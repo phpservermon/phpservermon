@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -63,7 +63,8 @@ function __autoload($class) {
 /**
  * Retrieve language settings from the selected language file
  *
- * @return unknown
+ * @return string
+ * @see sm_load_lang()
  */
 function sm_get_lang() {
 	$args = func_get_args();
@@ -81,6 +82,12 @@ function sm_get_lang() {
 	return $result;
 }
 
+/**
+ * Load language from the language file to the $GLOBALS['sm_lang'] variable
+ *
+ * @param string $lang language
+ * @see sm_get_lang()
+ */
 function sm_load_lang($lang) {
 	$lang_file = dirname(__FILE__) . '/lang/' . $lang . '.lang.php';
 
@@ -93,12 +100,26 @@ function sm_load_lang($lang) {
 	$GLOBALS['sm_lang'] = $sm_lang;
 }
 
+/**
+ * Get a setting from the config.
+ * The config must have been loaded first using sm_load_conf()
+ *
+ * @param string $key
+ * @return string
+ * @see sm_load_conf()
+ */
 function sm_get_conf($key) {
 	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : null;
 
 	return $result;
 }
 
+/**
+ * Load config from the database to the $GLOBALS['sm_config'] variable
+ *
+ * @global object $db
+ * @see sm_get_conf()
+ */
 function sm_load_conf() {
 	global $db;
 
@@ -168,6 +189,12 @@ function sm_parse_msg($status, $type, $vars) {
 	return $message;
 }
 
+/**
+ * Shortcut to curl_init(), curl_exec and curl_close()
+ *
+ * @param string $href
+ * @return string cURL result
+ */
 function sm_curl_get($href) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -181,13 +208,28 @@ function sm_curl_get($href) {
 	return $result;
 }
 
+/**
+ * Check if an update is available for PHP Server Monitor
+ *
+ * @global object $db
+ * @return boolean
+ */
 function sm_check_updates() {
-	$latest = sm_curl_get('http://phpservermon.neanderthal-technology.com/version');
-	$current = sm_get_conf('version');
+	global $db;
 
-	if((int) $current < (int) $latest) {
-		// new update available
-		return true;
+	$last_update = sm_get_conf('last_update_check');
+
+	if((time() - (7 * 24 * 60 * 60)) > $last_update) {
+		// been more than a week since update, lets go
+		// update "update-date"
+		$db->save(SM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
+		$latest = sm_curl_get('http://phpservermon.neanderthal-technology.com/version');
+		$current = sm_get_conf('version');
+
+		if((int) $current < (int) $latest) {
+			// new update available
+			return true;
+		}
 	}
 	return false;
 }
@@ -210,6 +252,9 @@ function pre($arr = null) {
 	echo "</pre>";
 }
 
+/**
+ * Send headers to the browser to avoid caching
+ */
 function sm_no_cache() {
 	header("Expires: Mon, 20 Dec 1998 01:00:00 GMT");
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");

@@ -22,7 +22,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class txtmsgSpryng extends txtmsgCore {
+class txtmsgClickatell extends txtmsgCore {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================
@@ -40,32 +40,23 @@ class txtmsgSpryng extends txtmsgCore {
 	}
 
 	public function sendSMS($message) {
+		//$message MUST BE urlencode or it will send only part message (first word in most cases)
 		$recipients = implode(',', $this->recipients);
-
-		$result = $this->_auth_https_post('http://www.spryng.nl', '/SyncTextService',
-			'?OPERATION=send' .
-			'&USERNAME=' . $this->username .
-			'&PASSWORD=' . $this->password .
-			'&DESTINATION=' . $recipients .
-			'&SENDER=' . $this->originator .
-			'&BODY=' . $message .
-			'&SMSTYPE=' . 'BUSINESS'
+		//example: https://api.clickatell.com/http/sendmsg?user=XXXXXX&password=PASSWORD&api_id=111111&to=11111111&text=Message
+		//YOU MUST MANUALLY CHANGE THE VALUE OF 'api_id' EX: '&api_id=' . '1234567'
+		$result = $this->_auth_https_post('api.clickatell.com', '/http/sendmsg',
+			'?user=' . $this->username .
+			'&password=' . $this->password .
+			'&to=' . $recipients .
+			'&api_id=' . 'XXXXXX' .
+			'&text=' . substr(urlencode($message), 0, 153)
 		);
 		return $result;
 	}
 
 	protected function _auth_https_post($host, $path, $data) {
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $host . $path . $data);
-		//curl_setopt($ch, CURLOPT_HEADER, 1);
-		//curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-		$data = curl_exec($ch);
-		curl_close($ch);
-		return $data;
+		$url = $host . $path . $data;
+		return sm_curl_get($url);
 	}
 }
 

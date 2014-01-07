@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -22,6 +22,9 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Server module. Add/edit/delete servers, show a list of all servers etc.
+ */
 class modServers extends modCore {
 
 	function __construct() {
@@ -43,6 +46,7 @@ class modServers extends modCore {
 		}
 	}
 
+	// override parent::createHTML()
 	public function createHTML() {
 		switch($this->mode) {
 			case 'list':
@@ -53,44 +57,20 @@ class modServers extends modCore {
 				break;
 		}
 
-		// add labels
-		$this->tpl->addTemplateData(
-			$this->tpl_id,
-			array(
-				'label_label' => sm_get_lang('servers', 'label'),
-				'label_domain' => sm_get_lang('servers', 'domain'),
-				'label_port' => sm_get_lang('servers', 'port'),
-				'label_type' => sm_get_lang('servers', 'type'),
-				'label_last_check' => sm_get_lang('servers', 'last_check'),
-				'label_rtime' => sm_get_lang('servers', 'rtime'),
-				'label_last_online' => sm_get_lang('servers', 'last_online'),
-				'label_monitoring' => sm_get_lang('servers', 'monitoring'),
-				'label_send_email' => sm_get_lang('servers', 'send_email'),
-				'label_send_sms' => sm_get_lang('servers', 'send_sms'),
-				'label_action' => sm_get_lang('system', 'action'),
-				'label_save' => sm_get_lang('system', 'save'),
-				'label_edit' => sm_get_lang('system', 'edit') . ' ' . sm_get_lang('servers', 'server'),
-				'label_delete' => sm_get_lang('system', 'delete') . ' ' . sm_get_lang('servers', 'server'),
-				'label_yes' => sm_get_lang('system', 'yes'),
-				'label_no' => sm_get_lang('system', 'no'),
-				'label_add_new' => sm_get_lang('system', 'add_new'),
-				'message' => ($this->message == '') ? '&nbsp' : $this->message,
-			)
-		);
-
 		return parent::createHTML();
 	}
 
-
-	public function createHTMLUpdate() {
-		$this->tpl_id = 'servers_update';
-		$this->tpl->newTemplate($this->tpl_id, 'servers.tpl.html');
+	/**
+	 * Prepare the template to show the update screen for a single server
+	 */
+	protected function createHTMLUpdate() {
+		$this->setTemplateId('servers_update', 'servers.tpl.html');
 
 		$server_id = $_GET['edit'];
 
 		$tpl_data = array();
 
-		switch((int) $server_id) {
+		switch(intval($server_id)) {
 			case 0:
 				// insert mode
 				$tpl_data['titlemode'] = sm_get_lang('system', 'insert');
@@ -125,14 +105,16 @@ class modServers extends modCore {
 		}
 
 		$this->tpl->addTemplateData(
-			$this->tpl_id,
+			$this->getTemplateId(),
 			$tpl_data
 		);
 	}
 
-	public function createHTMLList() {
-		$this->tpl_id = 'servers_list';
-		$this->tpl->newTemplate($this->tpl_id, 'servers.tpl.html');
+	/**
+	 * Prepare the template to show a list of all servers
+	 */
+	protected function createHTMLList() {
+		$this->setTemplateId('servers_list', 'servers.tpl.html');
 
 		// get servers from database
 		$servers = $this->db->query(
@@ -159,7 +141,7 @@ class modServers extends modCore {
 				'`email`, '.
 				'`sms` '.
 			'FROM `'.SM_DB_PREFIX.'servers` '.
-			'ORDER BY `type` ASC, `label` ASC'
+			'ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC'
 		);
 
 		$server_count = count($servers);
@@ -167,13 +149,30 @@ class modServers extends modCore {
 		for ($x = 0; $x < $server_count; $x++) {
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 			$servers[$x]['rtime'] = round((float) $servers[$x]['rtime'], 4);
+
+			if($servers[$x]['type'] == 'website') {
+				// add link to label
+				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
+			}
 		}
 		// add servers to template
-		$this->tpl->addTemplateDataRepeat($this->tpl_id, 'servers', $servers);
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
+
+		// check if we need to add the auto refresh
+		$auto_refresh = sm_get_conf('auto_refresh_servers');
+		if(intval($auto_refresh) > 0) {
+			// add it
+			$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
+			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
+			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
+		}
 
 	}
 
-	public function executeSave() {
+	/**
+	 * Executes the saving of one of the servers
+	 */
+	protected function executeSave() {
 		// check for add/edit mode
 		if (isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
 			$clean = array(
@@ -204,7 +203,10 @@ class modServers extends modCore {
 		}
 	}
 
-	public function executeDelete() {
+	/**
+	 * Executes the deletion of one of the servers
+	 */
+	protected function executeDelete() {
 		// do delete
 		$this->db->delete(
 			SM_DB_PREFIX . 'servers',
@@ -213,6 +215,34 @@ class modServers extends modCore {
 			)
 		);
 		$this->message = sm_get_lang('system', 'deleted');
+	}
+
+	// override parent::createHTMLLabels()
+	protected function createHTMLLabels() {
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			array(
+				'label_label' => sm_get_lang('servers', 'label'),
+				'label_domain' => sm_get_lang('servers', 'domain'),
+				'label_port' => sm_get_lang('servers', 'port'),
+				'label_type' => sm_get_lang('servers', 'type'),
+				'label_last_check' => sm_get_lang('servers', 'last_check'),
+				'label_rtime' => sm_get_lang('servers', 'rtime'),
+				'label_last_online' => sm_get_lang('servers', 'last_online'),
+				'label_monitoring' => sm_get_lang('servers', 'monitoring'),
+				'label_send_email' => sm_get_lang('servers', 'send_email'),
+				'label_send_sms' => sm_get_lang('servers', 'send_sms'),
+				'label_action' => sm_get_lang('system', 'action'),
+				'label_save' => sm_get_lang('system', 'save'),
+				'label_edit' => sm_get_lang('system', 'edit') . ' ' . sm_get_lang('servers', 'server'),
+				'label_delete' => sm_get_lang('system', 'delete') . ' ' . sm_get_lang('servers', 'server'),
+				'label_yes' => sm_get_lang('system', 'yes'),
+				'label_no' => sm_get_lang('system', 'no'),
+				'label_add_new' => sm_get_lang('system', 'add_new'),
+			)
+		);
+
+		return parent::createHTMLLabels();
 	}
 }
 

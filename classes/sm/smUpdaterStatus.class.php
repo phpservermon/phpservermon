@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -119,7 +119,7 @@ class smUpdaterStatus extends smCore {
 
 		// We're only interested in the header, because that should tell us plenty!
 		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+		curl_setopt($ch, CURLOPT_NOBODY, true);
 
 		$headers = curl_exec ($ch);
 		curl_close ($ch);
@@ -143,8 +143,8 @@ class smUpdaterStatus extends smCore {
 			$code = $code_matches[1][0];
 			$msg = $code_matches[2][0];
 
-			// All status codes starting with a 4 mean trouble!
-			if(substr($code, 0, 1) == '4') {
+			// All status codes starting with a 4 or higher mean trouble!
+			if(substr($code, 0, 1) >= '4') {
 				$this->server['error'] = $this->error = $code . ' ' . $msg;
 				$this->status_new = 'off';
 			} else {
@@ -297,6 +297,9 @@ class smUpdaterStatus extends smCore {
 				break;
 			case 'spryng':
 				$sms = new txtmsgSpryng();
+				break;
+			case 'clickatell':
+				$sms = new txtmsgClickatell();
 				break;
 		}
 

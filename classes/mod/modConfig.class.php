@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -32,7 +32,57 @@ class modConfig extends modCore {
 		}
 	}
 
-	public function executeSave() {
+	// override parent::createHTML()
+	public function createHTML() {
+		$this->setTemplateId('config', 'config.tpl.html');
+
+		$this->populateFields();
+
+		return parent::createHTML();
+	}
+
+	/**
+	 * Populate all the config fields with values from the database
+	 */
+	public function populateFields() {
+		$config_db = $this->db->select(
+			SM_DB_PREFIX . 'config',
+			null,
+			array('key', 'value')
+		);
+
+		$config = array();
+		foreach($config_db as $entry) {
+			$config[$entry['key']] = $entry['value'];
+		}
+
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			array(
+				'language_selected_' . $config['language'] => 'selected="selected"',
+				'email_status_checked' => ($config['email_status'] == '1') ? 'checked="checked"' : '',
+				'email_from_name' => $config['email_from_name'],
+				'email_from_email' => $config['email_from_email'],
+				'sms_status_checked' => ($config['sms_status'] == '1') ? 'checked="checked"' : '',
+				'sms_selected_' . $config['sms_gateway'] => 'selected="selected"',
+				'sms_gateway_username' => $config['sms_gateway_username'],
+				'sms_gateway_password' => $config['sms_gateway_password'],
+				'sms_from' => $config['sms_from'],
+				'alert_type_selected_' . $config['alert_type'] => 'selected="selected"',
+				'log_status_checked' => ($config['log_status'] == '1') ? 'checked="checked"' : '',
+				'log_email_checked' => ($config['log_email'] == '1') ? 'checked="checked"' : '',
+				'log_sms_checked' => ($config['log_sms'] == '1') ? 'checked="checked"' : '',
+				'show_update_checked' => ($config['show_update'] == '1') ? 'checked="checked"' : '',
+				'auto_refresh_servers' => (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0',
+			)
+		);
+	}
+
+	/**
+	 * If a post has been done, gather all the posted data
+	 * and save it to the database
+	 */
+	protected function executeSave() {
 		// save new config
 		$clean = array(
 			'language' => $_POST['language'],
@@ -49,73 +99,38 @@ class modConfig extends modCore {
 			'log_status' => (isset($_POST['log_status'])) ? '1' : '0',
 			'log_email' => (isset($_POST['log_email'])) ? '1' : '0',
 			'log_sms' => (isset($_POST['log_sms'])) ? '1' : '0',
+			'auto_refresh_servers' => (isset($_POST['auto_refresh_servers'])) ? intval($_POST['auto_refresh_servers']) : '0',
 		);
 
 		// save all values to the database
 		foreach($clean as $key => $value) {
-			$this->db->save(
-				SM_DB_PREFIX . 'config',
-				array('value' => $value),
-				array('key' => $key)
-			);
+			// check if key already exists, otherwise add it
+			if(sm_get_conf($key) === null) {
+				// not yet set, add it
+				$this->db->save(
+					SM_DB_PREFIX . 'config',
+					array(
+						'key' => $key,
+						'value' => $value,
+					)
+				);
+			} else {
+				// update
+				$this->db->save(
+					SM_DB_PREFIX . 'config',
+					array('value' => $value),
+					array('key' => $key)
+				);
+			}
 		}
 
 		$this->message = sm_get_lang('config', 'updated');
 	}
 
-	public function createHTML() {
-		$this->tpl_id = 'config';
-		$this->tpl->newTemplate($this->tpl_id, 'config.tpl.html');
-
-		$this->createHTMLUpdate();
-		$this->createHTMLLabels();
-
-		$this->populateFields();
-
-		return parent::createHTML();
-	}
-
-	public function createHTMLUpdate() {
-		// get latest version number
-
-	}
-
-	public function populateFields() {
-		$config_db = $this->db->select(
-			SM_DB_PREFIX . 'config',
-			null,
-			array('key', 'value')
-		);
-
-		$config = array();
-		foreach($config_db as $entry) {
-			$config[$entry['key']] = $entry['value'];
-		}
-
+	// override parent::createHTMLLabels()
+	protected function createHTMLLabels() {
 		$this->tpl->addTemplateData(
-			$this->tpl_id,
-			array(
-				'language_selected_' . $config['language'] => 'selected="selected"',
-				'email_status_checked' => ($config['email_status'] == '1') ? 'checked="checked"' : '',
-				'email_from_name' => $config['email_from_name'],
-				'email_from_email' => $config['email_from_email'],
-				'sms_status_checked' => ($config['sms_status'] == '1') ? 'checked="checked"' : '',
-				'sms_selected_' . $config['sms_gateway'] => 'selected="selected"',
-				'sms_gateway_username' => $config['sms_gateway_username'],
-				'sms_gateway_password' => $config['sms_gateway_password'],
-				'sms_from' => $config['sms_from'],
-				'alert_type_selected_' . $config['alert_type'] => 'selected="selected"',
-				'log_status_checked' => ($config['log_status'] == '1') ? 'checked="checked"' : '',
-				'log_email_checked' => ($config['log_email'] == '1') ? 'checked="checked"' : '',
-				'log_sms_checked' => ($config['log_sms'] == '1') ? 'checked="checked"' : '',
-				'show_update_checked' => ($config['show_update'] == '1') ? 'checked="checked"' : '',
-			)
-		);
-	}
-
-	public function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->tpl_id,
+			$this->getTemplateId(),
 			array(
 				'label_settings_email' => sm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => sm_get_lang('config', 'settings_sms'),
@@ -125,6 +140,8 @@ class modConfig extends modCore {
 				'label_language' => sm_get_lang('config', 'language'),
 				'label_language_english' => sm_get_lang('config', 'english'),
 				'label_language_dutch' => sm_get_lang('config', 'dutch'),
+				'label_language_french' => sm_get_lang('config', 'french'),
+				'label_language_german' => sm_get_lang('config', 'german'),
 				'label_show_update' => sm_get_lang('config', 'show_update'),
 				'label_email_status' => sm_get_lang('config', 'email_status'),
 				'label_email_from_email' => sm_get_lang('config', 'email_from_email'),
@@ -134,6 +151,7 @@ class modConfig extends modCore {
 				'label_sms_gateway_mollie' => sm_get_lang('config', 'sms_gateway_mollie'),
 				'label_sms_gateway_spryng' => sm_get_lang('config', 'sms_gateway_spryng'),
 				'label_sms_gateway_inetworx' => sm_get_lang('config', 'sms_gateway_inetworx'),
+				'label_sms_gateway_clickatell' => sm_get_lang('config', 'sms_gateway_clickatell'),
 				'label_sms_gateway_username' => sm_get_lang('config', 'sms_gateway_username'),
 				'label_sms_gateway_password' => sm_get_lang('config', 'sms_gateway_password'),
 				'label_sms_from' => sm_get_lang('config', 'sms_from'),
@@ -144,9 +162,11 @@ class modConfig extends modCore {
 				'label_log_status' => sm_get_lang('config', 'log_status'),
 				'label_log_email' => sm_get_lang('config', 'log_email'),
 				'label_log_sms' => sm_get_lang('config', 'log_sms'),
-				'message' => ($this->message == '') ? '&nbsp' : $this->message,
+				'label_auto_refresh_servers' => sm_get_lang('config', 'auto_refresh_servers'),
 			)
 		);
+
+		return parent::createHTMLLabels();
 	}
 }
 

@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -26,6 +26,11 @@
 error_reporting(0x0ffffff);
 
 require 'config.inc.php';
+
+if(!function_exists('curl_init')) {
+	die('PHP is installed without the cURL module. Please install cURL first.');
+}
+
 $tpl = new smTemplate();
 $tpl->addCSS('monitor.css', 'install');
 
@@ -111,6 +116,7 @@ $tables = array(
 					(null, 'log_email', '1'),
 					(null, 'log_sms', '1'),
 					(null, 'version', '200'),
+					(null, 'auto_refresh_servers', '0'),
 					(null, 'show_update', '1'),
 					(null, 'last_update_check', '0');",
 		)

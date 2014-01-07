@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -22,39 +22,29 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Log module. Create the page to view previous log messages
+ */
 class modLog extends modCore {
 
 	function __construct() {
 		parent::__construct();
 	}
 
+	// override parent::createHTML()
 	public function createHTML() {
-		$this->createHTMLList();
-
 		$this->tpl->addCSS('tabs.css', 'main');
 
-		$this->tpl->addTemplateData(
-			$this->tpl_id,
-			array(
-				'label_status' => sm_get_lang('log', 'status'),
-				'label_email' => sm_get_lang('log', 'email'),
-				'label_sms' => sm_get_lang('log', 'sms'),
-				'label_title' => sm_get_lang('log', 'title'),
-				'label_server' => sm_get_lang('servers', 'server'),
-				'label_type' => sm_get_lang('log', 'type'),
-				'label_message' => sm_get_lang('system', 'message'),
-				'label_date' => sm_get_lang('system', 'date'),
-				'label_users' => ucfirst(sm_get_lang('system', 'users')),
-			)
-		);
+		$this->createHTMLList();
 
 		return parent::createHTML();
 	}
 
-	public function createHTMLList() {
-		$this->tpl_id = 'log_list';
-
-		$this->tpl->newTemplate($this->tpl_id, 'log.tpl.html');
+	/**
+	 * Prepare the template with a list of all log entries
+	 */
+	protected function createHTMLList() {
+		$this->setTemplateId('log_list', 'log.tpl.html');
 
 		$entries = array();
 		$entries['status'] = $this->getEntries('status');
@@ -98,7 +88,7 @@ class modLog extends modCore {
 				)
 			);
 			$this->tpl->addTemplateData(
-				$this->tpl_id,
+				$this->getTemplateId(),
 				array(
 					'content_' . $key => $this->tpl->getTemplate('log_entries'),
 				)
@@ -107,6 +97,12 @@ class modLog extends modCore {
 
 	}
 
+	/**
+	 * Get all the log entries for a specific $type
+	 *
+	 * @param string $type status/email/sms
+	 * @return array
+	 */
 	public function getEntries($type) {
 		$entries = $this->db->query(
 			'SELECT '.
@@ -132,6 +128,25 @@ class modLog extends modCore {
 		return $entries;
 	}
 
+	// override parent::createHTMLLabels()
+	protected function createHTMLLabels() {
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			array(
+				'label_status' => sm_get_lang('log', 'status'),
+				'label_email' => sm_get_lang('log', 'email'),
+				'label_sms' => sm_get_lang('log', 'sms'),
+				'label_title' => sm_get_lang('log', 'title'),
+				'label_server' => sm_get_lang('servers', 'server'),
+				'label_type' => sm_get_lang('log', 'type'),
+				'label_message' => sm_get_lang('system', 'message'),
+				'label_date' => sm_get_lang('system', 'date'),
+				'label_users' => ucfirst(sm_get_lang('system', 'users')),
+			)
+		);
+
+		return parent::createHTMLLabels();
+	}
 }
 
 ?>

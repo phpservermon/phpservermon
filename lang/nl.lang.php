@@ -1,11 +1,11 @@
 <?php
 
 /*
- * PHP Server Monitor v2.0.0
+ * PHP Server Monitor v2.0.1
  * Monitor your servers with error notification
  * http://phpservermon.sourceforge.net/
  *
- * Copyright (c) 2008-2009 Pepijn Over (ipdope@users.sourceforge.net)
+ * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -81,6 +81,8 @@ $sm_lang = array(
 		'show_update' => 'Check for new updates weekly?',
 		'english' => 'Engels',
 		'dutch' => 'Nederlands',
+		'french' => 'Frans',
+		'german' => 'Duits',
 		'email_status' => 'Sta email berichten toe?',
 		'email_from_email' => 'Email van adres',
 		'email_from_name' => 'Email van naam',
@@ -89,6 +91,7 @@ $sm_lang = array(
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
+		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
@@ -116,6 +119,11 @@ $sm_lang = array(
 		'settings_sms' => 'SMS instellingen',
 		'settings_notification' => 'Notificatie instellingen',
 		'settings_log' => 'Log instellingen',
+		'auto_refresh_servers' =>
+			'Auto-refresh servers pagina<br/>'.
+			'<div class="small">'.
+			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
+			'</div>',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

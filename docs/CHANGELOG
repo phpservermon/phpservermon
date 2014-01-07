@@ -1,5 +1,20 @@
 #########################
 #
+# Version 2.0.1
+# October 29, 2011
+#
+#########################
+- adding german language file (thanks to Brunbaur Herbert)
+- adding french language file (thanks to David Ribeiro)
+- classes/sm/smUpdaterStatus.class.php: the curl option CURLOPT_CUSTOMREQUEST has been changed to CURLOPT_NOBODY
+- servers page: auto refresh can be configured at the config page
+- servers page: if the server is a website, the "Domain/Ip" field will be a link to the website
+- new text message gateway: Clickatell.com (thanks to Simon)
+- if cURL is not installed, the install.php script will throw an error
+- HTTP status codes 5xx will also be treated as error
+
+#########################
+#
 # Version 2.0.0
 # October 19, 2009
 #
@@ -20,6 +35,6 @@
 
 
 - log.php
-  tpl/log.tpl.html
-  						select order by clause used datetime field after DATE_FORMAT had been performed,
-						resulting in a wrong list of log entries shown
+- tpl/log.tpl.html
+select order by clause used datetime field after DATE_FORMAT had been performed,
+resulting in a wrong list of log entries shown
