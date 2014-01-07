@@ -1,0 +1,69 @@
+<!--%tpl_users_list-->
+<div class="message"><a href="index.php?type=users&edit=0">{label_add_new}</a></div><br/>
+<table cellpadding="0" cellspacing="0">
+  <tr class="odd">
+    <td><b>{label_name}</b></td>
+    <td><b>{label_mobile}</b></td>
+    <td><b>{label_email}</b></td>
+    <td><b>{label_servers}</b></td>
+    <td><b>{label_action}</b></td>
+  </tr>
+  <tr class="odd">
+    <td colspan="5" class="message">{message}</td>
+  </tr>
+  <!--%tpl_repeat_users-->
+	<tr class="{class}">
+	  <td style="vertical-align: top;">{name}</td>
+	  <td style="vertical-align: top;">{mobile}</td>
+	  <td style="vertical-align: top;">{email}</td>
+	  <td style="vertical-align: top;">{emp_servers}</td>
+	  <td>
+	    <a href="index.php?type=users&amp;edit={user_id}"><img src="img/edit.png" alt="edit" title="{label_edit}" /></a>
+	    &nbsp;
+	    <a href="javascript:sm_delete('{user_id}', 'users');"><img src="img/delete.png" alt="delete" title="{label_delete}" /></a>
+	  </td>
+	</tr>
+  <!--%%tpl_repeat_users-->
+  {users}
+</table>
+<!--%%tpl_users_list-->
+
+<!--%tpl_users_update-->
+<form action="index.php?type=users" id="edit_user" method="post">
+<table cellpadding="0" cellspacing="0" width="50%">
+  <tr class="odd">
+    <td colspan="2"><h3>{titlemode}</h3></td>
+  </tr>
+  <tr class="even">
+    <td>{label_name}</td>
+    <td><input type="text" name="name" value="{edit_value_name}" maxlength="255" /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_mobile}</td>
+    <td><input type="text" name="mobile" value="{edit_value_mobile}" maxlength="15" /></td>
+  </tr>
+  <tr class="even">
+    <td>{label_email}</td>
+    <td><input type="text" name="email" value="{edit_value_email}" maxlength="255" /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_servers}</td>
+    <td>
+      <div class="multiple_select_container">
+        <!--%tpl_repeat_servers-->
+          <label for='server{server_id}' class="{class}"><input name='server_id[]' value='{server_id}' type='checkbox' id='server{server_id}' onclick='sm_highlight_label(this);' {edit_checked} />{label}</label>
+        <!--%%tpl_repeat_servers-->
+        {servers}
+      </div>
+    </td>
+  </tr>
+  <tr class="even">
+    <td colspan="2">
+      <input type="hidden" name="user_id" value="{edit_user_id}" />
+      <input type="button" onclick="history.back();" value="Cancel" name="cancel"/>
+      <input type="submit" name="submit" value="Save" />
+    </td>
+  </tr>
+</table>
+</form>
+<!--%%tpl_users_update-->

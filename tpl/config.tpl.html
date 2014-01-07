@@ -1,0 +1,125 @@
+<!--%tpl_config-->
+{config_update}
+<form action="index.php?type=config" id="edit_config" method="post">
+<table cellpadding="0" cellspacing="0" width="50%">
+  <tr class="head">
+    <td colspan="2" class="message">
+      {message}
+    </td>
+  </tr>
+  <tr class="head">
+    <td colspan="2">
+      {label_general}
+    </td>
+  </tr>
+  <tr class="odd">
+    <td width="50%">{label_language}</td>
+    <td>
+      <select name="language">
+        <option value="en" {language_selected_en}>{label_language_english}</option>
+        <option value="nl" {language_selected_nl}>{label_language_dutch}</option>
+      </select>
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_show_update}</td>
+    <td><input type="checkbox" name="show_update[]" {show_update_checked} /></td>
+  </tr>
+  <tr class="head">
+    <td colspan="2">
+      {label_settings_email}
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_email_status}</td>
+    <td><input type="checkbox" name="email_status[]" {email_status_checked} /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_email_from_name}</td>
+    <td><input type="text" name="email_from_name" value="{email_from_name}" maxlength="255" /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_email_from_email}</td>
+    <td><input type="text" name="email_from_email" value="{email_from_email}" maxlength="255" /></td>
+  </tr>
+  <tr class="head">
+    <td colspan="2">
+      {label_settings_sms}
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_sms_status}</td>
+    <td><input type="checkbox" name="sms_status[]" {sms_status_checked} /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_sms_gateway}</td>
+    <td>
+      <select name="sms_gateway">
+        <option value="mollie" {sms_selected_mollie}>{label_sms_gateway_mollie}</option>
+        <option value="spryng" {sms_selected_spryng}>{label_sms_gateway_spryng}</option>
+        <option value="inetworx" {sms_selected_inetworx}>{label_sms_gateway_inetworx}</option>
+      </select>
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_sms_gateway_username}</td>
+    <td><input type="text" name="sms_gateway_username" value="{sms_gateway_username}" maxlength="255" /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_sms_gateway_password}</td>
+    <td><input type="password" name="sms_gateway_password" value="{sms_gateway_password}" maxlength="255" /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_sms_from}</td>
+    <td><input type="text" name="sms_from" value="{sms_from}" maxlength="255" /></td>
+  </tr>
+
+  <tr class="head">
+    <td colspan="2">
+      {label_settings_notification}
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_alert_type}</td>
+    <td>
+      <select name="alert_type">
+        <option value="status" {alert_type_selected_status}>{label_alert_type_status}</option>
+        <option value="offline" {alert_type_selected_offline}>{label_alert_type_offline}</option>
+        <option value="always" {alert_type_selected_always}>{label_alert_type_always}</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class="head">
+    <td colspan="2">
+      {label_settings_log}
+    </td>
+  </tr>
+  <tr class="odd">
+    <td>{label_log_status}</td>
+    <td><input type="checkbox" name="log_status[]" {log_status_checked} /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_log_email}</td>
+    <td><input type="checkbox" name="log_email[]" {log_email_checked} /></td>
+  </tr>
+  <tr class="odd">
+    <td>{label_log_sms}</td>
+    <td><input type="checkbox" name="log_sms[]" {log_sms_checked} /></td>
+  </tr>
+
+  <tr class="even">
+    <td>&nbsp;</td>
+    <td>
+      <input type="submit" name="submit" value="Save" />
+    </td>
+  </tr>
+</table>
+</form>
+<!--%%tpl_config-->
+
+<!--%tpl_config_update-->
+<div class="message">
+  Please update!
+</div>
+<!--%%tpl_config_update-->

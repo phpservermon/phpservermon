@@ -1,0 +1,25 @@
+#########################
+#
+# Version 2.0.0
+# October 19, 2009
+#
+#########################
+- server type ("service" or "website")
+- different types of notification
+- new text message gateways
+- code rewrite
+- new layout
+- check for updates function
+
+#########################
+#
+# Version 1.0.1
+# September 18, 2008
+#
+#########################
+
+
+- log.php
+  tpl/log.tpl.html
+  						select order by clause used datetime field after DATE_FORMAT had been performed,
+						resulting in a wrong list of log entries shown

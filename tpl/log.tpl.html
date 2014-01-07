@@ -1,0 +1,42 @@
+<!--%tpl_log_list-->
+<div class="tabs">
+  <ul>
+	<li id="tabs_title_status" class="selected"><a href="javascript:sm_switch_tab('status');">{label_status}</a></li>
+	<li id="tabs_title_email"><a href="javascript:sm_switch_tab('email');">{label_email}</a></li>
+	<li id="tabs_title_sms"><a href="javascript:sm_switch_tab('sms');">{label_sms}</a></li>
+  </ul>
+</div>
+<div class="tabs_content" id="tabs_content_status">
+{content_status}
+</div>
+<div class="tabs_content" id="tabs_content_email" style="display: none;">
+{content_email}
+</div>
+<div class="tabs_content" id="tabs_content_sms" style="display: none;">
+{content_sms}
+</div>
+
+<!--%%tpl_log_list-->
+
+<!--%tpl_log_entries-->
+<table cellpadding="0" cellspacing="0">
+  <tr class="head">
+    <td colspan="4">{logtitle}</td>
+  </tr>
+  <tr class="odd">
+    <td><b>{label_server}</b></td>
+    <td><b>{label_message}</b></td>
+    <td><b>{label_date}</b></td>
+    <td><b>{label_users}</b></td>
+  </tr>
+  <!--%tpl_repeat_entries-->
+	<tr class="{class}">
+	  <td>{server}</td>
+	  <td>{message}</td>
+	  <td>{datetime_format}</td>
+	  <td>{users}</td>
+	</tr>
+  <!--%%tpl_repeat_entries-->
+  {entries}
+</table>
+<!--%%tpl_log_entries-->
