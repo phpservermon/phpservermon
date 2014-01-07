@@ -1,11 +1,7 @@
 <?php
-
-/*
- * PHP Server Monitor v2.0.1
- * Monitor your servers with error notification
- * http://phpservermon.sourceforge.net/
- *
- * Copyright (c) 2008-2011 Pepijn Over (ipdope@users.sourceforge.net)
+/**
+ * PHP Server Monitor
+ * Monitor your servers and websites.
  *
  * This file is part of PHP Server Monitor.
  * PHP Server Monitor is free software: you can redistribute it and/or modify
@@ -20,7 +16,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
- */
+ *
+ * @package     phpservermon
+ * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version     Release: @package_version@
+ * @link        http://phpservermon.neanderthal-technology.com/
+ **/
 
 /**
  * User module. Add, edit and delete users, or assign

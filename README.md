@@ -33,6 +33,7 @@ available:
 * Mollie - <http://www.mollie.nl>
 * Spryng - <http://www.spryng.nl>
 * Inetworx - <http://www.inetworx.ch>
+* Clickatell - <https://www.clickatell.com>
 
 For these gateways you need an account with sufficient credits.
 
@@ -45,7 +46,7 @@ project page (tracker), or send me an email (see top of file for link).
 
 ## DOWNLOAD
 
-The latest version can be found at <http://phpservermon.sourceforge.net>.
+The latest version can be found at <http://phpservermon.neanderthal-technology.com/>.
 You can also clone the git repo at <http://github.com/dopeh/phpservermon>.
 
 
@@ -149,7 +150,7 @@ The second part is the actual message. There are a few variables you can use in 
    * Create a new file in the directory "lang" named "mylanguage.lang.php".
    * Copy the contents of the file "en.lang.php" to your new file.
    * Translate the English stuff to your own language.
-   * Send a copy to ipdope[at]users.sourceforge.net so I can add it to the next release :)
+   * Send a copy to pep[at]neanderthal-technology.com so I can add it to the next release :)
    * Or, send me a pull request on github.
 
 ## CREDITS
