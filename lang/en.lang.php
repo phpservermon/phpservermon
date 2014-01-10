@@ -47,6 +47,7 @@ $sm_lang = array(
 		'insert' => 'Insert',
 		'add_new' => 'Add new?',
 		'update_available' => 'A new update is available from <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
+		'back_to_top' => 'Back to top',
 	),
 	'users' => array(
 		'user' => 'user',

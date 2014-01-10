@@ -47,6 +47,7 @@ $sm_lang = array(
 		'insert' => 'Voeg toe',
 		'add_new' => 'Voeg toe?',
 		'update_available' => 'Een nieuwe update is beschikbaar op <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
+		'back_to_top' => 'Terug naar boven',
 	),
 	'users' => array(
 		'user' => 'gebruiker',

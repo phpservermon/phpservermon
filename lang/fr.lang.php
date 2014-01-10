@@ -47,6 +47,7 @@ $sm_lang = array(
 		'insert' => 'Inserer',
 		'add_new' => 'Rajouter un nouveau serveur?',
 		'update_available' => 'Une nouvelle version est disponible &agrave; l adresse <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
+		'back_to_top' => 'Haut de page',
 	),
 	'users' => array(
 		'user' => 'Utilisateur',

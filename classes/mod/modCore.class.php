@@ -135,6 +135,7 @@ abstract class modCore {
 				'label_config' => sm_get_lang('system', 'config'),
 				'label_update' => sm_get_lang('system', 'update'),
 				'label_help' => sm_get_lang('system', 'help'),
+				'label_back_to_top' => sm_get_lang('system', 'back_to_top'),
 			)
 		);
 	}
