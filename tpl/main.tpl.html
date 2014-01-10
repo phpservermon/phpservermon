@@ -33,17 +33,20 @@
           <a class="brand" href="index.php">{title}</a>
           <div class="nav-collapse">
             <ul class="nav">
-                <li id="nav_option_servers">
-                    <a href="index.php?type=servers" class="{active_servers}">{label_servers}</a>
+                <li id="nav_option_servers" class="{active_servers}">
+                    <a href="index.php?type=servers">{label_servers}</a>
                 </li>
-                <li id="nav_option_users">
-                    <a href="index.php?type=users" class="{active_users}">{label_users}</a>
+                <li id="nav_option_users" class="{active_users}">
+                    <a href="index.php?type=users">{label_users}</a>
                 </li>
-                <li id="nav_option_log">
-                    <a href="index.php?type=log" class="{active_log}">{label_log}</a>
+                <li id="nav_option_log" class="{active_log}">
+                    <a href="index.php?type=log">{label_log}</a>
                 </li>
-                <li id="nav_option_config">
-                    <a href="index.php?type=config" class="{active_config}">{label_config}</a>
+                <li id="nav_option_config" class="{active_config}">
+                    <a href="index.php?type=config">{label_config}</a>
+                </li>
+                <li id="nav_option_status" class="{active_status}">
+                    <a href="index.php?type=status">{label_status}Status</a>
                 </li>
                 <li id="nav_option_update">
                     <a href="index.php?action=check">{label_update}</a>
@@ -72,17 +75,7 @@
         </div>
 
         {update_available}
-
-        <footer class="footer">
-          <p class="pull-right"><a href="#">{label_back_to_top}</a></p>
-          <p>
-              Powered by <a href="http://phpservermon.sourceforge.net" target="_blank">PHP Server Monitor</a> and
-              <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>
-              <br/>
-              Copyright &copy; 2008-2014 <a href="mailto:pep@neanderthal-technology.com">Pepijn Over<a/>
-          </p>
-        </footer>
-
+		{html_footer}
     </div>
     <!-- /container -->
 
@@ -107,3 +100,15 @@
 <!--%tpl_main_auto_refresh-->
     <meta http-equiv="refresh" content="{seconds}" />
 <!--%%tpl_main_auto_refresh-->
+
+<!--%tpl_main_footer-->
+        <footer class="footer">
+          <p class="pull-right"><a href="#">{label_back_to_top}</a></p>
+          <p>
+              Powered by <a href="http://phpservermon.sourceforge.net" target="_blank">PHP Server Monitor</a> and
+              <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>
+              <br/>
+              Copyright &copy; 2008-2014 <a href="mailto:pep@neanderthal-technology.com">Pepijn Over</a>
+          </p>
+        </footer>
+<!--%%tpl_main_footer-->

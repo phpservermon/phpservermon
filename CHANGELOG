@@ -8,6 +8,7 @@
 - Support for mosms provider by Andreas Ek (https://github.com/EkAndreas/PHP-Server-Monitor-Plus/commit/105c734a02477befc01831e3b9b2b8fefd9b5ca5).
 - Language files are now automatically detected, instead of a hardcoded list.
 - Adding Korean language file (thanks to Ik-Jun).
+- Large status page by Michael Greenhill.
 
 #########################
 #

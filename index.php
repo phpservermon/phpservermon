@@ -26,7 +26,7 @@
  **/
 
 if(!file_exists('config.inc.php')) {
-	die('Failed to locate config file. Please read docs/README for more information on how to setup PHP Server Monitor.');
+	die('Failed to locate config file. Please read README.md for more information on how to setup PHP Server Monitor.');
 }
 require_once 'config.inc.php';
 
@@ -38,7 +38,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check') {
 }
 
 $type = (!isset($_GET['type'])) ? 'servers' : $_GET['type'];
-$allowed_types = array('servers', 'users', 'log', 'config');
+$allowed_types = array('servers', 'users', 'log', 'config', 'status');
 
 // make sure user selected a valid type. if so, include the file and add to template
 if(!in_array($type, $allowed_types)) {

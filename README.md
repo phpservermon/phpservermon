@@ -162,6 +162,7 @@ The second part is the actual message. There are a few variables you can use in 
  * Korean translation - Ik-Jun
  * Bootstrap implementation - Luiz Alberto S. Ribeiro
  * Mosms implementation - Andreas Ek
+ * Status page - Michael Greenhill
 
 ## License
 
