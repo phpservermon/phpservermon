@@ -91,6 +91,7 @@ $sm_lang = array(
 		'email_from_name' => 'Email from name',
 		'sms_status' => 'SMS Nachricht senden erlauben?',
 		'sms_gateway' => 'SMS Gateway',
+		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',

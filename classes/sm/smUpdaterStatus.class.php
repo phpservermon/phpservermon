@@ -214,6 +214,7 @@ class smUpdaterStatus extends smCore {
 			// send email
 			$this->notifyByEmail();
 		}
+
 		// check if sms is enabled for this server
 		if(sm_get_conf('sms_status') && $this->server['sms'] == 'yes') {
 			// yay lets wake those nerds up!
@@ -291,9 +292,12 @@ class smUpdaterStatus extends smCore {
 		// open the right class
 		// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
 		switch(strtolower(sm_get_conf('sms_gateway'))) {
+			case 'mosms':
+				$sms = new txtmsgMosms();
+				break;
 			case 'inetworx':
 				$sms = new txtmsgInetworx();
-			break;
+				break;
 			case 'mollie':
 				$sms = new txtmsgMollie();
 				$sms->setGateway(1);

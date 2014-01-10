@@ -34,6 +34,7 @@ available:
 * Spryng - <http://www.spryng.nl>
 * Inetworx - <http://www.inetworx.ch>
 * Clickatell - <https://www.clickatell.com>
+* Mosms - <http://www.mosms.com>
 
 For these gateways you need an account with sufficient credits.
 
@@ -160,6 +161,7 @@ The second part is the actual message. There are a few variables you can use in 
  * French translation - David Ribeiro
  * Korean translation - Ik-Jun
  * Bootstrap implementation - Luiz Alberto S. Ribeiro
+ * Mosms implementation - Andreas Ek
 
 ## License
 

@@ -4,6 +4,7 @@
 #
 #########################
 - merged PHP Server Monitor Plus project by Luiz Alberto S. Ribeiro (https://github.com/madeinnordeste/PHP-Server-Monitor-Plus)
+- support for mosms provider by Andreas Ek (https://github.com/EkAndreas/PHP-Server-Monitor-Plus/commit/105c734a02477befc01831e3b9b2b8fefd9b5ca5)
 
 #########################
 #

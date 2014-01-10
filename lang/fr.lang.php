@@ -91,6 +91,7 @@ $sm_lang = array(
 		'email_from_name' => 'Nom de l exp&eacute;diteur',
 		'sms_status' => 'Autoriser l envoi de SMS?',
 		'sms_gateway' => 'Passerelle &agrave; utiliser pour l envoi de SMS',
+		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',

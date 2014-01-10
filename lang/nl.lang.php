@@ -91,6 +91,7 @@ $sm_lang = array(
 		'email_from_name' => 'Email van naam',
 		'sms_status' => 'Sta SMS berichten toe?',
 		'sms_gateway' => 'Gateway voor het sturen van SMS',
+		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',

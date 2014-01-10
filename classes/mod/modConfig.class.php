@@ -151,6 +151,7 @@ class modConfig extends modCore {
 				'label_email_from_name' => sm_get_lang('config', 'email_from_name'),
 				'label_sms_status' => sm_get_lang('config', 'sms_status'),
 				'label_sms_gateway' => sm_get_lang('config', 'sms_gateway'),
+				'label_sms_gateway_mosms' => sm_get_lang('config', 'sms_gateway_mosms'),
 				'label_sms_gateway_mollie' => sm_get_lang('config', 'sms_gateway_mollie'),
 				'label_sms_gateway_spryng' => sm_get_lang('config', 'sms_gateway_spryng'),
 				'label_sms_gateway_inetworx' => sm_get_lang('config', 'sms_gateway_inetworx'),
