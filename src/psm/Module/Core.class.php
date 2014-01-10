@@ -25,17 +25,19 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-abstract class modCore {
+namespace psm\Module;
+
+abstract class Core {
 	/**
 	 * Custom message
-	 * @var string
+	 * @var string $message
 	 */
 	public $message;
 
 	/**
 	 * Current mode. Can be used by modules to determine
 	 * what to do
-	 * @var string
+	 * @var string $mode
 	 */
 	public $mode;
 
@@ -47,13 +49,13 @@ abstract class modCore {
 
 	/**
 	 * smDatabase object
-	 * @var object
+	 * @var object $db
 	 */
 	protected $db;
 
 	/**
-	 * smTemplate object
-	 * @var object
+	 * \psm\Template object
+	 * @var object $tpl
 	 */
 	protected $tpl;
 
@@ -67,8 +69,8 @@ abstract class modCore {
 	function __construct() {
 		global $db;
 
-		$this->db = ($db) ? $db : new smDatabase();
-		$this->tpl = new smTemplate();
+		$this->db = ($db) ? $db : new \psm\Database();
+		$this->tpl = new \psm\Template();
 
 
 	}
@@ -87,7 +89,7 @@ abstract class modCore {
 			$html_footer = '';
 		}
 
-		if(sm_get_conf('show_update')) {
+		if(psm_get_conf('show_update')) {
 			// user wants updates, lets see what we can do
 			$this->createHTMLUpdateAvailable();
 		}
@@ -101,7 +103,7 @@ abstract class modCore {
 				'content' => $this->tpl->getTemplate($this->getTemplateId()),
 				'message' => ($this->message == '') ? '&nbsp' : $this->message,
 				'html_footer' => $html_footer,
-				'label_back_to_top' => sm_get_lang('system', 'back_to_top'),
+				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 			)
 		);
 
@@ -116,12 +118,12 @@ abstract class modCore {
 	protected function createHTMLUpdateAvailable() {
 		// check for updates?
 
-		if(sm_check_updates()) {
+		if(psm_check_updates()) {
 			// yay, new update available =D
 			$this->tpl->addTemplateData(
 				'main',
 				array(
-					'update_available' => '<div id="update">'.sm_get_lang('system', 'update_available').'</div>',
+					'update_available' => '<div id="update">'.psm_get_lang('system', 'update_available').'</div>',
 				)
 			);
 		}
@@ -138,15 +140,15 @@ abstract class modCore {
 		$this->tpl->addTemplateData(
 			'main',
 			array(
-				'title' => strtoupper(sm_get_lang('system', 'title')),
-				'subtitle' => sm_get_lang('system', $type),
+				'title' => strtoupper(psm_get_lang('system', 'title')),
+				'subtitle' => psm_get_lang('system', $type),
 				'active_' . $type => 'active',
-				'label_servers' => sm_get_lang('system', 'servers'),
-				'label_users' => sm_get_lang('system', 'users'),
-				'label_log' => sm_get_lang('system', 'log'),
-				'label_config' => sm_get_lang('system', 'config'),
-				'label_update' => sm_get_lang('system', 'update'),
-				'label_help' => sm_get_lang('system', 'help'),
+				'label_servers' => psm_get_lang('system', 'servers'),
+				'label_users' => psm_get_lang('system', 'users'),
+				'label_log' => psm_get_lang('system', 'log'),
+				'label_config' => psm_get_lang('system', 'config'),
+				'label_update' => psm_get_lang('system', 'update'),
+				'label_help' => psm_get_lang('system', 'help'),
 			)
 		);
 	}

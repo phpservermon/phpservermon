@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class txtmsgInetworx extends txtmsgCore {
+namespace psm\Txtmsg;
+
+class Inetworx extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================

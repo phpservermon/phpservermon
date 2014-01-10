@@ -25,38 +25,6 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-/**
- *
- * Autoload
- *
- */
-function __autoload($class) {
-	// first check if a subdir exists for the class
-	// it splits using uppercase chars
-	preg_match_all("/(\P{Lu}+)|(\p{Lu}+\P{Lu}*)/", $class, $subdir_matches);
-
-	if(!empty($subdir_matches) && count($subdir_matches[0]) > 1) {
-		// okay we have some upper case, lets see if a dir exists
-		$dir = dirname(__FILE__) . '/classes/' . trim($subdir_matches[0][0]);
-		$file = $dir . '/' . trim($class) . '.class.php';
-
-		if(is_dir($dir) && file_exists($file)) {
-			require $file;
-			return $file;
-		}
-	} else {
-		$file = dirname(__FILE__).'/classes/'.trim(strtolower($class)).'.class.php';
-
-		if(file_exists($file)){
-			require $file;
-			return $file;
-		}
-	}
-
-	trigger_error("KERNEL_ERR : Unable to find file:\n\t\t[$file]\n\t associated with class:\n\t\t$class", E_USER_ERROR);
-	return false;
-}
-
 ###############################################
 #
 # Language functions
@@ -67,9 +35,9 @@ function __autoload($class) {
  * Retrieve language settings from the selected language file
  *
  * @return string
- * @see sm_load_lang()
+ * @see psm_load_lang()
  */
-function sm_get_lang() {
+function psm_get_lang() {
 	$args = func_get_args();
 
 	if(empty($args)) return $GLOBALS['sm_lang'];
@@ -89,10 +57,10 @@ function sm_get_lang() {
  * Load language from the language file to the $GLOBALS['sm_lang'] variable
  *
  * @param string $lang language
- * @see sm_get_lang()
+ * @see psm_get_lang()
  */
-function sm_load_lang($lang) {
-	$lang_file = dirname(__FILE__) . '/lang/' . $lang . '.lang.php';
+function psm_load_lang($lang) {
+	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
 
 	if(!file_exists($lang_file)) {
 		die('unable to load language file: ' . $lang_file);
@@ -107,11 +75,11 @@ function sm_load_lang($lang) {
  * Retrieve a list with keys of the available languages
  *
  * @return array
- * @see sm_load_lang()
+ * @see psm_load_lang()
  */
-function sm_get_langs() {
+function psm_get_langs() {
 	$fn_ext = '.lang.php';
-	$lang_files = glob(dirname(__FILE__) . '/lang/*' . $fn_ext);
+	$lang_files = glob(PSM_PATH_LANG . '*' . $fn_ext);
 	$langs = array();
 
 	foreach($lang_files as $file) {
@@ -122,13 +90,13 @@ function sm_get_langs() {
 
 /**
  * Get a setting from the config.
- * The config must have been loaded first using sm_load_conf()
+ * The config must have been loaded first using psm_load_conf()
  *
  * @param string $key
  * @return string
- * @see sm_load_conf()
+ * @see psm_load_conf()
  */
-function sm_get_conf($key) {
+function psm_get_conf($key) {
 	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : null;
 
 	return $result;
@@ -138,14 +106,14 @@ function sm_get_conf($key) {
  * Load config from the database to the $GLOBALS['sm_config'] variable
  *
  * @global object $db
- * @see sm_get_conf()
+ * @see psm_get_conf()
  */
-function sm_load_conf() {
+function psm_load_conf() {
 	global $db;
 
 	// load config from database into global scope
 	$GLOBALS['sm_config'] = array();
-	$config_db = $db->select(SM_DB_PREFIX . 'config', null, array('key', 'value'));
+	$config_db = $db->select(PSM_DB_PREFIX . 'config', null, array('key', 'value'));
 	foreach($config_db as $setting) {
 		$GLOBALS['sm_config'][$setting['key']] = $setting['value'];
 	}
@@ -170,11 +138,11 @@ function sm_load_conf() {
  * @param string $server_id
  * @param string $message
  */
-function sm_add_log($server_id, $type, $message, $user_id = null) {
+function psm_add_log($server_id, $type, $message, $user_id = null) {
 	global $db;
 
 	$db->save(
-		SM_DB_PREFIX.'log',
+		PSM_DB_PREFIX.'log',
 		array(
 			'server_id' => $server_id,
 			'type' => $type,
@@ -192,10 +160,10 @@ function sm_add_log($server_id, $type, $message, $user_id = null) {
  * @param array $server information about the server which may be placed in a message: %KEY% will be replaced by your value
  * @return string parsed message
  */
-function sm_parse_msg($status, $type, $vars) {
+function psm_parse_msg($status, $type, $vars) {
 	$message = '';
 
-	$message = sm_get_lang('notifications', $status . '_' . $type);
+	$message = psm_get_lang('notifications', $status . '_' . $type);
 
 	if(!$message) {
 		return $message;
@@ -215,7 +183,7 @@ function sm_parse_msg($status, $type, $vars) {
  * @param string $href
  * @return string cURL result
  */
-function sm_curl_get($href) {
+function psm_curl_get($href) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -236,7 +204,7 @@ function sm_curl_get($href) {
  * @return string
  * @todo add translation to timespan messages
  */
-function sm_timespan($time) {
+function psm_timespan($time) {
 	if ($time !== intval($time)) { $time = strtotime($time); }
 	$d = time() - $time;
 	if ($time < strtotime(date('Y-m-d 00:00:00')) - 60*60*24*3) {
@@ -266,17 +234,17 @@ function sm_timespan($time) {
  * @global object $db
  * @return boolean
  */
-function sm_check_updates() {
+function psm_check_updates() {
 	global $db;
 
-	$last_update = sm_get_conf('last_update_check');
+	$last_update = psm_get_conf('last_update_check');
 
 	if((time() - (7 * 24 * 60 * 60)) > $last_update) {
 		// been more than a week since update, lets go
 		// update "update-date"
-		$db->save(SM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
-		$latest = sm_curl_get('http://phpservermon.neanderthal-technology.com/version');
-		$current = sm_get_conf('version');
+		$db->save(PSM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
+		$latest = psm_curl_get('http://phpservermon.neanderthal-technology.com/version');
+		$current = psm_get_conf('version');
 
 		if((int) $current < (int) $latest) {
 			// new update available
@@ -307,7 +275,7 @@ function pre($arr = null) {
 /**
  * Send headers to the browser to avoid caching
  */
-function sm_no_cache() {
+function psm_no_cache() {
 	header("Expires: Mon, 20 Dec 1998 01:00:00 GMT");
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header("Cache-Control: no-cache, must-revalidate");

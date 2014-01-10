@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class smDatabase {
+namespace psm;
+
+class Database {
 
 	protected $debug = array();
 	protected $last_inserted_id;
@@ -35,9 +37,9 @@ class smDatabase {
 
 	function __construct() {
 		// Initizale connection
-		$this->link = mysql_connect(SM_DB_HOST, SM_DB_USER, SM_DB_PASS);
+		$this->link = mysql_connect(PSM_DB_HOST, PSM_DB_USER, PSM_DB_PASS);
 
-		if (!mysql_select_db(SM_DB_NAME, $this->link)) {
+		if (!mysql_select_db(PSM_DB_NAME, $this->link)) {
 			trigger_error(mysql_errno() . ": " . mysql_error());
 		}
 

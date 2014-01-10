@@ -25,13 +25,16 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-abstract class smCore {
-	public $db;
-
-	function __construct() {
-		// add database handler
-		$this->db = $GLOBALS['db'];
-	}
-}
+define('SM_CONFIG', true);
+// Prefix used for tables
+define('SM_DB_PREFIX', 'monitor_');
+// Database username
+define('SM_DB_USER', 'db_user');
+// Database password
+define('SM_DB_PASS', 'db_pass');
+// Database name
+define('SM_DB_NAME', 'db_name');
+// Database host
+define('SM_DB_HOST', 'localhost');
 
 ?>

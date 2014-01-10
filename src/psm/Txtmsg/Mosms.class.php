@@ -26,7 +26,9 @@
  * @since       phpservermon 2.1
  **/
 
-class txtmsgMosms extends txtmsgCore {
+namespace psm\Txtmsg;
+
+class Mosms extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================

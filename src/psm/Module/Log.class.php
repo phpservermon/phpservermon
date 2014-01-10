@@ -25,10 +25,12 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
+namespace psm\Module;
+
 /**
  * Log module. Create the page to view previous log messages
  */
-class modLog extends modCore {
+class Log extends Core {
 
 	function __construct() {
 		parent::__construct();
@@ -36,8 +38,6 @@ class modLog extends modCore {
 
 	// override parent::createHTML()
 	public function createHTML() {
-		$this->tpl->addCSS('tabs.css', 'main');
-
 		$this->createHTMLList();
 
 		return parent::createHTML();
@@ -55,7 +55,7 @@ class modLog extends modCore {
 		$entries['sms'] = $this->getEntries('sms');
 
 		// get users
-		$users = $this->db->select(SM_DB_PREFIX.'users', null, array('user_id','name'));
+		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
 
 		$users_labels = array();
 		foreach ($users as $user) {
@@ -122,8 +122,8 @@ class modLog extends modCore {
 					'\'%H:%i:%s %d-%m-%y\''.
 				') AS `datetime_format`, '.
 				'`user_id` '.
-			'FROM `'.SM_DB_PREFIX.'log` AS `log` '.
-			'JOIN `'.SM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
+			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
+			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
 			'WHERE `log`.`type`=\''.$type.'\' '.
 			'ORDER BY `datetime` DESC '.
 			'LIMIT 0,20'
@@ -136,15 +136,15 @@ class modLog extends modCore {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'label_status' => sm_get_lang('log', 'status'),
-				'label_email' => sm_get_lang('log', 'email'),
-				'label_sms' => sm_get_lang('log', 'sms'),
-				'label_title' => sm_get_lang('log', 'title'),
-				'label_server' => sm_get_lang('servers', 'server'),
-				'label_type' => sm_get_lang('log', 'type'),
-				'label_message' => sm_get_lang('system', 'message'),
-				'label_date' => sm_get_lang('system', 'date'),
-				'label_users' => ucfirst(sm_get_lang('system', 'users')),
+				'label_status' => psm_get_lang('log', 'status'),
+				'label_email' => psm_get_lang('log', 'email'),
+				'label_sms' => psm_get_lang('log', 'sms'),
+				'label_title' => psm_get_lang('log', 'title'),
+				'label_server' => psm_get_lang('servers', 'server'),
+				'label_type' => psm_get_lang('log', 'type'),
+				'label_message' => psm_get_lang('system', 'message'),
+				'label_date' => psm_get_lang('system', 'date'),
+				'label_users' => ucfirst(psm_get_lang('system', 'users')),
 			)
 		);
 

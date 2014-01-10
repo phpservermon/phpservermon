@@ -26,10 +26,12 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
+namespace psm\Module;
+
 /**
  * Status module
  */
-class modStatus extends modCore {
+class Status extends Core {
 
 	function __construct() {
 		parent::__construct();
@@ -52,7 +54,7 @@ class modStatus extends modCore {
 
 		// get the active servers from database
 		$servers = $this->db->select(
-			SM_DB_PREFIX.'servers',
+			PSM_DB_PREFIX.'servers',
 			array('active' => 'yes'),
 			array('server_id', 'label', 'status', 'last_online', 'last_check', 'rtime')
 		);
@@ -70,8 +72,8 @@ class modStatus extends modCore {
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 
 		foreach ($servers as $server) {
-			$server['last_checked_nice'] = sm_timespan($server['last_check']);
-			$server['last_online_nice'] = sm_timespan($server['last_online']);
+			$server['last_checked_nice'] = psm_timespan($server['last_check']);
+			$server['last_online_nice'] = psm_timespan($server['last_online']);
 
 			if ($server['status'] == "off") {
 				$offline[$server['server_id']] = $server;

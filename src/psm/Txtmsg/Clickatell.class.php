@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class txtmsgClickatell extends txtmsgCore {
+namespace psm\Txtmsg;
+
+class Clickatell extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================
@@ -59,7 +61,7 @@ class txtmsgClickatell extends txtmsgCore {
 
 	protected function _auth_https_post($host, $path, $data) {
 		$url = $host . $path . $data;
-		return sm_curl_get($url);
+		return psm_curl_get($url);
 	}
 }
 

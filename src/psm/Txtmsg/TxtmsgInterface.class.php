@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-interface txtmsgInterface {
+namespace psm\Txtmsg;
+
+interface TxtmsgInterface {
 
 	public function setLogin($username, $password);
 	public function setOriginator($originator);

@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class txtmsgMollie extends txtmsgCore {
+namespace psm\Txtmsg;
+
+class Mollie extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================

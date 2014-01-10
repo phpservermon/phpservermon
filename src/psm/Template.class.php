@@ -25,9 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class smTemplate {
-	protected $css_files = array();
-	protected $js_files = array();
+namespace psm;
+
+class Template {
 	protected $output;
 	protected $templates = array();
 
@@ -46,8 +46,8 @@ class smTemplate {
 	public function newTemplate($id, $filename) {
 		if (file_exists($filename)) {
 			$this->templates[$id] = $this->parseFile($filename);
-		} elseif (file_exists(SM_PATH_TPL.$filename)) {
-			$this->templates[$id] = $this->parseFile(SM_PATH_TPL.$filename);
+		} elseif (file_exists(PSM_PATH_TPL.$filename)) {
+			$this->templates[$id] = $this->parseFile(PSM_PATH_TPL.$filename);
 		} else {
 			// file does not exist
 			trigger_error('Template not found with id: '.$id.' and filename: '.$filename);
@@ -159,9 +159,6 @@ class smTemplate {
 		// check for tpl variables that have not been replaced. ie: {name}. ignore literal stuff, though. ie: {{name}} is {name} and should not be removed
 		preg_match_all('~{?{(.+?)}}?~', $result, $matches);
 
-		// add css and javascript files to header
-		$result = $this->addHeaderFiles($id, $result);
-
 		foreach($matches[0] as $match) {
 			if (substr($match, 0, 2) == '{{') {
 				// literal! remove only first and last bracket!
@@ -172,48 +169,6 @@ class smTemplate {
 			}
 		}
 		return $result;
-	}
-
-	/**
-	 * Adds a css file to the list which will be added to the template when display() is called
-	 *
-	 * @param string $template_id
-	 * @param string $filename
-	 * @param string $path uses default set in config if non specified
-	 */
-	public function addCSS($filename, $template_id = 'main', $path = SM_PATH_CSS) {
-		if (!isset($this->css_files[$template_id])) {
-			$this->css_files[$template_id] = array();
-		}
-
-		// if file doesn't exist we assume it's inline
-		$type = (file_exists($path.$filename)) ? 'file' : 'inline';
-
-		$this->css_files[$template_id][$filename] = array(
-			'file' => ($type == 'file') ? $path.$filename : $filename,
-			'type' => $type
-		);
-	}
-
-	/**
-	 * Adds a javascript file to the list which will be added to the template when display() is called
-	 *
-	 * @param string $template_id
-	 * @param string $filename path to file or CSS code to be added inline
-	 * @param string $path uses default set in config if non specified
-	 */
-	public function addJS($filename, $template_id = 'main', $path = SM_PATH_JS) {
-		if (!isset($this->js_files[$template_id])) {
-			$this->js_files[$template_id] = array();
-		}
-
-		// if file doesn't exist we assume it's inline
-		$type = (file_exists($path.$filename)) ? 'file' : 'inline';
-
-		$this->js_files[$template_id][$filename] = array(
-			'file' => ($type == 'file') ? $path.$filename : $filename,
-			'type' => $type
-		);
 	}
 
 	/**
@@ -230,62 +185,6 @@ class smTemplate {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * Adds the CSS and JavaScript files to the header html.
-	 *
-	 * @param string $template_id
-	 * @param string $html
-	 * @return string new html code
-	 */
-	protected function addHeaderFiles($template_id, $html) {
-		// get code between <head> tags
-		preg_match_all("{<head>(.*?)<\/head>}is", $html, $matches);
-
-		if (isset($matches[1][0]) && $matches[1][0] != '') {
-			$header = $matches[1][0];
-
-			if (isset($this->css_files[$template_id]) && !empty($this->css_files[$template_id])) {
-				$header .= "\t<!--CSS Files-->\n";
-
-				foreach($this->css_files[$template_id] as $filename => $info) {
-					switch($info['type']) {
-						case 'file':
-							$header .= "\t<link type=\"text/css\" href=\"{$info['file']}\" rel=\"stylesheet\" />\n";
-							break;
-						case 'inline':
-							$header .=
-								"\t<style type=\"text/css\">\n".
-								$info['file'].
-								"\t</style>\n";
-							break;
-					}
-				}
-			}
-
-			if (isset($this->js_files[$template_id]) && !empty($this->js_files[$template_id])) {
-				$header .= "\t<!--JavaScript Files-->\n";
-
-				foreach($this->js_files[$template_id] as $filename => $info) {
-					switch($info['type']) {
-						case 'file':
-							$header .= "\t<script src=\"".$info['file']."\" type=\"text/javascript\" ></script>\n";
-							break;
-						case 'inline':
-							$header .=
-								"\t<script type=\"text/javascript\">\n".
-								$info['file'].
-								"\t</script>\n";
-							break;
-					}
-				}
-			}
-			// add new header to html
-			$html = preg_replace('{'.$matches[1][0].'}is', $header, $html);
-		}
-
-		return $html;
 	}
 
 	/**

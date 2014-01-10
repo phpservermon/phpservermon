@@ -26,16 +26,16 @@
  **/
 
 // include main configuration and functionality
-require_once dirname(__FILE__) . '/../config.inc.php';
+require_once dirname(__FILE__) . '/../src/bootstrap.php';
 
 // get the active servers from database
 $servers = $db->select(
-	SM_DB_PREFIX.'servers',
+	PSM_DB_PREFIX.'servers',
 	array('active' => 'yes'),
 	array('server_id', 'ip', 'port', 'label', 'type', 'status', 'active', 'email', 'sms')
 );
 
-$updater = new smUpdaterStatus();
+$updater = new \psm\UpdaterStatus();
 
 foreach ($servers as $server) {
 	$status_org = $server['status'];
@@ -64,7 +64,7 @@ foreach ($servers as $server) {
 	}
 
 	$db->save(
-		SM_DB_PREFIX . 'servers',
+		PSM_DB_PREFIX . 'servers',
 		$save,
 		array('server_id' => $server['server_id'])
 	);

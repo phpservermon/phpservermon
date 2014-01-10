@@ -25,12 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-if(!file_exists('config.inc.php')) {
-	die('Failed to locate config file. Please read README.md for more information on how to setup PHP Server Monitor.');
-}
-require_once 'config.inc.php';
+require 'src/bootstrap.php';
 
-sm_no_cache();
+psm_no_cache();
 
 if(isset($_GET['action']) && $_GET['action'] == 'check') {
 	require 'cron/status.cron.php';
@@ -45,7 +42,7 @@ if(!in_array($type, $allowed_types)) {
 	$type = $allowed_types[0];
 }
 
-eval('$mod = new mod'.ucfirst($type).'();');
+eval('$mod = new psm\Module\\'.ucfirst($type).'();');
 // let the module prepare it's HTML code
 $mod->createHTML();
 

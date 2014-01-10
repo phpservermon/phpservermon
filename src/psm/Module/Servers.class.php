@@ -25,10 +25,12 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
+namespace psm\Module;
+
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
  */
-class modServers extends modCore {
+class Servers extends Core {
 
 	function __construct() {
 		parent::__construct();
@@ -76,7 +78,7 @@ class modServers extends modCore {
 		switch(intval($server_id)) {
 			case 0:
 				// insert mode
-				$tpl_data['titlemode'] = sm_get_lang('system', 'insert');
+				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
 				$tpl_data['edit_server_id'] = '0';
 				break;
 			default:
@@ -84,7 +86,7 @@ class modServers extends modCore {
 
 				// get server entry
 				$edit_server = $this->db->selectRow(
-					SM_DB_PREFIX.'servers',
+					PSM_DB_PREFIX.'servers',
 					array('server_id' => $server_id)
 				);
 				if (empty($edit_server)) {
@@ -93,7 +95,7 @@ class modServers extends modCore {
 				}
 
 				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => sm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
+					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
 					'edit_server_id' => $edit_server['server_id'],
 					'edit_value_label' => $edit_server['label'],
 					'edit_value_ip' => $edit_server['ip'],
@@ -143,7 +145,7 @@ class modServers extends modCore {
 				'`active`, '.
 				'`email`, '.
 				'`sms` '.
-			'FROM `'.SM_DB_PREFIX.'servers` '.
+			'FROM `'.PSM_DB_PREFIX.'servers` '.
 			'ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC'
 		);
 
@@ -162,7 +164,7 @@ class modServers extends modCore {
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
 
 		// check if we need to add the auto refresh
-		$auto_refresh = sm_get_conf('auto_refresh_servers');
+		$auto_refresh = psm_get_conf('auto_refresh_servers');
 		if(intval($auto_refresh) > 0) {
 			// add it
 			$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
@@ -192,16 +194,16 @@ class modServers extends modCore {
 			if ((int) $_POST['server_id'] > 0) {
 				// edit
 				$this->db->save(
-					SM_DB_PREFIX.'servers',
+					PSM_DB_PREFIX.'servers',
 					$clean,
 					array('server_id' => $_POST['server_id'])
 				);
-				$this->message = sm_get_lang('servers', 'updated');
+				$this->message = psm_get_lang('servers', 'updated');
 			} else {
 				// add
 				$clean['status'] = 'on';
-				$this->db->save(SM_DB_PREFIX.'servers', $clean);
-				$this->message = sm_get_lang('servers', 'inserted');
+				$this->db->save(PSM_DB_PREFIX.'servers', $clean);
+				$this->message = psm_get_lang('servers', 'inserted');
 			}
 		}
 	}
@@ -212,12 +214,12 @@ class modServers extends modCore {
 	protected function executeDelete() {
 		// do delete
 		$this->db->delete(
-			SM_DB_PREFIX . 'servers',
+			PSM_DB_PREFIX . 'servers',
 			array(
 				'server_id' => $_GET['delete']
 			)
 		);
-		$this->message = sm_get_lang('system', 'deleted');
+		$this->message = psm_get_lang('system', 'deleted');
 	}
 
 	// override parent::createHTMLLabels()
@@ -225,23 +227,23 @@ class modServers extends modCore {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'label_label' => sm_get_lang('servers', 'label'),
-				'label_domain' => sm_get_lang('servers', 'domain'),
-				'label_port' => sm_get_lang('servers', 'port'),
-				'label_type' => sm_get_lang('servers', 'type'),
-				'label_last_check' => sm_get_lang('servers', 'last_check'),
-				'label_rtime' => sm_get_lang('servers', 'rtime'),
-				'label_last_online' => sm_get_lang('servers', 'last_online'),
-				'label_monitoring' => sm_get_lang('servers', 'monitoring'),
-				'label_send_email' => sm_get_lang('servers', 'send_email'),
-				'label_send_sms' => sm_get_lang('servers', 'send_sms'),
-				'label_action' => sm_get_lang('system', 'action'),
-				'label_save' => sm_get_lang('system', 'save'),
-				'label_edit' => sm_get_lang('system', 'edit') . ' ' . sm_get_lang('servers', 'server'),
-				'label_delete' => sm_get_lang('system', 'delete') . ' ' . sm_get_lang('servers', 'server'),
-				'label_yes' => sm_get_lang('system', 'yes'),
-				'label_no' => sm_get_lang('system', 'no'),
-				'label_add_new' => sm_get_lang('system', 'add_new'),
+				'label_label' => psm_get_lang('servers', 'label'),
+				'label_domain' => psm_get_lang('servers', 'domain'),
+				'label_port' => psm_get_lang('servers', 'port'),
+				'label_type' => psm_get_lang('servers', 'type'),
+				'label_last_check' => psm_get_lang('servers', 'last_check'),
+				'label_rtime' => psm_get_lang('servers', 'rtime'),
+				'label_last_online' => psm_get_lang('servers', 'last_online'),
+				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
+				'label_send_email' => psm_get_lang('servers', 'send_email'),
+				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_action' => psm_get_lang('system', 'action'),
+				'label_save' => psm_get_lang('system', 'save'),
+				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('servers', 'server'),
+				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('servers', 'server'),
+				'label_yes' => psm_get_lang('system', 'yes'),
+				'label_no' => psm_get_lang('system', 'no'),
+				'label_add_new' => psm_get_lang('system', 'add_new'),
 			)
 		);
 

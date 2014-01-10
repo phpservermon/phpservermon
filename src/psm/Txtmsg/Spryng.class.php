@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class txtmsgSpryng extends txtmsgCore {
+namespace psm\Txtmsg;
+
+class Spryng extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================

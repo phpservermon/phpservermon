@@ -25,11 +25,13 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
+namespace psm\Module;
+
 /**
  * User module. Add, edit and delete users, or assign
  * servers to users.
  */
-class modUsers extends modCore {
+class Users extends Core {
 	public $servers;
 
 	function __construct() {
@@ -50,7 +52,7 @@ class modUsers extends modCore {
 			}
 		}
 
-		$this->servers = $this->db->select(SM_DB_PREFIX.'servers', null, array('server_id', 'label'));
+		$this->servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
 	}
 
 	// override parent::createHTML()
@@ -81,7 +83,7 @@ class modUsers extends modCore {
 		switch((int) $user_id) {
 			case 0:
 				// insert mode
-				$tpl_data['titlemode'] = sm_get_lang('system', 'insert');
+				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
 				$tpl_data['edit_user_id'] = '0';
 
 				// add inactive class to all servers
@@ -95,7 +97,7 @@ class modUsers extends modCore {
 
 				// get user entry
 				$edit_user = $this->db->selectRow(
-					SM_DB_PREFIX.'users',
+					PSM_DB_PREFIX.'users',
 					array('user_id' => $user_id)
 				);
 				if (empty($edit_user)) {
@@ -104,7 +106,7 @@ class modUsers extends modCore {
 				}
 
 				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => sm_get_lang('system', 'edit') . ' ' . $edit_user['name'],
+					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_user['name'],
 					'edit_user_id' => $edit_user['user_id'],
 					'edit_value_name' => $edit_user['name'],
 					'edit_value_mobile' => $edit_user['mobile'],
@@ -146,7 +148,7 @@ class modUsers extends modCore {
 
 		// get users from database
 		$users = $this->db->select(
-			SM_DB_PREFIX.'users',
+			PSM_DB_PREFIX.'users',
 			null,
 			null,
 			null,
@@ -193,15 +195,15 @@ class modUsers extends modCore {
 			if ((int) $_POST['user_id'] > 0) {
 				// edit
 				$this->db->save(
-					SM_DB_PREFIX.'users',
+					PSM_DB_PREFIX.'users',
 					$clean,
 					array('user_id' => $_POST['user_id'])
 				);
-				$this->message = sm_get_lang('users', 'updated');
+				$this->message = psm_get_lang('users', 'updated');
 			} else {
 				// add
-				$this->db->save(SM_DB_PREFIX.'users', $clean);
-				$this->message = sm_get_lang('users', 'inserted');
+				$this->db->save(PSM_DB_PREFIX.'users', $clean);
+				$this->message = psm_get_lang('users', 'inserted');
 			}
 		}
 	}
@@ -212,12 +214,12 @@ class modUsers extends modCore {
 	protected function executeDelete() {
 		// do delete
 		$this->db->delete(
-			SM_DB_PREFIX . 'users',
+			PSM_DB_PREFIX . 'users',
 			array(
 				'user_id' => $_GET['delete']
 			)
 		);
-		$this->message = sm_get_lang('system', 'deleted');
+		$this->message = psm_get_lang('system', 'deleted');
 	}
 
 	// override parent::createHTMLLabels()
@@ -225,16 +227,16 @@ class modUsers extends modCore {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'label_users' => sm_get_lang('system', 'users'),
-				'label_name' => sm_get_lang('users', 'name'),
-				'label_mobile' => sm_get_lang('users', 'mobile'),
-				'label_email' => sm_get_lang('users', 'email'),
-				'label_servers' => sm_get_lang('system', 'servers'),
-				'label_action' => sm_get_lang('system', 'action'),
-				'label_save' => sm_get_lang('system', 'save'),
-				'label_edit' => sm_get_lang('system', 'edit') . ' ' . sm_get_lang('users', 'user'),
-				'label_delete' => sm_get_lang('system', 'delete') . ' ' . sm_get_lang('users', 'user'),
-				'label_add_new' => sm_get_lang('system', 'add_new'),
+				'label_users' => psm_get_lang('system', 'users'),
+				'label_name' => psm_get_lang('users', 'name'),
+				'label_mobile' => psm_get_lang('users', 'mobile'),
+				'label_email' => psm_get_lang('users', 'email'),
+				'label_servers' => psm_get_lang('system', 'servers'),
+				'label_action' => psm_get_lang('system', 'action'),
+				'label_save' => psm_get_lang('system', 'save'),
+				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('users', 'user'),
+				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('users', 'user'),
+				'label_add_new' => psm_get_lang('system', 'add_new'),
 			)
 		);
 

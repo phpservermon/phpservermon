@@ -25,50 +25,42 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-########################################
-#
-# START SERVER MONITOR CONFIGURATION
-#
-########################################
+namespace psm\Txtmsg;
 
-// Database information
-// Prefix used for tables
-define('SM_DB_PREFIX', 'monitor_');
-// Database username
-define('SM_DB_USER', 'db_user');
-// Database password
-define('SM_DB_PASS', 'db_pass');
-// Database name
-define('SM_DB_NAME', 'db_name');
-// Database host
-define('SM_DB_HOST', 'localhost');
+abstract class Core implements TxtmsgInterface {
+	protected $originator;
+	protected $password;
+	protected $recipients = array();
+	protected $username;
 
-########################################
-#
-# END SERVER MONITOR CONFIGURATION
-#
-########################################
+	/**
+	 * Define login information for the gateway
+	 *
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setLogin($username, $password) {
+		$this->username = $username;
+		$this->password = $password;
+	}
 
-// Include paths
-// Tell the script where to find the templates, css files and javascript files.
-// If you haven't changed anything to the structure you should leave these unchanged
-define('SM_PATH_TPL', 'tpl/');
-define('SM_PATH_CSS', 'inc/');
-define('SM_PATH_JS', 'inc/');
+	/**
+	 * Set the mobile number the text message will be send from
+	 *
+	 * @param string $originator
+	 */
+	public function setOriginator($originator) {
+		$this->originator = $originator;
+	}
 
-error_reporting(0);
-ini_set('display_errors', 'Off');
-
-require 'functions.inc.php';
-$db = new smDatabase();
-
-sm_load_conf();
-
-$lang = sm_get_conf('language');
-
-if(!$lang) {
-	$lang = 'en';
+	/**
+	 * Add new recipient to the list
+	 *
+	 * @param unknown_type $recipient
+	 */
+	public function addRecipients($recipient) {
+		array_push($this->recipients, $recipient);
+	}
 }
-sm_load_lang($lang);
 
 ?>

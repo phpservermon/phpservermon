@@ -25,13 +25,22 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class smUpdaterStatus extends smCore {
+namespace psm;
+
+class UpdaterStatus {
 	public $error;
 	public $notify;
 	public $rtime = 0;
 	public $server;
 	public $status_org = false;
 	public $status_new = false;
+
+	public $db;
+
+	function __construct() {
+		// add database handler
+		$this->db = $GLOBALS['db'];
+	}
 
 	/**
 	 * Set a new server
@@ -168,14 +177,14 @@ class smUpdaterStatus extends smCore {
 	 *
 	 */
 	public function notify() {
-		if(sm_get_conf('email_status') == false && sm_get_conf('sms_status') == false && sm_get_conf('log_status') == false) {
+		if(psm_get_conf('email_status') == false && psm_get_conf('sms_status') == false && psm_get_conf('log_status') == false) {
 			// seems like we have nothing to do. skip the rest
 			return false;
 		}
 		$notify = false;
 
 		// check which type of alert the user wants
-		switch(sm_get_conf('alert_type')) {
+		switch(psm_get_conf('alert_type')) {
 			case 'always':
 				if($this->status_new == 'off') {
 					// server is offline. we are in error state.
@@ -201,22 +210,22 @@ class smUpdaterStatus extends smCore {
 		}
 
 		// first add to log (we use the same text as the SMS message because its short..)
-		if(sm_get_conf('log_status')) {
-			sm_add_log(
+		if(psm_get_conf('log_status')) {
+			psm_add_log(
 				$this->server['server_id'],
 				'status',
-				sm_parse_msg($this->status_new, 'sms', $this->server)
+				psm_parse_msg($this->status_new, 'sms', $this->server)
 			);
 		}
 
 		// check if email is enabled for this server
-		if(sm_get_conf('email_status') && $this->server['email'] == 'yes') {
+		if(psm_get_conf('email_status') && $this->server['email'] == 'yes') {
 			// send email
 			$this->notifyByEmail();
 		}
 
 		// check if sms is enabled for this server
-		if(sm_get_conf('sms_status') && $this->server['sms'] == 'yes') {
+		if(psm_get_conf('sms_status') && $this->server['sms'] == 'yes') {
 			// yay lets wake those nerds up!
 			$this->notifyByTxtMsg();
 		}
@@ -233,7 +242,7 @@ class smUpdaterStatus extends smCore {
 
 		// find all the users with this server listed
 		$users = $this->db->select(
-			SM_DB_PREFIX . 'users',
+			PSM_DB_PREFIX . 'users',
 			'FIND_IN_SET(\''.$this->server['server_id'].'\', `server_id`) AND `email` != \'\'',
 			array('user_id', 'name', 'email')
 		);
@@ -243,14 +252,14 @@ class smUpdaterStatus extends smCore {
 		}
 
 		// build mail object with some default values
-		$mail = new phpmailer();
+		$mail = new \phpmailer();
 
-		$mail->From		= sm_get_conf('email_from_email');
-		$mail->FromName	= sm_get_conf('email_from_name');
-		$mail->Subject	= sm_parse_msg($this->status_new, 'email_subject', $this->server);
+		$mail->From		= psm_get_conf('email_from_email');
+		$mail->FromName	= psm_get_conf('email_from_name');
+		$mail->Subject	= psm_parse_msg($this->status_new, 'email_subject', $this->server);
 		$mail->Priority	= 1;
 
-		$body = sm_parse_msg($this->status_new, 'email_body', $this->server);
+		$body = psm_parse_msg($this->status_new, 'email_body', $this->server);
 		$mail->Body		= $body;
 		$mail->AltBody	= str_replace('<br/>', "\n", $body);
 
@@ -263,9 +272,9 @@ class smUpdaterStatus extends smCore {
 	    	$mail->ClearAddresses();
 	    }
 
-	    if(sm_get_conf('log_email')) {
+	    if(psm_get_conf('log_email')) {
 	    	// save to log
-	    	sm_add_log($this->server['server_id'], 'email', $body, implode(',', $userlist));
+	    	psm_add_log($this->server['server_id'], 'email', $body, implode(',', $userlist));
 	    }
 	}
 
@@ -277,7 +286,7 @@ class smUpdaterStatus extends smCore {
 	protected function notifyByTxtMsg() {
 		// send sms to all users for this server using defined gateway
 		$users = $this->db->select(
-			SM_DB_PREFIX . 'users',
+			PSM_DB_PREFIX . 'users',
 			'FIND_IN_SET(\''.$this->server['server_id'].'\', `server_id`) AND `mobile` != \'\'',
 			array('user_id', 'name', 'mobile')
 		);
@@ -291,28 +300,28 @@ class smUpdaterStatus extends smCore {
 
 		// open the right class
 		// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
-		switch(strtolower(sm_get_conf('sms_gateway'))) {
+		switch(strtolower(psm_get_conf('sms_gateway'))) {
 			case 'mosms':
-				$sms = new txtmsgMosms();
+				$sms = new \psm\Txtmsg\Mosms();
 				break;
 			case 'inetworx':
-				$sms = new txtmsgInetworx();
+				$sms = new \psm\Txtmsg\Inetworx();
 				break;
 			case 'mollie':
-				$sms = new txtmsgMollie();
+				$sms = new \psm\Txtmsg\Mollie();
 				$sms->setGateway(1);
 				break;
 			case 'spryng':
-				$sms = new txtmsgSpryng();
+				$sms = new \psm\Txtmsg\Spryng();
 				break;
 			case 'clickatell':
-				$sms = new txtmsgClickatell();
+				$sms = new \psm\Txtmsg\Clickatell();
 				break;
 		}
 
 		// copy login information from the config file
-		$sms->setLogin(sm_get_conf('sms_gateway_username'), sm_get_conf('sms_gateway_password'));
-		$sms->setOriginator(sm_get_conf('sms_from'));
+		$sms->setLogin(psm_get_conf('sms_gateway_username'), psm_get_conf('sms_gateway_password'));
+		$sms->setOriginator(psm_get_conf('sms_from'));
 
 		// add all users to the recipients list
 		foreach ($users as $user) {
@@ -320,14 +329,14 @@ class smUpdaterStatus extends smCore {
 			$sms->addRecipients($user['mobile']);
 		}
 
-		$message = sm_parse_msg($this->status_new, 'sms', $this->server);
+		$message = psm_parse_msg($this->status_new, 'sms', $this->server);
 
 		// Send sms
 		$result = $sms->sendSMS($message);
 
-		if(sm_get_conf('log_sms')) {
+		if(psm_get_conf('log_sms')) {
 			// save to log
-			sm_add_log($this->server['server_id'], 'sms', $message, implode(',', $userlist));
+			psm_add_log($this->server['server_id'], 'sms', $message, implode(',', $userlist));
 		}
 		return $result;
 	}

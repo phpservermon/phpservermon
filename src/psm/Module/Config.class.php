@@ -25,7 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-class modConfig extends modCore {
+namespace psm\Module;
+
+class Config extends Core {
 
 	function __construct() {
 		parent::__construct();
@@ -49,7 +51,7 @@ class modConfig extends modCore {
 	 */
 	public function populateFields() {
 		$config_db = $this->db->select(
-			SM_DB_PREFIX . 'config',
+			PSM_DB_PREFIX . 'config',
 			null,
 			array('key', 'value')
 		);
@@ -60,10 +62,10 @@ class modConfig extends modCore {
 		}
 
 		// generate language array
-		$lang_keys = sm_get_langs();
+		$lang_keys = psm_get_langs();
 		$languages = array();
 		foreach($lang_keys as $key) {
-			$label = sm_get_lang('config', 'language_' . $key);
+			$label = psm_get_lang('config', 'language_' . $key);
 			// if we don't have a proper label, just show the key..
 			// better something than nothing huh
 			if($label == null) {
@@ -125,10 +127,10 @@ class modConfig extends modCore {
 		// save all values to the database
 		foreach($clean as $key => $value) {
 			// check if key already exists, otherwise add it
-			if(sm_get_conf($key) === null) {
+			if(psm_get_conf($key) === null) {
 				// not yet set, add it
 				$this->db->save(
-					SM_DB_PREFIX . 'config',
+					PSM_DB_PREFIX . 'config',
 					array(
 						'key' => $key,
 						'value' => $value,
@@ -137,16 +139,16 @@ class modConfig extends modCore {
 			} else {
 				// update
 				$this->db->save(
-					SM_DB_PREFIX . 'config',
+					PSM_DB_PREFIX . 'config',
 					array('value' => $value),
 					array('key' => $key)
 				);
 			}
 		}
 
-		$this->message = sm_get_lang('config', 'updated');
+		$this->message = psm_get_lang('config', 'updated');
 
-		if($clean['language'] != sm_get_conf('language')) {
+		if($clean['language'] != psm_get_conf('language')) {
 			header('Location: ' . $_SERVER['REQUEST_URI']);
 			die();
 		}
@@ -157,35 +159,35 @@ class modConfig extends modCore {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'label_settings_email' => sm_get_lang('config', 'settings_email'),
-				'label_settings_sms' => sm_get_lang('config', 'settings_sms'),
-				'label_settings_notification' => sm_get_lang('config', 'settings_notification'),
-				'label_settings_log' => sm_get_lang('config', 'settings_log'),
-				'label_general' => sm_get_lang('config', 'general'),
-				'label_language' => sm_get_lang('config', 'language'),
-				'label_show_update' => sm_get_lang('config', 'show_update'),
-				'label_email_status' => sm_get_lang('config', 'email_status'),
-				'label_email_from_email' => sm_get_lang('config', 'email_from_email'),
-				'label_email_from_name' => sm_get_lang('config', 'email_from_name'),
-				'label_sms_status' => sm_get_lang('config', 'sms_status'),
-				'label_sms_gateway' => sm_get_lang('config', 'sms_gateway'),
-				'label_sms_gateway_mosms' => sm_get_lang('config', 'sms_gateway_mosms'),
-				'label_sms_gateway_mollie' => sm_get_lang('config', 'sms_gateway_mollie'),
-				'label_sms_gateway_spryng' => sm_get_lang('config', 'sms_gateway_spryng'),
-				'label_sms_gateway_inetworx' => sm_get_lang('config', 'sms_gateway_inetworx'),
-				'label_sms_gateway_clickatell' => sm_get_lang('config', 'sms_gateway_clickatell'),
-				'label_sms_gateway_username' => sm_get_lang('config', 'sms_gateway_username'),
-				'label_sms_gateway_password' => sm_get_lang('config', 'sms_gateway_password'),
-				'label_sms_from' => sm_get_lang('config', 'sms_from'),
-				'label_alert_type' => sm_get_lang('config', 'alert_type'),
-				'label_alert_type_description' => sm_get_lang('config', 'alert_type_description'),
-				'label_alert_type_status' => sm_get_lang('config', 'alert_type_status'),
-				'label_alert_type_offline' => sm_get_lang('config', 'alert_type_offline'),
-				'label_alert_type_always' => sm_get_lang('config', 'alert_type_always'),
-				'label_log_status' => sm_get_lang('config', 'log_status'),
-				'label_log_email' => sm_get_lang('config', 'log_email'),
-				'label_log_sms' => sm_get_lang('config', 'log_sms'),
-				'label_auto_refresh_servers' => sm_get_lang('config', 'auto_refresh_servers'),
+				'label_settings_email' => psm_get_lang('config', 'settings_email'),
+				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
+				'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
+				'label_settings_log' => psm_get_lang('config', 'settings_log'),
+				'label_general' => psm_get_lang('config', 'general'),
+				'label_language' => psm_get_lang('config', 'language'),
+				'label_show_update' => psm_get_lang('config', 'show_update'),
+				'label_email_status' => psm_get_lang('config', 'email_status'),
+				'label_email_from_email' => psm_get_lang('config', 'email_from_email'),
+				'label_email_from_name' => psm_get_lang('config', 'email_from_name'),
+				'label_sms_status' => psm_get_lang('config', 'sms_status'),
+				'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
+				'label_sms_gateway_mosms' => psm_get_lang('config', 'sms_gateway_mosms'),
+				'label_sms_gateway_mollie' => psm_get_lang('config', 'sms_gateway_mollie'),
+				'label_sms_gateway_spryng' => psm_get_lang('config', 'sms_gateway_spryng'),
+				'label_sms_gateway_inetworx' => psm_get_lang('config', 'sms_gateway_inetworx'),
+				'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
+				'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
+				'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
+				'label_sms_from' => psm_get_lang('config', 'sms_from'),
+				'label_alert_type' => psm_get_lang('config', 'alert_type'),
+				'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
+				'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
+				'label_alert_type_offline' => psm_get_lang('config', 'alert_type_offline'),
+				'label_alert_type_always' => psm_get_lang('config', 'alert_type_always'),
+				'label_log_status' => psm_get_lang('config', 'log_status'),
+				'label_log_email' => psm_get_lang('config', 'log_email'),
+				'label_log_sms' => psm_get_lang('config', 'log_sms'),
+				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
 			)
 		);
 

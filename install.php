@@ -28,14 +28,13 @@
 // this script creates all the database tables required for server monitor
 error_reporting(0x0ffffff);
 
-require 'config.inc.php';
+require 'src/bootstrap.php';
 
 if(!function_exists('curl_init')) {
 	die('PHP is installed without the cURL module. Please install cURL first.');
 }
 
-$tpl = new smTemplate();
-$tpl->addCSS('monitor.css', 'install');
+$tpl = new psm\Template();
 
 $tpl->newTemplate('install', 'install.tpl.html');
 
@@ -53,7 +52,7 @@ if(!is_resource($db->getLink())) {
 $tables = array(
 	'users' =>
 		array(
-			0 => "CREATE TABLE `" . SM_DB_PREFIX . "users` (
+			0 => "CREATE TABLE `" . PSM_DB_PREFIX . "users` (
 				  `user_id` int(11) NOT NULL auto_increment,
 				  `server_id` varchar(255) NOT NULL,
 		  		  `name` varchar(255) NOT NULL,
@@ -61,11 +60,11 @@ $tables = array(
 		  		  `email` varchar(255) NOT NULL,
 		  		  PRIMARY KEY  (`user_id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			1 => "INSERT INTO `" . SM_DB_PREFIX . "users` (`server_id`, `name`, `mobile`, `email`) VALUES ('1,2', 'example_user', '0123456789', 'user@example.com')"
+			1 => "INSERT INTO `" . PSM_DB_PREFIX . "users` (`server_id`, `name`, `mobile`, `email`) VALUES ('1,2', 'example_user', '0123456789', 'user@example.com')"
 		),
 	'log' =>
 		array(
-			0 => "CREATE TABLE `" . SM_DB_PREFIX . "log` (
+			0 => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 				  `log_id` int(11) NOT NULL auto_increment,
 				  `server_id` int(11) NOT NULL,
 				  `type` enum('status','email','sms') NOT NULL,
@@ -77,7 +76,7 @@ $tables = array(
 		),
 	'servers' =>
 		array(
-			0 => "CREATE TABLE `" . SM_DB_PREFIX . "servers` (
+			0 => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 				  `server_id` int(11) NOT NULL auto_increment,
 				  `ip` varchar(100) NOT NULL,
 				  `port` int(5) NOT NULL,
@@ -93,18 +92,18 @@ $tables = array(
 				  `sms` enum('yes','no') NOT NULL default 'no',
 				  PRIMARY KEY  (`server_id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			1 => "INSERT INTO `" . SM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')",
+			1 => "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')",
 		),
 	'config' =>
 		array(
-			0 => "CREATE TABLE `" . SM_DB_PREFIX . "config` (
+			0 => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
 					`config_id` int(11) NOT NULL AUTO_INCREMENT,
 					`key` varchar(255) NOT NULL,
 					`value` varchar(255) NOT NULL,
 					PRIMARY KEY (`config_id`),
   					KEY `key` (`key`(50))
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-			1 => "INSERT INTO `" . SM_DB_PREFIX . "config` (`config_id`, `key`, `value`) VALUES
+			1 => "INSERT INTO `" . PSM_DB_PREFIX . "config` (`config_id`, `key`, `value`) VALUES
 					(null, 'language', 'en'),
 					(null, 'email_status', '1'),
 					(null, 'email_from_email', 'monitor@example.org'),
@@ -128,10 +127,10 @@ $tables = array(
 $result = array();
 
 foreach($tables as $name => $queries) {
-	$if_table_exists = $db->query('SHOW TABLES LIKE \'' . SM_DB_PREFIX . $name.'\'');
+	$if_table_exists = $db->query('SHOW TABLES LIKE \'' . PSM_DB_PREFIX . $name.'\'');
 
 	if(!empty($if_table_exists)) {
-		$message = 'Table ' . SM_DB_PREFIX . $name . ' already exists in your database!';
+		$message = 'Table ' . PSM_DB_PREFIX . $name . ' already exists in your database!';
 	} else {
 		$message = '';
 
