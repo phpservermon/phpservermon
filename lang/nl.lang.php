@@ -59,9 +59,9 @@ $sm_lang = array(
 	'log' => array(
 		'title' => 'Log entries',
 		'type' => 'Type',
-		'status' => 'status',
-		'email' => 'email',
-		'sms' => 'sms',
+		'status' => 'Status',
+		'email' => 'Email',
+		'sms' => 'SMS',
 	),
 	'servers' => array(
 		'server' => 'Server',
