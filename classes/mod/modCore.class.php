@@ -91,6 +91,7 @@ abstract class modCore {
 			// user wants updates, lets see what we can do
 			$this->createHTMLUpdateAvailable();
 		}
+
 		$this->createHTMLLabels();
 
 		// add the module's custom template to the main template to get some content
@@ -100,6 +101,7 @@ abstract class modCore {
 				'content' => $this->tpl->getTemplate($this->getTemplateId()),
 				'message' => ($this->message == '') ? '&nbsp' : $this->message,
 				'html_footer' => $html_footer,
+				'label_back_to_top' => sm_get_lang('system', 'back_to_top'),
 			)
 		);
 
@@ -145,7 +147,6 @@ abstract class modCore {
 				'label_config' => sm_get_lang('system', 'config'),
 				'label_update' => sm_get_lang('system', 'update'),
 				'label_help' => sm_get_lang('system', 'help'),
-				'label_back_to_top' => sm_get_lang('system', 'back_to_top'),
 			)
 		);
 	}
