@@ -59,10 +59,27 @@ class modConfig extends modCore {
 			$config[$entry['key']] = $entry['value'];
 		}
 
+		// generate language array
+		$lang_keys = sm_get_langs();
+		$languages = array();
+		foreach($lang_keys as $key) {
+			$label = sm_get_lang('config', 'language_' . $key);
+			// if we don't have a proper label, just show the key..
+			// better something than nothing huh
+			if($label == null) {
+				$label = $key;
+			}
+			$languages[] = array(
+				'value' => $key,
+				'label' => $label,
+				'selected' => ($key == $config['language']) ? 'selected="selected"' : '',
+			);
+		}
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'languages', $languages);
+
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'language_selected_' . $config['language'] => 'selected="selected"',
 				'email_status_checked' => ($config['email_status'] == '1') ? 'checked="checked"' : '',
 				'email_from_name' => $config['email_from_name'],
 				'email_from_email' => $config['email_from_email'],
@@ -128,6 +145,11 @@ class modConfig extends modCore {
 		}
 
 		$this->message = sm_get_lang('config', 'updated');
+
+		if($clean['language'] != sm_get_conf('language')) {
+			header('Location: ' . $_SERVER['REQUEST_URI']);
+			die();
+		}
 	}
 
 	// override parent::createHTMLLabels()
@@ -141,10 +163,6 @@ class modConfig extends modCore {
 				'label_settings_log' => sm_get_lang('config', 'settings_log'),
 				'label_general' => sm_get_lang('config', 'general'),
 				'label_language' => sm_get_lang('config', 'language'),
-				'label_language_english' => sm_get_lang('config', 'english'),
-				'label_language_dutch' => sm_get_lang('config', 'dutch'),
-				'label_language_french' => sm_get_lang('config', 'french'),
-				'label_language_german' => sm_get_lang('config', 'german'),
 				'label_show_update' => sm_get_lang('config', 'show_update'),
 				'label_email_status' => sm_get_lang('config', 'email_status'),
 				'label_email_from_email' => sm_get_lang('config', 'email_from_email'),

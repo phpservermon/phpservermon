@@ -104,6 +104,23 @@ function sm_load_lang($lang) {
 }
 
 /**
+ * Retrieve a list with keys of the available languages
+ *
+ * @return array
+ * @see sm_load_lang()
+ */
+function sm_get_langs() {
+	$fn_ext = '.lang.php';
+	$lang_files = glob(dirname(__FILE__) . '/lang/*' . $fn_ext);
+	$langs = array();
+
+	foreach($lang_files as $file) {
+		$langs[] = str_replace($fn_ext, '', basename($file));
+	}
+	return $langs;
+}
+
+/**
  * Get a setting from the config.
  * The config must have been loaded first using sm_load_conf()
  *

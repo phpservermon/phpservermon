@@ -8,10 +8,10 @@
                 <label class="control-label" for="language">{label_language}</label>
                 <div class="controls">
                     <select name="language">
-                        <option value="en" {language_selected_en}>{label_language_english}</option>
-                        <option value="nl" {language_selected_nl}>{label_language_dutch}</option>
-                        <option value="fr" {language_selected_fr}>{label_language_french}</option>
-                        <option value="de" {language_selected_de}>{label_language_german}</option>
+						<!--%tpl_repeat_languages-->
+                        <option value="{value}" {selected}>{label}</option>
+						<!--%%tpl_repeat_languages-->
+						{languages}
                     </select>
                 </div>
             </div>

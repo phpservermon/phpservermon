@@ -145,11 +145,11 @@ The second part is the actual message. There are a few variables you can use in 
 
 #### Adding a new language
 
-   It's not the easiest thing to add a new language to the monitor, but if you can spare a few minutes of your time
-   to send in a translation, it can be added to a future release.
+   To add a new language, follow these steps:
 
    * Create a new file in the directory "lang" named "mylanguage.lang.php".
    * Copy the contents of the file "en.lang.php" to your new file.
+   * Your new language should now be available on the config page.
    * Translate the English stuff to your own language.
    * Send a copy to pep[at]neanderthal-technology.com so I can add it to the next release :)
    * Or, send me a pull request on github.
