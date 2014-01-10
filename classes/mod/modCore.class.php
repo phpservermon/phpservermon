@@ -39,6 +39,11 @@ abstract class modCore {
 	 */
 	public $mode;
 
+	/**
+	 * Add footer to page?
+	 * @var boolean $add_footer
+	 */
+	protected $add_footer = true;
 
 	/**
 	 * smDatabase object
@@ -74,9 +79,13 @@ abstract class modCore {
 	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically
 	 */
 	public function createHTML() {
-		// add JS and CSS files
-		$this->tpl->addJS('monitor.js');
-		$this->tpl->addCSS('monitor.css');
+		// add footer to page?
+		if($this->add_footer) {
+			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
+			$html_footer = $this->tpl->getTemplate('main_footer');
+		} else {
+			$html_footer = '';
+		}
 
 		if(sm_get_conf('show_update')) {
 			// user wants updates, lets see what we can do
@@ -90,6 +99,7 @@ abstract class modCore {
 			array(
 				'content' => $this->tpl->getTemplate($this->getTemplateId()),
 				'message' => ($this->message == '') ? '&nbsp' : $this->message,
+				'html_footer' => $html_footer,
 			)
 		);
 
@@ -165,6 +175,14 @@ abstract class modCore {
 	 */
 	public function getTemplateId() {
 		return $this->tpl_id;
+	}
+
+	/**
+	 * Hide or show the footer of the page
+	 * @param boolean $value
+	 */
+	protected function addFooter($value) {
+		$this->add_footer = $value;
 	}
 }
 
