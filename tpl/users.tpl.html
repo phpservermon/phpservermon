@@ -1,69 +1,101 @@
 <!--%tpl_users_list-->
-<div class="message"><a href="index.php?type=users&edit=0">{label_add_new}</a></div><br/>
-<table cellpadding="0" cellspacing="0">
-  <tr class="odd">
-    <td><b>{label_name}</b></td>
-    <td><b>{label_mobile}</b></td>
-    <td><b>{label_email}</b></td>
-    <td><b>{label_servers}</b></td>
-    <td><b>{label_action}</b></td>
-  </tr>
-  <tr class="odd">
-    <td colspan="5" class="message">{message}</td>
-  </tr>
-  <!--%tpl_repeat_users-->
-	<tr class="{class}">
-	  <td style="vertical-align: top;">{name}</td>
-	  <td style="vertical-align: top;">{mobile}</td>
-	  <td style="vertical-align: top;">{email}</td>
-	  <td style="vertical-align: top;">{emp_servers}</td>
-	  <td>
-	    <a href="index.php?type=users&amp;edit={user_id}"><img src="img/edit.png" alt="edit" title="{label_edit}" /></a>
-	    &nbsp;
-	    <a href="javascript:sm_delete('{user_id}', 'users');"><img src="img/delete.png" alt="delete" title="{label_delete}" /></a>
-	  </td>
-	</tr>
-  <!--%%tpl_repeat_users-->
-  {users}
-</table>
+<div class="span12">
+    <div id="flashmessage" class="alert alert-info hide">
+        {message}
+    </div>
+    <div class="top_buutons">
+        <a class="btn btn-success" href="index.php?type=users&edit=0">
+            <i class="icon-plus icon-white"></i>
+            {label_add_new}
+        </a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>{label_name}</th>
+                <th>{label_mobile}</th>
+                <th>{label_email}</th>
+                <th>{label_servers}</th>
+                <th width="75">{label_action}</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!--%tpl_repeat_users-->
+        <tr>
+            <td>{name}</td>
+            <td>{mobile}</td>
+            <td>{email}</td>
+            <td>{emp_servers}</td>
+            <td>
+                <a class="btn btn-small" href="index.php?type=users&amp;edit={user_id}" title="{label_edit}">
+                    <i class="icon-pencil"></i>
+                </a>
+        	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'users');" title="{label_delete}">
+                    <i class="icon-remove icon-white"></i>
+                </a>
+            </td>
+        </tr>
+        <!--%%tpl_repeat_users-->
+        {users}
+        </tbody>
+     </table>
+</div>
+<script type="text/javascript">
+$(document).bind('ready', function(){
+    $('#nav_option_users').addClass('active');
+});
+</script>
 <!--%%tpl_users_list-->
 
 <!--%tpl_users_update-->
-<form action="index.php?type=users" id="edit_user" method="post">
-<table cellpadding="0" cellspacing="0" width="50%">
-  <tr class="odd">
-    <td colspan="2"><h3>{titlemode}</h3></td>
-  </tr>
-  <tr class="even">
-    <td>{label_name}</td>
-    <td><input type="text" name="name" value="{edit_value_name}" maxlength="255" /></td>
-  </tr>
-  <tr class="odd">
-    <td>{label_mobile}</td>
-    <td><input type="text" name="mobile" value="{edit_value_mobile}" maxlength="15" /></td>
-  </tr>
-  <tr class="even">
-    <td>{label_email}</td>
-    <td><input type="text" name="email" value="{edit_value_email}" maxlength="255" /></td>
-  </tr>
-  <tr class="odd">
-    <td>{label_servers}</td>
-    <td>
-      <div class="multiple_select_container">
-        <!--%tpl_repeat_servers-->
-          <label for='server{server_id}' class="{class}"><input name='server_id[]' value='{server_id}' type='checkbox' id='server{server_id}' onclick='sm_highlight_label(this);' {edit_checked} />{label}</label>
-        <!--%%tpl_repeat_servers-->
-        {servers}
-      </div>
-    </td>
-  </tr>
-  <tr class="even">
-    <td colspan="2">
-      <input type="hidden" name="user_id" value="{edit_user_id}" />
-      <input type="button" onclick="history.back();" value="Cancel" name="cancel"/>
-      <input type="submit" name="submit" value="Save" />
-    </td>
-  </tr>
-</table>
-</form>
+<div class="span12">
+    <form class="form-horizontal well" action="index.php?type=users" id="edit_server" method="post">
+         <fieldset>
+                <legend>{titlemode}</legend>
+                <div class="control-group">
+                    <label class="control-label" for="name">{label_name}</label>
+                    <div class="controls">
+                        <input type="text" name="name" value="{edit_value_name}" maxlength="255" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="mobile">{label_mobile}</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" value="{edit_value_mobile}" maxlength="15" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="name">{label_email}</label>
+                    <div class="controls">
+                        <input type="text" name="email" value="{edit_value_email}" maxlength="255" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="name">{label_servers}</label>
+                    <div class="controls">
+                        <!--%tpl_repeat_servers-->
+                        <label class="checkbox">
+                            <input id="server{server_id}"
+                                    type="checkbox"
+                                    name='server_id[]'
+                                    value='{server_id}' {edit_checked} >
+                            {label}
+                        </label>
+                        <!--%%tpl_repeat_servers-->
+                        {servers}
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input type="hidden" name="user_id" value="{edit_user_id}" />
+                    <button class="btn btn-success" type="submit">Save</button>
+                    <button class="btn" onclick="history.back();" >Cancel</button>
+                </div>
+         </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+$(document).bind('ready', function(){
+    $('#nav_option_users').addClass('active');
+});
+</script>
 <!--%%tpl_users_update-->

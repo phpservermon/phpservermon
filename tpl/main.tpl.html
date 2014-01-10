@@ -1,39 +1,108 @@
 <!--%tpl_main-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {auto_refresh}
-    <title>PHP Server Monitor</title>
+    <meta charset="utf-8">
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link href="static/plugin/twitter-bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="static/plugin/twitter-bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="static/plugin/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/js/scripts.js"></script>
   </head>
-  <body>
-    <div class="main">
-      <div class="header">
-        <div class="opensource"><a href="index.php"><img src="img/opensource.png" alt="Open Source" height="101px" /></a></div>
-        <div class="menu">
-          <h1>{title}</h1>
-          <ul>
-            <li><a href="index.php?type=servers" class="{active_servers}">{label_servers}</a></li>
-            <li><a href="index.php?type=users" class="{active_users}">{label_users}</a></li>
-            <li><a href="index.php?type=log" class="{active_log}">{label_log}</a></li>
-            <li><a href="index.php?type=config" class="{active_config}">{label_config}</a></li>
-            <li><a href="index.php?action=check">{label_update}</a></li>
-            <li><a href="http://phpservermon.sourceforge.net" target="_blank">{label_help}</a></li>
-          </ul>
+  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+    <!-- navbar -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="index.php">{title}</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li id="nav_option_servers">
+                    <a href="index.php?type=servers" class="{active_servers}">{label_servers}</a>
+                </li>
+                <li id="nav_option_users">
+                    <a href="index.php?type=users" class="{active_users}">{label_users}</a>
+                </li>
+                <li id="nav_option_log">
+                    <a href="index.php?type=log" class="{active_log}">{label_log}</a>
+                </li>
+                <li id="nav_option_config">
+                    <a href="index.php?type=config" class="{active_config}">{label_config}</a>
+                </li>
+                <li id="nav_option_update">
+                    <a href="index.php?action=check">{label_update}</a>
+                </li>
+                <li id="nav_option_help">
+                    <a href="http://phpservermon.sourceforge.net" target="_blank">{label_help}</a>
+                </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="container">
-        <h2>{subtitle}</h2>
-        {content}
-      </div>
-      {update_available}
-      <div class="footer">
-        Powered by <a href="http://phpservermon.sourceforge.net" target="_blank">PHP Server Monitor v2.0.1</a><br/>
-        Copyright &copy; 2008-2011 <a href="mailto:ipdope@users.sourceforge.net">Pepijn Over<a/>
-      </div>
     </div>
-  </body>
+    <!-- /navbar -->
+
+    <!-- container -->
+    <div class="container">
+
+        <div class="page-header">
+            <h1>
+                {subtitle}
+                <small>&nbsp;</small>
+            </h1>
+        </div>
+        <div class="row">
+            {content}
+        </div>
+
+        {update_available}
+
+        <footer class="footer">
+          <p class="pull-right"><a href="#">Back to top</a></p>
+          <p>
+              Powered by <a href="http://phpservermon.sourceforge.net" target="_blank">PHP Server Monitor</a> and
+              <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>
+              <br/>
+              Copyright &copy; 2008-2014 <a href="mailto:pep@neanderthal-technology.com">Pepijn Over<a/>
+          </p>
+        </footer>
+
+    </div>
+    <!-- /container -->
+
+    <script type="text/javascript">
+        $(document).bind('ready', function(){
+           var flashmessage = $('#flashmessage');
+           if(flashmessage.length){
+               var t = flashmessage.html();
+               var c = trim(t);
+               var t = c.replace('&nbsp;', '');
+               if(t){
+                   flashmessage.slideDown();
+               }
+           }
+        });
+    </script>
+
+    </body>
 </html>
 <!--%%tpl_main-->
 
-<!--%tpl_main_auto_refresh--><meta http-equiv="refresh" content="{seconds}" /><!--%%tpl_main_auto_refresh-->
+<!--%tpl_main_auto_refresh-->
+    <meta http-equiv="refresh" content="{seconds}" />
+<!--%%tpl_main_auto_refresh-->

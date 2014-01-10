@@ -1,0 +1,37 @@
+body{
+    padding-top:70px;
+} 
+body.install{
+    padding-top:20px;     
+}
+.label-status-on{
+    background-color: #468847;
+}
+.label-status-off{
+   background-color: #B94A48;
+}
+.label a{
+    color:#FFF;
+    text-decoration:none;
+}
+.top_buutons{
+    text-align:right;
+    padding:10px 0px 10px 0px;
+}
+.footer{
+    margin-top:20px;
+    border-top:1px solid #EEEEEE;
+    padding-top:10px;
+}
+.footer a{
+    font-weight:bold;
+}
+div.tabbable ul.nav-tabs li{
+    font-weight:bold;
+}
+legend{
+    border-color: -moz-use-text-color -moz-use-text-color #CCCCCC;
+}
+.form-actions {
+    background-color: transparent;
+}

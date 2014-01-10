@@ -98,18 +98,15 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Utilisateur sur la passerelle',
 		'sms_gateway_password' => 'Mot de passe sur la passerelle',
 		'sms_from' => 'SMS de l exp&eacute;diteur',
-		'alert_type' =>
-			'Choisissez quand vous souhaitez etre notifi&eacute;.<br/>'.
-			'<div class="small">'.
- 			'1) Changement de statut<br/>'.
+		'alert_type' => 'Choisissez quand vous souhaitez etre notifi&eacute;.<br/>',
+		'alert_type_description' => '<b>Changement de statut: </b>'.
 			'Vous recevrez une notification quand le serveur changera de statut. Cest-&agrave;-dire de l etat OK vers NOK ou NOK vers OK.<br/>'.
-			 '2) Eteint<br/>'.
+			 '<br/><b>Eteint: </b>'.
 			'Vous recevrez une notification quand le serveur passera au statut ETEINT *uniquement la premi&egrave;re fois*. Par exemple, '.
 			'Votre tache planifi&eacute;e s execute toute les 15 minutes et votre serveur entre dans le statut ETEINT &agrave; 1 heure du matin et il le reste jusqu &agrave; 6 heures du matin. '.
 			'Vous recevrez une seule notification &agrave; 1 heure du matin et uniquement celle-ci.<br/>'.
-			'3) Toujours<br/>'.
-			'Vous recevrez une notification &agrave; chaque passage de la tache planifi&eacute;e si le site est en statut ETEINT '.
-			'</div>',
+			'<br/><b>Toujours: </b>'.
+			'Vous recevrez une notification &agrave; chaque passage de la tache planifi&eacute;e si le site est en statut ETEINT ',
 
 		'alert_type_status' => 'Changement de statut',
 		'alert_type_offline' => 'Eteint',

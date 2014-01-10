@@ -28,12 +28,12 @@
 $sm_lang = array(
 	'system' => array(
 		'title' => 'Server Monitor',
-		'servers' => 'servers',
-		'users' => 'gebruikers',
-		'log' => 'log',
-		'update' => 'update',
-		'config' => 'config',
-		'help' => 'help',
+		'servers' => 'Servers',
+		'users' => 'Gebruikers',
+		'log' => 'Log',
+		'update' => 'Update',
+		'config' => 'Config',
+		'help' => 'Help',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -98,19 +98,15 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
-		'alert_type' =>
-			'Selecteer wanneer je een notificatie wilt.<br/>'.
-			'<div class="small">'.
- 			'1) Status verandering<br/>'.
+		'alert_type' => 'Selecteer wanneer je een notificatie wilt.<br/>',
+		'alert_type_description' => '<b>Status change:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
-			 '2) Offline<br/>'.
+			 '<br /><b>Offline</b>'.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
 			'je cronjob draait iedere 15 min en je server gaat down om 01:00 en blijft offline tot 06:00. '.
 			'Je krijgt 1 bericht om 01:00 en dat is het.<br/>'.
-			'3) Altijd<br/>'.
-			'Je krijgt een bericht elke keer dat het script draait en een website is down, ook al is de site al een paar uur offline.'.
-			'</div>',
-
+			'<br/><b>Altijd</b>'.
+			'Je krijgt een bericht elke keer dat het script draait en een website is down, ook al is de site al een paar uur offline.',
 		'alert_type_status' => 'Status verandering',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altijd',

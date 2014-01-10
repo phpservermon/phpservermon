@@ -98,19 +98,16 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS Sendernummer',
-		'alert_type' =>
-			'Wann m&ouml;chten Sie benachrichtig werden?<br/>'.
-			'<div class="small">'.
- 			'1) ...  wenn sich der Status &auml;ndert<br/>'.
+		'alert_type' => 'Wann m&ouml;chten Sie benachrichtig werden?<br/>',
+		'alert_type_description' => '<b>Status ge&auml;ndert:</b> '.
+			'...  wenn sich der Status &auml;ndert<br/>'.
 			'z.B. online -> offline oder offline -> online.<br/>'.
-			 '2) Offline<br/>'.
+			 '<br/><b>Offline: </b>'.
 			'Sie bekommen eine Benachrichtigung, wenn ein Server Offline ist.<br/>'.
 			'Es wird nur eine Mitteilung versendet.<br/>'.
-			'3) Immer<br/>'.
+			'<br/><b>Immer: </b>'.
 			'Sie werden jedesmal wenn der CronJob oder das Script ausgef&uuml;hrt wird benachrichtigt,<br>'.
-			'auch wenn der Dienst mehreres Stunden offline ist'.
-			'</div>',
-
+			'auch wenn der Dienst mehreres Stunden offline ist',
 		'alert_type_status' => 'Status ge&auml;ndert',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Immer',

@@ -159,6 +159,7 @@ class modConfig extends modCore {
 				'label_sms_gateway_password' => sm_get_lang('config', 'sms_gateway_password'),
 				'label_sms_from' => sm_get_lang('config', 'sms_from'),
 				'label_alert_type' => sm_get_lang('config', 'alert_type'),
+				'label_alert_type_description' => sm_get_lang('config', 'alert_type_description'),
 				'label_alert_type_status' => sm_get_lang('config', 'alert_type_status'),
 				'label_alert_type_offline' => sm_get_lang('config', 'alert_type_offline'),
 				'label_alert_type_always' => sm_get_lang('config', 'alert_type_always'),

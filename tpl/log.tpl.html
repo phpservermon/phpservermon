@@ -1,42 +1,52 @@
 <!--%tpl_log_list-->
-<div class="tabs">
-  <ul>
-	<li id="tabs_title_status" class="selected"><a href="javascript:sm_switch_tab('status');">{label_status}</a></li>
-	<li id="tabs_title_email"><a href="javascript:sm_switch_tab('email');">{label_email}</a></li>
-	<li id="tabs_title_sms"><a href="javascript:sm_switch_tab('sms');">{label_sms}</a></li>
-  </ul>
+<div class="span12">
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#log_status_content" data-toggle="tab">{label_status}</a></li>
+            <li><a href="#log_email_content" data-toggle="tab">{label_email}</a></li>
+            <li><a href="#log_sms_content" data-toggle="tab">{label_sms}</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="log_status_content">
+                {content_status}
+            </div>
+            <div class="tab-pane" id="log_email_content">
+                {content_email}
+            </div>
+            <div class="tab-pane" id="log_sms_content">
+                {content_sms}
+            </div>
+        </div>
+    </div>
 </div>
-<div class="tabs_content" id="tabs_content_status">
-{content_status}
-</div>
-<div class="tabs_content" id="tabs_content_email" style="display: none;">
-{content_email}
-</div>
-<div class="tabs_content" id="tabs_content_sms" style="display: none;">
-{content_sms}
-</div>
-
+<script type="text/javascript">
+    $(document).bind('ready', function(){
+        $('#nav_option_log').addClass('active');
+    });
+</script>
 <!--%%tpl_log_list-->
 
 <!--%tpl_log_entries-->
-<table cellpadding="0" cellspacing="0">
-  <tr class="head">
-    <td colspan="4">{logtitle}</td>
-  </tr>
-  <tr class="odd">
-    <td><b>{label_server}</b></td>
-    <td><b>{label_message}</b></td>
-    <td><b>{label_date}</b></td>
-    <td><b>{label_users}</b></td>
-  </tr>
-  <!--%tpl_repeat_entries-->
-	<tr class="{class}">
-	  <td>{server}</td>
-	  <td>{message}</td>
-	  <td>{datetime_format}</td>
-	  <td>{users}</td>
-	</tr>
-  <!--%%tpl_repeat_entries-->
-  {entries}
+<!-- {logtitle} -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>{label_server}</th>
+            <th>{label_message}</th>
+            <th width="130">{label_date}</th>
+            <th>{label_users}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--%tpl_repeat_entries-->
+        <tr class="{class}">
+          <td>{server}</td>
+          <td>{message}</td>
+          <td>{datetime_format}</td>
+          <td>{users}</td>
+        </tr>
+        <!--%%tpl_repeat_entries-->
+        {entries}
+    </tbody>
 </table>
 <!--%%tpl_log_entries-->
