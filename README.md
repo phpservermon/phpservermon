@@ -23,7 +23,7 @@ whether it is a "service" or a "website":
   This function takes care of that.
   You can enter a link to a website (for example <http://sourceforge.net/index.php>), it will use cURL to open the website and
   check the HTTP status code (see <http://en.wikipedia.org/wiki/List_of_HTTP_status_codes> for details).
-  If the HTTP status code is in the 4xx range, it means an error occured and the website is not accesible to the public.
+  If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
   In that case the script will return a "status offline", and will start sending out notifications.
 
 Each server has it's own settings regarding notification.
@@ -79,7 +79,7 @@ For example:
      define('SM_DB_USER', 'db_user');
 
 To change your username you should ONLY change the 'db\_user' part.
-Do NOT remove the quotes aroundyour username as that will result in an error.
+Do NOT remove the quotes around your username as that will result in an error.
 
 ### 2. Upload files
 
@@ -109,7 +109,7 @@ If it is your own server or you have shell access and permission to open the cro
      */15 * * * * root /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php
 
 As you can see, this line will run the status.cron.php script every 15 minutes. Change the line to suit your needs.
-If you do not have shell access, ask your webhosting to set it up for you.
+If you do not have shell access, ask your web hosting provider to set it up for you.
 
 ### 6. Voila!
 
@@ -119,7 +119,7 @@ If you do not have shell access, ask your webhosting to set it up for you.
 ### Language
 
 The server monitor uses language files. That means that any regular text you see on the screen can easily be
-changed without having to digg through the code. These language files are stored in the directory "lang".
+changed without having to dig through the code. These language files are stored in the directory "lang".
 The language that's being used by the monitor is defined in the config table. If you like
 you can make changes to the language file or even add a new one.
 
