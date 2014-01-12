@@ -98,6 +98,7 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
+        'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_username' => 'Utilisateur sur la passerelle',
 		'sms_gateway_password' => 'Mot de passe sur la passerelle',
 		'sms_from' => 'SMS de l exp&eacute;diteur',
