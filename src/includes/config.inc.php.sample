@@ -25,16 +25,16 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-define('SM_CONFIG', true);
+define('PSM_CONFIG', true);
 // Prefix used for tables
-define('SM_DB_PREFIX', 'monitor_');
+define('PSM_DB_PREFIX', 'monitor_');
 // Database username
-define('SM_DB_USER', 'db_user');
+define('PSM_DB_USER', 'db_user');
 // Database password
-define('SM_DB_PASS', 'db_pass');
+define('PSM_DB_PASS', 'db_pass');
 // Database name
-define('SM_DB_NAME', 'db_name');
+define('PSM_DB_NAME', 'db_name');
 // Database host
-define('SM_DB_HOST', 'localhost');
+define('PSM_DB_HOST', 'localhost');
 
 ?>
