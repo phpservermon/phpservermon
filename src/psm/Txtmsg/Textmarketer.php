@@ -23,7 +23,6 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
- * @since       phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
