@@ -18,23 +18,43 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Perri Vardy-Mason
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-define('PSM_CONFIG', true);
-// Prefix used for tables
-define('PSM_DB_PREFIX', 'monitor_');
-// Database username
-define('PSM_DB_USER', 'db_user');
-// Database password
-define('PSM_DB_PASS', 'db_pass');
-// Database name
-define('PSM_DB_NAME', 'db_name');
-// Database host
-define('PSM_DB_HOST', 'localhost');
+namespace psm\Txtmsg;
+
+class Textmarketer extends Core {
+    // =========================================================================
+    // [ Fields ]
+    // =========================================================================
+    public $gateway = 1;
+    public $resultcode = null;
+    public $resultmessage = null;
+    public $success = false;
+    public $successcount = 0;
+
+    public function sendSMS($message) {
+
+        $textmarketer_url = "https://api.textmarketer.co.uk/gateway/";
+        $textmarketer_data = urlencode( $message );
+        $textmarketer_origin = urlencode( 'SERVERALERT' );
+
+
+        foreach( $this->recipients as $phone ){
+
+            $URL = $textmarketer_url."?username=" . $this->username . "&password=" . $this->password . "&to=" . $phone . "&message=" . $textmarketer_data . "&orig=" . $textmarketer_origin;
+
+            $result = file_get_contents( $URL );
+
+        }
+
+        return $result;
+    }
+
+}
 
 ?>

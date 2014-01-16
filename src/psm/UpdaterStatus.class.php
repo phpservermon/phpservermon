@@ -317,6 +317,9 @@ class UpdaterStatus {
 			case 'clickatell':
 				$sms = new \psm\Txtmsg\Clickatell();
 				break;
+            case 'textmarketer':
+                $sms = new \psm\Txtmsg\Textmarketer();
+                break;
 		}
 
 		// copy login information from the config file
