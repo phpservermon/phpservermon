@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Luiz Alberto S. Ribeiro <madeinnordeste@gmail.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -99,6 +99,7 @@ $sm_lang = array(
         'sms_gateway_spryng' => 'Spryng',
         'sms_gateway_inetworx' => 'Inetworx',
         'sms_gateway_clickatell' => 'Clickatell',
+		'sms_gateway_textmarketer' => 'Textmarketer',
         'sms_gateway_username' => 'Usuário do Gateway',
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',

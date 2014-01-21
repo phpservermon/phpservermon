@@ -160,6 +160,7 @@ The second part is the actual message. There are a few variables you can use in 
  * German translation - Brunbaur Herbert
  * French translation - David Ribeiro
  * Korean translation - Ik-Jun
+ * Brazillian translation - Luiz Alberto S. Ribeiro
  * Bootstrap implementation - Luiz Alberto S. Ribeiro
  * Mosms implementation - Andreas Ek
  * Status page - Michael Greenhill

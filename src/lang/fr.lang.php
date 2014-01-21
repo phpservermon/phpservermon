@@ -87,6 +87,7 @@ $sm_lang = array(
 		'language_fr' => 'Francais',
 		'language_de' => 'German',
 		'language_kr' => 'Korean',
+		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => 'V&eacute;rifier les nouvelles mis &agrave; jour hebdomadairement?',
 		'email_status' => 'Autoriser l envoi de mail?',
 		'email_from_email' => 'Exp&eacute;diteur',

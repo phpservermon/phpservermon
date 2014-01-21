@@ -88,6 +88,7 @@ $sm_lang = array(
 		'language_fr' => '프랑스',
 		'language_de' => '독일',
 		'language_kr' => '한국',
+		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => '매주 업데이트를 확인하시겠습니까?',
 		'email_status' => '메일전송 허용',
 		'email_from_email' => 'Email 주소',

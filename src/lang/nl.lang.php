@@ -87,6 +87,7 @@ $sm_lang = array(
 		'language_fr' => 'Frans',
 		'language_de' => 'Duits',
 		'language_kr' => 'Koreaans',
+		'language_br' => 'Portugees - Braziliaans',
 		'show_update' => 'Check for new updates weekly?',
 		'email_status' => 'Sta email berichten toe?',
 		'email_from_email' => 'Email van adres',
