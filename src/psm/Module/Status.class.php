@@ -68,6 +68,9 @@ class Status extends Core {
 			'offline_fg' => '#f7cece',
 			'online_bg' => '#53a000',
 			'online_fg' => '#d8f7ce',
+			'label_last_check' => psm_get_lang('servers', 'last_check'),
+			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_rtime' => psm_get_lang('servers', 'rtime'),
 		);
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 
