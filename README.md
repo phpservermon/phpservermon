@@ -35,6 +35,7 @@ available:
 * Inetworx - <http://www.inetworx.ch>
 * Clickatell - <https://www.clickatell.com>
 * Mosms - <http://www.mosms.com>
+* Textmarketer - <http://www.textmarketer.co.uk>
 
 For these gateways you need an account with sufficient credits.
 
@@ -156,11 +157,12 @@ The second part is the actual message. There are a few variables you can use in 
 
 ## CREDITS
 
- * classes/phpmailer.class.php - Brent R. Matzelle
+ * Bugfixes & features - Perri Vardy-Mason
+ * PHP Mailer - Brent R. Matzelle
  * German translation - Brunbaur Herbert
  * French translation - David Ribeiro
  * Korean translation - Ik-Jun
- * Brazillian translation - Luiz Alberto S. Ribeiro
+ * Brazilian translation - Luiz Alberto S. Ribeiro
  * Bootstrap implementation - Luiz Alberto S. Ribeiro
  * Mosms implementation - Andreas Ek
  * Status page - Michael Greenhill
