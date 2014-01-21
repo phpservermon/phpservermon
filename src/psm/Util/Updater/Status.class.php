@@ -25,9 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-namespace psm;
+namespace psm\Util\Updater;
 
-class UpdaterStatus {
+class Status {
 	public $error;
 	public $notify;
 	public $rtime = 0;

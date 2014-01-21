@@ -35,7 +35,7 @@ $servers = $db->select(
 	array('server_id', 'ip', 'port', 'label', 'type', 'status', 'active', 'email', 'sms')
 );
 
-$updater = new \psm\UpdaterStatus();
+$updater = new \psm\Util\Updater\Status();
 
 foreach ($servers as $server) {
 	$status_org = $server['status'];
