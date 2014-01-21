@@ -69,8 +69,8 @@ abstract class Core {
 	function __construct() {
 		global $db;
 
-		$this->db = ($db) ? $db : new \psm\Database();
-		$this->tpl = new \psm\Template();
+		$this->db = ($db) ? $db : new \psm\Service\Database();
+		$this->tpl = new \psm\Service\Template();
 
 
 	}

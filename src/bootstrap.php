@@ -43,7 +43,7 @@ if(!defined('PSM_CONFIG')) {
 }
 
 // init db connection
-$db = new psm\Database();
+$db = new psm\Service\Database();
 
 psm_load_conf();
 

@@ -34,7 +34,7 @@ if(!function_exists('curl_init')) {
 	die('PHP is installed without the cURL module. Please install cURL first.');
 }
 
-$tpl = new psm\Template();
+$tpl = new psm\Service\Template();
 
 $tpl->newTemplate('install', 'install.tpl.html');
 

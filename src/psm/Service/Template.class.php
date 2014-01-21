@@ -25,7 +25,7 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-namespace psm;
+namespace psm\Service;
 
 class Template {
 	protected $output;
