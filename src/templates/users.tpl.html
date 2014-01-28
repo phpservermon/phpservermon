@@ -4,7 +4,7 @@
         {message}
     </div>
     <div class="top_buutons">
-        <a class="btn btn-success" href="index.php?type=users&edit=0">
+        <a class="btn btn-success" href="index.php?type=users&action=edit">
             <i class="icon-plus icon-white"></i>
             {label_add_new}
         </a>
@@ -27,7 +27,7 @@
             <td>{email}</td>
             <td>{emp_servers}</td>
             <td>
-                <a class="btn btn-small" href="index.php?type=users&amp;edit={user_id}" title="{label_edit}">
+                <a class="btn btn-small" href="index.php?type=users&amp;action=edit&amp;id={user_id}" title="{label_edit}">
                     <i class="icon-pencil"></i>
                 </a>
         	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'users');" title="{label_delete}">
@@ -44,7 +44,7 @@
 
 <!--%tpl_users_update-->
 <div class="span12">
-    <form class="form-horizontal well" action="index.php?type=users" id="edit_server" method="post">
+    <form class="form-horizontal well" action="index.php?type=users&amp;action=save&amp;id={edit_user_id}" method="post">
          <fieldset>
                 <legend>{titlemode}</legend>
                 <div class="control-group">
@@ -81,9 +81,8 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <input type="hidden" name="user_id" value="{edit_user_id}" />
                     <button class="btn btn-success" type="submit">Save</button>
-                    <button class="btn" onclick="history.back();" >Cancel</button>
+                    <button class="btn" onclick="history.back();return false;" >Cancel</button>
                 </div>
          </fieldset>
     </form>

@@ -26,99 +26,26 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
  */
-class Servers extends Core {
+class Servers extends AbstractModule {
 
-	function __construct() {
-		parent::__construct();
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-		// check mode
-		if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-			// edit mode or insert mode
-			$this->mode = 'update';
-		} else {
-			$this->mode = 'list';
-
-			if(!empty($_POST)) {
-				$this->executeSave();
-			}
-			if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-				$this->executeDelete();
-			}
-		}
-	}
-
-	// override parent::createHTML()
-	public function createHTML() {
-		switch($this->mode) {
-			case 'list':
-				$this->createHTMLList();
-				break;
-			case 'update':
-				$this->createHTMLUpdate();
-				break;
-		}
-
-		return parent::createHTML();
-	}
-
-	/**
-	 * Prepare the template to show the update screen for a single server
-	 */
-	protected function createHTMLUpdate() {
-		$this->setTemplateId('servers_update', 'servers.tpl.html');
-
-		$server_id = $_GET['edit'];
-
-		$tpl_data = array();
-
-		switch(intval($server_id)) {
-			case 0:
-				// insert mode
-				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
-				$tpl_data['edit_server_id'] = '0';
-				break;
-			default:
-				// edit mode
-
-				// get server entry
-				$edit_server = $this->db->selectRow(
-					PSM_DB_PREFIX.'servers',
-					array('server_id' => $server_id)
-				);
-				if (empty($edit_server)) {
-					$this->message = 'Invalid server id';
-					return $this->createHTMLList();
-				}
-
-				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
-					'edit_server_id' => $edit_server['server_id'],
-					'edit_value_label' => $edit_server['label'],
-					'edit_value_ip' => $edit_server['ip'],
-					'edit_value_port' => $edit_server['port'],
-					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
-					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
-					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
-					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
-				));
-
-				break;
-		}
-
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			$tpl_data
-		);
+		$this->setActions(array(
+			'index', 'edit', 'save', 'delete',
+		), 'index');
 	}
 
 	/**
 	 * Prepare the template to show a list of all servers
 	 */
-	protected function createHTMLList() {
+	protected function executeIndex() {
 		$this->setTemplateId('servers_list', 'servers.tpl.html');
 
 		// get servers from database
@@ -171,7 +98,55 @@ class Servers extends Core {
 			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
 			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
 		}
+	}
 
+	/**
+	 * Prepare the template to show the update screen for a single server
+	 */
+	protected function executeEdit() {
+		$this->setTemplateId('servers_update', 'servers.tpl.html');
+
+		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+		$tpl_data = array();
+
+		switch(intval($server_id)) {
+			case 0:
+				// insert mode
+				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
+				$tpl_data['edit_server_id'] = '0';
+				break;
+			default:
+				// edit mode
+				// get server entry
+				$edit_server = $this->db->selectRow(
+					PSM_DB_PREFIX.'servers',
+					array('server_id' => $server_id)
+				);
+				if (empty($edit_server)) {
+					$this->addMessage('Invalid server id');
+					return $this->initializeAction('index');
+				}
+
+				$tpl_data = array_merge($tpl_data, array(
+					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
+					'edit_server_id' => $edit_server['server_id'],
+					'edit_value_label' => $edit_server['label'],
+					'edit_value_ip' => $edit_server['ip'],
+					'edit_value_port' => $edit_server['port'],
+					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
+					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
+					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
+					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+				));
+
+				break;
+		}
+
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			$tpl_data
+		);
 	}
 
 	/**
@@ -179,11 +154,14 @@ class Servers extends Core {
 	 */
 	protected function executeSave() {
 		// check for add/edit mode
-		if (isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
+		if(isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
+			$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
 			$clean = array(
 				'label' => strip_tags($_POST['label']),
 				'ip' => strip_tags($_POST['ip']),
 				'port' => strip_tags($_POST['port']),
+				// @todo validate the following values
 				'type' => $_POST['type'],
 				'active' => $_POST['active'],
 				'email' => $_POST['email'],
@@ -191,35 +169,40 @@ class Servers extends Core {
 			);
 
 			// check for edit or add
-			if ((int) $_POST['server_id'] > 0) {
+			if($server_id > 0) {
 				// edit
 				$this->db->save(
 					PSM_DB_PREFIX.'servers',
 					$clean,
-					array('server_id' => $_POST['server_id'])
+					array('server_id' => $server_id)
 				);
-				$this->message = psm_get_lang('servers', 'updated');
+				$this->addMessage(psm_get_lang('servers', 'updated'));
 			} else {
 				// add
 				$clean['status'] = 'on';
 				$this->db->save(PSM_DB_PREFIX.'servers', $clean);
-				$this->message = psm_get_lang('servers', 'inserted');
+				$this->addMessage(psm_get_lang('servers', 'inserted'));
 			}
 		}
+		$this->initializeAction('index');
 	}
 
 	/**
 	 * Executes the deletion of one of the servers
 	 */
 	protected function executeDelete() {
-		// do delete
-		$this->db->delete(
-			PSM_DB_PREFIX . 'servers',
-			array(
-				'server_id' => $_GET['delete']
-			)
-		);
-		$this->message = psm_get_lang('system', 'deleted');
+		if(isset($_GET['id'])) {
+			$id = intval($_GET['id']);
+			// do delete
+			$this->db->delete(
+				PSM_DB_PREFIX . 'servers',
+				array(
+					'server_id' => $id,
+				)
+			);
+			$this->addMessage(psm_get_lang('system', 'deleted'));
+		}
+		$this->initializeAction('index');
 	}
 
 	// override parent::createHTMLLabels()

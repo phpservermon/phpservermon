@@ -26,13 +26,10 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
-abstract class Core {
-	/**
-	 * Custom message
-	 * @var string $message
-	 */
-	public $message;
+abstract class AbstractModule implements ModuleInterface {
 
 	/**
 	 * Current mode. Can be used by modules to determine
@@ -42,20 +39,48 @@ abstract class Core {
 	public $mode;
 
 	/**
+	 * Current action
+	 * @var string $action
+	 */
+	protected $action;
+
+	/**
+	 * Default action
+	 * @var string $action_default
+	 * @see setActions()
+	 */
+	protected $action_default;
+
+	/**
+	 * Actions available for this module
+	 * @var array $actions
+	 * @see setActions()
+	 * @see getAction()
+	 */
+	protected $actions = array();
+
+	/**
 	 * Add footer to page?
 	 * @var boolean $add_footer
 	 */
 	protected $add_footer = true;
 
 	/**
-	 * smDatabase object
-	 * @var object $db
+	 * Messages to show the user
+	 * @var array $messages
+	 * @see getMessage()
+	 */
+	protected $messages = array();
+
+	/**
+	 * Database object
+	 * @var \psm\Service\Database $db
 	 */
 	protected $db;
 
 	/**
-	 * \psm\Template object
-	 * @var object $tpl
+	 * Template object
+	 * @var \psm\Service\Template $tpl
 	 */
 	protected $tpl;
 
@@ -66,13 +91,48 @@ abstract class Core {
 	 */
 	protected $tpl_id;
 
-	function __construct() {
-		global $db;
+	function __construct(Database $db, Template $tpl) {
+		$this->db = $db;
+		$this->tpl = $tpl;
+	}
 
-		$this->db = ($db) ? $db : new \psm\Service\Database();
-		$this->tpl = new \psm\Service\Template();
+	/**
+	 * Initialize the module
+	 */
+	public function initialize() {
+		// yeh baby, "initialize" me..
+		// right, anyway, lets determine the aciton
+		$action = null;
 
+		if(isset($_GET['action'])) {
+			$action = $_GET['action'];
+		} elseif(isset($_POST['action'])) {
+			$action = $_POST['action'];
+		}
+		if($action !== null && in_array($action, $this->actions)) {
+			// we have an action
+			$this->initializeAction($action);
+		} elseif($this->action_default !== null) {
+			$this->initializeAction($this->action_default);
+		} else {
+			// else what..?
+		}
 
+		$this->createHTML();
+	}
+
+	/**
+	 * Run a specified action
+	 *
+	 * For it to run, the "execute$action" method must exist
+	 * @param string $action
+	 */
+	protected function initializeAction($action) {
+		$this->action = $action;
+		$method = 'execute' . ucfirst($action);
+		if(method_exists($this, $method)) {
+			$this->$method();
+		}
 	}
 
 	/**
@@ -80,7 +140,7 @@ abstract class Core {
 	 * First the createHTMLLabels() will be called to add all labels to the template,
 	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically
 	 */
-	public function createHTML() {
+	protected function createHTML() {
 		// add footer to page?
 		if($this->add_footer) {
 			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
@@ -101,7 +161,7 @@ abstract class Core {
 			'main',
 			array(
 				'content' => $this->tpl->getTemplate($this->getTemplateId()),
-				'message' => ($this->message == '') ? '&nbsp' : $this->message,
+				'message' => (empty($this->messages)) ? '&nbsp' : implode('<br/>', $this->messages),
 				'html_footer' => $html_footer,
 				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 			)
@@ -186,6 +246,51 @@ abstract class Core {
 	 */
 	protected function addFooter($value) {
 		$this->add_footer = $value;
+	}
+
+	/**
+	 * Set actions available
+	 * @param string|array $actions
+	 * @param string $default default action
+	 * @param boolean $append if TRUE, the actions will be added to the current actions
+	 * @return psm\Module\AbstractModule
+	 * @see getAction()
+	 */
+	protected function setActions($actions, $default = null, $append = true) {
+		if(!is_array($actions)) {
+			$actions = array($actions);
+		}
+		if($append) {
+			$this->actions = array_merge($actions);
+		} else {
+			$this->actions = $actions;
+		}
+		if($default !== null) {
+			$this->action_default = $default;
+		}
+		return $this;
+	}
+
+	/**
+	 * Get the current action
+	 * @return string
+	 * @see setActions()
+	 */
+	public function getAction() {
+		return $this->action;
+	}
+
+	/**
+	 * Add one or multiple message to the stack to be displayed to the user
+	 * @param string|array $msg
+	 * @return \psm\Module\AbstractModule
+	 */
+	public function addMessage($msg) {
+		if(!is_array($msg)) {
+			$msg = array($msg);
+		}
+		$this->messages = array_merge($this->messages, $msg);
+		return $this;
 	}
 }
 

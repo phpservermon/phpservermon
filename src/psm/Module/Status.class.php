@@ -27,28 +27,25 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
 /**
  * Status module
  */
-class Status extends Core {
+class Status extends AbstractModule {
 
-	function __construct() {
-		parent::__construct();
-	}
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-	// override parent::createHTML()
-	public function createHTML() {
-		$this->createHTMLList();
-
-		return parent::createHTML();
+		$this->setActions('index', 'index');
 	}
 
 	/**
 	 * Prepare the template to show a list of all servers
 	 * @todo move the background colurs to the config
 	 */
-	protected function createHTMLList() {
+	protected function executeIndex() {
 		$this->setTemplateId('status', 'status.tpl.html');
 		$this->addFooter(false);
 

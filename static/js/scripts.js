@@ -1,7 +1,7 @@
 function sm_delete(id, type) {
     var del = confirm("Are you sure you want to delete this record?");
     if (del == true) {
-        var loc = 'index.php?delete=' + id + '&type=' + type;
+        var loc = 'index.php?action=delete&id=' + id + '&type=' + type;
         window.location = loc;
     }
 }
@@ -9,7 +9,7 @@ function sm_delete(id, type) {
 function trim(str) {
     return str.replace(/^\s+|\s+$/g,"");
 }
- 
+
 //left trim
 function ltrim(str) {
 	return str.replace(/^\s+/,"");
@@ -18,4 +18,4 @@ function ltrim(str) {
 //right trim
 function rtrim(str) {
 	return str.replace(/\s+$/,"");
-} 
+}

@@ -1,7 +1,7 @@
 <!--%tpl_config-->
 {config_update}
 <div class="span12">
-    <form class="form-horizontal well" action="index.php?type=config" id="edit_config" method="post">
+    <form class="form-horizontal well" action="index.php?type=config&action=save" id="edit_config" method="post">
         <fieldset>
             <legend>{label_general}</legend>
             <div class="control-group">
@@ -118,9 +118,7 @@
                 </div>
             </div>
             <div class="form-actions">
-                <input type="hidden" name="server_id" value="{edit_server_id}" />
                 <button class="btn btn-success" type="submit">Save</button>
-                <button class="btn" onclick="history.back();" >Cancel</button>
             </div>
         </fieldset>
       </form>

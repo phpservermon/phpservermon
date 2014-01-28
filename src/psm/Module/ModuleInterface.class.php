@@ -23,28 +23,24 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
+ * @since		phpservermon 2.1
  **/
 
-require 'src/bootstrap.php';
+namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
-psm_no_cache();
+/**
+ * Public API for all modules
+ */
+interface ModuleInterface {
 
-if(isset($_GET['action']) && $_GET['action'] == 'check') {
-	require 'cron/status.cron.php';
-	header('Location: index.php');
+	public function __construct(Database $db, Template $tpl);
+
+	/**
+	 * Initialize the module
+	 */
+	public function initialize();
 }
-
-$type = (!isset($_GET['type'])) ? 'servers' : $_GET['type'];
-$allowed_types = array('servers', 'users', 'log', 'config', 'status');
-
-// make sure user selected a valid type. if so, include the file and add to template
-if(!in_array($type, $allowed_types)) {
-	$type = $allowed_types[0];
-}
-$tpl = new \psm\Service\Template();
-
-eval('$mod = new psm\Module\\'.ucfirst($type).'($db, $tpl);');
-// let the module prepare it's HTML code
-$mod->initialize();
 
 ?>
