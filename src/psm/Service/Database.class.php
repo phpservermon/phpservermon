@@ -35,17 +35,33 @@ class Database {
 	protected $num_rows_found;
 	protected $num_rows_returned;
 
-	function __construct() {
-		// Initizale connection
-		$this->link = mysql_connect(PSM_DB_HOST, PSM_DB_USER, PSM_DB_PASS);
+	function __construct($host = null, $user = null, $pass = null, $db = null) {
+		if($host != null && $user != null && $pass != null && $db != null) {
+			$this->connect($host, $user, $pass, $db);
+		} elseif(defined('PSM_DB_HOST') && defined('PSM_DB_USER') && defined('PSM_DB_PASS') && defined('PSM_DB_NAME')) {
+			$this->connect(PSM_DB_HOST, PSM_DB_USER, PSM_DB_PASS, PSM_DB_NAME);
+		}
+	}
 
-		if (!mysql_select_db(PSM_DB_NAME, $this->link)) {
+	/**
+	 * Connect to the database
+	 * @param string $host
+	 * @param string $user
+	 * @param string $pass
+	 * @param string $db
+	 * @return boolean
+	 */
+	protected function connect($host, $user, $pass, $db) {
+		$this->link = mysql_connect($host, $user, $pass);
+
+		if (!mysql_select_db($db, $this->link)) {
 			trigger_error(mysql_errno() . ": " . mysql_error());
+			return false;
 		}
 
-		// Setting the utf collection
-		mysql_query("SET NAMES utf8;", $this->getLink());
-  		mysql_query("SET CHARACTER SET 'utf8';", $this->getLink());
+		mysql_query("SET NAMES utf8;", $this->link);
+		mysql_query("SET CHARACTER SET 'utf8';", $this->link);
+		return true;
 	}
 
 	/**
