@@ -32,7 +32,7 @@ require_once dirname(__FILE__) . '/../src/bootstrap.php';
 $servers = $db->select(
 	PSM_DB_PREFIX.'servers',
 	array('active' => 'yes'),
-	array('server_id', 'ip', 'port', 'label', 'type', 'status', 'active', 'email', 'sms')
+	array('server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'email', 'sms')
 );
 
 $updater = new \psm\Util\Updater\Status();

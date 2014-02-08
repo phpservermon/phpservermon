@@ -6,6 +6,7 @@
 - Merged PHP Server Monitor Plus project by Luiz Alberto S. Ribeiro (https://github.com/madeinnordeste/PHP-Server-Monitor-Plus).
 -- New layout (thanks to twitter bootstrap)
 - New install module.
+- Regex search on website has been added by Paul Feakins.
 - Support for mosms provider by Andreas Ek.
 - Support for Textmarketer provider by Perri Vardy-Mason.
 - Language files are now automatically detected, instead of a hardcoded list.

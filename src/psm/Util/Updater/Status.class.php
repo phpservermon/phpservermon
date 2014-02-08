@@ -130,10 +130,11 @@ class Status {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
 
 		// We're only interested in the header, because that should tell us plenty!
+		// unless we have a pattern to search for!
 		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_NOBODY, ($this->server['pattern'] != '' ? false : true));
 
-		$headers = curl_exec ($ch);
+		$curl_result = curl_exec ($ch);
 		curl_close ($ch);
 
 		$time = explode(" ", microtime());
@@ -141,7 +142,7 @@ class Status {
 		$this->rtime = ($endtime - $starttime);
 
 		// the first line would be the status code..
-		$status_code = strtok($headers, "\r\n");
+		$status_code = strtok($curl_result, "\r\n");
 		// keep it general
 		// $code[1][0] = status code
 		// $code[2][0] = name of status code
@@ -161,6 +162,13 @@ class Status {
 				$this->status_new = 'off';
 			} else {
 				$this->status_new = 'on';
+			}
+		}
+		if($this->server['pattern'] != '') {
+			// Check to see if the pattern was found.
+			if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
+				$this->server['error'] = $this->error = 'Pattern not found.';
+				$this->status_new = 'off';
 			}
 		}
 

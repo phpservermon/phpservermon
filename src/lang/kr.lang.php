@@ -72,6 +72,7 @@ $sm_lang = array(
 		'domain' => 'Domain/IP',
 		'port' => 'Port',
 		'type' => 'Type',
+		'pattern' => 'Search string/regex',
 		'last_check' => '최근체크',
 		'last_online' => '최근접속',
 		'monitoring' => '확인중',

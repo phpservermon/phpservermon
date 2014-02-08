@@ -61,6 +61,7 @@ class Queries {
 						  `port` int(5) NOT NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('service','website') NOT NULL default 'service',
+						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,
 						  `rtime` FLOAT(9, 7) NULL,
@@ -121,6 +122,8 @@ class Queries {
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
+				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
+
 
 			}
 			$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';";

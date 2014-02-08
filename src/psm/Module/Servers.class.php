@@ -56,6 +56,7 @@ class Servers extends AbstractModule {
 				'`port`, '.
 				'`type`, '.
 				'`label`, '.
+				'`pattern`, '.
 				'`status`, '.
 				'`error`, '.
 				'`rtime`, '.
@@ -134,6 +135,7 @@ class Servers extends AbstractModule {
 					'edit_value_label' => $edit_server['label'],
 					'edit_value_ip' => $edit_server['ip'],
 					'edit_value_port' => $edit_server['port'],
+					'edit_value_pattern' => $edit_server['pattern'],
 					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
 					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
@@ -163,6 +165,7 @@ class Servers extends AbstractModule {
 				'port' => strip_tags($_POST['port']),
 				// @todo validate the following values
 				'type' => $_POST['type'],
+				'pattern' => $_POST['pattern'],
 				'active' => $_POST['active'],
 				'email' => $_POST['email'],
 				'sms' => $_POST['sms'],
@@ -214,6 +217,7 @@ class Servers extends AbstractModule {
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),
+				'label_pattern' => psm_get_lang('servers', 'pattern'),
 				'label_last_check' => psm_get_lang('servers', 'last_check'),
 				'label_rtime' => psm_get_lang('servers', 'rtime'),
 				'label_last_online' => psm_get_lang('servers', 'last_online'),

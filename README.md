@@ -17,14 +17,11 @@ whether it is a "service" or a "website":
 
 * Website
 
-  The previous version only tried to establish a connection to the server on port 80. If you are running multiple
-  websites on 1 machine, there was no proper way to check each website for possible errors. Also it was impossible to make
-  sure your site was really up and running, all you knew was that the server was still online.
-  This function takes care of that.
   You can enter a link to a website (for example <http://sourceforge.net/index.php>), it will use cURL to open the website and
   check the HTTP status code (see <http://en.wikipedia.org/wiki/List_of_HTTP_status_codes> for details).
   If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
-  In that case the script will return a "status offline", and will start sending out notifications.
+  You can also set a regular expression to match certain content on the page itself. If the regular expression returns no matches, the website is considered down.
+  In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has it's own settings regarding notification.
 You can choose for email notification or text message (SMS).

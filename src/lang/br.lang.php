@@ -71,6 +71,7 @@ $sm_lang = array(
         'domain' => 'Domínio/IP',
         'port' => 'Porta',
         'type' => 'Tipo',
+		'pattern' => 'Search string/pattern',
         'last_check' => 'Última verificação',
         'last_online' => 'Última vez online',
         'monitoring' => 'Monitoramento',

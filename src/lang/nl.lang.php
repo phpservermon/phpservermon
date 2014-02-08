@@ -71,6 +71,7 @@ $sm_lang = array(
 		'domain' => 'Domein/IP',
 		'port' => 'Poort',
 		'type' => 'Type',
+		'pattern' => 'Zoek voor tekst/regex',
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
