@@ -25,15 +25,15 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-define('PSM_INSTALL', true);
+namespace psm\Txtmsg;
 
-require 'src/bootstrap.php';
+interface TxtmsgInterface {
 
-psm_no_cache();
+	public function setLogin($username, $password);
+	public function setOriginator($originator);
+	public function addRecipients($recipient);
+	public function sendSMS($message);
 
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$mod = new psm\Module\Install($db, $tpl);
-$mod->initialize();
+}
 
 ?>

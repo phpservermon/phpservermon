@@ -23,17 +23,24 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
+ * @since		phpservermon 2.1
  **/
 
-define('PSM_INSTALL', true);
+namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
-require 'src/bootstrap.php';
+/**
+ * Public API for all modules
+ */
+interface ModuleInterface {
 
-psm_no_cache();
+	public function __construct(Database $db, Template $tpl);
 
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$mod = new psm\Module\Install($db, $tpl);
-$mod->initialize();
+	/**
+	 * Initialize the module
+	 */
+	public function initialize();
+}
 
 ?>

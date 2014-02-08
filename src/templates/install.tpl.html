@@ -1,0 +1,94 @@
+<!--%tpl_install-->
+<div class="hero-unit">
+	<h1><img class="pull-right" src="static/opensource.png" width="100" alt="" /> &nbsp;PHP Server Monitor</h1>
+	<p>&nbsp;</p>
+	<p>
+		<a class="btn btn-primary btn-large" target="_blank" href="http://phpservermon.neanderthal-technology.com">PHP Server Monitor</a>
+		<a class="btn btn-large" target="_blank" href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>
+	</p>
+	<p>PHP Server Monitor is a script that checks whether the servers on your list are up and running on the selected ports. It comes with a web based user interface where you can add and remove servers or websites from the MySQL database, and you can manage users for each server with a mobile number and email address.</p>
+	<p>To install PHP Server Monitor, please follow the instructions below.</p>
+</div>
+<div class="row-fluid">
+	<div class="span12">{html_results}</div>
+</div>
+{html_install}
+<!--%%tpl_install-->
+
+<!--%tpl_install_config_new-->
+<div class="row-fluid">
+   <div class="span6">
+	<form id="psm_config" class="form-horizontal" action="install.php" method="post">
+	  <!--<input type="hidden" name="action" value="config" />-->
+	  <h3>Please enter your database info:</h3>
+	  <div class="control-group">
+		<label class="control-label" for="host">Database host</label>
+		<div class="controls">
+		  <input type="text" id="host" name="host" value="{host}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="name">Database name</label>
+		<div class="controls">
+		  <input type="text" id="name" name="name" value="{name}" placeholder="db name" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="user">Database user</label>
+		<div class="controls">
+		  <input type="text" id="user" name="user" value="{user}" placeholder="db user" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="pass">Database password</label>
+		<div class="controls">
+		  <input type="password" id="pass" name="pass" value="{pass}" placeholder="db password" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="prefix">Table prefix</label>
+		<div class="controls">
+		  <input type="text" id="prefix" name="prefix" value="{prefix}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<div class="controls">
+		  <button type="submit" class="btn">Save configuration</button>
+		</div>
+	  </div>
+	</form>
+   </div>
+{html_config_copy}
+</div>
+<!--%%tpl_install_config_new-->
+
+<!--%tpl_install_config_new_copy-->
+    <div class="span6">
+		<h3>Your config file:</h3>
+		<div class="alert alert-error">Unable to save your configuration.</div>
+		<p>Please create a new file in the project directory called "config.php" and copy the information below.</p>
+		<p>After you have copied the configuration, press the button to continue.</p>
+		<p class="pull-left"><textarea rows="10">{php_config}</textarea></p>
+		<p class="offset2"><input type="submit" class="btn btn-primary" value="I have saved the configuration" onclick="location.reload(true);" /></p>
+    </div>
+<!--%%tpl_install_config_new_copy-->
+
+<!--%tpl_install_success-->
+<div class="row-fluid">
+   <div class="span12">
+The installation is complete. Please check above if errors have occured.<br/>
+If no errors have occurred, you are good to go.<br><br>
+<a class="btn btn-primary" href="index.php">Click here to go to the monitor</a>
+   </div>
+</div>
+<!--%%tpl_install_success-->
+
+<!--%tpl_install_results-->
+<!--%tpl_repeat_resultmsgs-->
+<div>
+	<p class="pull-left"><span class="label label-{shortcode}">{status}</span></p>
+	<p class="offset1">{message}</p>
+</div>
+<!--%%tpl_repeat_resultmsgs-->
+{resultmsgs}
+<!--%%tpl_install_results-->

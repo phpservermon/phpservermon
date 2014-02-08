@@ -25,15 +25,42 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-define('PSM_INSTALL', true);
+namespace psm\Txtmsg;
 
-require 'src/bootstrap.php';
+abstract class Core implements TxtmsgInterface {
+	protected $originator;
+	protected $password;
+	protected $recipients = array();
+	protected $username;
 
-psm_no_cache();
+	/**
+	 * Define login information for the gateway
+	 *
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setLogin($username, $password) {
+		$this->username = $username;
+		$this->password = $password;
+	}
 
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$mod = new psm\Module\Install($db, $tpl);
-$mod->initialize();
+	/**
+	 * Set the mobile number the text message will be send from
+	 *
+	 * @param string $originator
+	 */
+	public function setOriginator($originator) {
+		$this->originator = $originator;
+	}
+
+	/**
+	 * Add new recipient to the list
+	 *
+	 * @param unknown_type $recipient
+	 */
+	public function addRecipients($recipient) {
+		array_push($this->recipients, $recipient);
+	}
+}
 
 ?>

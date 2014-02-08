@@ -1,0 +1,71 @@
+<!--%tpl_status-->
+<style type="text/css">
+	body {
+		background: {bg};
+		padding: 20px;
+	}
+
+	.page-header {
+		border-bottom: 0;
+	}
+
+	h2, p {
+		margin: 0;
+		padding: 0;
+	}
+
+	h2 {
+		margin-bottom: 10px;
+	}
+
+	.entity {
+		padding: 10px;
+		box-shadow: 0px 0px 5px #666;
+		border-radius: 3px;
+		margin-bottom: 20px;
+	}
+
+	.offline {
+		float: left; width: 300px;
+	}
+
+	.offline .entity {
+		background: {offline_bg};
+		color: {offline_fg};
+		border: 2px solid {offline_fg};
+	}
+
+	.online {
+		margin-left: 320px;
+	}
+
+	.online .entity {
+		background: {online_bg};
+		color: {online_fg};
+		border: 2px solid {online_fg};
+		float: left;
+		margin-right: 20px;
+		width: 300px;
+	}
+</style>
+	<div class="offline">
+		<!--%tpl_repeat_servers_offline-->
+		<div class="entity">
+			<h2>{label}</h2>
+			<p>{label_last_online}: {last_online_nice}</p>
+			<p>{label_last_check}: {last_checked_nice}</p>
+		</div>
+		<!--%%tpl_repeat_servers_offline-->
+		{servers_offline}
+	</div>
+	<div class="online">
+		<!--%tpl_repeat_servers_online-->
+		<div class="entity">
+			<h2>{label}</h2>
+			<p>{label_last_online}: {last_checked_nice}</p>
+			<p>{label_rtime}: {rtime}s</p>
+		</div>
+		<!--%%tpl_repeat_servers_online-->
+		{servers_online}
+	</div>
+<!--%%tpl_status-->

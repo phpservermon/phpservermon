@@ -25,15 +25,10 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-define('PSM_INSTALL', true);
-
-require 'src/bootstrap.php';
-
-psm_no_cache();
-
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$mod = new psm\Module\Install($db, $tpl);
-$mod->initialize();
-
+define('PSM_CONFIG', true);
+define('PSM_DB_PREFIX', 'monitor_');
+define('PSM_DB_USER', 'db_user');
+define('PSM_DB_PASS', 'db_pass');
+define('PSM_DB_NAME', 'db_name');
+define('PSM_DB_HOST', 'localhost');
 ?>

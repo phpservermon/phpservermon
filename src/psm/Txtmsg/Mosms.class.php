@@ -18,22 +18,41 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Andreas Ek
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
+ * @since       phpservermon 2.1
  **/
 
-define('PSM_INSTALL', true);
+namespace psm\Txtmsg;
 
-require 'src/bootstrap.php';
+class Mosms extends Core {
+	// =========================================================================
+	// [ Fields ]
+	// =========================================================================
+	public $gateway = 1;
+	public $resultcode = null;
+	public $resultmessage = null;
+	public $success = false;
+	public $successcount = 0;
 
-psm_no_cache();
+	public function sendSMS($message) {
 
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$mod = new psm\Module\Install($db, $tpl);
-$mod->initialize();
+		$mosms_url = "https://www.mosms.com/se/sms-send.php";
+		$mosms_data = rawurlencode( $message );
+
+		foreach( $this->recipients as $phone ){
+
+			$result = file_get_contents( $mosms_url . "?username=" . $this->username
+				. "&password=" . $this->password . "&nr=" . $phone . "&type=text"
+				. "&data=" . $mosms_data );
+
+		}
+
+		return $result;
+	}
+}
 
 ?>

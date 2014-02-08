@@ -26,16 +26,25 @@
  **/
 
 // include main configuration and functionality
-require_once dirname(__FILE__) . '/../config.inc.php';
+require_once dirname(__FILE__) . '/../src/bootstrap.php';
+
+// prevent cron from running twice at the same time
+// however if the cron has been running for 10 mins, we'll assume it died and run anyway
+$time = time();
+if(psm_get_conf('cron_running') == 1 && ($time - psm_get_conf('cron_running_time') < 600)) {
+   die('Cron is already running. Exiting.');
+}
+psm_update_conf('cron_running', 1);
+psm_update_conf('cron_running_time', $time);
 
 // get the active servers from database
 $servers = $db->select(
-	SM_DB_PREFIX.'servers',
+	PSM_DB_PREFIX.'servers',
 	array('active' => 'yes'),
-	array('server_id', 'ip', 'port', 'label', 'type', 'status', 'active', 'email', 'sms')
+	array('server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'email', 'sms')
 );
 
-$updater = new smUpdaterStatus();
+$updater = new \psm\Util\Updater\Status();
 
 foreach ($servers as $server) {
 	$status_org = $server['status'];
@@ -64,10 +73,12 @@ foreach ($servers as $server) {
 	}
 
 	$db->save(
-		SM_DB_PREFIX . 'servers',
+		PSM_DB_PREFIX . 'servers',
 		$save,
 		array('server_id' => $server['server_id'])
 	);
 }
+
+psm_update_conf('cron_running', 0);
 
 ?>
