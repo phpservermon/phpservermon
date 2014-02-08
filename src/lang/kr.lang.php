@@ -32,6 +32,7 @@ $sm_lang = array(
 		'servers' => '서버목록',
 		'users' => '사용자',
 		'log' => '로그',
+		'status' => 'Status',
 		'update' => '업데이트',
 		'config' => '설정',
 		'help' => '도움말',

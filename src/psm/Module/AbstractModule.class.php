@@ -211,6 +211,7 @@ abstract class AbstractModule implements ModuleInterface {
 				'label_servers' => psm_get_lang('system', 'servers'),
 				'label_users' => psm_get_lang('system', 'users'),
 				'label_log' => psm_get_lang('system', 'log'),
+				'label_status' => psm_get_lang('system', 'status'),
 				'label_config' => psm_get_lang('system', 'config'),
 				'label_update' => psm_get_lang('system', 'update'),
 				'label_help' => psm_get_lang('system', 'help'),

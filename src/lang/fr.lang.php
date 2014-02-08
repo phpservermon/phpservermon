@@ -31,6 +31,7 @@ $sm_lang = array(
 		'servers' => 'Serveurs',
 		'users' => 'Utilisateurs',
 		'log' => 'Evenements',
+		'status' => 'Status',
 		'update' => 'Mise &agrave; jour',
 		'config' => 'Configuration',
 		'help' => 'Aide',
