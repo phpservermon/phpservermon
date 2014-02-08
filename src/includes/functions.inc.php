@@ -93,11 +93,12 @@ function psm_get_langs() {
  * The config must have been loaded first using psm_load_conf()
  *
  * @param string $key
+ * @param mixed $alt if not set, return this alternative
  * @return string
  * @see psm_load_conf()
  */
-function psm_get_conf($key) {
-	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : null;
+function psm_get_conf($key, $alt = null) {
+	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : $alt;
 
 	return $result;
 }
@@ -243,13 +244,10 @@ function psm_check_updates() {
 		// been more than a week since update, lets go
 		// update "update-date"
 		$db->save(PSM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
-		$latest = psm_curl_get('http://phpservermon.neanderthal-technology.com/version');
+		$latest = psm_curl_get('http://phpservermon.neanderthal-technology.com/version.php');
 		$current = psm_get_conf('version');
 
-		if((int) $current < (int) $latest) {
-			// new update available
-			return true;
-		}
+		return version_compare($latest, $current, '>');
 	}
 	return false;
 }

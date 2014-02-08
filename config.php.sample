@@ -26,15 +26,9 @@
  **/
 
 define('PSM_CONFIG', true);
-// Prefix used for tables
 define('PSM_DB_PREFIX', 'monitor_');
-// Database username
 define('PSM_DB_USER', 'db_user');
-// Database password
 define('PSM_DB_PASS', 'db_pass');
-// Database name
 define('PSM_DB_NAME', 'db_name');
-// Database host
 define('PSM_DB_HOST', 'localhost');
-
 ?>

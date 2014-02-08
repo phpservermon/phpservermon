@@ -19,3 +19,18 @@ function ltrim(str) {
 function rtrim(str) {
 	return str.replace(/\s+$/,"");
 }
+
+function psm_flash_message(message) {
+	var flashmessage = $('#flashmessage');
+	if(flashmessage.length){
+		if(typeof message != 'undefined') {
+			flashmessage.html(message);
+		}
+		var t = flashmessage.html();
+		var c = trim(t);
+		var t = c.replace('&nbsp;', '');
+		if(t){
+			flashmessage.slideDown();
+		}
+	}
+}

@@ -62,8 +62,16 @@ abstract class AbstractModule implements ModuleInterface {
 	/**
 	 * Add footer to page?
 	 * @var boolean $add_footer
+	 * @see addFooter()
 	 */
 	protected $add_footer = true;
+
+	/**
+	 * Add menu to page?
+	 * @var boolean $add_menu
+	 * @see addMenu()
+	 */
+	protected $add_menu = true;
 
 	/**
 	 * Messages to show the user
@@ -141,34 +149,36 @@ abstract class AbstractModule implements ModuleInterface {
 	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically
 	 */
 	protected function createHTML() {
-		// add footer to page?
-		if($this->add_footer) {
-			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
-			$html_footer = $this->tpl->getTemplate('main_footer');
-		} else {
-			$html_footer = '';
-		}
-
 		if(psm_get_conf('show_update')) {
 			// user wants updates, lets see what we can do
 			$this->createHTMLUpdateAvailable();
 		}
+		$tpl_data = array(
+			'message' => (empty($this->messages)) ? '&nbsp' : implode('<br/>', $this->messages),
+		);
+		// add menu to page?
+		if($this->add_menu) {
+			$this->tpl->newTemplate('main_menu', 'main.tpl.html');
+			$tpl_data['html_menu'] = $this->tpl->getTemplate('main_menu');
+		}
+		// add footer to page?
+		if($this->add_footer) {
+			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
+			$tpl_data['html_footer'] = $this->tpl->getTemplate('main_footer');
+		}
 
-		$this->createHTMLLabels();
+		$tpl_id_content = $this->getTemplateId();
+		if($tpl_id_content) {
+			$tpl_data['content'] = $this->tpl->getTemplate($tpl_id_content);
+		}
 
 		// add the module's custom template to the main template to get some content
-		$this->tpl->addTemplatedata(
-			'main',
-			array(
-				'content' => $this->tpl->getTemplate($this->getTemplateId()),
-				'message' => (empty($this->messages)) ? '&nbsp' : implode('<br/>', $this->messages),
-				'html_footer' => $html_footer,
-				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
-			)
-		);
+		$this->setTemplateId('main');
+		$this->tpl->addTemplatedata($this->getTemplateId(), $tpl_data);
+		$this->createHTMLLabels();
 
 		// display main template
-		echo $this->tpl->display('main');
+		echo $this->tpl->display($this->getTemplateId());
 	}
 
 	/**
@@ -180,12 +190,7 @@ abstract class AbstractModule implements ModuleInterface {
 
 		if(psm_check_updates()) {
 			// yay, new update available =D
-			$this->tpl->addTemplateData(
-				'main',
-				array(
-					'update_available' => '<div id="update">'.psm_get_lang('system', 'update_available').'</div>',
-				)
-			);
+			$this->addMessage(psm_get_lang('system', 'update_available'));
 		}
 	}
 
@@ -209,6 +214,7 @@ abstract class AbstractModule implements ModuleInterface {
 				'label_config' => psm_get_lang('system', 'config'),
 				'label_update' => psm_get_lang('system', 'update'),
 				'label_help' => psm_get_lang('system', 'help'),
+				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 			)
 		);
 	}
@@ -246,6 +252,14 @@ abstract class AbstractModule implements ModuleInterface {
 	 */
 	protected function addFooter($value) {
 		$this->add_footer = $value;
+	}
+
+	/**
+	 * Hide or show the menu of the page
+	 * @param boolean $value
+	 */
+	protected function addMenu($value) {
+		$this->add_menu = $value;
 	}
 
 	/**

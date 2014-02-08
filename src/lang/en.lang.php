@@ -34,6 +34,7 @@ $sm_lang = array(
 		'update' => 'Update',
 		'config' => 'Config',
 		'help' => 'Help',
+		'install' => 'Install',
 		'action' => 'Action',
 		'save' => 'Save',
 		'edit' => 'Edit',
