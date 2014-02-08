@@ -125,6 +125,9 @@ If it is your own server or you have shell access and permission to open the cro
 As you can see, this line will run the status.cron.php script every 15 minutes. Change the line to suit your needs.
 If you do not have shell access, ask your web hosting provider to set it up for you.
 
+The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
+After that the script is assumed dead and the cronjob will run again.
+
 
 ## CUSTOMIZING
 

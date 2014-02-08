@@ -14,6 +14,7 @@
 - Adding Portuguese / Brazilian language file (thanks to Luiz Alberto S. Ribeiro).
 - Large status page by Michael Greenhill.
 - New config file (see install instructions in README).
+- Cronjob will be prevented from running multiple times at the same time (with a 10 mins timeout).
 
 #########################
 #

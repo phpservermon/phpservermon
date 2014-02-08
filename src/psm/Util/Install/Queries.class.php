@@ -110,13 +110,17 @@ class Queries {
 						('version', '{$version}'),
 						('auto_refresh_servers', '0'),
 						('show_update', '1'),
-						('last_update_check', '0');";
+						('last_update_check', '0'),
+						('cron_running', '0'),
+						('cron_running_time', '0');";
 		} else {
 			if(version_compare($version_from, '2.1.0', '<')) {
 				// 2.0 upgrade
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP `config_id`;";
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` ADD PRIMARY KEY ( `key` );";
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP INDEX `key`;";
+				$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running', '0');";
+				$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running_time', '0');";
 
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `error` `error` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;";
 				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
