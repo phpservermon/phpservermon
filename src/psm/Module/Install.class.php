@@ -270,7 +270,7 @@ class Install extends AbstractModule {
 	 */
 	protected function writeConfigFile($db_vars) {
 		$config =
-			"<?php".PHP_EOL;
+			"<?php".PHP_EOL .
 			"define('PSM_CONFIG', true);".PHP_EOL;
 
 		foreach($db_vars as $key => $value) {
