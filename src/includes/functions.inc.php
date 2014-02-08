@@ -125,6 +125,21 @@ function psm_load_conf() {
 	}
 }
 
+/**
+ * Update a config setting
+ * @global \psm\Service\Database $db
+ * @param string $key
+ * @param string $value
+ */
+function psm_update_conf($key, $value) {
+	global $db;
+
+	$db->save(
+		PSM_DB_PREFIX.'config',
+		array('value' => $value),
+		array('key' => $key)
+	);
+}
 
 ###############################################
 #
