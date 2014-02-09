@@ -93,9 +93,6 @@ class Template {
 		}
 
 		foreach($data as $key => $value) {
-			// check if $value is a file
-			$value = (file_exists($value)) ? $this->parseFile($value) : $value;
-
 			$this->templates[$id] = str_replace('{'.$key.'}', $value, $this->templates[$id]);
 		}
 		return $this->templates[$id];
