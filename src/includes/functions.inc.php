@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 ###############################################
@@ -259,7 +259,7 @@ function psm_check_updates() {
 		// been more than a week since update, lets go
 		// update "update-date"
 		$db->save(PSM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
-		$latest = psm_curl_get('http://phpservermon.neanderthal-technology.com/version.php');
+		$latest = psm_curl_get('http://www.phpservermonitor.org/version.php');
 		$current = psm_get_conf('version');
 
 		return version_compare($latest, $current, '>');
