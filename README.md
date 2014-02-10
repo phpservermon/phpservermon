@@ -2,12 +2,11 @@
 
 ## SUMMARY
 
-PHP Server Monitor is a script that checks whether the servers on your list are up and running on the selected ports.
-It comes with a web based user interface where you can add and remove servers or websites from the MySQL database,
+PHP Server Monitor is a script that checks whether your websites and servers are up and running.
+It comes with a web based user interface where you can add and remove servers and websites from the MySQL database,
 and you can manage users for each server with a mobile number and email address.
 
-With version 2 there's the support for websites as well. On the "Add server" page, you can choose
-whether it is a "service" or a "website":
+There are two different ways to monitor a server:
 
 * Service
 
@@ -17,10 +16,10 @@ whether it is a "service" or a "website":
 
 * Website
 
-  You can enter a link to a website (for example <http://sourceforge.net/index.php>), it will use cURL to open the website and
-  check the HTTP status code (see <http://en.wikipedia.org/wiki/List_of_HTTP_status_codes> for details).
+  You can enter a link to a website, it will then use cURL to open the website and check the HTTP status code.
   If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
-  You can also set a regular expression to match certain content on the page itself. If the regular expression returns no matches, the website is considered down.
+  You can also set a regular expression to match for content on the page itself.
+  If the regular expression returns no matches, the website is considered down.
   In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has it's own settings regarding notification.
@@ -46,7 +45,7 @@ project page (tracker), or send me an email (see top of file for link).
 
 ## DOWNLOAD
 
-The latest version can be found at <http://phpservermon.neanderthal-technology.com/>.
+The latest version can be found at <http://www.phpservermonitor.org/>.
 You can also clone the git repo at <http://github.com/phpservermon/phpservermon> if you want to contribute.
 
 
