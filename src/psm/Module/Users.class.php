@@ -26,56 +26,33 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
 /**
  * User module. Add, edit and delete users, or assign
  * servers to users.
  */
-class Users extends Core {
+class Users extends AbstractModule {
 	public $servers;
 
-	function __construct() {
-		parent::__construct();
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-		// check mode
-		if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
-			// edit mode or insert mode
-			$this->mode = 'update';
-		} else {
-			$this->mode = 'list';
-
-			if(!empty($_POST)) {
-				$this->executeSave();
-			}
-			if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-				$this->executeDelete();
-			}
-		}
+		$this->setActions(array(
+			'index', 'edit', 'delete', 'save',
+		), 'index');
 
 		$this->servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
-	}
-
-	// override parent::createHTML()
-	public function createHTML() {
-		switch($this->mode) {
-			case 'list':
-				$this->createHTMLList();
-				break;
-			case 'update':
-				$this->createHTMLUpdate();
-				break;
-		}
-
-		return parent::createHTML();
 	}
 
 	/**
 	 * Prepare the template to show the update screen for a user
 	 */
-	protected function createHTMLUpdate() {
+	protected function executeEdit() {
 		$this->setTemplateId('users_update', 'users.tpl.html');
 
-		$user_id = $_GET['edit'];
+		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 		$tpl_data = array();
 		$servers_count = count($this->servers);
@@ -94,15 +71,13 @@ class Users extends Core {
 				break;
 			default:
 				// edit mode
-
-				// get user entry
 				$edit_user = $this->db->selectRow(
 					PSM_DB_PREFIX.'users',
 					array('user_id' => $user_id)
 				);
 				if (empty($edit_user)) {
-					$this->message = 'Invalid user id';
-					return $this->createHTMLList();
+					$this->addMessage('Invalid user.');
+					return $this->initializeAction('index');
 				}
 
 				$tpl_data = array_merge($tpl_data, array(
@@ -137,7 +112,7 @@ class Users extends Core {
 	/**
 	 * Prepare the template to show a list of all users
 	 */
-	protected function createHTMLList() {
+	protected function executeIndex() {
 		$this->setTemplateId('users_list', 'users.tpl.html');
 
 		// build label array for the next loop
@@ -174,7 +149,6 @@ class Users extends Core {
 		}
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
-
 	}
 
 	/**
@@ -182,7 +156,6 @@ class Users extends Core {
 	 */
 	protected function executeSave() {
 		// check for add/edit mode
-
 		if (isset($_POST['name']) && isset($_POST['mobile']) && isset($_POST['email'])) {
 			$clean = array(
 				'name' => $_POST['name'],
@@ -190,36 +163,42 @@ class Users extends Core {
 				'email' => $_POST['email'],
 				'server_id' => (isset($_POST['server_id'])) ? implode(',', $_POST['server_id']) : ''
 			);
+			$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
 			// check for edit or add
-			if ((int) $_POST['user_id'] > 0) {
+			if ((int) $id > 0) {
 				// edit
 				$this->db->save(
 					PSM_DB_PREFIX.'users',
 					$clean,
-					array('user_id' => $_POST['user_id'])
+					array('user_id' => $id)
 				);
-				$this->message = psm_get_lang('users', 'updated');
+				$this->addMessage(psm_get_lang('users', 'updated'));
 			} else {
 				// add
 				$this->db->save(PSM_DB_PREFIX.'users', $clean);
-				$this->message = psm_get_lang('users', 'inserted');
+				$this->addMessage(psm_get_lang('users', 'inserted'));
 			}
 		}
+		$this->initializeAction('index');
 	}
 
 	/**
 	 * Executes the deletion of a user
 	 */
 	protected function executeDelete() {
-		// do delete
-		$this->db->delete(
-			PSM_DB_PREFIX . 'users',
-			array(
-				'user_id' => $_GET['delete']
-			)
-		);
-		$this->message = psm_get_lang('system', 'deleted');
+		$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
+
+		if($id > 0) {
+			$this->db->delete(
+				PSM_DB_PREFIX . 'users',
+				array(
+					'user_id' => $id,
+				)
+			);
+			$this->addMessage(psm_get_lang('system', 'deleted'));
+		}
+		$this->initializeAction('index');
 	}
 
 	// override parent::createHTMLLabels()

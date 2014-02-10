@@ -41,9 +41,10 @@ $allowed_types = array('servers', 'users', 'log', 'config', 'status');
 if(!in_array($type, $allowed_types)) {
 	$type = $allowed_types[0];
 }
+$tpl = new \psm\Service\Template();
 
-eval('$mod = new psm\Module\\'.ucfirst($type).'();');
+eval('$mod = new psm\Module\\'.ucfirst($type).'($db, $tpl);');
 // let the module prepare it's HTML code
-$mod->createHTML();
+$mod->initialize();
 
 ?>

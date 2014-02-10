@@ -27,28 +27,25 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
 /**
  * Status module
  */
-class Status extends Core {
+class Status extends AbstractModule {
 
-	function __construct() {
-		parent::__construct();
-	}
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-	// override parent::createHTML()
-	public function createHTML() {
-		$this->createHTMLList();
-
-		return parent::createHTML();
+		$this->setActions('index', 'index');
 	}
 
 	/**
 	 * Prepare the template to show a list of all servers
 	 * @todo move the background colurs to the config
 	 */
-	protected function createHTMLList() {
+	protected function executeIndex() {
 		$this->setTemplateId('status', 'status.tpl.html');
 		$this->addFooter(false);
 
@@ -68,6 +65,9 @@ class Status extends Core {
 			'offline_fg' => '#f7cece',
 			'online_bg' => '#53a000',
 			'online_fg' => '#d8f7ce',
+			'label_last_check' => psm_get_lang('servers', 'last_check'),
+			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_rtime' => psm_get_lang('servers', 'rtime'),
 		);
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 

@@ -25,9 +25,9 @@
  * @link        http://phpservermon.neanderthal-technology.com/
  **/
 
-namespace psm;
+namespace psm\Util\Updater;
 
-class UpdaterStatus {
+class Status {
 	public $error;
 	public $notify;
 	public $rtime = 0;
@@ -130,10 +130,11 @@ class UpdaterStatus {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
 
 		// We're only interested in the header, because that should tell us plenty!
+		// unless we have a pattern to search for!
 		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_NOBODY, ($this->server['pattern'] != '' ? false : true));
 
-		$headers = curl_exec ($ch);
+		$curl_result = curl_exec ($ch);
 		curl_close ($ch);
 
 		$time = explode(" ", microtime());
@@ -141,7 +142,7 @@ class UpdaterStatus {
 		$this->rtime = ($endtime - $starttime);
 
 		// the first line would be the status code..
-		$status_code = strtok($headers, "\r\n");
+		$status_code = strtok($curl_result, "\r\n");
 		// keep it general
 		// $code[1][0] = status code
 		// $code[2][0] = name of status code
@@ -161,6 +162,13 @@ class UpdaterStatus {
 				$this->status_new = 'off';
 			} else {
 				$this->status_new = 'on';
+			}
+		}
+		if($this->server['pattern'] != '') {
+			// Check to see if the pattern was found.
+			if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
+				$this->server['error'] = $this->error = 'Pattern not found.';
+				$this->status_new = 'off';
 			}
 		}
 
@@ -205,10 +213,6 @@ class UpdaterStatus {
 				break;
 		}
 
-		if(!$notify) {
-			return false;
-		}
-
 		// first add to log (we use the same text as the SMS message because its short..)
 		if(psm_get_conf('log_status')) {
 			psm_add_log(
@@ -216,6 +220,10 @@ class UpdaterStatus {
 				'status',
 				psm_parse_msg($this->status_new, 'sms', $this->server)
 			);
+		}
+
+		if(!$notify) {
+			return false;
 		}
 
 		// check if email is enabled for this server

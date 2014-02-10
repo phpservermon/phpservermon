@@ -52,8 +52,8 @@
 		<!--%tpl_repeat_servers_offline-->
 		<div class="entity">
 			<h2>{label}</h2>
-			<p>Last online: {last_online_nice}</p>
-			<p>Last checked: {last_checked_nice}</p>
+			<p>{label_last_online}: {last_online_nice}</p>
+			<p>{label_last_check}: {last_checked_nice}</p>
 		</div>
 		<!--%%tpl_repeat_servers_offline-->
 		{servers_offline}
@@ -62,8 +62,8 @@
 		<!--%tpl_repeat_servers_online-->
 		<div class="entity">
 			<h2>{label}</h2>
-			<p>Last checked: {last_checked_nice}</p>
-			<p>Latency: {rtime}s</p>
+			<p>{label_last_online}: {last_checked_nice}</p>
+			<p>{label_rtime}: {rtime}s</p>
 		</div>
 		<!--%%tpl_repeat_servers_online-->
 		{servers_online}

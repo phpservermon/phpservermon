@@ -26,30 +26,25 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
-class Config extends Core {
+class Config extends AbstractModule {
 
-	function __construct() {
-		parent::__construct();
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-		if(!empty($_POST)) {
-			$this->executeSave();
-		}
-	}
-
-	// override parent::createHTML()
-	public function createHTML() {
-		$this->setTemplateId('config', 'config.tpl.html');
-
-		$this->populateFields();
-
-		return parent::createHTML();
+		$this->setActions(array(
+			'index', 'save',
+		), 'index');
 	}
 
 	/**
 	 * Populate all the config fields with values from the database
 	 */
-	public function populateFields() {
+	protected function executeIndex() {
+		$this->setTemplateId('config', 'config.tpl.html');
+
 		$config_db = $this->db->select(
 			PSM_DB_PREFIX . 'config',
 			null,
@@ -105,53 +100,56 @@ class Config extends Core {
 	 * and save it to the database
 	 */
 	protected function executeSave() {
-		// save new config
-		$clean = array(
-			'language' => $_POST['language'],
-			'show_update' => (isset($_POST['show_update'])) ? '1' : '0',
-			'email_status' => (isset($_POST['email_status'])) ? '1' : '0',
-			'email_from_name' => $_POST['email_from_name'],
-			'email_from_email' => $_POST['email_from_email'],
-			'sms_status' => (isset($_POST['sms_status'])) ? '1' : '0',
-			'sms_gateway' => $_POST['sms_gateway'],
-			'sms_gateway_username' => $_POST['sms_gateway_username'],
-			'sms_gateway_password' => $_POST['sms_gateway_password'],
-			'sms_from' => $_POST['sms_from'],
-			'alert_type' => $_POST['alert_type'],
-			'log_status' => (isset($_POST['log_status'])) ? '1' : '0',
-			'log_email' => (isset($_POST['log_email'])) ? '1' : '0',
-			'log_sms' => (isset($_POST['log_sms'])) ? '1' : '0',
-			'auto_refresh_servers' => (isset($_POST['auto_refresh_servers'])) ? intval($_POST['auto_refresh_servers']) : '0',
-		);
+		if(!empty($_POST)) {
+			// save new config
+			$clean = array(
+				'language' => $_POST['language'],
+				'show_update' => (isset($_POST['show_update'])) ? '1' : '0',
+				'email_status' => (isset($_POST['email_status'])) ? '1' : '0',
+				'email_from_name' => $_POST['email_from_name'],
+				'email_from_email' => $_POST['email_from_email'],
+				'sms_status' => (isset($_POST['sms_status'])) ? '1' : '0',
+				'sms_gateway' => $_POST['sms_gateway'],
+				'sms_gateway_username' => $_POST['sms_gateway_username'],
+				'sms_gateway_password' => $_POST['sms_gateway_password'],
+				'sms_from' => $_POST['sms_from'],
+				'alert_type' => $_POST['alert_type'],
+				'log_status' => (isset($_POST['log_status'])) ? '1' : '0',
+				'log_email' => (isset($_POST['log_email'])) ? '1' : '0',
+				'log_sms' => (isset($_POST['log_sms'])) ? '1' : '0',
+				'auto_refresh_servers' => (isset($_POST['auto_refresh_servers'])) ? intval($_POST['auto_refresh_servers']) : '0',
+			);
 
-		// save all values to the database
-		foreach($clean as $key => $value) {
-			// check if key already exists, otherwise add it
-			if(psm_get_conf($key) === null) {
-				// not yet set, add it
-				$this->db->save(
-					PSM_DB_PREFIX . 'config',
-					array(
-						'key' => $key,
-						'value' => $value,
-					)
-				);
-			} else {
-				// update
-				$this->db->save(
-					PSM_DB_PREFIX . 'config',
-					array('value' => $value),
-					array('key' => $key)
-				);
+			// save all values to the database
+			foreach($clean as $key => $value) {
+				// check if key already exists, otherwise add it
+				if(psm_get_conf($key) === null) {
+					// not yet set, add it
+					$this->db->save(
+						PSM_DB_PREFIX . 'config',
+						array(
+							'key' => $key,
+							'value' => $value,
+						)
+					);
+				} else {
+					// update
+					$this->db->save(
+						PSM_DB_PREFIX . 'config',
+						array('value' => $value),
+						array('key' => $key)
+					);
+				}
+			}
+
+			$this->addMessage(psm_get_lang('config', 'updated'));
+
+			if($clean['language'] != psm_get_conf('language')) {
+				header('Location: ' . $_SERVER['REQUEST_URI']);
+				die();
 			}
 		}
-
-		$this->message = psm_get_lang('config', 'updated');
-
-		if($clean['language'] != psm_get_conf('language')) {
-			header('Location: ' . $_SERVER['REQUEST_URI']);
-			die();
-		}
+		$this->initializeAction('index');
 	}
 
 	// override parent::createHTMLLabels()

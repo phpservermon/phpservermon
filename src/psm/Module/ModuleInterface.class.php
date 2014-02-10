@@ -23,18 +23,24 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://phpservermon.neanderthal-technology.com/
+ * @since		phpservermon 2.1
  **/
 
-define('PSM_CONFIG', true);
-// Prefix used for tables
-define('PSM_DB_PREFIX', 'monitor_');
-// Database username
-define('PSM_DB_USER', 'db_user');
-// Database password
-define('PSM_DB_PASS', 'db_pass');
-// Database name
-define('PSM_DB_NAME', 'db_name');
-// Database host
-define('PSM_DB_HOST', 'localhost');
+namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
+
+/**
+ * Public API for all modules
+ */
+interface ModuleInterface {
+
+	public function __construct(Database $db, Template $tpl);
+
+	/**
+	 * Initialize the module
+	 */
+	public function initialize();
+}
 
 ?>

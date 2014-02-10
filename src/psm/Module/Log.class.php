@@ -26,27 +26,24 @@
  **/
 
 namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
 /**
  * Log module. Create the page to view previous log messages
  */
-class Log extends Core {
+class Log extends AbstractModule {
 
-	function __construct() {
-		parent::__construct();
-	}
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
 
-	// override parent::createHTML()
-	public function createHTML() {
-		$this->createHTMLList();
-
-		return parent::createHTML();
+		$this->setActions('index', 'index');
 	}
 
 	/**
 	 * Prepare the template with a list of all log entries
 	 */
-	protected function createHTMLList() {
+	protected function executeIndex() {
 		$this->setTemplateId('log_list', 'log.tpl.html');
 
 		$entries = array();
@@ -97,7 +94,6 @@ class Log extends Core {
 				)
 			);
 		}
-
 	}
 
 	/**
