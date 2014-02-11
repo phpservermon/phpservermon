@@ -187,6 +187,7 @@ class Config extends AbstractModule {
 				'label_log_email' => psm_get_lang('config', 'log_email'),
 				'label_log_sms' => psm_get_lang('config', 'log_sms'),
 				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
+				'label_save' => psm_get_lang('system', 'save'),
 			)
 		);
 

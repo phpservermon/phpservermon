@@ -1,8 +1,16 @@
 <!--%tpl_config-->
 {config_update}
 <div class="span12">
-    <form class="form-horizontal well" action="index.php?type=config&action=save" id="edit_config" method="post">
-        <fieldset>
+	<form class="form-horizontal well" action="index.php?type=config&action=save" id="edit_config" method="post">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#config-general" data-toggle="tab">{label_general}</a></li>
+      <li><a href="#config-email" data-toggle="tab">{label_settings_email}</a></li>
+      <li><a href="#config-sms" data-toggle="tab">{label_settings_sms}</a></li>
+      <li><a href="#config-logging" data-toggle="tab">{label_settings_log}</a></li>
+    </ul>
+	<div class="tab-content">
+	  <div id="config-general" class="tab-pane active">
+          <fieldset>
             <legend>{label_general}</legend>
             <div class="control-group">
                 <label class="control-label" for="language">{label_language}</label>
@@ -27,6 +35,27 @@
                     <input type="text" name="auto_refresh_servers" value="{auto_refresh_servers}" maxlength="10" />&nbsp;seconds
                 </div>
             </div>
+            <legend>{label_settings_notification}</legend>
+            <div class="control-group">
+                <label class="control-label" for="alert_type">{label_alert_type}</label>
+                <div class="controls">
+                    <select name="alert_type">
+                        <option value="status" {alert_type_selected_status}>{label_alert_type_status}</option>
+                        <option value="offline" {alert_type_selected_offline}>{label_alert_type_offline}</option>
+                        <option value="always" {alert_type_selected_always}>{label_alert_type_always}</option>
+                      </select>
+                      <p class="help-block">
+                        {label_alert_type_description}
+                      </p>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit">{label_save}</button>
+            </div>
+		  </fieldset>
+	  </div>
+	  <div id="config-email" class="tab-pane">
+		<fieldset>
             <legend>{label_settings_email}</legend>
             <div class="control-group">
                 <label class="control-label" for="email_status">{label_email_status}</label>
@@ -46,7 +75,14 @@
                     <input type="text" name="email_from_email" value="{email_from_email}" maxlength="255" />
                 </div>
             </div>
-            <legend>{label_settings_sms}</legend>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit">{label_save}</button>
+            </div>
+        </fieldset>
+	  </div>
+	  <div id="config-sms" class="tab-pane">
+		<fieldset>
+          <legend>{label_settings_sms}</legend>
             <div class="control-group">
                 <label class="control-label" for="sms_status">{label_sms_status}</label>
                 <div class="controls">
@@ -84,20 +120,13 @@
                     <input type="text" name="sms_from" value="{sms_from}" maxlength="255" />
                 </div>
             </div>
-            <legend>{label_settings_notification}</legend>
-            <div class="control-group">
-                <label class="control-label" for="alert_type">{label_alert_type}</label>
-                <div class="controls">
-                    <select name="alert_type">
-                        <option value="status" {alert_type_selected_status}>{label_alert_type_status}</option>
-                        <option value="offline" {alert_type_selected_offline}>{label_alert_type_offline}</option>
-                        <option value="always" {alert_type_selected_always}>{label_alert_type_always}</option>
-                      </select>
-                      <p class="help-block">
-                        {label_alert_type_description}
-                      </p>
-                </div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit">{label_save}</button>
             </div>
+		</fieldset>
+		</div>
+		<div id="config-logging" class="tab-pane">
+		  <fieldset>
             <legend>{label_settings_log}</legend>
             <div class="control-group">
                 <label class="control-label" for="log_status">{label_log_status}</label>
@@ -118,9 +147,11 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-success" type="submit">Save</button>
+                <button class="btn btn-success" type="submit">{label_save}</button>
             </div>
-        </fieldset>
+		  </fieldset>
+		</div>
+	</div>
       </form>
 </div>
 <!--%%tpl_config-->
