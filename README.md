@@ -170,15 +170,7 @@ The second part is the actual message. There are a few variables you can use in 
 
 ## CREDITS
 
- * Bugfixes & features - Perri Vardy-Mason
- * PHP Mailer - Brent R. Matzelle
- * German translation - Brunbaur Herbert
- * French translation - David Ribeiro
- * Korean translation - Ik-Jun
- * Brazilian translation - Luiz Alberto S. Ribeiro
- * Bootstrap implementation - Luiz Alberto S. Ribeiro
- * Mosms implementation - Andreas Ek
- * Status page - Michael Greenhill
+See CREDITS file.
 
 ## License
 
