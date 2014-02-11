@@ -15,7 +15,7 @@
             <div class="control-group">
                 <label class="control-label" for="language">{label_language}</label>
                 <div class="controls">
-                    <select name="language">
+                    <select id="language" name="language">
 						<!--%tpl_repeat_languages-->
                         <option value="{value}" {selected}>{label}</option>
 						<!--%%tpl_repeat_languages-->
@@ -24,22 +24,22 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="auto_refresh_servers">{label_show_update}</label>
+                <label class="control-label" for="show_update">{label_show_update}</label>
                 <div class="controls">
-                    <input type="checkbox" name="show_update[]" {show_update_checked} />
+                    <input type="checkbox" id="show_update" name="show_update[]" {show_update_checked} />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="auto_refresh_servers">{label_auto_refresh_servers}</label>
                 <div class="controls">
-                    <input type="text" name="auto_refresh_servers" value="{auto_refresh_servers}" maxlength="10" />&nbsp;seconds
+                    <input type="text" id="auto_refresh_servers" name="auto_refresh_servers" value="{auto_refresh_servers}" maxlength="10" />&nbsp;seconds
                 </div>
             </div>
             <legend>{label_settings_notification}</legend>
             <div class="control-group">
                 <label class="control-label" for="alert_type">{label_alert_type}</label>
                 <div class="controls">
-                    <select name="alert_type">
+                    <select id="alert_type" name="alert_type">
                         <option value="status" {alert_type_selected_status}>{label_alert_type_status}</option>
                         <option value="offline" {alert_type_selected_offline}>{label_alert_type_offline}</option>
                         <option value="always" {alert_type_selected_always}>{label_alert_type_always}</option>
@@ -60,19 +60,19 @@
             <div class="control-group">
                 <label class="control-label" for="email_status">{label_email_status}</label>
                 <div class="controls">
-                    <input type="checkbox" name="email_status[]" {email_status_checked} />
+                    <input type="checkbox" id="email_status" name="email_status[]" {email_status_checked} />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="email_from_name">{label_email_from_name}</label>
                 <div class="controls">
-                    <input type="text" name="email_from_name" value="{email_from_name}" maxlength="255" />
+                    <input type="text" id="email_from_name" name="email_from_name" value="{email_from_name}" maxlength="255" />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="email_from_email">{label_email_from_email}</label>
                 <div class="controls">
-                    <input type="text" name="email_from_email" value="{email_from_email}" maxlength="255" />
+                    <input type="text" id="email_from_email" name="email_from_email" value="{email_from_email}" maxlength="255" />
                 </div>
             </div>
             <div class="form-actions">
@@ -86,13 +86,13 @@
             <div class="control-group">
                 <label class="control-label" for="sms_status">{label_sms_status}</label>
                 <div class="controls">
-                    <input type="checkbox" name="sms_status[]" {sms_status_checked} />
+                    <input type="checkbox" id="sms_status" name="sms_status[]" {sms_status_checked} />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="sms_gateway">{label_sms_gateway}</label>
                 <div class="controls">
-                    <select name="sms_gateway">
+                    <select id="sms_gateway" name="sms_gateway">
                         <option value="mosms" {sms_selected_mosms}>{label_sms_gateway_mosms}</option>
                         <option value="mollie" {sms_selected_mollie}>{label_sms_gateway_mollie}</option>
                         <option value="spryng" {sms_selected_spryng}>{label_sms_gateway_spryng}</option>
@@ -105,19 +105,19 @@
             <div class="control-group">
                 <label class="control-label" for="sms_gateway_username">{label_sms_gateway_username}</label>
                 <div class="controls">
-                    <input type="text" name="sms_gateway_username" value="{sms_gateway_username}" maxlength="255" />
+                    <input type="text" id="sms_gateway_username" name="sms_gateway_username" value="{sms_gateway_username}" maxlength="255" />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="sms_gateway_password">{label_sms_gateway_password}</label>
                 <div class="controls">
-                    <input type="password" name="sms_gateway_password" value="{sms_gateway_password}" maxlength="255" />
+                    <input type="password" id="sms_gateway_password" name="sms_gateway_password" value="{sms_gateway_password}" maxlength="255" />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="sms_from">{label_sms_from}</label>
                 <div class="controls">
-                    <input type="text" name="sms_from" value="{sms_from}" maxlength="255" />
+                    <input type="text" id="sms_from" name="sms_from" value="{sms_from}" maxlength="255" />
                 </div>
             </div>
             <div class="form-actions">
@@ -131,19 +131,19 @@
             <div class="control-group">
                 <label class="control-label" for="log_status">{label_log_status}</label>
                 <div class="controls">
-                    <input type="checkbox" name="log_status[]" {log_status_checked} />
+                    <input type="checkbox" id="log_status" name="log_status[]" {log_status_checked} />
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="log_status">{label_log_email}</label>
+                <label class="control-label" for="log_email">{label_log_email}</label>
                 <div class="controls">
-                    <input type="checkbox" name="log_email[]" {log_email_checked} />
+                    <input type="checkbox" id="log_email" name="log_email[]" {log_email_checked} />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="log_sms">{label_log_sms}</label>
                 <div class="controls">
-                    <input type="checkbox" name="log_sms[]" {log_sms_checked} />
+                    <input type="checkbox" id="log_sms" name="log_sms[]" {log_sms_checked} />
                 </div>
             </div>
             <div class="form-actions">
