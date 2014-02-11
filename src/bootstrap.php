@@ -80,7 +80,7 @@ foreach($includes as $file) {
 // init db connection
 $db = new psm\Service\Database();
 
-if($db->getLink() !== null) {
+if($db->status()) {
 
 	psm_load_conf();
 } else {

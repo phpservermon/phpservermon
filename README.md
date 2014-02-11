@@ -52,8 +52,8 @@ You can also clone the git repo at <http://github.com/phpservermon/phpservermon>
 ## REQUIREMENTS
 
  * PHP 5.3+
- * PHP packages: cURL, MySQL
- * MySQL Database
+ * PHP cURL package
+ * PHP PDO mysql driver
 
 
 ## INSTALL
