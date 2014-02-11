@@ -75,6 +75,31 @@
                     <input type="text" id="email_from_email" name="email_from_email" value="{email_from_email}" maxlength="255" />
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="email_smtp">{label_email_smtp}</label>
+                <div class="controls">
+                    <input type="checkbox" id="email_smtp" name="email_smtp[]" {email_smtp_checked} />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email_smtp_host">{label_email_smtp_host}</label>
+                <div class="controls">
+                    <input type="text" id="email_smtp_host" name="email_smtp_host" value="{email_smtp_host}" maxlength="100" placeholder="{label_email_smtp_host}" />
+                    <input type="text" class="input-small" id="email_smtp_port" name="email_smtp_port" value="{email_smtp_port}" maxlength="10" placeholder="{label_email_smtp_port}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email_smtp_username">{label_email_smtp_username}</label>
+                <div class="controls">
+                    <input type="text" id="email_smtp_username" name="email_smtp_username" value="{email_smtp_username}" maxlength="100" placeholder="{label_email_smtp_noauth}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email_smtp_password">{label_email_smtp_password}</label>
+                <div class="controls">
+                    <input type="password" id="email_smtp_password" name="email_smtp_password" value="{email_smtp_password}" maxlength="100" placeholder="{label_email_smtp_noauth}" />
+                </div>
+            </div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit">{label_save}</button>
             </div>

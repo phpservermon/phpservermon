@@ -260,10 +260,7 @@ class Status {
 		}
 
 		// build mail object with some default values
-		$mail = new \phpmailer();
-
-		$mail->From		= psm_get_conf('email_from_email');
-		$mail->FromName	= psm_get_conf('email_from_name');
+		$mail = psm_build_mail();
 		$mail->Subject	= psm_parse_msg($this->status_new, 'email_subject', $this->server);
 		$mail->Priority	= 1;
 

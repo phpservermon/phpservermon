@@ -267,6 +267,46 @@ function psm_check_updates() {
 	return false;
 }
 
+/**
+ * Prepare a new Mailer util.
+ *
+ * If the from name and email are left blank they will be prefilled from the config.
+ * @param string $from_name
+ * @param string $from_email
+ * @return \psm\Util\Mailer
+ */
+function psm_build_mail($from_name = null, $from_email = null) {
+	$phpmailer = new \psm\Util\Mailer();
+	$phpmailer->Encoding = "base64";
+	$phpmailer->SMTPDebug = false;
+
+	if(psm_get_conf('email_smtp') == '1') {
+		$phpmailer->IsSMTP();
+		$phpmailer->Host = psm_get_conf('email_smtp_host');
+		$phpmailer->Port = psm_get_conf('email_smtp_port');
+
+		$smtp_user = psm_get_conf('email_smtp_username');
+		$smtp_pass = psm_get_conf('email_smtp_password');
+
+		if($smtp_user != '' && $smtp_pass != '') {
+			$phpmailer->SMTPAuth = true;
+			$phpmailer->Username = $smtp_user;
+			$phpmailer->Password = $smtp_pass;
+		}
+	} else {
+		$phpmailer->IsMail();
+	}
+	if($from_name == null) {
+		$from_name = psm_get_conf('email_from_name');
+	}
+	if($from_email == null) {
+		$from_email = psm_get_conf('email_from_email');
+	}
+	$phpmailer->SetFrom($from_email, $from_name);
+
+	return $phpmailer;
+}
+
 ###############################################
 #
 # Debug functions

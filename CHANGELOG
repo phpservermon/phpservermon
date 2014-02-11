@@ -5,6 +5,8 @@
 #
 #########################
 - Switched from mysql_* to PDO.
+- Added SMTP support.
+- Updated PHPMailer package to v5.2.6.
 
 #########################
 #
