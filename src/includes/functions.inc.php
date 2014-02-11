@@ -197,15 +197,25 @@ function psm_parse_msg($status, $type, $vars) {
  * Shortcut to curl_init(), curl_exec and curl_close()
  *
  * @param string $href
+ * @param boolean $header return headers?
+ * @param boolean $body return body?
+ * @param int $timeout connection timeout in seconds
+ * @param boolean $add_agent add user agent?
  * @return string cURL result
  */
-function psm_curl_get($href) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_agent = true) {
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_HEADER, $header);
+	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt ($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_URL, $href);
+	if($add_agent) {
+		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
+	}
+
 	$result = curl_exec($ch);
 	curl_close($ch);
 

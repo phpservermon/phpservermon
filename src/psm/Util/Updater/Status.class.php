@@ -122,20 +122,13 @@ class Status {
 		$time = explode(' ', microtime());
 		$starttime = $time[1] + $time[0];
 
-		$ch = curl_init();
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_URL, $this->server['ip']);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt ($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
-
 		// We're only interested in the header, because that should tell us plenty!
 		// unless we have a pattern to search for!
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_NOBODY, ($this->server['pattern'] != '' ? false : true));
-
-		$curl_result = curl_exec ($ch);
-		curl_close ($ch);
+		$curl_result = psm_curl_get(
+			$this->server['ip'],
+			true,
+			($this->server['pattern'] == '' ? false : true)
+		);
 
 		$time = explode(" ", microtime());
 		$endtime = $time[1] + $time[0];
