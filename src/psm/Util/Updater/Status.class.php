@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 namespace psm\Util\Updater;
@@ -122,20 +122,13 @@ class Status {
 		$time = explode(' ', microtime());
 		$starttime = $time[1] + $time[0];
 
-		$ch = curl_init();
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_URL, $this->server['ip']);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt ($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
-
 		// We're only interested in the header, because that should tell us plenty!
 		// unless we have a pattern to search for!
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_NOBODY, ($this->server['pattern'] != '' ? false : true));
-
-		$curl_result = curl_exec ($ch);
-		curl_close ($ch);
+		$curl_result = psm_curl_get(
+			$this->server['ip'],
+			true,
+			($this->server['pattern'] == '' ? false : true)
+		);
 
 		$time = explode(" ", microtime());
 		$endtime = $time[1] + $time[0];
@@ -260,10 +253,7 @@ class Status {
 		}
 
 		// build mail object with some default values
-		$mail = new \phpmailer();
-
-		$mail->From		= psm_get_conf('email_from_email');
-		$mail->FromName	= psm_get_conf('email_from_name');
+		$mail = psm_build_mail();
 		$mail->Subject	= psm_parse_msg($this->status_new, 'email_subject', $this->server);
 		$mail->Priority	= 1;
 

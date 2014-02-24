@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 2.1
  **/
 
@@ -96,6 +96,12 @@ $sm_lang = array(
 		'email_status' => '메일전송 허용',
 		'email_from_email' => 'Email 주소',
 		'email_from_name' => 'Email 사용자',
+		'email_smtp' => 'Enable SMTP',
+		'email_smtp_host' => 'SMTP host',
+		'email_smtp_port' => 'SMTP port',
+		'email_smtp_username' => 'SMTP username',
+		'email_smtp_password' => 'SMTP password',
+		'email_smtp_noauth' => 'Leave blank for no authentication',
 		'sms_status' => 'SMS전송 허용',
 		'sms_gateway' => '메세지 전송을 위한 게이트웨이 허용',
 		'sms_gateway_mosms' => 'Mosms',

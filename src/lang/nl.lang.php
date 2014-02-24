@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
@@ -95,6 +95,12 @@ $sm_lang = array(
 		'email_status' => 'Sta email berichten toe?',
 		'email_from_email' => 'Email van adres',
 		'email_from_name' => 'Email van naam',
+		'email_smtp' => 'SMTP gebruiken',
+		'email_smtp_host' => 'SMTP host',
+		'email_smtp_port' => 'SMTP poort',
+		'email_smtp_username' => 'SMTP gebruikersnaam',
+		'email_smtp_password' => 'SMTP wachtwoord',
+		'email_smtp_noauth' => 'Laat leeg voor geen authenticatie',
 		'sms_status' => 'Sta SMS berichten toe?',
 		'sms_gateway' => 'Gateway voor het sturen van SMS',
 		'sms_gateway_mosms' => 'Mosms',

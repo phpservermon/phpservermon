@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 ###############################################
@@ -197,15 +197,25 @@ function psm_parse_msg($status, $type, $vars) {
  * Shortcut to curl_init(), curl_exec and curl_close()
  *
  * @param string $href
+ * @param boolean $header return headers?
+ * @param boolean $body return body?
+ * @param int $timeout connection timeout in seconds
+ * @param boolean $add_agent add user agent?
  * @return string cURL result
  */
-function psm_curl_get($href) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_agent = true) {
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_HEADER, $header);
+	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt ($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_URL, $href);
+	if($add_agent) {
+		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
+	}
+
 	$result = curl_exec($ch);
 	curl_close($ch);
 
@@ -259,12 +269,52 @@ function psm_check_updates() {
 		// been more than a week since update, lets go
 		// update "update-date"
 		$db->save(PSM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
-		$latest = psm_curl_get('http://phpservermon.neanderthal-technology.com/version.php');
+		$latest = psm_curl_get('http://www.phpservermonitor.org/version.php');
 		$current = psm_get_conf('version');
 
 		return version_compare($latest, $current, '>');
 	}
 	return false;
+}
+
+/**
+ * Prepare a new Mailer util.
+ *
+ * If the from name and email are left blank they will be prefilled from the config.
+ * @param string $from_name
+ * @param string $from_email
+ * @return \psm\Util\Mailer
+ */
+function psm_build_mail($from_name = null, $from_email = null) {
+	$phpmailer = new \psm\Util\Mailer();
+	$phpmailer->Encoding = "base64";
+	$phpmailer->SMTPDebug = false;
+
+	if(psm_get_conf('email_smtp') == '1') {
+		$phpmailer->IsSMTP();
+		$phpmailer->Host = psm_get_conf('email_smtp_host');
+		$phpmailer->Port = psm_get_conf('email_smtp_port');
+
+		$smtp_user = psm_get_conf('email_smtp_username');
+		$smtp_pass = psm_get_conf('email_smtp_password');
+
+		if($smtp_user != '' && $smtp_pass != '') {
+			$phpmailer->SMTPAuth = true;
+			$phpmailer->Username = $smtp_user;
+			$phpmailer->Password = $smtp_pass;
+		}
+	} else {
+		$phpmailer->IsMail();
+	}
+	if($from_name == null) {
+		$from_name = psm_get_conf('email_from_name');
+	}
+	if($from_email == null) {
+		$from_email = psm_get_conf('email_from_email');
+	}
+	$phpmailer->SetFrom($from_email, $from_name);
+
+	return $phpmailer;
 }
 
 ###############################################

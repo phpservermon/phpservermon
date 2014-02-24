@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 namespace psm\Module;
@@ -30,6 +30,36 @@ use psm\Service\Database;
 use psm\Service\Template;
 
 class Config extends AbstractModule {
+
+	/**
+	 * Checkboxes
+	 * @var array $checkboxes
+	 */
+	protected $checkboxes = array(
+		'email_status',
+		'email_smtp',
+		'sms_status',
+		'log_status',
+		'log_email',
+		'log_sms',
+		'show_update',
+	);
+
+	/**
+	 * Fields for saving
+	 * @var array $fields
+	 */
+	protected $fields = array(
+		'email_from_name',
+		'email_from_email',
+		'email_smtp_host',
+		'email_smtp_port',
+		'email_smtp_username',
+		'email_smtp_password',
+		'sms_gateway_username',
+		'sms_gateway_password',
+		'sms_from',
+	);
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -74,25 +104,23 @@ class Config extends AbstractModule {
 		}
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'languages', $languages);
 
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'email_status_checked' => ($config['email_status'] == '1') ? 'checked="checked"' : '',
-				'email_from_name' => $config['email_from_name'],
-				'email_from_email' => $config['email_from_email'],
-				'sms_status_checked' => ($config['sms_status'] == '1') ? 'checked="checked"' : '',
-				'sms_selected_' . $config['sms_gateway'] => 'selected="selected"',
-				'sms_gateway_username' => $config['sms_gateway_username'],
-				'sms_gateway_password' => $config['sms_gateway_password'],
-				'sms_from' => $config['sms_from'],
-				'alert_type_selected_' . $config['alert_type'] => 'selected="selected"',
-				'log_status_checked' => ($config['log_status'] == '1') ? 'checked="checked"' : '',
-				'log_email_checked' => ($config['log_email'] == '1') ? 'checked="checked"' : '',
-				'log_sms_checked' => ($config['log_sms'] == '1') ? 'checked="checked"' : '',
-				'show_update_checked' => ($config['show_update'] == '1') ? 'checked="checked"' : '',
-				'auto_refresh_servers' => (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0',
-			)
+		$tpl_data = array(
+			'sms_selected_' . $config['sms_gateway'] => 'selected="selected"',
+			'alert_type_selected_' . $config['alert_type'] => 'selected="selected"',
+			'auto_refresh_servers' => (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0',
 		);
+
+		foreach($this->checkboxes as $input_key) {
+			$tpl_data[$input_key . '_checked'] =
+				(isset($config[$input_key]) && (int) $config[$input_key] == 1)
+				? 'checked="checked"'
+				: '';
+		}
+		foreach($this->fields as $input_key) {
+			$tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
+		}
+
+		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
 	/**
@@ -104,21 +132,18 @@ class Config extends AbstractModule {
 			// save new config
 			$clean = array(
 				'language' => $_POST['language'],
-				'show_update' => (isset($_POST['show_update'])) ? '1' : '0',
-				'email_status' => (isset($_POST['email_status'])) ? '1' : '0',
-				'email_from_name' => $_POST['email_from_name'],
-				'email_from_email' => $_POST['email_from_email'],
-				'sms_status' => (isset($_POST['sms_status'])) ? '1' : '0',
 				'sms_gateway' => $_POST['sms_gateway'],
-				'sms_gateway_username' => $_POST['sms_gateway_username'],
-				'sms_gateway_password' => $_POST['sms_gateway_password'],
-				'sms_from' => $_POST['sms_from'],
 				'alert_type' => $_POST['alert_type'],
-				'log_status' => (isset($_POST['log_status'])) ? '1' : '0',
-				'log_email' => (isset($_POST['log_email'])) ? '1' : '0',
-				'log_sms' => (isset($_POST['log_sms'])) ? '1' : '0',
 				'auto_refresh_servers' => (isset($_POST['auto_refresh_servers'])) ? intval($_POST['auto_refresh_servers']) : '0',
 			);
+			foreach($this->checkboxes as $input_key) {
+				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
+			}
+			foreach($this->fields as $input_key) {
+				if(isset($_POST[$input_key])) {
+					$clean[$input_key] = $_POST[$input_key];
+				}
+			}
 
 			// save all values to the database
 			foreach($clean as $key => $value) {
@@ -167,6 +192,12 @@ class Config extends AbstractModule {
 				'label_email_status' => psm_get_lang('config', 'email_status'),
 				'label_email_from_email' => psm_get_lang('config', 'email_from_email'),
 				'label_email_from_name' => psm_get_lang('config', 'email_from_name'),
+				'label_email_smtp' => psm_get_lang('config', 'email_smtp'),
+				'label_email_smtp_host' => psm_get_lang('config', 'email_smtp_host'),
+				'label_email_smtp_port' => psm_get_lang('config', 'email_smtp_port'),
+				'label_email_smtp_username' => psm_get_lang('config', 'email_smtp_username'),
+				'label_email_smtp_password' => psm_get_lang('config', 'email_smtp_password'),
+				'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
 				'label_sms_status' => psm_get_lang('config', 'sms_status'),
 				'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
 				'label_sms_gateway_mosms' => psm_get_lang('config', 'sms_gateway_mosms'),
@@ -187,6 +218,7 @@ class Config extends AbstractModule {
 				'label_log_email' => psm_get_lang('config', 'log_email'),
 				'label_log_sms' => psm_get_lang('config', 'log_sms'),
 				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
+				'label_save' => psm_get_lang('system', 'save'),
 			)
 		);
 

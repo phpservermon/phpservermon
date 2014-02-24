@@ -23,24 +23,35 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 2.1
+ * @since       phpservermon 2.2.0
  **/
 
-namespace psm\Module;
-use psm\Service\Database;
-use psm\Service\Template;
+namespace psm\Util;
 
 /**
- * Public API for all modules
+ * PHPMailer is not using namespaces so unable to load files in autoloader.
  */
-interface ModuleInterface {
+require_once(PSM_PATH_VENDOR . '/PHPMailer/class.phpmailer.php');
+require_once(PSM_PATH_VENDOR . '/PHPMailer/class.smtp.php');
 
-	public function __construct(Database $db, Template $tpl);
+/**
+ * PSM Mailer utility
+ *
+ * The PHPMailer is an open source lib that can be found in vendor/PHPMailer.
+ *
+ * @see \PHPMailer
+ */
+class Mailer extends \PHPMailer {
 
 	/**
-	 * Initialize the module
+	 * Open new PHPMailer
+	 *
+	 * @param boolean $exceptions
 	 */
-	public function initialize();
+	function __construct($exceptions = false) {
+		parent::__construct($exceptions);
+
+	}
 }
 
 ?>

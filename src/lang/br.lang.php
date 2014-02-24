@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
@@ -95,6 +95,12 @@ $sm_lang = array(
         'email_status' => 'Habilitar envio de email?',
         'email_from_email' => 'Endereço do envio de email',
         'email_from_name' => 'Nome do envio de email',
+		'email_smtp' => 'Enable SMTP',
+		'email_smtp_host' => 'SMTP host',
+		'email_smtp_port' => 'SMTP port',
+		'email_smtp_username' => 'SMTP username',
+		'email_smtp_password' => 'SMTP password',
+		'email_smtp_noauth' => 'Leave blank for no authentication',
         'sms_status' => 'Habilitar o envio de mensagem de texto?',
         'sms_gateway' => 'Gateway para o uso de envio de mensagens',
         'sms_gateway_mosms' => 'Mosms',

@@ -22,123 +22,137 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  **/
 
 namespace psm\Service;
 
 class Database {
 
-	protected $debug = array();
-	protected $last_inserted_id;
-	protected $link;
-	protected $num_rows_found;
-	protected $num_rows_returned;
-
-	function __construct($host = null, $user = null, $pass = null, $db = null) {
-		if($host != null && $user != null && $pass != null && $db != null) {
-			$this->connect($host, $user, $pass, $db);
-		} elseif(defined('PSM_DB_HOST') && defined('PSM_DB_USER') && defined('PSM_DB_PASS') && defined('PSM_DB_NAME')) {
-			$this->connect(PSM_DB_HOST, PSM_DB_USER, PSM_DB_PASS, PSM_DB_NAME);
-		}
-	}
+	/**
+	 * DB hostname
+	 * @var string $db_host
+	 */
+	protected $db_host;
 
 	/**
-	 * Connect to the database
+	 * DB name
+	 * @var string $db_name
+	 */
+	protected $db_name;
+
+	/**
+	 * DB user password
+	 * @var string $db_pass
+	 */
+	protected $db_pass;
+
+	/**
+	 * DB username
+	 * @var string $db_user
+	 */
+	protected $db_user;
+
+	/**
+	 * PDOStatement of last query
+	 * @var \PDOStatement $last
+	 */
+	protected $last;
+
+	/**
+	 * Mysql db connection identifer
+	 * @var \PDO $pdo
+	 * @see pdo()
+	 */
+	protected $pdo;
+
+	/**
+	 * Connect status
+	 * @var boolean
+	 * @see connect()
+	 */
+	protected $status = false;
+
+	/**
+	 * Constructor
+	 *
 	 * @param string $host
+	 * @param string $db
 	 * @param string $user
 	 * @param string $pass
-	 * @param string $db
-	 * @return boolean
 	 */
-	protected function connect($host, $user, $pass, $db) {
-		$this->link = mysql_connect($host, $user, $pass);
-
-		if (!mysql_select_db($db, $this->link)) {
-			trigger_error(mysql_errno() . ": " . mysql_error());
-			return false;
+	function __construct($host = null, $user = null, $pass = null, $db = null) {
+		if($host != null && $user != null && $pass != null && $db != null) {
+			$this->db_host = $host;
+			$this->db_name = $db;
+			$this->db_user = $user;
+			$this->db_pass = $pass;
+			$this->connect();
+		} elseif(defined('PSM_DB_HOST') && defined('PSM_DB_USER') && defined('PSM_DB_PASS') && defined('PSM_DB_NAME')) {
+			$this->db_host = PSM_DB_HOST;
+			$this->db_name = PSM_DB_NAME;
+			$this->db_user = PSM_DB_USER;
+			$this->db_pass = PSM_DB_PASS;
+			$this->connect();
 		}
-
-		mysql_query("SET NAMES utf8;", $this->link);
-		mysql_query("SET CHARACTER SET 'utf8';", $this->link);
-		return true;
 	}
 
 	/**
-	 * Executes a query
+	 * Exectues query and fetches result.
 	 *
-	 * @param $sql string MySQL query
-	 * @return resource mysql resource
+	 * If you dont want to fetch a result, use exec().
+	 * @param string $query SQL query
+	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
+	 * @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
 	 */
-
-	public function executeQuery($sql) {
-
-		$result = mysql_query($sql, $this->getLink());
-
-		if (mysql_error($this->getLink())) {
-			trigger_error(mysql_errno($this->getLink()) . ': ' . mysql_error($this->getLink()));
-			return false;
-		}
-
-		if (is_resource($result) && mysql_num_rows($result) > 0) {
-			// Rows returned
-			$this->num_rows_returned = mysql_num_rows($result);
-
-			// Rows found
-			$result_num_rows_found = $this->fetchResults(mysql_query('SELECT FOUND_ROWS();'));
-			$this->num_rows_found = $result_num_rows_found[0]['FOUND_ROWS()'];
-		}
-
-		if (substr(strtolower(trim($sql)), 0, 6) == 'insert') {
-			// we have an insert
-			$this->last_inserted_id = mysql_insert_id($this->getLink());
-			$result = $this->last_inserted_id;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Exectues query and fetches result
-	 *
-	 * @param $query string MySQL query
-	 * @return $result array
-	 */
-	public function query($query) {
-
+	public function query($query, $fetch = true) {
 		// Execute query and process results
-		$result_resource = $this->executeQuery($query);
-		$result = $this->fetchResults($result_resource);
+		try {
+			$this->last = $this->pdo()->query($query);
+		} catch (\PDOException $e) {
+			$this->error($e);
+		}
 
+		if($fetch && $this->last != false) {
+			$cmd = strtolower(substr($query, 0, 6));
+
+			switch($cmd) {
+				case 'insert':
+					// insert query, return insert id
+					$result = $this->getLastInsertedId();
+					break;
+				case 'update':
+				case 'delete':
+					// update/delete, returns rowCount
+					$result = $this->getNumRows();
+					break;
+				default:
+					$result = $this->last->fetchAll(\PDO::FETCH_ASSOC);
+					break;
+			}
+		} else {
+			$result = $this->last;
+		}
 		return $result;
 	}
 
 	/**
-	 * Fetch results from a query
-	 *
-	 * @param resource $result result from a mysql query
-	 * @return array $array with results (multi-dimimensial) for more than one rows
+	 * Execute SQL statement and return number of affected rows
+	 * @param string $query
+	 * @return int
 	 */
-
-	public function fetchResults($result_query){
-
-		if (!is_resource($result_query)) {
-			return array();
+	public function exec($query) {
+		try {
+			$this->last = $this->pdo()->exec($query);
+		} catch (\PDOException $e) {
+			$this->error($e);
 		}
 
-		$num_rows = mysql_num_rows($result_query);
-
-		$result = array();
-		while($record = mysql_fetch_assoc($result_query)) {
-			$result[] = $record;
-		}
-
-		return $result;
+		return $this->last;
 	}
 
 	/**
 	 * Performs a select on the given table and returns an multi dimensional associative array with results
-	 *
 	 * @param string $table tablename
 	 * @param mixed $where string or array with where data
 	 * @param array $fields array with fields to be retrieved. if empty all fields will be retrieved
@@ -147,7 +161,6 @@ class Database {
 	 * @param string $direction ASC or DESC. Defaults to ASC
 	 * @return array multi dimensional array with results
 	 */
-
 	public function select($table, $where = null, $fields = null, $limit = '', $orderby = null, $direction = 'ASC'){
 		// build query
 		$query_parts = array();
@@ -164,16 +177,11 @@ class Database {
 		$query_parts[] = "FROM `{$table}`";
 
 		// Where clause
-		$query_parts[] = $this->buildWhereClause($table, $where);
+		$query_parts[] = $this->buildSQLClauseWhere($table, $where);
 
 		// Order by
-		if ($orderby !== null && !empty($orderby)) {
-			$orderby_clause = 'ORDER BY ';
-
-			foreach($orderby as $field) {
-				$orderby_clause .= "`{$field}`, ";
-			}
-			$query_parts[] = substr($orderby_clause, 0, -2) . ' ' . $direction;
+		if($orderby) {
+			$query_parts[] = $this->buildSQLClauseOrderBy($orderby, $direction);
 		}
 
 		// Limit
@@ -183,203 +191,307 @@ class Database {
 
 		$query = implode(' ', $query_parts);
 
-		// Get results
-		$result = $this->query($query);
-
-		return $result;
+		return $this->query($query);
 	}
 
-	public function selectRow($table, $where = null, $fields = null, $limit = '', $orderby = null, $direction = 'ASC') {
-		$result = $this->select($table, $where, $fields, $limit, $orderby, $direction);
+	/**
+	 * Alias to select() but uses limit = 1 to return only one row.
+	 * @param string $table tablename
+	 * @param mixed $where string or array with where data
+	 * @param array $fields array with fields to be retrieved. if empty all fields will be retrieved
+	 * @param array $orderby fields for the orderby clause
+	 * @param string $direction ASC or DESC. Defaults to ASC
+	 * @return array
+	 */
+	public function selectRow($table, $where = null, $fields = null, $orderby = null, $direction = 'ASC') {
+		$result = $this->select($table, $where, $fields, '1', $orderby, $direction);
 
-		if ($this->getNumRowsReturned() == '1') {
+		if(isset($result[0])) {
 			$result = $result[0];
 		}
+
 		return $result;
 	}
 
 	/**
 	 * Remove a record from database
-	 *
 	 * @param string $table tablename
 	 * @param mixed $where Where clause array or primary Id (string) or where clause (string)
-	 * @return boolean
+	 * @return int number of affected rows
 	 */
 	public function delete($table, $where = null){
+		$sql = 'DELETE FROM `'.$table.'` ' . $this->buildSQLClauseWhere($table, $where);
 
-		if ($table != '') {
-
-			$sql = 'DELETE FROM `'.$table.'` ' . $this->buildWhereClause($table, $where);
-
-			$this->query($sql);
-		}
+		return $this->exec($sql);
 	}
 
 	/**
 	 * Insert or update data to the database
-	 *
-	 * @param array $table table name
+	 * @param string $table table name
 	 * @param array $data data to save or insert
 	 * @param mixed $where either string ('user_id=2' or just '2' (works only with primary field)) or array with where clause (only when updating)
 	 */
-	public function save($table, $data, $where = null) {
-
+	public function save($table, array $data, $where = null) {
 		if ($where === null) {
 			// insert mode
 			$query = "INSERT INTO ";
+			$exec = false;
 		} else {
 			$query = "UPDATE ";
+			$exec = true;
 		}
 
 		$query .= "`{$table}` SET ";
 
 		foreach($data as $field => $value) {
-			$value = $this->escapeValue($value);
-			$query .= "`{$table}`.`{$field}`='{$value}', ";
+			if(is_null($value)) {
+				$value = 'NULL';
+			} else {
+				$value = $this->quote($value);
+			}
+			$query .= "`{$table}`.`{$field}`={$value}, ";
 		}
 
-		$query = substr($query, 0, -2) . ' ' . $this->buildWhereClause($table, $where);
+		$query = substr($query, 0, -2) . ' ' . $this->buildSQLClauseWhere($table, $where);
 
-		return $this->query($query);
+		if($exec) {
+			return $this->exec($query);
+		} else {
+			return $this->query($query);
+		}
+	}
+
+	/**
+	 * Insert multiple rows into a single table
+	 *
+	 * This method is preferred  over calling the insert() lots of times
+	 * so it can be optimized to be inserted with 1 query.
+	 * It can only be used if all inserts have the same fields, records
+	 * that do not match the fields provided in the first record will be
+	 * skipped.
+	 *
+	 * @param type $table
+	 * @param array $data
+	 * @return \PDOStatement
+	 * @see insert()
+	 */
+	public function insertMultiple($table, array $data) {
+		if(empty($data)) return false;
+
+		// prepare first part
+		$query = "INSERT INTO `{$table}` ";
+		$fields = array_keys($data[0]);
+		$query .= "(`".implode('`,`', $fields)."`) VALUES ";
+
+		// prepare all rows to be inserted with placeholders for vars (\?)
+		$q_part = array_fill(0, count($fields), '?');
+		$q_part = "(".implode(',', $q_part).")";
+
+		$q_part = array_fill(0, count($data), $q_part);
+		$query .= implode(',', $q_part);
+
+		$pst = $this->pdo()->prepare($query);
+
+		$i = 1;
+		foreach($data as $row) {
+			// make sure the fields of this row are identical to first row
+			$diff_keys = array_diff_key($fields, array_keys($row));
+
+			if(!empty($diff_keys)) {
+				continue;
+			}
+			foreach($fields as $field) {
+				$pst->bindParam($i++, $row[$field]);
+			}
+		}
+
+		try {
+			$this->last = $pst->execute();
+		} catch (\PDOException $e) {
+			$this->error($e);
+		}
+		return $this->last;
+	}
+
+	/**
+	 * Quote a string
+	 * @param string $value
+	 * @return string
+	 */
+	public function quote($value) {
+		return $this->pdo()->quote($value);
+	}
+
+	/**
+	 * Get the PDO object
+	 * @return \PDO
+	 */
+	public function pdo() {
+		return $this->pdo;
+	}
+
+	/**
+	 * Get number of rows of last statement
+	 * @return int number of rows
+	 */
+	public function getNumRows() {
+		return $this->last->rowCount();
+	}
+
+	/**
+	 * Get the last inserted id after an insert
+	 * @return int
+	 */
+	public function getLastInsertedId() {
+		return $this->pdo()->lastInsertId();
 	}
 
 	/**
 	 * Build WHERE clause for query
-	 *
 	 * @param string $table table name
 	 * @param mixed $where can be primary id (eg '2'), can be string (eg 'name=pepe') or can be array
 	 * @return string sql where clause
+	 * @see buildSQLClauseOrderBy()
 	 */
-	public function buildWhereClause($table, $where = null) {
+	public function buildSQLClauseWhere($table, $where = null) {
 
 		$query = '';
 
-                if ($where !== null) {
-                        if (is_array($where)) {
-                                $query .= " WHERE ";
+		if ($where !== null) {
+			if (is_array($where)) {
+				$query .= " WHERE ";
 
-                                foreach($where as $field => $value) {
-                                	$value = $this->escapeValue($value);
-									$query .= "`{$table}`.`{$field}`='{$value}' AND ";
-                                }
-                                $query = substr($query, 0, -5);
-                        } else {
-                            if (strpos($where, '=') === false) {
-                            	// no field given, use primary field
-                                $structure = $this->getTableStructure($table);
-                                $where = $this->escapeValue($where);
-                                $query .= " WHERE `{$table}`.`{$structure['primary']}`='{$where}'";
-                            } elseif (strpos(strtolower(trim($where)), 'where') === false) {
-                            	$query .= " WHERE {$where}";
-                            } else {
-                            	$query .= ' '.$where;
-                            }
-                        }
-                }
+				foreach($where as $field => $value) {
+					$query .= "`{$table}`.`{$field}`={$this->quote($value)} AND ";
+				}
+				$query = substr($query, 0, -5);
+			} else {
+				if (strpos($where, '=') === false) {
+					// no field given, use primary field
+					$primary = $this->getPrimary($table);
+					$query .= " WHERE `{$table}`.`{$primary}`={$this->quote($where)}";
+				} elseif (strpos(strtolower(trim($where)), 'where') === false) {
+					$query .= " WHERE {$where}";
+				} else {
+					$query .= ' '.$where;
+				}
+			}
+		}
 		return $query;
 	}
 
 	/**
-	 * Get table structure and primary key
-	 *
-	 * @param string $table table name
-	 * @return array primary key and database structure
-	 */
-	public function getTableStructure($table) {
-		if ($table == '') return false;
+	* Build ORDER BY clause for a query
+	* @param mixed $order_by can be string (with or without order by) or array
+	* @param string $direction
+	* @return string sql order by clause
+	 * @see buildSQLClauseWhere()
+	*/
+	public function buildSQLClauseOrderBy($order_by, $direction) {
+		$query = '';
 
-		$structure = $this->query("DESCRIBE `{$table}`");
+		if ($order_by !== null) {
+			if (is_array($order_by)) {
+				$query .= " ORDER BY ";
 
-		if (empty($structure)) return false;
-
-		// use arrray search function to get primary key
-		$search_needle = array(
-		        'key' => 'Key',
-		        'value' => 'PRI'
-		);
-		$primary = pep_array_search_key_value(
-		        $structure,
-		        array(
-		                'key' => 'Key',
-		                'value' => 'PRI'
-		        )
-		);
-
-		$primary_field = $structure[$primary[0]['path'][0]]['Field'];
-		return array(
-		        'primary' => $primary_field,
-		        'fields' => $structure
-		);
-	}
-
-	/**
-	 * Get information about a field from the database
-	 *
-	 * @param string $table
-	 * @param string $field
-	 * @return array mysql field information
-	 */
-	public function getFieldInfo($table, $field) {
-		if ($table == '' || $field == '') return array();
-
-		$db_structure = $this->getTableStructure($table);
-
-		$field_info = pep_array_search_key_value(
-			$db_structure,
-			array(
-				'key' => 'Field',
-				'value' => $field
-			)
-		);
-
-		if (empty($field_info)) {
-			return array();
+				foreach($order_by as $field) {
+					$query .= "`{$field}`, ";
+				}
+				// remove trailing ", "
+				$query = substr($query, 0, -2);
+			} else {
+				if (strpos(strtolower(trim($order_by)), 'order by') === false) {
+					$query .= " ORDER BY {$order_by}";
+				} else {
+					$query .= ' '.$order_by;
+				}
+			}
+		}
+		if(strlen($query) > 0) {
+			// check if "ASC" or "DESC" is already in the order by clause
+			if(strpos(strtolower(trim($query)), 'asc') === false && strpos(strtolower(trim($query)), 'desc') === false) {
+				$query .= ' '.$direction;
+			}
 		}
 
-		// return field info
-		return $field_info[0]['result'];
+		return $query;
 	}
 
 	/**
-	 * Formats the value for the SQL query to secure against injections
-	 *
-	 * @param string $value
+	 * Get the host of the current connection
 	 * @return string
 	 */
-	public function escapeValue($value) {
-		if(get_magic_quotes_gpc()) {
-			$value = stripslashes($value);
-		}
-		$value = mysql_real_escape_string($value, $this->link);
-
-		return $value;
+	public function getDbHost() {
+		return $this->db_host;
 	}
 
-    /**
-     * Get number of rows found
-     *
-     * @return int number of rows found
-     */
-    public function getNumRowsFound() {
-            return $this->num_rows_found;
-    }
-
-    /**
-     * Get number of rows returned
-     *
-     * @return int number of rows returned
-     */
-    public function getNumRowsReturned() {
-            return $this->num_rows_returned;
-    }
+	/**
+	 * Get the db name of the current connection
+	 * @return string
+	 */
+	public function getDbName() {
+		return $this->db_name;
+	}
 
 	/**
-	* Get the database connection identifier
-	*
-	* @return object db connection
-	*/
-	public function getLink() {
-		return $this->link;
+	 * Get the db user of the current connection
+	 * @return string
+	 */
+	public function getDbUser() {
+		return $this->db_user;
+	}
+
+	/**
+	 * Get status of the connection
+	 * @return boolean
+	 */
+	public function status() {
+		return $this->status;
+	}
+
+	/**
+	 * Connect to the database.
+	 *
+	 * @return resource mysql resource
+	 */
+	protected function connect() {
+		// Initizale connection
+		try {
+			$this->pdo = new \PDO(
+				'mysql:host='.$this->db_host.';dbname='.$this->db_name.';charset=utf8',
+				$this->db_user,
+				$this->db_pass
+			);
+			$this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			$this->status = true;
+		} catch (\PDOException $e) {
+			$this->status = false;
+			return $this->onConnectFailure($e);
+		}
+		return $this->pdo;
+	}
+
+	/**
+	 * Is called after connection failure
+	 */
+	protected function onConnectFailure(\PDOException $e) {
+		trigger_error('MySQL connection failed: '.$e->getMessage(), E_USER_WARNING);
+		return false;
+	}
+
+	/**
+	 * Disconnect from current link
+	 */
+	protected function disconnect() {
+		$this->pdo = null;
+	}
+
+	/**
+	 * Handle a PDOException
+	 * @param \PDOException $e
+	 */
+	protected function error(\PDOException $e) {
+		trigger_error('SQL error: ' . $e->getMessage(), E_USER_WARNING);
 	}
 }
 

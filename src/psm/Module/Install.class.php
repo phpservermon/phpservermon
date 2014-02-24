@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @link        http://www.phpservermonitor.org/
  * @since		phpservermon 2.1.0
  **/
 
@@ -103,9 +103,9 @@ class Install extends AbstractModule {
 		} else {
 			$this->addResult('cURL installed');
 		}
-		if(!function_exists('mysql_connect')) {
+		if(!in_array('mysql', \PDO::getAvailableDrivers())) {
 			$errors++;
-			$this->addResult('php-mysql needs to be installed.', 'error');
+			$this->addResult('The PDO MySQL driver needs to be installed.', 'error');
 		}
 
 		if($errors > 0) {
@@ -170,7 +170,7 @@ class Install extends AbstractModule {
 				$config['name']
 			);
 
-			if(is_resource($this->db->getLink())) {
+			if($this->db->status()) {
 				$this->addResult('Connection to MySQL successful.');
 				$config_php = $this->writeConfigFile($config);
 				if($config_php === true) {
@@ -222,7 +222,7 @@ class Install extends AbstractModule {
 			$this->addResult('No valid configuration found.', 'error');
 			return $this->executeConfig();
 		}
-		if(!is_resource($this->db->getLink())) {
+		if(!$this->db->status()) {
 			$this->addResult('MySQL connection failed.', 'error');
 			return;
 		}
@@ -234,7 +234,7 @@ class Install extends AbstractModule {
 			if(!empty($if_table_exists)) {
 				$this->addResult('Table ' . $name . ' already exists in your database!');
 			} else {
-				$this->db->query($sql);
+				$this->db->exec($sql);
 				$this->addResult('Table ' . $name . ' added.');
 			}
 		}
@@ -256,7 +256,7 @@ class Install extends AbstractModule {
 		$install_queries = $queries->upgrade(PSM_VERSION, $version_from);
 
 		foreach($install_queries as $sql) {
-			$this->db->query($sql);
+			$this->db->exec($sql);
 		}
 
 		$this->addResult('Installation finished!');

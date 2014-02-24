@@ -1,6 +1,18 @@
 #########################
 #
-# Version 2.1
+# Version 2.x
+# ?, 2014
+#
+#########################
+- Switched from mysql_* to PDO.
+- Added SMTP support.
+- Updated PHPMailer package to v5.2.6.
+- When checking a website, the updater will now follow 302 Location headers.
+
+#########################
+#
+# Version 2.1.0
+# February 8, 2014
 #
 #########################
 - Merged PHP Server Monitor Plus project by Luiz Alberto S. Ribeiro (https://github.com/madeinnordeste/PHP-Server-Monitor-Plus).
