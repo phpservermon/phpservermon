@@ -77,6 +77,12 @@ foreach ($servers as $server) {
 		$save,
 		array('server_id' => $server['server_id'])
 	);
+
+    if(status_new == "on") {
+        psm_log_uptime($server['server_id'], 1, $updater->getRtime());
+    } else {
+        psm_log_uptime($server['server_id'], 0, $updater->getRtime());
+    }
 }
 
 psm_update_conf('cron_running', 0);
