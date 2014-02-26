@@ -79,8 +79,10 @@ foreach ($servers as $server) {
 	);
 
     if(status_new == "on") {
+        // Status is 1 if online
         psm_log_uptime($server['server_id'], 1, $updater->getRtime());
     } else {
+        // Status is 0 if offline
         psm_log_uptime($server['server_id'], 0, $updater->getRtime());
     }
 }
