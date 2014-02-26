@@ -130,6 +130,16 @@ class Queries {
 
 
 			}
+            if(version_compare($version_from, '2.1.0', '<=')) {
+                // 2.1 upgrade
+                $queries[] = "CREATE TABLE  `" . PSM_DB_PREFIX . "uptime` (
+                        `server_id` INT( 11 ) NOT NULL ,
+                        `date` DATETIME NOT NULL ,
+                        `status` INT( 1 ) NOT NULL ,
+                        `latency`  FLOAT( 9, 7 ) NULL
+                       ) ENGINE = MYISAM ;"
+            }
+        }
 			$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';";
 		}
 		return $queries;
