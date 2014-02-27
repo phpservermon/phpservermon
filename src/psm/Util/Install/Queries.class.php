@@ -39,7 +39,7 @@ class Queries {
 	public function install() {
 		$tables = array(
 			PSM_DB_PREFIX . 'users' => "CREATE TABLE `" . PSM_DB_PREFIX . "users` (
-						  `user_id` int(11) NOT NULL auto_increment,
+						  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` varchar(255) NOT NULL,
 						  `name` varchar(255) NOT NULL,
 						  `mobile` varchar(15) NOT NULL,
@@ -47,8 +47,8 @@ class Queries {
 						  PRIMARY KEY  (`user_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
-						  `log_id` int(11) NOT NULL auto_increment,
-						  `server_id` int(11) NOT NULL,
+						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						  `server_id` int(11) unsigned NOT NULL,
 						  `type` enum('status','email','sms') NOT NULL,
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
@@ -56,7 +56,7 @@ class Queries {
 						  PRIMARY KEY  (`log_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
-						  `server_id` int(11) NOT NULL auto_increment,
+						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(100) NOT NULL,
 						  `port` int(5) NOT NULL,
 						  `label` varchar(255) NOT NULL,
@@ -115,32 +115,55 @@ class Queries {
 						('cron_running_time', '0');";
 		} else {
 			if(version_compare($version_from, '2.1.0', '<')) {
-				// 2.0 upgrade
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP `config_id`;";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` ADD PRIMARY KEY ( `key` );";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP INDEX `key`;";
-				$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running', '0');";
-				$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running_time', '0');";
-
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `error` `error` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
-				$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
-
-
+				// upgrade to 2.1.0
+				$queries = array_merge($queries, $this->upgrade210());
 			}
-            if(version_compare($version_from, '2.1.0', '<=')) {
-                // 2.1 upgrade
-                $queries[] = "CREATE TABLE  `" . PSM_DB_PREFIX . "uptime` (
-                        `server_id` INT( 11 ) NOT NULL ,
-                        `date` DATETIME NOT NULL ,
-                        `status` INT( 1 ) NOT NULL ,
-                        `latency`  FLOAT( 9, 7 ) NULL
-                       ) ENGINE = MYISAM ;";
+            if(version_compare($version_from, '2.2.0', '<')) {
+                // upgrade to 2.2.0
+				$queries = array_merge($queries, $this->upgrade220());
             }
 			$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';";
 		}
+		return $queries;
+	}
+
+	/**
+	 * Upgrade queries for v2.1.0 release
+	 * @return array
+	 */
+	protected function upgrade210() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP `config_id`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` ADD PRIMARY KEY ( `key` );";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP INDEX `key`;";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running', '0');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running_time', '0');";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `error` `error` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
+
+		return $queries;
+	}
+
+	/**
+	 * Upgrade queries for v2.2.0 release
+	 * @return array
+	 */
+	protected function upgrade220() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "uptime` (
+				`server_id` INT( 11 ) NOT NULL,
+				`date` DATETIME NOT NULL ,
+				`status` INT( 1 ) NOT NULL ,
+				`latency`  FLOAT( 9, 7 ) NULL
+			   ) ENGINE = MYISAM ;";
 		return $queries;
 	}
 }
