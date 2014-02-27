@@ -169,6 +169,27 @@ function psm_add_log($server_id, $type, $message, $user_id = null) {
 }
 
 /**
+ * This function adds the result of a check to the uptime table for logging purposes.
+ *
+ * @param int $server_id
+ * @param int $status
+ * @param string $latency
+ */
+function psm_log_uptime($server_id, $status, $latency) {
+    global $db;
+
+    $db->save(
+        PSM_DB_PREFIX.'uptime',
+        array(
+            'server_id' => $server_id,
+            'date' => date('Y-m-d H:i:s'),
+            'status' => $status,
+            'latency' => $latency,
+        )
+    );
+}
+
+/**
  * Parses a string from the language file with the correct variables replaced in the message
  *
  * @param string $status is either 'on' or 'off'

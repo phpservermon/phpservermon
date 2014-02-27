@@ -77,6 +77,14 @@ foreach ($servers as $server) {
 		$save,
 		array('server_id' => $server['server_id'])
 	);
+
+    if(status_new == "on") {
+        // Status is 1 if online
+        psm_log_uptime($server['server_id'], 1, $updater->getRtime());
+    } else {
+        // Status is 0 if offline
+        psm_log_uptime($server['server_id'], 0, $updater->getRtime());
+    }
 }
 
 psm_update_conf('cron_running', 0);
