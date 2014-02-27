@@ -26,7 +26,7 @@
  * @since       phpservermon 2.1.0
  **/
 
-define('PSM_VERSION', '2.1.0');
+define('PSM_VERSION', '2.2.0-dev');
 // Include paths
 define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 define('PSM_PATH_VENDOR', PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
@@ -80,8 +80,7 @@ foreach($includes as $file) {
 // init db connection
 $db = new psm\Service\Database();
 
-if($db->status()) {
-
+if($db->status() && (!defined('PSM_INSTALL') || !PSM_INSTALL)) {
 	psm_load_conf();
 } else {
 	// no config yet! lets help them in the right direction
