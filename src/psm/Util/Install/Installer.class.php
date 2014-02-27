@@ -29,14 +29,100 @@
 namespace psm\Util\Install;
 
 /**
- * Query class provides al queries required for installing/upgrading.
+ * Installer class.
+ *
+ * Executes the queries to install/upgrade phpservermon.
  */
-class Queries {
+class Installer {
+
+	/**
+	 * Database service
+	 * @var \psm\Service\Database $db
+	 */
+	protected $db;
+
+	/**
+	 * Log callback
+	 * @var callable $logger
+	 */
+	protected $logger;
+
+	/**
+	 * Log of executed queries
+	 * @var array $queries
+	 */
+	protected $queries = array();
+
+	/**
+	 * Open a new installer instance
+	 * @param \psm\Service\Database $db
+	 * @param callable $logger
+	 */
+	function __construct(\psm\Service\Database $db, $logger = null) {
+		$this->db = $db;
+		$this->logger = $logger;
+	}
+
+	/**
+	 * Log a message to the logger callable (if any)
+	 * @param string|array $msg
+	 * @return \psm\Util\Install\Installer
+	 */
+	protected function log($msg) {
+		if(is_callable($this->logger)) {
+			$msg = (!is_array($msg)) ? array($msg) : $msg;
+
+			foreach($msg as $m) {
+				call_user_func($this->logger, $m);
+			}
+		}
+		return $this;
+	}
+
+	/**
+	 * Execute one or more queries. Does no fetching or anything, so execute only.
+	 * @param string|array $query
+	 * @return \psm\Util\Install\Installer
+	 */
+	protected function execSQL($query) {
+		$query = (!is_array($query)) ? array($query) : $query;
+
+		foreach($query as $q) {
+			$this->queries[] = $q;
+			$this->db->exec($q);
+		}
+		return $this;
+	}
+
 	/**
 	 * Retrieve table queries for install
-	 * @return array
 	 */
 	public function install() {
+		$this->installTables();
+
+		$version_conf = $this->db->selectRow(PSM_DB_PREFIX . 'config', array('key' => 'version'), array('key', 'value'));
+
+		if(empty($version_conf)) {
+			// fresh install
+			$version_from = null;
+		} else {
+			// existing install
+			$version_from = $version_conf['value'];
+			if(strpos($version_from, '.') === false) {
+				// yeah, my bad.. previous version did not follow proper naming scheme
+				$version_from = rtrim(chunk_split($version_from, 1, '.'), '.');
+			}
+		}
+		$this->upgrade(PSM_VERSION, $version_from);
+
+
+		$this->log('Installation finished!');
+	}
+
+	/**
+	 * Install the tables for the monitor
+	 */
+	protected function installTables() {
 		$tables = array(
 			PSM_DB_PREFIX . 'users' => "CREATE TABLE `" . PSM_DB_PREFIX . "users` (
 						  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -78,19 +164,28 @@ class Queries {
 							PRIMARY KEY (`key`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 		);
-		return $tables;
+
+		foreach($tables as $name => $sql) {
+			$if_table_exists = $this->db->query("SHOW TABLES LIKE '{$name}'");
+
+			if(!empty($if_table_exists)) {
+				$this->log('Table ' . $name . ' already exists in your database!');
+			} else {
+				$this->execSQL($sql);
+				$this->log('Table ' . $name . ' added.');
+			}
+		}
 	}
 
 	/**
-	 * Get queries for upgrading
+	 * Populate the tables and perform upgrades if necessary
 	 * @param string $version
 	 * @param string $version_from
-	 * @return array
 	 */
 	public function upgrade($version, $version_from = null) {
-		$queries = array();
-
 		if($version_from === null) {
+			$this->log('Populating database...');
+			$queries = array();
 			$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` (`server_id`, `name`, `mobile`, `email`) VALUES ('1,2', 'example_user', '0123456789', 'user@example.com')";
 			$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
 			$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
@@ -113,23 +208,25 @@ class Queries {
 						('last_update_check', '0'),
 						('cron_running', '0'),
 						('cron_running_time', '0');";
+			$this->execSQL($queries);
 		} else {
-			if(version_compare($version_from, '2.1.0', '<')) {
-				// upgrade to 2.1.0
-				$queries = array_merge($queries, $this->upgrade210());
+			if(version_compare($version_from, $version, '<')) {
+				$this->log('Upgrade detected, upgrading from ' . $version_from . ' to ' . $version);
+				if(version_compare($version_from, '2.1.0', '<')) {
+					// upgrade to 2.1.0
+					$this->upgrade210();
+				}
+				if(version_compare($version_from, '2.2.0', '<')) {
+					// upgrade to 2.2.0
+					$this->upgrade220();
+				}
 			}
-            if(version_compare($version_from, '2.2.0', '<')) {
-                // upgrade to 2.2.0
-				$queries = array_merge($queries, $this->upgrade220());
-            }
-			$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';";
+			$this->execSQL("UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';");
 		}
-		return $queries;
 	}
 
 	/**
-	 * Upgrade queries for v2.1.0 release
-	 * @return array
+	 * Upgrade for v2.1.0 release
 	 */
 	protected function upgrade210() {
 		$queries = array();
@@ -145,12 +242,11 @@ class Queries {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
 
-		return $queries;
+		$this->execSQL($queries);
 	}
 
 	/**
-	 * Upgrade queries for v2.2.0 release
-	 * @return array
+	 * Upgrade for v2.2.0 release
 	 */
 	protected function upgrade220() {
 		$queries = array();
@@ -164,7 +260,8 @@ class Queries {
 				`status` INT( 1 ) NOT NULL ,
 				`latency`  FLOAT( 9, 7 ) NULL
 			   ) ENGINE = MYISAM ;";
-		return $queries;
+
+		$this->execSQL($queries);
 	}
 }
 

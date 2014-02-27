@@ -226,40 +226,10 @@ class Install extends AbstractModule {
 			$this->addResult('MySQL connection failed.', 'error');
 			return;
 		}
-		$queries = new \psm\Util\Install\Queries;
-		$tables = $queries->install();
-		foreach($tables as $name => $sql) {
-			$if_table_exists = $this->db->query("SHOW TABLES LIKE '{$name}'");
+		$logger = array($this, 'addResult');
+		$installer = new \psm\Util\Install\Installer($this->db, $logger);
+		$installer->install();
 
-			if(!empty($if_table_exists)) {
-				$this->addResult('Table ' . $name . ' already exists in your database!');
-			} else {
-				$this->db->exec($sql);
-				$this->addResult('Table ' . $name . ' added.');
-			}
-		}
-		$version_conf = $this->db->selectRow(PSM_DB_PREFIX . 'config', array('key' => 'version'), array('key', 'value'));
-
-		if(empty($version_conf)) {
-			// fresh install
-			$version_from = null;
-		} else {
-			// existing install
-			$version_from = $version_conf['value'];
-			if(strpos($version_from, '.') === false) {
-				// yeah, my bad.. previous version did not follow proper naming scheme
-				$version_from = rtrim(chunk_split($version_from, 1, '.'), '.');
-			}
-			$this->addResult('Upgrade detected, upgrading from ' . $version_from);
-		}
-		$this->addResult('Executing database changes for version ' . PSM_VERSION);
-		$install_queries = $queries->upgrade(PSM_VERSION, $version_from);
-
-		foreach($install_queries as $sql) {
-			$this->db->exec($sql);
-		}
-
-		$this->addResult('Installation finished!');
 		$this->setTemplateId('install_success', 'install.tpl.html');
 	}
 
@@ -297,7 +267,7 @@ class Install extends AbstractModule {
 	 * @param string $status success/warning/error
 	 * @return \psm\Module\Install
 	 */
-	protected function addResult($msg, $status = 'success') {
+	public function addResult($msg, $status = 'success') {
 		if(!is_array($msg)) {
 			$msg = array($msg);
 		}
