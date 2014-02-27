@@ -137,9 +137,8 @@ class Queries {
                         `date` DATETIME NOT NULL ,
                         `status` INT( 1 ) NOT NULL ,
                         `latency`  FLOAT( 9, 7 ) NULL
-                       ) ENGINE = MYISAM ;"
+                       ) ENGINE = MYISAM ;";
             }
-        }
 			$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value` = '{$version}' WHERE `key` = 'version';";
 		}
 		return $queries;
