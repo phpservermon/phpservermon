@@ -87,6 +87,7 @@ $sm_lang = array(
 		'general' => '일반',
 		'language' => '언어',
 		'language_en' => '미국',
+		'language_bg' => 'Bulgarian',
 		'language_nl' => '네덜란드',
 		'language_fr' => '프랑스',
 		'language_de' => '독일',

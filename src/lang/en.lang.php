@@ -86,6 +86,7 @@ $sm_lang = array(
 		'general' => 'General',
 		'language' => 'Language',
 		'language_en' => 'English',
+		'language_bg' => 'Bulgarian',
 		'language_nl' => 'Dutch',
 		'language_fr' => 'French',
 		'language_de' => 'German',

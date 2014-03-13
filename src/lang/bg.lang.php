@@ -18,11 +18,11 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Plamen Vasilev
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: phpservermon 2.1.0
- * @link        http://phpservermon.neanderthal-technology.com/
+ * @version     Release: @package_version@
+ * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
@@ -35,7 +35,7 @@ $sm_lang = array(
 		'update' => 'Обнови данните',
 		'config' => 'Настройки',
 		'help' => 'Помощ',
-		'install' => 'Инсталация',		
+		'install' => 'Инсталация',
 		'action' => 'Действие',
 		'save' => 'Запиши',
 		'edit' => 'Редактирай',
@@ -96,6 +96,12 @@ $sm_lang = array(
 		'email_status' => 'Да се изпращат ли имейли?',
 		'email_from_email' => 'Имейл, от който да се изпращат съобщенията',
 		'email_from_name' => 'Име на изпращача',
+		'email_smtp' => 'Enable SMTP',
+		'email_smtp_host' => 'SMTP host',
+		'email_smtp_port' => 'SMTP port',
+		'email_smtp_username' => 'SMTP username',
+		'email_smtp_password' => 'SMTP password',
+		'email_smtp_noauth' => 'Leave blank for no authentication',
 		'sms_status' => 'Да се изпращат ли SMS-и?',
 		'sms_gateway' => 'Портал за изпращане на SMS-и',
 		'sms_gateway_mosms' => 'Mosms',
@@ -107,20 +113,16 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
-		'alert_type' =>
-			'Изберете кога желаете системата да Ви известява.<br/>'.
-			'<div class="small">'.
- 			'1) Промяна на сатуса<br/>'.
+		'alert_type' => 'Изберете кога желаете системата да Ви известява.<br/>',
+		'alert_type_description' => '<b>Промяна на сатуса:</b>'.
 			'Ще получавате нотификация когато има промяна със връзката на даден някой от описаните. От online -> offline и от offline -> online.<br/>'.
-			'2) Offline<br/>'.
+			'<br/><b>Offline</b>'.
 			'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
 			'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
 			'You will get 1 notification at 1 am and thats it.<br/>'.
-			'3) Always<br/>'.
+			'<br><b>Always:</b> '.
 			'You will receive a notification every time the script runs and a site is down, even if the site has been '.
-			'offline for hours.'.
-			'</div>',
-
+			'offline for hours.',
 		'alert_type_status' => 'Промяна на статуса',
 		'alert_type_offline' => 'Офлайн',
 		'alert_type_always' => 'Винаги',
