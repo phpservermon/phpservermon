@@ -39,14 +39,10 @@ If logging is enabled in the configuration, it will log any connection errors, e
 The latest log records will be displayed on your web interface.
 The cron/status.cron.php can be added as a cronjob which will keep the server status up to date.
 
-I'd appreciate any feedback you might have regarding this script. Please leave it on the GitHub
-project page (tracker), or send me an email (see top of file for link).
-
 
 ## DOWNLOAD
 
-The latest version can be found at <http://www.phpservermonitor.org/>.
-You can also clone the git repo at <http://github.com/phpservermon/phpservermon> if you want to contribute.
+The latest version can be downloaded from <http://www.phpservermonitor.org/>.
 
 
 ## REQUIREMENTS
@@ -128,23 +124,22 @@ The update script has been designed to prevent itself from running multiple time
 After that the script is assumed dead and the cronjob will run again.
 
 
-## CUSTOMIZING
+## CONTRIBUTING
 
-### Language
+The code is available from <https://github.com/phpservermon/phpservermon>.
+There is a master branch, which is stable and always reflects the latest release.
+The develop branch is used for ongoing development and should not be considered stable.
+If you would like to contribute a patch or feature, please fork the develop branch and send a pull request.
 
-The server monitor uses language files. That means that any regular text you see on the screen can easily be
-changed without having to dig through the code. These language files are stored in the directory "src/lang".
-The language that's being used by the monitor is defined in the config table. If you like
-you can make changes to the language file or even add a new one.
 
-#### Changing the email or text message
+### Changing the email or text message
 
-Open the language file that corresponds to the selected language
+Go to the folder "src/lang", open the language file that corresponds to the selected language
 (default is English ("en.lang.php")). Scroll all the way to the bottom until you spot this line:
 
      'notifications' => array(
 
-After that you'll see the lines that hold the notification messages. For example:
+After that you will see the lines that hold the notification messages. For example:
 
      'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
 
@@ -154,19 +149,8 @@ The second part is the actual message. There are a few variables you can use in 
     * %LABEL%				The name of the server
     * %IP%					The ip of the server
     * %PORT%				The port of the server
-    * %ERROR%				This one only works for the off_* messages and contains the error returned by the
-								monitor
+    * %ERROR%				This one only works for the off_* messages and contains the error returned by the monitor
 
-#### Adding a new language
-
-   To add a new language, follow these steps:
-
-   * Create a new file in the directory "src/lang" named "mylanguage.lang.php".
-   * Copy the contents of the file "en.lang.php" to your new file.
-   * Your new language should now be available on the config page.
-   * Translate the English stuff to your own language.
-   * Send a copy to pep[at]neanderthal-technology.com so I can add it to the next release :)
-   * Or, send me a pull request on github (https://github.com/phpservermon/phpservermon).
 
 ## CREDITS
 
