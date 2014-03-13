@@ -230,8 +230,9 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-	curl_setopt ($ch, CURLOPT_TIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_ENCODING, '');
 	curl_setopt($ch, CURLOPT_URL, $href);
 	if($add_agent) {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
