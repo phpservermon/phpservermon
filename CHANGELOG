@@ -8,6 +8,7 @@
 - Added SMTP support.
 - Updated PHPMailer package to v5.2.6.
 - When checking a website, the updater will now follow 302 Location headers.
+- Adding Bulgarian language file (thanks to Plamen Vasilev)
 
 #########################
 #

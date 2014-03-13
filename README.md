@@ -1,6 +1,6 @@
 # PHP Server Monitor
 
-## SUMMARY
+## Summary
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can add and remove servers and websites from the MySQL database,
@@ -40,19 +40,19 @@ The latest log records will be displayed on your web interface.
 The cron/status.cron.php can be added as a cronjob which will keep the server status up to date.
 
 
-## DOWNLOAD
+## Download
 
 The latest version can be downloaded from <http://www.phpservermonitor.org/>.
 
 
-## REQUIREMENTS
+## Requirements
 
  * PHP 5.3+
  * PHP cURL package
  * PHP PDO mysql driver
 
 
-## INSTALL
+## Install
 
 ### 1. Configuration
 
@@ -84,7 +84,7 @@ Open the main page of the server monitor, by simply calling index.php. In the me
 it will open a page where you can change the necessary information for your tool.
 
 
-## UPGRADE
+## Upgrade
 
 ### From 2.0
 
@@ -124,7 +124,7 @@ The update script has been designed to prevent itself from running multiple time
 After that the script is assumed dead and the cronjob will run again.
 
 
-## CONTRIBUTING
+## Contributing
 
 The code is available from <https://github.com/phpservermon/phpservermon>.
 There is a master branch, which is stable and always reflects the latest release.
@@ -152,7 +152,7 @@ The second part is the actual message. There are a few variables you can use in 
     * %ERROR%				This one only works for the off_* messages and contains the error returned by the monitor
 
 
-## CREDITS
+## Credits
 
 See CREDITS file.
 
