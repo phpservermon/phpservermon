@@ -29,13 +29,21 @@ require 'src/bootstrap.php';
 
 psm_no_cache();
 
-if(isset($_GET['action']) && $_GET['action'] == 'check') {
-	require 'cron/status.cron.php';
-	header('Location: index.php');
+$type = (!isset($_GET['type'])) ? 'servers' : $_GET['type'];
+
+// if user is not logged in, load login module
+$user = new \psm\Service\User($db);
+if(!$user->isUserLoggedIn()) {
+	$type = 'login';
 }
 
-$type = (!isset($_GET['type'])) ? 'servers' : $_GET['type'];
-$allowed_types = array('servers', 'users', 'log', 'config', 'status');
+if($type == 'update') {
+	require 'cron/status.cron.php';
+	header('Location: ' . psm_build_url());
+	die();
+}
+
+$allowed_types = array('servers', 'users', 'log', 'config', 'status', 'login');
 
 // make sure user selected a valid type. if so, include the file and add to template
 if(!in_array($type, $allowed_types)) {
@@ -44,7 +52,9 @@ if(!in_array($type, $allowed_types)) {
 $tpl = new \psm\Service\Template();
 
 eval('$mod = new psm\Module\\'.ucfirst($type).'($db, $tpl);');
+if($user->getUserLevel() > $mod->getMinUserLevelRequired()) {
+	die('You do not have the privileges to view this page.');
+}
+$mod->setUser($user);
 // let the module prepare it's HTML code
 $mod->initialize();
-
-?>

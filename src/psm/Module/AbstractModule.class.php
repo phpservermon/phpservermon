@@ -76,7 +76,7 @@ abstract class AbstractModule implements ModuleInterface {
 	/**
 	 * Messages to show the user
 	 * @var array $messages
-	 * @see getMessage()
+	 * @see addMessage()
 	 */
 	protected $messages = array();
 
@@ -98,6 +98,19 @@ abstract class AbstractModule implements ModuleInterface {
 	 * @see setTemplateId() getTemplateId()
 	 */
 	protected $tpl_id;
+
+	/**
+	 * User service
+	 * @var \psm\Service\User $user
+	 */
+	protected $user;
+
+	/**
+	 * Required user level for this module
+	 * @var int $user_level_required
+	 * @see setMinUserLevelRequired()
+	 */
+	protected $user_level_required = PSM_USER_USER;
 
 	function __construct(Database $db, Template $tpl) {
 		$this->db = $db;
@@ -153,13 +166,14 @@ abstract class AbstractModule implements ModuleInterface {
 			// user wants updates, lets see what we can do
 			$this->createHTMLUpdateAvailable();
 		}
-		$tpl_data = array(
-			'message' => (empty($this->messages)) ? '&nbsp' : implode('<br/>', $this->messages),
-		);
+		$tpl_data = array();
+
+		if(!empty($this->messages)) {
+			$this->tpl->addTemplateDataRepeat('main', 'messages', $this->messages);
+		}
 		// add menu to page?
 		if($this->add_menu) {
-			$this->tpl->newTemplate('main_menu', 'main.tpl.html');
-			$tpl_data['html_menu'] = $this->tpl->getTemplate('main_menu');
+			$tpl_data['html_menu'] = $this->createHTMLMenu();
 		}
 		// add footer to page?
 		if($this->add_footer) {
@@ -182,14 +196,68 @@ abstract class AbstractModule implements ModuleInterface {
 	}
 
 	/**
+	 * Create HTML code for the menu
+	 * @return string
+	 */
+	protected function createHTMLMenu() {
+		// @todo globals..? seriously..?
+		global $type;
+
+		$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
+
+		$tpl_id = 'main_menu';
+		$this->tpl->newTemplate($tpl_id, 'main.tpl.html');
+
+		$tpl_data = array(
+			'label_help' => psm_get_lang('system', 'help'),
+			'label_logout' => psm_get_lang('login', 'logout'),
+			'url_logout' => psm_build_url(array('logout' => 1)),
+		);
+
+		switch($ulvl) {
+			case PSM_USER_ADMIN:
+				$items = array('servers', 'users', 'log', 'status', 'config', 'update');
+				break;
+			case PSM_USER_USER:
+				$items = array('servers', 'log', 'status', 'update');
+				break;
+			default:
+				$items = array();
+				break;
+		}
+		$menu = array();
+		foreach($items as $key) {
+			$menu[] = array(
+				'active' => ($key == $type) ? 'active' : '',
+				'url' => psm_build_url(array('type' => $key)),
+				'label' => psm_get_lang('system', $key),
+			);
+		}
+		if(!empty($menu)) {
+			$this->tpl->addTemplateDataRepeat($tpl_id, 'menu', $menu);
+		}
+
+		if($ulvl != PSM_USER_ANONYMOUS) {
+			$user = $this->user->getUser();
+			$tpl_data['label_usermenu'] = str_replace(
+				'%user_name%',
+				$user->name,
+				psm_get_lang('login', 'welcome_usermenu')
+			);
+		}
+		$this->tpl->addTemplateData($tpl_id, $tpl_data);
+
+		return $this->tpl->getTemplate($tpl_id);
+	}
+
+	/**
 	 * First check if an update is available, if there is add a message
 	 * to the main template
 	 */
 	protected function createHTMLUpdateAvailable() {
-		// check for updates?
-
 		if(psm_check_updates()) {
 			// yay, new update available =D
+			// @todo perhaps find a way to make the message more persistent?
 			$this->addMessage(psm_get_lang('system', 'update_available'));
 		}
 	}
@@ -207,14 +275,6 @@ abstract class AbstractModule implements ModuleInterface {
 			array(
 				'title' => strtoupper(psm_get_lang('system', 'title')),
 				'subtitle' => psm_get_lang('system', $type),
-				'active_' . $type => 'active',
-				'label_servers' => psm_get_lang('system', 'servers'),
-				'label_users' => psm_get_lang('system', 'users'),
-				'label_log' => psm_get_lang('system', 'log'),
-				'label_status' => psm_get_lang('system', 'status'),
-				'label_config' => psm_get_lang('system', 'config'),
-				'label_update' => psm_get_lang('system', 'update'),
-				'label_help' => psm_get_lang('system', 'help'),
 				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 			)
 		);
@@ -298,15 +358,50 @@ abstract class AbstractModule implements ModuleInterface {
 	/**
 	 * Add one or multiple message to the stack to be displayed to the user
 	 * @param string|array $msg
+	 * @param string $status success/warning/error
 	 * @return \psm\Module\AbstractModule
 	 */
-	public function addMessage($msg) {
+	public function addMessage($msg, $status = 'info') {
 		if(!is_array($msg)) {
 			$msg = array($msg);
 		}
-		$this->messages = array_merge($this->messages, $msg);
+		if($status == 'error') {
+			$shortcode = 'important';
+		} else {
+			$shortcode = $status;
+		}
+
+		foreach($msg as $m) {
+			$this->messages[] = array(
+				'message' => $m,
+				'status' => ($status == null) ? '' : strtoupper($status),
+				'shortcode' => $shortcode,
+			);
+		}
 		return $this;
 	}
-}
 
-?>
+	/**
+	 * Set user service
+	 * @param \psm\Service\User $user
+	 */
+	public function setUser(\psm\Service\User $user) {
+		$this->user = $user;
+	}
+
+	/**
+	 * Set the minimum required user level for this module
+	 * @param int $level
+	 */
+	public function setMinUserLevelRequired($level) {
+		$this->user_level_required = intval($level);
+	}
+
+	/**
+	 * Get the minimum required user level for this module
+	 * @return int
+	 */
+	public function getMinUserLevelRequired() {
+		return $this->user_level_required;
+	}
+}

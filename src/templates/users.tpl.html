@@ -10,6 +10,8 @@
         <thead>
             <tr>
                 <th>{label_name}</th>
+                <th>{label_user_name}</th>
+                <th>{label_level}</th>
                 <th>{label_mobile}</th>
                 <th>{label_email}</th>
                 <th>{label_servers}</th>
@@ -20,6 +22,8 @@
         <!--%tpl_repeat_users-->
         <tr>
             <td>{name}</td>
+            <td>{user_name}</td>
+            <td>{label_level_{level}}</td>
             <td>{mobile}</td>
             <td>{email}</td>
             <td>{emp_servers}</td>
@@ -47,23 +51,52 @@
                 <div class="control-group">
                     <label class="control-label" for="name">{label_name}</label>
                     <div class="controls">
-                        <input type="text" name="name" value="{edit_value_name}" maxlength="255" />
+                        <input type="text" id="name" name="name" value="{edit_value_name}" maxlength="255" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="user_name">{label_user_name}</label>
+                    <div class="controls">
+                        <input type="text" id="user_name" name="user_name" value="{edit_value_user_name}" maxlength="64" required>
+                    </div>
+                </div>
+				<div class="control-group">
+					<label class="control-label" for="level">{label_level}</label>
+					<div class="controls">
+						<select id="level" name="level">
+							<!--%tpl_repeat_levels-->
+							<option value="{value}" {selected}>{label}</option>
+							<!--%%tpl_repeat_levels-->
+							{levels}
+						 </select>
+					</div>
+				</div>
+                <div class="control-group">
+                    <label class="control-label" for="password">{label_password}</label>
+                    <div class="controls">
+                        <input type="password" id="password" name="password" maxlength="255" placeholder="{placeholder_password}" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password_repeat">{label_password_repeat}</label>
+                    <div class="controls">
+                        <input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{placeholder_password}" />
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="mobile">{label_mobile}</label>
                     <div class="controls">
-                        <input type="text" name="mobile" value="{edit_value_mobile}" maxlength="15" />
+                        <input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="name">{label_email}</label>
+                    <label class="control-label" for="email">{label_email}</label>
                     <div class="controls">
-                        <input type="text" name="email" value="{edit_value_email}" maxlength="255" />
+                        <input type="text" id="email" name="email" value="{edit_value_email}" maxlength="255" required>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="name">{label_servers}</label>
+                    <label class="control-label" for="servers[]">{label_servers}</label>
                     <div class="controls">
                         <!--%tpl_repeat_servers-->
                         <label class="checkbox">
@@ -78,8 +111,8 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button class="btn btn-success" type="submit">Save</button>
-                    <button class="btn" onclick="history.back();return false;" >Cancel</button>
+                    <button class="btn btn-success" type="submit">{label_save}</button>
+                    <button class="btn" onclick="history.back();return false;" >{label_go_back}</button>
                 </div>
          </fieldset>
     </form>

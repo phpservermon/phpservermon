@@ -29,11 +29,11 @@ define('PSM_INSTALL', true);
 
 require 'src/bootstrap.php';
 
-psm_no_cache();
-
 $type = 'install';
 $tpl = new \psm\Service\Template();
+$user = new \psm\Service\User($db);
 $mod = new psm\Module\Install($db, $tpl);
+$mod->setUser($user);
 $mod->initialize();
 
 ?>

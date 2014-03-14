@@ -36,77 +36,27 @@ use psm\Service\Template;
 class Users extends AbstractModule {
 	public $servers;
 
+	/**
+	 * User data validator
+	 * @var \psm\Util\User\UserValidator $user_validator
+	 */
+	protected $user_validator;
+
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
+
+		$this->setMinUserLevelRequired(PSM_USER_ADMIN);
 
 		$this->setActions(array(
 			'index', 'edit', 'delete', 'save',
 		), 'index');
-
-		$this->servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
 	}
 
-	/**
-	 * Prepare the template to show the update screen for a user
-	 */
-	protected function executeEdit() {
-		$this->setTemplateId('users_update', 'users.tpl.html');
+	public function initialize() {
+		$this->user_validator = new \psm\Util\User\UserValidator($this->user);
+		$this->servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
 
-		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-		$tpl_data = array();
-		$servers_count = count($this->servers);
-
-		switch((int) $user_id) {
-			case 0:
-				// insert mode
-				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
-				$tpl_data['edit_user_id'] = '0';
-
-				// add inactive class to all servers
-				for ($i = 0; $i < $servers_count; $i++) {
-					$this->servers[$i]['class'] = 'inactive';
-				}
-
-				break;
-			default:
-				// edit mode
-				$edit_user = $this->db->selectRow(
-					PSM_DB_PREFIX.'users',
-					array('user_id' => $user_id)
-				);
-				if (empty($edit_user)) {
-					$this->addMessage('Invalid user.');
-					return $this->initializeAction('index');
-				}
-
-				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_user['name'],
-					'edit_user_id' => $edit_user['user_id'],
-					'edit_value_name' => $edit_user['name'],
-					'edit_value_mobile' => $edit_user['mobile'],
-					'edit_value_email' => $edit_user['email'],
-				));
-
-				// select servers for this user
-				$user_servers = explode(',', $edit_user['server_id']);
-
-				for ($h = 0; $h < $servers_count; $h++) {
-					if(in_array($this->servers[$h]['server_id'], $user_servers)) {
-						$this->servers[$h]['edit_checked'] = 'checked="checked"';
-						$this->servers[$h]['class'] = 'active';
-					}
-				}
-
-				break;
-		}
-
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			$tpl_data
-		);
-		// add servers to template for the edit form
-		$this->tpl->addTemplateDataRepeat('users_update', 'servers', $this->servers);
+		return parent::initialize();
 	}
 
 	/**
@@ -121,66 +71,164 @@ class Users extends AbstractModule {
 			$servers_labels[$server['server_id']] = $server['label'];
 		}
 
-		// get users from database
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			null,
+			array('user_id', 'user_name', 'level', 'server_id', 'name', 'mobile', 'email'),
 			null,
 			array('name')
 		);
 
-		$user_count = count($users);
+		foreach($users as $x => &$user) {
+			$user['class'] = ($x & 1) ? 'odd' : 'even';
 
-		for ($x = 0; $x < $user_count; $x++) {
-			$users[$x]['class'] = ($x & 1) ? 'odd' : 'even';
-
-			$users[$x]['emp_servers'] = '';
+			$user['emp_servers'] = '';
 
 			// fix server list
-			$user_servers = explode(',', $users[$x]['server_id']);
-			if (empty($user_servers)) continue;
+			$user_servers = explode(',', $user['server_id']);
+			if(empty($user_servers)) continue;
 
-			foreach ($user_servers as $server) {
+			foreach($user_servers as $server) {
 				if (!isset($servers_labels[$server])) continue;
-				$users[$x]['emp_servers'] .= $servers_labels[$server] . '<br/>';
+				$user['emp_servers'] .= $servers_labels[$server] . '<br/>';
 			}
-			$users[$x]['emp_servers'] = substr($users[$x]['emp_servers'], 0, -5);
+			$user['emp_servers'] = substr($user['emp_servers'], 0, -5);
 		}
-		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
+	}
+
+	/**
+	 * Prepare the template to show the update screen for a user
+	 */
+	protected function executeEdit() {
+		$this->setTemplateId('users_update', 'users.tpl.html');
+
+		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$fields_prefill = array('name', 'user_name', 'mobile', 'email');
+
+		if($user_id == 0) {
+			// insert mode
+			$title = psm_get_lang('system', 'insert');
+			$placeholder_password = '';
+			$lvl_selected = PSM_USER_USER; // default level is regular user
+
+			// attempt to prefill previously posted fields
+			$edit_user = new \stdClass();
+			foreach($fields_prefill as $field) {
+				$edit_user->$field = (isset($_POST[$field])) ? $_POST[$field] : '';
+			}
+
+			// add inactive class to all servers
+			foreach($this->servers as &$server) {
+				$server['class'] = 'inactive';
+			}
+		} else {
+			// edit mode
+			try {
+				$this->user_validator->userId($user_id);
+			} catch(\InvalidArgumentException $e) {
+				$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
+				return $this->executeIndex();
+			}
+			$edit_user = $this->user->getUser($user_id);
+			$title = psm_get_lang('system', 'edit') . ' ' . $edit_user->name;
+			$placeholder_password = psm_get_lang('users', 'password_leave_blank');
+			$lvl_selected = $edit_user->level;
+
+			// select servers for this user
+			$user_servers = explode(',', $edit_user->server_id);
+
+			foreach($this->servers as &$server) {
+				if(in_array($server['server_id'], $user_servers)) {
+					$server['edit_checked'] = 'checked="checked"';
+					$server['class'] = 'active';
+				}
+			}
+		}
+		$tpl_data = array(
+			'titlemode' => $title,
+			'placeholder_password' => $placeholder_password,
+			'edit_user_id' => $user_id,
+		);
+		foreach($fields_prefill as $field) {
+			if(isset($edit_user->$field)) {
+				$tpl_data['edit_value_' . $field] = $edit_user->$field;
+			}
+		}
+
+		$ulvls_tpl = array();
+		foreach($this->user_validator->getUserLevels() as $lvl) {
+			$ulvls_tpl[] = array(
+				'value' => $lvl,
+				'label' => psm_get_lang('users', 'level_' . $lvl),
+				'selected' => ($lvl == $lvl_selected) ? 'selected="selected"' : '',
+			);
+		}
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'levels', $ulvls_tpl);
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $this->servers);
+		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
 	/**
 	 * Executes the saving of a user
 	 */
 	protected function executeSave() {
-		// check for add/edit mode
-		if (isset($_POST['name']) && isset($_POST['mobile']) && isset($_POST['email'])) {
-			$clean = array(
-				'name' => $_POST['name'],
-				'mobile' => $_POST['mobile'],
-				'email' => $_POST['email'],
-				'server_id' => (isset($_POST['server_id'])) ? implode(',', $_POST['server_id']) : ''
-			);
-			$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
+		if(empty($_POST)) {
+			// dont process anything if no data has been posted
+			return $this->executeIndex();
+		}
+		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-			// check for edit or add
-			if ((int) $id > 0) {
-				// edit
-				$this->db->save(
-					PSM_DB_PREFIX.'users',
-					$clean,
-					array('user_id' => $id)
-				);
-				$this->addMessage(psm_get_lang('users', 'updated'));
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'email', 'server_id');
+		$clean = array();
+		foreach($fields as $field) {
+			if(isset($_POST[$field])) {
+				if(is_array($_POST[$field])) {
+					$_POST[$field] = implode(',', $_POST[$field]);
+				}
+				$clean[$field] = trim(strip_tags($_POST[$field]));
 			} else {
-				// add
-				$this->db->save(PSM_DB_PREFIX.'users', $clean);
-				$this->addMessage(psm_get_lang('users', 'inserted'));
+				$clean[$field] = '';
 			}
 		}
-		$this->initializeAction('index');
+
+		// validate the lot
+		try {
+			$this->user_validator->username($clean['user_name'], $user_id);
+			$this->user_validator->email($clean['email']);
+			$this->user_validator->level($clean['level']);
+
+			// always validate password for new users,
+			// but only validate it for existing users when they change it.
+			if($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
+				$this->user_validator->password($clean['password'], $clean['password_repeat']);
+			}
+			if($user_id > 0) {
+				$this->user_validator->userId($user_id);
+			}
+		} catch(\InvalidArgumentException $e) {
+			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
+			return $this->executeEdit();
+		}
+		if(!empty($clean['password'])) {
+			$password = $clean['password'];
+			$clean['password'] = '';
+		}
+		unset($clean['password_repeat']);
+
+		if($user_id > 0) {
+			// edit user
+			$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $user_id));
+			$this->addMessage(psm_get_lang('users', 'updated'), 'success');
+		} else {
+			// add user
+			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $clean);
+			$this->addMessage(psm_get_lang('users', 'inserted'), 'success');
+		}
+		if(isset($password)) {
+			$this->user->changePassword($user_id, $password);
+		}
+		return $this->executeIndex();
 	}
 
 	/**
@@ -189,16 +237,19 @@ class Users extends AbstractModule {
 	protected function executeDelete() {
 		$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		if($id > 0) {
+		try {
+			$this->user_validator->userId($id);
+
 			$this->db->delete(
 				PSM_DB_PREFIX . 'users',
-				array(
-					'user_id' => $id,
-				)
+				array('user_id' => $id,)
 			);
-			$this->addMessage(psm_get_lang('system', 'deleted'));
+			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
+		} catch(\InvalidArgumentException $e) {
+			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
 		}
-		$this->initializeAction('index');
+
+		return $this->executeIndex();
 	}
 
 	// override parent::createHTMLLabels()
@@ -208,11 +259,19 @@ class Users extends AbstractModule {
 			array(
 				'label_users' => psm_get_lang('system', 'users'),
 				'label_name' => psm_get_lang('users', 'name'),
+				'label_user_name' => psm_get_lang('users', 'user_name'),
+				'label_password' => psm_get_lang('users', 'password'),
+				'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
+				'label_level' => psm_get_lang('users', 'level'),
+				'label_level_10' => psm_get_lang('users', 'level_10'),
+				'label_level_20' => psm_get_lang('users', 'level_20'),
+				'label_level_30' => psm_get_lang('users', 'level_30'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
 				'label_email' => psm_get_lang('users', 'email'),
 				'label_servers' => psm_get_lang('system', 'servers'),
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
+				'label_go_back' => psm_get_lang('system', 'go_back'),
 				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('users', 'user'),
 				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('users', 'user'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
@@ -222,5 +281,3 @@ class Users extends AbstractModule {
 		return parent::createHTMLLabels();
 	}
 }
-
-?>

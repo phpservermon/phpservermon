@@ -1,0 +1,81 @@
+<?php
+/**
+ * PHP Server Monitor
+ * Monitor your servers and websites.
+ *
+ * This file is part of PHP Server Monitor.
+ * PHP Server Monitor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PHP Server Monitor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package     phpservermon
+ * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version     Release: @package_version@
+ * @link        http://www.phpservermonitor.org/
+ * @since       phpservermon 2.2.0
+ **/
+
+/**
+ * Current PSM version
+ */
+define('PSM_VERSION', '2.2.0-dev');
+
+/**
+ * Configuration for: Hashing strength
+ * This is the place where you define the strength of your password hashing/salting
+ *
+ * To make password encryption very safe and future-proof, the PHP 5.5 hashing/salting functions
+ * come with a clever so called COST FACTOR. This number defines the base-2 logarithm of the rounds of hashing,
+ * something like 2^12 if your cost factor is 12. By the way, 2^12 would be 4096 rounds of hashing, doubling the
+ * round with each increase of the cost factor and therefore doubling the CPU power it needs.
+ * Currently, in 2013, the developers of this functions have chosen a cost factor of 10, which fits most standard
+ * server setups. When time goes by and server power becomes much more powerful, it might be useful to increase
+ * the cost factor, to make the password hashing one step more secure. Have a look here
+ * (@see https://github.com/panique/php-login/wiki/Which-hashing-&-salting-algorithm-should-be-used-%3F)
+ * in the BLOWFISH benchmark table to get an idea how this factor behaves. For most people this is irrelevant,
+ * but after some years this might be very very useful to keep the encryption of your database up to date.
+ *
+ * Remember: Every time a user registers or tries to log in (!) this calculation will be done.
+ * Don't change this if you don't know what you do.
+ *
+ * To get more information about the best cost factor please have a look here
+ * @see http://stackoverflow.com/q/4443476/1114320
+ *
+ * This constant will be used in the login and the registration class.
+ */
+define("PSM_LOGIN_HASH_COST_FACTOR", "10");
+
+/**
+ * Configuration for: Cookies
+ * Please note: The COOKIE_DOMAIN needs the domain where your app is,
+ * in a format like this: .mydomain.com
+ * Note the . in front of the domain. No www, no http, no slash here!
+ * For local development .127.0.0.1 or .localhost is fine, but when deploying you should
+ * change this to your real domain, like '.mydomain.com' ! The leading dot makes the cookie available for
+ * sub-domains too.
+ * @see http://stackoverflow.com/q/9618217/1114320
+ * @see http://www.php.net/manual/en/function.setcookie.php
+ *
+ * COOKIE_RUNTIME: How long should a cookie be valid ? 1209600 seconds = 2 weeks
+ * COOKIE_DOMAIN: The domain where the cookie is valid for, like '.mydomain.com'
+ * COOKIE_SECRET_KEY: Put a random value here to make your app more secure. When changed, all cookies are reset.
+ */
+define("PSM_LOGIN_COOKIE_RUNTIME", 1209600);
+define("PSM_LOGIN_COOKIE_DOMAIN", null);
+define("PSM_LOGIN_COOKIE_SECRET_KEY", "4w900de52e3ap7y77y8675jy6c594286");
+
+/**
+ * Number of seconds the reset link is valid after sending it to the user.
+ */
+define('PSM_LOGIN_RESET_RUNTIME', 3600);

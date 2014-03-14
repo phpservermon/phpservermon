@@ -33,13 +33,6 @@ use psm\Service\Template;
 class Install extends AbstractModule {
 
 	/**
-	 * Result messages to add to the main template
-	 * @var array $install_results
-	 * @see addResult()
-	 */
-	protected $install_results = array();
-
-	/**
 	 * Full path to config file
 	 * @var string $path_config
 	 */
@@ -54,6 +47,8 @@ class Install extends AbstractModule {
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
 
+		$this->addMenu(false);
+
 		$this->path_config = PSM_PATH_SRC . '../config.php';
 		$this->path_config_old = PSM_PATH_SRC . '../config.inc.php';
 
@@ -63,18 +58,18 @@ class Install extends AbstractModule {
 	}
 
 	protected function createHTML() {
-		$tpl_id_custom = $this->getTemplateId();
-		$this->setTemplateId('install', 'install.tpl.html');
-		$html_install = ($tpl_id_custom) ? $this->tpl->getTemplate($tpl_id_custom) : '';
-
 		$html_results = '';
-		if(!empty($this->install_results)) {
+		if(!empty($this->messages)) {
 			$this->tpl->newTemplate('install_results', 'install.tpl.html');
-			$this->tpl->addTemplateDataRepeat('install_results', 'resultmsgs', $this->install_results);
+			$this->tpl->addTemplateDataRepeat('install_results', 'resultmsgs', $this->messages);
 			$html_results = $this->tpl->getTemplate('install_results');
+			$this->messages = array();
 		}
+		$tpl_id = $this->getTemplateId();
+		$this->setTemplateId('install', 'install.tpl.html');
+
 		$this->tpl->addTemplateData($this->getTemplateId(), array(
-			'html_install' => $html_install,
+			'html_install' => $this->tpl->getTemplate($tpl_id),
 			'html_results' => $html_results,
 		));
 
@@ -82,11 +77,10 @@ class Install extends AbstractModule {
 	}
 
 	/**
-	 * Generate the main install page with prerequisites
+	 * Say hi to our new user
 	 */
 	protected function executeIndex() {
-		$this->addMenu(false);
-		$tpl_data = array();
+		$this->setTemplateId('install_index', 'install.tpl.html');
 
 		// build prerequisites
 		$errors = 0;
@@ -94,30 +88,22 @@ class Install extends AbstractModule {
 		$phpv = phpversion();
 		if(version_compare($phpv, '5.3.0', '<')) {
 			$errors++;
-			$this->addResult('PHP 5.3+ is required to run PHP Server Monitor.', 'error');
+			$this->addMessage('PHP 5.3+ is required to run PHP Server Monitor.', 'error');
 		} else {
-			$this->addResult('PHP version: ' . $phpv);
+			$this->addMessage('PHP version: ' . $phpv, 'success');
 		}
 		if(!function_exists('curl_init')) {
-			$this->addResult('PHP is installed without the cURL module. Please install cURL.', 'warning');
+			$this->addMessage('PHP is installed without the cURL module. Please install cURL.', 'warning');
 		} else {
-			$this->addResult('cURL installed');
+			$this->addMessage('PHP cURL module found', 'success');
 		}
 		if(!in_array('mysql', \PDO::getAvailableDrivers())) {
 			$errors++;
-			$this->addResult('The PDO MySQL driver needs to be installed.', 'error');
+			$this->addMessage('The PDO MySQL driver needs to be installed.', 'error');
 		}
 
 		if($errors > 0) {
-			// cannot continue
-			$this->addResult($errors . ' error(s) have been encountered. Please fix them and refresh this page.', 'error');
-		} else {
-			if(defined('PSM_CONFIG')) {
-				$this->addResult('Configuration file found.');
-				return $this->executeInstall();
-			} else {
-				return $this->executeConfig();
-			}
+			$this->addMessage($errors . ' error(s) have been encountered. Please fix them and refresh this page.', 'error');
 		}
 	}
 
@@ -125,110 +111,163 @@ class Install extends AbstractModule {
 	 * Help the user create a new config file
 	 */
 	protected function executeConfig() {
-		if(defined('PSM_CONFIG')) {
-			return $this->executeInstall();
-		}
-				// first detect "old" config file (2.0)
-		if(file_exists($this->path_config_old)) {
-			// oldtimer huh
-			$this->addResult('Configuration file for v2.0 found.');
-			$this->addResult(
-				'The location of the config file has been changed since the previous version.<br/>' .
-				'We will attempt to create a new config file for you.'
-			, 'warning');
-			$values = $this->parseConfig20();
-		} else {
-			// fresh install
-			$values = $_POST;
-		}
-
-		$config = array(
-			'host' => 'localhost',
-			'name' => '',
-			'user' => '',
-			'pass' => '',
-			'prefix' => 'psm_',
-		);
 		$this->setTemplateId('install_config_new', 'install.tpl.html');
+		$tpl_data = array();
 
-		$changed = false;
-		foreach($config as $ckey => &$cvalue) {
-			if(isset($values[$ckey])) {
-				$changed = true;
-				$cvalue = $values[$ckey];
+		if(!defined('PSM_CONFIG')) {
+			// first detect "old" config file (2.0)
+			if(file_exists($this->path_config_old)) {
+				// oldtimer huh
+				$this->addMessage('Configuration file for v2.0 found.', 'success');
+				$this->addMessage(
+					'The location of the config file has been changed since v2.0.<br/>' .
+					'We will attempt to create a new config file for you.'
+				, 'warning');
+				$values = $this->parseConfig20();
+			} else {
+				// fresh install
+				$values = $_POST;
 			}
-		}
-		// add config to template data for prefilling the form
-		$tpl_data = $config;
 
-		if($changed) {
-			// test db connection
-			$this->db = new \psm\Service\Database(
-				$config['host'],
-				$config['user'],
-				$config['pass'],
-				$config['name']
+			$config = array(
+				'host' => 'localhost',
+				'name' => '',
+				'user' => '',
+				'pass' => '',
+				'prefix' => 'psm_',
 			);
 
-			if($this->db->status()) {
-				$this->addResult('Connection to MySQL successful.');
-				$config_php = $this->writeConfigFile($config);
-				if($config_php === true) {
-					$this->addResult('Configuration file written successfully.');
-					return $this->executeInstall();
-				} else {
-					$this->addResult('Config file is not writable, we cannot save it for you.', 'error');
-					$this->tpl->newTemplate('install_config_new_copy', 'install.tpl.html');
-					$tpl_data['html_config_copy'] = $this->tpl->getTemplate('install_config_new_copy');
-					$tpl_data['php_config'] = $config_php;
+			$changed = false;
+			foreach($config as $ckey => &$cvalue) {
+				if(isset($values[$ckey])) {
+					$changed = true;
+					$cvalue = $values[$ckey];
 				}
-			} else {
-				$this->addResult('Unable to connect to MySQL. Please check your information.', 'error');
+			}
+			// add config to template data for prefilling the form
+			$tpl_data = $config;
+
+			if($changed) {
+				// test db connection
+				$this->db = new \psm\Service\Database(
+					$config['host'],
+					$config['user'],
+					$config['pass'],
+					$config['name']
+				);
+
+				if($this->db->status()) {
+					$this->addMessage('Connection to MySQL successful.', 'success');
+					$config_php = $this->writeConfigFile($config);
+					if($config_php === true) {
+						$this->addMessage('Configuration file written successfully.', 'success');
+					} else {
+						$this->addMessage('Config file is not writable, we cannot save it for you.', 'error');
+						$this->tpl->newTemplate('install_config_new_copy', 'install.tpl.html');
+						$tpl_data['html_config_copy'] = $this->tpl->getTemplate('install_config_new_copy');
+						$tpl_data['php_config'] = $config_php;
+					}
+				} else {
+					$this->addMessage('Unable to connect to MySQL. Please check your information.', 'error');
+				}
 			}
 		}
 
+		if(defined('PSM_CONFIG')) {
+			if($this->db->status()) {
+				if($this->isUpgrade()) {
+					// upgrade
+					if(version_compare($version_from, '2.2.0', '<')) {
+						// upgrade from before 2.2, does not have passwords yet.. create new user first
+						$this->addMessage('PLEASE CREATE A USER!', 'warning');
+						$this->setTemplateId('install_config_new_user', 'install.tpl.html');
+					} else {
+						$this->setTemplateId('install_config_upgrade', 'install.tpl.html');
+						$tpl_data['version'] = PSM_VERSION;
+					}
+				} else {
+					// fresh install ahead
+					$this->setTemplateId('install_config_new_user', 'install.tpl.html');
+
+					$tpl_data['username'] = (isset($_POST['username'])) ? $_POST['username'] : '';
+					$tpl_data['email'] = (isset($_POST['email'])) ? $_POST['email'] : '';
+				}
+			} else {
+				$this->addMessage('Configuration file found, but unable to connect to MySQL. Please check your information.', 'error');
+			}
+		}
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
 	/**
-	 * Parse the 2.0 config file for prefilling
-	 * @return array
-	 */
-	protected function parseConfig20() {
-		$config_old = file_get_contents($this->path_config_old);
-		$vars = array(
-			'prefix' => '',
-			'user' => '',
-			'pass' => '',
-			'name' => '',
-			'host' => '',
-		);
-		$pattern = "/define\('SM_DB_{key}', '(.*?)'/u";
-
-		foreach($vars as $key => $value) {
-			$pattern_key = str_replace('{key}', strtoupper($key), $pattern);
-			preg_match($pattern_key, $config_old, $value_matches);
-			$vars[$key] = (isset($value_matches[1])) ? $value_matches[1] : '';
-		}
-
-		return $vars;
-	}
-
-	/**
-	 * Execute the upgrade process to a newer version
+	 * Execute the install and upgrade process to a newer version
 	 */
 	protected function executeInstall() {
-		if(!defined('PSM_CONFIG')) {
-			$this->addResult('No valid configuration found.', 'error');
+		if(!defined('PSM_CONFIG') || !$this->db->status()) {
 			return $this->executeConfig();
 		}
-		if(!$this->db->status()) {
-			$this->addResult('MySQL connection failed.', 'error');
-			return;
-		}
-		$logger = array($this, 'addResult');
+		// check if user submitted username + password in previous step
+		// this would only be the case for new installs, and install from
+		// before 2.2
+		$new_user = array(
+			'user_name' => psm_POST('username'),
+			'name' => psm_POST('username'),
+			'password' => psm_POST('password'),
+			'password_repeat' => psm_POST('password_repeat'),
+			'email' => psm_POST('email', ''),
+			'level' => PSM_USER_ADMIN,
+		);
+
+		$validator = new \psm\Util\User\UserValidator($this->user);
+
+		$logger = array($this, 'addMessage');
 		$installer = new \psm\Util\Install\Installer($this->db, $logger);
-		$installer->install();
+
+		if($this->isUpgrade()) {
+			$this->addMessage('Upgrade process started.', 'info');
+
+			$version_from = $this->getPreviousVersion();
+			if($version_from === false) {
+				$this->addMessage('Unable to locate your previous version. Please run a fresh install.', 'error');
+			} else {
+				if(version_compare($version_from, PSM_VERSION, '=')) {
+					$this->addMessage('Your installation is already at the latest version.', 'success');
+				} elseif(version_compare($version_from, PSM_VERSION, '>')) {
+					$this->addMessage('This installer does not support downgrading, sorry.', 'error');
+				} else {
+					$this->addMessage('Upgrading from ' . $version_from . ' to ' . PSM_VERSION, 'info');
+					$installer->upgrade($version_from, PSM_VERSION);
+
+				}
+				if(version_compare($version_from, '2.2.0', '<')) {
+					$add_user = true;
+				}
+			}
+		} else {
+			// validate the lot
+			try {
+				$validator->email($new_user['email']);
+				$validator->password($new_user['password'], $new_user['password_repeat']);
+			} catch(\InvalidArgumentException $e) {
+				$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
+				return $this->executeConfig();
+			}
+
+			$this->addMessage('Installation process started.', 'success');
+			$installer->install();
+			// add user
+			$add_user = true;
+		}
+
+		if($add_user) {
+			unset($new_user['password_repeat']);
+			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $new_user);
+			if(intval($user_id) > 0) {
+				$this->addMessage('User account has been created successfully.');
+			} else {
+				$this->addMessage('There was an error adding your user account.');
+			}
+		}
 
 		$this->setTemplateId('install_success', 'install.tpl.html');
 	}
@@ -262,30 +301,63 @@ class Install extends AbstractModule {
 	}
 
 	/**
-	 * Add install result to be added to the main template
-	 * @param string|array $msg
-	 * @param string $status success/warning/error
-	 * @return \psm\Module\Install
+	 * Parse the 2.0 config file for prefilling
+	 * @return array
 	 */
-	public function addResult($msg, $status = 'success') {
-		if(!is_array($msg)) {
-			$msg = array($msg);
-		}
-		if($status == 'error') {
-			$shortcode = 'important';
-		} else {
-			$shortcode = $status;
+	protected function parseConfig20() {
+		$config_old = file_get_contents($this->path_config_old);
+		$vars = array(
+			'prefix' => '',
+			'user' => '',
+			'pass' => '',
+			'name' => '',
+			'host' => '',
+		);
+		$pattern = "/define\('SM_DB_{key}', '(.*?)'/u";
+
+		foreach($vars as $key => $value) {
+			$pattern_key = str_replace('{key}', strtoupper($key), $pattern);
+			preg_match($pattern_key, $config_old, $value_matches);
+			$vars[$key] = (isset($value_matches[1])) ? $value_matches[1] : '';
 		}
 
-		foreach($msg as $m) {
-			$this->install_results[] = array(
-				'message' => $m,
-				'status' => strtoupper($status),
-				'shortcode' => $shortcode,
-			);
+		return $vars;
+	}
+
+	/**
+	 * Is it an upgrade or install?
+	 */
+	protected function isUpgrade() {
+		if(!$this->db->status()) {
+			return false;
 		}
-		return $this;
+		$confExists = $this->db->query("SHOW TABLES LIKE '".PSM_DB_PREFIX."config';", false)->rowCount();
+
+		if($confExists > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Get the previous version from the config table
+	 * @return boolean|string FALSE on failure, string otherwise
+	 */
+	protected function getPreviousVersion() {
+		if(!$this->isUpgrade()) {
+			return false;
+		}
+		$version_conf = $this->db->selectRow(PSM_DB_PREFIX . 'config', array('key' => 'version'), array('value'));
+		if(empty($version_conf)) {
+			return false;
+		} else {
+			$version_from = $version_conf['value'];
+			if(strpos($version_from, '.') === false) {
+				// yeah, my bad.. previous version did not follow proper naming scheme
+				$version_from = rtrim(chunk_split($version_from, 1, '.'), '.');
+			}
+			return $version_from;
+		}
 	}
 }
-
-?>

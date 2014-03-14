@@ -369,6 +369,34 @@ function psm_build_url($params = array(), $urlencode = true) {
 	return $url;
 }
 
+/**
+ * Try existence of a GET var, if not return the alternative
+ * @param string $key
+ * @param string $alt
+ * @return mixed
+ */
+function psm_GET($key, $alt = null) {
+	if(isset($_GET[$key])) {
+		return $_GET[$key];
+	} else {
+		return $alt;
+	}
+}
+
+/**
+ * Try existence of a GET var, if not return the alternative
+ * @param string $key
+ * @param string $alt
+ * @return mixed
+ */
+function psm_POST($key, $alt = null) {
+	if(isset($_POST[$key])) {
+		return $_POST[$key];
+	} else {
+		return $alt;
+	}
+}
+
 ###############################################
 #
 # Debug functions
@@ -396,5 +424,3 @@ function psm_no_cache() {
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Pragma: no-cache");
 }
-
-?>

@@ -98,15 +98,6 @@ The config file has actually been renamed since 2.0, but if you keep it there wh
  * Remove the old config.inc.php file
 
 
-## Security
-
-By default the PHP Server Monitor does not (yet) come with any security methods. After uploading these files to
-your public html folder these will be visible to everyone on the web. It is recommended to put a password
-on this folder to prevent other people from playing with your tool. An example .htaccess login script can
-be found in the example/ dir. To create your own username and password for the .htpasswd file, see
-<http://www.htaccesstools.com/htpasswd-generator/>
-
-
 ## Setting up a cronjob
 
 In order to keep the server monitor up to date, the monitor.php file has to run regularly.

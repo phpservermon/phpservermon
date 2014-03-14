@@ -21,18 +21,22 @@
  * @author      Pepijn Over <pep@neanderthal-technology.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: phpservermon 2.1.0
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 2.1.0
  **/
 
-define('PSM_VERSION', '2.2.0-dev');
 // Include paths
 define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 define('PSM_PATH_VENDOR', PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_INC', PSM_PATH_SRC . 'includes' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_TPL', PSM_PATH_SRC . 'templates' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
+
+// user levels
+define('PSM_USER_ADMIN', 10);
+define('PSM_USER_USER', 20);
+define('PSM_USER_ANONYMOUS', 30);
 
 // find config file
 $path_conf = PSM_PATH_SRC . '../config.php';
