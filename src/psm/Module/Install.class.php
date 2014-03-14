@@ -263,9 +263,10 @@ class Install extends AbstractModule {
 			unset($new_user['password_repeat']);
 			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $new_user);
 			if(intval($user_id) > 0) {
-				$this->addMessage('User account has been created successfully.');
+				$this->user->changePassword($user_id, $new_user['password']);
+				$this->addMessage('User account has been created successfully.', 'success');
 			} else {
-				$this->addMessage('There was an error adding your user account.');
+				$this->addMessage('There was an error adding your user account.', 'error');
 			}
 		}
 

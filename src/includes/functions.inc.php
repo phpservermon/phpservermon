@@ -179,7 +179,7 @@ function psm_log_uptime($server_id, $status, $latency) {
     global $db;
 
     $db->save(
-        PSM_DB_PREFIX.'uptime',
+        PSM_DB_PREFIX.'servers_uptime',
         array(
             'server_id' => $server_id,
             'date' => date('Y-m-d H:i:s'),

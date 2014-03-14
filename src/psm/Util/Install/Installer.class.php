@@ -131,7 +131,12 @@ class Installer {
 	 */
 	protected function installTables() {
 		$tables = array(
-			PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `monitor_users` (
+			PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
+							`key` varchar(255) NOT NULL,
+							`value` varchar(255) NOT NULL,
+							PRIMARY KEY (`key`)
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
 							`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 							`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
 							`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
@@ -172,11 +177,15 @@ class Installer {
 						  `sms` enum('yes','no') NOT NULL default 'no',
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
-							`key` varchar(255) NOT NULL,
-							`value` varchar(255) NOT NULL,
-							PRIMARY KEY (`key`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
+						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						`server_id` int(11) unsigned NOT NULL,
+						`date` datetime NOT NULL,
+						`status` tinyint(1) unsigned NOT NULL,
+						`latency` float(9,7) DEFAULT NULL,
+						PRIMARY KEY (`servers_uptime_id`),
+						KEY `server_id` (`server_id`)
+					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 		);
 
 		foreach($tables as $name => $sql) {
@@ -205,7 +214,7 @@ class Installer {
 			// upgrade to 2.2.0
 			$this->upgrade220();
 		}
-		$this->db->save(PSM_DB_PREFIX . 'config', array('value' => $version_from), array('key' => 'version'));
+		$this->db->save(PSM_DB_PREFIX . 'config', array('value' => $version_to), array('key' => 'version'));
 	}
 
 	/**
@@ -248,12 +257,15 @@ class Installer {
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_name`=`email`, `level`=10;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD UNIQUE `unique_username` ( `user_name` );";
 
-		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "uptime` (
-				`server_id` INT( 11 ) NOT NULL,
-				`date` DATETIME NOT NULL ,
-				`status` INT( 1 ) NOT NULL ,
-				`latency`  FLOAT( 9, 7 ) NULL
-			   ) ENGINE = MYISAM ;";
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
+						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						`server_id` int(11) unsigned NOT NULL,
+						`date` datetime NOT NULL,
+						`status` tinyint(1) unsigned NOT NULL,
+						`latency` float(9,7) DEFAULT NULL,
+						PRIMARY KEY (`servers_uptime_id`),
+						KEY `server_id` (`server_id`)
+					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
 		$this->execSQL($queries);
 	}
