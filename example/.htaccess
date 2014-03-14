@@ -1,4 +1,0 @@
-AuthUserFile ".htpasswd"
-AuthType Basic
-AuthName "Server Monitor"
-require valid-user
