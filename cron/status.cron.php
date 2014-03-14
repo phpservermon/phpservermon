@@ -29,9 +29,10 @@
 require_once dirname(__FILE__) . '/../src/bootstrap.php';
 
 // prevent cron from running twice at the same time
-// however if the cron has been running for 10 mins, we'll assume it died and run anyway
+// however if the cron has been running for X mins, we'll assume it died and run anyway
+// if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 $time = time();
-if(psm_get_conf('cron_running') == 1 && ($time - psm_get_conf('cron_running_time') < 600)) {
+if(psm_get_conf('cron_running') == 1 && ($time - psm_get_conf('cron_running_time') < PSM_CRON_TIMEOUT)) {
    die('Cron is already running. Exiting.');
 }
 psm_update_conf('cron_running', 1);

@@ -26,19 +26,20 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-namespace psm\Module;
+namespace psm\Module\Server\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Status module
  */
-class Status extends AbstractModule {
+class StatusController extends AbstractController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
 
-		$this->setActions('index', 'index');
+		$this->setActions(array('index'), 'index');
 	}
 
 	/**
@@ -90,6 +91,15 @@ class Status extends AbstractModule {
 		$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => 30));
 		$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
 	}
-}
 
-?>
+	protected function createHTMLLabels() {
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			array(
+				'subtitle' => psm_get_lang('menu', 'status'),
+			)
+		);
+
+		return parent::createHTMLLabels();
+	}
+}

@@ -23,11 +23,19 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since		phpservermon 2.1
  **/
 
-require 'src/bootstrap.php';
+namespace psm\Module;
+use psm\Service\Database;
+use psm\Service\Template;
 
-psm_no_cache();
+interface ControllerInterface {
 
-$router = new psm\Router();
-$router->run();
+	public function __construct(Database $db, Template $tpl);
+
+	/**
+	 * Initialize the module
+	 */
+	public function initialize();
+}

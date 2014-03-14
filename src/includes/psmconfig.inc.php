@@ -79,3 +79,8 @@ define("PSM_LOGIN_COOKIE_SECRET_KEY", "4w900de52e3ap7y77y8675jy6c594286");
  * Number of seconds the reset link is valid after sending it to the user.
  */
 define('PSM_LOGIN_RESET_RUNTIME', 3600);
+
+/**
+ * Number of seconds the cron is supposedly dead and we will run another cron anyway.
+ */
+define('PSM_CRON_TIMEOUT', 600);

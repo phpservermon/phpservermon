@@ -25,11 +25,12 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-namespace psm\Module;
+namespace psm\Module\Config\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
-class Config extends AbstractModule {
+class ConfigController extends AbstractController {
 
 	/**
 	 * Checkboxes
@@ -182,6 +183,7 @@ class Config extends AbstractModule {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
+				'subtitle' => psm_get_lang('menu', 'config'),
 				'label_settings_email' => psm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 				'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
@@ -225,5 +227,3 @@ class Config extends AbstractModule {
 		return parent::createHTMLLabels();
 	}
 }
-
-?>

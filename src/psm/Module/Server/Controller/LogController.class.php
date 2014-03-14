@@ -25,14 +25,15 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-namespace psm\Module;
+namespace psm\Module\Server\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Log module. Create the page to view previous log messages
  */
-class Log extends AbstractModule {
+class LogController extends AbstractController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -132,6 +133,7 @@ class Log extends AbstractModule {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
+				'subtitle' => psm_get_lang('system', 'server_log'),
 				'label_status' => psm_get_lang('log', 'status'),
 				'label_email' => psm_get_lang('log', 'email'),
 				'label_sms' => psm_get_lang('log', 'sms'),
@@ -140,12 +142,10 @@ class Log extends AbstractModule {
 				'label_type' => psm_get_lang('log', 'type'),
 				'label_message' => psm_get_lang('system', 'message'),
 				'label_date' => psm_get_lang('system', 'date'),
-				'label_users' => ucfirst(psm_get_lang('system', 'users')),
+				'label_users' => ucfirst(psm_get_lang('menu', 'users')),
 			)
 		);
 
 		return parent::createHTMLLabels();
 	}
 }
-
-?>

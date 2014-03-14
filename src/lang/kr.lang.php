@@ -28,13 +28,6 @@
 $sm_lang = array(
 	'system' => array(
 		'title' => 'Server Monitor',
-		'servers' => '서버목록',
-		'users' => '사용자',
-		'log' => '로그',
-		'status' => 'Status',
-		'update' => '업데이트',
-		'config' => '설정',
-		'help' => '도움말',
 		'install' => 'Install',
 		'action' => 'Action',
 		'save' => '저장',
@@ -51,6 +44,15 @@ $sm_lang = array(
 		'update_available' => '새로운 업데이트가 있습니다. 다음사이트를 방문 해 주십시오. <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
+	),
+	'menu' => array(
+		'config' => '설정',
+		'server' => '서버목록',
+		'server_log' => '로그',
+		'server_status' => 'Status',
+		'server_update' => '업데이트',
+		'user' => '사용자',
+		'help' => '도움말',
 	),
 	'users' => array(
 		'user' => '사용자',

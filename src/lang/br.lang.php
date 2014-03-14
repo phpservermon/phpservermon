@@ -28,13 +28,6 @@
 $sm_lang = array(
     'system' => array(
         'title' => 'Server Monitor',
-        'servers' => 'Servidores',
-        'users' => 'Usuários',
-        'log' => 'Log',
-		'status' => 'Status',
-        'update' => 'Atualização',
-        'config' => 'Configuração',
-        'help' => 'Ajuda',
 		'install' => 'Install',
         'action' => 'Ação',
         'save' => 'Salvar',
@@ -52,6 +45,15 @@ $sm_lang = array(
         'back_to_top' => 'Voltar ao topo',
 		'go_back' => 'Go back',
     ),
+	'menu' => array(
+		'config' => 'Configuração',
+		'server' => 'Servidores',
+		'server_log' => 'Log',
+		'server_status' => 'Status',
+		'server_update' => 'Atualização',
+		'user' => 'Usuários',
+		'help' => 'Ajuda',
+	),
     'users' => array(
         'user' => 'usuário',
         'name' => 'Nome',

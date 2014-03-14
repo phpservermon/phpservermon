@@ -29,11 +29,5 @@ define('PSM_INSTALL', true);
 
 require 'src/bootstrap.php';
 
-$type = 'install';
-$tpl = new \psm\Service\Template();
-$user = new \psm\Service\User($db);
-$mod = new psm\Module\Install($db, $tpl);
-$mod->setUser($user);
-$mod->initialize();
-
-?>
+$router = new psm\Router();
+$router->run('config_install');

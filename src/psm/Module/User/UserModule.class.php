@@ -23,11 +23,19 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since		phpservermon 2.2
  **/
 
-require 'src/bootstrap.php';
+namespace psm\Module\User;
+use psm\Module\ModuleInterface;
 
-psm_no_cache();
+class UserModule implements ModuleInterface {
+	public function getControllers() {
+		return array(
+			'user' => __NAMESPACE__ . '\Controller\UserController',
+			'login' => __NAMESPACE__ . '\Controller\LoginController',
+//			'profile' => __NAMESPACE__ . '\Controller\StatusController',
+		);
 
-$router = new psm\Router();
-$router->run();
+	}
+}

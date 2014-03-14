@@ -28,13 +28,6 @@
 $sm_lang = array(
 	'system' => array(
 		'title' => 'Server Monitor',
-		'servers' => 'Servers',
-		'users' => 'Users',
-		'log' => 'Log',
-		'status' => 'Status',
-		'update' => 'Update',
-		'config' => 'Config',
-		'help' => 'Help',
 		'install' => 'Install',
 		'action' => 'Action',
 		'save' => 'Save',
@@ -51,6 +44,15 @@ $sm_lang = array(
 		'update_available' => 'A new update is available from <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
+	),
+	'menu' => array(
+		'config' => 'Config',
+		'server' => 'Servers',
+		'server_log' => 'Log',
+		'server_status' => 'Status',
+		'server_update' => 'Update',
+		'user' => 'Users',
+		'help' => 'Help',
 	),
 	'users' => array(
 		'user' => 'user',

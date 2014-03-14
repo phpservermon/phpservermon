@@ -25,7 +25,8 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-namespace psm\Module;
+namespace psm\Module\User\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
@@ -33,7 +34,7 @@ use psm\Service\Template;
  * User module. Add, edit and delete users, or assign
  * servers to users.
  */
-class Users extends AbstractModule {
+class UserController extends AbstractController {
 	public $servers;
 
 	/**
@@ -257,7 +258,8 @@ class Users extends AbstractModule {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'label_users' => psm_get_lang('system', 'users'),
+				'subtitle' => psm_get_lang('menu', 'users'),
+				'label_users' => psm_get_lang('menu', 'users'),
 				'label_name' => psm_get_lang('users', 'name'),
 				'label_user_name' => psm_get_lang('users', 'user_name'),
 				'label_password' => psm_get_lang('users', 'password'),
@@ -268,7 +270,7 @@ class Users extends AbstractModule {
 				'label_level_30' => psm_get_lang('users', 'level_30'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
 				'label_email' => psm_get_lang('users', 'email'),
-				'label_servers' => psm_get_lang('system', 'servers'),
+				'label_servers' => psm_get_lang('menu', 'server'),
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
 				'label_go_back' => psm_get_lang('system', 'go_back'),

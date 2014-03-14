@@ -18,16 +18,38 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
+ * @author      Michael Greenhill
  * @author      Pepijn Over <pep@neanderthal-technology.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since		phpservermon 2.2.0
  **/
 
-require 'src/bootstrap.php';
+namespace psm\Module\Server\Controller;
+use psm\Module\AbstractController;
+use psm\Service\Database;
+use psm\Service\Template;
 
-psm_no_cache();
+class UpdateController extends AbstractController {
 
-$router = new psm\Router();
-$router->run();
+	function __construct(Database $db, Template $tpl) {
+		parent::__construct($db, $tpl);
+
+		$this->setActions('index', 'index');
+	}
+
+	protected function executeIndex() {
+		// fuck globals. but hey, dirty fixes, like you've done it.
+		global $db;
+
+		require PSM_PATH_SRC . '../cron/status.cron.php';
+		// redirect user to regular status page
+		header('Location: ' . psm_build_url(array(
+			'mod' => 'server_status'
+		)));
+		die();
+	}
+
+}

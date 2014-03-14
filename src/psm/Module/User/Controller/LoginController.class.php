@@ -26,11 +26,12 @@
  * @since       phpservermon 2.2.0
  **/
 
-namespace psm\Module;
+namespace psm\Module\User\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
-class Login extends AbstractModule {
+class LoginController extends AbstractController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);

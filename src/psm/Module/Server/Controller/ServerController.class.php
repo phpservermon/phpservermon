@@ -25,14 +25,15 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-namespace psm\Module;
+namespace psm\Module\Server\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
  */
-class Servers extends AbstractModule {
+class ServerController extends AbstractController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -213,6 +214,7 @@ class Servers extends AbstractModule {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
+				'subtitle' => psm_get_lang('menu', 'servers'),
 				'label_label' => psm_get_lang('servers', 'label'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
@@ -237,5 +239,3 @@ class Servers extends AbstractModule {
 		return parent::createHTMLLabels();
 	}
 }
-
-?>

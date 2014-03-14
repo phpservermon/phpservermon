@@ -29,7 +29,7 @@ namespace psm\Module;
 use psm\Service\Database;
 use psm\Service\Template;
 
-abstract class AbstractModule implements ModuleInterface {
+abstract class AbstractController implements ControllerInterface {
 
 	/**
 	 * Current mode. Can be used by modules to determine
@@ -200,26 +200,23 @@ abstract class AbstractModule implements ModuleInterface {
 	 * @return string
 	 */
 	protected function createHTMLMenu() {
-		// @todo globals..? seriously..?
-		global $type;
-
 		$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
 
 		$tpl_id = 'main_menu';
 		$this->tpl->newTemplate($tpl_id, 'main.tpl.html');
 
 		$tpl_data = array(
-			'label_help' => psm_get_lang('system', 'help'),
+			'label_help' => psm_get_lang('menu', 'help'),
 			'label_logout' => psm_get_lang('login', 'logout'),
 			'url_logout' => psm_build_url(array('logout' => 1)),
 		);
 
 		switch($ulvl) {
 			case PSM_USER_ADMIN:
-				$items = array('servers', 'users', 'log', 'status', 'config', 'update');
+				$items = array('server', 'user', 'server_log', 'server_status', 'config', 'server_update');
 				break;
 			case PSM_USER_USER:
-				$items = array('servers', 'log', 'status', 'update');
+				$items = array('server', 'server_log', 'server_status', 'server_update');
 				break;
 			default:
 				$items = array();
@@ -228,9 +225,9 @@ abstract class AbstractModule implements ModuleInterface {
 		$menu = array();
 		foreach($items as $key) {
 			$menu[] = array(
-				'active' => ($key == $type) ? 'active' : '',
-				'url' => psm_build_url(array('type' => $key)),
-				'label' => psm_get_lang('system', $key),
+				'active' => ($key == psm_GET('mod')) ? 'active' : '',
+				'url' => psm_build_url(array('mod' => $key)),
+				'label' => psm_get_lang('menu', $key),
 			);
 		}
 		if(!empty($menu)) {
@@ -274,7 +271,6 @@ abstract class AbstractModule implements ModuleInterface {
 			'main',
 			array(
 				'title' => strtoupper(psm_get_lang('system', 'title')),
-				'subtitle' => psm_get_lang('system', $type),
 				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 			)
 		);

@@ -28,13 +28,6 @@
 $sm_lang = array(
 	'system' => array(
 		'title' => 'Serveur de Supervision',
-		'servers' => 'Serveurs',
-		'users' => 'Utilisateurs',
-		'log' => 'Evenements',
-		'status' => 'Status',
-		'update' => 'Mise &agrave; jour',
-		'config' => 'Configuration',
-		'help' => 'Aide',
 		'install' => 'Install',
 		'action' => 'Action',
 		'save' => 'Enregistrer',
@@ -51,6 +44,15 @@ $sm_lang = array(
 		'update_available' => 'Une nouvelle version est disponible &agrave; l adresse <a href="http://phpservermon.sourceforge.net" target="_blank">http://phpservermon.sourceforge.net</a>.',
 		'back_to_top' => 'Haut de page',
 		'go_back' => 'Go back',
+	),
+	'menu' => array(
+		'config' => 'Configuration',
+		'server' => 'Serveurs',
+		'server_log' => 'Evenements',
+		'server_status' => 'Status',
+		'server_update' => 'Mise &agrave; jour',
+		'user' => 'Utilisateurs',
+		'help' => 'Aide',
 	),
 	'users' => array(
 		'user' => 'Utilisateur',

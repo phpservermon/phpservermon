@@ -1,7 +1,7 @@
-function sm_delete(id, type) {
+function sm_delete(id, mod) {
     var del = confirm("Are you sure you want to delete this record?");
     if (del == true) {
-        var loc = 'index.php?action=delete&id=' + id + '&type=' + type;
+        var loc = 'index.php?action=delete&id=' + id + '&mod=' + mod;
         window.location = loc;
     }
 }

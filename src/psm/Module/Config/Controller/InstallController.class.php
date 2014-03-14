@@ -26,11 +26,12 @@
  * @since		phpservermon 2.1.0
  **/
 
-namespace psm\Module;
+namespace psm\Module\Config\Controller;
+use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
-class Install extends AbstractModule {
+class InstallController extends AbstractController {
 
 	/**
 	 * Full path to config file
@@ -47,6 +48,7 @@ class Install extends AbstractModule {
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
 
+		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
 		$this->addMenu(false);
 
 		$this->path_config = PSM_PATH_SRC . '../config.php';
@@ -360,5 +362,16 @@ class Install extends AbstractModule {
 			}
 			return $version_from;
 		}
+	}
+
+	protected function createHTMLLabels() {
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			array(
+				'subtitle' => psm_get_lang('system', 'install'),
+			)
+		);
+
+		return parent::createHTMLLabels();
 	}
 }

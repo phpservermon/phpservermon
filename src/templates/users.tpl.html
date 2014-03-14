@@ -1,7 +1,7 @@
 <!--%tpl_users_list-->
 <div class="span12">
     <div class="top_buutons">
-        <a class="btn btn-success" href="index.php?type=users&action=edit">
+        <a class="btn btn-success" href="index.php?mod=user&action=edit">
             <i class="icon-plus icon-white"></i>
             {label_add_new}
         </a>
@@ -28,10 +28,10 @@
             <td>{email}</td>
             <td>{emp_servers}</td>
             <td>
-                <a class="btn btn-small" href="index.php?type=users&amp;action=edit&amp;id={user_id}" title="{label_edit}">
+                <a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
                     <i class="icon-pencil"></i>
                 </a>
-        	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'users');" title="{label_delete}">
+        	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'user');" title="{label_delete}">
                     <i class="icon-remove icon-white"></i>
                 </a>
             </td>
@@ -45,7 +45,7 @@
 
 <!--%tpl_users_update-->
 <div class="span12">
-    <form class="form-horizontal well" action="index.php?type=users&amp;action=save&amp;id={edit_user_id}" method="post">
+    <form class="form-horizontal well" action="index.php?mod=user&amp;action=save&amp;id={edit_user_id}" method="post">
          <fieldset>
                 <legend>{titlemode}</legend>
                 <div class="control-group">

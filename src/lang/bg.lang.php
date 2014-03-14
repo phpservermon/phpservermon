@@ -28,13 +28,6 @@
 $sm_lang = array(
 	'system' => array(
 		'title' => 'Мониторинг система',
-		'servers' => 'Сървъри',
-		'users' => 'Потребители',
-		'log' => 'Логове',
-		'status' => 'Статус',
-		'update' => 'Обнови данните',
-		'config' => 'Настройки',
-		'help' => 'Помощ',
 		'install' => 'Инсталация',
 		'action' => 'Действие',
 		'save' => 'Запиши',
@@ -51,6 +44,15 @@ $sm_lang = array(
 		'update_available' => 'Налична е нова версия. Може да я свалите от <a href="http://phpservermon.sourceforge.net" target="_blank">тук</a>.',
 		'back_to_top' => 'Нагоре',
 		'go_back' => 'Go back',
+	),
+	'menu' => array(
+		'config' => 'Настройки',
+		'server' => 'Сървъри',
+		'server_log' => 'Логове',
+		'server_status' => 'Статус',
+		'server_update' => 'Обнови данните',
+		'user' => 'Потребители',
+		'help' => 'Помощ',
 	),
 	'users' => array(
 		'user' => 'Потребител',
