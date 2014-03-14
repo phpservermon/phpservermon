@@ -177,9 +177,9 @@ class Install extends AbstractModule {
 			if($this->db->status()) {
 				if($this->isUpgrade()) {
 					// upgrade
-					if(version_compare($version_from, '2.2.0', '<')) {
+					if(version_compare(PSM_VERSION, '2.2.0', '<')) {
 						// upgrade from before 2.2, does not have passwords yet.. create new user first
-						$this->addMessage('PLEASE CREATE A USER!', 'warning');
+						$this->addMessage('Your current version does not have an authentication system, but since v2.2 access to the monitor is restricted by user accounts. Please set up a new account to be able to login after the upgrade, and which you can use to change the passwords for your other accounts.', 'info');
 						$this->setTemplateId('install_config_new_user', 'install.tpl.html');
 					} else {
 						$this->setTemplateId('install_config_upgrade', 'install.tpl.html');

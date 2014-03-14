@@ -86,17 +86,25 @@ it will open a page where you can change the necessary information for your tool
 
 ## Upgrade
 
+For a regular upgrade, follow these steps:
+
+* Replace all files except(!) config.php
+* Navigate to install.php
+* Follow the steps
+* Enjoy
+
 ### From 2.0
 
 The structure of the project has changed quite a bit since 2.0, but if you have not made any local changes the upgrade is quite easy.
 The best thing to do is to replace all your current files with the new release, except for the config.inc.php file.
 The config file has actually been renamed since 2.0, but if you keep it there while upgrading the install script will use it to prefill your database information.
+The rest of the steps are identical to a regular upgrade (see above), except that you can remove the old config.inc.php file afterwards.
 
- * Replace all files except(!) config.inc.php
- * Navigate to install.php
- * Follow the steps
- * Remove the old config.inc.php file
+### From 2.1
 
+One of the new features introduced in 2.2 is a user authentication system. Because the users in previous versions do not have a password, after upgrading you would not be able to login.
+For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
+If, for whatever reason this does not work, the upgrade script automatically change the username of all existing users to their email addresses, which you could use for the forgot password screen.
 
 ## Setting up a cronjob
 
