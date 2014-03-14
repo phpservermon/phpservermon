@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Plamen Vasilev
+ * @author      Plamen Vasilev <p.vasileff@gmail.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -83,8 +83,8 @@ $sm_lang = array(
 		'rtime' => 'Пинг',
 	),
 	'config' => array(
-		'general' => 'General',
-		'language' => 'Language',
+		'general' => 'Основни настройки',
+		'language' => 'Език',
 		'language_en' => 'English',
 		'language_bg' => 'Български',
 		'language_nl' => 'Dutch',
@@ -113,14 +113,14 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
-		'alert_type' => 'Изберете кога желаете системата да Ви известява.<br/>',
-		'alert_type_description' => '<b>Промяна на сатуса:</b>'.
-			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Online -> Offline и от Offline -> Online.<br/>'.
-			'<br/><b>Offline</b>'.
+		'alert_type' => 'Изберете кога желаете да получавате известия<br/>',
+		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
+			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
+			'<br/><b>Офлайн</b><br>'.
 			'Ще получите известие когато връзката до сървъра е изгубена за *ПЪРВИ ПЪТ*. Например, '.
 			'вашия cron скрипт проверява всеки 15 минути и връзката до сървъра е изгубена в 1 часа през ноща и не работи до 6 часа сутринта '.
 			'Вие ще получите едно известие в 1 часа за това<br/>'.
-			'<br><b>Винаги:</b> '.
+			'<br><b>Винаги:</b><br> '.
 			'Ще получавате известие при всяка проверка на Вашия cron скрипт дори когато връзката до даден сървър или сайт е била'.
 			'прекъсната в продължение на часове.',
 		'alert_type_status' => 'Промяна на статуса',
@@ -132,7 +132,7 @@ $sm_lang = array(
 		'updated' => 'Настройките са обновени успешно.',
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
-		'settings_notification' => 'Настройки на уведомяването',
+		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh_servers' =>
 			'Автоматично опресняване на страницата<br/>'.
@@ -140,12 +140,12 @@ $sm_lang = array(
 			'Времето е в секунди, ако е 0 страницата няма да се обноява.'.
 			'</div>',
 	),
-	// for newlines in the email messages use <br/>
+	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(
-		'off_sms' => 'Serverat \'%LABEL%\' e OFFLINE: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
+		'off_sms' => 'Syrvyryt \'%LABEL%\' e OFFLINE: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' e ONLINE: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Syrvyryt \'%LABEL%\' e ONLINE: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
