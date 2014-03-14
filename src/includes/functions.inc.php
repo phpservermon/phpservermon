@@ -339,6 +339,36 @@ function psm_build_mail($from_name = null, $from_email = null) {
 	return $phpmailer;
 }
 
+/**
+ * Generate a new link to the current monitor
+ * @param array $params key value pairs
+ * @param boolean $urlencode urlencode all params?
+ * @return string
+ */
+function psm_build_url($params = array(), $urlencode = true) {
+	$defports = array(80, 443);
+	$url =
+		($_SERVER['SERVER_PORT']==80 ? 'http' : 'https').'://'.
+		$_SERVER['HTTP_HOST'];
+	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
+		$url .= ':' . $_SERVER['SERVER_PORT'];
+	}
+	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+
+	if($params != null) {
+		$url .= '?';
+
+		foreach($params as $k => $v) {
+			if($urlencode) {
+				$v = urlencode($v);
+			}
+			$url .= '&' . $k . '=' . $v;
+		}
+	}
+
+	return $url;
+}
+
 ###############################################
 #
 # Debug functions
