@@ -171,7 +171,7 @@ class LoginController extends AbstractController {
 			'action' => 'reset',
 			'user_id' => $user_id,
 			'token' => $user_password_reset_hash,
-		));
+		), true, false);
 		$body = psm_get_lang('login', 'password_reset_email_body');
 		$body = str_replace('%link%', $url, $body);
 		$mail->Body = $body;
