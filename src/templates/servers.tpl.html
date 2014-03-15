@@ -1,12 +1,6 @@
 <!--%tpl_servers_list-->
 <div class="span12">
-    <div class="top_buutons">
-        <a class="btn btn-success" href="index.php?mod=server&action=edit">
-            <i class="icon-plus icon-white"></i>
-            {label_add_new}
-        </a>
-    </div>
-
+{html_buttons_admin}
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -21,7 +15,7 @@
                 <th>{label_monitoring}</th>
                 <th>{label_send_email}</th>
                 <th>{label_send_sms}</th>
-                <th width="75">{label_action}</th>
+                <th>{label_action}</th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +36,7 @@
                 <td>{active}</td>
                 <td>{email}</td>
                 <td>{sms}</td>
-                <td>
-                    <a class="btn btn-small" href="index.php?mod=server&amp;action=edit&amp;id={server_id}" title="{label_edit}">
-                        <i class="icon-pencil"></i>
-                    </a>
-            	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{server_id}', 'server');" title="{label_delete}">
-                        <i class="icon-remove icon-white"></i>
-                    </a>
-                </td>
+                <td>{html_actions}</td>
             </tr>
             <!--%%tpl_repeat_servers-->
             {servers}
@@ -58,6 +45,23 @@
 </div>
 <!--%%tpl_servers_list-->
 
+<!--%tpl_servers_list_admin_buttons-->
+<div class="top_buutons">
+	<a class="btn btn-success" href="{url_add}">
+		<i class="icon-plus icon-white"></i>
+		{label_add_new}
+	</a>
+</div>
+<!--%%tpl_servers_list_admin_buttons-->
+
+<!--%tpl_servers_list_admin_actions-->
+<a class="btn btn-small" href="index.php?mod=server&amp;action=edit&amp;id={server_id}" title="{label_edit}">
+	<i class="icon-pencil"></i>
+</a>
+<a class="btn btn-small btn-danger" href="javascript:sm_delete('{server_id}', 'server');" title="{label_delete}">
+	<i class="icon-remove icon-white"></i>
+</a>
+<!--%%tpl_servers_list_admin_actions-->
 
 <!--%tpl_servers_update-->
 <div class="span12">

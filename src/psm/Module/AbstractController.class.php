@@ -112,6 +112,13 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected $user_level_required = PSM_USER_USER;
 
+	/**
+	 * Required user level for certain actions
+	 * @var int $user_level_required_actions
+	 * @see setMinUserLevelRequiredForAction()
+	 */
+	protected $user_level_required_actions = array();
+
 	function __construct(Database $db, Template $tpl) {
 		$this->db = $db;
 		$this->tpl = $tpl;
@@ -121,22 +128,10 @@ abstract class AbstractController implements ControllerInterface {
 	 * Initialize the module
 	 */
 	public function initialize() {
-		// yeh baby, "initialize" me..
-		// right, anyway, lets determine the aciton
-		$action = null;
+		$action = psm_GET('action', psm_POST('action', $this->action_default));
 
-		if(isset($_GET['action'])) {
-			$action = $_GET['action'];
-		} elseif(isset($_POST['action'])) {
-			$action = $_POST['action'];
-		}
-		if($action !== null && in_array($action, $this->actions)) {
-			// we have an action
-			$this->initializeAction($action);
-		} elseif($this->action_default !== null) {
+		if(!in_array($action, $this->actions) || !$this->initializeAction($action)) {
 			$this->initializeAction($this->action_default);
-		} else {
-			// else what..?
 		}
 
 		$this->createHTML();
@@ -145,15 +140,26 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Run a specified action
 	 *
-	 * For it to run, the "execute$action" method must exist
+	 * For it to run, the "execute$action" method must exist.
 	 * @param string $action
+	 * @return boolean whether action has been initialized successfully
 	 */
 	protected function initializeAction($action) {
-		$this->action = $action;
+		if(isset($this->user_level_required_actions[$action])) {
+			$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
+
+			if($ulvl > $this->user_level_required_actions[$action]) {
+				// user is not allowed to access this action..
+				return false;
+			}
+		}
 		$method = 'execute' . ucfirst($action);
 		if(method_exists($this, $method)) {
+			$this->action = $action;
 			$this->$method();
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -390,9 +396,11 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Set the minimum required user level for this module
 	 * @param int $level
+	 * @return \psm\Module\AbstractController
 	 */
 	public function setMinUserLevelRequired($level) {
 		$this->user_level_required = intval($level);
+		return $this;
 	}
 
 	/**
@@ -401,5 +409,24 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	public function getMinUserLevelRequired() {
 		return $this->user_level_required;
+	}
+
+	/**
+	 * Set the minimum required user level for a certain action.
+	 *
+	 * Use this only if one of the access is more restricted than the entire controller
+	 * @param int $level
+	 * @param string|array $actions one or more actions to set this level for
+	 * @return \psm\Module\AbstractController
+	 * @see setMinUserLevelRequired()
+	 */
+	public function setMinUserLevelRequiredForAction($level, $actions) {
+		if(!is_array($actions)) {
+			$actions = array($actions);
+		}
+		foreach($actions as $action) {
+			$this->user_level_required_actions[$action] = intval($level);
+		}
+		return $this;
 	}
 }

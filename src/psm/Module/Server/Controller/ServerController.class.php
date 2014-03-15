@@ -41,6 +41,11 @@ class ServerController extends AbstractController {
 		$this->setActions(array(
 			'index', 'edit', 'save', 'delete',
 		), 'index');
+
+		// make sure only admins are allowed to edit/delete servers:
+		$this->setMinUserLevelRequiredForAction(PSM_USER_ADMIN, array(
+			'delete', 'edit', 'save'
+		));
 	}
 
 	/**
@@ -48,6 +53,22 @@ class ServerController extends AbstractController {
 	 */
 	protected function executeIndex() {
 		$this->setTemplateId('servers_list', 'servers.tpl.html');
+		// check if user is admin, in that case we add the buttons
+		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+			// first add buttons at the top
+			$this->tpl->newTemplate('servers_list_admin_buttons', 'servers.tpl.html');
+			$this->tpl->addTemplateData($this->getTemplateId(), array(
+				'html_buttons_admin' => $this->tpl->getTemplate('servers_list_admin_buttons'),
+				'url_add' => psm_build_url(array('mod' => 'server', 'action' => 'edit'))
+			));
+			// get the action buttons per server
+			$this->tpl->newTemplate('servers_list_admin_actions', 'servers.tpl.html');
+			$html_actions = $this->tpl->getTemplate('servers_list_admin_actions');
+		} else {
+			$html_actions = '';
+		}
+		// we need an array for our template magic (see below):
+		$html_actions = array('html_actions' => $html_actions);
 
 		// get servers from database
 		$servers = $this->db->query(
@@ -81,6 +102,10 @@ class ServerController extends AbstractController {
 		$server_count = count($servers);
 
 		for ($x = 0; $x < $server_count; $x++) {
+			// template magic: push the actions html to the front of the server array
+			// so the template handler will add it first. that way the other server vars
+			// will also be replaced in the html_actions template itself
+			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 			$servers[$x]['rtime'] = round((float) $servers[$x]['rtime'], 4);
 
