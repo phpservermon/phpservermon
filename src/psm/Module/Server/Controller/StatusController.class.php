@@ -96,7 +96,7 @@ class StatusController extends AbstractController {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'subtitle' => psm_get_lang('menu', 'status'),
+				'subtitle' => psm_get_lang('menu', 'server_status'),
 			)
 		);
 

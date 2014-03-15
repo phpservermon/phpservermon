@@ -239,7 +239,7 @@ class ServerController extends AbstractController {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'subtitle' => psm_get_lang('menu', 'servers'),
+				'subtitle' => psm_get_lang('menu', 'server'),
 				'label_label' => psm_get_lang('servers', 'label'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),

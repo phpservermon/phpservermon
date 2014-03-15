@@ -258,7 +258,7 @@ class UserController extends AbstractController {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'subtitle' => psm_get_lang('menu', 'users'),
+				'subtitle' => psm_get_lang('menu', 'user'),
 				'label_users' => psm_get_lang('menu', 'users'),
 				'label_name' => psm_get_lang('users', 'name'),
 				'label_user_name' => psm_get_lang('users', 'user_name'),

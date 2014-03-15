@@ -133,7 +133,7 @@ class LogController extends AbstractController {
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
 			array(
-				'subtitle' => psm_get_lang('system', 'server_log'),
+				'subtitle' => psm_get_lang('menu', 'server_log'),
 				'label_status' => psm_get_lang('log', 'status'),
 				'label_email' => psm_get_lang('log', 'email'),
 				'label_sms' => psm_get_lang('log', 'sms'),
