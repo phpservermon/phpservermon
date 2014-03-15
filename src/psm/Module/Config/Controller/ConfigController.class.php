@@ -65,6 +65,8 @@ class ConfigController extends AbstractController {
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
 
+		$this->setMinUserLevelRequired(PSM_USER_ADMIN);
+
 		$this->setActions(array(
 			'index', 'save',
 		), 'index');
