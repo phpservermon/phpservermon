@@ -347,9 +347,7 @@ function psm_build_mail($from_name = null, $from_email = null) {
  */
 function psm_build_url($params = array(), $urlencode = true) {
 	$defports = array(80, 443);
-	$url =
-		($_SERVER['SERVER_PORT']==80 ? 'http' : 'https').'://'.
-		$_SERVER['HTTP_HOST'];
+	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
 		$url .= ':' . $_SERVER['SERVER_PORT'];
 	}
@@ -384,7 +382,7 @@ function psm_GET($key, $alt = null) {
 }
 
 /**
- * Try existence of a GET var, if not return the alternative
+ * Try existence of a POST var, if not return the alternative
  * @param string $key
  * @param string $alt
  * @return mixed
