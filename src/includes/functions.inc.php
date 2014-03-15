@@ -343,9 +343,10 @@ function psm_build_mail($from_name = null, $from_email = null) {
  * Generate a new link to the current monitor
  * @param array $params key value pairs
  * @param boolean $urlencode urlencode all params?
+ * @param boolean $htmlentities use entities in url?
  * @return string
  */
-function psm_build_url($params = array(), $urlencode = true) {
+function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
 	$defports = array(80, 443);
 	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
@@ -355,12 +356,13 @@ function psm_build_url($params = array(), $urlencode = true) {
 
 	if($params != null) {
 		$url .= '?';
+		$delim = ($htmlentities) ? '&amp;' : '&';
 
 		foreach($params as $k => $v) {
 			if($urlencode) {
 				$v = urlencode($v);
 			}
-			$url .= '&' . $k . '=' . $v;
+			$url .= $delim . $k . '=' . $v;
 		}
 	}
 

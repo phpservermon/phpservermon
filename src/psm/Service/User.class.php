@@ -93,9 +93,11 @@ class User {
 
     /**
      * Get user by id, or get current user.
+	 * @param int $user_id if null it will attempt current user id
+	 * @param boolean $flush if TRUE it will query db regardless of whether we already have the data
      * @return object|boolean FALSE if user not found, object otherwise
      */
-    public function getUser($user_id = null) {
+    public function getUser($user_id = null, $flush = false) {
 		if($user_id == null) {
 			if(!$this->isUserLoggedIn()) {
 				return false;
@@ -104,7 +106,7 @@ class User {
 			}
 		}
 
-		if(!isset($this->user_data[$user_id])) {
+		if(!isset($this->user_data[$user_id]) || $flush) {
 			$query_user = $this->db_connection->prepare('SELECT * FROM '.PSM_DB_PREFIX.'users WHERE user_id = :user_id');
 			$query_user->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
 			$query_user->execute();

@@ -34,7 +34,7 @@ class UserModule implements ModuleInterface {
 		return array(
 			'user' => __NAMESPACE__ . '\Controller\UserController',
 			'login' => __NAMESPACE__ . '\Controller\LoginController',
-//			'profile' => __NAMESPACE__ . '\Controller\StatusController',
+			'profile' => __NAMESPACE__ . '\Controller\ProfileController',
 		);
 
 	}

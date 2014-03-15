@@ -48,7 +48,7 @@ class UpdateController extends AbstractController {
 		// redirect user to regular status page
 		header('Location: ' . psm_build_url(array(
 			'mod' => 'server_status'
-		)));
+		), true, false));
 		die();
 	}
 
