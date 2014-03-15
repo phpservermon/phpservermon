@@ -213,8 +213,8 @@ class UserController extends AbstractController {
 		}
 		if(!empty($clean['password'])) {
 			$password = $clean['password'];
-			$clean['password'] = '';
 		}
+		unset($clean['password']);
 		unset($clean['password_repeat']);
 
 		if($user_id > 0) {
