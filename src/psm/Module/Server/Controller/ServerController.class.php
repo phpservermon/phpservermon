@@ -26,14 +26,13 @@
  **/
 
 namespace psm\Module\Server\Controller;
-use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
  */
-class ServerController extends AbstractController {
+class ServerController extends AbstractServerController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -70,35 +69,7 @@ class ServerController extends AbstractController {
 		// we need an array for our template magic (see below):
 		$html_actions = array('html_actions' => $html_actions);
 
-		// get servers from database
-		$servers = $this->db->query(
-			'SELECT '.
-				'`server_id`, '.
-				'`ip`, '.
-				'`port`, '.
-				'`type`, '.
-				'`label`, '.
-				'`pattern`, '.
-				'`status`, '.
-				'`error`, '.
-				'`rtime`, '.
-				'IF('.
-					'`last_check`=\'0000-00-00 00:00:00\', '.
-					'\'never\', '.
-					'DATE_FORMAT(`last_check`, \'%d-%m-%y %H:%i\') '.
-				') AS `last_check`, '.
-				'IF('.
-					'`last_online`=\'0000-00-00 00:00:00\', '.
-					'\'never\', '.
-					'DATE_FORMAT(`last_online`, \'%d-%m-%y %H:%i\') '.
-				') AS `last_online`, '.
-				'`active`, '.
-				'`email`, '.
-				'`sms` '.
-			'FROM `'.PSM_DB_PREFIX.'servers` '.
-			'ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC'
-		);
-
+		$servers = $this->getServers();
 		$server_count = count($servers);
 
 		for ($x = 0; $x < $server_count; $x++) {
@@ -223,12 +194,11 @@ class ServerController extends AbstractController {
 		if(isset($_GET['id'])) {
 			$id = intval($_GET['id']);
 			// do delete
-			$this->db->delete(
-				PSM_DB_PREFIX . 'servers',
-				array(
-					'server_id' => $id,
-				)
-			);
+			$res = $this->db->delete(PSM_DB_PREFIX . 'servers', array('server_id' => $id));
+			if($res->rowCount() == 1) {
+				$this->db->delete(PSM_DB_PREFIX.'log', array('server_id' => $id));
+				$this->db->delete(PSM_DB_PREFIX.'users_servers', array('server_id' => $id));
+			}
 			$this->addMessage(psm_get_lang('system', 'deleted'));
 		}
 		$this->initializeAction('index');

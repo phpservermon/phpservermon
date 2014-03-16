@@ -25,7 +25,16 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
+/**
+ * The status class is for checking a server and notifying if necessary.
+ *
+ * You will need to provide an array with all
+ * server information to the setServer() method, run update() and notify() if you want to.
+ * If you are looking for a check-all, see the Autorun class.
+ * @see \psm\Util\Updater\Autorun
+ */
 namespace psm\Util\Updater;
+use psm\Service\Database;
 
 class Status {
 	public $error;
@@ -37,9 +46,8 @@ class Status {
 
 	public $db;
 
-	function __construct() {
-		// add database handler
-		$this->db = $GLOBALS['db'];
+	function __construct(Database $db) {
+		$this->db = $db;
 	}
 
 	/**
@@ -241,12 +249,7 @@ class Status {
 	protected function notifyByEmail() {
 		$userlist = array();
 
-		// find all the users with this server listed
-		$users = $this->db->select(
-			PSM_DB_PREFIX . 'users',
-			'FIND_IN_SET(\''.$this->server['server_id'].'\', `server_id`) AND `email` != \'\'',
-			array('user_id', 'name', 'email')
-		);
+		$users = $this->getUsers($this->server['server_id']);
 
 		if (empty($users)) {
 			return false;
@@ -283,11 +286,7 @@ class Status {
 	 */
 	protected function notifyByTxtMsg() {
 		// send sms to all users for this server using defined gateway
-		$users = $this->db->select(
-			PSM_DB_PREFIX . 'users',
-			'FIND_IN_SET(\''.$this->server['server_id'].'\', `server_id`) AND `mobile` != \'\'',
-			array('user_id', 'name', 'mobile')
-		);
+		$users = $this->getUsers($this->server['server_id']);
 
 		if (empty($users)) {
 			return false;
@@ -369,6 +368,22 @@ class Status {
 		$this->status_org = false;
 		$this->status_new = false;
 	}
-}
 
-?>
+	/**
+	 * Get all users for the provided server id
+	 * @param int $server_id
+	 * @return array
+	 */
+	public function getUsers($server_id) {
+		// find all the users with this server listed
+		$users = $this->db->query("
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`
+			FROM `".PSM_DB_PREFIX."users` AS `u`
+			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
+				`us`.`user_id`=`u`.`user_id`
+				AND `us`.`server_id` = {$server_id}
+			)
+		");
+		return $users;
+	}
+}

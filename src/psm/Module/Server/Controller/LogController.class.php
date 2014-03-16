@@ -26,14 +26,13 @@
  **/
 
 namespace psm\Module\Server\Controller;
-use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Log module. Create the page to view previous log messages
  */
-class LogController extends AbstractController {
+class LogController extends AbstractServerController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -104,6 +103,14 @@ class LogController extends AbstractController {
 	 * @return array
 	 */
 	public function getEntries($type) {
+		$sql_join = '';
+		if($this->user != null && $this->user->getUserLevel() > PSM_USER_ADMIN) {
+			// restrict by user_id
+			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
+						`us`.`user_id`={$this->user->getUserId()}
+						AND `us`.`server_id`=`servers`.`server_id`
+						)";
+		}
 		$entries = $this->db->query(
 			'SELECT '.
 				'`servers`.`label`, '.
@@ -118,9 +125,10 @@ class LogController extends AbstractController {
 					'`log`.`datetime`, '.
 					'\'%H:%i:%s %d-%m-%y\''.
 				') AS `datetime_format`, '.
-				'`user_id` '.
+				'`log`.`user_id` '.
 			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
 			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
+			$sql_join .
 			'WHERE `log`.`type`=\''.$type.'\' '.
 			'ORDER BY `datetime` DESC '.
 			'LIMIT 0,20'
@@ -142,7 +150,7 @@ class LogController extends AbstractController {
 				'label_type' => psm_get_lang('log', 'type'),
 				'label_message' => psm_get_lang('system', 'message'),
 				'label_date' => psm_get_lang('system', 'date'),
-				'label_users' => ucfirst(psm_get_lang('menu', 'users')),
+				'label_users' => ucfirst(psm_get_lang('menu', 'user')),
 			)
 		);
 

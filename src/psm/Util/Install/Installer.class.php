@@ -144,13 +144,17 @@ class Installer {
 							`password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
 							`rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
 							`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
-							`server_id` varchar(255) NOT NULL,
 							`name` varchar(255) NOT NULL,
 							`mobile` varchar(15) NOT NULL,
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
+							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
+							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
+							PRIMARY KEY ( `user_id` , `server_id` )
+							) ENGINE = MYISAM ;",
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
@@ -267,6 +271,32 @@ class Installer {
 						KEY `server_id` (`server_id`)
 					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
+		$queries[] = "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
+						`user_id` INT( 11 ) UNSIGNED NOT NULL ,
+						`server_id` INT( 11 ) UNSIGNED NOT NULL ,
+						PRIMARY KEY ( `user_id` , `server_id` )
+						) ENGINE = MYISAM ;";
 		$this->execSQL($queries);
+
+		// from 2.2 all user-server relations are in a separate table
+		$users = $this->db->select(PSM_DB_PREFIX . 'users', null, array('user_id', 'server_id'));
+		foreach($users as $user) {
+			$idc = array();
+			if($user['server_id'] == '') {
+				continue;
+			}
+			if(strpos($user['server_id'], ',') === false) {
+				$idc[] = $user['server_id'];
+			} else {
+				$idc = explode(',', $user['server_id']);
+			}
+			foreach($idc as $id) {
+				$this->db->save(PSM_DB_PREFIX . 'users_servers', array(
+					'user_id' => $user['user_id'],
+					'server_id' => $id,
+				));
+			}
+		}
+		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
 	}
 }

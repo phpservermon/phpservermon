@@ -55,7 +55,11 @@ class UserController extends AbstractController {
 
 	public function initialize() {
 		$this->user_validator = new \psm\Util\User\UserValidator($this->user);
-		$this->servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
+		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
+		// change the indexes to reflect their server ids
+		foreach($servers as $server) {
+			$this->servers[$server['server_id']] = $server;
+		}
 
 		return parent::initialize();
 	}
@@ -75,23 +79,21 @@ class UserController extends AbstractController {
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			array('user_id', 'user_name', 'level', 'server_id', 'name', 'mobile', 'email'),
+			array('user_id', 'user_name', 'level', 'name', 'mobile', 'email'),
 			null,
 			array('name')
 		);
 
 		foreach($users as $x => &$user) {
+			$user_servers = $this->getUserServers($user['user_id']);
 			$user['class'] = ($x & 1) ? 'odd' : 'even';
 
 			$user['emp_servers'] = '';
 
 			// fix server list
-			$user_servers = explode(',', $user['server_id']);
-			if(empty($user_servers)) continue;
-
-			foreach($user_servers as $server) {
-				if (!isset($servers_labels[$server])) continue;
-				$user['emp_servers'] .= $servers_labels[$server] . '<br/>';
+			foreach($user_servers as $server_id) {
+				if (!isset($servers_labels[$server_id])) continue;
+				$user['emp_servers'] .= $servers_labels[$server_id] . '<br/>';
 			}
 			$user['emp_servers'] = substr($user['emp_servers'], 0, -5);
 		}
@@ -137,7 +139,7 @@ class UserController extends AbstractController {
 			$lvl_selected = $edit_user->level;
 
 			// select servers for this user
-			$user_servers = explode(',', $edit_user->server_id);
+			$user_servers = $this->getUserServers($user_id);
 
 			foreach($this->servers as &$server) {
 				if(in_array($server['server_id'], $user_servers)) {
@@ -180,13 +182,10 @@ class UserController extends AbstractController {
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'email', 'server_id');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'email');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
-				if(is_array($_POST[$field])) {
-					$_POST[$field] = implode(',', $_POST[$field]);
-				}
 				$clean[$field] = trim(strip_tags($_POST[$field]));
 			} else {
 				$clean[$field] = '';
@@ -229,6 +228,24 @@ class UserController extends AbstractController {
 		if(isset($password)) {
 			$this->user->changePassword($user_id, $password);
 		}
+
+		// update servers
+		$server_idc = psm_POST('server_id', array());
+		$server_idc_save = array();
+
+		foreach($server_idc as $server_id) {
+			$server_idc_save[] = array(
+				'user_id' => $user_id,
+				'server_id' => intval($server_id),
+			);
+		}
+		// delete all existing records
+		$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $user_id));
+		if(!empty($server_idc_save)) {
+			// add all new servers
+			$this->db->insertMultiple(PSM_DB_PREFIX.'users_servers', $server_idc_save);
+		}
+
 		return $this->executeIndex();
 	}
 
@@ -241,10 +258,8 @@ class UserController extends AbstractController {
 		try {
 			$this->user_validator->userId($id);
 
-			$this->db->delete(
-				PSM_DB_PREFIX . 'users',
-				array('user_id' => $id,)
-			);
+			$this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
+			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
 			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
 		} catch(\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
@@ -281,5 +296,24 @@ class UserController extends AbstractController {
 		);
 
 		return parent::createHTMLLabels();
+	}
+
+	/**
+	 * Get all server ids for a user
+	 * @param int $user_id
+	 * @return array with ids only
+	 * @todo we should probably find a central place for this kind of stuff
+	 */
+	protected function getUserServers($user_id) {
+		$servers = $this->db->select(
+			PSM_DB_PREFIX.'users_servers',
+			array('user_id' => $user_id),
+			array('server_id')
+		);
+		$result = array();
+		foreach($servers as $server) {
+			$result[] = $server['server_id'];
+		}
+		return $result;
 	}
 }

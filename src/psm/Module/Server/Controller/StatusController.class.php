@@ -27,14 +27,13 @@
  **/
 
 namespace psm\Module\Server\Controller;
-use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;
 
 /**
  * Status module
  */
-class StatusController extends AbstractController {
+class StatusController extends AbstractServerController {
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -51,11 +50,7 @@ class StatusController extends AbstractController {
 		$this->addFooter(false);
 
 		// get the active servers from database
-		$servers = $this->db->select(
-			PSM_DB_PREFIX.'servers',
-			array('active' => 'yes'),
-			array('server_id', 'label', 'status', 'last_online', 'last_check', 'rtime')
-		);
+		$servers = $this->getServers();
 
 		$offline = array();
 		$online = array();
@@ -73,6 +68,9 @@ class StatusController extends AbstractController {
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 
 		foreach ($servers as $server) {
+			if($server['active'] == 'no') {
+				continue;
+			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
 

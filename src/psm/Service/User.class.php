@@ -71,23 +71,26 @@ class User {
     public function __construct(Database $db) {
 		$this->db_connection = $db->pdo();
 
-        session_start();
+		if(php_sapi_name() != 'cli') {
+			if(!$this->isSessionStarted()) {
+				session_start();
+			}
+			// check the possible login actions:
+			// 1. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
+			// 2. login via cookie
+			// 3. logout (happen when user clicks logout button)
 
-        // check the possible login actions:
-        // 1. logout (happen when user clicks logout button)
-        // 2. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
-        // 3. login via cookie
+			// if user has an active session on the server
+			if(!$this->loginWithSessionData()) {
+				$this->loginWithCookieData();
+			}
 
-        // if user has an active session on the server
-		if(!$this->loginWithSessionData()) {
-            $this->loginWithCookieData();
-        }
-
-        if(isset($_GET["logout"])) {
-            $this->doLogout();
-			// logged out, redirect to login
-			header('Location: ' . psm_build_url());
-			die();
+			if(isset($_GET["logout"])) {
+				$this->doLogout();
+				// logged out, redirect to login
+				header('Location: ' . psm_build_url());
+				die();
+			}
 		}
     }
 
@@ -421,5 +424,20 @@ class User {
 		} else {
 			return PSM_USER_ANONYMOUS;
 		}
+	}
+
+	/**
+	 * Check if the session has already started
+	 * @return boolean
+	 */
+	public function isSessionStarted() {
+		if(php_sapi_name() !== 'cli') {
+			if(version_compare(phpversion(), '5.4.0', '>=')) {
+				return session_status() === PHP_SESSION_ACTIVE ? true : false;
+			} else {
+				return session_id() === '' ? false : true;
+			}
+		}
+		return false;
 	}
 }

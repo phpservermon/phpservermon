@@ -25,6 +25,10 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
+if(php_sapi_name() != 'cli') {
+	die('This script can only be run from the command line.');
+}
+
 // include main configuration and functionality
 require_once dirname(__FILE__) . '/../src/bootstrap.php';
 
@@ -35,54 +39,12 @@ $time = time();
 if(psm_get_conf('cron_running') == 1 && ($time - psm_get_conf('cron_running_time') < PSM_CRON_TIMEOUT)) {
    die('Cron is already running. Exiting.');
 }
-psm_update_conf('cron_running', 1);
+if(!PSM_DEBUG) {
+	psm_update_conf('cron_running', 1);
+}
 psm_update_conf('cron_running_time', $time);
 
-// get the active servers from database
-$servers = $db->select(
-	PSM_DB_PREFIX.'servers',
-	array('active' => 'yes'),
-	array('server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'email', 'sms')
-);
-
-$updater = new \psm\Util\Updater\Status();
-
-foreach ($servers as $server) {
-	$status_org = $server['status'];
-	// remove the old status from the array to avoid confusion between the new and old status
-	unset($server['status']);
-
-	$updater->setServer($server, $status_org);
-
-	// check server status
-	// it returns the new status, and performs the update check automatically.
-	$status_new = $updater->getStatus();
-	// notify the nerds if applicable
-	$updater->notify();
-
-	// update server status
-	$save = array(
-		'last_check' => date('Y-m-d H:i:s'),
-		'status' => $status_new,
-		'error' => $updater->getError(),
-		'rtime' => $updater->getRtime(),
-	);
-
-	// if the server is on, add the last_online value
-	if($save['status'] == 'on') {
-		$save['last_online'] = date('Y-m-d H:i:s');
-	}
-
-	$db->save(
-		PSM_DB_PREFIX . 'servers',
-		$save,
-		array('server_id' => $server['server_id'])
-	);
-
-	$log_status = ($status_new == 'on') ? 1 : 0;
-	psm_log_uptime($server['server_id'], $log_status, $updater->getRtime());
-}
+$autorun = new \psm\Util\Updater\Autorun($db);
+$autorun->run();
 
 psm_update_conf('cron_running', 0);
-
-?>
