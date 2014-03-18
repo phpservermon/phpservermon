@@ -71,7 +71,7 @@ class User {
     public function __construct(Database $db) {
 		$this->db_connection = $db->pdo();
 
-		if(php_sapi_name() != 'cli') {
+		if(php_sapi_name() != 'cli' && (!defined('PSM_INSTALL') || !PSM_INSTALL)) {
 			if(!$this->isSessionStarted()) {
 				session_start();
 			}
