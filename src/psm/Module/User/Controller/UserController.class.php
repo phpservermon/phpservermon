@@ -282,7 +282,7 @@ class UserController extends AbstractController {
 				'label_level' => psm_get_lang('users', 'level'),
 				'label_level_10' => psm_get_lang('users', 'level_10'),
 				'label_level_20' => psm_get_lang('users', 'level_20'),
-				'label_level_30' => psm_get_lang('users', 'level_30'),
+				'label_level_description' => psm_get_lang('users', 'level_description'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
 				'label_email' => psm_get_lang('users', 'email'),
 				'label_servers' => psm_get_lang('menu', 'server'),
