@@ -116,7 +116,7 @@ class InstallController extends AbstractController {
 		$this->setTemplateId('install_config_new', 'install.tpl.html');
 		$tpl_data = array();
 
-		if(!defined('PSM_CONFIG')) {
+		if(!defined('PSM_DB_PREFIX')) {
 			// first detect "old" config file (2.0)
 			if(file_exists($this->path_config_old)) {
 				// oldtimer huh
@@ -175,7 +175,7 @@ class InstallController extends AbstractController {
 			}
 		}
 
-		if(defined('PSM_CONFIG')) {
+		if(defined('PSM_DB_PREFIX')) {
 			if($this->db->status()) {
 				if($this->isUpgrade()) {
 					// upgrade
@@ -205,7 +205,7 @@ class InstallController extends AbstractController {
 	 * Execute the install and upgrade process to a newer version
 	 */
 	protected function executeInstall() {
-		if(!defined('PSM_CONFIG') || !$this->db->status()) {
+		if(!defined('PSM_DB_PREFIX') || !$this->db->status()) {
 			return $this->executeConfig();
 		}
 		// check if user submitted username + password in previous step
@@ -281,9 +281,7 @@ class InstallController extends AbstractController {
 	 * @return boolean|string TRUE on success, string with config otherwise
 	 */
 	protected function writeConfigFile($db_vars) {
-		$config =
-			"<?php".PHP_EOL .
-			"define('PSM_CONFIG', true);".PHP_EOL;
+		$config = "<?php".PHP_EOL;
 
 		foreach($db_vars as $key => $value) {
 			$line = "define('PSM_DB_{key}', '{value}');".PHP_EOL;

@@ -111,7 +111,7 @@ class Inetworx extends Core {
 		$header .= "Content-type: application/x-www-form-urlencoded\r\n";
 		$header .= "Content-length: ".strlen($inarray[4])."\r\n\r\n";
 		// Connect to the server.
-		$connection = fsockopen("ssl://".$inarray[0], $inarray[1], &$errnum, &$errdesc, 10);
+		$connection = fsockopen("ssl://".$inarray[0], $inarray[1], $errnum, $errdesc, 10);
 		$msg = "";
 		if (! $connection){
 		  $msg = $errdesc." (".$errnum.")";
