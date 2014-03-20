@@ -159,13 +159,12 @@ class ServerController extends AbstractServerController {
 			$clean = array(
 				'label' => strip_tags($_POST['label']),
 				'ip' => strip_tags($_POST['ip']),
-				'port' => strip_tags($_POST['port']),
-				// @todo validate the following values
-				'type' => $_POST['type'],
+				'port' => intval($_POST['port']),
+				'type' => in_array($_POST['type'], array('website', 'service')) ? $_POST['type'] : 'website',
 				'pattern' => $_POST['pattern'],
-				'active' => $_POST['active'],
-				'email' => $_POST['email'],
-				'sms' => $_POST['sms'],
+				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
+				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
+				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			);
 
 			// check for edit or add
