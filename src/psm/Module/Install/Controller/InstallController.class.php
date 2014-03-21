@@ -26,7 +26,7 @@
  * @since		phpservermon 2.1.0
  **/
 
-namespace psm\Module\Config\Controller;
+namespace psm\Module\Install\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
 use psm\Service\Template;

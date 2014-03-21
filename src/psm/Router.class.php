@@ -84,6 +84,7 @@ class Router {
 			'config' => new Module\Config\ConfigModule(),
 			'server' => new Module\Server\ServerModule(),
 			'user' => new Module\User\UserModule(),
+			'install' => new Module\Install\InstallModule(),
 		);
 	}
 
