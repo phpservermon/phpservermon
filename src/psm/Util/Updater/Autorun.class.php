@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 2.2.0
+ * @since       phpservermon 2.2.0
  **/
 
 namespace psm\Util\Updater;
@@ -76,42 +76,14 @@ class Autorun {
 
 		$servers = $this->db->query($sql);
 
-		$updater = new Status($this->db);
+		$updater = new StatusUpdater($this->db);
+		$notifier = new StatusNotifier($this->db);
 
 		foreach($servers as $server) {
-			$status_org = $server['status'];
-			// remove the old status from the array to avoid confusion between the new and old status
-			unset($server['status']);
-
-			$updater->setServer($server, $status_org);
-
-			// check server status
-			// it returns the new status, and performs the update check automatically.
-			$status_new = $updater->getStatus();
+			$status_old = ($server['status'] == 'on') ? true : false;
+			$status_new = $updater->update($server['server_id']);
 			// notify the nerds if applicable
-			$updater->notify();
-
-			// update server status
-			$save = array(
-				'last_check' => date('Y-m-d H:i:s'),
-				'status' => $status_new,
-				'error' => $updater->getError(),
-				'rtime' => $updater->getRtime(),
-			);
-
-			// if the server is on, add the last_online value
-			if($save['status'] == 'on') {
-				$save['last_online'] = date('Y-m-d H:i:s');
-			}
-
-			$this->db->save(
-				PSM_DB_PREFIX . 'servers',
-				$save,
-				array('server_id' => $server['server_id'])
-			);
-
-			$log_status = ($status_new == 'on') ? 1 : 0;
-			psm_log_uptime($server['server_id'], $log_status, $updater->getRtime());
+			$notifier->notify($server['server_id'], $status_old, $status_new);
 		}
 	}
 

@@ -96,6 +96,7 @@ $sm_lang = array(
 		'port' => 'Port',
 		'type' => 'Type',
 		'pattern' => 'Search string/regex',
+		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => '최근체크',
 		'last_online' => '최근접속',
 		'monitoring' => '확인중',
@@ -108,6 +109,8 @@ $sm_lang = array(
 		'week' => 'Week',
 		'day' => 'Day',
 		'hour' => 'Hour',
+		'warning_threshold' => 'Warning threshold',
+		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
 	),
 	'config' => array(
 		'general' => '일반',

@@ -86,6 +86,10 @@ class ServerController extends AbstractServerController {
 				// add link to label
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
 			}
+
+			if($servers[$x]['status'] == 'on' && $servers[$x]['warning_threshold_counter'] > 0) {
+				$servers[$x]['status'] = 'warning';
+			}
 		}
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
@@ -108,13 +112,16 @@ class ServerController extends AbstractServerController {
 
 		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-		$tpl_data = array();
+		$tpl_data = array(
+			'url_go_back' => psm_build_url(array('mod' => 'server')),
+		);
 
 		switch(intval($server_id)) {
 			case 0:
 				// insert mode
 				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
 				$tpl_data['edit_server_id'] = '0';
+				$tpl_data['edit_value_warning_threshold'] = '1';
 				break;
 			default:
 				// edit mode
@@ -135,6 +142,7 @@ class ServerController extends AbstractServerController {
 					'edit_value_ip' => $edit_server['ip'],
 					'edit_value_port' => $edit_server['port'],
 					'edit_value_pattern' => $edit_server['pattern'],
+					'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
 					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
@@ -164,6 +172,7 @@ class ServerController extends AbstractServerController {
 				'port' => intval($_POST['port']),
 				'type' => in_array($_POST['type'], array('website', 'service')) ? $_POST['type'] : 'website',
 				'pattern' => $_POST['pattern'],
+				'warning_threshold' => intval($_POST['warning_threshold']),
 				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
@@ -216,14 +225,18 @@ class ServerController extends AbstractServerController {
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),
 				'label_pattern' => psm_get_lang('servers', 'pattern'),
+				'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
 				'label_last_check' => psm_get_lang('servers', 'last_check'),
 				'label_rtime' => psm_get_lang('servers', 'rtime'),
 				'label_last_online' => psm_get_lang('servers', 'last_online'),
 				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
+				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
+				'label_go_back' => psm_get_lang('system', 'go_back'),
 				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('servers', 'server'),
 				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('servers', 'server'),
 				'label_yes' => psm_get_lang('system', 'yes'),

@@ -61,6 +61,8 @@ class StatusController extends AbstractServerController {
 			'offline_fg' => '#f7cece',
 			'online_bg' => '#53a000',
 			'online_fg' => '#d8f7ce',
+			'warning_bg' => '#FAA732',
+			'warning_fg' => '#F3F3B1',
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
 			'label_rtime' => psm_get_lang('servers', 'rtime'),
@@ -75,6 +77,9 @@ class StatusController extends AbstractServerController {
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
 
 			if ($server['status'] == "off") {
+				$offline[$server['server_id']] = $server;
+			} elseif($server['warning_threshold_counter'] > 0) {
+				$server['class_warning'] = 'warning';
 				$offline[$server['server_id']] = $server;
 			} else {
 				$online[$server['server_id']] = $server;

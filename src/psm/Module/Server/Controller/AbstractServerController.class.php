@@ -66,7 +66,9 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`last_online`,
 					`s`.`active`,
 					`s`.`email`,
-					`s`.`sms`
+					`s`.`sms`,
+					`s`.`warning_threshold`,
+					`s`.`warning_threshold_counter`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC";

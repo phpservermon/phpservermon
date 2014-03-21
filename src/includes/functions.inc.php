@@ -192,13 +192,13 @@ function psm_log_uptime($server_id, $status, $latency) {
 /**
  * Parses a string from the language file with the correct variables replaced in the message
  *
- * @param string $status is either 'on' or 'off'
+ * @param boolean $status
  * @param string $type is either 'sms' or 'email'
  * @param array $server information about the server which may be placed in a message: %KEY% will be replaced by your value
  * @return string parsed message
  */
 function psm_parse_msg($status, $type, $vars) {
-	$message = '';
+	$status = ($status == true) ? 'on' : 'off';
 
 	$message = psm_get_lang('notifications', $status . '_' . $type);
 
