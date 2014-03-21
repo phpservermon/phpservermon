@@ -95,6 +95,7 @@ $sm_lang = array(
 		'port' => 'Poort',
 		'type' => 'Type',
 		'pattern' => 'Zoek voor tekst/regex',
+		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
@@ -103,6 +104,8 @@ $sm_lang = array(
 		'updated' => 'Server gewijzigd.',
 		'inserted' => 'Server toegevoegd.',
 		'rtime' => 'Response tijd',
+		'warning_threshold' => 'Warning threshold',
+		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
 	),
 	'config' => array(
 		'general' => 'Algemeen',

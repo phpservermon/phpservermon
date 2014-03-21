@@ -10,6 +10,9 @@ body.install{
 .label-status-off{
    background-color: #B94A48;
 }
+.label-status-warning{
+   background-color: #FAA732;
+}
 .label a{
     color:#FFF;
     text-decoration:none;

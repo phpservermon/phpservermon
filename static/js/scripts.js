@@ -1,9 +1,17 @@
 function sm_delete(id, mod) {
     var del = confirm("Are you sure you want to delete this record?");
-    if (del == true) {
+    if (del === true) {
         var loc = 'index.php?action=delete&id=' + id + '&mod=' + mod;
         window.location = loc;
     }
+}
+
+function psm_tooltips() {
+	$('input[data-toggle="tooltip"]').tooltip({
+		'trigger':'focus',
+		'placement': 'right',
+		'container': 'body'
+	});
 }
 
 function trim(str) {

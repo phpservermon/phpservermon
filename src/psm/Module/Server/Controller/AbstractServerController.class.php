@@ -66,7 +66,9 @@ abstract class AbstractServerController extends AbstractController {
 					IF(`s`.`last_online`='0000-00-00 00:00:00', 'never', DATE_FORMAT(`s`.`last_online`, '%d-%m-%y %H:%i')) AS `last_online`,
 					`s`.`active`,
 					`s`.`email`,
-					`s`.`sms`
+					`s`.`sms`,
+					`s`.`warning_threshold`,
+					`s`.`warning_threshold_counter`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC";

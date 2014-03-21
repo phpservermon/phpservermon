@@ -95,6 +95,7 @@ $sm_lang = array(
 		'port' => 'Порт',
 		'type' => 'Тип',
 		'pattern' => 'Търсене на образец/схема',
+		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
 		'monitoring' => 'Мониторинг',
@@ -103,6 +104,8 @@ $sm_lang = array(
 		'updated' => 'Информацията за сървъра е обновена.',
 		'inserted' => 'Сървърът е добвен успешно.',
 		'rtime' => 'Пинг',
+		'warning_threshold' => 'Warning threshold',
+		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
 	),
 	'config' => array(
 		'general' => 'Основни настройки',

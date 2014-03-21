@@ -35,6 +35,12 @@
 		border: 2px solid {offline_fg};
 	}
 
+	.offline .entity.warning {
+		background: {warning_bg};
+		color: {warning_fg};
+		border: 2px solid {warning_fg};
+	}
+
 	.online {
 		margin-left: 320px;
 	}
@@ -50,7 +56,7 @@
 </style>
 	<div class="offline">
 		<!--%tpl_repeat_servers_offline-->
-		<div class="entity">
+		<div class="entity {class_warning}">
 			<h2>{label}</h2>
 			<p>{label_last_online}: {last_online_nice}</p>
 			<p>{label_last_check}: {last_checked_nice}</p>
