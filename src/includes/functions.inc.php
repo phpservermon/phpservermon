@@ -248,11 +248,13 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
  * Get a "nice" timespan message
  *
  * Source: http://www.interactivetools.com/forum/forum-posts.php?postNum=2208966
- * @param int $time
+ * @param string $time
  * @return string
  * @todo add translation to timespan messages
  */
 function psm_timespan($time) {
+	if(empty($time) || $time == '0000-00-00 00:00:00')
+		return 'never';
 	if ($time !== intval($time)) { $time = strtotime($time); }
 	$d = time() - $time;
 	if ($time < strtotime(date('Y-m-d 00:00:00')) - 60*60*24*3) {
@@ -274,6 +276,19 @@ function psm_timespan($time) {
 	if ($d >= 2) { return intval($d) . " seconds ago"; }
 
 	return "a few seconds ago";
+}
+
+/**
+ * Get a localised date from MySQL date format
+ * @param string $time
+ * @return string
+ * @todo add translation
+ */
+function psm_date($time)
+{
+	if(empty($time) || $time == '0000-00-00 00:00:00')
+		return 'never';
+	return date('d/m/Y H:i:s', strtotime($time));
 }
 
 /**
