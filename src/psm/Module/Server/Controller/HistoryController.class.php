@@ -101,7 +101,7 @@ class HistoryController extends AbstractServerController {
 				'server_name'	=> $server['label'],
 				'server_lines'	=> sizeof($lines) ? '[' . implode(',', $lines) . ']' : '',
 				'server_down'	=> sizeof($down) ? '[' . implode(',', $down) . ']' : '',
-				'server_online'	=> $server['last_online'],
+				'server_online'	=> psm_date($server['last_online']),
 				'server_rtime'	=> round((float)$server['rtime'], 3),
 			);
 		}
@@ -123,6 +123,9 @@ class HistoryController extends AbstractServerController {
 				'label_week' => psm_get_lang('servers', 'week'),
 				'label_day' => psm_get_lang('servers', 'day'),
 				'label_hour' => psm_get_lang('servers', 'hour'),
+				'long_date_format' => psm_get_lang('servers', 'chart_long_date_format'),
+				'short_date_format' => psm_get_lang('servers', 'chart_short_date_format'),
+				'short_time_format' => psm_get_lang('servers', 'chart_short_time_format'),
 			)
 		);
 
