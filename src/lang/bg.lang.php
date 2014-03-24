@@ -27,7 +27,7 @@
 
 $sm_lang = array(
 	'system' => array(
-		'title' => 'Мониторинг система',
+		'title' => 'Server Monitor',
 		'install' => 'Инсталация',
 		'action' => 'Действие',
 		'save' => 'Запиши',

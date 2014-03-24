@@ -1,15 +1,21 @@
 #########################
 #
-# Version 2.x
+# Version 2.2.0
 # ?, 2014
 #
 #########################
-- User login system
-- Switched from mysql_* to PDO.
+- New project url: http://www.phpservermonitor.org
+- Added user login system with 2 user levels (administrator and regular user).
+- Added warning threshold option (set number of failed checks before server goes offline).
 - Added SMTP support.
-- Updated PHPMailer package to v5.2.6.
+- Adding Bulgarian language file (thanks to Plamen Vasilev).
+- Added user profile page.
+- Added history tracking of server uptime.
 - When checking a website, the updater will now follow 302 Location headers.
-- Adding Bulgarian language file (thanks to Plamen Vasilev)
+- String/pattern search on websites did not work for websites with compression turned on.
+- Switched from mysql_* to PDO.
+- Updated PHPMailer package to v5.2.6.
+- Fixed several XSS vulnerabilities.
 
 #########################
 #
