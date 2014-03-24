@@ -154,7 +154,7 @@ class Template {
 		$result = preg_replace('{<!--%(.+?)-->(.*?)<!--%%\\1-->}is', '', $this->templates[$id]);
 
 		// check for tpl variables that have not been replaced. ie: {name}. ignore literal stuff, though. ie: {{name}} is {name} and should not be removed
-		preg_match_all('~{?{(.+?)}}?~', $result, $matches);
+		preg_match_all('~{?{(\w+?)}}?~', $result, $matches);
 
 		foreach($matches[0] as $match) {
 			if (substr($match, 0, 2) == '{{') {

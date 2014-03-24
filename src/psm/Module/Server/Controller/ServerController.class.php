@@ -79,6 +79,8 @@ class ServerController extends AbstractServerController {
 			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 			$servers[$x]['rtime'] = round((float) $servers[$x]['rtime'], 4);
+			$servers[$x]['last_online']  = psm_date($servers[$x]['last_online']);
+			$servers[$x]['last_check']  = psm_date($servers[$x]['last_check']);
 
 			if($servers[$x]['type'] == 'website') {
 				// add link to label
