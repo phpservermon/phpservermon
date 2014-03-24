@@ -27,7 +27,7 @@
 
 $sm_lang = array(
 	'system' => array(
-		'title' => 'Surveillance de serveurs',
+		'title' => 'Server Monitor',
 		'install' => 'Installer',
 		'action' => 'Action',
 		'save' => 'Enregistrer',
