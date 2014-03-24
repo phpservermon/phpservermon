@@ -1,5 +1,7 @@
 body {
 	padding-top: 70px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .navbar-fixed-top {
 	position: fixed;
@@ -8,7 +10,7 @@ body {
 .navbar-fixed-top .navbar-inner {
 	padding-left: 0;
 	padding-right: 0;
-}
+}	
 body.install{
     padding-top:20px;
 }
@@ -67,4 +69,14 @@ legend{
 	height: auto;
 	margin-bottom: 15px;
 	padding: 7px 9px;
+}
+
+.dropdown-menu span {
+  display: block;
+  padding: 3px 15px;
+  clear: both;
+  font-weight: normal;
+  line-height: 18px;
+  color: #333333;
+  white-space: nowrap;
 }

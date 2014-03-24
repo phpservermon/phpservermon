@@ -1,0 +1,73 @@
+#history-panel {
+	width: 100%;
+	max-width: 1100px;
+}
+
+.chart-row {
+	margin-bottom: 20px;
+}
+
+.chart-row:after {
+	clear:both;
+}
+
+.chart-container {
+	float: left;
+	width: 100%;
+	margin-right: -260px;
+}
+
+.chart-content {
+	margin-right: 260px;
+}
+
+.info-container {
+	float: right;
+	width: 250px;
+}
+
+.info-dropdown {
+	display: none;
+}
+
+.chart {
+	height: 300px;
+	width: 100%;
+}
+
+.server-info {
+	padding-top: 40px;
+	height: 200px;
+}
+
+.chart-selector {
+}
+
+@media (max-width: 767px) {
+	.chart-container {
+		margin-right: 0;
+	}
+	
+	.chart-content {
+		margin-right: 0;
+	}
+	
+	.info-container {
+		float: none;
+		clear: both;
+		width: 100%;
+	}
+
+	.info-dropdown {
+		display: block;
+		float: left;
+	}
+	
+	.server-info {
+		display: none;
+	}
+	
+	.chart-selector {
+		float: right;
+	}
+}
