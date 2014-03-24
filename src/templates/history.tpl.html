@@ -1,0 +1,49 @@
+<!--%tpl_history_list-->
+<link href="static/plugin/jqplot/jquery.jqplot.min.css" rel="stylesheet" >
+<!--[if lt IE 9]><script type="text/javascript" src="static/plugin/excanvas.js"></script><![endif]-->
+<script type="text/javascript" src="static/plugin/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.canvasOverlay.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.highlighter.min.js"></script>
+
+<link href="static/css/history.css" rel="stylesheet" >
+<script type="text/javascript" src="static/js/history.js"></script>
+
+<div id="history-panel">
+<!--%tpl_repeat_servers-->
+<div class="chart-row">
+	<div class="chart-container">
+		<div class="chart-content">
+			<div id="chart{server_id}" class="chart" data-title="{server_name}" data-lines="{server_lines}" data-down="{server_down}"></div>
+		</div>
+	</div>
+	<div class="info-container">
+		<div class="info-content">
+			<div class="info-dropdown btn-group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-info-sign"></i></span></button>
+				<ul class="dropdown-menu">
+					<li><span>{label_last_online}: {server_online}</span></li>
+					<li><span>{label_rtime}: {server_rtime}</span></li>
+				</ul>
+			</div>
+			<div class="server-info">
+				{label_last_online}: {server_online}<br/>
+				{label_rtime}: {server_rtime}<br/>
+			</div>
+		</div>
+		<div class="chart-selector">
+			<div class="btn-group">
+				<button class="btn" data-chartId="{server_id}" data-chartMode="month" >{label_month}</button>
+				<button class="btn" data-chartId="{server_id}" data-chartMode="week" >{label_week}</button>
+				<button class="btn" data-chartId="{server_id}" data-chartMode="day" >{label_day}</button>
+				<button class="btn btn-info" data-chartId="{server_id}" data-chartMode="hour" >{label_hour}</button>
+			</div>			
+		</div>
+	</div>
+</div>
+<div style="clear: both;">&nbsp;</div>
+<!--%%tpl_repeat_servers-->
+{servers}
+</div>
+
+<!--%%tpl_history_list-->

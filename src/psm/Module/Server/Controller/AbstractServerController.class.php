@@ -75,4 +75,8 @@ abstract class AbstractServerController extends AbstractController {
 		return $servers;
 
 	}
+	
+	public function getServerUptime($server_id)	{
+		return $this->db->select(PSM_DB_PREFIX.'servers_uptime' , "server_id=$server_id", null, '', 'date');
+	}
 }
