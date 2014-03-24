@@ -144,6 +144,10 @@ class StatusNotifier {
 				break;
 		}
 
+		if(!$notify) {
+			return false;
+		}
+
 		// first add to log (we use the same text as the SMS message because its short..)
 		if($this->save_logs) {
 			psm_add_log(
@@ -151,10 +155,6 @@ class StatusNotifier {
 				'status',
 				psm_parse_msg($status_new, 'sms', $this->server)
 			);
-		}
-
-		if(!$notify) {
-			return false;
 		}
 
 		// check if email is enabled for this server
