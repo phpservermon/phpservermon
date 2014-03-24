@@ -51,20 +51,20 @@ function create_plot($this, mode)
 	{
 		case 'month':
 			timeStamp = 1000 * 60 * 60 * 24 * 30;
-			tickFormat = '%d/%m %H:%M';
+			tickFormat = short_date_format;
 			break;
 		case 'week':
 			timeStamp = 1000 * 60 * 60 * 24 * 7;
-			tickFormat = '%d/%m %H:%M';
+			tickFormat = short_date_format;
 			break;
 		case 'day':
 			timeStamp = 1000 * 60 * 60 *24;
-			tickFormat = '%H:%M';
+			tickFormat = short_time_format;
 			break;
 		case 'hour':
 		default:
 			timeStamp = 1000 * 60 * 60;
-			tickFormat = '%H:%M';
+			tickFormat = short_time_format;
 			break;
 	}
 
@@ -85,7 +85,7 @@ function create_plot($this, mode)
 				color: '#fe5d5d',
 				showTooltip: true,
 				showTooltipPrecision: 1.0,
-				tooltipFormatString: "&darr; " + d.strftime('%d/%m/%y %H:%M:%S')
+				tooltipFormatString: "&darr; " + d.strftime(long_date_format)
 			}});
 		}		
 	}
@@ -108,7 +108,7 @@ function create_plot($this, mode)
 			{
 				var point = plot.series[seriesIndex].data[pointIndex];
 				var d = new $.jsDate(point[0]);
-				return "&uarr; " + d.strftime('%d/%m/%y %H:%M:%S') + ' - ' + $.jqplot.sprintf('%.3fs', point[1]);
+				return "&uarr; " + d.strftime(long_date_format) + ' - ' + $.jqplot.sprintf('%.3fs', point[1]);
 			}
 		},
 		seriesDefaults: {
@@ -117,7 +117,14 @@ function create_plot($this, mode)
 		canvasOverlay: {
 			show: true,
 			objects: downArray
-		}			
+		},
+		cursor:{ 
+			show: true,
+			zoom: true, 
+			showTooltip:false,
+			dblClickReset: true,
+			constrainZoomTo: 'x'
+		} 				
 	});
 	$this.data('psm_plot', plot);
 }

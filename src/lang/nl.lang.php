@@ -44,6 +44,8 @@ $sm_lang = array(
 		'update_available' => 'Een nieuwe update is beschikbaar op <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Terug naar boven',
 		'go_back' => 'Terug',
+		
+		'date_time_format' => 'd-m-Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
 	),
 	'menu' => array(
 		'config' => 'Config',
@@ -111,6 +113,11 @@ $sm_lang = array(
 		'hour' => 'Hour',
 		'warning_threshold' => 'Warning threshold',
 		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
+
+		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
+		'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',
+		'chart_short_date_format' => '%d-%m %H:%M',
+		'chart_short_time_format' => '%H:%M',
 	),
 	'config' => array(
 		'general' => 'Algemeen',

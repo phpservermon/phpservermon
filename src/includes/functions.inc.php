@@ -288,7 +288,7 @@ function psm_date($time)
 {
 	if(empty($time) || $time == '0000-00-00 00:00:00')
 		return 'never';
-	return date('d/m/Y H:i:s', strtotime($time));
+	return date(psm_get_lang('system', 'date_time_format'), strtotime($time));
 }
 
 /**

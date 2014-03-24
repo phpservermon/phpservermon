@@ -66,6 +66,7 @@ class LogController extends AbstractServerController {
 				$records[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 				$records[$x]['users'] = '';
 				$records[$x]['server'] = $records[$x]['label'] . ' (' . $records[$x]['label_adv'] . ')';
+				$records[$x]['datetime_format'] = psm_date($records[$x]['datetime']);
 
 				// fix up user list
 				if($records[$x]['user_id'] == '') continue;
@@ -121,10 +122,7 @@ class LogController extends AbstractServerController {
 				') AS `label_adv`, '.
 				'`log`.`type`, '.
 				'`log`.`message`, '.
-				'DATE_FORMAT('.
-					'`log`.`datetime`, '.
-					'\'%H:%i:%s %d-%m-%y\''.
-				') AS `datetime_format`, '.
+				'`log`.`datetime`, '.
 				'`log`.`user_id` '.
 			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
 			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
