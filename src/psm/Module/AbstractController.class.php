@@ -221,10 +221,10 @@ abstract class AbstractController implements ControllerInterface {
 
 		switch($ulvl) {
 			case PSM_USER_ADMIN:
-				$items = array('server', 'server_status', 'server_log', 'user', 'config', 'server_update');
+				$items = array('server', 'server_status', 'server_history', 'server_log', 'user', 'config', 'server_update');
 				break;
 			case PSM_USER_USER:
-				$items = array('server', 'server_status', 'server_log', 'server_update');
+				$items = array('server', 'server_status', 'server_history', 'server_log', 'server_update');
 				break;
 			default:
 				$items = array();
