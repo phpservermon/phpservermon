@@ -26,6 +26,8 @@
  **/
 
 $sm_lang = array(
+	'name' => 'English',
+	'locale' => 'en_US',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -45,7 +47,19 @@ $sm_lang = array(
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		
-		'date_time_format' => 'Y-m-d H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+		'date_time_format' => 'Y-m-d g:i:sa',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+		
+		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'long_day_format' => '%B %e, %Y',
+		'yesterday_format' => 'Yesterday at %l:%Ma',
+		'other_day_format' => '%A at g:ia',
+		'never' => 'Never',
+		'hours_ago' => '%d hours ago',
+		'an_hour_ago' => 'about an hour ago',
+		'minutes_ago' => '%d minutes ago',
+		'a_minute_ago' => 'about a minute ago',
+		'seconds_ago' => '%d seconds ago',
+		'a_second_ago' => 'a second ago',
 	),
 	'menu' => array(
 		'config' => 'Config',
@@ -97,6 +111,8 @@ $sm_lang = array(
 		'domain' => 'Domain/IP',
 		'port' => 'Port',
 		'type' => 'Type',
+		'type_website' => 'Website',
+		'type_service' => 'Service',
 		'pattern' => 'Search string/pattern',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Last check',
@@ -122,13 +138,6 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'General',
 		'language' => 'Language',
-		'language_en' => 'English',
-		'language_bg' => 'Bulgarian',
-		'language_nl' => 'Dutch',
-		'language_fr' => 'French',
-		'language_de' => 'German',
-		'language_kr' => 'Korean',
-		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => 'Check for new updates weekly?',
 		'email_status' => 'Allow sending email?',
 		'email_from_email' => 'Email from address',

@@ -26,6 +26,8 @@
  **/
 
 $sm_lang = array(
+	'name' => 'Български',
+	'locale' => 'bg_BG',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Инсталация',
@@ -46,6 +48,18 @@ $sm_lang = array(
 		'go_back' => 'Go back',
 		
 		'date_time_format' => 'd.m.Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+		
+		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'long_day_format' => '%B %e, %Y',
+		'yesterday_format' => 'Yesterday at %l:%Ma',
+		'other_day_format' => '%A at g:ia',
+		'never' => 'Never',
+		'hours_ago' => '%d hours ago',
+		'an_hour_ago' => 'about an hour ago',
+		'minutes_ago' => '%d minutes ago',
+		'a_minute_ago' => 'about a minute ago',
+		'seconds_ago' => '%d seconds ago',
+		'a_second_ago' => 'a second ago',
 	),
 	'menu' => array(
 		'config' => 'Настройки',
@@ -97,6 +111,8 @@ $sm_lang = array(
 		'domain' => 'Хост',
 		'port' => 'Порт',
 		'type' => 'Тип',
+		'type_website' => 'Website',
+		'type_service' => 'Service',
 		'pattern' => 'Търсене на образец/схема',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Последна проверка',
@@ -122,13 +138,6 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Основни настройки',
 		'language' => 'Език',
-		'language_en' => 'English',
-		'language_bg' => 'Български',
-		'language_nl' => 'Dutch',
-		'language_fr' => 'French',
-		'language_de' => 'German',
-		'language_kr' => 'Korean',
-		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => 'Да проверява ли за нова версия всяка седмица?',
 		'email_status' => 'Да се изпращат ли имейли?',
 		'email_from_email' => 'Имейл, от който да се изпращат съобщенията',

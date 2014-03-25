@@ -92,13 +92,7 @@ class ConfigController extends AbstractController {
 		// generate language array
 		$lang_keys = psm_get_langs();
 		$languages = array();
-		foreach($lang_keys as $key) {
-			$label = psm_get_lang('config', 'language_' . $key);
-			// if we don't have a proper label, just show the key..
-			// better something than nothing huh
-			if($label == null) {
-				$label = $key;
-			}
+		foreach($lang_keys as $key => $label) {
 			$languages[] = array(
 				'value' => $key,
 				'label' => $label,

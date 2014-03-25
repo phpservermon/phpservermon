@@ -63,10 +63,20 @@ function psm_load_lang($lang) {
 	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
 
 	if(!file_exists($lang_file)) {
-		die('unable to load language file: ' . $lang_file);
+		// If the file have been removed, we use the english one
+		$en_file = PSM_PATH_LANG . 'en.lang.php';
+		if(!file_exists($en_file)) {
+			// OK, nothing we can do
+			die('unable to load language file: ' . $lang_file);
+		}
+		$lang_file = $en_file;
 	}
 
 	require $lang_file;
+	if(isset($sm_lang['locale']))
+	{
+		setlocale(LC_TIME, $sm_lang['locale']);
+	}
 
 	$GLOBALS['sm_lang'] = $sm_lang;
 }
@@ -83,7 +93,21 @@ function psm_get_langs() {
 	$langs = array();
 
 	foreach($lang_files as $file) {
-		$langs[] = str_replace($fn_ext, '', basename($file));
+		$key = str_replace($fn_ext, '', basename($file));
+		$sm_lang = array();
+		if(file_exists($file)) {
+			require $file;
+		}
+		if(isset($sm_lang['name']))
+		{
+			$name = $sm_lang['name'];
+		}
+		else
+		{
+			$name = $key;
+		}
+		$langs[$key] = $name;
+		unset($sm_lang);
 	}
 	return $langs;
 }
@@ -254,28 +278,24 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
  */
 function psm_timespan($time) {
 	if(empty($time) || $time == '0000-00-00 00:00:00')
-		return 'never';
+		return psm_get_lang(system, 'never');
 	if ($time !== intval($time)) { $time = strtotime($time); }
-	$d = time() - $time;
 	if ($time < strtotime(date('Y-m-d 00:00:00')) - 60*60*24*3) {
-		$format = 'F j';
-		if (date('Y') !== date('Y', $time)) {
-			$format .= ", Y";
-		}
-		return date($format, $time);
+		$format = psm_get_lang('system', (date('Y') !== date('Y', $time)) ? 'long_day_format' : 'short_day_format');
+		return strftime($format, $time);
 	}
+	$d = time() - $time;
 	if ($d >= 60*60*24) {
-		$day = 'Yesterday';
-		if (date('l', time() - 60*60*24) !== date('l', $time)) { $day = date('l', $time); }
-		return $day . " at " . date('g:ia', $time);
+		$format = psm_get_lang('system', (date('l', time() - 60*60*24) == date('l', $time)) ? 'yesterday_format' : 'other_day_format');
+		return strftime($format, $time);
 	}
-	if ($d >= 60*60*2) { return intval($d / (60*60)) . " hours ago"; }
-	if ($d >= 60*60) { return "about an hour ago"; }
-	if ($d >= 60*2) { return intval($d / 60) . " minutes ago"; }
-	if ($d >= 60) { return "about a minute ago"; }
-	if ($d >= 2) { return intval($d) . " seconds ago"; }
+	if ($d >= 60*60*2) { return sprintf(psm_get_lang('system', 'hours_ago'), intval($d / (60*60))); }
+	if ($d >= 60*60) { return psm_get_lang('system', 'an_hour_ago'); }
+	if ($d >= 60*2) { return sprintf(psm_get_lang('system', 'minutes_ago'), intval($d / 60)); }
+	if ($d >= 60) { return psm_get_lang('system', 'a_minute_ago'); }
+	if ($d >= 2) { return sprintf(psm_get_lang('system', 'seconds_ago'), intval($d));intval($d); }
 
-	return "a few seconds ago";
+	return psm_get_lang('system', 'a_second_ago');
 }
 
 /**
@@ -287,7 +307,7 @@ function psm_timespan($time) {
 function psm_date($time)
 {
 	if(empty($time) || $time == '0000-00-00 00:00:00')
-		return 'never';
+		return psm_get_lang(system, 'never');
 	return date(psm_get_lang('system', 'date_time_format'), strtotime($time));
 }
 

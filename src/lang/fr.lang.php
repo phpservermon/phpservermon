@@ -26,6 +26,8 @@
  **/
 
 $sm_lang = array(
+	'name' => 'Français',
+	'locale' => 'fr_FR',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installer',
@@ -46,6 +48,18 @@ $sm_lang = array(
 		'go_back' => 'Retour',
 		
 		'date_time_format' => 'd/m/Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+
+		'short_day_format' => 'Le %e %B',			// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'long_day_format' => 'Le %e %B %Y',
+		'yesterday_format' => 'Hier à %kh%M',
+		'other_day_format' => '%A à %kh%M',
+		'never' => 'Jamais',
+		'hours_ago' => 'Il y a %d heures',
+		'an_hour_ago' => 'Il y a une heure',
+		'minutes_ago' => 'Il y a %d minutes',
+		'a_minute_ago' => 'Il y a une minute',
+		'seconds_ago' => 'Il y a %d secondes',
+		'a_second_ago' => 'Il y a une seconde',
 	),
 	'menu' => array(
 		'config' => 'Configuration',
@@ -67,7 +81,7 @@ $sm_lang = array(
 		'level' => 'Niveau',
 		'level_10' => 'Administrateur',
 		'level_20' => 'Utilisateur',
-		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
+		'level_description' => 'Les <b>Administrateurs</b> ont un accès total. Ils peuvent gérer les serveurs, les utilisateurs et éditer la configuration globale.<br/>Les <b>Utilisateurs</b> ne peuvent que voir et mettre à jour les serveurs qui leur ont été assignés.',
 		'mobile' => 'Numéro de téléphone',
 		'email' => 'Email',
 		'updated' => 'Utilisateur mis à jour.',
@@ -97,8 +111,10 @@ $sm_lang = array(
 		'domain' => 'Domaine/IP',
 		'port' => 'Port',
 		'type' => 'Type',
+		'type_website' => 'Site Web',
+		'type_service' => 'Service',
 		'pattern' => 'Rechercher un texte/motif',
-		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
+		'pattern_description' => 'Si ce texte n\'est par retrouvé sur le site web, le serveur est marqué hors-service. Les expressions réguliaires sont autorisées.',
 		'last_check' => 'Dernière vérification',
 		'last_online' => 'Dernière fois OK',
 		'monitoring' => 'Serveillé',
@@ -111,8 +127,8 @@ $sm_lang = array(
 		'week' => 'Semaine',
 		'day' => 'Jour',
 		'hour' => 'Heure',
-		'warning_threshold' => 'Warning threshold',
-		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
+		'warning_threshold' => 'Seuil d\'alerte',
+		'warning_threshold_description' => 'Nombre d\'échecs de connexion avant que le serveur soit marqué hors-service.',
 
 		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
 		'chart_long_date_format' => '%d/%m/%Y %H:%M:%S',
@@ -122,13 +138,6 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Général',
 		'language' => 'Langue',
-		'language_en' => 'English',
-		'language_bg' => 'Bulgarian',
-		'language_nl' => 'Dutch',
-		'language_fr' => 'Français',
-		'language_de' => 'German',
-		'language_kr' => 'Korean',
-		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => 'Vérifier les nouvelles mise à jour chaque semaines',
 		'email_status' => 'Autoriser l\'envoi de mail',
 		'email_from_email' => 'Adresse de l\'expéditeur',
@@ -180,7 +189,7 @@ $sm_lang = array(
 	'notifications' => array(
 		'off_sms' => 'Le Serveur \'%LABEL%\' est HORS SERVICE: IP=%IP%, Port=%PORT%. Erreur=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est HORS SERVICE',
-		'off_email_body' => "Impossible de v&eacute;rifier le serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
+		'off_email_body' => "Impossible de se connecter au serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
 		'on_sms' => 'Le Serveur \'%LABEL%\' est OK: IP=%IP%, Port=%PORT%',
 		'on_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est OK',
 		'on_email_body' => "Le Serveur '%LABEL%' est de nouveau OK:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
