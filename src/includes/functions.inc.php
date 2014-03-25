@@ -187,6 +187,11 @@ function psm_log_uptime($server_id, $status, $latency) {
             'latency' => $latency,
         )
     );
+	
+	// Limite the number of records in the database to 30 days
+	$time = time() - (60 * 60 * 24 * 30);
+	$query = 'DELETE FROM ' . PSM_DB_PREFIX.'servers_uptime WHERE date < "' . date('Y-m-d 00:00:00', $time) . '"';
+	$db->query($query);
 }
 
 /**
