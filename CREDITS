@@ -1,9 +1,10 @@
 Credits
 =======
 
+ * Main development - Pepijn Over
+ * History page, localisation & more - Jérôme Cabanis
  * Bugfixes & features - Perri Vardy-Mason
  * PHP Mailer - Brent R. Matzelle
- * History page & more - Jérôme Cabanis
  * German translation - Brunbaur Herbert
  * French translation - David Ribeiro
  * Korean translation - Ik-Jun
@@ -12,3 +13,5 @@ Credits
  * Bootstrap implementation - Luiz Alberto S. Ribeiro
  * Mosms implementation - Andreas Ek
  * Status page - Michael Greenhill
+ * Javascript charts - jqPlot <http://www.jqplot.com>
+ * Bootstrap layout - Twitter Bootstrap <http://getbootstrap.com>
