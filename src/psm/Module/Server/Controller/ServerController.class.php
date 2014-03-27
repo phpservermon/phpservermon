@@ -81,6 +81,9 @@ class ServerController extends AbstractServerController {
 			$servers[$x]['rtime'] = round((float) $servers[$x]['rtime'], 4);
 			$servers[$x]['last_online']  = psm_date($servers[$x]['last_online']);
 			$servers[$x]['last_check']  = psm_date($servers[$x]['last_check']);
+			$servers[$x]['active'] = psm_get_lang('system', $servers[$x]['active']);
+			$servers[$x]['email'] = psm_get_lang('system', $servers[$x]['email']);
+			$servers[$x]['sms'] = psm_get_lang('system', $servers[$x]['sms']);
 
 			if($servers[$x]['type'] == 'website') {
 				// add link to label
@@ -90,6 +93,8 @@ class ServerController extends AbstractServerController {
 			if($servers[$x]['status'] == 'on' && $servers[$x]['warning_threshold_counter'] > 0) {
 				$servers[$x]['status'] = 'warning';
 			}
+			
+			$servers[$x]['type'] = psm_get_lang('servers', 'type_' . $servers[$x]['type']);
 		}
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
@@ -223,6 +228,9 @@ class ServerController extends AbstractServerController {
 				'label_label' => psm_get_lang('servers', 'label'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
+				'label_type' => psm_get_lang('servers', 'type'),
+				'label_website' => psm_get_lang('servers', 'type_website'),
+				'label_service' => psm_get_lang('servers', 'type_service'),
 				'label_type' => psm_get_lang('servers', 'type'),
 				'label_pattern' => psm_get_lang('servers', 'pattern'),
 				'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),

@@ -26,6 +26,8 @@
  **/
 
 $sm_lang = array(
+	'name' => 'Nederlands',
+	'locale' => 'nl_NL',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -46,6 +48,18 @@ $sm_lang = array(
 		'go_back' => 'Terug',
 		
 		'date_time_format' => 'd-m-Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+		
+		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'long_day_format' => '%B %e, %Y',
+		'yesterday_format' => 'Yesterday at %l:%Ma',
+		'other_day_format' => '%A at g:ia',
+		'never' => 'Never',
+		'hours_ago' => '%d hours ago',
+		'an_hour_ago' => 'about an hour ago',
+		'minutes_ago' => '%d minutes ago',
+		'a_minute_ago' => 'about a minute ago',
+		'seconds_ago' => '%d seconds ago',
+		'a_second_ago' => 'a second ago',
 	),
 	'menu' => array(
 		'config' => 'Config',
@@ -97,6 +111,8 @@ $sm_lang = array(
 		'domain' => 'Domein/IP',
 		'port' => 'Poort',
 		'type' => 'Type',
+		'type_website' => 'Website',
+		'type_service' => 'Service',
 		'pattern' => 'Zoek voor tekst/regex',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Laatst gecontroleerd',
@@ -122,13 +138,6 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Algemeen',
 		'language' => 'Taal',
-		'language_en' => 'Engels',
-		'language_bg' => 'Bulgarian',
-		'language_nl' => 'Nederlands',
-		'language_fr' => 'Frans',
-		'language_de' => 'Duits',
-		'language_kr' => 'Koreaans',
-		'language_br' => 'Portugees - Braziliaans',
 		'show_update' => 'Check for new updates weekly?',
 		'email_status' => 'Sta email berichten toe?',
 		'email_from_email' => 'Email van adres',

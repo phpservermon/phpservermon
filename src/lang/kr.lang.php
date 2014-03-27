@@ -26,6 +26,8 @@
  **/
 
 $sm_lang = array(
+	'name' => '한국',
+	'locale' => 'ko_KR',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -46,6 +48,18 @@ $sm_lang = array(
 		'go_back' => 'Go back',
 		
 		'date_time_format' => 'Y-m-d H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
+		
+		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'long_day_format' => '%B %e, %Y',
+		'yesterday_format' => 'Yesterday at %l:%Ma',
+		'other_day_format' => '%A at g:ia',
+		'never' => 'Never',
+		'hours_ago' => '%d hours ago',
+		'an_hour_ago' => 'about an hour ago',
+		'minutes_ago' => '%d minutes ago',
+		'a_minute_ago' => 'about a minute ago',
+		'seconds_ago' => '%d seconds ago',
+		'a_second_ago' => 'a second ago',
 	),
 	'menu' => array(
 		'config' => '설정',
@@ -97,6 +111,8 @@ $sm_lang = array(
 		'domain' => 'Domain/IP',
 		'port' => 'Port',
 		'type' => 'Type',
+		'type_website' => 'Website',
+		'type_service' => 'Service',
 		'pattern' => 'Search string/regex',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => '최근체크',
@@ -122,13 +138,6 @@ $sm_lang = array(
 	'config' => array(
 		'general' => '일반',
 		'language' => '언어',
-		'language_en' => '미국',
-		'language_bg' => 'Bulgarian',
-		'language_nl' => '네덜란드',
-		'language_fr' => '프랑스',
-		'language_de' => '독일',
-		'language_kr' => '한국',
-		'language_br' => 'Portuguese - Brazilian',
 		'show_update' => '매주 업데이트를 확인하시겠습니까?',
 		'email_status' => '메일전송 허용',
 		'email_from_email' => 'Email 주소',
