@@ -93,7 +93,7 @@ class ServerController extends AbstractServerController {
 			if($servers[$x]['status'] == 'on' && $servers[$x]['warning_threshold_counter'] > 0) {
 				$servers[$x]['status'] = 'warning';
 			}
-			
+
 			$servers[$x]['type'] = psm_get_lang('servers', 'type_' . $servers[$x]['type']);
 		}
 		// add servers to template
@@ -213,6 +213,8 @@ class ServerController extends AbstractServerController {
 			if($res->rowCount() == 1) {
 				$this->db->delete(PSM_DB_PREFIX.'log', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'users_servers', array('server_id' => $id));
+				$this->db->delete(PSM_DB_PREFIX.'servers_uptime', array('server_id' => $id));
+				$this->db->delete(PSM_DB_PREFIX.'servers_history', array('server_id' => $id));
 			}
 			$this->addMessage(psm_get_lang('system', 'deleted'));
 		}

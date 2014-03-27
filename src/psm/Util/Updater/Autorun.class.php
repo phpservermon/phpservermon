@@ -79,11 +79,18 @@ class Autorun {
 		$updater = new StatusUpdater($this->db);
 		$notifier = new StatusNotifier($this->db);
 
+		$archiver = new StatusArchiver($this->db);
+		$cleanup_date = new \DateTime();
+		$cleanup_date->modify('-1 month');
+
 		foreach($servers as $server) {
 			$status_old = ($server['status'] == 'on') ? true : false;
 			$status_new = $updater->update($server['server_id']);
 			// notify the nerds if applicable
 			$notifier->notify($server['server_id'], $status_old, $status_new);
+
+			// clean-up time!! archive all records older than 1 month
+			$archiver->archive($server['server_id'], $cleanup_date);
 		}
 	}
 

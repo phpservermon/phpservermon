@@ -192,6 +192,18 @@ class Installer {
 						PRIMARY KEY (`servers_uptime_id`),
 						KEY `server_id` (`server_id`)
 					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
+						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						  `server_id` int(11) unsigned NOT NULL,
+						  `date` date NOT NULL,
+						  `latency_min` float(9,7) NOT NULL,
+						  `latency_avg` float(9,7) NOT NULL,
+						  `latency_max` float(9,7) NOT NULL,
+						  `checks_total` int(11) unsigned NOT NULL,
+						  `checks_failed` int(11) unsigned NOT NULL,
+						  PRIMARY KEY (`servers_history_id`),
+						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
+						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 		);
 
 		foreach($tables as $name => $sql) {
@@ -285,6 +297,19 @@ class Installer {
 						PRIMARY KEY (`servers_uptime_id`),
 						KEY `server_id` (`server_id`)
 					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
+						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						  `server_id` int(11) unsigned NOT NULL,
+						  `date` date NOT NULL,
+						  `latency_min` float(9,7) NOT NULL,
+						  `latency_avg` float(9,7) NOT NULL,
+						  `latency_max` float(9,7) NOT NULL,
+						  `checks_total` int(11) unsigned NOT NULL,
+						  `checks_failed` int(11) unsigned NOT NULL,
+						  PRIMARY KEY (`servers_history_id`),
+						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
+						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
 		$queries[] = "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
 						`user_id` INT( 11 ) UNSIGNED NOT NULL ,
