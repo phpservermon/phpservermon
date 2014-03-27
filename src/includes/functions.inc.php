@@ -63,8 +63,8 @@ function psm_load_lang($lang) {
 	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
 
 	if(!file_exists($lang_file)) {
-		// If the file have been removed, we use the english one
-		$en_file = PSM_PATH_LANG . 'en.lang.php';
+		// If the file has been removed, we use the english one
+		$en_file = PSM_PATH_LANG . 'en_US.lang.php';
 		if(!file_exists($en_file)) {
 			// OK, nothing we can do
 			die('unable to load language file: ' . $lang_file);
@@ -73,10 +73,8 @@ function psm_load_lang($lang) {
 	}
 
 	require $lang_file;
-	if(isset($sm_lang['locale']))
-	{
-		setlocale(LC_TIME, $sm_lang['locale']);
-	}
+	$locale = basename($lang_file, '.lang.php');
+	setlocale(LC_TIME, $locale);
 
 	$GLOBALS['sm_lang'] = $sm_lang;
 }
@@ -98,17 +96,15 @@ function psm_get_langs() {
 		if(file_exists($file)) {
 			require $file;
 		}
-		if(isset($sm_lang['name']))
-		{
+		if(isset($sm_lang['name'])) {
 			$name = $sm_lang['name'];
-		}
-		else
-		{
+		} else {
 			$name = $key;
 		}
 		$langs[$key] = $name;
 		unset($sm_lang);
 	}
+	ksort($langs);
 	return $langs;
 }
 
@@ -274,14 +270,19 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
  * Source: http://www.interactivetools.com/forum/forum-posts.php?postNum=2208966
  * @param string $time
  * @return string
- * @todo add translation to timespan messages
  */
 function psm_timespan($time) {
-	if(empty($time) || $time == '0000-00-00 00:00:00')
-		return psm_get_lang(system, 'never');
+	if(empty($time) || $time == '0000-00-00 00:00:00') {
+		return psm_get_lang('system', 'never');
+	}
 	if ($time !== intval($time)) { $time = strtotime($time); }
 	if ($time < strtotime(date('Y-m-d 00:00:00')) - 60*60*24*3) {
 		$format = psm_get_lang('system', (date('Y') !== date('Y', $time)) ? 'long_day_format' : 'short_day_format');
+		// Check for Windows to find and replace the %e
+		// modifier correctly
+		if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+			$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+		}
 		return strftime($format, $time);
 	}
 	$d = time() - $time;
@@ -302,13 +303,12 @@ function psm_timespan($time) {
  * Get a localised date from MySQL date format
  * @param string $time
  * @return string
- * @todo add translation
  */
-function psm_date($time)
-{
-	if(empty($time) || $time == '0000-00-00 00:00:00')
-		return psm_get_lang(system, 'never');
-	return date(psm_get_lang('system', 'date_time_format'), strtotime($time));
+function psm_date($time) {
+	if(empty($time) || $time == '0000-00-00 00:00:00') {
+		return psm_get_lang('system', 'never');
+	}
+	return strftime('%x %X', strtotime($time));
 }
 
 /**

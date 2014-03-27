@@ -27,7 +27,6 @@
 
 $sm_lang = array(
 	'name' => 'English',
-	'locale' => 'en_US',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -46,13 +45,11 @@ $sm_lang = array(
 		'update_available' => 'A new update is available from <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
-		
-		'date_time_format' => 'Y-m-d g:i:sa',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
-		
-		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
-		'yesterday_format' => 'Yesterday at %l:%Ma',
-		'other_day_format' => '%A at g:ia',
+		'yesterday_format' => 'Yesterday at %k:%M',
+		'other_day_format' => '%A at %k:%M',
 		'never' => 'Never',
 		'hours_ago' => '%d hours ago',
 		'an_hour_ago' => 'about an hour ago',

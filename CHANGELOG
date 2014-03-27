@@ -12,7 +12,7 @@
 - Added user profile page.
 - Added history tracking of server uptime.
 - Added history graphs of server uptime and latency (thanks to Jérôme Cabanis).
-- Date format is taken from language file and localized per language (thanks to Jérôme Cabanis).
+- Date and time formats are taken from language file and localized per language (thanks to Jérôme Cabanis).
 - When checking a website, the updater will now follow 302 Location headers.
 - String/pattern search on websites did not work for websites with compression turned on.
 - Switched from mysql_* to PDO.

@@ -26,8 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Français',
-	'locale' => 'fr_FR',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
+	'name' => 'Français - French',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installer',
@@ -46,10 +45,8 @@ $sm_lang = array(
 		'update_available' => 'Une nouvelle version est disponible à l\'adresse <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Haut de page',
 		'go_back' => 'Retour',
-		
-		'date_time_format' => 'd/m/Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
-
-		'short_day_format' => 'Le %e %B',			// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'short_day_format' => 'Le %e %B',
 		'long_day_format' => 'Le %e %B %Y',
 		'yesterday_format' => 'Hier à %kh%M',
 		'other_day_format' => '%A à %kh%M',

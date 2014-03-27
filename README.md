@@ -134,7 +134,7 @@ If you would like to contribute a patch or feature, please fork the develop bran
 ### Changing the email or text message
 
 Go to the folder "src/lang", open the language file that corresponds to the selected language
-(default is English ("en.lang.php")). Scroll all the way to the bottom until you spot this line:
+(default is English ("en_US.lang.php")). Scroll all the way to the bottom until you spot this line:
 
      'notifications' => array(
 

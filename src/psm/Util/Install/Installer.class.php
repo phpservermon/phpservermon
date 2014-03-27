@@ -248,6 +248,15 @@ class Installer {
 	 */
 	protected function upgrade220() {
 		$queries = array();
+		// language is now stored as language code (ISO 639-1) + country code (ISO 3166-1)
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='bg_BG' WHERE `key`='language' AND `value`='bg';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='de_DE' WHERE `key`='language' AND `value`='de';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='en_US' WHERE `key`='language' AND `value`='en';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='fr_FR' WHERE `key`='language' AND `value`='fr';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='ko_KR' WHERE `key`='language' AND `value`='kr';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='nl_NL' WHERE `key`='language' AND `value`='nl';";
+		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='pt_BR' WHERE `key`='language' AND `value`='br';";
+
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";
 

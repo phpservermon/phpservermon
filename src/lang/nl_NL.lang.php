@@ -26,8 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Nederlands',
-	'locale' => 'nl_NL',					// Language code (ISO 639-1) + Contry code (ISO_3166-1)
+	'name' => 'Nederlands - Dutch',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -46,25 +45,23 @@ $sm_lang = array(
 		'update_available' => 'Een nieuwe update is beschikbaar op <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Terug naar boven',
 		'go_back' => 'Terug',
-		
-		'date_time_format' => 'd-m-Y H:i:s',		// date/time format according the date php function format parameter http://php.net/manual/function.date.php
-		
-		'short_day_format' => '%B %e',				// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
+		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
-		'yesterday_format' => 'Yesterday at %l:%Ma',
-		'other_day_format' => '%A at g:ia',
-		'never' => 'Never',
-		'hours_ago' => '%d hours ago',
-		'an_hour_ago' => 'about an hour ago',
-		'minutes_ago' => '%d minutes ago',
-		'a_minute_ago' => 'about a minute ago',
-		'seconds_ago' => '%d seconds ago',
-		'a_second_ago' => 'a second ago',
+		'yesterday_format' => 'Gisteren om %k:%M',
+		'other_day_format' => '%A om %k:%M',
+		'never' => 'Nooit',
+		'hours_ago' => '%d uren geleden',
+		'an_hour_ago' => 'een uur geleden',
+		'minutes_ago' => '%d minuten geleden',
+		'a_minute_ago' => 'een minuut geleden',
+		'seconds_ago' => '%d seconden geleden',
+		'a_second_ago' => 'een seconde geleden',
 	),
 	'menu' => array(
 		'config' => 'Config',
 		'server' => 'Servers',
-		'server_history' => 'History',
+		'server_history' => 'Geschiedenis',
 		'server_log' => 'Log',
 		'server_status' => 'Status',
 		'server_update' => 'Update',
@@ -114,7 +111,7 @@ $sm_lang = array(
 		'type_website' => 'Website',
 		'type_service' => 'Service',
 		'pattern' => 'Zoek voor tekst/regex',
-		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
+		'pattern_description' => 'Als dit patroon niet gevonden wordt op de website, zal de server als offline gemarkeerd worden. Regular expressions zijn toegestaan.',
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
@@ -128,7 +125,7 @@ $sm_lang = array(
 		'day' => 'Day',
 		'hour' => 'Hour',
 		'warning_threshold' => 'Warning threshold',
-		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
+		'warning_threshold_description' => 'Aantal mislukte pogingen voordat de server als offline gemarkeerd wordt.',
 
 		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
 		'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',

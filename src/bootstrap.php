@@ -93,5 +93,5 @@ if($db->status() && (!defined('PSM_INSTALL') || !PSM_INSTALL)) {
 		die();
 	}
 }
-$lang = psm_get_conf('language', 'en');
+$lang = psm_get_conf('language', 'en_US');
 psm_load_lang($lang);
