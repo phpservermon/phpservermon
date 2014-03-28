@@ -25,12 +25,12 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-if(php_sapi_name() != 'cli') {
-	die('This script can only be run from the command line.');
-}
-
 // include main configuration and functionality
 require_once dirname(__FILE__) . '/../src/bootstrap.php';
+
+if(!psm_is_cli()) {
+	die('This script can only be run from the command line.');
+}
 
 // prevent cron from running twice at the same time
 // however if the cron has been running for X mins, we'll assume it died and run anyway

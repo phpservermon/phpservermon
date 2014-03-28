@@ -432,6 +432,17 @@ function psm_POST($key, $alt = null) {
 	}
 }
 
+/**
+ * Check if we are in CLI mode
+ *
+ * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli
+ * source: https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/drupal_is_cli/7
+ * @return boolean
+ */
+function psm_is_cli() {
+	return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
+}
+
 ###############################################
 #
 # Debug functions
