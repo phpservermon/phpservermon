@@ -45,12 +45,12 @@
 
     <!-- container -->
     <div class="container-fluid">
-
         <div class="page-header">
             <h1>{subtitle}<small>&nbsp;</small></h1>
         </div>
         <div class="row-fluid">
-			<div class="span12">
+			{html_sidebar}
+			<div class="span{content_span}">
 				<div id="flashmessage" class="hide">
 				<!--%tpl_repeat_messages-->
 				<div class="alert alert-{shortcode}">
@@ -60,9 +60,9 @@
 				<!--%%tpl_repeat_messages-->
 				{messages}
 				</div>
+				{content}
 			</div>
-        </div>
-        <div class="row-fluid">{content}</div>
+		</div>
 		{html_footer}
     </div>
     <!-- /container -->
@@ -76,8 +76,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{label_usermenu} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{url_profile}">{label_profile}</a></li>
-                  <li><a href="{url_logout}">{label_logout}</a></li>
+                  <li><a href="{url_profile}"><i class="icon-cog"></i>&nbsp;{label_profile}</a></li>
+                  <li><a href="{url_logout}"><i class="icon-off"></i>&nbsp;{label_logout}</a></li>
                 </ul>
               </li>
 			</ul>

@@ -1,123 +1,113 @@
 <!--%tpl_users_list-->
-<div class="span12">
-    <div class="top_buutons">
-        <a class="btn btn-success" href="index.php?mod=user&action=edit">
-            <i class="icon-plus icon-white"></i>
-            {label_add_new}
-        </a>
-    </div>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>{label_name}</th>
-                <th>{label_user_name}</th>
-                <th>{label_level}</th>
-                <th>{label_mobile}</th>
-                <th>{label_email}</th>
-                <th>{label_servers}</th>
-                <th width="75">{label_action}</th>
-            </tr>
-        </thead>
-        <tbody>
-        <!--%tpl_repeat_users-->
-        <tr>
-            <td>{name}</td>
-            <td>{user_name}</td>
-            <td>{label_level_{level}}</td>
-            <td>{mobile}</td>
-            <td>{email}</td>
-            <td>{emp_servers}</td>
-            <td>
-                <a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
-                    <i class="icon-pencil"></i>
-                </a>
-        	    <a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'user');" title="{label_delete}">
-                    <i class="icon-remove icon-white"></i>
-                </a>
-            </td>
-        </tr>
-        <!--%%tpl_repeat_users-->
-        {users}
-        </tbody>
-     </table>
-</div>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>{label_name}</th>
+			<th>{label_user_name}</th>
+			<th>{label_level}</th>
+			<th>{label_mobile}</th>
+			<th>{label_email}</th>
+			<th>{label_servers}</th>
+			<th width="75">{label_action}</th>
+		</tr>
+	</thead>
+	<tbody>
+	<!--%tpl_repeat_users-->
+	<tr>
+		<td>{name}</td>
+		<td>{user_name}</td>
+		<td>{label_level_{level}}</td>
+		<td>{mobile}</td>
+		<td>{email}</td>
+		<td>{emp_servers}</td>
+		<td>
+			<a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
+				<i class="icon-pencil"></i>
+			</a>
+			<a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'user');" title="{label_delete}">
+				<i class="icon-remove icon-white"></i>
+			</a>
+		</td>
+	</tr>
+	<!--%%tpl_repeat_users-->
+	{users}
+	</tbody>
+ </table>
 <!--%%tpl_users_list-->
 
 <!--%tpl_users_update-->
-<div class="span12">
-    <form class="form-horizontal well" action="index.php?mod=user&amp;action=save&amp;id={edit_user_id}" method="post">
-         <fieldset>
-                <legend>{titlemode}</legend>
-                <div class="control-group">
-                    <label class="control-label" for="name">{label_name}</label>
-                    <div class="controls">
-                        <input type="text" id="name" name="name" value="{edit_value_name}" maxlength="255" required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="user_name">{label_user_name}</label>
-                    <div class="controls">
-                        <input type="text" id="user_name" name="user_name" value="{edit_value_user_name}" maxlength="64" required>
-                    </div>
-                </div>
-				<div class="control-group">
-					<label class="control-label" for="level">{label_level}</label>
-					<div class="controls">
-						<select id="level" name="level">
-							<!--%tpl_repeat_levels-->
-							<option value="{value}" {selected}>{label}</option>
-							<!--%%tpl_repeat_levels-->
-							{levels}
-						 </select>
-						<p class="help-block">
-						  {label_level_description}
-						</p>
-					</div>
+<form class="form-horizontal well" action="index.php?mod=user&amp;action=save&amp;id={edit_user_id}" method="post">
+	 <fieldset>
+			<legend>{titlemode}</legend>
+			<div class="control-group">
+				<label class="control-label" for="name">{label_name}</label>
+				<div class="controls">
+					<input type="text" id="name" name="name" value="{edit_value_name}" maxlength="255" required>
 				</div>
-                <div class="control-group">
-                    <label class="control-label" for="password">{label_password}</label>
-                    <div class="controls">
-                        <input type="password" id="password" name="password" maxlength="255" placeholder="{placeholder_password}" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="password_repeat">{label_password_repeat}</label>
-                    <div class="controls">
-                        <input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{placeholder_password}" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="mobile">{label_mobile}</label>
-                    <div class="controls">
-                        <input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="email">{label_email}</label>
-                    <div class="controls">
-                        <input type="text" id="email" name="email" value="{edit_value_email}" maxlength="255" required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="servers[]">{label_servers}</label>
-                    <div class="controls">
-                        <!--%tpl_repeat_servers-->
-                        <label class="checkbox">
-                            <input id="server{server_id}"
-                                    type="checkbox"
-                                    name='server_id[]'
-                                    value='{server_id}' {edit_checked} >
-                            {label}
-                        </label>
-                        <!--%%tpl_repeat_servers-->
-                        {servers}
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-success" type="submit">{label_save}</button>
-                    <button class="btn" onclick="history.back();return false;" >{label_go_back}</button>
-                </div>
-         </fieldset>
-    </form>
-</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="user_name">{label_user_name}</label>
+				<div class="controls">
+					<input type="text" id="user_name" name="user_name" value="{edit_value_user_name}" maxlength="64" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="level">{label_level}</label>
+				<div class="controls">
+					<select id="level" name="level">
+						<!--%tpl_repeat_levels-->
+						<option value="{value}" {selected}>{label}</option>
+						<!--%%tpl_repeat_levels-->
+						{levels}
+					 </select>
+					<p class="help-block">
+					  {label_level_description}
+					</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password">{label_password}</label>
+				<div class="controls">
+					<input type="password" id="password" name="password" maxlength="255" placeholder="{placeholder_password}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password_repeat">{label_password_repeat}</label>
+				<div class="controls">
+					<input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{placeholder_password}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="mobile">{label_mobile}</label>
+				<div class="controls">
+					<input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="email">{label_email}</label>
+				<div class="controls">
+					<input type="text" id="email" name="email" value="{edit_value_email}" maxlength="255" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="servers[]">{label_servers}</label>
+				<div class="controls">
+					<!--%tpl_repeat_servers-->
+					<label class="checkbox">
+						<input id="server{server_id}"
+								type="checkbox"
+								name='server_id[]'
+								value='{server_id}' {edit_checked} >
+						{label}
+					</label>
+					<!--%%tpl_repeat_servers-->
+					{servers}
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-success" type="submit">{label_save}</button>
+				<button class="btn" onclick="history.back();return false;" >{label_go_back}</button>
+			</div>
+	 </fieldset>
+</form>
 <!--%%tpl_users_update-->

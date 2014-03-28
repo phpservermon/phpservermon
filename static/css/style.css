@@ -11,6 +11,9 @@ body {
 	padding-left: 0;
 	padding-right: 0;
 }
+.sidebar-nav {
+	padding: 9px 0;
+}
 body.install{
     padding-top:20px;
 }
@@ -26,10 +29,6 @@ body.install{
 .label a{
     color:#FFF;
     text-decoration:none;
-}
-.top_buutons{
-    text-align:right;
-    padding:10px 0px 10px 0px;
 }
 .footer{
     margin-top:20px;

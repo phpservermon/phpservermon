@@ -1,0 +1,15 @@
+<!--%tpl_main_sidebar_container-->
+<div class="span3">
+	<div class="well sidebar-nav">
+		<ul class="nav nav-list">
+			<li class="nav-header">{subtitle}</li>
+			<!--%tpl_repeat_items-->
+			<li class="{class_active}">{html_item}</li>
+			<!--%%tpl_repeat_items-->
+			{items}
+		</ul>
+	</div>
+</div>
+<!--%%tpl_main_sidebar_container-->
+
+<!--%tpl_main_sidebar_types_link--><a href="{url}"><i class="icon-{icon}"></i>&nbsp;{label}</a><!--%%tpl_main_sidebar_types_link-->

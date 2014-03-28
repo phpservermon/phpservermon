@@ -41,7 +41,7 @@ $sm_lang = array(
         'no' => 'Não',
         'edit' => 'Editar',
         'insert' => 'Inserir',
-        'add_new' => 'Adicionar novo?',
+        'add_new' => 'Adicionar novo',
         'update_available' => 'Uma atualização disponível em <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
         'back_to_top' => 'Voltar ao topo',
 		'go_back' => 'Go back',

@@ -81,6 +81,12 @@ abstract class AbstractController implements ControllerInterface {
 	protected $messages = array();
 
 	/**
+	 * Sidebar to add
+	 * @var \psm\Util\Module\Sidebar $sidebar
+	 */
+	protected $sidebar;
+
+	/**
 	 * Database object
 	 * @var \psm\Service\Database $db
 	 */
@@ -180,6 +186,13 @@ abstract class AbstractController implements ControllerInterface {
 		// add menu to page?
 		if($this->add_menu) {
 			$tpl_data['html_menu'] = $this->createHTMLMenu();
+		}
+		// add sidebar to page?
+		if($this->sidebar !== null) {
+			$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
+			$tpl_data['content_span'] = '9';
+		} else {
+			$tpl_data['content_span'] = '12';
 		}
 		// add footer to page?
 		if($this->add_footer) {
@@ -436,6 +449,16 @@ abstract class AbstractController implements ControllerInterface {
 		foreach($actions as $action) {
 			$this->user_level_required_actions[$action] = intval($level);
 		}
+		return $this;
+	}
+
+	/**
+	 * Add a sidebar to the page
+	 * @param \psm\Util\Module\SidebarInterface $sidebar
+	 * @return \psm\Module\ControllerInterface
+	 */
+	public function setSidebar(\psm\Util\Module\SidebarInterface $sidebar) {
+		$this->sidebar = $sidebar;
 		return $this;
 	}
 }

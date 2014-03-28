@@ -52,20 +52,31 @@ class ServerController extends AbstractServerController {
 	 */
 	protected function executeIndex() {
 		$this->setTemplateId('servers_list', 'servers.tpl.html');
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			// first add buttons at the top
-			$this->tpl->newTemplate('servers_list_admin_buttons', 'servers.tpl.html');
-			$this->tpl->addTemplateData($this->getTemplateId(), array(
-				'html_buttons_admin' => $this->tpl->getTemplate('servers_list_admin_buttons'),
-				'url_add' => psm_build_url(array('mod' => 'server', 'action' => 'edit'))
-			));
+			$sidebar->addLink(
+				'add_new',
+				psm_get_lang('system', 'add_new'),
+				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
+				'plus'
+			);
 			// get the action buttons per server
 			$this->tpl->newTemplate('servers_list_admin_actions', 'servers.tpl.html');
 			$html_actions = $this->tpl->getTemplate('servers_list_admin_actions');
 		} else {
 			$html_actions = '';
 		}
+
+		$sidebar->addLink(
+			'update',
+			psm_get_lang('menu', 'server_update'),
+			psm_build_url(array('mod' => 'server_update')),
+			'refresh'
+		);
+
 		// we need an array for our template magic (see below):
 		$html_actions = array('html_actions' => $html_actions);
 
@@ -114,6 +125,15 @@ class ServerController extends AbstractServerController {
 	 */
 	protected function executeEdit() {
 		$this->setTemplateId('servers_update', 'servers.tpl.html');
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+
+		$sidebar->addLink(
+			'go_back',
+			psm_get_lang('system', 'go_back'),
+			psm_build_url(array('mod' => 'server')),
+			'th-list'
+		);
 
 		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 

@@ -69,6 +69,15 @@ class UserController extends AbstractController {
 	 */
 	protected function executeIndex() {
 		$this->setTemplateId('users_list', 'users.tpl.html');
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+
+		$sidebar->addLink(
+			'add_new',
+			psm_get_lang('system', 'add_new'),
+			psm_build_url(array('mod' => 'user', 'action' => 'edit')),
+			'plus'
+		);
 
 		// build label array for the next loop
 		$servers_labels = array();
@@ -105,6 +114,15 @@ class UserController extends AbstractController {
 	 */
 	protected function executeEdit() {
 		$this->setTemplateId('users_update', 'users.tpl.html');
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+
+		$sidebar->addLink(
+			'go_back',
+			psm_get_lang('system', 'go_back'),
+			psm_build_url(array('mod' => 'user')),
+			'th-list'
+		);
 
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		$fields_prefill = array('name', 'user_name', 'mobile', 'email');

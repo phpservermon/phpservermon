@@ -80,22 +80,37 @@ class Template {
 	/**
 	 * Add data to the template
 	 *
-	 * @param string $id template_id used by add_template()
+	 * @param string $tpl_id template_id used by add_template()
 	 * @param array $data
+	 * @param boolean $use_html if true, $tpl_id is considered to be HTML code and used rather than a template
 	 * @return string new template
 	 */
-	public function addTemplateData($id, $data) {
-		// does the template exist?
-		if (!isset($this->templates[$id])) {
-			// file does not exist
-			trigger_error('Template not found with id: '.$id);
-			return false;
+	public function addTemplateData($tpl_id, $data, $use_html = false) {
+		if($use_html) {
+			// no template
+			$source = $tpl_id;
+		} else {
+			// does the template exist?
+			if (!isset($this->templates[$tpl_id])) {
+				// file does not exist
+				trigger_error("Template '{$tpl_id}' could not be found", E_USER_WARNING);
+				return false;
+			}
+			$source =& $this->templates[$tpl_id];
 		}
 
 		foreach($data as $key => $value) {
-			$this->templates[$id] = str_replace('{'.$key.'}', $value, $this->templates[$id]);
+			if(is_array($value)) {
+				$subdata = array();
+				foreach($value as $k => $v) {
+					$subdata[$key.'_'.$k] = $v;
+				}
+				$source = $this->assignTplVar($source, $subdata, true);
+			} else {
+				$source = str_replace('{'.$key.'}', $value, $source);
+			}
 		}
-		return $this->templates[$id];
+		return $source;
 	}
 
 	/**

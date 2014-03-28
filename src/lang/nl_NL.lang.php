@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'Nee',
 		'edit' => 'Wijzig',
 		'insert' => 'Voeg toe',
-		'add_new' => 'Voeg toe?',
+		'add_new' => 'Voeg toe',
 		'update_available' => 'Een nieuwe update is beschikbaar op <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Terug naar boven',
 		'go_back' => 'Terug',
