@@ -10,7 +10,7 @@ body {
 .navbar-fixed-top .navbar-inner {
 	padding-left: 0;
 	padding-right: 0;
-}	
+}
 body.install{
     padding-top:20px;
 }
@@ -82,4 +82,10 @@ legend{
   line-height: 18px;
   color: #333333;
   white-space: nowrap;
+}
+
+#flashmessage {
+	max-width: 350px;
+	margin: auto;
+	margin-bottom: 18px;
 }

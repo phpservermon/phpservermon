@@ -51,10 +51,10 @@
         </div>
         <div class="row-fluid">
 			<div class="span12">
-				<div id="flashmessage" class="alert alert-info hide">
+				<div id="flashmessage" class="hide">
 				<!--%tpl_repeat_messages-->
-				<div>
-					<p class="pull-left span1"><span class="label label-{shortcode}">{status}</span></p>
+				<div class="alert alert-{shortcode}">
+					<p class="pull-left span1"><i class="icon-{icon}"></i></p>
 					<p>{message}</p>
 				</div>
 				<!--%%tpl_repeat_messages-->

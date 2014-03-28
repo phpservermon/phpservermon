@@ -8,7 +8,7 @@ function sm_delete(id, mod) {
 
 function psm_tooltips() {
 	$('input[data-toggle="tooltip"]').tooltip({
-		'trigger':'focus',
+		'trigger':'hover',
 		'placement': 'right',
 		'container': 'body'
 	});

@@ -362,24 +362,33 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Add one or multiple message to the stack to be displayed to the user
 	 * @param string|array $msg
-	 * @param string $status success/warning/error
+	 * @param string $shortcode info/success/warning/error
 	 * @return \psm\Module\AbstractModule
 	 */
-	public function addMessage($msg, $status = 'info') {
+	public function addMessage($msg, $shortcode = 'info') {
 		if(!is_array($msg)) {
 			$msg = array($msg);
 		}
-		if($status == 'error') {
-			$shortcode = 'important';
-		} else {
-			$shortcode = $status;
+		switch($shortcode) {
+			case 'error':
+				$icon = 'exclamation-sign';
+				break;
+			case 'success':
+				$icon = 'ok-sign';
+				break;
+			case 'warning':
+				$icon = 'question-sign';
+				break;
+			default:
+				$icon = 'info-sign';
+				break;
 		}
 
 		foreach($msg as $m) {
 			$this->messages[] = array(
 				'message' => $m,
-				'status' => ($status == null) ? '' : strtoupper($status),
 				'shortcode' => $shortcode,
+				'icon' => $icon,
 			);
 		}
 		return $this;

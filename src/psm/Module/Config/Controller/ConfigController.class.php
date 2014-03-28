@@ -164,7 +164,7 @@ class ConfigController extends AbstractController {
 				}
 			}
 
-			$this->addMessage(psm_get_lang('config', 'updated'));
+			$this->addMessage(psm_get_lang('config', 'updated'), 'success');
 
 			if($clean['language'] != psm_get_conf('language')) {
 				header('Location: ' . $_SERVER['REQUEST_URI']);

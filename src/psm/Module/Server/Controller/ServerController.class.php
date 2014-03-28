@@ -136,7 +136,7 @@ class ServerController extends AbstractServerController {
 					array('server_id' => $server_id)
 				);
 				if (empty($edit_server)) {
-					$this->addMessage('Invalid server id');
+					$this->addMessage('Invalid server id', 'error');
 					return $this->initializeAction('index');
 				}
 
@@ -191,12 +191,12 @@ class ServerController extends AbstractServerController {
 					$clean,
 					array('server_id' => $server_id)
 				);
-				$this->addMessage(psm_get_lang('servers', 'updated'));
+				$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
 			} else {
 				// add
 				$clean['status'] = 'on';
 				$this->db->save(PSM_DB_PREFIX.'servers', $clean);
-				$this->addMessage(psm_get_lang('servers', 'inserted'));
+				$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
 			}
 		}
 		$this->initializeAction('index');
@@ -210,13 +210,14 @@ class ServerController extends AbstractServerController {
 			$id = intval($_GET['id']);
 			// do delete
 			$res = $this->db->delete(PSM_DB_PREFIX . 'servers', array('server_id' => $id));
-			if($res->rowCount() == 1) {
+
+			if($res == 1) {
 				$this->db->delete(PSM_DB_PREFIX.'log', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'users_servers', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'servers_uptime', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'servers_history', array('server_id' => $id));
 			}
-			$this->addMessage(psm_get_lang('system', 'deleted'));
+			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
 		}
 		$this->initializeAction('index');
 	}
