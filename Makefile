@@ -12,6 +12,8 @@ export:
 	mkdir ./build ./build/phpservermon
 	git archive $(tag) | tar -xf - -C ./build/phpservermon/
 	find ./build/phpservermon -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
+	find ./build/phpservermon -type f | xargs chmod 0644
+	find ./build/phpservermon -type d | xargs chmod 0755
 	cd ./build; zip -rq phpservermon-$(tag).zip ./phpservermon; cd ../;
 	cd ./build; tar -pczf phpservermon-$(tag).tar.gz ./phpservermon; cd ../;
 	rm -rf ./build/phpservermon
