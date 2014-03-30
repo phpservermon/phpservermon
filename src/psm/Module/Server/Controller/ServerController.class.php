@@ -257,10 +257,11 @@ class ServerController extends AbstractServerController {
 				'remove'
 			);
 		}
+		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'server';
 		$sidebar->addLink(
 			'go_back',
 			psm_get_lang('system', 'go_back'),
-			psm_build_url(array('mod' => 'server')),
+			psm_build_url(array('mod' => $back_to)),
 			'th-list'
 		);
 

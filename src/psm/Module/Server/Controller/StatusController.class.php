@@ -75,7 +75,7 @@ class StatusController extends AbstractServerController {
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
-			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id']));
+			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
 			if ($server['status'] == "off") {
 				$offline[$server['server_id']] = $server;
@@ -90,7 +90,7 @@ class StatusController extends AbstractServerController {
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_offline', $offline);
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_online', $online);
-		
+
 		// check if we need to add the auto refresh
 		$auto_refresh = psm_get_conf('auto_refresh_servers');
 		if(intval($auto_refresh) > 0) {
