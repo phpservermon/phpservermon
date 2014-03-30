@@ -71,7 +71,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`warning_threshold_counter`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
-				ORDER BY `active` ASC, `status` DESC, `type` ASC, `label` ASC";
+				ORDER BY `active` ASC, `status` DESC, `label` ASC";
 		$servers = $this->db->query($sql);
 
 		return $servers;

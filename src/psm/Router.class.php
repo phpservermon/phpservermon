@@ -46,7 +46,7 @@ class Router {
 	 * Default module (if none given or invalid one)
 	 * @var string $default_module
 	 */
-	public $default_module = 'server';
+	public $default_module = 'server_status';
 
 	/**
 	 * Controller map

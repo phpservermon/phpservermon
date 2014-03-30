@@ -103,7 +103,8 @@ function create_plot($this, mode)
         series: eval($this.attr('data-series')),
 		legend: {
 			show: true,
-			placement: 'outsideGrid'
+			placement: 'insideGrid',
+			location: 'nw'
 		},
 		axes : {
 			xaxis:{

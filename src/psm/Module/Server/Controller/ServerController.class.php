@@ -89,24 +89,15 @@ class ServerController extends AbstractServerController {
 			// will also be replaced in the html_actions template itself
 			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
-			$servers[$x] = $this->formatServer($servers[$x]);
 
 			if($servers[$x]['type'] == 'website') {
 				// add link to label
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
 			}
+			$servers[$x] = $this->formatServer($servers[$x]);
 		}
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
-
-		// check if we need to add the auto refresh
-		$auto_refresh = psm_get_conf('auto_refresh_servers');
-		if(intval($auto_refresh) > 0) {
-			// add it
-			$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
-			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
-			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
-		}
 	}
 
 	/**
@@ -317,6 +308,7 @@ class ServerController extends AbstractServerController {
 			array(
 				'subtitle' => psm_get_lang('menu', 'server'),
 				'label_label' => psm_get_lang('servers', 'label'),
+				'label_status' => psm_get_lang('menu', 'server_status'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),

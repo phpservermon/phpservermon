@@ -183,7 +183,7 @@ abstract class AbstractController implements ControllerInterface {
 		// add sidebar to page?
 		if($this->sidebar !== null) {
 			$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
-			$tpl_data['content_span'] = '9';
+			$tpl_data['content_span'] = '10';
 		} else {
 			$tpl_data['content_span'] = '12';
 		}
@@ -227,10 +227,10 @@ abstract class AbstractController implements ControllerInterface {
 
 		switch($ulvl) {
 			case PSM_USER_ADMIN:
-				$items = array('server', 'server_status', 'server_log', 'user', 'config', 'server_update');
+				$items = array('server_status', 'server', 'server_log', 'user', 'config', 'server_update');
 				break;
 			case PSM_USER_USER:
-				$items = array('server', 'server_status', 'server_log', 'server_update');
+				$items = array('server_status', 'server', 'server_log', 'server_update');
 				break;
 			default:
 				$items = array();

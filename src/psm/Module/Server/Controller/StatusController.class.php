@@ -90,10 +90,15 @@ class StatusController extends AbstractServerController {
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_offline', $offline);
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_online', $online);
-		// add refresh (bit overkill perhaps to do it this way..?)
-		$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
-		$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => 30));
-		$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
+		
+		// check if we need to add the auto refresh
+		$auto_refresh = psm_get_conf('auto_refresh_servers');
+		if(intval($auto_refresh) > 0) {
+			// add it
+			$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
+			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
+			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
+		}
 	}
 
 	protected function createHTMLLabels() {
