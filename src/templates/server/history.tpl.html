@@ -1,4 +1,4 @@
-<!--%tpl_history_list-->
+<!--%tpl_server_history-->
 <link href="static/plugin/jqplot/jquery.jqplot.min.css" rel="stylesheet" >
 <!--[if lt IE 9]><script type="text/javascript" src="static/plugin/excanvas.js"></script><![endif]-->
 <script type="text/javascript" src="static/plugin/jqplot/jquery.jqplot.min.js"></script>
@@ -9,6 +9,7 @@
 
 <link href="static/css/history.css" rel="stylesheet" >
 <script type="text/javascript">
+	var day_format = '{day_format}';
 	var long_date_format = '{long_date_format}';
 	var short_date_format = '{short_date_format}';
 	var short_time_format = '{short_time_format}';
@@ -16,11 +17,11 @@
 <script type="text/javascript" src="static/js/history.js"></script>
 
 <div id="history-panel">
-<!--%tpl_repeat_servers-->
+<!--%tpl_repeat_graphs-->
 <div class="chart-row">
 	<div class="chart-container">
 		<div class="chart-content">
-			<div id="chart{server_id}" class="chart" data-title="{server_name}" data-lines="{server_lines}" data-down="{server_down}"></div>
+			<div id="chart{chart_id}" class="chart" data-title="{title}" data-plotMode="{plotmode}" data-endTime="{end_timestamp}" data-series="{series}" data-lines="{server_lines}" data-down="{server_down}"></div>
 		</div>
 	</div>
 	<div class="info-container">
@@ -28,28 +29,25 @@
 			<div class="info-dropdown btn-group">
 				<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-info-sign"></i></span></button>
 				<ul class="dropdown-menu">
-					<li><span>{label_last_online}: {server_online}</span></li>
-					<li><span>{label_rtime}: {server_rtime}</span></li>
+					<li><span>{label_latency_avg}: {latency_avg}</span></li>
 				</ul>
 			</div>
 			<div class="server-info">
-				{label_last_online}: {server_online}<br/>
-				{label_rtime}: {server_rtime}<br/>
+				{label_latency_avg}: {latency_avg}<br/>
 			</div>
 		</div>
 		<div class="chart-selector">
 			<div class="btn-group">
-				<button class="btn" data-chartId="{server_id}" data-chartMode="month" >{label_month}</button>
-				<button class="btn" data-chartId="{server_id}" data-chartMode="week" >{label_week}</button>
-				<button class="btn" data-chartId="{server_id}" data-chartMode="day" >{label_day}</button>
-				<button class="btn btn-info" data-chartId="{server_id}" data-chartMode="hour" >{label_hour}</button>
-			</div>			
+				<!--%tpl_repeat_buttons-->
+				<button class="btn {class_active}" data-chartId="{chart_id}" data-chartMode="{mode}" >{label}</button>
+				<!--%%tpl_repeat_buttons-->
+				{buttons}
+			</div>
 		</div>
 	</div>
 </div>
 <div style="clear: both;">&nbsp;</div>
-<!--%%tpl_repeat_servers-->
-{servers}
+<!--%%tpl_repeat_graphs-->
+{graphs}
 </div>
-
-<!--%%tpl_history_list-->
+<!--%%tpl_server_history-->

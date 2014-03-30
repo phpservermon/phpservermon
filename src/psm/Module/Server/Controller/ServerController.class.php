@@ -38,7 +38,7 @@ class ServerController extends AbstractServerController {
 		parent::__construct($db, $tpl);
 
 		$this->setActions(array(
-			'index', 'edit', 'save', 'delete',
+			'index', 'edit', 'save', 'delete', 'view',
 		), 'index');
 
 		// make sure only admins are allowed to edit/delete servers:
@@ -89,23 +89,12 @@ class ServerController extends AbstractServerController {
 			// will also be replaced in the html_actions template itself
 			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
-			$servers[$x]['rtime'] = round((float) $servers[$x]['rtime'], 4);
-			$servers[$x]['last_online']  = psm_date($servers[$x]['last_online']);
-			$servers[$x]['last_check']  = psm_date($servers[$x]['last_check']);
-			$servers[$x]['active'] = psm_get_lang('system', $servers[$x]['active']);
-			$servers[$x]['email'] = psm_get_lang('system', $servers[$x]['email']);
-			$servers[$x]['sms'] = psm_get_lang('system', $servers[$x]['sms']);
+			$servers[$x] = $this->formatServer($servers[$x]);
 
 			if($servers[$x]['type'] == 'website') {
 				// add link to label
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
 			}
-
-			if($servers[$x]['status'] == 'on' && $servers[$x]['warning_threshold_counter'] > 0) {
-				$servers[$x]['status'] = 'warning';
-			}
-
-			$servers[$x]['type'] = psm_get_lang('servers', 'type_' . $servers[$x]['type']);
 		}
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
@@ -156,7 +145,7 @@ class ServerController extends AbstractServerController {
 					array('server_id' => $server_id)
 				);
 				if (empty($edit_server)) {
-					$this->addMessage('Invalid server id', 'error');
+					$this->addMessage('Invalid server', 'error');
 					return $this->initializeAction('index');
 				}
 
@@ -242,6 +231,85 @@ class ServerController extends AbstractServerController {
 		$this->initializeAction('index');
 	}
 
+	/**
+	 * Prepare the view template
+	 */
+	protected function executeView() {
+		$this->setTemplateId('server_view', 'server/view.tpl.html');
+		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+		// get server entry
+		$server = $this->db->selectRow(
+			PSM_DB_PREFIX.'servers',
+			array('server_id' => $server_id)
+		);
+		if (empty($server)) {
+			$this->addMessage('Invalid server', 'error');
+			return $this->initializeAction('index');
+		}
+
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+		$sidebar->setSubtitle($server['label']);
+
+		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+			$sidebar->addLink(
+				'edit',
+				psm_get_lang('system', 'edit'),
+				psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $server_id)),
+				'edit'
+			);
+			$sidebar->addLink(
+				'delete',
+				psm_get_lang('system', 'delete'),
+				"javascript:sm_delete('{$server_id}', 'server');",
+				'remove'
+			);
+		}
+		$sidebar->addLink(
+			'go_back',
+			psm_get_lang('system', 'go_back'),
+			psm_build_url(array('mod' => 'server')),
+			'th-list'
+		);
+
+		$tpl_data = $this->formatServer($server);
+		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->tpl);
+		$tpl_data['html_history'] = $history->createHTML($server_id);
+
+		$this->tpl->addTemplateData(
+			$this->getTemplateId(),
+			$tpl_data
+		);
+	}
+
+	/**
+	 * Format server data for display
+	 * @param array $server
+	 * @return array
+	 */
+	protected function formatServer($server) {
+		$server['rtime'] = round((float) $server['rtime'], 4);
+		$server['last_online']  = psm_timespan($server['last_online']);
+		$server['last_check']  = psm_timespan($server['last_check']);
+		$server['active'] = psm_get_lang('system', $server['active']);
+		$server['email'] = psm_get_lang('system', $server['email']);
+		$server['sms'] = psm_get_lang('system', $server['sms']);
+		$server['url_view'] = psm_build_url(array(
+			'mod' => 'server',
+			'action' => 'view',
+			'id' => $server['server_id'],
+		));
+
+		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+			$server['status'] = 'warning';
+		}
+
+		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+
+		return $server;
+	}
+
 	// override parent::createHTMLLabels()
 	protected function createHTMLLabels() {
 		$this->tpl->addTemplateData(
@@ -258,7 +326,7 @@ class ServerController extends AbstractServerController {
 				'label_pattern' => psm_get_lang('servers', 'pattern'),
 				'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
 				'label_last_check' => psm_get_lang('servers', 'last_check'),
-				'label_rtime' => psm_get_lang('servers', 'rtime'),
+				'label_rtime' => psm_get_lang('servers', 'latency'),
 				'label_last_online' => psm_get_lang('servers', 'last_online'),
 				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 				'label_send_email' => psm_get_lang('servers', 'send_email'),

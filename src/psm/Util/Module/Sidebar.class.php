@@ -44,6 +44,13 @@ class Sidebar implements SidebarInterface {
 	protected $items = array();
 
 	/**
+	 * Custom subtitle
+	 * @var string $subtitle
+	 * @see setSubtitle()
+	 */
+	protected $subtitle;
+
+	/**
 	 * Template service
 	 * @var \psm\Service\Template $tpl
 	 */
@@ -60,6 +67,16 @@ class Sidebar implements SidebarInterface {
 	 */
 	public function setActiveItem($id) {
 		$this->active_id = $id;
+		return $this;
+	}
+
+	/**
+	 * Set a custom subtitle (default is module subitle)
+	 * @param string $title
+	 * @return \psm\Util\Moduke\Sidebar
+	 */
+	public function setSubtitle($title) {
+		$this->subtitle = $title;
 		return $this;
 	}
 
@@ -113,6 +130,11 @@ class Sidebar implements SidebarInterface {
 		}
 		if(!empty($items)) {
 			$this->tpl->addTemplateDataRepeat($tpl_id, 'items', $items);
+		}
+		if($this->subtitle !== null) {
+			$this->tpl->addTemplateData($tpl_id, array(
+				'subtitle' => $this->subtitle,
+			));
 		}
 
 		$html = $this->tpl->getTemplate($tpl_id);

@@ -1,0 +1,56 @@
+<!--%tpl_server_view-->
+<table class="table">
+	<colgroup>
+		<col class="oce-first" />
+	</colgroup>
+	<thead>
+		<tr class="head">
+			<th colspan="2">
+				<span class="label label-status-{status}">
+					<a href="#" title="{error}">{status}</a>
+				</span>&nbsp;
+				{label}
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>{label_type}:</td>
+			<td>{type}</td>
+		</tr>
+		<tr>
+			<td>{label_domain}:</td>
+			<td>{ip}</td>
+		</tr>
+		<tr>
+			<td>{label_port}:</td>
+			<td>{port}</td>
+		</tr>
+		<tr>
+			<td>{label_last_check}:</td>
+			<td>{last_check}</td>
+		</tr>
+		<tr>
+			<td>{label_last_online}:</td>
+			<td>{last_online}</td>
+		</tr>
+		<tr>
+			<td>{label_rtime}:</td>
+			<td>{rtime} s</td>
+		</tr>
+		<tr>
+			<td>{label_monitoring}:</td>
+			<td>{active}</td>
+		</tr>
+		<tr>
+			<td>{label_send_email}:</td>
+			<td>{email}</td>
+		</tr>
+		<tr>
+			<td>{label_send_sms}:</td>
+			<td>{sms}</td>
+		</tr>
+	</tbody>
+</table>
+{html_history}
+<!--%%tpl_server_view-->

@@ -24,6 +24,7 @@
 		border-radius: 3px;
 		margin-bottom: 20px;
 		width: 300px;
+		cursor: pointer;
 	}
 
 	.offline {
@@ -54,7 +55,7 @@
 </style>
 	<div class="offline">
 		<!--%tpl_repeat_servers_offline-->
-		<div class="entity {class_warning}">
+		<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
 			<h2>{label}</h2>
 			<p>{label_last_online}: {last_online_nice}</p>
 			<p>{label_last_check}: {last_checked_nice}</p>
@@ -64,7 +65,7 @@
 	</div>
 	<div class="online">
 		<!--%tpl_repeat_servers_online-->
-		<div class="entity">
+		<div class="entity" onclick="window.location.href='{url_view}'">
 			<h2>{label}</h2>
 			<p>{label_last_online}: {last_checked_nice}</p>
 			<p>{label_rtime}: {rtime}s</p>

@@ -65,7 +65,7 @@ class StatusController extends AbstractServerController {
 			'warning_fg' => '#F3F3B1',
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
-			'label_rtime' => psm_get_lang('servers', 'rtime'),
+			'label_rtime' => psm_get_lang('servers', 'latency'),
 		);
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 
@@ -75,6 +75,7 @@ class StatusController extends AbstractServerController {
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
+			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id']));
 
 			if ($server['status'] == "off") {
 				$offline[$server['server_id']] = $server;

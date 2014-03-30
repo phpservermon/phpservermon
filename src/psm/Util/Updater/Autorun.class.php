@@ -81,7 +81,7 @@ class Autorun {
 
 		$archiver = new StatusArchiver($this->db);
 		$cleanup_date = new \DateTime();
-		$cleanup_date->modify('-1 month');
+		$cleanup_date->modify('-1 week');
 
 		foreach($servers as $server) {
 			$status_old = ($server['status'] == 'on') ? true : false;
