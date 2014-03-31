@@ -46,7 +46,7 @@ class StatusController extends AbstractServerController {
 	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('status', 'status.tpl.html');
+		$this->setTemplateId('server_status', 'server/status.tpl.html');
 		$this->addFooter(false);
 
 		// get the active servers from database

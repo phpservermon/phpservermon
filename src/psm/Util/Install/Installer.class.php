@@ -118,6 +118,7 @@ class Installer {
 					('log_email', '1'),
 					('log_sms', '1'),
 					('version', '" . PSM_VERSION . "'),
+					('version_update_check', '" . PSM_VERSION . "'),
 					('auto_refresh_servers', '0'),
 					('show_update', '1'),
 					('last_update_check', '0'),
@@ -268,6 +269,8 @@ class Installer {
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='ko_KR' WHERE `key`='language' AND `value`='kr';";
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='nl_NL' WHERE `key`='language' AND `value`='nl';";
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='pt_BR' WHERE `key`='language' AND `value`='br';";
+
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('version_update_check', '" . PSM_VERSION . "');";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";

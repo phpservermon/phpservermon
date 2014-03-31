@@ -32,6 +32,18 @@
 define('PSM_VERSION', '2.2.0-dev');
 
 /**
+ * URL to check for updates. Will not be checked if turned off on config page.
+ * @see psm_update_available()
+ */
+define('PSM_UPDATE_URL', 'http://www.phpservermonitor.org/version.php');
+
+/**
+ * Default update interval (1 week). Only applicable when updates are enabled.
+ * @see psm_update_available()
+ */
+define('PSM_UPDATE_INTERVAL', 7 * 24 * 60 * 60);
+
+/**
  * Configuration for: Hashing strength
  * This is the place where you define the strength of your password hashing/salting
  *

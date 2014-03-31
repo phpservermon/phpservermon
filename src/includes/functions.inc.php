@@ -159,6 +159,7 @@ function psm_update_conf($key, $value) {
 		array('value' => $value),
 		array('key' => $key)
 	);
+	$GLOBALS['sm_config'][$key] = $value;
 }
 
 ###############################################
@@ -312,26 +313,41 @@ function psm_date($time) {
 }
 
 /**
- * Check if an update is available for PHP Server Monitor
+ * Check if an update is available for PHP Server Monitor.
  *
+ * Will only check for new version if user turned updates on in config.
  * @global object $db
  * @return boolean
  */
-function psm_check_updates() {
+function psm_update_available() {
 	global $db;
+
+	if(!psm_get_conf('show_update')) {
+		// user does not want updates, fair enough.
+		return false;
+	}
 
 	$last_update = psm_get_conf('last_update_check');
 
-	if((time() - (7 * 24 * 60 * 60)) > $last_update) {
+	if((time() - PSM_UPDATE_INTERVAL) > $last_update) {
 		// been more than a week since update, lets go
-		// update "update-date"
-		$db->save(PSM_DB_PREFIX . 'config', array('value' => time()), array('key' => 'last_update_check'));
-		$latest = psm_curl_get('http://www.phpservermonitor.org/version.php');
-		$current = psm_get_conf('version');
-
-		return version_compare($latest, $current, '>');
+		// update last check date
+		psm_update_conf('last_update_check', time());
+		$latest = psm_curl_get(PSM_UPDATE_URL);
+		// add latest version to database
+		if($latest !== false && strlen($latest) < 15) {
+			psm_update_conf('version_update_check', $latest);
+		}
+	} else {
+		$latest = psm_get_conf('version_update_check');
 	}
-	return false;
+
+	if($latest != false) {
+		$current = psm_get_conf('version');
+		return version_compare($latest, $current, '>');
+	} else {
+		return false;
+	}
 }
 
 /**

@@ -167,10 +167,6 @@ abstract class AbstractController implements ControllerInterface {
 	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically
 	 */
 	protected function createHTML() {
-		if(psm_get_conf('show_update')) {
-			// user wants updates, lets see what we can do
-			$this->createHTMLUpdateAvailable();
-		}
 		$tpl_data = array();
 
 		if(!empty($this->messages)) {
@@ -196,6 +192,10 @@ abstract class AbstractController implements ControllerInterface {
 		$tpl_id_content = $this->getTemplateId();
 		if($tpl_id_content) {
 			$tpl_data['content'] = $this->tpl->getTemplate($tpl_id_content);
+		}
+
+		if(psm_update_available()) {
+			$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
 		}
 
 		// add the module's custom template to the main template to get some content
@@ -259,18 +259,6 @@ abstract class AbstractController implements ControllerInterface {
 		$this->tpl->addTemplateData($tpl_id, $tpl_data);
 
 		return $this->tpl->getTemplate($tpl_id);
-	}
-
-	/**
-	 * First check if an update is available, if there is add a message
-	 * to the main template
-	 */
-	protected function createHTMLUpdateAvailable() {
-		if(psm_check_updates()) {
-			// yay, new update available =D
-			// @todo perhaps find a way to make the message more persistent?
-			$this->addMessage(psm_get_lang('system', 'update_available'));
-		}
 	}
 
 	/**

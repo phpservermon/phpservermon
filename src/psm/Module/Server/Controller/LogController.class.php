@@ -44,7 +44,7 @@ class LogController extends AbstractServerController {
 	 * Prepare the template with a list of all log entries
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('log_list', 'log.tpl.html');
+		$this->setTemplateId('server_log_list', 'server/log.tpl.html');
 
 		$entries = array();
 		$entries['status'] = $this->getEntries('status');
@@ -80,10 +80,10 @@ class LogController extends AbstractServerController {
 			}
 
 			// add entries to template
-			$this->tpl->newTemplate('log_entries', 'log.tpl.html');
-			$this->tpl->addTemplateDataRepeat('log_entries', 'entries', $records);
+			$this->tpl->newTemplate('server_log_entries', 'server/log.tpl.html');
+			$this->tpl->addTemplateDataRepeat('server_log_entries', 'entries', $records);
 			$this->tpl->addTemplateData(
-				'log_entries',
+				'server_log_entries',
 				array(
 					'logtitle' => $key,
 				)
@@ -91,7 +91,7 @@ class LogController extends AbstractServerController {
 			$this->tpl->addTemplateData(
 				$this->getTemplateId(),
 				array(
-					'content_' . $key => $this->tpl->getTemplate('log_entries'),
+					'content_' . $key => $this->tpl->getTemplate('server_log_entries'),
 				)
 			);
 		}

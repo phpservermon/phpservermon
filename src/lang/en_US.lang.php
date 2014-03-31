@@ -42,7 +42,7 @@ $sm_lang = array(
 		'edit' => 'Edit',
 		'insert' => 'Insert',
 		'add_new' => 'Add new',
-		'update_available' => 'A new update is available from <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'A new version ({version}) is available from <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php

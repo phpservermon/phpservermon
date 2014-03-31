@@ -62,13 +62,13 @@ class InstallController extends AbstractController {
 	protected function createHTML() {
 		$html_results = '';
 		if(!empty($this->messages)) {
-			$this->tpl->newTemplate('install_results', 'install.tpl.html');
+			$this->tpl->newTemplate('install_results', 'install/install.tpl.html');
 			$this->tpl->addTemplateDataRepeat('install_results', 'resultmsgs', $this->messages);
 			$html_results = $this->tpl->getTemplate('install_results');
 			$this->messages = array();
 		}
 		$tpl_id = $this->getTemplateId();
-		$this->setTemplateId('install', 'install.tpl.html');
+		$this->setTemplateId('install', 'install/install.tpl.html');
 
 		$this->tpl->addTemplateData($this->getTemplateId(), array(
 			'html_install' => $this->tpl->getTemplate($tpl_id),
@@ -82,7 +82,7 @@ class InstallController extends AbstractController {
 	 * Say hi to our new user
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('install_index', 'install.tpl.html');
+		$this->setTemplateId('install_index', 'install/install.tpl.html');
 
 		// build prerequisites
 		$errors = 0;
@@ -113,7 +113,7 @@ class InstallController extends AbstractController {
 	 * Help the user create a new config file
 	 */
 	protected function executeConfig() {
-		$this->setTemplateId('install_config_new', 'install.tpl.html');
+		$this->setTemplateId('install_config_new', 'install/install.tpl.html');
 		$tpl_data = array();
 
 		if(!defined('PSM_DB_PREFIX')) {
@@ -165,7 +165,7 @@ class InstallController extends AbstractController {
 						$this->addMessage('Configuration file written successfully.', 'success');
 					} else {
 						$this->addMessage('Config file is not writable, we cannot save it for you.', 'error');
-						$this->tpl->newTemplate('install_config_new_copy', 'install.tpl.html');
+						$this->tpl->newTemplate('install_config_new_copy', 'install/install.tpl.html');
 						$tpl_data['html_config_copy'] = $this->tpl->getTemplate('install_config_new_copy');
 						$tpl_data['php_config'] = $config_php;
 					}
@@ -182,14 +182,14 @@ class InstallController extends AbstractController {
 					if(version_compare(PSM_VERSION, '2.2.0', '<')) {
 						// upgrade from before 2.2, does not have passwords yet.. create new user first
 						$this->addMessage('Your current version does not have an authentication system, but since v2.2 access to the monitor is restricted by user accounts. Please set up a new account to be able to login after the upgrade, and which you can use to change the passwords for your other accounts.', 'info');
-						$this->setTemplateId('install_config_new_user', 'install.tpl.html');
+						$this->setTemplateId('install_config_new_user', 'install/install.tpl.html');
 					} else {
-						$this->setTemplateId('install_config_upgrade', 'install.tpl.html');
+						$this->setTemplateId('install_config_upgrade', 'install/install.tpl.html');
 						$tpl_data['version'] = PSM_VERSION;
 					}
 				} else {
 					// fresh install ahead
-					$this->setTemplateId('install_config_new_user', 'install.tpl.html');
+					$this->setTemplateId('install_config_new_user', 'install/install.tpl.html');
 
 					$tpl_data['username'] = (isset($_POST['username'])) ? $_POST['username'] : '';
 					$tpl_data['email'] = (isset($_POST['email'])) ? $_POST['email'] : '';
@@ -272,7 +272,7 @@ class InstallController extends AbstractController {
 			}
 		}
 
-		$this->setTemplateId('install_success', 'install.tpl.html');
+		$this->setTemplateId('install_success', 'install/install.tpl.html');
 	}
 
 	/**

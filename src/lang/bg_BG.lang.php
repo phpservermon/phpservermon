@@ -42,7 +42,7 @@ $sm_lang = array(
 		'edit' => 'Редактиране на',
 		'insert' => 'Добавяне',
 		'add_new' => 'Добави нов',
-		'update_available' => 'Налична е нова версия. Може да я свалите от <a href="http://www.phpservermonitor.org" target="_blank">тук</a>.',
+		'update_available' => 'Налична е нова версия ({version}). Може да я свалите от <a href="http://www.phpservermonitor.org" target="_blank">тук</a>.',
 		'back_to_top' => 'Нагоре',
 		'go_back' => 'Go back',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php

@@ -68,7 +68,7 @@ class UserController extends AbstractController {
 	 * Prepare the template to show a list of all users
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('users_list', 'users.tpl.html');
+		$this->setTemplateId('user_list', 'user/user.tpl.html');
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
 		$this->setSidebar($sidebar);
 
@@ -113,7 +113,7 @@ class UserController extends AbstractController {
 	 * Prepare the template to show the update screen for a user
 	 */
 	protected function executeEdit() {
-		$this->setTemplateId('users_update', 'users.tpl.html');
+		$this->setTemplateId('user_update', 'user/user.tpl.html');
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
 		$this->setSidebar($sidebar);
 

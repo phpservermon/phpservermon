@@ -76,16 +76,7 @@ class ConfigController extends AbstractController {
 	 * Populate all the config fields with values from the database
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('config', 'config.tpl.html');
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
-		$this->setSidebar($sidebar);
-
-		$sidebar->addLink(
-			'save',
-			psm_get_lang('system', 'save'),
-			"javascript:$('#edit_config').submit();",
-			'ok'
-		);
+		$this->setTemplateId('config', 'config/config.tpl.html');
 
 		$config_db = $this->db->select(
 			PSM_DB_PREFIX . 'config',

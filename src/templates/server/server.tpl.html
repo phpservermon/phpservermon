@@ -1,4 +1,4 @@
-<!--%tpl_servers_list-->
+<!--%tpl_server_list-->
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
@@ -38,18 +38,18 @@
 		{servers}
 	</tbody>
 </table>
-<!--%%tpl_servers_list-->
+<!--%%tpl_server_list-->
 
-<!--%tpl_servers_list_admin_actions-->
+<!--%tpl_server_list_admin_actions-->
 <a class="btn btn-small" href="index.php?mod=server&amp;action=edit&amp;id={server_id}" title="{label_edit}">
 	<i class="icon-pencil"></i>
 </a>
 <a class="btn btn-small btn-danger" href="javascript:sm_delete('{server_id}', 'server');" title="{label_delete}">
 	<i class="icon-remove icon-white"></i>
 </a>
-<!--%%tpl_servers_list_admin_actions-->
+<!--%%tpl_server_list_admin_actions-->
 
-<!--%tpl_servers_update-->
+<!--%tpl_server_update-->
 <form class="form-horizontal well" action="index.php?mod=server&action=save&id={edit_server_id}" method="post">
 	<fieldset>
 		<legend>{titlemode}</legend>
@@ -125,4 +125,4 @@
 		</div>
 	</fieldset>
 </form>
-<!--%%tpl_servers_update-->
+<!--%%tpl_server_update-->

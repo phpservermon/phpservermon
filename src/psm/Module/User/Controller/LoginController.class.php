@@ -46,7 +46,7 @@ class LoginController extends AbstractController {
 	}
 
 	protected function executeLogin() {
-		$this->setTemplateId('login', 'login.tpl.html');
+		$this->setTemplateId('user_login', 'user/login.tpl.html');
 
 		if(isset($_POST['user_name']) && isset($_POST['user_password'])) {
 			$rememberme = (isset($_POST['user_rememberme'])) ? true : false;
@@ -83,7 +83,7 @@ class LoginController extends AbstractController {
 	 * Show/process the password forgot form (before the mail)
 	 */
 	protected function executeForgot() {
-		$this->setTemplateId('login_forgot', 'login.tpl.html');
+		$this->setTemplateId('user_login_forgot', 'user/login.tpl.html');
 
 		if(isset($_POST['user_name'])) {
 			$user = $this->user->getUserByUsername($_POST['user_name']);
@@ -118,7 +118,7 @@ class LoginController extends AbstractController {
 	 * Show/process the password reset form (after the mail)
 	 */
 	protected function executeReset() {
-		$this->setTemplateId('login_reset', 'login.tpl.html');
+		$this->setTemplateId('user_login_reset', 'user/login.tpl.html');
 
 		$user_id = (isset($_GET['user_id'])) ? intval($_GET['user_id']) : 0;
 		$token = (isset($_GET['token'])) ? $_GET['token'] : '';

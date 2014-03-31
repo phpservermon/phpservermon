@@ -51,7 +51,7 @@ class ServerController extends AbstractServerController {
 	 * Prepare the template to show a list of all servers
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('servers_list', 'servers.tpl.html');
+		$this->setTemplateId('server_list', 'server/server.tpl.html');
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
 		$this->setSidebar($sidebar);
 
@@ -64,8 +64,8 @@ class ServerController extends AbstractServerController {
 				'plus'
 			);
 			// get the action buttons per server
-			$this->tpl->newTemplate('servers_list_admin_actions', 'servers.tpl.html');
-			$html_actions = $this->tpl->getTemplate('servers_list_admin_actions');
+			$this->tpl->newTemplate('server_list_admin_actions', 'server/server.tpl.html');
+			$html_actions = $this->tpl->getTemplate('server_list_admin_actions');
 		} else {
 			$html_actions = '';
 		}
@@ -104,7 +104,7 @@ class ServerController extends AbstractServerController {
 	 * Prepare the template to show the update screen for a single server
 	 */
 	protected function executeEdit() {
-		$this->setTemplateId('servers_update', 'servers.tpl.html');
+		$this->setTemplateId('server_update', 'server/server.tpl.html');
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
 		$this->setSidebar($sidebar);
 
