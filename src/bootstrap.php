@@ -38,6 +38,10 @@ define('PSM_USER_ADMIN', 10);
 define('PSM_USER_USER', 20);
 define('PSM_USER_ANONYMOUS', 30);
 
+if(function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get')) {
+	date_default_timezone_set(@date_default_timezone_get());
+}
+
 // find config file
 $path_conf = PSM_PATH_SRC . '../config.php';
 if(file_exists($path_conf)) {

@@ -103,6 +103,9 @@ class InstallController extends AbstractController {
 			$errors++;
 			$this->addMessage('The PDO MySQL driver needs to be installed.', 'error');
 		}
+		if(!ini_get('date.timezone')) {
+			$this->addMessage('You should set a timezone in your php.ini file (e.g. \'date.timezone = UTC\'). See <a href="http://www.php.net/manual/en/timezones.php" target="_blank">this page</a> for more info.', 'warning');
+		}
 
 		if($errors > 0) {
 			$this->addMessage($errors . ' error(s) have been encountered. Please fix them and refresh this page.', 'error');
