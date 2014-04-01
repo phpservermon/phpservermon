@@ -230,11 +230,8 @@ class ServerController extends AbstractServerController {
 		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 		// get server entry
-		$server = $this->db->selectRow(
-			PSM_DB_PREFIX.'servers',
-			array('server_id' => $server_id)
-		);
-		if (empty($server)) {
+		$server = $this->getServers($server_id);
+		if(empty($server)) {
 			$this->addMessage('Invalid server', 'error');
 			return $this->initializeAction('index');
 		}

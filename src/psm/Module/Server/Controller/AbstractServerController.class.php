@@ -39,10 +39,12 @@ abstract class AbstractServerController extends AbstractController {
 
 	/**
 	 * Get all servers for the current user
+	 * @param int $server_id if true only that server will be retrieved.
 	 * @return array
 	 */
-	public function getServers() {
+	public function getServers($server_id = null) {
 		$sql_join = '';
+		$sql_where = '';
 
 		if($this->user != null && $this->user->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
@@ -50,6 +52,10 @@ abstract class AbstractServerController extends AbstractController {
 						`us`.`user_id`={$this->user->getUserId()}
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
+		}
+		if($server_id !== null) {
+			$server_id = intval($server_id);
+			$sql_where ="WHERE `s`.`server_id`={$server_id} ";
 		}
 
 		$sql = "SELECT
@@ -71,8 +77,13 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`warning_threshold_counter`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
+				{$sql_where}
 				ORDER BY `active` ASC, `status` DESC, `label` ASC";
 		$servers = $this->db->query($sql);
+
+		if($server_id !== null && count($servers) == 1) {
+			$servers = $servers[0];
+		}
 
 		return $servers;
 
