@@ -51,6 +51,8 @@ function create_plot($this, mode)
 	mode = mode || $this.attr('data-plotMode') || 'hour';
 	$this.attr('data-plotMode', mode);
 	var timeStamp, tickFormat;
+	var showMarker = false;
+	var showLegend = true;
 	switch(mode)
 	{
 		case 'year':
@@ -62,8 +64,10 @@ function create_plot($this, mode)
 			tickFormat = day_format;
 			break;
 		case 'week':
+		case 'week2':
 			timeStamp = 1000 * 60 * 60 * 24 * 7;
 			tickFormat = short_date_format;
+			showMarker = (mode == 'week2');
 			break;
 		case 'day':
 			timeStamp = 1000 * 60 * 60 *24;
@@ -71,11 +75,11 @@ function create_plot($this, mode)
 			break;
 		case 'hour':
 		default:
+			showMarker = true;
 			timeStamp = 1000 * 60 * 60;
 			tickFormat = short_time_format;
 			break;
 	}
-
 
 	var downArray = new Array();
 	var down = $this.attr('data-down');
@@ -98,11 +102,27 @@ function create_plot($this, mode)
 		}
 	}
 
+	var series = eval($this.attr('data-series'));
+	if(Array.isArray(series)) {
+		for (var i=0; i<series.length; i++)
+		{
+			$.extend(true, series[i], {
+				markerOptions: {
+					show: showMarker
+				},
+				lineWidth: 1
+			});
+		}
+	} else {
+		series = [{}];
+		showLegend = false;
+	}
+
 	plot = $.jqplot($this.attr('id'), lines, {
 		title: $this.attr('data-title'),
-        series: eval($this.attr('data-series')),
+        series: series,
 		legend: {
-			show: true,
+			show: showLegend,
 			placement: 'insideGrid',
 			location: 'nw'
 		},
