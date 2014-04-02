@@ -73,8 +73,9 @@ function psm_load_lang($lang) {
 	}
 
 	require $lang_file;
-	$locale = basename($lang_file, '.lang.php');
-	setlocale(LC_TIME, $locale);
+	if(isset($sm_lang['locale'])) {
+		setlocale(LC_TIME, $sm_lang['locale']);
+	}
 
 	$GLOBALS['sm_lang'] = $sm_lang;
 }
