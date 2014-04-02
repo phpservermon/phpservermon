@@ -130,7 +130,7 @@ class HistoryGraph {
 			'latency_avg' => count($uptimes) > 0 ? round(($latency_avg / count($uptimes)), 4) : 0,
 			'server_lines'	=> sizeof($lines) ? '[' . implode(',', $lines) . ']' : '',
 			'server_down'	=> sizeof($down) ? '[' . implode(',', $down) . ']' : '',
-			'series' => "[{label: '".psm_get_lang('servers', 'latency')."', lineWidth: 1}]",
+			'series' => "[{label: '".psm_get_lang('servers', 'latency')."'}]",
 			'plotmode' => 'hour',
 			'buttons' => $buttons,
 			'chart_id' => $server_id . '_uptime',
@@ -194,13 +194,13 @@ class HistoryGraph {
 				continue;
 			}
 			$lines_merged[] = '[' . implode(',', $line_value) . ']';
-			$series[] = "{label: '".psm_get_lang('servers', $line_key)."', lineWidth: 1}";
+			$series[] = "{label: '".psm_get_lang('servers', $line_key)."'}";
 		}
 		if($last_date) {
 			$down[] = '[' . $last_date . ',0]';
 		}
 		$buttons = array();
-		$buttons[] = array('mode' => 'week', 'label' => psm_get_lang('servers', 'week'));
+		$buttons[] = array('mode' => 'week2', 'label' => psm_get_lang('servers', 'week'));
 		$buttons[] = array('mode' => 'month', 'label' => psm_get_lang('servers', 'month'), 'class_active' => 'btn-info');
 		$buttons[] = array('mode' => 'year', 'label' => psm_get_lang('servers', 'year'));
 
@@ -211,7 +211,7 @@ class HistoryGraph {
 			'server_down'	=> sizeof($down) ? '[' . implode(',', $down) . ']' : '',
 			'series' => sizeof($series) ? '[' . implode(',', $series) . ']' : '',
 			'plotmode' => 'month',
-			'end_timestamp' => $time_end,
+			'end_timestamp' => $time_end ? $time_end : '',
 			'buttons' => $buttons,
 			// make sure to add chart id after buttons so its added to those tmeplates as well
 			'chart_id' => $server_id . '_history',
