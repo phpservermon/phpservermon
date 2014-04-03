@@ -27,6 +27,7 @@
 
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
+	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Инсталация',

@@ -27,6 +27,7 @@
 
 $sm_lang = array(
 	'name' => 'English',
+	'locale' => array('en_US.UTF-8', 'en_US', 'american', 'english-us'),
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',

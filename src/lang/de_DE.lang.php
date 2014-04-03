@@ -27,6 +27,7 @@
 
 $sm_lang = array(
 	'name' => 'Deutsch - German',
+	'locale' => array('de_DE.UTF-8', 'de_DE', 'german'),
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',

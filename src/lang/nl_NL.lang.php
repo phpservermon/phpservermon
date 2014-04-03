@@ -27,6 +27,7 @@
 
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
+	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
