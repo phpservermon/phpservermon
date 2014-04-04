@@ -86,6 +86,32 @@ abstract class AbstractServerController extends AbstractController {
 		}
 
 		return $servers;
+	}
 
+	/**
+	 * Format server data for display
+	 * @param array $server
+	 * @return array
+	 */
+	protected function formatServer($server) {
+		$server['rtime'] = round((float) $server['rtime'], 4);
+		$server['last_online']  = psm_timespan($server['last_online']);
+		$server['last_check']  = psm_timespan($server['last_check']);
+		$server['active'] = psm_get_lang('system', $server['active']);
+		$server['email'] = psm_get_lang('system', $server['email']);
+		$server['sms'] = psm_get_lang('system', $server['sms']);
+		$server['url_view'] = psm_build_url(array(
+			'mod' => 'server',
+			'action' => 'view',
+			'id' => $server['server_id'],
+		));
+
+		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+			$server['status'] = 'warning';
+		}
+
+		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+
+		return $server;
 	}
 }

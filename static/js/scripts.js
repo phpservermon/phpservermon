@@ -14,6 +14,10 @@ function psm_tooltips() {
 	});
 }
 
+function psm_goTo(url) {
+	window.location = url;
+}
+
 function trim(str) {
     return str.replace(/^\s+|\s+$/g,"");
 }

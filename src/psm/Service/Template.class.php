@@ -105,7 +105,7 @@ class Template {
 				foreach($value as $k => $v) {
 					$subdata[$key.'_'.$k] = $v;
 				}
-				$source = $this->assignTplVar($source, $subdata, true);
+				$source = $this->addTemplateData($source, $subdata, true);
 			} else {
 				$source = str_replace('{'.$key.'}', $value, $source);
 			}

@@ -14,6 +14,22 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+.sidebar-nav .btn {
+	margin: 5px 0;
+	min-width: 100px;
+}
+@media (max-width: 979px) {
+	.sidebar-nav .nav-list {
+		padding: 0;
+	}
+	.sidebar-nav li.nav-header {
+		display: none;
+	}
+	.sidebar-nav li {
+		float: left;
+		margin-right: 15px;
+	}
+}
 body.install{
     padding-top:20px;
 }

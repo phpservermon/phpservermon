@@ -34,8 +34,16 @@ use psm\Service\Template;
  */
 class ServerController extends AbstractServerController {
 
+	/**
+	 * Current server id
+	 * @var int $server_id
+	 */
+	protected $server_id;
+
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
+
+		$this->server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 		$this->setActions(array(
 			'index', 'edit', 'save', 'delete', 'view',
@@ -57,11 +65,11 @@ class ServerController extends AbstractServerController {
 
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			$sidebar->addLink(
+			$sidebar->addButton(
 				'add_new',
 				psm_get_lang('system', 'add_new'),
 				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
-				'plus'
+				'plus icon-white', 'success'
 			);
 			// get the action buttons per server
 			$this->tpl->newTemplate('server_list_admin_actions', 'server/server.tpl.html');
@@ -70,7 +78,7 @@ class ServerController extends AbstractServerController {
 			$html_actions = '';
 		}
 
-		$sidebar->addLink(
+		$sidebar->addButton(
 			'update',
 			psm_get_lang('menu', 'server_update'),
 			psm_build_url(array('mod' => 'server_update')),
@@ -105,23 +113,26 @@ class ServerController extends AbstractServerController {
 	 */
 	protected function executeEdit() {
 		$this->setTemplateId('server_update', 'server/server.tpl.html');
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
-		$this->setSidebar($sidebar);
-
-		$sidebar->addLink(
-			'go_back',
-			psm_get_lang('system', 'go_back'),
-			psm_build_url(array('mod' => 'server')),
-			'th-list'
-		);
-
-		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
 
 		$tpl_data = array(
-			'url_go_back' => psm_build_url(array('mod' => 'server')),
+			// form url:
+			'url_save' => psm_build_url(array(
+				'mod' => 'server',
+				'action' => 'save',
+				'id' => $this->server_id,
+				'back_to' => $back_to,
+			)),
 		);
 
-		switch(intval($server_id)) {
+		// depending on where the user came from, add the go back url:
+		if($back_to == 'view' && $this->server_id > 0) {
+			$tpl_data['url_go_back'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $this->server_id));
+		} else {
+			$tpl_data['url_go_back'] = psm_build_url(array('mod' => 'server'));
+		}
+
+		switch($this->server_id) {
 			case 0:
 				// insert mode
 				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
@@ -131,10 +142,7 @@ class ServerController extends AbstractServerController {
 			default:
 				// edit mode
 				// get server entry
-				$edit_server = $this->db->selectRow(
-					PSM_DB_PREFIX.'servers',
-					array('server_id' => $server_id)
-				);
+				$edit_server = $this->getServers($this->server_id);
 				if (empty($edit_server)) {
 					$this->addMessage('Invalid server', 'error');
 					return $this->initializeAction('index');
@@ -169,8 +177,6 @@ class ServerController extends AbstractServerController {
 	protected function executeSave() {
 		// check for add/edit mode
 		if(isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
-			$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
 			$clean = array(
 				'label' => strip_tags($_POST['label']),
 				'ip' => strip_tags($_POST['ip']),
@@ -184,22 +190,28 @@ class ServerController extends AbstractServerController {
 			);
 
 			// check for edit or add
-			if($server_id > 0) {
+			if($this->server_id > 0) {
 				// edit
 				$this->db->save(
 					PSM_DB_PREFIX.'servers',
 					$clean,
-					array('server_id' => $server_id)
+					array('server_id' => $this->server_id)
 				);
 				$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
 			} else {
 				// add
 				$clean['status'] = 'on';
-				$this->db->save(PSM_DB_PREFIX.'servers', $clean);
+				$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
 				$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
 			}
 		}
-		$this->initializeAction('index');
+
+		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
+		if($back_to == 'view') {
+			$this->initializeAction('view');
+		} else {
+			$this->initializeAction('index');
+		}
 	}
 
 	/**
@@ -211,7 +223,7 @@ class ServerController extends AbstractServerController {
 			// do delete
 			$res = $this->db->delete(PSM_DB_PREFIX . 'servers', array('server_id' => $id));
 
-			if($res == 1) {
+			if($res === 1) {
 				$this->db->delete(PSM_DB_PREFIX.'log', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'users_servers', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'servers_uptime', array('server_id' => $id));
@@ -226,77 +238,61 @@ class ServerController extends AbstractServerController {
 	 * Prepare the view template
 	 */
 	protected function executeView() {
-		$this->setTemplateId('server_view', 'server/view.tpl.html');
-		$server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		if($this->server_id == 0) {
+			return $this->initializeAction('index');
+		}
+		$server = $this->getServers($this->server_id);
 
-		// get server entry
-		$server = $this->getServers($server_id);
 		if(empty($server)) {
-			$this->addMessage('Invalid server', 'error');
 			return $this->initializeAction('index');
 		}
 
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
-		$this->setSidebar($sidebar);
-		$sidebar->setSubtitle($server['label']);
+		$this->setTemplateId('server_view', 'server/view.tpl.html');
 
+		$tpl_data = $this->formatServer($server);
+
+		// create history HTML
+		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->tpl);
+		$tpl_data['html_history'] = $history->createHTML($this->server_id);
+
+		// add edit/delete buttons for admins
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			$sidebar->addLink(
-				'edit',
-				psm_get_lang('system', 'edit'),
-				psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $server_id)),
-				'edit'
-			);
-			$sidebar->addLink(
-				'delete',
-				psm_get_lang('system', 'delete'),
-				"javascript:sm_delete('{$server_id}', 'server');",
-				'remove'
+			$tpl_id_actions = 'server_view_admin_actions';
+			$this->tpl->newTemplate($tpl_id_actions, 'server/view.tpl.html');
+			$tpl_data['html_actions'] = $this->tpl->getTemplate($tpl_id_actions);
+			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
+		}
+
+		// add all available servers to the menu
+		$servers = $this->getServers();
+		$options = array();
+		foreach($servers as $i => $server) {
+			$options[] = array(
+				'class_active' => ($server['server_id'] == $this->server_id) ? 'active' : '',
+				'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'])),
+				'label' => $server['label'],
 			);
 		}
-		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'server';
-		$sidebar->addLink(
+		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$this->setSidebar($sidebar);
+
+		$sidebar->addDropdown(
+			'server',
+			psm_get_lang('menu', 'server'),
+			$options,
+			'th', 'success'
+		);
+
+		// check which module the user came from, and add a link accordingly
+		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'status' ? $_GET['back_to'] : 'server';
+		$sidebar->addButton(
 			'go_back',
 			psm_get_lang('system', 'go_back'),
 			psm_build_url(array('mod' => $back_to)),
 			'th-list'
 		);
 
-		$tpl_data = $this->formatServer($server);
-		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->tpl);
-		$tpl_data['html_history'] = $history->createHTML($server_id);
-
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			$tpl_data
-		);
-	}
-
-	/**
-	 * Format server data for display
-	 * @param array $server
-	 * @return array
-	 */
-	protected function formatServer($server) {
-		$server['rtime'] = round((float) $server['rtime'], 4);
-		$server['last_online']  = psm_timespan($server['last_online']);
-		$server['last_check']  = psm_timespan($server['last_check']);
-		$server['active'] = psm_get_lang('system', $server['active']);
-		$server['email'] = psm_get_lang('system', $server['email']);
-		$server['sms'] = psm_get_lang('system', $server['sms']);
-		$server['url_view'] = psm_build_url(array(
-			'mod' => 'server',
-			'action' => 'view',
-			'id' => $server['server_id'],
-		));
-
-		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
-			$server['status'] = 'warning';
-		}
-
-		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
-
-		return $server;
+		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
 	// override parent::createHTMLLabels()
@@ -326,8 +322,8 @@ class ServerController extends AbstractServerController {
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
 				'label_go_back' => psm_get_lang('system', 'go_back'),
-				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('servers', 'server'),
-				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('servers', 'server'),
+				'label_edit' => psm_get_lang('system', 'edit'),
+				'label_delete' => psm_get_lang('system', 'delete'),
 				'label_yes' => psm_get_lang('system', 'yes'),
 				'label_no' => psm_get_lang('system', 'no'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),

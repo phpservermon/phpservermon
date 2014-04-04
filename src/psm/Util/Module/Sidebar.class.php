@@ -94,10 +94,61 @@ class Sidebar implements SidebarInterface {
 		}
 
 		$this->items['link'][$id] = array(
-			'type' => 'link',
+			'id' => $id,
 			'label' => $label,
 			'url' => str_replace('"', '\"', $url),
 			'icon' => $icon,
+		);
+		return $this;
+	}
+
+	/**
+	 * Add a new button to the sidebar
+	 * @param string $id
+	 * @param string $label
+	 * @param string $url
+	 * @param string $icon
+	 * @param string $btn_class
+	 * @param boolean $url_is_onclick if you want onclick rather than url, change this to true
+	 * @return \psm\Util\Module\Sidebar
+	 */
+	public function addButton($id, $label, $url, $icon = null, $btn_class = null, $url_is_onclick = false) {
+		if(!isset($this->items['button'])) {
+			$this->items['button'] = array();
+		}
+		if(!$url_is_onclick) {
+			$url = "psm_goTo('" . $url . "');";
+		}
+
+		$this->items['button'][$id] = array(
+			'id' => $id,
+			'label' => $label,
+			'onclick' => str_replace('"', '\"', $url),
+			'icon' => $icon,
+			'btn_class'=> $btn_class,
+		);
+		return $this;
+	}
+
+	/**
+	 * Add dropdown button
+	 * @param string $id
+	 * @param string $label
+	 * @param array $options
+	 * @param string $icon
+	 * @param string $btn_class
+	 * @return \psm\Util\Module\Sidebar
+	 */
+	public function addDropdown($id, $label, $options, $icon = null, $btn_class = null) {
+		if(!isset($this->items['dropdown'])) {
+			$this->items['dropdown'] = array();
+		}
+		$this->items['dropdown'][$id] = array(
+			'id' => $id,
+			'label' => $label,
+			'options' => $options,
+			'icon' => $icon,
+			'btn_class' => $btn_class,
 		);
 		return $this;
 	}
@@ -106,7 +157,7 @@ class Sidebar implements SidebarInterface {
 		$tpl_id = 'main_sidebar_container';
 		$this->tpl->newTemplate($tpl_id, 'main_sidebar.tpl.html');
 
-		$types = array('link');
+		$types = array('dropdown', 'button', 'link');
 		$items = array();
 
 		// loop through all types and build their html
@@ -122,8 +173,16 @@ class Sidebar implements SidebarInterface {
 
 			// build html for each individual item
 			foreach($this->items[$type] as $id => $item) {
+				$html_item = $html_type;
+
+				if(isset($item['options'])) {
+					$item['options'] = $this->tpl->addTemplateDataRepeat($html_item, 'options', $item['options'], true);
+
+				}
+				$html_item = $this->tpl->addTemplateData($html_type, $item, true);
+
 				$items[] = array(
-					'html_item' => $this->tpl->addTemplateData($html_type, $item, true),
+					'html_item' => $html_item,
 					'class_active' => ($id === $this->active_id) ? 'active' : '',
 				);
 			}
