@@ -5,7 +5,20 @@
 	</colgroup>
 	<thead>
 		<tr class="head">
-			<th colspan="2"><h4>{label}</h4></th>
+			<th colspan="2">
+				<div class="btn-group">
+				  <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+					<i class="icon-th icon-white"></i>&nbsp;{label}
+					<span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+					<!--%tpl_repeat_options-->
+					<li class="{class_active}"><a href="{url}">{label}</a>
+					<!--%%tpl_repeat_options-->
+					{options}
+				  </ul>
+				</div>
+			</th>
 		</tr>
 	</thead>
 	<tbody>

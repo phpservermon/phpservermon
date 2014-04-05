@@ -273,15 +273,10 @@ class ServerController extends AbstractServerController {
 				'label' => $server_available['label'],
 			);
 		}
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'options', $options);
+
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
 		$this->setSidebar($sidebar);
-
-		$sidebar->addDropdown(
-			'server',
-			$server['label'],
-			$options,
-			'th', 'success'
-		);
 
 		// check which module the user came from, and add a link accordingly
 		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'server_status' ? $_GET['back_to'] : 'server';
