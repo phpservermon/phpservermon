@@ -3,8 +3,17 @@
 ## Summary
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
-It comes with a web based user interface where you can add and remove servers and websites from the MySQL database,
+It comes with a web based user interface where you can manage your services and websites,
 and you can manage users for each server with a mobile number and email address.
+
+Features:
+
+* Monitor services and websites (see below).
+* Email and SMS notifications.
+* View history graphs of uptime and latency.
+* User authentication with 2 levels (administrator and regular user).
+* Logs of connection errors, outgoing emails and text messages.
+* Easy cronjob implementation to automatically check your servers.
 
 There are two different ways to monitor a server:
 
@@ -33,11 +42,7 @@ The following SMS gateways are currently available:
 * Mosms - <http://www.mosms.com>
 * Textmarketer - <http://www.textmarketer.co.uk>
 
-For these gateways you need an account with sufficient credits.
-
-If logging is enabled in the configuration, it will log any connection errors, emails and text messages sent.
-The latest log records will be displayed on your web interface.
-The cron/status.cron.php can be added as a cronjob which will keep the server status up to date.
+Please note: for these gateways you will need an account with sufficient credits.
 
 
 ## Download

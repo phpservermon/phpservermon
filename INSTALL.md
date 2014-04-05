@@ -50,7 +50,7 @@ The rest of the steps are identical to a regular upgrade (see above), except tha
 
 ### From 2.1
 
-One of the new features introduced in 2.2 is a user authentication system. Because the users in previous versions do not have a password, after upgrading you would not be able to login.
+One of the new features introduced in 3.0 is a user authentication system. Because the users in previous versions do not have a password, after upgrading you would not be able to login.
 For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
 If, for whatever reason this does not work, the upgrade script automatically change the username of all existing users to their email addresses, which you could use for the forgot password screen.
 
@@ -70,3 +70,10 @@ If you do not have shell access, ask your web hosting provider to set it up for 
 The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
 After that the script is assumed dead and the cronjob will run again.
 If you want to change the 10 minutes timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
+
+## Troubleshooting
+
+If you have problems setting up or accessing your monitor and do not know why, enable debug mode to turn on error reporting.
+To enable debug mode, add the following line to your config.php file:
+
+    define('PSM_DEBUG', true);
