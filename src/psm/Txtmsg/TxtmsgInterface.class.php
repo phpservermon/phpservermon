@@ -35,5 +35,3 @@ interface TxtmsgInterface {
 	public function sendSMS($message);
 
 }
-
-?>

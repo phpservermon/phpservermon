@@ -143,5 +143,3 @@ class Inetworx extends Core {
 	} //end function auth_https_post
 
 }
-
-?>

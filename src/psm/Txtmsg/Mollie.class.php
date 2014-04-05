@@ -98,4 +98,3 @@ class Mollie extends Core {
 		return $buf;
 	}
 }
-?>

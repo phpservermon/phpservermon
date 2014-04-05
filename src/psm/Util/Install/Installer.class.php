@@ -229,9 +229,9 @@ class Installer {
 			// upgrade to 2.1.0
 			$this->upgrade210();
 		}
-		if(version_compare($version_from, '2.2.0', '<')) {
-			// upgrade to 2.2.0
-			$this->upgrade220();
+		if(version_compare($version_from, '3.0.0', '<')) {
+			// upgrade to 3.0.0
+			$this->upgrade300();
 		}
 		$this->db->save(PSM_DB_PREFIX . 'config', array('value' => $version_to), array('key' => 'version'));
 	}
@@ -257,9 +257,9 @@ class Installer {
 	}
 
 	/**
-	 * Upgrade for v2.2.0 release
+	 * Upgrade for v3.0.0 release
 	 */
-	protected function upgrade220() {
+	protected function upgrade300() {
 		$queries = array();
 		// language is now stored as language code (ISO 639-1) + country code (ISO 3166-1)
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='bg_BG' WHERE `key`='language' AND `value`='bg';";
@@ -321,7 +321,7 @@ class Installer {
 						) ENGINE = MYISAM ;";
 		$this->execSQL($queries);
 
-		// from 2.2 all user-server relations are in a separate table
+		// from 3.0 all user-server relations are in a separate table
 		$users = $this->db->select(PSM_DB_PREFIX . 'users', null, array('user_id', 'server_id'));
 		foreach($users as $user) {
 			$idc = array();

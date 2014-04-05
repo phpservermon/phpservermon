@@ -23,13 +23,13 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.2.0
+ * @since       phpservermon 3.0.0
  **/
 
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '2.2.0-dev');
+define('PSM_VERSION', '3.0.0');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.

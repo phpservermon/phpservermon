@@ -54,5 +54,3 @@ class Mosms extends Core {
 		return $result;
 	}
 }
-
-?>

@@ -266,11 +266,11 @@ class ServerController extends AbstractServerController {
 		// add all available servers to the menu
 		$servers = $this->getServers();
 		$options = array();
-		foreach($servers as $i => $server) {
+		foreach($servers as $i => $server_available) {
 			$options[] = array(
-				'class_active' => ($server['server_id'] == $this->server_id) ? 'active' : '',
-				'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'])),
-				'label' => $server['label'],
+				'class_active' => ($server_available['server_id'] == $this->server_id) ? 'active' : '',
+				'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server_available['server_id'])),
+				'label' => $server_available['label'],
 			);
 		}
 		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
@@ -278,13 +278,13 @@ class ServerController extends AbstractServerController {
 
 		$sidebar->addDropdown(
 			'server',
-			psm_get_lang('menu', 'server'),
+			$server['label'],
 			$options,
 			'th', 'success'
 		);
 
 		// check which module the user came from, and add a link accordingly
-		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'status' ? $_GET['back_to'] : 'server';
+		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'server_status' ? $_GET['back_to'] : 'server';
 		$sidebar->addButton(
 			'go_back',
 			psm_get_lang('system', 'go_back'),

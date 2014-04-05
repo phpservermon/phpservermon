@@ -62,5 +62,3 @@ abstract class Core implements TxtmsgInterface {
 		array_push($this->recipients, $recipient);
 	}
 }
-
-?>

@@ -73,5 +73,3 @@ class Spryng extends Core {
 		return $data;
 	}
 }
-
-?>

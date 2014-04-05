@@ -28,8 +28,19 @@
 namespace psm\Service;
 
 class Template {
-	protected $output;
+
+	/**
+	 * Loaded templates
+	 * @var array $templates
+	 */
 	protected $templates = array();
+
+	/**
+	 * Cache of parsed files
+	 * @var array $files_parsed
+	 * @see parseFile()
+	 */
+	protected $files_parsed = array();
 
 	function __construct() {
 		// add the main template
@@ -255,13 +266,18 @@ class Template {
 	protected function parseFile($filename) {
 		if (!file_exists($filename)) return false;
 
+		if(isset($this->files_parsed[$filename])) {
+			return $this->files_parsed[$filename];
+		}
+
 		ob_start();
 		include($filename);
 		$file_content = ob_get_contents();
 		ob_end_clean();
 
+		$this->files_parsed[$filename] = $file_content;
+
 		return $file_content;
 	}
 }
 
-?>

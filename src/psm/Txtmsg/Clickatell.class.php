@@ -64,5 +64,3 @@ class Clickatell extends Core {
 		return psm_curl_get($url);
 	}
 }
-
-?>

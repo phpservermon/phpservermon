@@ -22,7 +22,7 @@
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @since       phpservermon 2.2.0
+ * @since       phpservermon 3.0.0
  **/
 
 namespace psm\Module\User\Controller;

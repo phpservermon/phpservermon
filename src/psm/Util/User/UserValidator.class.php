@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.2.0
+ * @since       phpservermon 3.0.0
  **/
 
 namespace psm\Util\User;

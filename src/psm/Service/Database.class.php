@@ -494,5 +494,3 @@ class Database {
 		trigger_error('SQL error: ' . $e->getMessage(), E_USER_WARNING);
 	}
 }
-
-?>

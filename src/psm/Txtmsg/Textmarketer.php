@@ -57,5 +57,3 @@ class Textmarketer extends Core {
     }
 
 }
-
-?>
