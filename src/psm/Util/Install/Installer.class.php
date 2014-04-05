@@ -108,6 +108,11 @@ class Installer {
 					('email_status', '1'),
 					('email_from_email', 'monitor@example.org'),
 					('email_from_name', 'Server Monitor'),
+					('email_smtp', ''),
+					('email_smtp_host', ''),
+					('email_smtp_port', ''),
+					('email_smtp_username', ''),
+					('email_smtp_password', ''),
 					('sms_status', '1'),
 					('sms_gateway', 'mollie'),
 					('sms_gateway_username', 'username'),
@@ -271,6 +276,11 @@ class Installer {
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='pt_BR' WHERE `key`='language' AND `value`='br';";
 
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('version_update_check', '" . PSM_VERSION . "');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp', '');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_host', '');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_port', '');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_username', '');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_password', '');";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";
