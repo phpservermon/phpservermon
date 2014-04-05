@@ -314,6 +314,29 @@ class Database {
 	}
 
 	/**
+	 * Check if a certain table exists.
+	 * @param string $table
+	 * @return boolean
+	 */
+	public function ifTableExists($table) {
+		$table = $this->quote($table);
+		$db = $this->quote($this->getDbName());
+
+		$if_exists = "SELECT COUNT(*) AS `cnt`
+			FROM `information_schema`.`tables`
+			WHERE `table_schema` = {$db}
+			AND `table_name` = {$table};
+		";
+		$if_exists = $this->query($if_exists);
+
+		if(isset($if_exists[0]['cnt']) && $if_exists[0]['cnt'] == 1) {
+			return true;
+		} else {
+			false;
+		}
+	}
+
+	/**
 	 * Quote a string
 	 * @param string $value
 	 * @return string

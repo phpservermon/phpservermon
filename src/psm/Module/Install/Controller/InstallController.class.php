@@ -335,13 +335,7 @@ class InstallController extends AbstractController {
 		if(!$this->db->status()) {
 			return false;
 		}
-		$confExists = $this->db->query("SHOW TABLES LIKE '".PSM_DB_PREFIX."config';", false)->rowCount();
-
-		if($confExists > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->db->ifTableExists(PSM_DB_PREFIX.'config');
 	}
 
 	/**

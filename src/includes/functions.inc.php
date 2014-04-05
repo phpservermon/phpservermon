@@ -128,6 +128,7 @@ function psm_get_conf($key, $alt = null) {
  * Load config from the database to the $GLOBALS['sm_config'] variable
  *
  * @global object $db
+ * @return boolean
  * @see psm_get_conf()
  */
 function psm_load_conf() {
@@ -135,14 +136,19 @@ function psm_load_conf() {
 
 	// load config from database into global scope
 	$GLOBALS['sm_config'] = array();
-	$config_db = $db->select(PSM_DB_PREFIX . 'config', null, array('key', 'value'));
-	foreach($config_db as $setting) {
-		$GLOBALS['sm_config'][$setting['key']] = $setting['value'];
-	}
 
-	if(empty($GLOBALS['sm_config']) && basename($_SERVER['SCRIPT_NAME']) != 'install.php') {
-		// no config found, go to install page
-		die('Failed to load config table. Please run the install.php file');
+	if(!$db->ifTableExists(PSM_DB_PREFIX.'config')) {
+		return false;
+	}
+	$config_db = $db->select(PSM_DB_PREFIX . 'config', null, array('key', 'value'));
+
+	if(is_array($config_db) && !empty($config_db)) {
+		foreach($config_db as $setting) {
+			$GLOBALS['sm_config'][$setting['key']] = $setting['value'];
+		}
+		return true;
+	} else {
+		return false;
 	}
 }
 

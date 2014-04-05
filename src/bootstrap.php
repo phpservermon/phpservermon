@@ -88,14 +88,36 @@ foreach($includes as $file) {
 // init db connection
 $db = new psm\Service\Database();
 
-if($db->status() && (!defined('PSM_INSTALL') || !PSM_INSTALL)) {
-	psm_load_conf();
+// sanity check!
+if(defined('PSM_INSTALL') && PSM_INSTALL) {
+	// install mode
+	if($db->status()) {
+		// connection established, attempt to load config.
+		// no biggie if it doesnt work because the user is still in the install module.
+		psm_load_conf();
+	}
 } else {
-	// no config yet! lets help them in the right direction
-	if(!defined('PSM_INSTALL')) {
+	if($db->getDbHost() === null) {
+		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');
 		die();
 	}
+	// config file has been loaded, check if we have a connection
+	if(!$db->status()) {
+		die('Unable to establish database connection...');
+	}
+	// attempt to load configuration from database
+	if(!psm_load_conf()) {
+		// unable to load from config table
+		die('We were unable to find an existing installation. <a href="install.php">Please click here to install PHP Server Monitor</a>.');
+	}
+	// config load OK, make sure database version is up to date
+	$version_db = psm_get_conf('version');
+
+	if(version_compare(PSM_VERSION, $version_db, '>')) {
+		die('Your database is for an older version, <a href="install.php">please click here</a> to update your database to the latest version.');
+	}
 }
+
 $lang = psm_get_conf('language', 'en_US');
 psm_load_lang($lang);
