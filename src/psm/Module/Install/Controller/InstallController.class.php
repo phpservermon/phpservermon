@@ -182,7 +182,7 @@ class InstallController extends AbstractController {
 			if($this->db->status()) {
 				if($this->isUpgrade()) {
 					// upgrade
-					if(version_compare(PSM_VERSION, '3.0.0', '<')) {
+					if(version_compare($this->getPreviousVersion(), '3.0.0', '<')) {
 						// upgrade from before 3.0, does not have passwords yet.. create new user first
 						$this->addMessage('Your current version does not have an authentication system, but since v3.0 access to the monitor is restricted by user accounts. Please set up a new account to be able to login after the upgrade, and which you can use to change the passwords for your other accounts.', 'info');
 						$this->setTemplateId('install_config_new_user', 'install/install.tpl.html');

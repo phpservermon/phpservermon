@@ -6,11 +6,10 @@ help:
 
 export:
 	@echo 'Building release for tag $(tag) '
-	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
-	find . -name "*.php" | xargs -I file php -l file
-	rm -rf ./build
-	mkdir ./build ./build/phpservermon
+	mkdir -p ./build ./build/phpservermon
 	git archive $(tag) | tar -xf - -C ./build/phpservermon/
+	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
+	find ./build/phpservermon -name "*.php" | xargs -I file php -l file
 	find ./build/phpservermon -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
 	find ./build/phpservermon -type f | xargs chmod 0644
 	find ./build/phpservermon -type d | xargs chmod 0755

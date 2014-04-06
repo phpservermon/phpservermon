@@ -109,7 +109,8 @@ if(defined('PSM_INSTALL') && PSM_INSTALL) {
 	// attempt to load configuration from database
 	if(!psm_load_conf()) {
 		// unable to load from config table
-		die('We were unable to find an existing installation. <a href="install.php">Please click here to install PHP Server Monitor</a>.');
+		header('Location: install.php');
+		die();
 	}
 	// config load OK, make sure database version is up to date
 	$version_db = psm_get_conf('version');
