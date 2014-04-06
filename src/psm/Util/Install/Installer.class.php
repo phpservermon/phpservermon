@@ -104,7 +104,7 @@ class Installer {
 		$queries = array();
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('language', 'en'),
+					('language', 'en_US'),
 					('email_status', '1'),
 					('email_from_email', 'monitor@example.org'),
 					('email_from_name', 'Server Monitor'),
