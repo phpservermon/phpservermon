@@ -53,24 +53,24 @@
 		margin-right: 20px;
 	}
 </style>
-	<div class="offline">
-		<!--%tpl_repeat_servers_offline-->
-		<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
-			<h2>{label}</h2>
-			<p>{label_last_online}: {last_online_nice}</p>
-			<p>{label_last_check}: {last_checked_nice}</p>
-		</div>
-		<!--%%tpl_repeat_servers_offline-->
-		{servers_offline}
+<div class="offline">
+	<!--%tpl_repeat_servers_offline-->
+	<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
+		<h2>{label}</h2>
+		<p>{label_last_online}: {last_online_nice}</p>
+		<p>{label_last_check}: {last_checked_nice}</p>
 	</div>
-	<div class="online">
-		<!--%tpl_repeat_servers_online-->
-		<div class="entity" onclick="window.location.href='{url_view}'">
-			<h2>{label}</h2>
-			<p>{label_last_online}: {last_checked_nice}</p>
-			<p>{label_rtime}: {rtime}s</p>
-		</div>
-		<!--%%tpl_repeat_servers_online-->
-		{servers_online}
+	<!--%%tpl_repeat_servers_offline-->
+	{servers_offline}
+</div>
+<div class="online">
+	<!--%tpl_repeat_servers_online-->
+	<div class="entity" onclick="window.location.href='{url_view}'">
+		<h2>{label}</h2>
+		<p>{label_last_online}: {last_checked_nice}</p>
+		<p>{label_rtime}: {rtime}s</p>
 	</div>
+	<!--%%tpl_repeat_servers_online-->
+	{servers_online}
+</div>
 <!--%%tpl_server_status-->

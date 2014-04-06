@@ -110,6 +110,7 @@ abstract class AbstractServerController extends AbstractController {
 			$server['status'] = 'warning';
 		}
 
+		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
 
 		return $server;
