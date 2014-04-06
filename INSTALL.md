@@ -52,7 +52,7 @@ The rest of the steps are identical to a regular upgrade (see above), except tha
 
 One of the new features introduced in 3.0 is a user authentication system. Because the users in previous versions do not have a password, after upgrading you would not be able to login.
 For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
-If, for whatever reason this does not work, the upgrade script automatically change the username of all existing users to their email addresses, which you could use for the forgot password screen.
+If, for whatever reason this does not work, the upgrade script automatically changes the username of all existing users to their email addresses, which you could use for the forgot password screen.
 
 ## Setting up a cronjob
 

@@ -18,6 +18,7 @@
  * When checking a website, the updater will now follow 302 Location headers.
  * String/pattern search on websites did not work for websites with compression turned on.
  * The monitor now uses a custom user agent so it can be identified in access logs (Mozilla/5.0 (compatible; phpservermon/version; +http://www.phpservermonitor.org)).
+ * Improved mobile compatibility.
  * Template directory restructured to correspond with module structure.
  * Switched from mysql_* to PDO.
  * Updated PHPMailer package to v5.2.6.

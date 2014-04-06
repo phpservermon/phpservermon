@@ -187,6 +187,7 @@ abstract class AbstractController implements ControllerInterface {
 		if($this->add_footer) {
 			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
 			$tpl_data['html_footer'] = $this->tpl->getTemplate('main_footer');
+			$tpl_data['version'] = 'v' . PSM_VERSION;
 		}
 
 		$tpl_id_content = $this->getTemplateId();
