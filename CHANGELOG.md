@@ -2,22 +2,23 @@
 
 ## Changelog
 
-### v2.2.0 (not yet released, 2014)
+### v3.0.0 (released April 6, 2014)
 
  * New module structure (not backwards compatible).
- * Template directory restructured to correspond with module structure.
  * Added user login system with 2 user levels (administrator and regular user).
  * Added warning threshold option (set number of failed checks before server goes offline).
  * Added SMTP support.
  * Adding Bulgarian language file (thanks to Plamen Vasilev).
- * Added user profile page.
  * Added history tracking of server uptime.
  * Added history graphs of server uptime and latency (thanks to Jérôme Cabanis).
+ * Added user profile page.
  * Status page is now default homepage.
- * Updated French translation.
+ * Updated translations.
  * Date and time formats are taken from language file and localized per language (thanks to Jérôme Cabanis).
  * When checking a website, the updater will now follow 302 Location headers.
  * String/pattern search on websites did not work for websites with compression turned on.
+ * The monitor now uses a custom user agent so it can be identified in access logs (Mozilla/5.0 (compatible; phpservermon/version; +http://www.phpservermonitor.org)).
+ * Template directory restructured to correspond with module structure.
  * Switched from mysql_* to PDO.
  * Updated PHPMailer package to v5.2.6.
  * Fixed several XSS vulnerabilities.

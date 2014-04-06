@@ -263,7 +263,7 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
 	curl_setopt($ch, CURLOPT_ENCODING, '');
 	curl_setopt($ch, CURLOPT_URL, $href);
 	if($add_agent) {
-		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11');
+		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
 	}
 
 	$result = curl_exec($ch);
