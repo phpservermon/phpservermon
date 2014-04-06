@@ -31,7 +31,7 @@ There are two different ways to monitor a server:
   If the regular expression returns no matches, the website is considered down.
   In both cases the script will return a "status offline", and will start sending out notifications.
 
-Each server has it's own settings regarding notification.
+Each server has its own settings regarding notification.
 You can choose for email notification or text message (SMS).
 The following SMS gateways are currently available:
 
