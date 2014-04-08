@@ -1,5 +1,5 @@
 body {
-	padding-top: 70px;
+	padding-top: 40px;
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -15,6 +15,18 @@ body {
 	margin: 5px 0;
 	min-width: 100px;
 }
+.navbar .nav .divider {
+	height: 1px;
+	overflow: hidden;
+	background-color: #444;
+}
+
+@media (min-width: 980px) {
+	.hidden-desktop {
+		display: none !important;
+	}
+}
+
 @media (max-width: 979px) {
 	.sidebar-nav .nav-list {
 		padding: 0;
@@ -26,7 +38,21 @@ body {
 		float: left;
 		margin-right: 15px;
 	}
+	.navbar .brand {
+		margin-left: -10px;
+	}
+	.visible-desktop {
+		display: none !important;
+	}
 }
+
+@media (max-width: 479px) {
+	.container-fluid {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
 body.install{
     padding-top:20px;
 }
