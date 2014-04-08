@@ -2,6 +2,11 @@
 
 ## Changelog
 
+### v3.1.0 (not yet released)
+
+ * Added Chinese translation
+
+
 ### v3.0.0 (released April 6, 2014)
 
  * New module structure (not backwards compatible).
