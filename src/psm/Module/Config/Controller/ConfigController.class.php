@@ -180,6 +180,9 @@ class ConfigController extends AbstractController {
 			$this->getTemplateId(),
 			array(
 				'subtitle' => psm_get_lang('menu', 'config'),
+				'label_tab_email' => psm_get_lang('config', 'tab_email'),
+				'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
+				'label_tab_log' => psm_get_lang('config', 'tab_log'),
 				'label_settings_email' => psm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 				'label_settings_notification' => psm_get_lang('config', 'settings_notification'),

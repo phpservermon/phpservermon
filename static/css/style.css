@@ -2,6 +2,13 @@ body {
 	padding-top: 40px;
     padding-left: 0px;
     padding-right: 0px;
+    -webkit-text-size-adjust: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .navbar-fixed-top {
 	position: fixed;
@@ -19,6 +26,36 @@ body {
 	height: 1px;
 	overflow: hidden;
 	background-color: #444;
+}
+
+.nav-tabs {
+	margin-left: 10px;
+	margin-bottom: 0;
+	border: 0;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+	background-color: whiteSmoke;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a:hover {
+	padding: 8px 8px;
+}
+
+legend {
+	margin-bottom: 0px;
+}
+
+.form-horizontal .control-label {
+	width: 180px;
+}
+
+.form-horizontal .controls {
+	margin-left: 190px;
+}
+
+.form-horizontal .form-actions {
+	padding-left: 190px;
 }
 
 @media (min-width: 980px) {
@@ -50,6 +87,12 @@ body {
 	.container-fluid {
 		padding-left: 10px;
 		padding-right: 10px;
+	}
+	.form-horizontal .controls {
+		margin-left: 0px;
+	}
+	.form-horizontal .form-actions {
+		padding-left: 10px;
 	}
 }
 
