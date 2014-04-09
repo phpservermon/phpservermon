@@ -27,9 +27,10 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="auto_refresh_servers">{label_auto_refresh_servers}</label>
+                <label class="control-label" for="auto_refresh_servers">{label_auto_refresh}</label>
                 <div class="controls">
-                    <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{auto_refresh_servers}" maxlength="10" />&nbsp;seconds
+                    <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{auto_refresh_server}" maxlength="10" />&nbsp;{label_seconds}
+					<p class="help-block">{label_auto_refresh_servers}</p>
                 </div>
             </div>
             <legend>{label_settings_notification}</legend>
@@ -41,9 +42,7 @@
                         <option value="offline" {alert_type_selected_offline}>{label_alert_type_offline}</option>
                         <option value="always" {alert_type_selected_always}>{label_alert_type_always}</option>
                       </select>
-                      <p class="help-block">
-                        {label_alert_type_description}
-                      </p>
+                      <p class="help-block">{label_alert_type_description}</p>
                 </div>
             </div>
             <div class="form-actions">
@@ -80,7 +79,7 @@
                 <label class="control-label" for="email_smtp_host">{label_email_smtp_host}</label>
                 <div class="controls">
                     <input type="text" id="email_smtp_host" name="email_smtp_host" value="{email_smtp_host}" maxlength="100" placeholder="{label_email_smtp_host}" />
-                    <input type="text" class="input-mini" id="email_smtp_port" name="email_smtp_port" value="{email_smtp_port}" maxlength="10" placeholder="{label_email_smtp_port}" />
+                    <input type="text" class="input-small" id="email_smtp_port" name="email_smtp_port" value="{email_smtp_port}" maxlength="10" placeholder="{label_email_smtp_port}" />
                 </div>
             </div>
             <div class="control-group">
@@ -149,6 +148,7 @@
             <legend>{label_settings_log}</legend>
             <div class="control-group">
 				<label class="checkbox"><input type="checkbox" id="log_status" name="log_status[]" {log_status_checked} /> {label_log_status}</label>
+				<p class="help-block">{label_log_status_description}</p>
 			</div>
             <div class="control-group">
 				<label class="checkbox"><input type="checkbox" id="log_email" name="log_email[]" {log_email_checked} /> {label_log_email}</label>

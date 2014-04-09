@@ -17,46 +17,10 @@
 		margin-bottom: 10px;
 	}
 
-	.offline, .online {
-		width: 100%;
-	}
-
-	.entity-container {
-		float: left;
-		width: 100%;
-		max-width: 320px;
-	}
-	
-	.entity {
-		padding: 10px;
-		box-shadow: 0px 0px 5px #666;
-		border-radius: 3px;
-		margin-right: 20px;
-		margin-bottom: 20px;
-		cursor: pointer;
-	}
-
-	.offline .entity {
-		background: {offline_bg};
-		color: {offline_fg};
-		border: 2px solid {offline_fg};
-	}
-
-	.offline .entity.warning {
-		background: {warning_bg};
-		color: {warning_fg};
-		border: 2px solid {warning_fg};
-	}
-
-	.online .entity {
-		background: {online_bg};
-		color: {online_fg};
-		border: 2px solid {online_fg};
-	}
 </style>
-<div class="offline">
+<div class="entity-container">
 	<!--%tpl_repeat_servers_offline-->
-	<div class="entity-container">
+	<div class="offline">
 		<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
 			<h2>{label}</h2>
 			<p>{label_last_online}: {last_online_nice}</p>
@@ -65,10 +29,8 @@
 	</div>
 	<!--%%tpl_repeat_servers_offline-->
 	{servers_offline}
-</div>
-<div class="online">
 	<!--%tpl_repeat_servers_online-->
-	<div class="entity-container">
+	<div class="online">
 		<div class="entity" onclick="window.location.href='{url_view}'">
 			<h2>{label}</h2>
 			<p>{label_last_online}: {last_checked_nice}</p>

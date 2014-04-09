@@ -151,7 +151,7 @@ $sm_lang = array(
 		'email_smtp_username' => 'SMTP username',
 		'email_smtp_password' => 'SMTP password',
 		'email_smtp_noauth' => 'Leave blank for no authentication',
-		'sms_status' => 'Allow sending text messages?',
+		'sms_status' => 'Allow sending text messages',
 		'sms_gateway' => 'Gateway to use for sending messages',
 		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
@@ -175,9 +175,10 @@ $sm_lang = array(
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
-		'log_status' => 'Log status<br/><div class="small">If log status is set to TRUE, the monitor will log the event whenever the Notification settings are passed</div>',
-		'log_email' => 'Log emails sent by the script?',
-		'log_sms' => 'Log text messages sent by the script?',
+		'log_status' => 'Log status',
+		'log_status_description' => 'If log status is set to TRUE, the monitor will log the event whenever the Notification settings are passed.',
+		'log_email' => 'Log emails sent by the script',
+		'log_sms' => 'Log text messages sent by the script',
 		'updated' => 'The configuration has been updated.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
@@ -186,11 +187,13 @@ $sm_lang = array(
 		'settings_sms' => 'Text message settings',
 		'settings_notification' => 'Notification settings',
 		'settings_log' => 'Log settings',
+		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers page<br/>'.
-			'<div class="small">'.
+			'Auto-refresh servers page.<br/>'.
+			'<span class="small">'.
 			'Time in seconds, if 0 the page won\'t refresh.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

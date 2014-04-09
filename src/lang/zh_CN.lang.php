@@ -174,7 +174,8 @@ $sm_lang = array(
 		'alert_type_status' => '状态变化',
 		'alert_type_offline' => '离线状态',
 		'alert_type_always' => '总是提醒',
-		'log_status' => '状态记录<br/><div class="small">如果状态记录设置为开, 提醒发送时均会保存记录.</div>',
+		'log_status' => '状态记录',
+		'log_status_description' => '如果状态记录设置为开, 提醒发送时均会保存记录.',
 		'log_email' => '记录脚本所发邮件?',
 		'log_sms' => '记录脚本所发短信SMS?',
 		'updated' => '设置已更新.',
@@ -185,11 +186,13 @@ $sm_lang = array(
 		'settings_sms' => '短信发送设置',
 		'settings_notification' => '提醒设置',
 		'settings_log' => '日志设置',
+		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'自动刷新服务器页<br/>'.
-			'<div class="small">'.
+			'自动刷新服务器页.<br/>'.
+			'<span class="small">'.
 			'单位为秒, 设置为0则不自动刷新.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

@@ -175,7 +175,8 @@ $sm_lang = array(
         'alert_type_status' => 'Mudança de Status',
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Sempre',
-        'log_status' => 'Log status<br/><div class="small">Se o status de registro é definido como TRUE, o monitor irá registrar o evento sempre que as configurações de notificação forem passadas</div>',
+        'log_status' => 'Log status',
+        'log_status_description' => 'Se o status de registro é definido como TRUE, o monitor irá registrar o evento sempre que as configurações de notificação forem passadas.',
         'log_email' => 'Registrar no Log os envios de email feitos pelo script?',
         'log_sms' => 'Registrar no Log os envios de mensagens de texto feitos pelo script?',
         'updated' => 'A configuração foi atualizada.',
@@ -186,11 +187,13 @@ $sm_lang = array(
         'settings_sms' => 'Configuração de mensagens de texto',
         'settings_notification' => 'Configuração de notificações',
         'settings_log' => 'Configuração de Logs',
+        'auto_refresh' => 'Atualizar automaticamente',
         'auto_refresh_servers' =>
-            'Atualizar automaticamente a página de servidores<br/>'.
-            '<div class="small">'.
+            'Atualizar automaticamente a página de servidores.<br/>'.
+            '<span class="small">'.
             'Tempo em segundos, Se 0 a página não será atualizada.'.
-            '</div>',
+            '</span>',
+		'seconds' => 'segundos',
     ),
     // for newlines in the email messages use <br/>
     'notifications' => array(

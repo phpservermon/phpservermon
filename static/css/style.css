@@ -28,16 +28,25 @@ body {
 	background-color: #444;
 }
 
+.powered {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.tab-content {
+	display: block;
+	width: auto;
+	padding-top: 10px;
+	padding-bottom: 0;
+}
 .nav-tabs {
 	margin-left: 10px;
 	margin-bottom: 0;
 	border: 0;
 }
-
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
 	background-color: whiteSmoke;
 }
-
 .nav-tabs > li > a, .nav-tabs > li > a:hover {
 	padding: 8px 8px;
 }
@@ -45,18 +54,54 @@ body {
 legend {
 	margin-bottom: 0px;
 }
-
 .form-horizontal .control-label {
 	width: 180px;
 }
-
 .form-horizontal .controls {
 	margin-left: 190px;
 }
-
 .form-horizontal .form-actions {
 	padding-left: 190px;
+	margin-bottom: 0;
 }
+.form-horizontal label {
+	font-weight: bold;
+}
+.help-block {
+	font-style: italic;
+	color: #666;
+}
+
+.offline, .online {
+	display: inline-block;
+	width: 100%;
+	max-width: 320px;
+}
+.entity {
+	text-align: left;
+	padding: 10px;
+	box-shadow: 0px 0px 5px #666;
+	border-radius: 3px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
+.offline .entity {
+	background: #a00000;
+	color: #f7cece;
+	border: 2px solid #f7cece;
+}
+.offline .entity.warning {
+	background: #FAA732;
+	color: #F3F3B1;
+	border: 2px solid #F3F3B1;
+}
+.online .entity {
+	background: #53a000;
+	color: #d8f7ce;
+	border: 2px solid #d8f7ce;
+}
+
 
 @media (min-width: 980px) {
 	.hidden-desktop {
@@ -81,6 +126,10 @@ legend {
 	.visible-desktop {
 		display: none !important;
 	}
+	.tab-content {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 }
 
 @media (max-width: 479px) {
@@ -93,6 +142,14 @@ legend {
 	}
 	.form-horizontal .form-actions {
 		padding-left: 10px;
+		text-align: center;
+	}
+
+	.entity-container {
+		text-align: center;
+	}
+	.entity {
+		margin: 0 10px 20px 10px;
 	}
 }
 
