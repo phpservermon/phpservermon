@@ -52,7 +52,7 @@ The latest version can be downloaded from <http://www.phpservermonitor.org/>.
 
 ## Requirements
 
- * PHP 5.3+
+ * PHP 5.3.7+
  * PHP cURL package
  * PHP PDO mysql driver
 
