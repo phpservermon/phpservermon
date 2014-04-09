@@ -153,7 +153,9 @@ function psm_load_conf() {
 }
 
 /**
- * Update a config setting
+ * Update a config setting.
+ *
+ * If the key does not exist yet it will be created.
  * @global \psm\Service\Database $db
  * @param string $key
  * @param string $value
@@ -161,11 +163,21 @@ function psm_load_conf() {
 function psm_update_conf($key, $value) {
 	global $db;
 
-	$db->save(
+	$result = $db->save(
 		PSM_DB_PREFIX.'config',
 		array('value' => $value),
 		array('key' => $key)
 	);
+	// save returns the # rows updated, if 0, key doenst exist yet
+	if($result === 0) {
+		$db->save(
+			PSM_DB_PREFIX . 'config',
+			array(
+				'key' => $key,
+				'value' => $value,
+			)
+		);
+	}
 	$GLOBALS['sm_config'][$key] = $value;
 }
 
