@@ -3,6 +3,26 @@
 Frequently Asked Questions
 ==========================
 
+
+Users
++++++
+
+What are the differences between the user levels?
+-----------------------------------------------
+
+There are 2 user levels available: regular user and administrator.
+
+Administrators:
+* Manage servers.
+* Manage users.
+* Edit global configuration.
+
+Regular users:
+* View the status of their assigned servers.
+* View the history and logs of their assigned servers.
+* Run the updater on their assigned servers.
+
+
 Configuration
 +++++++++++++
 
