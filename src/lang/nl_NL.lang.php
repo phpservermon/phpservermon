@@ -174,19 +174,25 @@ $sm_lang = array(
 		'alert_type_status' => 'Status verandering',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altijd',
-		'log_status' => 'Log status<br/><div class="small">Als de log status op TRUE staat, zal de monitor een log aanmaken elke keer dat hij door de notificatie instellingen komt</div>',
+		'log_status' => 'Log status',
+		'log_status_description' => 'Als de log status op TRUE staat, zal de monitor een log aanmaken elke keer dat hij door de notificatie instellingen komt.',
 		'log_email' => 'Log emails verstuurd bij het script?',
 		'log_sms' => 'Log sms berichten verstuurd bij het script?',
 		'updated' => 'De configuratie is gewijzigd.',
+		'tab_email' => 'Email',
+		'tab_sms' => 'SMS',
+		'tab_log' => 'Log',
 		'settings_email' => 'Email instellingen',
 		'settings_sms' => 'SMS instellingen',
 		'settings_notification' => 'Notificatie instellingen',
 		'settings_log' => 'Log instellingen',
+		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers pagina<br/>'.
-			'<div class="small">'.
+			'Auto-refresh servers pagina.<br/>'.
+			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

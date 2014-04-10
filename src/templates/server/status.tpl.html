@@ -1,8 +1,7 @@
 <!--%tpl_server_status-->
 <style type="text/css">
 	body {
-		background: {bg};
-		padding: 30px 20px;
+		background: black;
 	}
 
 	.page-header {
@@ -18,57 +17,25 @@
 		margin-bottom: 10px;
 	}
 
-	.entity {
-		padding: 10px;
-		box-shadow: 0px 0px 5px #666;
-		border-radius: 3px;
-		margin-bottom: 20px;
-		width: 300px;
-		cursor: pointer;
-	}
-
-	.offline {
-		width: 325px;
-		float: left;
-		margin-right: 20px;
-	}
-
-	.offline .entity {
-		background: {offline_bg};
-		color: {offline_fg};
-		border: 2px solid {offline_fg};
-	}
-
-	.offline .entity.warning {
-		background: {warning_bg};
-		color: {warning_fg};
-		border: 2px solid {warning_fg};
-	}
-
-	.online .entity {
-		background: {online_bg};
-		color: {online_fg};
-		border: 2px solid {online_fg};
-		float: left;
-		margin-right: 20px;
-	}
 </style>
-<div class="offline">
+<div class="entity-container">
 	<!--%tpl_repeat_servers_offline-->
-	<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
-		<h2>{label}</h2>
-		<p>{label_last_online}: {last_online_nice}</p>
-		<p>{label_last_check}: {last_checked_nice}</p>
+	<div class="offline">
+		<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
+			<h2>{label}</h2>
+			<p>{label_last_online}: {last_online_nice}</p>
+			<p>{label_last_check}: {last_checked_nice}</p>
+		</div>
 	</div>
 	<!--%%tpl_repeat_servers_offline-->
 	{servers_offline}
-</div>
-<div class="online">
 	<!--%tpl_repeat_servers_online-->
-	<div class="entity" onclick="window.location.href='{url_view}'">
-		<h2>{label}</h2>
-		<p>{label_last_online}: {last_checked_nice}</p>
-		<p>{label_rtime}: {rtime}s</p>
+	<div class="online">
+		<div class="entity" onclick="window.location.href='{url_view}'">
+			<h2>{label}</h2>
+			<p>{label_last_online}: {last_checked_nice}</p>
+			<p>{label_rtime}: {rtime}s</p>
+		</div>
 	</div>
 	<!--%%tpl_repeat_servers_online-->
 	{servers_online}

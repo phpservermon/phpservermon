@@ -175,19 +175,25 @@ $sm_lang = array(
 		'alert_type_status' => 'Status ge&auml;ndert',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Immer',
-		'log_status' => 'Log Status<br/><div class="small">Ist der Log Status auf TRUE (ein Hacken) gesetzt, wird jeder Status protokolliert</div>',
+		'log_status' => 'Log Status',
+		'log_status_description' => 'Ist der Log Status auf TRUE (ein Hacken) gesetzt, wird jeder Status protokolliert.',
 		'log_email' => 'Email Log per Script senden?',
 		'log_sms' => 'SMS Log per Script senden?',
 		'updated' => 'Die Einstellungen wurden gespeichert.',
+		'tab_email' => 'Email',
+		'tab_sms' => 'SMS',
+		'tab_log' => 'Log',
 		'settings_email' => 'Email',
 		'settings_sms' => 'SMS Nachricht',
 		'settings_notification' => 'Benachrichtigung',
 		'settings_log' => 'Log',
+		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
 			'Auto-refresh servers page<br/>'.
-			'<div class="small">'.
+			'<span class="small">'.
 			'Time in seconds, if 0 the page won\'t refresh.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <title>{title}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 	{auto_refresh}
@@ -46,7 +46,7 @@
     <!-- container -->
     <div class="container-fluid">
         <div class="page-header">
-            <h1>{subtitle}<small>&nbsp;</small></h1>
+            <h1>{subtitle}</h1>
         </div>
         <div class="row-fluid">
 			{html_sidebar}
@@ -72,15 +72,6 @@
 
 <!--%tpl_main_menu-->
           <div class="nav-collapse">
-			<ul class="nav pull-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{label_usermenu} <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{url_profile}"><i class="icon-cog"></i>&nbsp;{label_profile}</a></li>
-                  <li><a href="{url_logout}"><i class="icon-off"></i>&nbsp;{label_logout}</a></li>
-                </ul>
-              </li>
-			</ul>
             <ul class="nav">
 				<!--%tpl_repeat_menu-->
                 <li class="{active}">
@@ -92,6 +83,18 @@
                     <a href="http://www.phpservermonitor.org/" target="_blank">{label_help}</a>
                 </li>
             </ul>
+			<ul class="nav pull-right">
+              <li class="dropdown visible-desktop">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{label_usermenu} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{url_profile}"><i class="icon-cog"></i>&nbsp;{label_profile}</a></li>
+                  <li><a href="{url_logout}"><i class="icon-off"></i>&nbsp;{label_logout}</a></li>
+                </ul>
+              </li>
+			  <li class="hidden-desktop divider"></li>
+			  <li class="hidden-desktop"><a href="{url_profile}">{label_profile}</a></li>
+              <li class="hidden-desktop"><a href="{url_logout}">{label_logout}</a></li>
+			</ul>
           </div>
 <!--%%tpl_main_menu-->
 
@@ -102,6 +105,6 @@
 <!--%tpl_main_footer-->
         <footer class="footer">
           <p class="pull-right"><a href="#">{label_back_to_top}</a></p>
-          <p><small>Powered by <a href="http://www.phpservermonitor.org/" target="_blank">PHP Server Monitor {version}</a>.<br/>{update_available}</small></p>
+          <p class="powered"><small>Powered by <a href="http://www.phpservermonitor.org/" target="_blank">PHP Server Monitor {version}</a>.<br/>{update_available}</small></p>
         </footer>
 <!--%%tpl_main_footer-->
