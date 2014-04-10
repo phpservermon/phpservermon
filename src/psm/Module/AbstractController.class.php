@@ -398,7 +398,7 @@ abstract class AbstractController implements ControllerInterface {
 	}
 
 	/**
-	 * Set the minimum required user level for this module
+	 * Set the minimum required user level for this controller
 	 * @param int $level
 	 * @return \psm\Module\AbstractController
 	 */
@@ -408,7 +408,7 @@ abstract class AbstractController implements ControllerInterface {
 	}
 
 	/**
-	 * Get the minimum required user level for this module
+	 * Get the minimum required user level for this controller
 	 * @return int
 	 */
 	public function getMinUserLevelRequired() {
