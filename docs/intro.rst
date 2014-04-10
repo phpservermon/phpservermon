@@ -26,7 +26,7 @@ Servers
 -------
 There are two different ways to monitor a server:
 
- * Service
+* Service
 
   A connection will be made to the entered ip or domain, on the given port.
   This way you can check if certain services on your machine are still running.
