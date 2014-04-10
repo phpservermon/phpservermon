@@ -4,8 +4,9 @@ Changelog
 not yet released
 ----------------
 
- * Added Chinese translation.
+ * #57: Added Chinese translation.
  * Sphinx is now used for documentation <http://sphinx.pocoo.org/>.
+ * #58: Server order on users page now matches the order on servers page.
 
 
 v3.0.0 (released April 6, 2014)

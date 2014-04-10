@@ -55,7 +55,7 @@ class UserController extends AbstractController {
 
 	public function initialize() {
 		$this->user_validator = new \psm\Util\User\UserValidator($this->user);
-		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'));
+		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `active` ASC, `status` DESC, `label` ASC");
 		// change the indexes to reflect their server ids
 		foreach($servers as $server) {
 			$this->servers[$server['server_id']] = $server;
