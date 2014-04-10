@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to the PHP Server Monitor documentation!
-========================================
+================================================
 
 Contents:
 
@@ -14,6 +14,8 @@ Contents:
    intro
    requirements
    install
+   faq
+   developers
    credits
    copyright
 

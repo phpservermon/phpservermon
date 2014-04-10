@@ -1,4 +1,5 @@
-# PHP Server Monitor
+PHP Server Monitor
+==================
 
 Version 3.1.0-dev
 
@@ -6,7 +7,9 @@ PHP Server Monitor is a script that checks whether your websites and servers are
 It comes with a web based user interface where you can manage your services and websites,
 and you can manage users for each server with a mobile number and email address.
 
+
 Features:
+---------
 
 * Monitor services and websites (see below).
 * Email and SMS notifications.
@@ -45,52 +48,36 @@ The following SMS gateways are currently available:
 Please note: for these gateways you will need an account with sufficient credits.
 
 
-## Download
+Download
+--------
 
-The latest version can be downloaded from <http://www.phpservermonitor.org/>.
+The latest version can be downloaded from http://www.phpservermonitor.org/.
 
 
-## Requirements
+Requirements
+------------
 
+ * Web server
+ * MySQL database
  * PHP 5.3.7+
  * PHP cURL package
  * PHP PDO mysql driver
 
 
-## Install
-
-See INSTALL.md file.
-
-
-## Contributing
-
-The code is available from <https://github.com/phpservermon/phpservermon>.
-There is a master branch, which is stable and always reflects the latest release.
-The develop branch is used for ongoing development and should not be considered stable.
-If you would like to contribute a patch or feature, please fork the develop branch and send a pull request.
+Install
+-------
+Please see docs/install.rst.
+In a nutshell: unzip, upload, run install.php, enjoy.
 
 
-### Changing the email or text message
+Documentation
+-------------
 
-Go to the folder "src/lang", open the language file that corresponds to the selected language
-(default is English ("en_US.lang.php")). Scroll all the way to the bottom until you spot this line:
-
-     'notifications' => array(
-
-After that you will see the lines that hold the notification messages. For example:
-
-     'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
-
-The first part of this line, 'off_sms', is the name of the notification. You should not change this.
-The second part is the actual message. There are a few variables you can use in your message:
-
-    * %LABEL%				The name of the server
-    * %IP%					The ip of the server
-    * %PORT%				The port of the server
-    * %ERROR%				This one only works for the off_* messages and contains the error returned by the monitor
+The documentation is available in the docs folder or http://docs.phpservermonitor.org.
 
 
-## License
+License
+-------
 
  PHP Server Monitor is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -103,4 +90,4 @@ The second part is the actual message. There are a few variables you can use in 
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
+ along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.

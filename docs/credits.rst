@@ -11,12 +11,12 @@ The following people have contributed to the development of phpservermon:
 
 * Pepijn Over <pep\_at\_neanderthal-technology.com>
 
-  * creator and project maintainer
+  * Creator and project maintainer
 
 * Jérôme Cabanis
 
   * History graphs
-  * Date localisation
+  * Date localization
   * Mobile compatibility
   * Various fixes and improvements
 
@@ -38,10 +38,15 @@ The following people have contributed to the development of phpservermon:
 
   * Mosms SMS gateway
 
+* Paul Feakins
+
+  * Website pattern / regular expression search
+
+
 Translators
 +++++++++++
 
-The following people have contributed to the translation of phpservermon:
+The following people have contributed to the translation of PHP Server Monitor:
 
 * German
 
@@ -68,8 +73,8 @@ The following people have contributed to the translation of phpservermon:
 Vendors
 +++++++++
 
-The following libraries are being used by phpservermon:
+The following libraries are being used by PHP Server Monitor:
 
- * jqPlot <http://www.jqplot.com>
- * Twitter Bootstrap <http://getbootstrap.com>
- * PHP Mailer - Brent R. Matzelle
+ * jqPlot - http://www.jqplot.com
+ * Twitter Bootstrap - http://getbootstrap.com
+ * PHP Mailer - https://github.com/PHPMailer/PHPMailer

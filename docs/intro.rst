@@ -21,6 +21,7 @@ Features
   * Logs of connection errors, outgoing emails and text messages.
   * Easy cronjob implementation to automatically check your servers.
 
+
 Servers
 -------
 There are two different ways to monitor a server:
@@ -38,6 +39,7 @@ There are two different ways to monitor a server:
   You can also set a regular expression to match for content on the page itself.
   If the regular expression returns no matches, the website is considered down.
   In both cases the script will return a "status offline", and will start sending out notifications.
+
 
 Notifications
 -------------
