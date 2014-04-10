@@ -75,6 +75,6 @@ Vendors
 
 The following libraries are being used by PHP Server Monitor:
 
- * jqPlot - http://www.jqplot.com
- * Twitter Bootstrap - http://getbootstrap.com
- * PHP Mailer - https://github.com/PHPMailer/PHPMailer
+* jqPlot - http://www.jqplot.com
+* Twitter Bootstrap - http://getbootstrap.com
+* PHP Mailer - https://github.com/PHPMailer/PHPMailer
