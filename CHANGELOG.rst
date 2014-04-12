@@ -1,7 +1,7 @@
 Changelog
 =========
 
-not yet released
+v3.0.1 (released April 12, 2014)
 ----------------
 
 * #56: Minimum PHP version is PHP 5.3.7 (not PHP 5.3.0).
