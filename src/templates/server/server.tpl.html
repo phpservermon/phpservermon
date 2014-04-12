@@ -1,17 +1,17 @@
 <!--%tpl_server_list-->
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-align-middle">
 	<thead>
 		<tr>
 			<th>&nbsp;</th>
 			<th>{label_label}</th>
 			<th>{label_domain}</th>
-			<th>{label_port}</th>
-			<th>{label_type}</th>
+			<th class="visible-desktop">{label_port}</th>
+			<th class="visible-desktop">{label_type}</th>
 			<th>{label_rtime}</th>
 			<th>{label_last_online}</th>
 			<th>{label_monitoring}</th>
-			<th>{label_email}</th>
-			<th>{label_sms}</th>
+			<th class="visible-desktop">{label_email}</th>
+			<th class="visible-desktop">{label_sms}</th>
 			<th>{label_action}</th>
 		</tr>
 	</thead>
@@ -23,16 +23,18 @@
 					<a href="{url_view}" title="{error}">{status}</a>
 				</span>
 			</td>
-			<td><a href="{url_view}">{label}</a></td>
-			<td>{ip}</td>
-			<td>{port}</td>
-			<td>{type}</td>
-			<td>{rtime} s</td>
-			<td>{last_online}</td>
-			<td>{active}</td>
-			<td>{email}</td>
-			<td>{sms}</td>
-			<td class="col-action"><a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-eye-open"></i></a>
+			<td class="nowrap"><a href="{url_view}">{label}</a></td>
+			<td class="nowrap hidden-desktop"><i class="{type_icon}" title="{type}"></i> {ip} : {port}</td>
+			<td class="nowrap visible-desktop">{ip}</td>
+			<td class="nowrap visible-desktop">{port}</td>
+			<td class="nowrap visible-desktop">{type}</td>
+			<td class="nowrap">{rtime} s</td>
+			<td class="nowrap">{last_online}</td>
+			<td class="nowrap hidden-desktop"><i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i></td>
+			<td class="nowrap visible-desktop">{active}</td>
+			<td class="nowrap visible-desktop">{email}</td>
+			<td class="nowrap visible-desktop">{sms}</td>
+			<td class="col-action"><a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-chart"></i></a>
 				{html_actions}</td>
 		</tr>
 		<!--%%tpl_repeat_servers-->

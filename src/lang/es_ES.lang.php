@@ -115,6 +115,7 @@ $sm_lang = array(
 		'last_check' => 'Ultima verificación',
 		'last_online' => 'Última vez en línea',
 		'monitoring' => 'Monitoreo',
+		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',
 		'send_email' => 'Email',
 		'sms' => 'SMS',

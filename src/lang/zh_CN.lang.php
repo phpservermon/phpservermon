@@ -115,6 +115,7 @@ $sm_lang = array(
 		'last_check' => '最后检查',
 		'last_online' => '最后在线',
 		'monitoring' => '监控中',
+		'no_monitoring' => 'No monitoring',
 		'email' => '邮件',
 		'send_email' => '发送邮件',
 		'sms' => '短信',

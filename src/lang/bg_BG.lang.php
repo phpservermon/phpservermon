@@ -115,6 +115,7 @@ $sm_lang = array(
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
 		'monitoring' => 'Мониторинг',
+		'no_monitoring' => 'No monitoring',
 		'email' => 'Имейл',
 		'send_email' => 'Имейл',
 		'sms' => 'SMS',
