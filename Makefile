@@ -15,6 +15,7 @@ export:
 	@echo 'Building HTML documentation'
 	cd ./build/phpservermon/docs; make BUILDDIR=. html; cd ../../../;
 	@echo 'Cleaning up docs dir'
+	rm -f ./build/phpservermon/Makefile
 	rm -f ./build/phpservermon/docs/Makefile
 	rm -f ./build/phpservermon/docs/make.bat
 	rm -f ./build/phpservermon/docs/conf.py
