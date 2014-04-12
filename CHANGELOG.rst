@@ -5,9 +5,10 @@ not yet released
 ----------------
 
 * #56: Minimum PHP version is PHP 5.3.7 (not PHP 5.3.0).
-* #57: Added Chinese translation.
 * #58: Server order on users page now matches the order on servers page.
 * #59: Warning threshold ignored for notification trigger.
+* #57: Added Chinese translation.
+* #60: Added Italian translation.
 * Sphinx is now used for documentation <http://sphinx.pocoo.org/>.
 
 
