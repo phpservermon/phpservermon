@@ -8,7 +8,7 @@ Users
 +++++
 
 What are the differences between the user levels?
------------------------------------------------
+-------------------------------------------------
 
 There are 2 user levels available: regular user and administrator.
 

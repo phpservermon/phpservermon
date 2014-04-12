@@ -122,16 +122,16 @@ $sm_lang = array(
 		'latency' => 'Response tijd',
 		'latency_max' => 'Latency (maximum)',
 		'latency_min' => 'Latency (minimum)',
-		'latency_avg' => 'Latency (average)',
-		'year' => 'Year',
-		'month' => 'Month',
+		'latency_avg' => 'Latency (gemiddeld)',
+		'year' => 'Jaar',
+		'month' => 'Maand',
 		'week' => 'Week',
-		'day' => 'Day',
-		'hour' => 'Hour',
+		'day' => 'Dag',
+		'hour' => 'Uur',
 		'warning_threshold' => 'Warning threshold',
 		'warning_threshold_description' => 'Aantal mislukte pogingen voordat de server als offline gemarkeerd wordt.',
-		'chart_last_week' => 'Last week',
-		'chart_history' => 'History',
+		'chart_last_week' => 'Afgelopen week',
+		'chart_history' => 'Geschiedenis',
 		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
 		'chart_day_format' => '%d-%m-%Y',
 		'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',
@@ -141,7 +141,7 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Algemeen',
 		'language' => 'Taal',
-		'show_update' => 'Check for new updates weekly?',
+		'show_update' => 'Controleer wekelijks voor updates?',
 		'email_status' => 'Sta email berichten toe?',
 		'email_from_email' => 'Email van adres',
 		'email_from_name' => 'Email van naam',
@@ -165,17 +165,17 @@ $sm_lang = array(
 		'alert_type' => 'Selecteer wanneer je een notificatie wilt.<br/>',
 		'alert_type_description' => '<b>Status change:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
-			 '<br /><b>Offline</b>'.
+			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
 			'je cronjob draait iedere 15 min en je server gaat down om 01:00 en blijft offline tot 06:00. '.
 			'Je krijgt 1 bericht om 01:00 en dat is het.<br/>'.
-			'<br/><b>Altijd</b>'.
+			'<br/><b>Altijd:</b> '.
 			'Je krijgt een bericht elke keer dat het script draait en een website is down, ook al is de site al een paar uur offline.',
 		'alert_type_status' => 'Status verandering',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altijd',
 		'log_status' => 'Log status',
-		'log_status_description' => 'Als de log status op TRUE staat, zal de monitor een log aanmaken elke keer dat hij door de notificatie instellingen komt.',
+		'log_status_description' => 'Als de log status aan staat, zal de monitor een log aanmaken elke keer dat hij door de notificatie instellingen komt.',
 		'log_email' => 'Log emails verstuurd bij het script?',
 		'log_sms' => 'Log sms berichten verstuurd bij het script?',
 		'updated' => 'De configuratie is gewijzigd.',
