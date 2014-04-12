@@ -10,8 +10,8 @@
 			<th>{label_rtime}</th>
 			<th>{label_last_online}</th>
 			<th>{label_monitoring}</th>
-			<th>{label_send_email}</th>
-			<th>{label_send_sms}</th>
+			<th>{label_email}</th>
+			<th>{label_sms}</th>
 			<th>{label_action}</th>
 		</tr>
 	</thead>
@@ -32,7 +32,7 @@
 			<td>{active}</td>
 			<td>{email}</td>
 			<td>{sms}</td>
-			<td><a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-eye-open"></i></a>
+			<td class="col-action"><a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-eye-open"></i></a>
 				{html_actions}</td>
 		</tr>
 		<!--%%tpl_repeat_servers-->

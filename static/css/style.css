@@ -28,15 +28,43 @@ body {
 	background-color: #444;
 }
 
+#main-container {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#main-content {
+	display: table;
+	width: 100%;
+}
+
+#sidebar-container {
+	display: table-cell;
+	vertical-align: top;
+	width: 1px;
+	white-space: nowrap;
+}
+
+#page-container {
+	display: table-cell;
+	vertical-align: top;
+}
+
 .powered {
 	display: inline-block;
 	white-space: nowrap;
 }
 
+table {
+  background-color: white;
+}
+fieldset {
+	display: inline-block;
+}
 .tab-content {
 	display: block;
 	width: auto;
-	padding-top: 10px;
+	padding-top: 19px;
 	padding-bottom: 0;
 }
 .nav-tabs {
@@ -57,6 +85,7 @@ body {
 }
 
 legend {
+	margin-top: 0px;
 	margin-bottom: 0px;
 }
 .form-horizontal .control-label {
@@ -115,6 +144,12 @@ legend {
 }
 
 @media (max-width: 979px) {
+	#sidebar-container {
+		display: table-row;
+	}
+	#page-container {
+		display: table-row;
+	}
 	.sidebar-nav .nav-list {
 		padding: 0;
 	}
@@ -138,7 +173,7 @@ legend {
 }
 
 @media (max-width: 479px) {
-	.container-fluid {
+	#main-container, .container-fluid {
 		padding-left: 10px;
 		padding-right: 10px;
 	}
@@ -235,4 +270,10 @@ legend{
 
 .oce-first{
 	background-color:#eee;
+}
+
+/* Tables */
+.col-action {
+	width: 20px;
+	white-space: nowrap;	
 }
