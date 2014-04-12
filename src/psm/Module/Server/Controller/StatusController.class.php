@@ -55,20 +55,6 @@ class StatusController extends AbstractServerController {
 		$offline = array();
 		$online = array();
 
-		$tpl_data = array(
-			'bg' => '#000000',
-			'offline_bg' => '#a00000',
-			'offline_fg' => '#f7cece',
-			'online_bg' => '#53a000',
-			'online_fg' => '#d8f7ce',
-			'warning_bg' => '#FAA732',
-			'warning_fg' => '#F3F3B1',
-			'label_last_check' => psm_get_lang('servers', 'last_check'),
-			'label_last_online' => psm_get_lang('servers', 'last_online'),
-			'label_rtime' => psm_get_lang('servers', 'latency'),
-		);
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
-
 		foreach ($servers as $server) {
 			if($server['active'] == 'no') {
 				continue;
@@ -106,6 +92,9 @@ class StatusController extends AbstractServerController {
 			$this->getTemplateId(),
 			array(
 				'subtitle' => psm_get_lang('menu', 'server_status'),
+				'label_last_check' => psm_get_lang('servers', 'last_check'),
+				'label_last_online' => psm_get_lang('servers', 'last_online'),
+				'label_rtime' => psm_get_lang('servers', 'latency'),
 			)
 		);
 

@@ -180,6 +180,9 @@ class ConfigController extends AbstractController {
 			$this->getTemplateId(),
 			array(
 				'subtitle' => psm_get_lang('menu', 'config'),
+				'label_tab_email' => psm_get_lang('config', 'tab_email'),
+				'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
+				'label_tab_log' => psm_get_lang('config', 'tab_log'),
 				'label_settings_email' => psm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 				'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
@@ -213,9 +216,12 @@ class ConfigController extends AbstractController {
 				'label_alert_type_offline' => psm_get_lang('config', 'alert_type_offline'),
 				'label_alert_type_always' => psm_get_lang('config', 'alert_type_always'),
 				'label_log_status' => psm_get_lang('config', 'log_status'),
+				'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
 				'label_log_email' => psm_get_lang('config', 'log_email'),
 				'label_log_sms' => psm_get_lang('config', 'log_sms'),
+				'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
 				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
+				'label_seconds' => psm_get_lang('config', 'seconds'),
 				'label_save' => psm_get_lang('system', 'save'),
 			)
 		);

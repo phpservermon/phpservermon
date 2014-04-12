@@ -88,9 +88,9 @@ class InstallController extends AbstractController {
 		$errors = 0;
 
 		$phpv = phpversion();
-		if(version_compare($phpv, '5.3.0', '<')) {
+		if(version_compare($phpv, '5.3.7', '<')) {
 			$errors++;
-			$this->addMessage('PHP 5.3+ is required to run PHP Server Monitor.', 'error');
+			$this->addMessage('PHP 5.3.7+ is required to run PHP Server Monitor.', 'error');
 		} else {
 			$this->addMessage('PHP version: ' . $phpv, 'success');
 		}

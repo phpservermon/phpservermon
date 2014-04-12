@@ -113,10 +113,9 @@ if(defined('PSM_INSTALL') && PSM_INSTALL) {
 		die();
 	}
 	// config load OK, make sure database version is up to date
-	$version_db = psm_get_conf('version');
-
-	if(version_compare(PSM_VERSION, $version_db, '>')) {
-		die('Your database is for an older version, <a href="install.php">please click here</a> to update your database to the latest version.');
+	$installer = new \psm\Util\Install\Installer($db);
+	if($installer->isUpgradeRequired()) {
+		die('Your database is for an older version and requires an upgrade, <a href="install.php">please click here</a> to update your database to the latest version.');
 	}
 }
 

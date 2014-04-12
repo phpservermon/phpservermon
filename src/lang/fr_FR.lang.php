@@ -174,19 +174,25 @@ $sm_lang = array(
 		'alert_type_status' => 'Changement d\'état',
 		'alert_type_offline' => 'Hors service',
 		'alert_type_always' => 'Toujours',
-		'log_status' => 'Etat des événements<br/><div class="small">Si l\'option est activée, un événement est enregistré chaque fois qu\'une notification a lieu</div>',
+		'log_status' => 'Etat des événements',
+		'log_status_description' => 'Si l\'option est activée, un événement est enregistré chaque fois qu\'une notification a lieu.',
 		'log_email' => 'Enregistrer tout les emails envoyés',
-		'log_sms' => 'Enregistrer tout les SMS envoyé',
+		'log_sms' => 'Enregistrer tout les SMS envoyés',
 		'updated' => 'La configuration a été mise à jour.',
+		'tab_email' => 'Email',
+		'tab_sms' => 'SMS',
+		'tab_log' => 'Événements',
 		'settings_email' => 'Configuration email',
 		'settings_sms' => 'Configuration SMS',
 		'settings_notification' => 'Configuration des notifications',
 		'settings_log' => 'Configuration des événements',
+		'auto_refresh' => 'Auto-rachaîchissement',
 		'auto_refresh_servers' =>
-			'Auto-rachaîchissement de la page serveurs<br/>'.
-			'<div class="small">'.
+			'Auto-rachaîchissement de la page serveurs.<br/>'.
+			'<span class="small">'.
 			'Temps en secondes. Si 0, la page n\'est pas rafraîchie.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'secondes',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

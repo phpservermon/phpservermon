@@ -38,4 +38,10 @@ interface ControllerInterface {
 	 * Initialize the module
 	 */
 	public function initialize();
+
+	/**
+	 * Get the minimum required user level for this controller
+	 * @return int
+	 */
+	public function getMinUserLevelRequired();
 }

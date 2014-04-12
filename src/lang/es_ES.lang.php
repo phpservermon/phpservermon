@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Klemens Häckel <http://clickdimension.wordpress.com/>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -26,24 +26,24 @@
  **/
 
 $sm_lang = array(
-	'name' => 'English',
-	'locale' => array('en_US.UTF-8', 'en_US', 'american', 'english-us'),
+	'name' => 'Español - Spanish',
+	'locale' => array('es_ES.UTF-8', 'es_ES', 'spanish', 'esp'),
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
-		'action' => 'Action',
-		'save' => 'Save',
-		'edit' => 'Edit',
-		'delete' => 'Delete',
-		'deleted' => 'Record has been deleted',
-		'date' => 'Date',
-		'message' => 'Message',
-		'yes' => 'Yes',
+		'action' => 'Acción',
+		'save' => 'Guardar',
+		'edit' => 'Modificar',
+		'delete' => 'Eliminar',
+		'deleted' => 'Registro eliminado',
+		'date' => 'Fecha',
+		'message' => 'Mensaje',
+		'yes' => 'Si',
 		'no' => 'No',
-		'edit' => 'Edit',
-		'insert' => 'Insert',
-		'add_new' => 'Add new',
-		'update_available' => 'A new version ({version}) is available from <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'edit' => 'Modificar',
+		'insert' => 'Insertar',
+		'add_new' => 'Agregar nuevo',
+		'update_available' => 'Hay una nueva versión ({version}) disponible en <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
@@ -60,17 +60,17 @@ $sm_lang = array(
 		'a_second_ago' => 'a second ago',
 	),
 	'menu' => array(
-		'config' => 'Config',
-		'server' => 'Servers',
+		'config' => 'Configurar',
+		'server' => 'Servidores',
 		'server_log' => 'Log',
 		'server_status' => 'Status',
-		'server_update' => 'Update',
-		'user' => 'Users',
-		'help' => 'Help',
+		'server_update' => 'Actualizar',
+		'user' => 'Usuarios',
+		'help' => 'Ayuda',
 	),
 	'users' => array(
-		'user' => 'user',
-		'name' => 'Name',
+		'user' => 'Usuario',
+		'name' => 'Nombre',
 		'user_name' => 'Username',
 		'password' => 'Password',
 		'password_repeat' => 'Password repeat',
@@ -79,10 +79,10 @@ $sm_lang = array(
 		'level_10' => 'Administrator',
 		'level_20' => 'User',
 		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
-		'mobile' => 'Mobile',
+		'mobile' => 'Mobil',
 		'email' => 'Email',
-		'updated' => 'User updated.',
-		'inserted' => 'User added.',
+		'updated' => 'Usuario actualizado.',
+		'inserted' => 'Usuario ingresado.',
 		'profile' => 'Profile',
 		'profile_updated' => 'Your profile has been updated.',
 		'error_user_name_bad_length' => 'Usernames must be between 2 and 64 characters.',
@@ -96,33 +96,33 @@ $sm_lang = array(
 		'error_user_password_no_match' => 'The entered passwords do not match.',
 	),
 	'log' => array(
-		'title' => 'Log entries',
-		'type' => 'Type',
-		'status' => 'Status',
+		'title' => 'Registro Log',
+		'type' => 'Tipo',
+		'status' => 'Estado',
 		'email' => 'Email',
 		'sms' => 'SMS',
 	),
 	'servers' => array(
-		'server' => 'Server',
-		'label' => 'Label',
+		'server' => 'Servidores',
+		'label' => 'Titulo',
 		'domain' => 'Domain/IP',
 		'port' => 'Port',
-		'type' => 'Type',
+		'type' => 'Tipo',
 		'type_website' => 'Website',
 		'type_service' => 'Service',
 		'pattern' => 'Search string/pattern',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
-		'last_check' => 'Last check',
-		'last_online' => 'Last online',
-		'monitoring' => 'Monitoring',
-		'send_email' => 'Send Email',
-		'send_sms' => 'Send SMS',
-		'updated' => 'Server updated.',
-		'inserted' => 'Server added.',
-		'latency' => 'Latency',
-		'latency_max' => 'Latency (maximum)',
-		'latency_min' => 'Latency (minimum)',
-		'latency_avg' => 'Latency (average)',
+		'last_check' => 'Ultima verificación',
+		'last_online' => 'Última vez en línea',
+		'monitoring' => 'Monitoreo',
+		'send_email' => 'Email',
+		'send_sms' => 'SMS',
+		'updated' => 'Servidor arctualizado.',
+		'inserted' => 'Servidor ingresado.',
+		'latency' => 'Tiempo de respuesta',
+		'latency_max' => 'Tiempo de respuesta (maximum)',
+		'latency_min' => 'Tiempo de respuesta (minimum)',
+		'latency_avg' => 'Tiempo de respuesta (average)',
 		'year' => 'Year',
 		'month' => 'Month',
 		'week' => 'Week',
@@ -140,19 +140,19 @@ $sm_lang = array(
 	),
 	'config' => array(
 		'general' => 'General',
-		'language' => 'Language',
-		'show_update' => 'Updates',
-		'email_status' => 'Allow sending email',
-		'email_from_email' => 'Email from address',
-		'email_from_name' => 'Email from name',
+		'language' => 'Idioma',
+		'show_update' => 'Comprobar actualizaciones semanalmente ?',
+		'email_status' => 'Habilitar envio de email ?',
+		'email_from_email' => 'Email desde dirección',
+		'email_from_name' => 'Email desde nombre',
 		'email_smtp' => 'Enable SMTP',
 		'email_smtp_host' => 'SMTP host',
 		'email_smtp_port' => 'SMTP port',
 		'email_smtp_username' => 'SMTP username',
 		'email_smtp_password' => 'SMTP password',
 		'email_smtp_noauth' => 'Leave blank for no authentication',
-		'sms_status' => 'Allow sending text messages',
-		'sms_gateway' => 'Gateway to use for sending messages',
+		'sms_status' => 'Habilitar envio de SMS ?',
+		'sms_gateway' => 'SMS Gateway',
 		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
@@ -161,48 +161,47 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
-		'sms_from' => 'Sender\'s phone number',
-		'alert_type' => 'Select when you\'d like to be notified.<br/>',
-        'alert_type_description' => '<b>Status change:</b> '.
-		    'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
+		'sms_from' => 'Número origen del SMS',
+		'alert_type' => 'Cuando desea recibir notificaciones ?<br/>',
+        'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
+		    'p.ej. online -> offline o offline -> online.<br/>'.
 		    '<br /><b>Offline:</b> '.
-		    'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
-		    'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
-		    'You will get 1 notification at 1 am and thats it.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'You will receive a notification every time the script runs and a site is down, even if the site has been '.
-		    'offline for hours.',
-		'alert_type_status' => 'Status change',
+		    'Recibirá una notificación cuando el servidor va fuera de línea.'.
+		    'Se envia un sólo mensaje cuando el CronJob detecta la caída por primera vez.<br/>'.
+		    '<br><b>Siempre:</b> '.
+		    'Se le enviará una notificación, cada vez que se ejecuta el script o el CronJob, '.
+		    'aunqué el servicio puede haber estado fuera de línea por varias horas antes.',
+		'alert_type_status' => 'Cambio de estado',
 		'alert_type_offline' => 'Offline',
-		'alert_type_always' => 'Always',
+		'alert_type_always' => 'Siempre',
 		'log_status' => 'Log status',
-		'log_status_description' => 'If log status is set to TRUE, the monitor will log the event whenever the Notification settings are passed.',
-		'log_email' => 'Log emails sent by the script',
-		'log_sms' => 'Log text messages sent by the script',
-		'updated' => 'The configuration has been updated.',
+		'log_status_description' => 'Al setear TRUE (marcar) se protocolan todos los estados.',
+		'log_email' => 'Enviar Log via email?',
+		'log_sms' => 'Enviar Log via SMS ?',
+		'updated' => 'Configuración guardada.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Log',
-		'settings_email' => 'Email settings',
-		'settings_sms' => 'Text message settings',
-		'settings_notification' => 'Notification settings',
-		'settings_log' => 'Log settings',
-		'auto_refresh' => 'Auto-refresh',
+		'settings_email' => 'Email',
+		'settings_sms' => 'Mensaje SMS',
+		'settings_notification' => 'Notificación',
+		'settings_log' => 'Log',
+		'auto_refresh' => 'Refrescar automáticamente página de servidores',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers page.<br/>'.
+			'Refrescar automáticamente página de servidores.<br/>'.
 			'<span class="small">'.
-			'Time in seconds, if 0 the page won\'t refresh.'.
+			'Tiempo en segundos, indicar "0" para no actualizar.'.
 			'</span>',
 		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
-		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
-		'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
-		'off_email_body' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
-		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'off_sms' => 'Servidor \'%LABEL%\' está fuera de línea: ip=%IP%, port=%PORT%. error=%ERROR%',
+		'off_email_subject' => 'Importante: Servidor \'%LABEL%\' está fuera de línea',
+		'off_email_body' => "No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
+		'on_sms' => 'Servidor \'%LABEL%\' ya está de nuevo funcionando en línea: ip=%IP%, port=%PORT%',
+		'on_email_subject' => 'Importante: Servidor \'%LABEL%\' ya está de nuevo en línea',
+		'on_email_body' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fecha: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

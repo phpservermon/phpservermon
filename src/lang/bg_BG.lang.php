@@ -141,8 +141,8 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Основни настройки',
 		'language' => 'Език',
-		'show_update' => 'Да проверява ли за нова версия всяка седмица?',
-		'email_status' => 'Да се изпращат ли имейли?',
+		'show_update' => 'Да проверява ли за нова версия всяка седмица',
+		'email_status' => 'Да се изпращат ли имейли',
 		'email_from_email' => 'Имейл, от който да се изпращат съобщенията',
 		'email_from_name' => 'Име на изпращача',
 		'email_smtp' => 'Активиране на SMTP',
@@ -151,7 +151,7 @@ $sm_lang = array(
 		'email_smtp_username' => 'SMTP потребителско име',
 		'email_smtp_password' => 'SMTP парола',
 		'email_smtp_noauth' => 'Оставете празно за "без аутентикация"',
-		'sms_status' => 'Да се изпращат ли SMS-и?',
+		'sms_status' => 'Да се изпращат ли SMS-и',
 		'sms_gateway' => 'Портал за изпращане на SMS-и',
 		'sms_gateway_mosms' => 'Mosms',
 		'sms_gateway_mollie' => 'Mollie',
@@ -175,19 +175,25 @@ $sm_lang = array(
 		'alert_type_status' => 'Промяна на статуса',
 		'alert_type_offline' => 'Офлайн',
 		'alert_type_always' => 'Винаги',
-		'log_status' => 'Статус на логовете<br/><div class="small">Ако е отметнато, системата ще записва всяка промяна:</div>',
-		'log_email' => 'Да се пази ли лог на изпратените имейли от системата?',
-		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата?',
+		'log_status' => 'Статус на логовете',
+		'log_status_description' => 'Ако е отметнато, системата ще записва всяка промяна.',
+		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
+		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
 		'updated' => 'Настройките са обновени успешно.',
+		'tab_email' => 'Имейл',
+		'tab_sms' => 'SMS',
+		'tab_log' => 'логовете',
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
+		'auto_refresh' => 'Автоматично опресняване',
 		'auto_refresh_servers' =>
-			'Автоматично опресняване на страницата<br/>'.
-			'<div class="small">'.
+			'Автоматично опресняване на страницата.<br/>'.
+			'<span class="small">'.
 			'Времето е в секунди, ако е 0 страницата няма да се обноява.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(

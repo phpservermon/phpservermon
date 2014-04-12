@@ -64,6 +64,30 @@ class Installer {
 	}
 
 	/**
+	 * Check if an upgrade is required for the current version.
+	 * @return boolean
+	 * @see upgrade()
+	 */
+	public function isUpgradeRequired() {
+		$version_db = psm_get_conf('version');
+
+		if(version_compare(PSM_VERSION, $version_db, '==')) {
+			// version is up to date
+			return false;
+		}
+
+		// different DB version, check if the version requires any changes
+		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
+		if(version_compare($version_db, '3.0.0', '<')) {
+			return true;
+		} else {
+			// change database version to current version so this check won't be required next time
+			psm_update_conf('version', PSM_VERSION);
+		}
+		return false;
+	}
+
+	/**
 	 * Log a message to the logger callable (if any)
 	 * @param string|array $msg
 	 * @return \psm\Util\Install\Installer
@@ -229,6 +253,7 @@ class Installer {
 	 * Populate the tables and perform upgrades if necessary
 	 * @param string $version_from
 	 * @param string $version_to
+	 * @see isUpgradeRequired()
 	 */
 	public function upgrade($version_from, $version_to) {
 		if(version_compare($version_from, '2.1.0', '<')) {
@@ -239,7 +264,7 @@ class Installer {
 			// upgrade to 3.0.0
 			$this->upgrade300();
 		}
-		$this->db->save(PSM_DB_PREFIX . 'config', array('value' => $version_to), array('key' => 'version'));
+		psm_update_conf('version', $version_to);
 	}
 
 	/**

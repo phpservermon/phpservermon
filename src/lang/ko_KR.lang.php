@@ -173,19 +173,25 @@ $sm_lang = array(
 		'alert_type_status' => '상태 변경',
 		'alert_type_offline' => '오프라인',
 		'alert_type_always' => '항상',
-		'log_status' => '로그 상태<br/><div class="small">로그상태가 TRUE이면 알림설정이 통과할때마다 이벤트를 기록합니다.</div>',
+		'log_status' => '로그 상태',
+		'log_status_description' => '로그상태가 TRUE이면 알림설정이 통과할때마다 이벤트를 기록합니다.',
 		'log_email' => '이메일로 로그를 전송하시겠습니까?',
 		'log_sms' => 'SMS로 로그를 전송하시겠습니까?',
 		'updated' => '설정이 수정되었습니다.',
+		'tab_email' => 'Email',
+		'tab_sms' => 'SMS',
+		'tab_log' => '로그',
 		'settings_email' => 'Email 설정',
 		'settings_sms' => 'SMS 설정',
 		'settings_notification' => '알림 설정',
 		'settings_log' => '로그 설정',
+		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'서버페이지를 자동으로 새로고침<br/>'.
-			'<div class="small">'.
+			'서버페이지를 자동으로 새로고침.<br/>'.
+			'<span class="small">'.
 			'시간은 초(sec)로 설정을 하고, 0은 새로고침을 하지 않습니다.'.
-			'</div>',
+			'</span>',
+		'seconds' => 'seconds',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
