@@ -89,7 +89,7 @@ class Autorun {
 			// notify the nerds if applicable
 			$notifier->notify($server['server_id'], $status_old, $status_new);
 
-			// clean-up time!! archive all records older than 1 month
+			// clean-up time!! archive all records older than 1 week
 			$archiver->archive($server['server_id'], $cleanup_date);
 		}
 	}

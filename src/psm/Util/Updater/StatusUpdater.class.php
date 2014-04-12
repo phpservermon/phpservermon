@@ -67,6 +67,8 @@ class StatusUpdater {
 	 * The function its all about. This one checks whether the given ip and port are up and running!
 	 * If the server check fails it will try one more time, depending on the $max_runs.
 	 *
+	 * Please note: if the server is down but has not met the warning threshold, this will return true
+	 * to avoid any "we are down" events.
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
 	 * @return boolean TRUE if server is up, FALSE otherwise
@@ -102,6 +104,10 @@ class StatusUpdater {
 			'rtime' => $this->rtime,
 		);
 
+		// log the uptime before checking the warning threshold,
+		// so that the warnings can still be reviewed in the server history.
+		psm_log_uptime($this->server_id, (int) $this->status_new, $this->rtime);
+
 		if($this->status_new == true) {
 			// if the server is on, add the last_online value and reset the error threshold counter
 			$save['status'] = 'on';
@@ -115,13 +121,13 @@ class StatusUpdater {
 				// the server is offline but the error threshold has not been met yet.
 				// so we are going to leave the status "on" for now while we are in a sort of warning state..
 				$save['status'] = 'on';
+				$this->status_new = true;
 			} else {
 				$save['status'] = 'off';
 			}
 		}
 
 		$this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
-		psm_log_uptime($this->server_id, (int) $this->status_new, $this->rtime);
 
 		return $this->status_new;
 
