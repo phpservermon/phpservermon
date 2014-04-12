@@ -9,6 +9,7 @@ not yet released
 * #59: Warning threshold ignored for notification trigger.
 * #57: Added Chinese translation.
 * #60: Added Italian translation.
+* #61: Added Spanish translation.
 * Sphinx is now used for documentation <http://sphinx.pocoo.org/>.
 
 

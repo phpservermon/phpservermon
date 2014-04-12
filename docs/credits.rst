@@ -77,6 +77,9 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Luiz Alberto S. Ribeiro
 
+* Spanish
+
+  * Klemens Häckel <http://clickdimension.wordpress.com/>
 
 Vendors
 +++++++
