@@ -261,6 +261,13 @@ td.hidden-desktop, th.hidden-desktop {
 	.entity {
 		margin: 0 10px 20px 10px;
 	}
+	.hidden-small {
+		display: none !important;
+	}
+	.action-small {
+		text-align: center !important;
+		background-color: white;
+	}
 }
 
 body.install{
