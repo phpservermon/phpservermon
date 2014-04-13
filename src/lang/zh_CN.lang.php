@@ -130,6 +130,7 @@ $sm_lang = array(
 		'latency_max' => '延迟(最大)',
 		'latency_min' => '延迟(最小)',
 		'latency_avg' => '延迟(平均)',
+		'uptime' => 'Uptime',
 		'year' => '年',
 		'month' => '月',
 		'week' => '周',

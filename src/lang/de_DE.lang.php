@@ -130,6 +130,7 @@ $sm_lang = array(
 		'latency_max' => 'Latency (maximum)',
 		'latency_min' => 'Latency (minimum)',
 		'latency_avg' => 'Latency (average)',
+		'uptime' => 'Uptime',
 		'year' => 'Year',
 		'month' => 'Month',
 		'week' => 'Week',
