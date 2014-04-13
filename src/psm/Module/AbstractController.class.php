@@ -80,6 +80,12 @@ abstract class AbstractController implements ControllerInterface {
 	protected $sidebar;
 
 	/**
+	 * Modal to add
+	 * @var \psm\Util\Module\ModalInterface $modal
+	 */
+	protected $modal;
+
+	/**
 	 * Database object
 	 * @var \psm\Service\Database $db
 	 */
@@ -175,6 +181,10 @@ abstract class AbstractController implements ControllerInterface {
 		// add menu to page?
 		if($this->add_menu) {
 			$tpl_data['html_menu'] = $this->createHTMLMenu();
+		}
+		// add modal dialog to page ?
+		if($this->modal != null) {
+			$tpl_data['html_modal'] = $this->modal->createHTML();
 		}
 		// add sidebar to page?
 		if($this->sidebar !== null) {
@@ -441,6 +451,16 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	public function setSidebar(\psm\Util\Module\SidebarInterface $sidebar) {
 		$this->sidebar = $sidebar;
+		return $this;
+	}
+
+	/**
+	 * Add a modal dialog to the page
+	 * @param \psm\Util\Module\ModalInterface $modal
+	 * @return \psm\Module\ControllerInterface
+	 */
+	public function setModal(\psm\Util\Module\ModalInterface $modal) {
+		$this->modal = $modal;
 		return $this;
 	}
 }

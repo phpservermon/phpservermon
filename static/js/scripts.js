@@ -1,10 +1,27 @@
-function sm_delete(id, mod) {
-    var del = confirm("Are you sure you want to delete this record?");
-    if (del === true) {
-        var loc = 'index.php?action=delete&id=' + id + '&mod=' + mod;
-        window.location = loc;
-    }
-}
+$().ready(function() {
+	var $modal = $('#mainModal');
+	if($modal.length) {
+		$('.show-modal').click(function (e) {
+			var $this = $(this);
+			if ($this.is('a')) {
+				e.preventDefault();
+			}
+			var href = $this.attr('href');
+			$('#mainModalOKButton').attr('href', href);
+
+			var param = $this.attr('data-modal-param');
+			if(param) {
+				var ary = param.split(',');
+				for (var index = 0; index < ary.length && index < 9; ++index) {
+					var value = ary[index];
+					$('#mainModal span.mainModalP' + (index+1)).text(value);
+				}
+			}
+			$modal.modal('show');
+			return false;
+		});
+	}
+});
 
 function psm_tooltips() {
 	$('input[data-toggle="tooltip"]').tooltip({

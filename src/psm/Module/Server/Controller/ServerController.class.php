@@ -65,6 +65,12 @@ class ServerController extends AbstractServerController {
 
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+			$modal = new \psm\Util\Module\Modal($this->tpl, \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->setModal($modal);
+			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
+			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+			
 			$sidebar->addButton(
 				'add_new',
 				psm_get_lang('system', 'add_new'),
@@ -229,7 +235,7 @@ class ServerController extends AbstractServerController {
 				$this->db->delete(PSM_DB_PREFIX.'servers_uptime', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'servers_history', array('server_id' => $id));
 			}
-			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
+			$this->addMessage(psm_get_lang('servers', 'deleted'), 'success');
 		}
 		$this->initializeAction('index');
 	}
@@ -261,6 +267,14 @@ class ServerController extends AbstractServerController {
 			$this->tpl->newTemplate($tpl_id_actions, 'server/view.tpl.html');
 			$tpl_data['html_actions'] = $this->tpl->getTemplate($tpl_id_actions);
 			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
+			$tpl_data['url_delete'] = psm_build_url(array('mod' => 'server', 'action' => 'delete', 'id' => $this->server_id));
+			$tpl_data['server_name'] = $server['label'];
+
+			$modal = new \psm\Util\Module\Modal($this->tpl, \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->setModal($modal);
+			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
+			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
 		}
 
 		// add all available servers to the menu
