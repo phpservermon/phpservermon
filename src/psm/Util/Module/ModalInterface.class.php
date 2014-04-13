@@ -32,6 +32,6 @@ interface ModalInterface {
 
 	public function __construct(\psm\Service\Template $tpl);
 
+	public function getModalID();
 	public function createHTML();
-
 }

@@ -1,14 +1,14 @@
 <!--%tpl_main_modal_container-->
-<div id="mainModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mainModalLabel" aria-hidden="true">
+<div id="{modal_id}Modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{modal_id}ModalLabel" aria-hidden="true">
 	<div class="modal-header">
-		<h3 id="mainModalLabel">{modal_title}</h3>
+		<h3 id="{modal_id}ModalLabel">{modal_title}</h3>
 	</div>
 	<div class="modal-body">
 		<p>{modal_body}</p>
 	</div>
 	<div class="modal-footer">
 		<!--%tpl_repeat_buttons-->
-		<a href="#" id="{modal_button_id}" class="btn btn-{modal_button_type}" data-dismiss="{modal_button_dismiss}">{modal_button_label}</a>
+		<a href="#" class="btn btn-{modal_button_type} {modal_button_class}" {modal_button_attr}>{modal_button_label}</a>
 		<!--%%tpl_repeat_buttons-->
 		{buttons}
 	</div>

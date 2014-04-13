@@ -1,26 +1,33 @@
 $().ready(function() {
-	var $modal = $('#mainModal');
-	if($modal.length) {
-		$('.show-modal').click(function (e) {
-			var $this = $(this);
-			if ($this.is('a')) {
-				e.preventDefault();
-			}
-			var href = $this.attr('href');
-			$('#mainModalOKButton').attr('href', href);
+	$('.show-modal').click(function (e) {
+		var $this = $(this);
+		if ($this.is('a')) {
+			e.preventDefault();
+		}
+		var $modal_id = $this.attr('data-modal-id') || 'main';
+		var $modal = $('#' + $modal_id + 'Modal');
+		var href = $this.attr('href');
+		if($modal.length) {
+			$modal.find('.modalOKButton').attr('href', href);
 
 			var param = $this.attr('data-modal-param');
 			if(param) {
 				var ary = param.split(',');
 				for (var index = 0; index < ary.length && index < 9; ++index) {
 					var value = ary[index];
-					$('#mainModal span.mainModalP' + (index+1)).text(value);
+					$($modal).find('span.modalP' + (index+1)).text(value);
 				}
 			}
 			$modal.modal('show');
-			return false;
-		});
-	}
+		} else {	
+			// Just in case we forgot the dialog box
+			var conf = confirm("Are you sure?");
+			if (conf === true) {
+				window.location = href;
+			}
+		}
+		return false;
+	});
 });
 
 function psm_tooltips() {

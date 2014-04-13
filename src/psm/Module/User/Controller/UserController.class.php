@@ -79,8 +79,8 @@ class UserController extends AbstractController {
 			'plus icon-white', 'success'
 		);
 
-		$modal = new \psm\Util\Module\Modal($this->tpl, \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
-		$this->setModal($modal);
+		$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+		$this->addModal($modal);
 		$modal->setTitle(psm_get_lang('users', 'delete_title'));
 		$modal->setMessage(psm_get_lang('users', 'delete_message'));
 		$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));

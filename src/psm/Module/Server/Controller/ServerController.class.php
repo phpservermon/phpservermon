@@ -65,8 +65,8 @@ class ServerController extends AbstractServerController {
 
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			$modal = new \psm\Util\Module\Modal($this->tpl, \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
-			$this->setModal($modal);
+			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
 			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
@@ -270,8 +270,8 @@ class ServerController extends AbstractServerController {
 			$tpl_data['url_delete'] = psm_build_url(array('mod' => 'server', 'action' => 'delete', 'id' => $this->server_id));
 			$tpl_data['server_name'] = $server['label'];
 
-			$modal = new \psm\Util\Module\Modal($this->tpl, \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
-			$this->setModal($modal);
+			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
 			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
