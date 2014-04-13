@@ -108,6 +108,7 @@ $sm_lang = array(
     ),
     'servers' => array(
         'server' => 'Servidor',
+		'status' => 'Status',
         'label' => 'Etiqueta',
         'domain' => 'Domínio/IP',
         'port' => 'Porta',
