@@ -19,7 +19,7 @@ $().ready(function() {
 				}
 			}
 			$modal.modal('show');
-		} else {	
+		} else {
 			// Just in case we forgot the dialog box
 			var conf = confirm("Are you sure?");
 			if (conf === true) {
@@ -28,6 +28,9 @@ $().ready(function() {
 		}
 		return false;
 	});
+
+	psm_flash_message();
+	psm_tooltips();
 });
 
 function psm_tooltips() {
