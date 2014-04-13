@@ -88,12 +88,41 @@ fieldset {
 .table-align-middle td {
 	vertical-align: middle;
 }
-.col-action {
-	width: 20px;
+.tight {
+	width: 10px;
 	white-space: nowrap;	
 }
 .nowrap {
 	white-space: nowrap;
+}
+
+.table-body {
+	display: table;
+	width: 100%;
+}
+.table-row {
+	display: table-row
+}
+.table-cell {
+	display: table-cell;
+	vertical-align: top;
+}
+.table-cell-title {
+	display: table-cell;
+	vertical-align: middle;
+	height: 32px;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+.table-cell-title .label {
+	position: relative;
+	top: -2px;
+}
+.table-cell-details {
+	display: table-cell;
+	font-size: 11px;
+	font-style: italic;
+	line-height: 13px;
 }
 
 /* Form */
@@ -149,16 +178,22 @@ legend {
 	border: 2px solid #d8f7ce;
 }
 
+td.visible-desktop, th.visible-desktop,
+td.hidden-phone, th.hidden-phone,
+td.hidden-tablet, th.hidden-tablet {
+	display: table-cell;
+}
 
+td.visible-phone, th.visible-phone,
+td.visible-tablet, th.visible-tablet,
+td.hidden-desktop, th.hidden-desktop {
+	display: none;
+}
 @media (min-width: 980px) {
 	.hidden-desktop {
 		display: none !important;
 	}
-	td.visible-desktop, th.visible-desktop {
-		display: table-cell;
-	}
 }
-
 @media (max-width: 979px) {
 	#sidebar-container {
 		display: table-row;
@@ -182,15 +217,31 @@ legend {
 	.visible-desktop {
 		display: none !important;
 	}
-	td.hidden-desktop, th.hidden-desktop {
-		display: table-cell;
-	}
 	.tab-content {
 		padding-left: 10px;
 		padding-right: 10px;
 	}
 }
-
+@media (max-width: 767px) {
+	td.visible-phone, th.visible-phone,
+	td.hidden-desktop, th.hidden-desktop {
+		display: table-cell;
+	}
+	td.hidden-phone, th.hidden-phone,
+	td.visible-desktop, th.visible-desktop {
+		display: none;
+	}
+}
+@media (min-width: 768px) and (max-width: 979px) {
+	td.visible-tablet, th.visible-tablet,
+	td.hidden-desktop, th.hidden-desktop {
+		display: table-cell;
+	}
+	td.hidden-tablet, th.hidden-tablet,
+	td.visible-desktop, th.visible-desktop {
+		display: none;
+	}
+}
 @media (max-width: 479px) {
 	#main-container, .container-fluid {
 		padding-left: 10px;
@@ -215,13 +266,16 @@ legend {
 body.install{
     padding-top:20px;
 }
-.label-status-on{
+.label-status-on, .label-status-off, .label-status-warning {
+	vertical-align: baseline;
+}
+.label-status-on {
     background-color: #468847;
 }
-.label-status-off{
+.label-status-off {
    background-color: #B94A48;
 }
-.label-status-warning{
+.label-status-warning {
    background-color: #FAA732;
 }
 .label a{
