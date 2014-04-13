@@ -79,6 +79,12 @@ class UserController extends AbstractController {
 			'plus icon-white', 'success'
 		);
 
+		$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+		$this->addModal($modal);
+		$modal->setTitle(psm_get_lang('users', 'delete_title'));
+		$modal->setMessage(psm_get_lang('users', 'delete_message'));
+		$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
 		// build label array for the next loop
 		$servers_labels = array();
 		foreach ($this->servers as $server) {
@@ -268,7 +274,7 @@ class UserController extends AbstractController {
 
 			$this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
 			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
-			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
+			$this->addMessage(psm_get_lang('users', 'deleted'), 'success');
 		} catch(\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
 		}

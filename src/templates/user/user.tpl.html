@@ -24,7 +24,7 @@
 			<a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
 				<i class="icon-pencil"></i>
 			</a>
-			<a class="btn btn-small btn-danger" href="javascript:sm_delete('{user_id}', 'user');" title="{label_delete}">
+			<a class="btn btn-small btn-danger show-modal" href="index.php?mod=user&action=delete&id={user_id}" title="{label_delete}" data-modal-id="delete" data-modal-param="{user_name}">
 				<i class="icon-remove icon-white"></i>
 			</a>
 		</td>
