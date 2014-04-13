@@ -4,6 +4,8 @@ Changelog
 not yet released
 ----------------
 
+* #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
+
 
 v3.0.1 (released April 12, 2014)
 ----------------
