@@ -70,7 +70,7 @@ class ServerController extends AbstractServerController {
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
 			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
-			
+
 			$sidebar->addButton(
 				'add_new',
 				psm_get_lang('system', 'add_new'),
@@ -194,6 +194,10 @@ class ServerController extends AbstractServerController {
 				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			);
+			// make sure websites start with http://
+			if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
+				$clean['ip'] = 'http://' . $clean['ip'];
+			}
 
 			// check for edit or add
 			if($this->server_id > 0) {
