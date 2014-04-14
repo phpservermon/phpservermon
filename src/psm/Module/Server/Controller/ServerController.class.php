@@ -311,7 +311,7 @@ class ServerController extends AbstractServerController {
 			array(
 				'subtitle' => psm_get_lang('menu', 'server'),
 				'label_label' => psm_get_lang('servers', 'label'),
-				'label_status' => psm_get_lang('menu', 'server_status'),
+				'label_status' => psm_get_lang('servers', 'status'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),
