@@ -184,7 +184,7 @@ class HistoryGraph {
 	 * @param boolean $add_uptime add uptime calculation?
 	 * @return array
 	 */
-	protected function generateGraphLines($records, $lines, callable $cb_if_up, $latency_avg_key, $add_uptime = false) {
+	protected function generateGraphLines($records, $lines, $cb_if_up, $latency_avg_key, $add_uptime = false) {
 		$data = array();
 
 		// PLEASE NOTE: all times are in microseconds! because of javascript.
