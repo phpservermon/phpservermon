@@ -163,19 +163,22 @@ function psm_load_conf() {
 function psm_update_conf($key, $value) {
 	global $db;
 
-	$result = $db->save(
-		PSM_DB_PREFIX.'config',
-		array('value' => $value),
-		array('key' => $key)
-	);
-	// save returns the # rows updated, if 0, key doenst exist yet
-	if($result === 0) {
+	// check if key exists
+	$exists = psm_get_conf($key, false);
+	if($exists === false) {
+		// add new config record
 		$db->save(
 			PSM_DB_PREFIX . 'config',
 			array(
 				'key' => $key,
 				'value' => $value,
 			)
+		);
+	} else {
+		$db->save(
+			PSM_DB_PREFIX.'config',
+			array('value' => $value),
+			array('key' => $key)
 		);
 	}
 	$GLOBALS['sm_config'][$key] = $value;
