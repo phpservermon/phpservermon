@@ -101,9 +101,11 @@ class ServerController extends AbstractServerController {
 			if($servers[$x]['type'] == 'website') {
 				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
-				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';				
+				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
+				$servers[$x]['ip_short'] = $servers[$x]['ip'];
 			} else {
 				$servers[$x]['type_icon'] = 'icon-cog';
+				$servers[$x]['ip_short'] = $servers[$x]['ip'] . ' : ' . $servers[$x]['port'];
 			}
 			if(($servers[$x]['active'] == 'yes')) {
 				$servers[$x]['active_icon'] = 'icon-eye-open';
@@ -116,7 +118,7 @@ class ServerController extends AbstractServerController {
 				$servers[$x]['email_icon'] = '';
 				$servers[$x]['sms_icon'] = '';
 			}
-					
+
 			$servers[$x] = $this->formatServer($servers[$x]);
 		}
 		// add servers to template
