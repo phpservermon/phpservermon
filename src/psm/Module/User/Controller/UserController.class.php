@@ -227,15 +227,16 @@ class UserController extends AbstractController {
 		if(!empty($clean['password'])) {
 			$password = $clean['password'];
 		}
-		unset($clean['password']);
 		unset($clean['password_repeat']);
 
 		if($user_id > 0) {
 			// edit user
+			unset($clean['password']); // password update is executed separately
 			$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $user_id));
 			$this->addMessage(psm_get_lang('users', 'updated'), 'success');
 		} else {
 			// add user
+			$clean['password'] = ''; // password update is executed separately
 			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $clean);
 			$this->addMessage(psm_get_lang('users', 'inserted'), 'success');
 		}

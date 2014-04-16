@@ -211,6 +211,8 @@ class InstallController extends AbstractController {
 		if(!defined('PSM_DB_PREFIX') || !$this->db->status()) {
 			return $this->executeConfig();
 		}
+		$add_user = false;
+
 		// check if user submitted username + password in previous step
 		// this would only be the case for new installs, and install from
 		// before 3.0
@@ -220,6 +222,7 @@ class InstallController extends AbstractController {
 			'password' => psm_POST('password'),
 			'password_repeat' => psm_POST('password_repeat'),
 			'email' => psm_POST('email', ''),
+			'mobile' => '',
 			'level' => PSM_USER_ADMIN,
 		);
 
