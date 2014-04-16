@@ -105,9 +105,26 @@ class ServerController extends AbstractServerController {
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 
 			if($servers[$x]['type'] == 'website') {
+				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
+				$servers[$x]['ip_short'] = $servers[$x]['ip'];
+			} else {
+				$servers[$x]['type_icon'] = 'icon-cog';
+				$servers[$x]['ip_short'] = $servers[$x]['ip'] . ' : ' . $servers[$x]['port'];
 			}
+			if(($servers[$x]['active'] == 'yes')) {
+				$servers[$x]['active_icon'] = 'icon-eye-open';
+				$servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
+				$servers[$x]['email_icon'] = ($servers[$x]['email'] == 'yes') ? 'icon-envelope' : '';
+				$servers[$x]['sms_icon'] = ($servers[$x]['sms'] == 'yes') ? 'icon-mobile' : '';
+			} else {
+				$servers[$x]['active_icon'] = 'icon-eye-close';
+				$servers[$x]['active_title'] = psm_get_lang('servers', 'no_monitoring');
+				$servers[$x]['email_icon'] = '';
+				$servers[$x]['sms_icon'] = '';
+			}
+
 			$servers[$x] = $this->formatServer($servers[$x]);
 		}
 		// add servers to template
@@ -328,7 +345,9 @@ class ServerController extends AbstractServerController {
 				'label_rtime' => psm_get_lang('servers', 'latency'),
 				'label_last_online' => psm_get_lang('servers', 'last_online'),
 				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
+				'label_email' => psm_get_lang('servers', 'email'),
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
+				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

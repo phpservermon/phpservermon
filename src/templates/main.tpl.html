@@ -41,27 +41,27 @@
 
 	{html_modal}
     <!-- container -->
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1>{subtitle}</h1>
-        </div>
-        <div class="row-fluid">
+    <div id="main-container">
+		<div class="page-header">
+			<h1>{subtitle}</h1>
+		</div>
+		<div id="main-content">
 			{html_sidebar}
-			<div class="span{content_span}">
+			<div id="page-container">
 				<div id="flashmessage" class="hide">
-				<!--%tpl_repeat_messages-->
-				<div class="alert alert-{shortcode}">
-					<p class="pull-left span1"><i class="icon-{icon}"></i></p>
-					<p>{message}</p>
-				</div>
-				<!--%%tpl_repeat_messages-->
-				{messages}
+					<!--%tpl_repeat_messages-->
+					<div class="alert alert-{shortcode}">
+						<p class="pull-left span1"><i class="icon-{icon}"></i></p>
+						<p>{message}</p>
+					</div>
+					<!--%%tpl_repeat_messages-->
+					{messages}
 				</div>
 				{content}
 			</div>
 		</div>
 		{html_footer}
-    </div>
+	</div>
     <!-- /container -->
     </body>
 </html>

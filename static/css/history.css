@@ -1,3 +1,7 @@
+#main-container {
+	overflow: hidden;
+}
+
 #history-panel {
 	width: 100%;
 	max-width: 1100px;

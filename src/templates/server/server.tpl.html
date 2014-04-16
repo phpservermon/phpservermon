@@ -1,39 +1,65 @@
 <!--%tpl_server_list-->
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-align-middle">
 	<thead>
 		<tr>
-			<th>&nbsp;</th>
+			<th class="hidden-phone">&nbsp;</th>
 			<th>{label_label}</th>
-			<th>{label_domain}</th>
-			<th>{label_port}</th>
-			<th>{label_type}</th>
-			<th>{label_rtime}</th>
-			<th>{label_last_online}</th>
-			<th>{label_monitoring}</th>
-			<th>{label_send_email}</th>
-			<th>{label_send_sms}</th>
-			<th>{label_action}</th>
+			<th class="hidden-phone">{label_domain}</th>
+			<th class="visible-desktop">{label_port}</th>
+			<th class="visible-desktop">{label_type}</th>
+			<th class="hidden-phone">{label_rtime}</th>
+			<th class="hidden-phone">{label_last_online}</th>
+			<th class="hidden-phone">{label_monitoring}</th>
+			<th class="visible-desktop">{label_email}</th>
+			<th class="visible-desktop">{label_sms}</th>
+			<th class="hidden-phone">{label_action}</th>
 		</tr>
 	</thead>
 	<tbody>
 		<!--%tpl_repeat_servers-->
 		<tr>
-			<td>
-				<span class="label label-status-{status}">
-					<a href="{url_view}" title="{error}">{status}</a>
-				</span>
+			<td class="hidden-phone">
+				<span class="label label-status-{status}"><a href="{url_view}" title="{error}">{status}</a></span>
 			</td>
-			<td><a href="{url_view}">{label}</a></td>
-			<td>{ip}</td>
-			<td>{port}</td>
-			<td>{type}</td>
-			<td>{rtime} s</td>
-			<td>{last_online}</td>
-			<td>{active}</td>
-			<td>{email}</td>
-			<td>{sms}</td>
-			<td><a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-eye-open"></i></a>
-				{html_actions}</td>
+			<td class="hidden-phone"><a href="{url_view}">{label}</a></td>
+			<td class="nowrap visible-tablet"><i class="{type_icon}" title="{type}"></i> {ip_short}</td>
+			<td class="nowrap visible-desktop">{ip}</td>
+			<td class="nowrap visible-desktop">{port}</td>
+			<td class="nowrap visible-desktop">{type}</td>
+			<td class="nowrap hidden-phone">{rtime} s</td>
+			<td class="nowrap hidden-phone">{last_online}</td>
+			<td class="tight visible-tablet"><i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i></td>
+			<td class="tight visible-desktop">{active}</td>
+			<td class="tight visible-desktop">{email}</td>
+			<td class="tight visible-desktop">{sms}</td>
+			<td class="tight hidden-phone">
+				<a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-chart"></i></a>
+				{html_actions}
+			</td>
+			<td class="visible-phone">
+				<div class="table-body">
+					<div class="table-cell-title">
+						<span class="label label-status-{status}"><a href="{url_view}" title="{error}">{status}</a></span>
+						<a href="{url_view}">{label}</a>
+					</div>
+					<div class="table-cell tight">
+						&nbsp;<a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-chart"></i></a>
+						{html_actions}
+					</div>
+				</div>
+				<div class="table-body">
+					<div class="table-row">
+						<div class="table-cell"><i class="{type_icon}" title="{type}"></i> {ip_short}</div>
+						<div class="table-cell tight">
+							<i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i>
+						</div>
+					</div>
+				</div>
+				<div class="table-body">
+					<div class="table-row"><div class="table-cell-details tight">{label_rtime}: &nbsp;</div><div class="table-cell-details">{rtime} s</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{label_last_online}: &nbsp;</div><div class="table-cell-details">{last_online}</div></div>
+				</div>
+			</td>
 		</tr>
 		<!--%%tpl_repeat_servers-->
 		{servers}
