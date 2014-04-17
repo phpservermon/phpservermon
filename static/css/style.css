@@ -85,7 +85,7 @@ fieldset {
 }
 
 /* Tables */
-.table-align-middle td {
+.align-middle {
 	vertical-align: middle;
 }
 .tight {
@@ -111,12 +111,17 @@ fieldset {
 	display: table-cell;
 	vertical-align: middle;
 	height: 32px;
-	font-size: 1.1em;
-	font-weight: bold;
 }
 .table-cell-title .label {
 	position: relative;
 	top: -2px;
+}
+
+@media (max-width: 767px) {
+	.table-cell-title .title {
+		font-size: 1.1em;
+		font-weight: bold;
+	}
 }
 .table-cell-details {
 	display: table-cell;
@@ -184,11 +189,18 @@ td.hidden-tablet, th.hidden-tablet {
 	display: table-cell;
 }
 
-td.visible-phone, th.visible-phone,
-td.visible-tablet, th.visible-tablet,
-td.hidden-desktop, th.hidden-desktop {
+span.visible-desktop, span.visible-desktop,
+span.hidden-phone, span.hidden-phone,
+span.hidden-tablet, span.hidden-tablet {
+	display: inline-block;
+}
+
+span.visible-phone, span.visible-phone,
+span.visible-tablet, span.visible-tablet,
+span.hidden-desktop, span.hidden-desktop {
 	display: none;
 }
+
 @media (min-width: 980px) {
 	.hidden-desktop {
 		display: none !important;
@@ -227,8 +239,16 @@ td.hidden-desktop, th.hidden-desktop {
 	td.hidden-desktop, th.hidden-desktop {
 		display: table-cell;
 	}
+	span.visible-phone, span.visible-phone,
+	span.hidden-desktop, span.hidden-desktop {
+		display: inline-block;
+	}
 	td.hidden-phone, th.hidden-phone,
 	td.visible-desktop, th.visible-desktop {
+		display: none;
+	}
+	span.hidden-phone, span.hidden-phone,
+	span.visible-desktop, span.visible-desktop {
 		display: none;
 	}
 }
@@ -237,8 +257,16 @@ td.hidden-desktop, th.hidden-desktop {
 	td.hidden-desktop, th.hidden-desktop {
 		display: table-cell;
 	}
+	span.visible-tablet, span.visible-tablet,
+	span.hidden-desktop, span.hidden-desktop {
+		display: inline-block;
+	}
 	td.hidden-tablet, th.hidden-tablet,
 	td.visible-desktop, th.visible-desktop {
+		display: none;
+	}
+	span.hidden-tablet, span.hidden-tablet,
+	span.visible-desktop, span.visible-desktop {
 		display: none;
 	}
 }
@@ -437,6 +465,11 @@ legend{
 .icon-chart {
   background-position: 0px -168px;
 }
+
 .icon-mobile {
   background-position: -24px -168px;
+}
+
+.icon-admin {
+  background-position: -48px -168px;
 }

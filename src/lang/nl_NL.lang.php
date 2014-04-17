@@ -70,7 +70,7 @@ $sm_lang = array(
 		'help' => 'Help',
 	),
 	'users' => array(
-		'user' => 'gebruiker',
+		'user' => 'Gebruiker',
 		'name' => 'Naam',
 		'user_name' => 'Gebruikersnaam',
 		'password' => 'Wachtwoord',
