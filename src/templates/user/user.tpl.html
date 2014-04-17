@@ -2,25 +2,50 @@
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
-			<th>{label_name}</th>
-			<th>{label_user_name}</th>
-			<th>{label_level}</th>
-			<th>{label_mobile}</th>
-			<th>{label_email}</th>
-			<th>{label_servers}</th>
-			<th width="75">{label_action}</th>
+			<th class="hidden-phone">{label_user}</th>
+			<th class="visible-desktop">{label_name}</th>
+			<th class="visible-desktop">{label_level}</th>
+			<th class="hidden-phone">{label_email}</th>
+			<th class="hidden-phone">{label_mobile}</th>
+			<th class="hidden-phone">{label_servers}</th>
+			<th class="hidden-phone tight">{label_action}</th>
 		</tr>
 	</thead>
 	<tbody>
 	<!--%tpl_repeat_users-->
 	<tr>
-		<td>{name}</td>
-		<td>{user_name}</td>
-		<td>{label_level_{level}}</td>
-		<td class="tight">{mobile}</td>
-		<td class="tight">{email}</td>
-		<td>{emp_servers}</td>
-		<td class="tight">
+		<td>
+			<div class="table-body">
+				<div class="table-cell-title nowrap">
+					<span class="hidden-desktop"><i class="{icon_level_{level}}" title="{label_level_{level}}"></i>&nbsp;</span>
+					<span class="title">{user_name}</span>
+					<span class="hidden-desktop">&nbsp;({name})</span>
+				</div>
+				<div class="table-cell tight">
+					<div class="visible-phone">
+						<a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
+							<i class="icon-pencil"></i>
+						</a>
+						<a class="btn btn-small btn-danger show-modal" href="index.php?mod=user&action=delete&id={user_id}" title="{label_delete}" data-modal-id="delete" data-modal-param="{user_name}">
+							<i class="icon-remove icon-white"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="visible-phone">
+				<div class="table-body">
+					<div class="table-row"><div class="table-cell-details tight">{label_email}:&nbsp;</div><div class="table-cell-details">{email}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{label_mobile}:&nbsp;</div><div class="table-cell-details">{mobile}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{label_servers}:&nbsp;</div><div class="table-cell-details">{emp_servers}</div></div>
+				</div>
+			</div>
+		</td>
+		<td class="visible-desktop nowrap"><div class="table-cell-title">{name}</div></td>
+		<td class="visible-desktop tight"><div class="table-cell-title">{label_level_{level}}</div></td>
+		<td class="hidden-phone tight"><div class="table-cell-title">{email}</div></td>
+		<td class="hidden-phone tight"><div class="table-cell-title">{mobile}</div></td>
+		<td class="hidden-phone"><div class="table-cell-title">{emp_servers}</div></td>
+		<td class="hidden-phone tight">
 			<a class="btn btn-small" href="index.php?mod=user&amp;action=edit&amp;id={user_id}" title="{label_edit}">
 				<i class="icon-pencil"></i>
 			</a>
@@ -40,15 +65,15 @@
 	 <fieldset>
 			<legend>{titlemode}</legend>
 			<div class="control-group">
-				<label class="control-label" for="name">{label_name}</label>
-				<div class="controls">
-					<input type="text" id="name" name="name" value="{edit_value_name}" maxlength="255" required>
-				</div>
-			</div>
-			<div class="control-group">
 				<label class="control-label" for="user_name">{label_user_name}</label>
 				<div class="controls">
 					<input type="text" id="user_name" name="user_name" value="{edit_value_user_name}" maxlength="64" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="name">{label_name}</label>
+				<div class="controls">
+					<input type="text" id="name" name="name" value="{edit_value_name}" maxlength="255" required>
 				</div>
 			</div>
 			<div class="control-group">
@@ -78,15 +103,15 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="mobile">{label_mobile}</label>
-				<div class="controls">
-					<input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
-				</div>
-			</div>
-			<div class="control-group">
 				<label class="control-label" for="email">{label_email}</label>
 				<div class="controls">
 					<input type="text" id="email" name="email" value="{edit_value_email}" maxlength="255" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="mobile">{label_mobile}</label>
+				<div class="controls">
+					<input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
 				</div>
 			</div>
 			<div class="control-group">

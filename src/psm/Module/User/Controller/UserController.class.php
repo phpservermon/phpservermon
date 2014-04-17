@@ -290,6 +290,7 @@ class UserController extends AbstractController {
 			array(
 				'subtitle' => psm_get_lang('menu', 'user'),
 				'label_users' => psm_get_lang('menu', 'users'),
+				'label_user' => psm_get_lang('users', 'user'),
 				'label_name' => psm_get_lang('users', 'name'),
 				'label_user_name' => psm_get_lang('users', 'user_name'),
 				'label_password' => psm_get_lang('users', 'password'),
@@ -304,9 +305,11 @@ class UserController extends AbstractController {
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
 				'label_go_back' => psm_get_lang('system', 'go_back'),
-				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('users', 'user'),
-				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('users', 'user'),
+				'label_edit' => psm_get_lang('system', 'edit'),
+				'label_delete' => psm_get_lang('system', 'delete'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
+				'icon_level_10' => 'icon-admin',
+				'icon_level_20' => 'icon-user',
 			)
 		);
 
