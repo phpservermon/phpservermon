@@ -118,6 +118,10 @@ class Template {
 				}
 				$source = $this->addTemplateData($source, $subdata, true);
 			} else {
+				// replace if statements
+				$if_replacement = empty($value) ? '' : '$1';
+				$source = preg_replace('{<!--\?'.$key.'-->(.*?)<!--\?\?'.$key.'-->}is', $if_replacement, $source);
+
 				$source = str_replace('{'.$key.'}', $value, $source);
 			}
 		}
@@ -202,10 +206,18 @@ class Template {
 						$tmp_string = str_replace('{'.$k.'}', $repeat_html, $tmp_string);
 					} else {
 						foreach($v as $vk => $vv) {
+							// replace if statements
+							$if_replacement = empty($vv) ? '' : '$1';
+							$tmp_string = preg_replace('{<!--\?'.$k.'_'.$vk.'-->(.*?)<!--\?\?'.$k.'_'.$vk.'-->}is', $if_replacement, $tmp_string);
+
 							$tmp_string = str_replace('{'.$k.'_'.$vk.'}', $vv, $tmp_string);
 						}
 					}
 				} else {
+					// replace if statements
+					$if_replacement = empty($v) ? '' : '$1';
+					$tmp_string = preg_replace('{<!--\?'.$k.'-->(.*?)<!--\?\?'.$k.'-->}is', $if_replacement, $tmp_string);
+					
 					$tmp_string = str_replace('{'.$k.'}', $v, $tmp_string);
 				}
 			}
@@ -225,6 +237,9 @@ class Template {
 		// check if there are any unused tpl_repeat templates, and if there are remove them
 		$result = preg_replace('{<!--%(.+?)-->(.*?)<!--%%\\1-->}is', '', $this->templates[$id]);
 
+		// check if there are any unused if, and if there are remove them
+		$result = preg_replace('{<!--\?(.+?)-->(.*?)<!--\?\?\\1-->}is', '', $result);
+		
 		// check for tpl variables that have not been replaced. ie: {name}. ignore literal stuff, though. ie: {{name}} is {name} and should not be removed
 		preg_match_all('~{?{(\w+?)}}?~', $result, $matches);
 

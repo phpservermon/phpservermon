@@ -26,14 +26,14 @@
 		<col />
 		<col />
 		<col style="width: 135px" />
-		<col />
+		<!--?has_users--><col /><!--??has_users-->
 	</colgroup>
     <thead>
         <tr>
             <th>{label_server}</th>
             <th>{label_message}</th>
             <th>{label_date}</th>
-            <th>{label_users}</th>
+			<!--?has_users--><th>{label_users}</th><!--??has_users-->
         </tr>
     </thead>
     <tbody>
@@ -42,7 +42,7 @@
           <td>{server}</td>
           <td>{message}</td>
           <td>{datetime_format}</td>
-          <td>{users}</td>
+          <!--?has_users--><td>{users}</td><!--??has_users-->
         </tr>
         <!--%%tpl_repeat_entries-->
         {entries}
