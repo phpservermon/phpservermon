@@ -55,3 +55,9 @@ The following SMS gateways are currently available:
 * Textmarketer - http://www.textmarketer.co.uk
 
 Please note: for these gateways you will need an account with sufficient credits.
+
+
+Download
+++++++++
+
+The latest version can be downloaded from http://www.phpservermonitor.org/.
