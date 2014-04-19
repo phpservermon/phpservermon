@@ -105,6 +105,7 @@ $sm_lang = array(
 		'status' => '状态',
 		'email' => '邮件',
 		'sms' => '短信',
+		'no_logs' => 'No logs',
 	),
 	'servers' => array(
 		'server' => '服务器',

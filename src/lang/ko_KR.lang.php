@@ -105,6 +105,7 @@ $sm_lang = array(
 		'status' => '상태',
 		'email' => 'email',
 		'sms' => 'sms',
+		'no_logs' => 'No logs',
 	),
 	'servers' => array(
 		'server' => '서버',

@@ -194,9 +194,6 @@ abstract class AbstractController implements ControllerInterface {
 		// add sidebar to page?
 		if($this->sidebar !== null) {
 			$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
-			$tpl_data['content_span'] = '10';
-		} else {
-			$tpl_data['content_span'] = '12';
 		}
 		// add footer to page?
 		if($this->add_footer) {

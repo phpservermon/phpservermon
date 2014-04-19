@@ -107,8 +107,12 @@ class ServerController extends AbstractServerController {
 			if($servers[$x]['type'] == 'website') {
 				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
-				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
-				$servers[$x]['ip_short'] = $servers[$x]['ip'];
+				$ip = $servers[$x]['ip'];
+				if(!empty($servers[$x]['port']) && ($servers[$x]['port']  != 80)) {
+					$ip .= ' : ' . $servers[$x]['port'];
+				}
+				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$ip.'</a>';
+				$servers[$x]['ip_short'] = $ip;
 			} else {
 				$servers[$x]['type_icon'] = 'icon-cog';
 				$servers[$x]['ip_short'] = $servers[$x]['ip'] . ' : ' . $servers[$x]['port'];

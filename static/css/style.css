@@ -117,8 +117,18 @@ fieldset {
 	top: -2px;
 }
 
+.table-separator {
+	margin: 4px 0;
+	border-top: 1px solid #EEE;
+	border-bottom: 1px solid #FFF;
+}
+
+td.cell-center {
+	text-align: center;
+}
+
 @media (max-width: 767px) {
-	.table-cell-title .title {
+	.table-cell .title, .table-cell-title .title {
 		font-size: 1.1em;
 		font-weight: bold;
 	}
