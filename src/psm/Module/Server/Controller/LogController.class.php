@@ -86,7 +86,7 @@ class LogController extends AbstractServerController {
 				'server_log_entries',
 				array(
 					'logtitle' => $key,
-					'has_users' => ($key == 'status') ? false : true,
+					'?has_users' => ($key == 'status') ? false : true,
 				)
 			);
 			$this->tpl->addTemplateData(
