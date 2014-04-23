@@ -192,6 +192,7 @@ $sm_lang = array(
 		'log_email' => 'Enregistrer tout les emails envoyés',
 		'log_sms' => 'Enregistrer tout les SMS envoyés',
 		'updated' => 'La configuration a été mise à jour.',
+		'nochanges' => 'La configuration n\'a pas été modifiée.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Événements',
@@ -206,6 +207,15 @@ $sm_lang = array(
 			'Temps en secondes. Si 0, la page n\'est pas rafraîchie.'.
 			'</span>',
 		'seconds' => 'secondes',
+		'test' => 'Tester',
+		'test_email' => 'Un email va vous être envoyé à l\'adresse définie dans votre profil utilisateur.',
+		'test_sms' => 'Un SMS va vous être envoyé au numéro défini dans votre profil utilisateur.',
+		'send' => 'Envoyer',
+		'test_message' => 'Message de test',
+		'email_sent' => 'Email envoyé',
+		'email_error' => 'Erreur lors de l\'envoie de l\'email',
+		'sms_sent' => 'Sms envoyé',
+		'sms_error' => 'Erreur lors de l\'envoie du sms',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

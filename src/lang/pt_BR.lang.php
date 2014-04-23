@@ -193,6 +193,7 @@ $sm_lang = array(
         'log_email' => 'Registrar no Log os envios de email feitos pelo script?',
         'log_sms' => 'Registrar no Log os envios de mensagens de texto feitos pelo script?',
         'updated' => 'A configuração foi atualizada.',
+		'nochanges' => 'The configuration didn\'t change.',
         'tab_email' => 'Email',
         'tab_sms' => 'Texto',
         'tab_log' => 'Logs',
@@ -207,6 +208,15 @@ $sm_lang = array(
             'Tempo em segundos, Se 0 a página não será atualizada.'.
             '</span>',
 		'seconds' => 'segundos',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'A SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
     ),
     // for newlines in the email messages use <br/>
     'notifications' => array(

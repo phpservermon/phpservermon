@@ -413,6 +413,47 @@ function psm_build_mail($from_name = null, $from_email = null) {
 }
 
 /**
+ * Prepare a new SMS util.
+ * 
+ * @return \psm\Txtmsg\TxtmsgInterface
+ */
+function psm_build_sms() {
+	$sms = null;
+
+	// open the right class
+	// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
+	switch(strtolower(psm_get_conf('sms_gateway'))) {
+		case 'mosms':
+			$sms = new \psm\Txtmsg\Mosms();
+			break;
+		case 'inetworx':
+			$sms = new \psm\Txtmsg\Inetworx();
+			break;
+		case 'mollie':
+			$sms = new \psm\Txtmsg\Mollie();
+			$sms->setGateway(1);
+			break;
+		case 'spryng':
+			$sms = new \psm\Txtmsg\Spryng();
+			break;
+		case 'clickatell':
+			$sms = new \psm\Txtmsg\Clickatell();
+			break;
+		case 'textmarketer':
+			$sms = new \psm\Txtmsg\Textmarketer();
+			break;
+	}
+	
+	// copy login information from the config file
+	if($sms) {
+		$sms->setLogin(psm_get_conf('sms_gateway_username'), psm_get_conf('sms_gateway_password'));
+		$sms->setOriginator(psm_get_conf('sms_from'));
+	}
+
+	return $sms;
+}
+
+/**
  * Generate a new link to the current monitor
  * @param array $params key value pairs
  * @param boolean $urlencode urlencode all params?

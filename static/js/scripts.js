@@ -6,9 +6,8 @@ $().ready(function() {
 		}
 		var $modal_id = $this.attr('data-modal-id') || 'main';
 		var $modal = $('#' + $modal_id + 'Modal');
-		var href = $this.attr('href');
 		if($modal.length) {
-			$modal.find('.modalOKButton').attr('href', href);
+			$modal.find('.modalOKButton').data('modal-origin', $this);
 
 			var param = $this.attr('data-modal-param');
 			if(param) {
@@ -18,6 +17,7 @@ $().ready(function() {
 					$($modal).find('span.modalP' + (index+1)).text(value);
 				}
 			}
+			scroll(0, 0);
 			$modal.modal('show');
 		} else {
 			// Just in case we forgot the dialog box
@@ -25,6 +25,18 @@ $().ready(function() {
 			if (conf === true) {
 				window.location = href;
 			}
+		}
+		return false;
+	});
+	
+	$('.modalOKButton').click(function(e) {
+		var $this = $(this);
+		var $origin = $this.data('modal-origin');
+		if ($origin.is('a')) {
+			window.location = $origin.attr('href');
+		} else {
+			$origin.next('input[type=hidden]').attr('value', 1);
+			$origin.closest('form').submit();
 		}
 		return false;
 	});

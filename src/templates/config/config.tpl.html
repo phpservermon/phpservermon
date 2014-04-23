@@ -1,13 +1,13 @@
 <!--%tpl_config-->
-<form class="form-horizontal" action="index.php?mod=config&action=save" id="edit_config" method="post">
+<form class="form-horizontal" name="edit_config" action="index.php?mod=config&action=save" id="edit_config" method="post">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#config-general" data-toggle="tab">{label_general}</a></li>
-      <li><a href="#config-email" data-toggle="tab">{label_tab_email}</a></li>
-      <li><a href="#config-sms" data-toggle="tab">{label_tab_sms}</a></li>
-      <li><a href="#config-logging" data-toggle="tab">{label_tab_log}</a></li>
+      <li class="{general_active}"><a href="#config-general" data-toggle="tab">{label_general}</a></li>
+      <li class="{email_active}"><a href="#config-email" data-toggle="tab">{label_tab_email}</a></li>
+      <li class="{sms_active}"><a href="#config-sms" data-toggle="tab">{label_tab_sms}</a></li>
+      <li class="{logging_active}"><a href="#config-logging" data-toggle="tab">{label_tab_log}</a></li>
     </ul>
 	<div class="tab-content well">
-	  <div id="config-general" class="tab-pane active">
+	  <div id="config-general" class="tab-pane {general_active}">
           <fieldset>
             <legend>{label_general}</legend>
             <div class="control-group">
@@ -46,11 +46,11 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-success" type="submit">{label_save}</button>
+                <button class="btn btn-success" type="submit" name="general_submit">{label_save}</button>
             </div>
 		  </fieldset>
 	  </div>
-	  <div id="config-email" class="tab-pane">
+	  <div id="config-email" class="tab-pane {email_active}">
 		<fieldset>
             <legend>{label_settings_email}</legend>
             <div class="control-group">
@@ -94,12 +94,18 @@
                     <input type="password" id="email_smtp_password" name="email_smtp_password" value="{email_smtp_password}" maxlength="100" placeholder="{label_email_smtp_noauth}" />
                 </div>
             </div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testEmail">{label_test}</button>
+					<input type="hidden" name="test_email" value="0" />
+				</div>
+			</div>
             <div class="form-actions">
-                <button class="btn btn-success" type="submit">{label_save}</button>
+                <button class="btn btn-success" type="submit" name="email_submit" >{label_save}</button>
             </div>
         </fieldset>
 	  </div>
-	  <div id="config-sms" class="tab-pane">
+	  <div id="config-sms" class="tab-pane {sms_active}">
 		<fieldset>
           <legend>{label_settings_sms}</legend>
             <div class="control-group">
@@ -138,12 +144,18 @@
                     <input type="text" id="sms_from" name="sms_from" value="{sms_from}" maxlength="255" />
                 </div>
             </div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testSMS">{label_test}</button>
+					<input type="hidden" name="test_sms" value="0" />
+				</div>
+			</div>
             <div class="form-actions">
-                <button class="btn btn-success" type="submit">{label_save}</button>
+                <button class="btn btn-success" type="submit" name="sms_submit">{label_save}</button>
             </div>
 		</fieldset>
 		</div>
-		<div id="config-logging" class="tab-pane">
+		<div id="config-logging" class="tab-pane {logging_active}">
 		  <fieldset>
             <legend>{label_settings_log}</legend>
             <div class="control-group">
@@ -157,7 +169,7 @@
 				<label class="checkbox"><input type="checkbox" id="log_sms" name="log_sms[]" {log_sms_checked} /> {label_log_sms}</label>
 			</div>
             <div class="form-actions">
-                <button class="btn btn-success" type="submit">{label_save}</button>
+                <button class="btn btn-success" type="submit" name="logging_submit">{label_save}</button>
             </div>
 		  </fieldset>
 		</div>

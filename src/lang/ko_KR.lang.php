@@ -191,6 +191,7 @@ $sm_lang = array(
 		'log_email' => '이메일로 로그를 전송하시겠습니까?',
 		'log_sms' => 'SMS로 로그를 전송하시겠습니까?',
 		'updated' => '설정이 수정되었습니다.',
+		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => '로그',
@@ -205,6 +206,15 @@ $sm_lang = array(
 			'시간은 초(sec)로 설정을 하고, 0은 새로고침을 하지 않습니다.'.
 			'</span>',
 		'seconds' => 'seconds',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'A SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

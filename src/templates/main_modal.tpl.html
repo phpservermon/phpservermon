@@ -7,10 +7,8 @@
 		<p>{modal_body}</p>
 	</div>
 	<div class="modal-footer">
-		<!--%tpl_repeat_buttons-->
-		<a href="#" class="btn btn-{modal_button_type} {modal_button_class}" {modal_button_attr}>{modal_button_label}</a>
-		<!--%%tpl_repeat_buttons-->
-		{buttons}
+		<!--?has_cancel--><button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{label_cancel}</button><!--??has_cancel-->
+		<button class="btn btn-{modal_button_type} modalOKButton" >{modal_button_label}</button>
 	</div>
 </div>
 <!--%%tpl_main_modal_container-->

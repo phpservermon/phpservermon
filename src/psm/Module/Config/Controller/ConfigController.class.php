@@ -61,6 +61,8 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 	);
+	
+	private $default_tab = 'general';
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -117,6 +119,20 @@ class ConfigController extends AbstractController {
 			$tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
 		}
 
+		$tpl_data[$this->default_tab . '_active'] = 'active';
+		
+		$modal = new \psm\Util\Module\Modal($this->tpl, 'testEmail', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+		$this->addModal($modal);
+		$modal->setTitle(psm_get_lang('servers', 'send_email'));
+		$modal->setMessage(psm_get_lang('config', 'test_email'));
+		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
+		
+		$modal = new \psm\Util\Module\Modal($this->tpl, 'testSMS', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+		$this->addModal($modal);
+		$modal->setTitle(psm_get_lang('servers', 'send_sms'));
+		$modal->setMessage(psm_get_lang('config', 'test_sms'));
+		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
+		
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
@@ -143,9 +159,11 @@ class ConfigController extends AbstractController {
 			}
 
 			// save all values to the database
+			$changed = false;
 			foreach($clean as $key => $value) {
 				// check if key already exists, otherwise add it
-				if(psm_get_conf($key) === null) {
+				$old_value = psm_get_conf($key);
+				if($old_value === null) {
 					// not yet set, add it
 					$this->db->save(
 						PSM_DB_PREFIX . 'config',
@@ -154,21 +172,66 @@ class ConfigController extends AbstractController {
 							'value' => $value,
 						)
 					);
-				} else {
+					$changed = true;
+				} else if($value != $old_value) {
 					// update
 					$this->db->save(
 						PSM_DB_PREFIX . 'config',
 						array('value' => $value),
 						array('key' => $key)
 					);
+					$changed = true;
 				}
 			}
 
-			$this->addMessage(psm_get_lang('config', 'updated'), 'success');
+			if($changed) {
+				$this->addMessage(psm_get_lang('config', 'updated'), 'success');
+			}
+			
+			if(!empty($_POST['test_email'])) {
+				// build mail object 
+				$mail = psm_build_mail();
+				$message = psm_get_lang('config', 'test_message');
+				$mail->Subject	= $message;
+				$mail->Priority	= 1;
+				$mail->Body		= $message;
+				$mail->AltBody	= str_replace('<br/>', "\n", $message);
+				$user = $this->user->getUser();
+				$mail->AddAddress($user->email, $user->name);
+				if($mail->Send()) {
+					$this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
+				} else {
+					$this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
+				}
+			} elseif(!empty($_POST['test_sms'])) {
+				// build sms object
+				$sms = psm_build_sms();
+				if($sms) {
+					$user = $this->user->getUser();
+					$sms->addRecipients($user->mobile);
+					if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+						$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
+					} else {
+						$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+					}
+				}
+			} elseif(!$changed) {
+				$this->addMessage(psm_get_lang('config', 'nochanges'));
+			}
 
 			if($clean['language'] != psm_get_conf('language')) {
 				header('Location: ' . $_SERVER['REQUEST_URI']);
 				die();
+			}
+
+			if(isset($_POST['general_submit'])) {
+				$this->default_tab = 'general';
+			} elseif(isset($_POST['email_submit']) || !empty($_POST['test_email'])) {
+				$this->default_tab = 'email';
+			} elseif(isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
+				$this->default_tab = 'sms';
+			} elseif(isset($_POST['logging_submit'])) {
+				$this->default_tab = 'logging';
 			}
 		}
 		$this->initializeAction('index');
@@ -223,6 +286,7 @@ class ConfigController extends AbstractController {
 				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
 				'label_seconds' => psm_get_lang('config', 'seconds'),
 				'label_save' => psm_get_lang('system', 'save'),
+				'label_test' => psm_get_lang('config', 'test'),
 			)
 		);
 

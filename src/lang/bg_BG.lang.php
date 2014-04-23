@@ -194,6 +194,7 @@ $sm_lang = array(
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
 		'updated' => 'Настройките са обновени успешно.',
+		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Логове',
@@ -208,6 +209,15 @@ $sm_lang = array(
 			'Времето е в секунди, ако е 0 страницата няма да се обновява.'.
 			'</span>',
 		'seconds' => 'секунди',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'A SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(

@@ -192,6 +192,7 @@ $sm_lang = array(
 		'log_email' => '记录脚本所发邮件?',
 		'log_sms' => '记录脚本所发短信SMS?',
 		'updated' => '设置已更新.',
+		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => '邮件发送设置',
 		'tab_sms' => '短信发送设置',
 		'tab_log' => '日志设置',
@@ -206,6 +207,15 @@ $sm_lang = array(
 			'单位为秒, 设置为0则不自动刷新.'.
 			'</span>',
 		'seconds' => 'seconds',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'A SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

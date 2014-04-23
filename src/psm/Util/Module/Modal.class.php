@@ -125,52 +125,9 @@ class Modal implements ModalInterface {
 		$tpl_id = 'main_modal_container';
 		$this->tpl->newTemplate($tpl_id, 'main_modal.tpl.html');
 
-		$buttons = array();
-		switch($this->type)
-		{
-			case self::MODAL_TYPE_OK:
-				$buttons[] = array(
-					'modal_button_class'	=> 'modalOKButton',
-					'modal_button_type'		=> 'primary',
-					'modal_button_dismiss'	=> '',
-					'modal_button_label'	=> empty($this->ok_label) ? psm_get_lang('system', 'ok') : $this->ok_label,
-				);
-				break;
-			
-			case self::MODAL_TYPE_OKCANCEL:
-				$buttons[] = array(
-					'modal_button_class'	=> 'modalCancelButton',
-					'modal_button_type'		=> 'default',
-					'modal_button_attr'		=> 'data-dismiss="modal"',
-					'modal_button_label'	=> psm_get_lang('system', 'cancel'),
-				);
-				$buttons[] = array(
-					'modal_button_class'	=> 'modalOKButton',
-					'modal_button_type'		=> 'primary',
-					'modal_button_attr'		=> '',
-					'modal_button_label'	=> empty($this->ok_label) ? psm_get_lang('system', 'ok') : $this->ok_label,
-				);
-				break;
-			
-			case self::MODAL_TYPE_DANGER:
-				$buttons[] = array(
-					'modal_button_class'	=> 'modalCancelButton',
-					'modal_button_type'		=> 'default',
-					'modal_button_attr'		=> 'data-dismiss="modal"',
-					'modal_button_label'	=> psm_get_lang('system', 'cancel'),
-				);
-				$buttons[] = array(
-					'modal_button_class'	=> 'modalOKButton',
-					'modal_button_type'		=> 'danger',
-					'modal_button_attr'		=> '',
-					'modal_button_label'	=> empty($this->ok_label) ? psm_get_lang('system', 'ok') : $this->ok_label,
-				);
-				break;
-		}
-		
-		if(sizeof($buttons)) {
-			$this->tpl->addTemplateDataRepeat($tpl_id, 'buttons', $buttons);
-		}
+		$has_cancel = ($this->type == self::MODAL_TYPE_OK) ? false : true;
+		$button_type = ($this->type == self::MODAL_TYPE_DANGER) ? 'danger' : 'primary';
+		$button_label = empty($this->ok_label) ? psm_get_lang('system', 'ok') : $this->ok_label;
 
 		$message = !empty($this->message) ? $this->message : '';
 		$matches = array();
@@ -181,9 +138,13 @@ class Modal implements ModalInterface {
 		}
 		
 		$this->tpl->addTemplateData($tpl_id, array(
-			'modal_id'		=> $this->modal_id,
-			'modal_title'	=> !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
-			'modal_body'	=> $message,
+			'modal_id'			=> $this->modal_id,
+			'modal_title'		=> !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
+			'modal_body'		=> $message,
+			'?has_cancel'		=> $has_cancel,
+			'label_cancel'		=> psm_get_lang('system', 'cancel'),
+			'modal_button_type' => $button_type,
+			'modal_button_label'=> $button_label,
 		));
 		
 		
