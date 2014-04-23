@@ -170,12 +170,13 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
+        	'sms_gateway_textmarketer' => 'Textmarketer',
+        	'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_username' => 'Nome Utente Gateway',
 		'sms_gateway_password' => 'Password Gateway',
 		'sms_from' => 'Numero di telefono del mittente',
 		'alert_type' => 'Seleziona quando vuoi essere notificato.<br/>',
-        'alert_type_description' => '<b>Cambio di Stato:</b> '.
+        	'alert_type_description' => '<b>Cambio di Stato:</b> '.
 		    'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
 		    '<br /><b>Offline:</b> '.
 		    'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
