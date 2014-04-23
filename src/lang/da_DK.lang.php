@@ -174,7 +174,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
-		'sms_from' => 'Afsenders telefon nummer.',
+		'sms_from' => 'Afsenders navn.',
 		'alert_type' => 'Vælg hvornår du vil modtage besked.<br/>',
        'alert_type_description' => '<b>Status ændring:</b> '.
 		    'Du vil modtage en notifcation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
