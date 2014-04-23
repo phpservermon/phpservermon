@@ -28,7 +28,7 @@
 
 namespace psm\Txtmsg;
 
-class Textmarketer extends Core {
+class Smsit extends Core {
     // =========================================================================
     // [ Fields ]
     // =========================================================================
@@ -39,15 +39,16 @@ class Textmarketer extends Core {
     public $successcount = 0;
 
     public function sendSMS($message) {
-
-        $textmarketer_url = "https://api.textmarketer.co.uk/gateway/";
+        // http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[AFSENDER]&mobile=[MOBILNUMMER]&message=[BESKED]
+        // Use USERNAME as API KEY, password not needed
+        $textmarketer_url = "http://www.smsit.dk/api/sendSms.php";
         $textmarketer_data = urlencode( $message );
         $textmarketer_origin = urlencode( 'SERVERALERT' );
 
 
         foreach( $this->recipients as $phone ){
 
-            $URL = $textmarketer_url."?username=" . $this->username . "&password=" . $this->password . "&to=" . $phone . "&message=" . $textmarketer_data . "&orig=" . $textmarketer_origin;
+            $URL = $textmarketer_url."?apiKey=" . $this->username . "&mobile=" . $phone . "&message=" . $textmarketer_data . "&senderId=" . $textmarketer_origin;
 
             $result = file_get_contents( $URL );
 
