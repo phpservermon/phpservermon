@@ -170,12 +170,13 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_smsit' => 'Smsit',
+        	'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Número origen del SMS',
 		'alert_type' => 'Cuando desea recibir notificaciones ?<br/>',
-        'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
+        	'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
 		    'p.ej. online -> offline o offline -> online.<br/>'.
 		    '<br /><b>Offline:</b> '.
 		    'Recibirá una notificación cuando el servidor va fuera de línea.'.
