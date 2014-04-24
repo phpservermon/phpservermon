@@ -105,7 +105,7 @@ $sm_lang = array(
 		'status' => 'Статус',
 		'email' => 'Имейл',
 		'sms' => 'SMS',
-		'no_logs' => 'No logs',
+		'no_logs' => 'Няма налични логове',
 	),
 	'servers' => array(
 		'server' => 'Сървър',
@@ -167,6 +167,7 @@ $sm_lang = array(
 		'sms_status' => 'Да се изпращат ли SMS-и',
 		'sms_gateway' => 'Портал за изпращане на SMS-и',
 		'sms_gateway_mosms' => 'Mosms',
+		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_mollie' => 'Mollie',
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
