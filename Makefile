@@ -12,6 +12,11 @@ export:
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
 	find ./build/phpservermon -name "*.php" | xargs -I file php -l file
 	find ./build/phpservermon -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
+	@echo 'Downloading dependencies'
+	cd ./build/phpservermon; php composer.phar install; cd ../../;
+	rm -f ./build/phpservermon/composer.phar
+	rm -f ./build/phpservermon/composer.json
+	rm -f ./build/phpservermon/composer.lock
 	@echo 'Building HTML documentation'
 	cd ./build/phpservermon/docs; make BUILDDIR=. html; cd ../../../;
 	@echo 'Cleaning up docs dir'

@@ -373,15 +373,15 @@ function psm_update_available() {
 }
 
 /**
- * Prepare a new Mailer util.
+ * Prepare a new phpmailer instance.
  *
  * If the from name and email are left blank they will be prefilled from the config.
  * @param string $from_name
  * @param string $from_email
- * @return \psm\Util\Mailer
+ * @return \PHPMailer
  */
 function psm_build_mail($from_name = null, $from_email = null) {
-	$phpmailer = new \psm\Util\Mailer();
+	$phpmailer = new \PHPMailer();
 	$phpmailer->Encoding = "base64";
 	$phpmailer->SMTPDebug = false;
 

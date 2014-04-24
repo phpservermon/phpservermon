@@ -33,6 +33,24 @@ $().ready(function() {
 	psm_tooltips();
 });
 
+function psm_xhr(mod, params, method, on_complete, options) {
+	method = (typeof method == 'undefined') ? 'GET' : method;
+
+	var xhr_options = {
+		data: params,
+		type: method,
+		success: on_complete,
+		error: function(jqjqXHR, textStatus, errorThrown) {
+			psm_flash_message(errorThrown);
+		}
+	};
+	$.extend(xhr_options, options);
+
+	var result = $.ajax('index.php?xhr=1&mod=' + mod, xhr_options);
+
+	return result;
+}
+
 function psm_tooltips() {
 	$('input[data-toggle="tooltip"]').tooltip({
 		'trigger':'hover',

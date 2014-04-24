@@ -64,6 +64,15 @@ One of the new features introduced in 3.0 is a user authentication system. Becau
 For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
 If, for whatever reason this does not work, the upgrade script automatically changes the username of all existing users to their email addresses, which you could use for the forgot password screen.
 
+
+Installing from GitHub
+++++++++++++++++++++++
+If you have downloaded the source from GitHub (and not a pre-built package), the dependencies are not included.
+To be able to run an installation from the repo, you need to run the following command to install the dependencies::
+
+     php composer.phar install
+
+
 Setting up a cronjob
 ++++++++++++++++++++
 

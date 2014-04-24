@@ -1,0 +1,10 @@
+{
+	"name": "phpservermon/phpservermon",
+	"description": "PHP Server Monitor",
+	"homepage": "http://www.phpservermonitor.org",
+	"require": {
+		"php": ">=5.3.7",
+		"phpmailer/phpmailer": "5.2.6",
+		"symfony/http-foundation": "2.4.*"
+	}
+}
