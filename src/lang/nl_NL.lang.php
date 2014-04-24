@@ -206,16 +206,16 @@ $sm_lang = array(
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
-		'seconds' => 'seconds',
+		'seconds' => 'seconden',
 		'test' => 'Test',
-		'test_email' => 'An email will be sent to the address specified in your user profile.',
-		'test_sms' => 'A SMS will be sent to the phone number specified in your user profile.',
-		'send' => 'Send',
-		'test_message' => 'Test message',
-		'email_sent' => 'Email sent',
-		'email_error' => 'Error in email sending',
-		'sms_sent' => 'Sms sent',
-		'sms_error' => 'Error in sms sending',
+		'test_email' => 'Er zal een email verstuurd worden naar het email adres in je profiel.',
+		'test_sms' => 'Er zal een SMS verstuurd worden naar het telefoonnummer in je profiel.',
+		'send' => 'Verstuur',
+		'test_message' => 'Test bericht',
+		'email_sent' => 'Email verzonden',
+		'email_error' => 'Er is een fout opgetreden tijdens het verzenden',
+		'sms_sent' => 'SMS verzonden',
+		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
