@@ -8,6 +8,7 @@ not yet released
 * #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
 * #66: Unable to add users with MySQL in strict mode.
 * #75: Test mode for email and SMS settings.
+* #83: Invalid redirect after switching languages.
 * Composer added for dependencies.
 
 
