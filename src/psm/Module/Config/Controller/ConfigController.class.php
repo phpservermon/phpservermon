@@ -167,7 +167,7 @@ class ConfigController extends AbstractController {
 			$this->addMessage(psm_get_lang('config', 'updated'), 'success');
 
 			if($clean['language'] != psm_get_conf('language')) {
-				header('Location: ' . $_SERVER['REQUEST_URI']);
+				header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 				die();
 			}
 		}
@@ -207,6 +207,7 @@ class ConfigController extends AbstractController {
 				'label_sms_gateway_inetworx' => psm_get_lang('config', 'sms_gateway_inetworx'),
                 'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
                 'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
+				'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
 				'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 				'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 				'label_sms_from' => psm_get_lang('config', 'sms_from'),
