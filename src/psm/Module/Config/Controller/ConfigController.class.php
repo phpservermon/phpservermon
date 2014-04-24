@@ -61,7 +61,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 	);
-	
+
 	private $default_tab = 'general';
 
 	function __construct(Database $db, Template $tpl) {
@@ -120,19 +120,19 @@ class ConfigController extends AbstractController {
 		}
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
-		
+
 		$modal = new \psm\Util\Module\Modal($this->tpl, 'testEmail', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 		$this->addModal($modal);
 		$modal->setTitle(psm_get_lang('servers', 'send_email'));
 		$modal->setMessage(psm_get_lang('config', 'test_email'));
 		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
-		
+
 		$modal = new \psm\Util\Module\Modal($this->tpl, 'testSMS', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 		$this->addModal($modal);
 		$modal->setTitle(psm_get_lang('servers', 'send_sms'));
 		$modal->setMessage(psm_get_lang('config', 'test_sms'));
 		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
-		
+
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
@@ -186,10 +186,12 @@ class ConfigController extends AbstractController {
 
 			if($changed) {
 				$this->addMessage(psm_get_lang('config', 'updated'), 'success');
+			} else {
+				$this->addMessage(psm_get_lang('config', 'nochanges'));
 			}
-			
+
 			if(!empty($_POST['test_email'])) {
-				// build mail object 
+				// build mail object
 				$mail = psm_build_mail();
 				$message = psm_get_lang('config', 'test_message');
 				$mail->Subject	= $message;
@@ -215,12 +217,10 @@ class ConfigController extends AbstractController {
 						$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
 					}
 				}
-			} elseif(!$changed) {
-				$this->addMessage(psm_get_lang('config', 'nochanges'));
 			}
 
 			if($clean['language'] != psm_get_conf('language')) {
-				header('Location: ' . $_SERVER['REQUEST_URI']);
+				header('Location: ' . psm_build_url(array('mod' => 'config'), true, false));
 				die();
 			}
 
