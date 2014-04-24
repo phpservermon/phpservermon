@@ -232,6 +232,9 @@ class StatusNotifier {
 			case 'mosms':
 				$sms = new \psm\Txtmsg\Mosms();
 				break;
+			case 'smsit':
+				$sms = new \psm\Txtmsg\Smsit();
+				break;
 			case 'inetworx':
 				$sms = new \psm\Txtmsg\Inetworx();
 				break;
