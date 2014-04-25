@@ -115,6 +115,7 @@ $sm_lang = array(
 		'type' => 'Type',
 		'type_website' => 'Site Web',
 		'type_service' => 'Service',
+		'type_ping' => 'Ping',
 		'pattern' => 'Rechercher un texte/motif',
 		'pattern_description' => 'Si ce texte n\'est par retrouvé sur le site web, le serveur est marqué hors-service. Les expressions réguliaires sont autorisées.',
 		'last_check' => 'Dernière vérification',
