@@ -101,6 +101,13 @@ class Router {
 	 * @throws \LogicException
 	 */
 	public function run($mod = null) {
+		if(!psm_is_cli() && isset($_GET["logout"])) {
+			$this->services['user']->doLogout();
+			// logged out, redirect to login
+			header('Location: ' . psm_build_url());
+			die();
+		}
+
 		if($mod === null) {
 			$mod = psm_GET('mod', $this->default_module);
 		}

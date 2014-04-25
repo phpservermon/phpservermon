@@ -28,9 +28,13 @@
  **/
 
 namespace psm\Service;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * This is a heavily modified version of the php-login-advanced project by Panique.
+ *
+ * It uses the Session classes from the Symfony HttpFoundation component.
  *
  * @author Panique
  * @author Pepijn Over
@@ -52,6 +56,12 @@ class User {
 	 */
 	protected $user_data = array();
 
+	/**
+	 * Session object
+	 * @var \Symfony\Component\HttpFoundation\Session\Session $session
+	 */
+	protected $session;
+
     /**
 	 * Current user id
      * @var int $user_id
@@ -65,31 +75,30 @@ class User {
     protected $user_is_logged_in = false;
 
     /**
-     * the function "__construct()" automatically starts whenever an object of this class is created,
-     * you know, when you do "$login = new Login();"
+     * Open a new user service
+	 *
+	 * @param \psm\Service\Database $db
+	 * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session if NULL, one will be created
      */
-    public function __construct(Database $db) {
+    public function __construct(Database $db, SessionInterface $session = null) {
 		$this->db_connection = $db->pdo();
 
-		if(php_sapi_name() != 'cli' && (!defined('PSM_INSTALL') || !PSM_INSTALL)) {
-			if(!$this->isSessionStarted()) {
-				session_start();
+		if(!psm_is_cli()) {
+			if($session == null) {
+				$session = new Session();
+				$session->start();
 			}
-			// check the possible login actions:
-			// 1. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
-			// 2. login via cookie
-			// 3. logout (happen when user clicks logout button)
+			$this->session = $session;
 
-			// if user has an active session on the server
-			if(!$this->loginWithSessionData()) {
-				$this->loginWithCookieData();
-			}
+			if((!defined('PSM_INSTALL') || !PSM_INSTALL)) {
+				// check the possible login actions:
+				// 1. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
+				// 2. login via cookie
 
-			if(isset($_GET["logout"])) {
-				$this->doLogout();
-				// logged out, redirect to login
-				header('Location: ' . psm_build_url());
-				die();
+				// if user has an active session on the server
+				if(!$this->loginWithSessionData()) {
+					$this->loginWithCookieData();
+				}
 			}
 		}
     }
@@ -133,13 +142,15 @@ class User {
     }
 
     /**
-     * Logs in with S_SESSION data.
+     * Logs in with SESSION data.
+	 *
+	 * @return boolean
      */
-    private function loginWithSessionData() {
-		if(empty($_SESSION) || !isset($_SESSION['user_id'])) {
+    protected function loginWithSessionData() {
+		if(!$this->session->has('user_id')) {
 			return false;
 		}
-		$user = $this->getUser($_SESSION['user_id']);
+		$user = $this->getUser($this->session->get('user_id'));
 
 		if(!empty($user)) {
 			$this->setUserLoggedIn($user->user_id);
@@ -161,7 +172,7 @@ class User {
             // extract data from the cookie
             list ($user_id, $token, $hash) = explode(':', $_COOKIE['rememberme']);
             // check cookie hash validity
-            if ($hash == hash('sha256', $user_id . ':' . $token . PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
+            if($hash == hash('sha256', $user_id . ':' . $token . PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
                 // cookie looks good, try to select corresponding user
 				// get real token from database (and all other data)
 				$user = $this->getUser($user_id);
@@ -200,14 +211,14 @@ class User {
 		if(!isset($user->user_id)) {
 			password_verify($user_password, 'dummy_call_against_timing');
 			return false;
-		} else if (! password_verify($user_password, $user->password)) {
+		} else if(!password_verify($user_password, $user->password)) {
 			return false;
 		}
 
 		$this->setUserLoggedIn($user->user_id, true);
 
 		// if user has check the "remember me" checkbox, then generate token and write cookie
-		if ($user_rememberme) {
+		if($user_rememberme) {
 			$this->newRememberMeCookie();
 		}
 
@@ -215,9 +226,9 @@ class User {
 		// DELETE this if-block if you like, it only exists to recalculate users's hashes when you provide a cost factor,
 		// by default the script will use a cost factor of 10 and never change it.
 		// check if the have defined a cost factor in config/hashing.php
-		if (defined('PSM_LOGIN_HASH_COST_FACTOR')) {
+		if(defined('PSM_LOGIN_HASH_COST_FACTOR')) {
 			// check if the hash needs to be rehashed
-			if (password_needs_rehash($user->password, PASSWORD_DEFAULT, array('cost' => PSM_LOGIN_HASH_COST_FACTOR))) {
+			if(password_needs_rehash($user->password, PASSWORD_DEFAULT, array('cost' => PSM_LOGIN_HASH_COST_FACTOR))) {
 				$this->changePassword($user->user_id, $user_password);
 			}
 		}
@@ -231,10 +242,10 @@ class User {
 	 */
 	protected function setUserLoggedIn($user_id, $regenerate = false) {
 		if($regenerate) {
-			session_regenerate_id();
+			$this->session->migrate();
 		}
-		$_SESSION['user_id'] = $user_id;
-		$_SESSION['user_logged_in'] = 1;
+		$this->session->set('user_id', $user_id);
+		$this->session->set('user_logged_in', 1);
 
 		// declare user id, set the login status to true
 		$this->user_id = $user_id;
@@ -244,7 +255,7 @@ class User {
     /**
      * Create all data needed for remember me cookie connection on client and server side
      */
-    private function newRememberMeCookie() {
+    protected function newRememberMeCookie() {
 		// generate 64 char random string and store it in current user data
 		$random_token_string = hash('sha256', mt_rand());
 		$sth = $this->db_connection->prepare('UPDATE '.PSM_DB_PREFIX.'users SET rememberme_token = :user_rememberme_token WHERE user_id = :user_id');
@@ -262,11 +273,11 @@ class User {
     /**
      * Delete all data needed for remember me cookie connection on client and server side
      */
-    private function deleteRememberMeCookie() {
+    protected function deleteRememberMeCookie() {
 		// Reset rememberme token
-		if(isset($_SESSION['user_id'])) {
+		if($this->session->has('user_id')) {
 			$sth = $this->db_connection->prepare('UPDATE '.PSM_DB_PREFIX.'users SET rememberme_token = NULL WHERE user_id = :user_id');
-			$sth->execute(array(':user_id' => $_SESSION['user_id']));
+			$sth->execute(array(':user_id' => $this->session->get('user_id')));
 		}
 
         // set the rememberme-cookie to ten years ago (3600sec * 365 days * 10).
@@ -281,10 +292,8 @@ class User {
     public function doLogout() {
         $this->deleteRememberMeCookie();
 
-        $_SESSION = array();
-        session_destroy();
-		session_start();
-		session_regenerate_id();
+		$this->session->clear();
+		$this->session->invalidate();
 
         $this->user_is_logged_in = false;
     }
@@ -427,17 +436,10 @@ class User {
 	}
 
 	/**
-	 * Check if the session has already started
-	 * @return boolean
+	 * Get session object
+	 * @return \Symfony\Component\HttpFoundation\Session\SessionInterface
 	 */
-	public function isSessionStarted() {
-		if(php_sapi_name() !== 'cli') {
-			if(version_compare(phpversion(), '5.4.0', '>=')) {
-				return session_status() === PHP_SESSION_ACTIVE ? true : false;
-			} else {
-				return session_id() === '' ? false : true;
-			}
-		}
-		return false;
+	public function getSession() {
+		return $this->session;
 	}
 }
