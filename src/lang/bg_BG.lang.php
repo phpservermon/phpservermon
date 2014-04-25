@@ -141,7 +141,7 @@ $sm_lang = array(
 		'day' => 'Ден',
 		'hour' => 'Час',
 		'warning_threshold' => 'Предупредителен праг',
-		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра или сайта да бъдет маркирани като Офлайн.',
+		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра или сайта да бъдат маркирани като Офлайн.',
 		'chart_last_week' => 'Последната седмица',
 		'chart_history' => 'История',
 		// Charts формат на датата според jqPlot http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
