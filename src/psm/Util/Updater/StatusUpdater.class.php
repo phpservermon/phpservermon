@@ -237,7 +237,8 @@ class StatusUpdater {
 		
 		/* 	Only run if is cron
 		 *  socket_create() need to run as root :(
-		 *  ugly hack cli hack i know
+		 *  ugly cli hack i know
+		 *  might be a better way still have not found a solution when updating true website
 		 */
 		//if(psm_is_cli()) {		
 			
@@ -254,7 +255,7 @@ class StatusUpdater {
 			socket_send($socket, $package, strLen($package), 0);
 			
 			// if ping fails it returns false
-			$status = (socket_read($socket, 255)) ? false : true;
+			$status = (socket_read($socket, 255)) ? true : false;
 			$this->rtime = (microtime(true) - $starttime);
 			
 			socket_close($socket);
