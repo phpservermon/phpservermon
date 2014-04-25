@@ -200,7 +200,7 @@ class Installer {
 						  `ip` varchar(100) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
-						  `type` enum('service','website') NOT NULL default 'service',
+						  `type` enum('service','website','ping') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,

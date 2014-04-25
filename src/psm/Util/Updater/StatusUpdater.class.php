@@ -95,6 +95,9 @@ class StatusUpdater {
 			case 'website':
 				$this->status_new = $this->updateWebsite($max_runs);
 				break;
+			case 'ping':
+				$this->status_new = $this->updatePing($max_runs);
+				break;
 		}
 
 		// update server status
@@ -217,6 +220,53 @@ class StatusUpdater {
 
 		return $result;
 	}
+	
+	/**
+	 * Check the current server with a ping and hope to get a pong
+	 * @param int $max_runs
+	 * @param int $run
+	 * @return boolean
+	 */
+	protected function updatePing($max_runs, $run = 1) {
+		$errno		= 0;
+		$timeout	= 1;
+		$package	= "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost"; /* ICMP ping packet with a pre-calculated checksum */
+		
+		// save response time
+		$starttime 	= microtime(true);
+		
+		/* 	Only run if is cron
+		 *  socket_create() need to run as root :(
+		 *  ugly hack cli hack i know
+		 */
+		//if(psm_is_cli()) {		
+			
+			// IPv6 ready
+			if ($this->is_ipv6($this->server['ip'])) {
+				$socket  = socket_create(AF_INET6, SOCK_RAW, 1);
+			} else {
+				$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+			}
+			
+			
+			socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
+			socket_connect($socket, $this->server['ip'], null);
+			socket_send($socket, $package, strLen($package), 0);
+			
+			// if ping fails it returns false
+			$status = (socket_read($socket, 255)) ? false : true;
+			$this->rtime = (microtime(true) - $starttime);
+			
+			socket_close($socket);
+	
+			// check if server is available and rerun if asked.
+			if(!$status && $run < $max_runs) {
+				return $this->updatePing($max_runs, $run + 1);
+			}
+	
+			return $status;
+		//}
+	}
 
 	/**
 	 * Get the error returned by the update function
@@ -234,5 +284,24 @@ class StatusUpdater {
 	 */
 	public function getRtime() {
 		return $this->rtime;
+	}
+	
+	/**
+	 * Test if ip is IPv6
+	 * @param string $ip
+	 * @return boolean
+	 */
+	private function is_ipv6($ip) {
+		// If it contains anything other than hex characters, periods, colons or a / it's not IPV6
+		if (!preg_match("/^([0-9a-f\.\/:]+)$/",strtolower($ip))) { return false; }
+	
+		// An IPV6 address needs at minimum two colons in it
+		if (substr_count($ip,":") < 2) { return false; }
+	
+		// If any of the "octets" are longer than 4 characters it's not valid
+		$part = preg_split("/[:\/]/",$ip);
+		foreach ($part as $i) { if (strlen($i) > 4) { return false; } }
+	
+		return true;
 	}
 }

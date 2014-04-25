@@ -115,6 +115,7 @@ $sm_lang = array(
 		'type' => 'Type',
 		'type_website' => 'Hjemmeside',
 		'type_service' => 'Tjeneste',
+		'type_ping' => 'Ping',
 		'pattern' => 'Søge streng/mønster',
 		'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret offline. Regulære udtryk er tilladt.',
 		'last_check' => 'Sidst kontrolleret',
