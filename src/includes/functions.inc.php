@@ -414,7 +414,7 @@ function psm_build_mail($from_name = null, $from_email = null) {
 
 /**
  * Prepare a new SMS util.
- * 
+ *
  * @return \psm\Txtmsg\TxtmsgInterface
  */
 function psm_build_sms() {
@@ -425,6 +425,9 @@ function psm_build_sms() {
 	switch(strtolower(psm_get_conf('sms_gateway'))) {
 		case 'mosms':
 			$sms = new \psm\Txtmsg\Mosms();
+			break;
+		case 'smsit':
+			$sms = new \psm\Txtmsg\Smsit();
 			break;
 		case 'inetworx':
 			$sms = new \psm\Txtmsg\Inetworx();
@@ -443,7 +446,7 @@ function psm_build_sms() {
 			$sms = new \psm\Txtmsg\Textmarketer();
 			break;
 	}
-	
+
 	// copy login information from the config file
 	if($sms) {
 		$sms->setLogin(psm_get_conf('sms_gateway_username'), psm_get_conf('sms_gateway_password'));
@@ -455,7 +458,7 @@ function psm_build_sms() {
 
 /**
  * Generate a new link to the current monitor
- * @param array $params key value pairs
+ * @param array|string $params key value pairs or pre-formatted string
  * @param boolean $urlencode urlencode all params?
  * @param boolean $htmlentities use entities in url?
  * @return string
@@ -470,13 +473,17 @@ function psm_build_url($params = array(), $urlencode = true, $htmlentities = tru
 
 	if($params != null) {
 		$url .= '?';
-		$delim = ($htmlentities) ? '&amp;' : '&';
+		if(is_array($params)) {
+			$delim = ($htmlentities) ? '&amp;' : '&';
 
-		foreach($params as $k => $v) {
-			if($urlencode) {
-				$v = urlencode($v);
+			foreach($params as $k => $v) {
+				if($urlencode) {
+					$v = urlencode($v);
+				}
+				$url .= $delim . $k . '=' . $v;
 			}
-			$url .= $delim . $k . '=' . $v;
+		} else {
+			$url .= $params;
 		}
 	}
 

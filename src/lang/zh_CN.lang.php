@@ -39,7 +39,6 @@ $sm_lang = array(
 		'message' => '消息',
 		'yes' => '是',
 		'no' => '否o',
-		'edit' => '编辑',
 		'insert' => '插入',
 		'add_new' => '添加',
 		'update_available' => '发现新版本({version}) <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',

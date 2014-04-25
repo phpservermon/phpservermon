@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      nerdalertdk
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -26,7 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Danish',
+	'name' => 'Dansk - Danish',
 	'locale' => array('da_DK.UTF-8', 'da_DK', 'danish', 'danish-dk'),
 	'system' => array(
 		'title' => 'Server Monitor',
@@ -170,8 +170,8 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-		'sms_gateway_smsit' => 'Smsit',
         'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
 		'sms_from' => 'Afsenders navn.',
@@ -193,6 +193,7 @@ $sm_lang = array(
 		'log_email' => 'Log mails sendt af systemet',
 		'log_sms' => 'Log SMS sendt af systemet',
 		'updated' => 'Indstillingerne er blevet opdateret.',
+		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Log',
@@ -207,6 +208,15 @@ $sm_lang = array(
 			'Tid i sekunder, Hvis 0 vil siden ikke genopfriske automatisk'.
 			'</span>',
 		'seconds' => 'sekunder',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

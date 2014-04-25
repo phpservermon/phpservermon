@@ -39,7 +39,6 @@ $sm_lang = array(
         'message' => 'Mensagem',
         'yes' => 'Sim',
         'no' => 'Não',
-        'edit' => 'Editar',
         'insert' => 'Inserir',
         'add_new' => 'Adicionar novo',
         'update_available' => 'Uma atualização ({version}) disponível em <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',

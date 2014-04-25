@@ -39,7 +39,6 @@ $sm_lang = array(
 		'message' => 'Съобщение',
 		'yes' => 'Да',
 		'no' => 'Не',
-		'edit' => 'Редактирай',
 		'insert' => 'Добавяне',
 		'add_new' => 'Добави нов',
 		'update_available' => 'Налична е нова версия: ({version}). Може да я свалите от <a href="http://www.phpservermonitor.org" target="_blank">тук</a>.',

@@ -42,6 +42,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Website pattern / regular expression search
 
+* nerdalertdk <https://github.com/nerdalertdk>
+
+  * Smsit SMS gateway
+
 
 Translators
 +++++++++++
@@ -55,6 +59,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Bulgarian
 
   * Plamen Vasilev <https://github.com/PVasileff>
+
+* Danish
+
+  * nerdalertdk
 
 * French
 
@@ -80,6 +88,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Spanish
 
   * Klemens Häckel <http://clickdimension.wordpress.com/>
+
 
 Vendors
 +++++++

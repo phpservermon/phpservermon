@@ -39,7 +39,6 @@ $sm_lang = array(
 		'message' => '메세지',
 		'yes' => '예',
 		'no' => '아니오',
-		'edit' => '수정',
 		'insert' => '삽입',
 		'add_new' => '새계정 추가',
 		'update_available' => '새로운 업데이트가 있습니다 ({version}). 다음사이트를 방문 해 주십시오. <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',

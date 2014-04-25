@@ -39,7 +39,6 @@ $sm_lang = array(
 		'message' => 'Bericht',
 		'yes' => 'Ja',
 		'no' => 'Nee',
-		'edit' => 'Wijzig',
 		'insert' => 'Voeg toe',
 		'add_new' => 'Voeg toe',
 		'update_available' => 'Een nieuwe update ({version}) is beschikbaar op <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
