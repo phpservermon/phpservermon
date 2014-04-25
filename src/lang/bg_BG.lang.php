@@ -115,8 +115,8 @@ $sm_lang = array(
 		'type' => 'Тип',
 		'type_website' => 'Сайт',
 		'type_service' => 'Услуга',
-		'pattern' => 'Ключова дума',
-		'pattern_description' => 'Ако този текст не е намерен в интернет страницата, сървърът ще бъде отбелязан като Офлайн. Регулярните изрази са разрешени.',
+		'pattern' => 'Търсене на стринг/образец',
+		'pattern_description' => 'Ако този текст не е намерен в интернет страницата (когато имате добавен сайт), той ще бъде маркиран като Офлайн. Регулярните изрази са разрешени.',
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
 		'monitoring' => 'Мониторинг',
@@ -141,7 +141,7 @@ $sm_lang = array(
 		'day' => 'Ден',
 		'hour' => 'Час',
 		'warning_threshold' => 'Предупредителен праг',
-		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра да бъде маркиран като Офлайн.',
+		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра или сайта да бъдет маркирани като Офлайн.',
 		'chart_last_week' => 'Последната седмица',
 		'chart_history' => 'История',
 		// Charts формат на датата според jqPlot http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
@@ -220,10 +220,10 @@ $sm_lang = array(
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(
-		'off_sms' => 'Сървър \'%LABEL%\' е ОФЛАЙН: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
+		'off_sms' => 'Сървър \'%LABEL%\' е Офлайн: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
-		'on_sms' => 'Сървър \'%LABEL%\' е ОНЛАЙН: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
