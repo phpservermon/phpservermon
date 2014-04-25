@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Plamen Vasilev <p.vasileff@gmail.com>
+ * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -29,7 +29,7 @@ $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
 	'system' => array(
-		'title' => 'Сървър Мониторинг',
+		'title' => 'Мониторинг',
 		'install' => 'Инсталация',
 		'action' => 'Действие',
 		'save' => 'Запиши',
@@ -115,8 +115,8 @@ $sm_lang = array(
 		'type' => 'Тип',
 		'type_website' => 'Сайт',
 		'type_service' => 'Услуга',
-		'pattern' => 'Търсене на образец/схема',
-		'pattern_description' => 'Ако този образец/схема не е намерен в интернет страницата, сървърът ще бъде отбелязан като Офлайн. Регулярните изрази са разрешени.',
+		'pattern' => 'Търсене на стринг/образец',
+		'pattern_description' => 'Ако този текст не е намерен в интернет страницата (когато имате добавен сайт), той ще бъде маркиран като Офлайн. Регулярните изрази са разрешени.',
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
 		'monitoring' => 'Мониторинг',
@@ -141,7 +141,7 @@ $sm_lang = array(
 		'day' => 'Ден',
 		'hour' => 'Час',
 		'warning_threshold' => 'Предупредителен праг',
-		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра да бъде маркиран като Офлайн.',
+		'warning_threshold_description' => 'Брой неуспешни проверки, преди сървъра или сайта да бъдат маркирани като Офлайн.',
 		'chart_last_week' => 'Последната седмица',
 		'chart_history' => 'История',
 		// Charts формат на датата според jqPlot http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
@@ -172,7 +172,6 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
@@ -194,7 +193,7 @@ $sm_lang = array(
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
 		'updated' => 'Настройките са обновени успешно.',
-		'nochanges' => 'The configuration didn\'t change.',
+		'nochanges' => 'Не бяха направени промени!',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Логове',
@@ -209,22 +208,22 @@ $sm_lang = array(
 			'Времето е в секунди, ако е 0 страницата няма да се обновява.'.
 			'</span>',
 		'seconds' => 'секунди',
-		'test' => 'Test',
-		'test_email' => 'An email will be sent to the address specified in your user profile.',
-		'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
-		'send' => 'Send',
-		'test_message' => 'Test message',
-		'email_sent' => 'Email sent',
-		'email_error' => 'Error in email sending',
-		'sms_sent' => 'Sms sent',
-		'sms_error' => 'Error in sms sending',
+		'test' => 'Тест',
+		'test_email' => 'Ще бъде изпратенo тестово съобщение до имейл адреса, който сте задали в профила си.',
+		'test_sms' => 'Ще бъде изпратен тестово SMS съобщение до телефонния номер, който сте задали в профила си.',
+		'send' => 'Изпрати',
+		'test_message' => 'Тестово съобщение',
+		'email_sent' => 'Тестовия имейл е изпратен успешно.',
+		'email_error' => 'Възникна грешка при изпращането на тесовия имейл',
+		'sms_sent' => 'Тестовото SMS съобщение е изпратеното успешно.',
+		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS',
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(
-		'off_sms' => 'Syrvyryt \'%LABEL%\' e OFFLINE: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
+		'off_sms' => 'Сървър \'%LABEL%\' е Офлайн: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
-		'on_sms' => 'Syrvyryt \'%LABEL%\' e ONLINE: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
