@@ -227,7 +227,7 @@ class StatusNotifier {
 		if(!$sms) {
 			return false;
 		}
-		
+
 		// we have to build an userlist for the log table..
 		$userlist = array();
 
