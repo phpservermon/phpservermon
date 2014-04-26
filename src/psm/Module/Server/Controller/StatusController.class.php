@@ -46,6 +46,14 @@ class StatusController extends AbstractServerController {
 	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
+		// set background color to black
+		$this->black_background = true;
+		
+		// add header accessories
+		$this->tpl->newTemplate('status_layout_selector', 'server/status.tpl.html');
+		$html_accessories = $this->tpl->getTemplate('status_layout_selector');
+		$this->setHeaderAccessories($html_accessories);
+		
 		$this->setTemplateId('server_status', 'server/status.tpl.html');
 		$this->addFooter(false);
 
@@ -76,6 +84,8 @@ class StatusController extends AbstractServerController {
 		// add servers to template
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_offline', $offline);
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_online', $online);
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_offline2', $offline);
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_online2', $online);
 
 		// check if we need to add the auto refresh
 		$auto_refresh = psm_get_conf('auto_refresh_servers');

@@ -87,6 +87,12 @@ abstract class AbstractController implements ControllerInterface {
 	protected $modal = array();
 
 	/**
+	 * html code of header accessories
+	 * @var string $header_accessories
+	 */
+	protected $header_accessories;
+
+	/**
 	 * Database object
 	 * @var \psm\Service\Database $db
 	 */
@@ -125,6 +131,12 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected $user_level_required_actions = array();
 
+	/*
+	 * Required using black background layout
+	 * @var boolean $black_background
+	 */
+	protected $black_background = false;
+	
 	/**
 	 * XHR mode?
 	 * @var boolean $xhr
@@ -214,6 +226,10 @@ abstract class AbstractController implements ControllerInterface {
 			if($this->add_menu) {
 				$tpl_data['html_menu'] = $this->createHTMLMenu();
 			}
+			// add header accessories to page ?
+			if($this->header_accessories) {
+				$tpl_data['header_accessories'] = $this->header_accessories;
+			}
 			// add modal dialog to page ?
 			if(sizeof($this->modal)) {
 				$html_modal = '';
@@ -239,6 +255,10 @@ abstract class AbstractController implements ControllerInterface {
 
 			if(psm_update_available()) {
 				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
+			}
+			
+			if($this->black_background) {
+				$tpl_data['body_class'] = 'black_background';
 			}
 
 			// add the module's custom template to the main template to get some content
@@ -497,6 +517,14 @@ abstract class AbstractController implements ControllerInterface {
 		return $this;
 	}
 
+	/**
+	 * Set the html code of the header accessories
+	 * @param string $html
+	 */
+	public function setHeaderAccessories($html) {
+		$this->header_accessories = $html;
+	}
+	
 	/**
 	 * Check if XHR is on
 	 * @return boolean

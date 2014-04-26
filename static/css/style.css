@@ -10,6 +10,19 @@ body {
 	-ms-user-select: none;
 	user-select: none;
 }
+
+body.black_background {
+	background: black;
+}
+
+body.black_background .page-header {
+	border-bottom: 0;
+}
+
+body.black_background .page-header  h1 {
+	color: #888;
+}
+
 .navbar-fixed-top {
 	position: fixed;
 	margin: 0;
@@ -55,6 +68,23 @@ body {
 	white-space: nowrap;
 }
 
+.page-header {
+	display: table;
+	width: 100%;
+}
+.header-label {
+	display: table-cell;
+}
+.header-accessories {
+	display: table-cell;
+	white-space: nowrap;
+	text-align: right;
+}
+.header-accessories .btn-group {
+	display: inline-block;
+	vertical-align: bottom;
+}
+
 table {
   background-color: white;
 }
@@ -64,8 +94,11 @@ fieldset {
 .tab-content {
 	display: block;
 	width: auto;
-	padding-top: 19px;
+	padding-top: 0;
 	padding-bottom: 0;
+}
+.tab-content.well {
+	padding-top: 19px;
 }
 .nav-tabs {
 	position: relative;
@@ -163,6 +196,7 @@ legend {
 	color: #666;
 }
 
+/* Status page */
 .offline, .online {
 	display: inline-block;
 	width: 100%;
@@ -176,6 +210,13 @@ legend {
 	margin-right: 20px;
 	margin-bottom: 20px;
 	cursor: pointer;
+}
+.entity h2 {
+	margin-bottom: 10px;
+}
+.entity p {
+	margin: 0;
+	padding: 0;
 }
 .offline .entity {
 	background: #a00000;
@@ -191,6 +232,33 @@ legend {
 	background: #53a000;
 	color: #d8f7ce;
 	border: 2px solid #d8f7ce;
+}
+.entity-container table td {
+	padding: 6px 8px;
+	vertical-align: middle;
+}
+.row-offline td, .row-offline tr:hover td {
+	background: #a00000 !important;
+	color: #f7cece;
+}
+.row-offline td.warning, .row-offline tr:hover tr.warning {
+	background: #FAA732 !important;
+	color: #F3F3B1;
+}
+.row-online td, .row-online tr:hover td {
+	background: #53a000 !important;
+	color: #d8f7ce;
+}
+.entity-container .server-name {
+	display: inline-block;
+	font-size: 1.15em;
+	line-height: 18px;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.visible-small {
+	display: none;
 }
 
 td.visible-desktop, th.visible-desktop,
@@ -239,7 +307,7 @@ span.hidden-desktop, span.hidden-desktop {
 	.visible-desktop {
 		display: none !important;
 	}
-	.tab-content {
+	.tab-content.well {
 		padding-left: 10px;
 		padding-right: 10px;
 	}
@@ -305,6 +373,12 @@ span.hidden-desktop, span.hidden-desktop {
 	.action-small {
 		text-align: center !important;
 		background-color: white;
+	}
+	.visible-small {
+		display: block;
+	}
+	td.visible-small {
+		display: table-cell;
 	}
 }
 
