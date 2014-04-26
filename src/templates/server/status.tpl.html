@@ -1,6 +1,6 @@
 <!--%tpl_server_status-->
 <div class="tab-content">
-	<div id="flow-layout" class="tab-pane active">
+	<div id="flow-layout" class="tab-pane {block_layout_active}">
 		<div class="entity-container">
 			<!--%tpl_repeat_servers_offline-->
 			<div class="offline">
@@ -24,7 +24,7 @@
 			{servers_online}
 		</div>
 	</div>
-	<div id="list-layout" class="tab-pane">
+	<div id="list-layout" class="tab-pane {list_layout_active}">
 		<div class="entity-container">
 			<table class="table table-bordered">
 				<tbody>
@@ -67,7 +67,7 @@
 
 <!--%tpl_status_layout_selector-->
 <div class="btn-group" data-toggle="buttons-radio">
-	<button class="btn active" data-toggle="tab" data-target="#flow-layout"><i class="icon-th-large"></i></button>
-	<button class="btn" data-toggle="tab" data-target="#list-layout"><i class="icon-th-list"></i></button>
+	<button class="btn {block_layout_active}" data-toggle="tab" data-target="#flow-layout" onclick="psm_saveLayout(0)"><i class="icon-th-large"></i></button>
+	<button class="btn {list_layout_active}" data-toggle="tab" data-target="#list-layout" onclick="psm_saveLayout(1)"><i class="icon-th-list"></i></button>
 </div>
 <!--%%tpl_status_layout_selector-->

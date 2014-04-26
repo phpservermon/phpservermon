@@ -38,7 +38,7 @@ class StatusController extends AbstractServerController {
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
 
-		$this->setActions(array('index'), 'index');
+		$this->setActions(array('index', 'saveLayout'), 'index');
 	}
 
 	/**
@@ -50,13 +50,21 @@ class StatusController extends AbstractServerController {
 		$this->black_background = true;
 		
 		// add header accessories
+		$layout = $this->user->getUserPref('status_layout', 0);
+		$layout_data = array(
+			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
+			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+		);
 		$this->tpl->newTemplate('status_layout_selector', 'server/status.tpl.html');
+		$this->tpl->addTemplateData('status_layout_selector', $layout_data);
 		$html_accessories = $this->tpl->getTemplate('status_layout_selector');
 		$this->setHeaderAccessories($html_accessories);
 		
 		$this->setTemplateId('server_status', 'server/status.tpl.html');
 		$this->addFooter(false);
 
+		$this->tpl->addTemplateData($this->getTemplateId(), $layout_data);
+		
 		// get the active servers from database
 		$servers = $this->getServers();
 
@@ -95,6 +103,19 @@ class StatusController extends AbstractServerController {
 			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
 			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
 		}
+	}
+
+	protected function executeSaveLayout() {
+		if($this->isXHR()) {
+			$layout = psm_POST('layout', 0);
+			$this->user->setUserPref('status_layout', $layout);
+			
+			$response = new \Symfony\Component\HttpFoundation\JsonResponse();
+			$response->setData(array(
+				'layout' => $layout,
+			));
+			return $response;
+		 }
 	}
 
 	protected function createHTMLLabels() {

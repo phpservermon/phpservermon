@@ -68,7 +68,13 @@ class User {
      */
     protected $user_id;
 
-    /**
+	/**
+	 *Current user preferences
+	 * @var array $user_preferences
+	 */
+	protected $user_preferences;
+
+	/**
 	 * The user's login status
      * @var boolean $user_is_logged_in
      */
@@ -432,6 +438,61 @@ class User {
 			return $user->level;
 		} else {
 			return PSM_USER_ANONYMOUS;
+		}
+	}
+
+	/**
+	 * read current user preferences from the database
+	 * @return boolean return false is user not connected
+	 */
+	private function getPreferences() {
+		if($this->user_preferences === null) {
+			if(!$this->getUser()) {
+				return false;
+			}
+
+			$this->user_preferences = array();
+			foreach($this->db_connection->query('SELECT * FROM ' . PSM_DB_PREFIX . 'users_preferences WHERE user_id = ' . $this->user_id) as $row) {
+				$this->user_preferences[$row['key']] = $row['value'];
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Get a user preference value
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function getUserPref($key, $default = '') {
+		if(!$this->getPreferences() || !isset($this->user_preferences[$key])) {
+			return $default;
+		}
+
+		$value = $this->user_preferences[$key];
+		settype($value, gettype($default));
+		return $value;
+	}
+
+	/**
+	 * Set a user preference value
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setUserPref($key, $value) {
+		if($this->getPreferences()) {
+			if(isset($this->user_preferences[$key])) {
+				if($this->user_preferences[$key] == $value) {
+					return;		// no change
+				}
+				$sql = 'UPDATE ' . PSM_DB_PREFIX . 'users_preferences SET `key` = ?, `value` = ? WHERE `user_id` = ?';
+			} else{
+				$sql = 'INSERT INTO ' . PSM_DB_PREFIX . 'users_preferences SET `key` = ?, `value` = ?, `user_id` = ?';
+			}
+			$sth = $this->db_connection->prepare($sql);
+			$sth->execute(array($key, $value, $this->user_id));
+			$this->user_preferences[$key] = $value;
 		}
 	}
 

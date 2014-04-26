@@ -264,6 +264,10 @@ class Installer {
 			// upgrade to 3.0.0
 			$this->upgrade300();
 		}
+		if(version_compare($version_from, '3.1.0', '<')) {
+			// upgrade to 3.1.0
+			$this->upgrade310();
+		}
 		psm_update_conf('version', $version_to);
 	}
 
@@ -377,5 +381,16 @@ class Installer {
 			}
 		}
 		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
+	}
+
+	protected function upgrade310() {
+		$queries = array();
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+						`user_id` int(11) unsigned NOT NULL,
+						`key` varchar(255) NOT NULL,
+						`value` varchar(255) NOT NULL,
+						PRIMARY KEY (`user_id`)
+					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		$this->execSQL($queries);
 	}
 }

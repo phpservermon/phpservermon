@@ -63,6 +63,14 @@ function psm_xhr(mod, params, method, on_complete, options) {
 	return result;
 }
 
+function psm_saveLayout(layout) {
+	var params = {
+		action: 'saveLayout',
+		layout: layout
+	};
+	psm_xhr('server_status', params, 'POST');
+}
+
 function psm_tooltips() {
 	$('input[data-toggle="tooltip"]').tooltip({
 		'trigger':'hover',
