@@ -529,6 +529,21 @@ function psm_is_cli() {
 	return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
 }
 
+/**
+ * Check if ip is IPv6 or not
+ *
+ * @param string $ip
+ * @return boolean
+ */
+function psm_validate_ipv6($ip) {
+	// if $ip is a valid ipv6 address it returns true
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)){
+    	return true;
+	} else {
+		return false;
+	}
+}
+
 ###############################################
 #
 # Debug functions

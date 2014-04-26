@@ -243,7 +243,7 @@ class StatusUpdater {
 		//if(psm_is_cli()) {		
 			
 			// IPv6 ready
-			if ($this->is_ipv6($this->server['ip'])) {
+			if (psm_validate_ipv6($this->server['ip'])) {
 				$socket  = socket_create(AF_INET6, SOCK_RAW, 1);
 			} else {
 				$socket  = socket_create(AF_INET, SOCK_RAW, 1);
@@ -285,24 +285,5 @@ class StatusUpdater {
 	 */
 	public function getRtime() {
 		return $this->rtime;
-	}
-	
-	/**
-	 * Test if ip is IPv6
-	 * @param string $ip
-	 * @return boolean
-	 */
-	private function is_ipv6($ip) {
-		// If it contains anything other than hex characters, periods, colons or a / it's not IPV6
-		if (!preg_match("/^([0-9a-f\.\/:]+)$/",strtolower($ip))) { return false; }
-	
-		// An IPV6 address needs at minimum two colons in it
-		if (substr_count($ip,":") < 2) { return false; }
-	
-		// If any of the "octets" are longer than 4 characters it's not valid
-		$part = preg_split("/[:\/]/",$ip);
-		foreach ($part as $i) { if (strlen($i) > 4) { return false; } }
-	
-		return true;
 	}
 }
