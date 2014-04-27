@@ -277,6 +277,7 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
 	curl_setopt($ch, CURLOPT_URL, $href);
+
 	if($add_agent) {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
 	}
@@ -536,9 +537,11 @@ function psm_is_cli() {
  * @return boolean
  */
 function psm_validate_ipv6($ip) {
-	// if $ip is a valid ipv6 address it returns true
+	// Need to remove [] on ipv6 address before we can test
+	$ip = trim($ip, '[]');
+	
 	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)){
-    	return true;
+		return true;
 	} else {
 		return false;
 	}
