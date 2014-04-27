@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status','rtime', 'active', 'warning_threshold', 'warning_threshold_counter',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -146,7 +146,7 @@ class StatusUpdater {
 		$errno = 0;
 		// save response time
 		$starttime = microtime(true);
-
+		
 		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 
 		$status = ($fp === false) ? false : true;
@@ -171,10 +171,22 @@ class StatusUpdater {
 	protected function updateWebsite($max_runs, $run = 1) {
 		$starttime = microtime(true);
 
+		
+		// Removes http(s) from ip address so we can test if its an ipv6 adress
+		$clean['ip'] = preg_replace('#^http(s)?://#i', '', rtrim($this->server['ip'],'/')); // removes http(s) from ip address
+		
+		// Test if ip is ipv6 or ipv4
+		if (psm_validate_ipv6($clean['ip'])) {
+			$clean['ip'] = '['. $clean['ip'] .']';
+		}
+		
+		// Add http(s)  again 
+		$this->server['ip'] = ($this->server['port'] == 443 ? 'https' : 'http') . '://' . $clean['ip'];
+		
 		// We're only interested in the header, because that should tell us plenty!
 		// unless we have a pattern to search for!
 		$curl_result = psm_curl_get(
-			$this->server['ip'],
+			$this->server['ip'].':'.$this->server['port'],
 			true,
 			($this->server['pattern'] == '' ? false : true)
 		);
@@ -235,20 +247,22 @@ class StatusUpdater {
 		// save response time
 		$starttime 	= microtime(true);
 		
-		/* 	Only run if is cron
-		 *  socket_create() need to run as root :(
-		 *  ugly cli hack i know
-		 *  might be a better way still have not found a solution when updating true website
+		/** 
+		 * Only run if is cron
+		 * socket_create() need to run as root :(
+		 * ugly cli hack i know
+		 * might be a better way still have not found a solution when updating true website
 		 */
-		//if(psm_is_cli()) {		
-			
-			// IPv6 ready
+		if(psm_is_cli()) {		
+
+			// if ipv6 we have to use AF_INET6
 			if (psm_validate_ipv6($this->server['ip'])) {
+				// Need to remove [] on ipv6 address
+				$this->server['ip'] = trim($this->server['ip'], '[]');
 				$socket  = socket_create(AF_INET6, SOCK_RAW, 1);
 			} else {
 				$socket  = socket_create(AF_INET, SOCK_RAW, 1);
 			}
-			
 			
 			socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
 			socket_connect($socket, $this->server['ip'], null);
@@ -266,7 +280,14 @@ class StatusUpdater {
 			}
 	
 			return $status;
-		//}
+		// If state on last update was 'on' and the update request is comming from the website
+		} elseif ($this->server['status'] == 'on') {
+			// need to set rtime to the value from last update, if not the latency will be 0
+			$this->rtime = $this->server['rtime'];
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
