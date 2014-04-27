@@ -294,7 +294,7 @@ class StatusUpdater {
 		} elseif ($this->server['status'] == 'on') {
 			// need to set rtime to the value from last update, if not the latency will be 0
 			$this->rtime = $this->server['rtime'];
-			$this->error = 'Update skipped, must run from cron script.';
+			$this->error = 'Update skipped, status will be updated on next cron script run.';
 			return true;
 		} else {
 			return false;
