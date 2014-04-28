@@ -182,15 +182,11 @@ class StatusUpdater {
 		 *
 		 * Need php_http.dll extensions but might be a better tool for the job
 		 * http://stackoverflow.com/questions/14056977/function-http-build-url
-		 
-		$this->server['ip'] = http_build_url($this->server['ip'],
-			array(
-				"scheme" 	=> $url['scheme'],
-				"host" 		=> (psm_validate_ipv6($url['host']) ? '['. $url['host'] .']' : $url['host']),
-				"port" 		=> $this->server['port'],
-				"path" 		=> (isset($url['path']) ? $url['path'] : ''),
-				"query" 	=> (isset($url['query']) ? '?'.$url['query'] : '')
-			), HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT);
+		// Sets port number
+		$url['port'] = (isset($url['port']) ? $url['port'] : $this->server['port'])
+		// Update Server[ip]
+      		$this->server['ip'] = http_build_url('', $url);
+		
 		*/
 		
 		// We're only interested in the header, because that should tell us plenty!
