@@ -452,7 +452,7 @@ class User {
 			}
 
 			$this->user_preferences = array();
-			foreach($this->db_connection->query('SELECT * FROM ' . PSM_DB_PREFIX . 'users_preferences WHERE user_id = ' . $this->user_id) as $row) {
+			foreach($this->db_connection->query('SELECT `key`,`value` FROM `' . PSM_DB_PREFIX . 'users_preferences` WHERE `user_id` = ' . $this->user_id) as $row) {
 				$this->user_preferences[$row['key']] = $row['value'];
 			}
 		}
@@ -486,9 +486,9 @@ class User {
 				if($this->user_preferences[$key] == $value) {
 					return;		// no change
 				}
-				$sql = 'UPDATE ' . PSM_DB_PREFIX . 'users_preferences SET `key` = ?, `value` = ? WHERE `user_id` = ?';
+				$sql = 'UPDATE `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ? WHERE `user_id` = ?';
 			} else{
-				$sql = 'INSERT INTO ' . PSM_DB_PREFIX . 'users_preferences SET `key` = ?, `value` = ?, `user_id` = ?';
+				$sql = 'INSERT INTO `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ?, `user_id` = ?';
 			}
 			$sth = $this->db_connection->prepare($sql);
 			$sth->execute(array($key, $value, $this->user_id));

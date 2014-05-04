@@ -10,6 +10,7 @@ not yet released
 * #75: Test mode for email and SMS settings.
 * #82: Added Danish translation.
 * #83: Invalid redirect after switching languages and logging in.
+* #86: Different design styles on status page (list, table).
 * Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 * Composer added for dependencies.
 

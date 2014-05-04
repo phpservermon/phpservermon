@@ -181,6 +181,12 @@ class Installer {
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+							`user_id` int(11) unsigned NOT NULL,
+							`key` varchar(255) NOT NULL,
+							`value` varchar(255) NOT NULL,
+							PRIMARY KEY (`user_id`, `key`)
+						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
 							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
@@ -389,7 +395,7 @@ class Installer {
 						`user_id` int(11) unsigned NOT NULL,
 						`key` varchar(255) NOT NULL,
 						`value` varchar(255) NOT NULL,
-						PRIMARY KEY (`user_id`)
+						PRIMARY KEY (`user_id`, `key`)
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$this->execSQL($queries);
 	}
