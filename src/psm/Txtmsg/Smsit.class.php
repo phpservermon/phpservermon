@@ -32,25 +32,36 @@ class Smsit extends Core {
     // =========================================================================
     // [ Fields ]
     // =========================================================================
-    public $gateway = 1;
-    public $resultcode = null;
-    public $resultmessage = null;
-    public $success = false;
-    public $successcount = 0;
+    public $gateway         = 1;
+    public $resultcode      = null;
+    public $resultmessage   = null;
+    public $success         = false;
+    public $successcount    = 0;
 
     public function sendSMS($message) {
-        // http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[AFSENDER]&mobile=[MOBILNUMMER]&message=[BESKED]
+        // http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[SENDER]&mobile=[PHONENUMBER]&message=[MESSAGE]
         // Use USERNAME as API KEY, password not needed
-        $textmarketer_url = "http://www.smsit.dk/api/sendSms.php";
-        $textmarketer_data = urlencode( $message );
-        $textmarketer_origin = urlencode( 'SERVERALERT' );
-
-
+        $apiurl     = "http://www.smsit.dk/api/sendSms.php";
+        $msg        = urlencode( $message );
+        $from       = urlencode( substr($this->originator,0,11) ); // Max 11 Char.
+        
         foreach( $this->recipients as $phone ){
-
-            $URL = $textmarketer_url."?apiKey=" . $this->username . "&mobile=" . $phone . "&message=" . $textmarketer_data . "&senderId=" . $textmarketer_origin;
-
+            $URL = $apiurl."?apiKey=" . $this->username . "&mobile=" . $phone . "&message=" . $msg . "&senderId=" . $from;
             $result = file_get_contents( $URL );
+			
+			/*
+				0	Everything went as it should
+				1	Invalid API key
+				2	Invalid sender name
+				3	Invalid character set (charset)
+				4	Invalid mobile number
+				5	There is not filled out a message
+				6	The message is too long (That was she said)
+				7	API-key does not exist
+			*/
+			if((int)$result == 0) {
+				$success = true;
+			}
 
         }
 
