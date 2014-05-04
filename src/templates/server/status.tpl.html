@@ -16,7 +16,7 @@
 			<div class="online">
 				<div class="entity" onclick="window.location.href='{url_view}'">
 					<h2>{label}</h2>
-					<p>{label_last_online}: {last_checked_nice}</p>
+					<p>{label_last_online}: {last_online_nice}</p>
 					<p>{label_rtime}: {rtime}s</p>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 							<td class="{class_warning} hidden-phone">{label_last_online}: {last_online_nice}</td>
 							<td class="{class_warning} hidden-phone">{label_last_check}: {last_checked_nice}</td>
 						</tr>
-					<!--%%tpl_repeat_servers_offline2--> 
+					<!--%%tpl_repeat_servers_offline2-->
 					{servers_offline2}
 					<!--%tpl_repeat_servers_online2-->
 						<tr class="row-online" onclick="window.location.href='{url_view}'">
