@@ -445,7 +445,7 @@ class User {
 	 * read current user preferences from the database
 	 * @return boolean return false is user not connected
 	 */
-	private function getPreferences() {
+	protected function loadPreferences() {
 		if($this->user_preferences === null) {
 			if(!$this->getUser()) {
 				return false;
@@ -466,7 +466,7 @@ class User {
 	 * @return mixed
 	 */
 	public function getUserPref($key, $default = '') {
-		if(!$this->getPreferences() || !isset($this->user_preferences[$key])) {
+		if(!$this->loadPreferences() || !isset($this->user_preferences[$key])) {
 			return $default;
 		}
 
@@ -481,7 +481,7 @@ class User {
 	 * @param mixed $value
 	 */
 	public function setUserPref($key, $value) {
-		if($this->getPreferences()) {
+		if($this->loadPreferences()) {
 			if(isset($this->user_preferences[$key])) {
 				if($this->user_preferences[$key] == $value) {
 					return;		// no change
