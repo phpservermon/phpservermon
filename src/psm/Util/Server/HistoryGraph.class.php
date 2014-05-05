@@ -56,9 +56,13 @@ class HistoryGraph {
 	 * @return string
 	 */
 	public function createHTML($server_id) {
+		$now = new \DateTime();
+		$last_week = new \DateTime('-1 week 0:0:0');
+		$last_year = new \DateTime('-1 year -1 week 0:0:0');
+
 		$graphs = array(
-			0 => $this->generateGraphUptime($server_id),
-			1 => $this->generateGraphHistory($server_id),
+			0 => $this->generateGraphUptime($server_id, $last_week, $now),
+			1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
 		);
 		$info_fields = array(
 			'latency_avg' => '%01.4f',
@@ -95,18 +99,20 @@ class HistoryGraph {
 	/**
 	 * Generate data for uptime graph
 	 * @param int $server_id
+	 * @param \DateTime $start_time Lowest DateTime of the graph
+	 * @param \DateTime $end_time Highest DateTime of the graph
 	 * @return array
 	 */
-	public function generateGraphUptime($server_id) {
+	public function generateGraphUptime($server_id, $start_time, $end_time) {
 		$lines = array(
 			'latency' => array(),
 		);
 		$cb_if_up = function($uptime_record) {
 			return ($uptime_record['status'] == 1);
 		};
-		$records = $this->getRecords('uptime', $server_id);
+		$records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
 
-		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency', true);
+		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency', $start_time, $end_time, true);
 
 		$data['title'] = psm_get_lang('servers', 'chart_last_week');
 		$data['plotmode'] = 'hour';
@@ -123,9 +129,11 @@ class HistoryGraph {
 	/**
 	 * Generate data for history graph
 	 * @param int $server_id
+	 * @param \DateTime $start_time Lowest DateTime of the graph
+	 * @param \DateTime $end_time Highest DateTime of the graph
 	 * @return array
 	 */
-	public function generateGraphHistory($server_id) {
+	public function generateGraphHistory($server_id, $start_time, $end_time) {
 		$lines = array(
 			'latency_avg' => array(),
 			'latency_max' => array(),
@@ -136,10 +144,10 @@ class HistoryGraph {
 		$cb_if_up = function($uptime_record) use($server) {
 			return ($uptime_record['checks_failed'] < $server['warning_threshold']);
 		};
-		$records = $this->getRecords('history', $server_id);
+		$records = $this->getRecords('history', $server_id, $start_time, $end_time);
 
 		// dont add uptime for now because we have no way to calculate accurate uptimes for archived records
-		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency_avg', false);
+		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency_avg', $start_time, $end_time, false);
 
 		$data['title'] = psm_get_lang('servers', 'chart_history');
 		$data['plotmode'] = 'month';
@@ -157,13 +165,24 @@ class HistoryGraph {
 	 * Get all uptime/history records for a server
 	 * @param string $type
 	 * @param int $server_id
+	 * @param \DateTime $start_time Lowest DateTime of the graph
+	 * @param \DateTime $end_time Highest DateTime of the graph
 	 * @return array
 	 */
-	protected function getRecords($type, $server_id) {
+	protected function getRecords($type, $server_id, $start_time, $end_time) {
 		if(!in_array($type, array('history', 'uptime'))) {
 			return array();
 		}
-		$records = $this->db->select(PSM_DB_PREFIX.'servers_'.$type , array('server_id' => $server_id), null, '', 'date');
+
+		$records = $this->db->execute(
+			'SELECT *
+				FROM `' . PSM_DB_PREFIX . "servers_$type`
+				WHERE `server_id` = :server_id AND `date` BETWEEN :start_time AND :end_time",
+			array(
+				'server_id' => $server_id,
+				'start_time' => $start_time->format('Y-m-d H:i:s'),
+				'end_time' => $end_time->format('Y-m-d H:i:s'),
+			));
 		return $records;
 	}
 
@@ -173,37 +192,27 @@ class HistoryGraph {
 	 * @param array $lines array with keys as line ids to prepare (key must be available in uptime records)
 	 * @param callable $cb_if_up function to check if the server is up or down
 	 * @param string $latency_avg_key which key from uptime records to use for calculating averages
+	 * @param \DateTime $start_time Lowest DateTime of the graph
+	 * @param \DateTime $end_time Highest DateTime of the graph
 	 * @param boolean $add_uptime add uptime calculation?
 	 * @return array
 	 */
-	protected function generateGraphLines($records, $lines, $cb_if_up, $latency_avg_key, $add_uptime = false) {
+	protected function generateGraphLines($records, $lines, $cb_if_up, $latency_avg_key, $start_time, $end_time, $add_uptime = false) {
 		$data = array();
 
 		// PLEASE NOTE: all times are in microseconds! because of javascript.
 		$last_date = 0;
 		$latency_avg = 0;
 		$series = array();
-		// lowest timestamp of the graph (start time)
-		$time_start = 0;
-		// highest timestamp of the graph (end time)
-		$time_end = 0;
 		// number of microseconds of downtime
 		$time_down = 0;
 
 		$down = array();
 
 		// Create the list of points and server down zones
-		foreach ($records as $i => $uptime) {
+		foreach ($records as $uptime) {
 			$time = strtotime($uptime['date']) * 1000;
 
-			// keep track of lowest and highest timestamp to use as end-date for graphs
-			// and for calculating uptime
-			if($i == 0 || $time < $time_start) {
-				$time_start = $time;
-			}
-			if($time > $time_end) {
-				$time_end = $time;
-			}
 			// use the first line to calculate average latency
 			$latency_avg += (float) $uptime[$latency_avg_key];
 
@@ -241,17 +250,19 @@ class HistoryGraph {
 		}
 		if($last_date) {
 			$down[] = '[' . $last_date . ',0]';
+			$time = $end_time->getTimestamp() * 1000;
+			$time_down += ($time - $last_date);
 		}
 
-		if($add_uptime && $time_end > $time_start) {
-			$data['uptime'] = 100 - (($time_down / ($time_end - $time_start)) * 100);
+		if($add_uptime) {
+			$data['uptime'] = 100 - (($time_down / ($end_time->getTimestamp() - $start_time->getTimestamp())) / 10);
 		}
 
 		$data['latency_avg'] = count($records) > 0 ? ($latency_avg / count($records)) : 0;
 		$data['server_lines'] = sizeof($lines_merged) ? '[' . implode(',', $lines_merged) . ']' : '';
 		$data['server_down'] = sizeof($down) ? '[' . implode(',', $down) . ']' : '';
 		$data['series'] = sizeof($series) ? '[' . implode(',', $series) . ']' : '';
-		$data['end_timestamp'] = $time_end ? $time_end : '';
+		$data['end_timestamp'] = $end_time->getTimestamp() * 1000;
 
 		return $data;
 	}

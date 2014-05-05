@@ -132,6 +132,9 @@ function create_plot($this, mode)
 				tickOptions : {	formatString: tickFormat },
 				min: time - timeStamp,
 				max: time
+			},
+			yaxis:{
+				min: 0
 			}
 		},
 		highlighter: {

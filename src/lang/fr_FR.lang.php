@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      David Ribeiro
+ * @author      Jérôme Cabanis <jerome@lauraly.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -144,7 +145,7 @@ $sm_lang = array(
 		'latency_max' => 'Temps de réponse maximum',
 		'latency_min' => 'Temps de réponse minimum',
 		'latency_avg' => 'Temps de réponse moyen',
-		'uptime' => 'Uptime',
+		'uptime' => 'Disponibilité',
 		'year' => 'Année',
 		'month' => 'Mois',
 		'week' => 'Semaine',

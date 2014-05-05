@@ -77,9 +77,9 @@ class Database {
 	 * Constructor
 	 *
 	 * @param string $host
-	 * @param string $db
 	 * @param string $user
 	 * @param string $pass
+	 * @param string $db
 	 */
 	function __construct($host = null, $user = null, $pass = null, $db = null) {
 		if($host != null && $user != null && $pass != null && $db != null) {
@@ -149,6 +149,29 @@ class Database {
 		}
 
 		return $this->last;
+	}
+
+	/**
+	 * Prepare and execute SQL statement with parameters
+	 * @param string $query SQL statement
+	 * @param Array $parameters An array of values with as many elements as there are bound parameters in the SQL statement
+	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
+	 * @return @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
+	 */
+	public function execute($query, $parameters, $fetch = true) {
+		try {
+			$this->last = $this->pdo()->prepare($query);
+			$this->last->execute($parameters);
+		} catch (\PDOException $e) {
+			$this->error($e);
+		}
+
+		if($fetch && $this->last != false) {
+			$result = $this->last->fetchAll(\PDO::FETCH_ASSOC);
+		} else {
+			$result = $this->last;
+		}
+		return $result;
 	}
 
 	/**
