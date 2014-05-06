@@ -149,6 +149,13 @@ $sm_lang = array(
 		'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',
 		'chart_short_date_format' => '%d-%m %H:%M',
 		'chart_short_time_format' => '%H:%M',
+		'error_server_no_match' => 'Server niet gevonden.',
+		'error_server_label_bad_length' => 'Het label moet tussen de 1 en 255 karakters lang zijn.',
+		'error_server_ip_bad_length' => 'Het domein / IP moet tussen de 1 en 255 karakters lang zijn.',
+		'error_server_ip_bad_service' => 'Het IP adres is ongeldig.',
+		'error_server_ip_bad_website' => 'De website URL is ongeldig.',
+		'error_server_type_invalid' => 'Het geselecteerde server type is ongeldig.',
+		'error_server_warning_threshold_invalid' => 'De warning threshold moet een numerieke waarde zijn groter dan 0.',
 	),
 	'config' => array(
 		'general' => 'Algemeen',

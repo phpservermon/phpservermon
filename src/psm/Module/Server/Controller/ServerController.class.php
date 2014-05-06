@@ -143,6 +143,7 @@ class ServerController extends AbstractServerController {
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
 
 		$tpl_data = array(
+			'edit_server_id' => $this->server_id,
 			// form url:
 			'url_save' => psm_build_url(array(
 				'mod' => 'server',
@@ -163,34 +164,39 @@ class ServerController extends AbstractServerController {
 			case 0:
 				// insert mode
 				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
-				$tpl_data['edit_server_id'] = '0';
 				$tpl_data['edit_value_warning_threshold'] = '1';
+
+				$edit_server = $_POST;
 				break;
 			default:
 				// edit mode
 				// get server entry
 				$edit_server = $this->getServers($this->server_id);
-				if (empty($edit_server)) {
-					$this->addMessage('Invalid server', 'error');
+				if(empty($edit_server)) {
+					$this->addMessage(psm_get_lang('servers', 'error_server_no_match'), 'error');
 					return $this->initializeAction('index');
 				}
+				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
-				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
-					'edit_server_id' => $edit_server['server_id'],
-					'edit_value_label' => $edit_server['label'],
-					'edit_value_ip' => $edit_server['ip'],
-					'edit_value_port' => $edit_server['port'],
-					'edit_value_pattern' => $edit_server['pattern'],
-					'edit_value_warning_threshold' => $edit_server['warning_threshold'],
-					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
-					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
-					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
-					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
-				));
 
 				break;
 		}
+		// attempt to prefill previously posted fields
+		foreach($edit_server as $key => $value) {
+			$edit_server[$key] = psm_POST($key, $value);
+		}
+
+		$tpl_data = array_merge($tpl_data, array(
+			'edit_value_label' => $edit_server['label'],
+			'edit_value_ip' => $edit_server['ip'],
+			'edit_value_port' => $edit_server['port'],
+			'edit_value_pattern' => $edit_server['pattern'],
+			'edit_value_warning_threshold' => $edit_server['warning_threshold'],
+			'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
+			'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
+			'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
+			'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+		));
 
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
@@ -202,39 +208,57 @@ class ServerController extends AbstractServerController {
 	 * Executes the saving of one of the servers
 	 */
 	protected function executeSave() {
-		// check for add/edit mode
-		if(isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
-			$clean = array(
-				'label' => strip_tags($_POST['label']),
-				'ip' => strip_tags($_POST['ip']),
-				'port' => intval($_POST['port']),
-				'type' => in_array($_POST['type'], array('website', 'service')) ? $_POST['type'] : 'website',
-				'pattern' => $_POST['pattern'],
-				'warning_threshold' => intval($_POST['warning_threshold']),
-				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
-				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
-				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
-			);
-			// make sure websites start with http://
-			if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
-				$clean['ip'] = 'http://' . $clean['ip'];
-			}
+		if(empty($_POST)) {
+			// dont process anything if no data has been posted
+			return $this->executeIndex();
+		}
 
-			// check for edit or add
+		$clean = array(
+			'label' => trim(strip_tags(psm_POST('label', ''))),
+			'ip' => trim(strip_tags(psm_POST('ip', ''))),
+			'port' => intval(psm_POST('port', 0)),
+			'type' => psm_POST('type', ''),
+			'pattern' => psm_POST('pattern', ''),
+			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
+			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
+			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
+			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
+		);
+		// make sure websites start with http://
+		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
+			$clean['ip'] = 'http://' . $clean['ip'];
+		}
+
+		// validate the lot
+		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
+
+		try {
 			if($this->server_id > 0) {
-				// edit
-				$this->db->save(
-					PSM_DB_PREFIX.'servers',
-					$clean,
-					array('server_id' => $this->server_id)
-				);
-				$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
-			} else {
-				// add
-				$clean['status'] = 'on';
-				$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
-				$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
+				$server_validator->serverId($this->server_id);
 			}
+			$server_validator->label($clean['label']);
+			$server_validator->type($clean['type']);
+			$server_validator->ip($clean['ip'], $clean['type']);
+			$server_validator->warningThreshold($clean['warning_threshold']);
+		} catch(\InvalidArgumentException $ex) {
+			$this->addMessage(psm_get_lang('servers', 'error_' . $ex->getMessage()), 'error');
+			return $this->executeEdit();
+		}
+
+		// check for edit or add
+		if($this->server_id > 0) {
+			// edit
+			$this->db->save(
+				PSM_DB_PREFIX.'servers',
+				$clean,
+				array('server_id' => $this->server_id)
+			);
+			$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
+		} else {
+			// add
+			$clean['status'] = 'on';
+			$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
+			$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
 		}
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';

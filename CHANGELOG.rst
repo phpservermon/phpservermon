@@ -4,6 +4,7 @@ Changelog
 not yet released
 ----------------
 
+* #50: Validation on servers page.
 * #54: Improved phone/tablet compatibility.
 * #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
 * #66: Unable to add users with MySQL in strict mode.

@@ -149,6 +149,13 @@ $sm_lang = array(
 		'chart_long_date_format' => '%d/%m/%Y %H:%M:%S',
 		'chart_short_date_format' => '%d/%m %H:%M',
 		'chart_short_time_format' => '%H:%M',
+		'error_server_no_match' => 'Server not found.',
+		'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
+		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
+		'error_server_ip_bad_service' => 'The IP address is not valid.',
+		'error_server_ip_bad_website' => 'The website URL is not valid.',
+		'error_server_type_invalid' => 'The selected server type is invalid.',
+		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
 	),
 	'config' => array(
 		'general' => 'Général',
