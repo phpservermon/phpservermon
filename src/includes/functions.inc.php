@@ -338,12 +338,9 @@ function psm_date($time) {
  * Check if an update is available for PHP Server Monitor.
  *
  * Will only check for new version if user turned updates on in config.
- * @global object $db
  * @return boolean
  */
 function psm_update_available() {
-	global $db;
-
 	if(!psm_get_conf('show_update')) {
 		// user does not want updates, fair enough.
 		return false;
@@ -542,7 +539,9 @@ function psm_is_cli() {
  */
 function pre($arr = null) {
 	echo "<pre>";
-	if ($arr === null) debug_print_backtrace();
+	if ($arr === null) {
+		debug_print_backtrace();
+	}
 	print_r($arr);
 	echo "</pre>";
 }
