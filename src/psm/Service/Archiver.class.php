@@ -36,10 +36,10 @@
  *
  * @see \psm\Util\Updater\Autorun
  */
-namespace psm\Util\Updater;
+namespace psm\Service;
 use psm\Service\Database;
 
-class StatusArchiver {
+class Archiver {
 
 	/**
 	 * Database service
@@ -52,69 +52,87 @@ class StatusArchiver {
 	}
 
 	/**
-	 * Archive the active records of a server before a certain date.
+	 * Archive all server status records older than 1 week.
 	 *
 	 * Archiving means calculating averages per day, and storing 1 single
-	 * history row for each day for this server.
-	 *
-	 * @param int $server_id
-	 * @param \DateTime $date_before archive all records before this date
+	 * history row for each day for each server.
 	 */
-	public function archive($server_id, \DateTime $date_before) {
-		// get all uptime records for this server
-		$q_records = $this->db->pdo()->prepare("
-			SELECT `date`,`status`,`latency`
-			FROM `".PSM_DB_PREFIX."servers_uptime`
-			WHERE `server_id` = :server_id AND `date` < :latest_date
-		");
-		$q_records->execute(array(
-			'server_id' => $server_id,
-			'latest_date' => $date_before->format('Y-m-d 00:00:00'),
-		));
-		$records = $q_records->fetchAll();
+	public function archiveStatus() {
+		$latest_date = new \DateTime('-1 week 0:0:0');
+		$timestamp = $latest_date->getTimestamp();
 
-		if(empty($records)) {
+		// Check if archiving is necessary
+		$last_archive = psm_get_conf('last_archive_time', 0);
+		if($timestamp <= $last_archive) {
 			return false;
 		}
 
-		$data_by_day = array();
+		psm_update_conf('last_archive_time', $timestamp);
 
-		// first group all records by day
-		foreach($records as $record) {
-			$day = date('Y-m-d', strtotime($record['date']));
-			if(!isset($data_by_day[$day])) {
-				$data_by_day[$day] = array();
+		// Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
+		$this->db->exec('LOCK TABLES ' . PSM_DB_PREFIX . 'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
+
+		$latest_date_str = $latest_date->format('Y-m-d 00:00:00');
+
+		$records = $this->db->execute(
+			"SELECT `server_id`,`date`,`status`,`latency`
+				FROM `" . PSM_DB_PREFIX."servers_uptime`
+				WHERE `date` < :latest_date
+				ORDER BY `date` ASC",
+			array('latest_date'	=> $latest_date_str));
+
+		if(!empty($records)) {
+			// first group all records by day and server_id
+			$data_by_day = array();
+			foreach($records as $record) {
+				$server_id = (int)$record['server_id'];
+				$day = date('Y-m-d', strtotime($record['date']));
+				if(!isset($data_by_day[$day][$server_id])) {
+					$data_by_day[$day][$server_id] = array();
+				}
+				$data_by_day[$day][$server_id][] = $record;
 			}
-			$data_by_day[$day][] = $record;
+
+			// now get history data day by day
+			$histories = array();
+			foreach($data_by_day as $day => $day_records) {
+				foreach ($day_records as $server_id => $server_day_records) {
+					$histories[] = $this->getHistoryForDay($day, $server_id, $server_day_records);
+				}
+			}
+
+			// Save all
+			$this->db->insertMultiple(PSM_DB_PREFIX.'servers_history', $histories);
+
+			// now remove all records from the uptime table
+			$this->db->execute(
+				"DELETE FROM `".PSM_DB_PREFIX."servers_uptime` WHERE `date` < :latest_date",
+				array('latest_date' => $latest_date_str),
+				false
+			);
 		}
 
-		// now lets sort out and save the history day by day
-		foreach($data_by_day as $day => $day_records) {
-			$history = $this->getHistoryForDay($day, $day_records);
-			$history['server_id'] = $server_id;
+		// Remove older history entries
+		$latest_date->modify('-1 year');
+		$this->db->execute(
+			"DELETE FROM `".PSM_DB_PREFIX."servers_history` WHERE `date` < :latest_date",
+			array('latest_date' => $latest_date->format('Y-m-d 00:00:00')),
+			false
+		);
 
-			// store the history for this day in the history table
-			$this->db->save(PSM_DB_PREFIX.'servers_history', $history);
-		}
-
-		// now remove all records from the uptime table
-		$q_records_cleanup = $this->db->pdo()->prepare("
-			DELETE FROM `".PSM_DB_PREFIX."servers_uptime`
-			WHERE `server_id` = :server_id AND `date` < :latest_date
-		");
-		$q_records_cleanup->execute(array(
-			'server_id' => $server_id,
-			'latest_date' => $date_before->format('Y-m-d 00:00:00'),
-		));
+		$this->db->exec('UNLOCK TABLES');
+		
+		return true;
 	}
 
 	/**
-	 * Build a history array for a certain day and its records
+	 * Build a history array for a day records
 	 * @param string $day
+	 * @param int $server_id
 	 * @param array $day_records
 	 * @return array
 	 */
-	protected function getHistoryForDay($day, $day_records) {
+	protected function getHistoryForDay($day, $server_id, $day_records) {
 		$latencies = array();
 		$checks_failed = 0;
 
@@ -129,6 +147,7 @@ class StatusArchiver {
 
 		$history = array(
 			'date' => $day,
+			'server_id' => $server_id,
 			'latency_min' => min($latencies),
 			'latency_avg' => array_sum($latencies) / count($latencies),
 			'latency_max' => max($latencies),

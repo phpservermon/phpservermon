@@ -28,6 +28,7 @@
 
 namespace psm\Util\Server;
 use psm\Service\Database;
+use psm\Service\Archiver;
 
 /**
  * History util, create HTML for server graphs
@@ -56,6 +57,10 @@ class HistoryGraph {
 	 * @return string
 	 */
 	public function createHTML($server_id) {
+		// Archive all records older than 1 week, if needed
+		$archiver = new Archiver($this->db);
+		$archiver->archiveStatus();
+
 		$now = new \DateTime();
 		$last_week = new \DateTime('-1 week 0:0:0');
 		$last_year = new \DateTime('-1 year -1 week 0:0:0');
