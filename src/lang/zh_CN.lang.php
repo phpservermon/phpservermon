@@ -115,6 +115,7 @@ $sm_lang = array(
 		'type' => '类型',
 		'type_website' => '网站',
 		'type_service' => '服务',
+		'type_ping' => 'Ping',
 		'pattern' => '字符串/正则匹配',
 		'pattern_description' => '如果在网站上未找到对应匹配内容, 则标记该网站为离线. 支持正则表达式.',
 		'last_check' => '最后检查',

@@ -115,6 +115,7 @@ $sm_lang = array(
 		'type' => 'Type',
 		'type_website' => 'Website',
 		'type_service' => 'Service',
+		'type_ping' => 'Ping',
 		'pattern' => 'Search string/pattern',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Letzter Check',

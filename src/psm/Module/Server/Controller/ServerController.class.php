@@ -108,7 +108,7 @@ class ServerController extends AbstractServerController {
 				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
 				$ip = $servers[$x]['ip'];
-				if(!empty($servers[$x]['port']) && ($servers[$x]['port']  != 80)) {
+				if(!empty($servers[$x]['port']) && ($servers[$x]['port']  != 80) && ($servers[$x]['port']  != 443)) {
 					$ip .= ' : ' . $servers[$x]['port'];
 				}
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$ip.'</a>';
@@ -208,17 +208,19 @@ class ServerController extends AbstractServerController {
 				'label' => strip_tags($_POST['label']),
 				'ip' => strip_tags($_POST['ip']),
 				'port' => intval($_POST['port']),
-				'type' => in_array($_POST['type'], array('website', 'service')) ? $_POST['type'] : 'website',
+				'type' => in_array($_POST['type'], array('website', 'service', 'ping')) ? $_POST['type'] : 'website',
 				'pattern' => $_POST['pattern'],
 				'warning_threshold' => intval($_POST['warning_threshold']),
 				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			);
-			// make sure websites start with http://
-			if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
-				$clean['ip'] = 'http://' . $clean['ip'];
+
+			// Make sure websites start with http:// or https:// if port is 443
+			if($clean['type'] == 'website' && !preg_match('#^http(s)?://#', $clean['ip'])) {
+				$clean['ip'] = ($clean['port'] == 443 ? 'https' : 'http') . '://' . $clean['ip'];
 			}
+			
 
 			// check for edit or add
 			if($this->server_id > 0) {
@@ -342,6 +344,7 @@ class ServerController extends AbstractServerController {
 				'label_type' => psm_get_lang('servers', 'type'),
 				'label_website' => psm_get_lang('servers', 'type_website'),
 				'label_service' => psm_get_lang('servers', 'type_service'),
+				'label_ping' => psm_get_lang('servers', 'type_ping'),
 				'label_type' => psm_get_lang('servers', 'type'),
 				'label_pattern' => psm_get_lang('servers', 'pattern'),
 				'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),

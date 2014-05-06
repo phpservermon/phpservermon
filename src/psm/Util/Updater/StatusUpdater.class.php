@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'rtime', 'active', 'warning_threshold', 'warning_threshold_counter',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -94,6 +94,9 @@ class StatusUpdater {
 				break;
 			case 'website':
 				$this->status_new = $this->updateWebsite($max_runs);
+				break;
+			case 'ping':
+				$this->status_new = $this->updatePing($max_runs);
 				break;
 		}
 
@@ -143,7 +146,7 @@ class StatusUpdater {
 		$errno = 0;
 		// save response time
 		$starttime = microtime(true);
-
+		
 		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 
 		$status = ($fp === false) ? false : true;
@@ -166,8 +169,26 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updateWebsite($max_runs, $run = 1) {
+		
 		$starttime = microtime(true);
-
+		
+		// Parse a URL and return its components
+		$url = parse_url($this->server['ip']);
+		
+		// Build url
+		$this->server['ip'] = $url['scheme'] . '://' . (psm_validate_ipv6($url['host']) ? '['. $url['host'] .']' : $url['host']) . ':'.$this->server['port'] . (isset($url['path']) ? $url['path'] : '') . (isset($url['query']) ? '?'.$url['query'] : '');
+		
+		/**
+		 *
+		 * Need php_http.dll extensions but might be a better tool for the job
+		 * http://stackoverflow.com/questions/14056977/function-http-build-url
+		// Sets port number
+		$url['port'] = (isset($url['port']) ? $url['port'] : $this->server['port'])
+		// Update Server[ip]
+      		$this->server['ip'] = http_build_url('', $url);
+		
+		*/
+		
 		// We're only interested in the header, because that should tell us plenty!
 		// unless we have a pattern to search for!
 		$curl_result = psm_curl_get(
@@ -188,7 +209,7 @@ class StatusUpdater {
 
 		if(empty($code_matches[0])) {
 			// somehow we dont have a proper response.
-			$this->error = 'no response from server';
+			$this->error = 'No response from server.';
 			$result = false;
 		} else {
 			$code = $code_matches[1][0];
@@ -216,6 +237,64 @@ class StatusUpdater {
 		}
 
 		return $result;
+	}
+	
+	/**
+	 * Check the current server with a ping and hope to get a pong
+	 * @param int $max_runs
+	 * @param int $run
+	 * @return boolean
+	 */
+	protected function updatePing($max_runs, $run = 1) {
+		$errno		= 0;
+		$timeout	= 1;
+		$package	= "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost"; /* ICMP ping packet with a pre-calculated checksum */
+		
+		// save response time
+		$starttime 	= microtime(true);
+		
+		/** 
+		 * Only run if is cron
+		 * socket_create() need to run as root :(
+		 * ugly cli hack i know
+		 * might be a better way still have not found a solution when updating true website
+		 */
+		if(psm_is_cli()) {		
+
+			// if ipv6 we have to use AF_INET6
+			if (psm_validate_ipv6($this->server['ip'])) {
+				// Need to remove [] on ipv6 address
+				$this->server['ip'] = trim($this->server['ip'], '[]');
+				$socket  = socket_create(AF_INET6, SOCK_RAW, 1);
+			} else {
+				$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+			}
+			
+			socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
+			socket_connect($socket, $this->server['ip'], null);
+			socket_send($socket, $package, strLen($package), 0);
+			
+			// if ping fails it returns false
+			$status = (socket_read($socket, 255)) ? true : false;
+			$this->rtime = (microtime(true) - $starttime);
+			
+			socket_close($socket);
+	
+			// check if server is available and rerun if asked.
+			if(!$status && $run < $max_runs) {
+				return $this->updatePing($max_runs, $run + 1);
+			}
+	
+			return $status;
+		// If state on last update was 'on' and the update request is comming from the website
+		} elseif ($this->server['status'] == 'on') {
+			// need to set rtime to the value from last update, if not the latency will be 0
+			$this->rtime = $this->server['rtime'];
+			$this->error = 'Update skipped, status will be updated on next cron script run.';
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
