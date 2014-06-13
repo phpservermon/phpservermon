@@ -160,6 +160,7 @@ class ServerController extends AbstractServerController {
 					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+					'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
 				));
 
 				break;
@@ -187,6 +188,7 @@ class ServerController extends AbstractServerController {
 				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
+				'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
 			);
 
 			// check for edit or add
@@ -312,6 +314,7 @@ class ServerController extends AbstractServerController {
 				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
 				'label_action' => psm_get_lang('system', 'action'),

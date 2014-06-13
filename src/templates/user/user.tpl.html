@@ -6,6 +6,7 @@
 			<th>{label_user_name}</th>
 			<th>{label_level}</th>
 			<th>{label_mobile}</th>
+			<th>{label_pushover}</th>
 			<th>{label_email}</th>
 			<th>{label_servers}</th>
 			<th width="75">{label_action}</th>
@@ -18,6 +19,7 @@
 		<td>{user_name}</td>
 		<td>{label_level_{level}}</td>
 		<td>{mobile}</td>
+		<td>{pushover_device}</td>
 		<td>{email}</td>
 		<td>{emp_servers}</td>
 		<td>
@@ -81,6 +83,18 @@
 				<label class="control-label" for="mobile">{label_mobile}</label>
 				<div class="controls">
 					<input type="text" id="mobile" name="mobile" value="{edit_value_mobile}" maxlength="15" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="pushover_key">{label_pushover_key}</label>
+				<div class="controls">
+					<input type="text" id="pushover_key" name="pushover_key" value="{edit_value_pushover_key}" maxlength="255" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="pushover_device">{label_pushover_device}</label>
+				<div class="controls">
+					<input type="text" id="pushover_device" name="pushover_device" value="{edit_value_pushover_device}" maxlength="255" />
 				</div>
 			</div>
 			<div class="control-group">
