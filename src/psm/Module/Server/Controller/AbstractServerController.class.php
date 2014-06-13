@@ -73,6 +73,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
+					`s`.`pushover`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
@@ -100,6 +101,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
+		$server['pushover'] = psm_get_lang('system', $server['pushover']);
 		$server['url_view'] = psm_build_url(array(
 			'mod' => 'server',
 			'action' => 'view',

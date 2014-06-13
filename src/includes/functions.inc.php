@@ -410,6 +410,19 @@ function psm_build_mail($from_name = null, $from_email = null) {
 }
 
 /**
+
+ * Prepare a new Pushover util.
+ *
+ * @return \psm\Util\Pushover
+ */
+function psm_build_pushover() {
+	$pushover = new \psm\Util\Pushover();
+	$pushover->setToken(psm_get_conf('pushover_api_token'));
+
+	return $pushover;
+}
+
+/**
  * Prepare a new SMS util.
  *
  * @return \psm\Txtmsg\TxtmsgInterface

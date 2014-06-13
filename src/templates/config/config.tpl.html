@@ -4,6 +4,7 @@
       <li class="{general_active}"><a href="#config-general" data-toggle="tab">{label_general}</a></li>
       <li class="{email_active}"><a href="#config-email" data-toggle="tab">{label_tab_email}</a></li>
       <li class="{sms_active}"><a href="#config-sms" data-toggle="tab">{label_tab_sms}</a></li>
+      <li class="{pushover_active}"><a href="#config-pushover" data-toggle="tab">{label_tab_pushover}</a></li>
       <li class="{logging_active}"><a href="#config-logging" data-toggle="tab">{label_tab_log}</a></li>
     </ul>
 	<div class="tab-content well">
@@ -156,7 +157,26 @@
             </div>
 		</fieldset>
 		</div>
-		<div id="config-logging" class="tab-pane {logging_active}">
+		<div id="config-pushover" class="tab-pane {pushover_active}">
+		<fieldset>
+          <legend>{label_settings_pushover}</legend>
+            <div class="control-group">
+                <div class="controls">
+					<label class="checkbox" for="pushover_status"><input type="checkbox" id="pushover_status" name="pushover_status[]" {pushover_status_checked} /> {label_pushover_status}</label>
+				</div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="pushover_api">{label_pushover_api_token}</label>
+                <div class="controls">
+                    <input type="text" id="pushover_api_token" name="pushover_api_token" value="{pushover_api_token}" maxlength="255" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit">{label_save}</button>
+            </div>
+		</fieldset>
+		</div>
+		<div id="config-logging" class="tab-pane">
 		  <fieldset>
             <legend>{label_settings_log}</legend>
             <div class="control-group">
@@ -168,6 +188,9 @@
 			</div>
             <div class="control-group">
 				<label class="checkbox"><input type="checkbox" id="log_sms" name="log_sms[]" {log_sms_checked} /> {label_log_sms}</label>
+			</div>
+            <div class="control-group">
+				<label class="checkbox"><input type="checkbox" id="log_pushover" name="log_pushover[]" {log_pushover_checked} /> {label_log_pushover}</label>
 			</div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit" name="logging_submit">{label_save}</button>

@@ -55,6 +55,12 @@ class StatusNotifier {
 	protected $send_sms = false;
 
 	/**
+	 * Send sms?
+	 * @var boolean $send_pushover
+	 */
+	protected $send_pushover = false;
+
+	/**
 	 * Save log records?
 	 * @var boolean $save_log
 	 */
@@ -89,6 +95,7 @@ class StatusNotifier {
 
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
+		$this->send_pushover = psm_get_conf('pushover_status');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -114,7 +121,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -169,6 +176,12 @@ class StatusNotifier {
 			$this->notifyByTxtMsg();
 		}
 
+		// check if pushover is enabled for this server
+		if($this->send_pushover && $this->server['pushover'] == 'yes') {
+			// yay lets wake those nerds up!
+			$this->notifyByPushover();
+		}
+
 		return $notify;
 	}
 
@@ -207,6 +220,60 @@ class StatusNotifier {
 	    if(psm_get_conf('log_email')) {
 	    	// save to log
 	    	psm_add_log($this->server_id, 'email', $body, implode(',', $userlist));
+	    }
+	}
+
+	/**
+	 * This functions performs the pushover notifications
+	 *
+	 * @return boolean
+	 */
+	protected function notifyByPushover() {
+		$userlist = array();
+
+		$users = $this->getUsers($this->server_id);
+
+		if (empty($users)) {
+			return false;
+		}
+
+		// build pushover object with some default values
+		$pushover = psm_build_pushover();
+
+		if($this->status_new === true)
+		{
+			$pushover->setPriority(0);
+		}else
+		{
+			$pushover->setPriority(2);
+			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
+			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
+		}
+		//$pushover->setCallback('http://some.url/runscript.php'); // The callback parameter must be a URL (HTTP or HTTPS) that is reachable from the Internet that our servers will call out to as soon as the notification has been acknowledged.
+		$pushover->setTimestamp(time());
+		//$pushover->setDebug(true);
+		//$pushover->setSound('bike');
+
+		$this->server['MONITORURL']=$url = "http".(!empty($_SERVER['HTTPS'])?"s":"").":\/\/".$_SERVER['SERVER_NAME'];
+
+		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+		
+		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
+		$pushover->setMessage(str_replace('<br/>', "\n", $message));
+
+		$pushover->setUrl(psm_parse_msg($this->status_new, 'pushover_url', $this->server));
+		$pushover->setUrlTitle(psm_parse_msg($this->status_new, 'pushover_url_title', $this->server));
+
+		// go through empl
+	    foreach ($users as $user) {
+			$pushover->setUser($user['pushover_key']);
+			$pushover->setDevice($user['pushover_device']);
+			$pushover->send();
+	    }
+
+	    if(psm_get_conf('log_pushover')) {
+	    	// save to log
+	    	psm_add_log($this->server_id, 'pushover', $message, implode(',', $userlist));
 	    }
 	}
 
@@ -257,7 +324,7 @@ class StatusNotifier {
 	public function getUsers($server_id) {
 		// find all the users with this server listed
 		$users = $this->db->query("
-			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`

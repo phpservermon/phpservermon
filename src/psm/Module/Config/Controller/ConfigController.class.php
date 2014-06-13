@@ -40,9 +40,11 @@ class ConfigController extends AbstractController {
 		'email_status',
 		'email_smtp',
 		'sms_status',
+		'pushover_status',
 		'log_status',
 		'log_email',
 		'log_sms',
+		'log_pushover',
 		'show_update',
 	);
 
@@ -60,6 +62,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_username',
 		'sms_gateway_password',
 		'sms_from',
+		'pushover_api_token',
 	);
 
 	private $default_tab = 'general';
@@ -245,9 +248,11 @@ class ConfigController extends AbstractController {
 				'subtitle' => psm_get_lang('menu', 'config'),
 				'label_tab_email' => psm_get_lang('config', 'tab_email'),
 				'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
+				'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
 				'label_tab_log' => psm_get_lang('config', 'tab_log'),
 				'label_settings_email' => psm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
+				'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
 				'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 				'label_settings_log' => psm_get_lang('config', 'settings_log'),
 				'label_general' => psm_get_lang('config', 'general'),
@@ -274,6 +279,8 @@ class ConfigController extends AbstractController {
 				'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 				'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 				'label_sms_from' => psm_get_lang('config', 'sms_from'),
+				'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
+				'label_pushover_api_token' => psm_get_lang('config', 'pushover_api_token'),
 				'label_alert_type' => psm_get_lang('config', 'alert_type'),
 				'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 				'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
@@ -283,6 +290,7 @@ class ConfigController extends AbstractController {
 				'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
 				'label_log_email' => psm_get_lang('config', 'log_email'),
 				'label_log_sms' => psm_get_lang('config', 'log_sms'),
+				'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
 				'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
 				'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
 				'label_seconds' => psm_get_lang('config', 'seconds'),

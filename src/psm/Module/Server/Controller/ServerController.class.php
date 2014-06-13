@@ -178,6 +178,20 @@ class ServerController extends AbstractServerController {
 				}
 				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
+				$tpl_data = array_merge($tpl_data, array(
+					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
+					'edit_server_id' => $edit_server['server_id'],
+					'edit_value_label' => $edit_server['label'],
+					'edit_value_ip' => $edit_server['ip'],
+					'edit_value_port' => $edit_server['port'],
+					'edit_value_pattern' => $edit_server['pattern'],
+					'edit_value_warning_threshold' => $edit_server['warning_threshold'],
+					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
+					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
+					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
+					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+					'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+				));
 
 				break;
 		}
@@ -212,6 +226,7 @@ class ServerController extends AbstractServerController {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
+
 
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
@@ -377,6 +392,7 @@ class ServerController extends AbstractServerController {
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
 				'label_action' => psm_get_lang('system', 'action'),

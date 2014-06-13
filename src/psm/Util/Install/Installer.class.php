@@ -126,7 +126,7 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`, `pushover`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -143,10 +143,13 @@ class Installer {
 					('sms_gateway_username', 'username'),
 					('sms_gateway_password', 'password'),
 					('sms_from', '1234567890'),
+					('pushover_status', '1'),
+					('pushover_api_token', ''),
 					('alert_type', 'status'),
 					('log_status', '1'),
 					('log_email', '1'),
 					('log_sms', '1'),
+					('log_pushover', '1'),
 					('version', '" . PSM_VERSION . "'),
 					('version_update_check', '" . PSM_VERSION . "'),
 					('auto_refresh_servers', '0'),
@@ -177,6 +180,8 @@ class Installer {
 							`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
 							`name` varchar(255) NOT NULL,
 							`mobile` varchar(15) NOT NULL,
+							`pushover_key` varchar(255) NOT NULL,
+							`pushover_device` varchar(255) NOT NULL,
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
@@ -216,6 +221,7 @@ class Installer {
 						  `active` enum('yes','no') NOT NULL default 'yes',
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
+						  `pushover` enum('yes','no') NOT NULL default 'no',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
 						  PRIMARY KEY  (`server_id`)
@@ -391,6 +397,15 @@ class Installer {
 
 	protected function upgrade310() {
 		$queries = array();
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('pushover_status', '1');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('log_pushover', '1');";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('pushover_api_token', '');";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";		
+		
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENOM( 'yes','no' ) NOT NULL DEFAULT 'no' AFTER  `sms`;";
+
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
 						`user_id` int(11) unsigned NOT NULL,
 						`key` varchar(255) NOT NULL,

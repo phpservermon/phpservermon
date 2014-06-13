@@ -12,6 +12,7 @@
 			<th class="hidden-phone">{label_monitoring}</th>
 			<th class="visible-desktop">{label_email}</th>
 			<th class="visible-desktop">{label_sms}</th>
+			<th class="visible-desktop">{label_pushover}</th>
 			<th class="hidden-phone">{label_action}</th>
 		</tr>
 	</thead>
@@ -137,6 +138,15 @@
 				<select id="sms" name="sms">
 					<option value="yes" {edit_sms_selected_yes}>{label_yes}</option>
 					<option value="no" {edit_sms_selected_no}>{label_no}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="pushover">{label_send_pushover}</label>
+			<div class="controls">
+				<select id="pushover" name="pushover">
+					<option value="yes" {edit_pushover_selected_yes}>{label_yes}</option>
+					<option value="no" {edit_pushover_selected_no}>{label_no}</option>
 				</select>
 			</div>
 		</div>
