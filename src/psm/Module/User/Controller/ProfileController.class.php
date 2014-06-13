@@ -36,7 +36,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
 
 	function __construct(Database $db, Template $tpl) {
 		parent::__construct($db, $tpl);
@@ -132,6 +132,8 @@ class ProfileController extends AbstractController {
 				'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
 				'label_level' => psm_get_lang('users', 'level'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
+				'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
+				'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 				'label_email' => psm_get_lang('users', 'email'),
 				'label_save' => psm_get_lang('system', 'save'),
 			)
