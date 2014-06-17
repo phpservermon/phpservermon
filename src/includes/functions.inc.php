@@ -386,6 +386,11 @@ function psm_build_mail($from_name = null, $from_email = null) {
 		$phpmailer->IsSMTP();
 		$phpmailer->Host = psm_get_conf('email_smtp_host');
 		$phpmailer->Port = psm_get_conf('email_smtp_port');
+		if ($phpmailer->Port == 587) {
+			$phpmailer->SMTPSecure = 'tls';
+		} else if ($phpmailer->Port == 465) {
+			$phpmailer->SMTPSecure = 'ssl';
+		}
 
 		$smtp_user = psm_get_conf('email_smtp_username');
 		$smtp_pass = psm_get_conf('email_smtp_password');
