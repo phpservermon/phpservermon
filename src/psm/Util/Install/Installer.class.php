@@ -206,7 +206,7 @@ class Installer {
 						  `ip` varchar(100) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
-						  `type` enum('service','website') NOT NULL default 'service',
+						  `type` varchar(255) NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,
@@ -274,6 +274,12 @@ class Installer {
 			// upgrade to 3.1.0
 			$this->upgrade310();
 		}
+        if(version_compare($version_from, '3.1.1', '<')) {
+            // upgrade to 3.1.1
+            $this->upgrade311();
+        }
+
+
 		psm_update_conf('version', $version_to);
 	}
 
@@ -399,4 +405,14 @@ class Installer {
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$this->execSQL($queries);
 	}
+
+
+
+    protected function upgrade311(){
+        $queries = array();
+        $queries[] = "ALTER TABLE  `".PSM_DB_PREFIX."servers` CHANGE  `type`  `type` CHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'service'";
+        $this->execSQL($queries);
+
+
+    }
 }

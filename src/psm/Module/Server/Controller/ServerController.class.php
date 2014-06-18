@@ -84,7 +84,9 @@ class ServerController extends AbstractServerController {
 			$html_actions = '';
 		}
 
-		$sidebar->addButton(
+
+
+        $sidebar->addButton(
 			'update',
 			psm_get_lang('menu', 'server_update'),
 			psm_build_url(array('mod' => 'server_update')),
@@ -97,6 +99,8 @@ class ServerController extends AbstractServerController {
 		$servers = $this->getServers();
 		$server_count = count($servers);
 
+        $statusUpdater = new StatusUpdater($this->db);
+
 		for ($x = 0; $x < $server_count; $x++) {
 			// template magic: push the actions html to the front of the server array
 			// so the template handler will add it first. that way the other server vars
@@ -104,8 +108,9 @@ class ServerController extends AbstractServerController {
 			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 
+
+            $servers[$x]['type_icon'] = $statusUpdater->GetHandler($servers[$x]['type'])->GetIcon() ;
 			if($servers[$x]['type'] == 'website') {
-				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
 				$ip = $servers[$x]['ip'];
 				if(!empty($servers[$x]['port']) && ($servers[$x]['port']  != 80)) {
@@ -114,7 +119,6 @@ class ServerController extends AbstractServerController {
 				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$ip.'</a>';
 				$servers[$x]['ip_short'] = $ip;
 			} else {
-				$servers[$x]['type_icon'] = 'icon-cog';
 				$servers[$x]['ip_short'] = $servers[$x]['ip'] . ' : ' . $servers[$x]['port'];
 			}
 			if(($servers[$x]['active'] == 'yes')) {
@@ -141,6 +145,8 @@ class ServerController extends AbstractServerController {
 	protected function executeEdit() {
 		$this->setTemplateId('server_update', 'server/server.tpl.html');
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
+
+
 
 		$tpl_data = array(
 			'edit_server_id' => $this->server_id,
@@ -186,13 +192,29 @@ class ServerController extends AbstractServerController {
 			$edit_server[$key] = psm_POST($key, $value);
 		}
 
-		$tpl_data = array_merge($tpl_data, array(
+        // generate language array
+        $updater = new \psm\Util\Updater\StatusUpdater($this->db);
+
+        $types = array();
+        foreach($updater->GetHandlers() as $key => $handler) {
+
+
+            $types[] = array(
+                'value' => $key,
+                'label' => $key,
+                'selected' => ($key == $edit_server['type']) ? 'selected="selected"' : '',
+            );
+        }
+        $this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'types', $types );
+
+
+
+        $tpl_data = array_merge($tpl_data, array(
 			'edit_value_label' => $edit_server['label'],
 			'edit_value_ip' => $edit_server['ip'],
 			'edit_value_port' => $edit_server['port'],
 			'edit_value_pattern' => $edit_server['pattern'],
 			'edit_value_warning_threshold' => $edit_server['warning_threshold'],
-			'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
 			'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 			'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 			'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
@@ -224,10 +246,8 @@ class ServerController extends AbstractServerController {
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 		);
-		// make sure websites start with http://
-		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
-			$clean['ip'] = 'http://' . $clean['ip'];
-		}
+    	$statusUpdater = new \psm\Util\Updater\StatusUpdater($this->db);
+        $clean['ip'] = $statusUpdater->GetHandler($clean['type'])->PrepareIP($clean['ip']);
 
 		// validate the lot
 		$server_validator = new \psm\Util\Server\ServerValidator($this->db);

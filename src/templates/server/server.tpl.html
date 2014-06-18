@@ -96,8 +96,10 @@
 			<label class="control-label" for="type">{label_type}</label>
 			<div class="controls">
 				<select id="type" name="type">
-					<option value="service" {edit_type_selected_service}>{label_service}</option>
-					<option value="website" {edit_type_selected_website}>{label_website}</option>
+                    <!--%tpl_repeat_types-->
+                    <option value="{value}" {selected}>{label}</option>
+                    <!--%%tpl_repeat_types-->
+                    {types}
 				 </select>
 			</div>
 		</div>
