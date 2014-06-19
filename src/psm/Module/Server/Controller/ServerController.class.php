@@ -99,7 +99,7 @@ class ServerController extends AbstractServerController {
 		$servers = $this->getServers();
 		$server_count = count($servers);
 
-        $statusUpdater = new StatusUpdater($this->db);
+        $statusUpdater = new \psm\Util\Updater\StatusUpdater($this->db);
 
 		for ($x = 0; $x < $server_count; $x++) {
 			// template magic: push the actions html to the front of the server array

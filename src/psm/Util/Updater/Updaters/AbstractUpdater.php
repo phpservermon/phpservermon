@@ -19,11 +19,15 @@ abstract class AbstractUpdater
 
     protected function StartRun(){
         $this->run_start = microtime(true);
-
     }
+
 
     protected function StopRun(){
         $this->run_time = (microtime(true) - $this->run_start);
+    }
+
+    protected function SetRunTime($time_microsec){
+        $this->run_time = $time_microsec;
     }
 
     public function GetRunTime(){

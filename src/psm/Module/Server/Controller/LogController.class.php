@@ -54,7 +54,7 @@ class LogController extends AbstractServerController {
 		// get users
 		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
 
-        $statusUpdater = new StatusUpdater($this->db);
+        $statusUpdater = new \psm\Util\Updater\StatusUpdater($this->db);
 
 
 		$users_labels = array();
