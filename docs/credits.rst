@@ -9,7 +9,7 @@ Credits
 
 The following people have contributed to the development of PHP Server Monitor:
 
-* Pepijn Over <pep_at_neanderthal-technology.com>
+* Pepijn Over <https://github.com/dopeh/>
 
   * Creator and project maintainer
 
@@ -88,6 +88,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Spanish
 
   * Klemens Häckel <http://clickdimension.wordpress.com/>
+
+* Russian
+
+  * Roman Beylin <https://github.com/roman-beylin>
 
 
 Vendors

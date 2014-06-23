@@ -12,6 +12,8 @@ not yet released
 * #82: Added Danish translation.
 * #83: Invalid redirect after switching languages and logging in.
 * #86: Different design styles on status page (list, table).
+* #103: Added Russian translation.
+* #105: Fixing check for websites with unverified SSL certificates.
 * Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 * Composer added for dependencies.
 
