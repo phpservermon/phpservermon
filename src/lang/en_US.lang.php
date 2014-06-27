@@ -111,6 +111,7 @@ $sm_lang = array(
 		'status' => 'Status',
 		'label' => 'Label',
 		'domain' => 'Domain/IP',
+		'timeout' => 'Timeout',
 		'port' => 'Port',
 		'type' => 'Type',
 		'type_website' => 'Website',
