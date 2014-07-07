@@ -248,6 +248,9 @@ class StatusNotifier {
             case 'textmarketer':
                 $sms = new \psm\Txtmsg\Textmarketer();
                 break;
+			case 'smsglobal':
+				$sms = new \psm\Txtmsg\Smsglobal();
+				break;
 		}
 
 		// copy login information from the config file
