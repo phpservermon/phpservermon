@@ -16,6 +16,7 @@ not yet released
 * #105: Fixing check for websites with unverified SSL certificates.
 * #107: Fixing update job for Synology DSM Task Scheduler.
 * #111: Generated urls for non-default ports included the port twice.
+* #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
 * Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 * Composer added for dependencies.
 
