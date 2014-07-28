@@ -525,7 +525,7 @@ function psm_POST($key, $alt = null) {
  * @return boolean
  */
 function psm_is_cli() {
-	return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
+	return (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0));
 }
 
 ###############################################
