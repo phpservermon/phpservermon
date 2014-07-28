@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -175,11 +175,12 @@ class StatusUpdater {
 		$curl_result = psm_curl_get(
 			$this->server['ip'],
 			true,
-			($this->server['pattern'] == '' ? false : true)
+			($this->server['pattern'] == '' ? false : true),
+			$this->server['timeout']
 		);
 
 		$this->rtime = (microtime(true) - $starttime);
-
+		
 		// the first line would be the status code..
 		$status_code = strtok($curl_result, "\r\n");
 		// keep it general

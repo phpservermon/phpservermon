@@ -190,6 +190,7 @@ class ServerController extends AbstractServerController {
 			'edit_value_label' => $edit_server['label'],
 			'edit_value_ip' => $edit_server['ip'],
 			'edit_value_port' => $edit_server['port'],
+			'edit_value_timeout' => $edit_server['timeout'],
 			'edit_value_pattern' => $edit_server['pattern'],
 			'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 			'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
@@ -216,6 +217,7 @@ class ServerController extends AbstractServerController {
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),
+			'timeout' => intval(psm_POST('timeout', 0)),
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
@@ -362,6 +364,7 @@ class ServerController extends AbstractServerController {
 				'label_label' => psm_get_lang('servers', 'label'),
 				'label_status' => psm_get_lang('servers', 'status'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
+				'label_timeout' => psm_get_lang('servers', 'timeout'),
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),
 				'label_website' => psm_get_lang('servers', 'type_website'),
