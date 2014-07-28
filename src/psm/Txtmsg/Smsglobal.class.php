@@ -23,6 +23,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since       phpservermon 3.1
  **/
 
 namespace psm\Txtmsg;
@@ -48,7 +49,6 @@ class Smsglobal extends Core {
 		if(count($recipients) == 0) {
 			return false;
 		}
-
 		/**
 		 * Documentation is here: http://www.smsglobal.com/http-api/
 		 * Recipient numbers should be in the MSIDSN format (eg. 61400111222). The '+' sign should not be included before the country code.
@@ -66,7 +66,6 @@ class Smsglobal extends Core {
 			'&text=' . substr(rawurlencode($message), 0, 153);
 
 		$returnedData = file_get_contents($url);
-
 		$isOk = strpos($returnedData, 'OK: 0') !== false;
 
 		$this->success = $isOk;

@@ -46,6 +46,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Smsit SMS gateway
 
+* Victor Macko <https://github.com/victormacko>
+
+  * SMSGlobal SMS gateway
+
 
 Translators
 +++++++++++
