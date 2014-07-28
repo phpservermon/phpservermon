@@ -463,11 +463,7 @@ function psm_build_sms() {
  * @return string
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
-	$defports = array(80, 443);
 	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
-		$url .= ':' . $_SERVER['SERVER_PORT'];
-	}
 	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
 
 	if($params != null) {

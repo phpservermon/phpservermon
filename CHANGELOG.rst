@@ -15,6 +15,7 @@ not yet released
 * #103: Added Russian translation.
 * #105: Fixing check for websites with unverified SSL certificates.
 * #107: Fixing update job for Synology DSM Task Scheduler.
+* #111: Generated urls for non-default ports included the port twice.
 * Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 * Composer added for dependencies.
 
