@@ -467,7 +467,11 @@ function psm_build_sms() {
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
 	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+
+	// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
+	// for urls, we only want the forward slashes.
 	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+	$url = str_replace('\\', '', $url);
 
 	if($params != null) {
 		$url .= '?';
