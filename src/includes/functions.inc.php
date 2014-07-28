@@ -263,11 +263,13 @@ function psm_parse_msg($status, $type, $vars) {
  * @param string $href
  * @param boolean $header return headers?
  * @param boolean $body return body?
- * @param int $timeout connection timeout in seconds
+ * @param int $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
  * @param boolean $add_agent add user agent?
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_agent = true) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true) {
+	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));

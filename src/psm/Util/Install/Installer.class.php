@@ -78,7 +78,7 @@ class Installer {
 
 		// different DB version, check if the version requires any changes
 		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
-		if(version_compare($version_db, '3.1.1', '<')) {
+		if(version_compare($version_db, '3.1.0', '<')) {
 			return true;
 		} else {
 			// change database version to current version so this check won't be required next time
@@ -218,7 +218,7 @@ class Installer {
 						  `sms` enum('yes','no') NOT NULL default 'no',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
-                          `timeout` int(1) NOT NULL DEFAULT '10',
+                          `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -274,10 +274,6 @@ class Installer {
 		if(version_compare($version_from, '3.1.0', '<')) {
 			// upgrade to 3.1.0
 			$this->upgrade310();
-		}
-		if(version_compare($version_from, '3.1.1', '<')) {
-			// upgrade to 3.1.1
-			$this->upgrade311();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -402,12 +398,7 @@ class Installer {
 						`value` varchar(255) NOT NULL,
 						PRIMARY KEY (`user_id`, `key`)
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$this->execSQL($queries);
-	}
-	
-	protected function upgrade311() {
-		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` INT( 1 ) NOT NULL DEFAULT '10';";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
 		$this->execSQL($queries);
 	}
 }

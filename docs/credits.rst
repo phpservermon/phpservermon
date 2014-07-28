@@ -50,6 +50,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * SMSGlobal SMS gateway
 
+* Julien Lebouteiller <https://github.com/Halvra>
+
+  * Custom time-out per server
+
 
 Translators
 +++++++++++

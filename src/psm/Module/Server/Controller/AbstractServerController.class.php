@@ -113,6 +113,7 @@ abstract class AbstractServerController extends AbstractController {
 
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
 		return $server;
 	}
