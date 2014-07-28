@@ -149,7 +149,7 @@ class StatusUpdater {
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);
 
-		if(is_resource) {
+		if(is_resource($fp)) {
 			fclose($fp);
 		}
 
@@ -180,7 +180,7 @@ class StatusUpdater {
 		);
 
 		$this->rtime = (microtime(true) - $starttime);
-		
+
 		// the first line would be the status code..
 		$status_code = strtok($curl_result, "\r\n");
 		// keep it general
