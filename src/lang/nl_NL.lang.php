@@ -200,7 +200,7 @@ $sm_lang = array(
 		'log_email' => 'Log emails verstuurd bij het script?',
 		'log_sms' => 'Log sms berichten verstuurd bij het script?',
 		'updated' => 'De configuratie is gewijzigd.',
-		'nochanges' => 'The configuration didn\'t change.',
+		'nochanges' => 'De configuratie is ongewijzigd.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Log',
@@ -224,6 +224,7 @@ $sm_lang = array(
 		'email_error' => 'Er is een fout opgetreden tijdens het verzenden',
 		'sms_sent' => 'SMS verzonden',
 		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden',
+		'sms_error_nomobile' => 'Kan test SMS niet verzenden: er is geen telefoonnummer ingevuld in je profiel.',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

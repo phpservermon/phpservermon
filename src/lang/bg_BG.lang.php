@@ -225,6 +225,7 @@ $sm_lang = array(
 		'email_error' => 'Възникна грешка при изпращането на тесовия имейл',
 		'sms_sent' => 'Тестовото SMS съобщение е изпратеното успешно.',
 		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS',
+		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(

@@ -225,6 +225,7 @@ $sm_lang = array(
 		'email_error' => 'Fejl ved afsendelse af email',
 		'sms_sent' => 'Sms sendt',
 		'sms_error' => 'Fejl ved afsendelse af SMS',
+		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

@@ -210,11 +210,15 @@ class ConfigController extends AbstractController {
 				$sms = psm_build_sms();
 				if($sms) {
 					$user = $this->user->getUser();
-					$sms->addRecipients($user->mobile);
-					if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
-						$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
+					if(empty($user->mobile)) {
+						$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
 					} else {
-						$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+						$sms->addRecipients($user->mobile);
+						if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+							$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
+						} else {
+							$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+						}
 					}
 				}
 			}
