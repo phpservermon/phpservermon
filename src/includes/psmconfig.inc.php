@@ -96,3 +96,8 @@ define('PSM_LOGIN_RESET_RUNTIME', 3600);
  * Number of seconds the cron is supposedly dead and we will run another cron anyway.
  */
 define('PSM_CRON_TIMEOUT', 600);
+
+/**
+ * Default timeout in seconds for curl requests (can be overwritten per-server).
+ */
+define('PSM_CURL_TIMEOUT', 10);

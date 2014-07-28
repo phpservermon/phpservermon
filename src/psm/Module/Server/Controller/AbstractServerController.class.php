@@ -74,7 +74,8 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`email`,
 					`s`.`sms`,
 					`s`.`warning_threshold`,
-					`s`.`warning_threshold_counter`
+					`s`.`warning_threshold_counter`,
+					`s`.`timeout`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -112,6 +113,7 @@ abstract class AbstractServerController extends AbstractController {
 
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
 		return $server;
 	}
