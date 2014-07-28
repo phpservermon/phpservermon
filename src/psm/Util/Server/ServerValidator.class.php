@@ -93,7 +93,11 @@ class ServerValidator {
 				}
 				break;
 			case 'service':
-				if(!filter_var($value, FILTER_VALIDATE_IP)) {
+				if(
+					!filter_var($value, FILTER_VALIDATE_IP)
+					// domain regex as per http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address :
+					&& !preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])/", $value)
+				) {
 					throw new \InvalidArgumentException('server_ip_bad_service');
 				}
 				break;
