@@ -259,4 +259,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'An email has been sent to you with information how to reset your password.',
 		'success_password_reset' => 'Your password has been reset successfully. Please login.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );

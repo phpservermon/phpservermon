@@ -83,6 +83,7 @@ class Router {
 	public function getModules() {
 		return array(
 			'config' => new Module\Config\ConfigModule(),
+			'error' => new Module\Error\ErrorModule(),
 			'server' => new Module\Server\ServerModule(),
 			'user' => new Module\User\UserModule(),
 			'install' => new Module\Install\InstallModule(),
@@ -122,21 +123,20 @@ class Router {
 		}
 		// get min required level for this controller and make sure the user matches
 		$min_lvl = $controller->getMinUserLevelRequired();
+		$action = null;
 
 		if($min_lvl < PSM_USER_ANONYMOUS) {
 			// if user is not logged in, load login module
 			if(!$this->services['user']->isUserLoggedIn()) {
-				// redirect to login
 				$controller = $this->getController('user_login');
 			} elseif($this->services['user']->getUserLevel() > $min_lvl) {
-				// @todo perhaps show a nice permission denied page
-				die('You do not have the privileges to view this page.');
+				$controller = $this->getController('error');
+				$action = '401';
 			}
 		}
 
 		$controller->setUser($this->services['user']);
-		// let the module prepare it's HTML code
-		$response = $controller->initialize();
+		$response = $controller->initialize($action);
 
 		if(!($response instanceof Response)) {
 			throw new \LogicException('Controller did not return a Response object.');

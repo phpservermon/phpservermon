@@ -260,4 +260,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'Er is een mail verstuurd met informatie om je wachtwoord aan te passen.',
 		'success_password_reset' => 'Je wachtwoord is aangepast. Je kunt nu inloggen.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'U heeft niet de juiste bevoegdheden om deze pagina te bekijken.',
+	),
 );

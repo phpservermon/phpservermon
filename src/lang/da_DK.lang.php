@@ -261,4 +261,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'En e-mail er blevet sendt til dig med oplysninger om, hvordan du nulstiller din adgangskode.',
 		'success_password_reset' => 'Dit password er blevet nulstillet. venligst log ind.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );

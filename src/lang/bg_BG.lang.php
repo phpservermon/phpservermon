@@ -261,4 +261,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'Изпратен е имейл с информация за възстановяване на паролата.',
 		'success_password_reset' => 'Вашата парола е променена успешно. Моля, влезте в системата.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );

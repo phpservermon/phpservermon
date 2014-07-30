@@ -260,4 +260,8 @@ $sm_lang = array(
 		'success_password_forgot' => '密码重设邮件已发送.',
 		'success_password_reset' => '密码重设成功.请登录.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );

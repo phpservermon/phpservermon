@@ -261,4 +261,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'Um email foi enviado para você com as instruções de redefinição de senha.',
 		'success_password_reset' => 'Sua senha foi redefinida com sucesso. Por favor faça login.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );

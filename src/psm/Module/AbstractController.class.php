@@ -136,7 +136,7 @@ abstract class AbstractController implements ControllerInterface {
 	 * @var boolean $black_background
 	 */
 	protected $black_background = false;
-	
+
 	/**
 	 * XHR mode?
 	 * @var boolean $xhr
@@ -152,10 +152,13 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Initialize the controller.
 	 *
+	 * @param string $action if NULL, the action will be retrieved from user input (GET/POST)
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function initialize() {
-		$action = psm_GET('action', psm_POST('action', $this->action_default));
+	public function initialize($action = null) {
+		if($action === null) {
+			$action = psm_GET('action', psm_POST('action', $this->action_default));
+		}
 		$this->xhr = (bool) psm_GET('xhr', psm_POST('xhr', false));
 
 		if(!in_array($action, $this->actions) || !($result = $this->initializeAction($action))) {
@@ -256,7 +259,7 @@ abstract class AbstractController implements ControllerInterface {
 			if(psm_update_available()) {
 				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
 			}
-			
+
 			if($this->black_background) {
 				$tpl_data['body_class'] = 'black_background';
 			}
@@ -524,7 +527,7 @@ abstract class AbstractController implements ControllerInterface {
 	public function setHeaderAccessories($html) {
 		$this->header_accessories = $html;
 	}
-	
+
 	/**
 	 * Check if XHR is on
 	 * @return boolean

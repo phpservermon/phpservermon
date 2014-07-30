@@ -260,4 +260,8 @@ $sm_lang = array(
 		'success_password_forgot' => 'Un email vous a été envoyé pour réinitialiser votre mot de passe.',
 		'success_password_reset' => 'Votre mot de passe a été réinitialisé.',
 	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
+	),
 );
