@@ -4,24 +4,29 @@ Changelog
 not yet released
 ----------------
 
-* #50: Validation on servers page.
+Features:
+* #52: Uptime percentage per server for the last week.
 * #54: Improved phone/tablet compatibility.
+* #75: Test mode for email and SMS settings.
+* #86: Different design styles on status page (list, table).
+* #82: Added Danish translation.
+* #103: Added Russian translation.
+* #109: Custom time-out per server.
+* #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
+* #82: Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+
+Bugs:
+* #50: Validation on servers page.
 * #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
 * #66: Unable to add users with MySQL in strict mode.
-* #75: Test mode for email and SMS settings.
-* #82: Added Danish translation.
 * #83: Invalid redirect after switching languages and logging in.
-* #86: Different design styles on status page (list, table).
-* #103: Added Russian translation.
 * #105: Fixing check for websites with unverified SSL certificates.
 * #107: Fixing update job for Synology DSM Task Scheduler.
 * #108: URLs on Windows contained both back- and forward slashes.
-* #109: Custom time-out per server.
 * #111: Generated urls for non-default ports included the port twice.
-* #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
-* Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+* #28: Permission denied page.
+* #53: User selection on server edit page.
 * Composer added for dependencies.
-
 
 v3.0.1 (released April 12, 2014)
 ----------------
