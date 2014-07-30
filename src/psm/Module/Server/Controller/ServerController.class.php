@@ -209,6 +209,7 @@ class ServerController extends AbstractServerController {
 				'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
 			));
 		}
 
@@ -226,6 +227,7 @@ class ServerController extends AbstractServerController {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
+
 
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
@@ -410,6 +412,7 @@ class ServerController extends AbstractServerController {
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
 				'label_users' => psm_get_lang('servers', 'users'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

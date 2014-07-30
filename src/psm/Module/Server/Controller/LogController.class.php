@@ -50,6 +50,7 @@ class LogController extends AbstractServerController {
 		$entries['status'] = $this->getEntries('status');
 		$entries['email'] = $this->getEntries('email');
 		$entries['sms'] = $this->getEntries('sms');
+		$entries['pushover'] = $this->getEntries('pushover');
 
 		// get users
 		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
@@ -156,6 +157,7 @@ class LogController extends AbstractServerController {
 				'label_status' => psm_get_lang('log', 'status'),
 				'label_email' => psm_get_lang('log', 'email'),
 				'label_sms' => psm_get_lang('log', 'sms'),
+				'label_pushover' => psm_get_lang('log', 'pushover'),
 				'label_title' => psm_get_lang('log', 'title'),
 				'label_server' => psm_get_lang('servers', 'server'),
 				'label_type' => psm_get_lang('log', 'type'),
