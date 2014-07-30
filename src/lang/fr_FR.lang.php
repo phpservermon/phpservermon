@@ -127,6 +127,7 @@ $sm_lang = array(
 		'send_email' => 'Envoyer un email',
 		'sms' => 'SMS',
 		'send_sms' => 'Envoyer un SMS',
+		'users' => 'Users',
 		'delete_title' => 'Supprimer un serveur',
 		'delete_message' => 'Êtes-vous sûr de vouloir supprimer le serveur \'%1\' ?',
 		'deleted' => 'Serveur supprimé.',

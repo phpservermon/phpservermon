@@ -127,6 +127,7 @@ $sm_lang = array(
 		'send_email' => '发送邮件',
 		'sms' => '短信',
 		'send_sms' => '发送短信',
+		'users' => 'Users',
 		'delete_title' => 'Delete Server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
 		'deleted' => 'Server deleted.',

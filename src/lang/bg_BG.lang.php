@@ -127,6 +127,7 @@ $sm_lang = array(
 		'send_email' => 'Имейл',
 		'sms' => 'SMS',
 		'send_sms' => 'SMS',
+		'users' => 'Users',
 		'delete_title' => 'Изтриване на сървър',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете сървър \'%1\'?',
 		'deleted' => 'Сървъра е изтрит успешно.',

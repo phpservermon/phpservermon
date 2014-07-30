@@ -127,6 +127,7 @@ $sm_lang = array(
 		'send_email' => 'Отправить Email',
 		'sms' => 'SMS',
 		'send_sms' => 'Отправить SMS',
+		'users' => 'Users',
 		'delete_title' => 'Удалить сервер',
 		'delete_message' => 'Вы точно хотите удалить сервер \'%1\'?',
 		'deleted' => 'Сервер удален.',

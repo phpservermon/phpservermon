@@ -127,6 +127,7 @@ $sm_lang = array(
 		'send_email' => '메일 전송',
 		'sms' => 'SMS 전송',
 		'send_sms' => 'SMS 전송',
+		'users' => 'Users',
 		'delete_title' => 'Delete Server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
 		'deleted' => 'Server deleted.',

@@ -160,6 +160,8 @@ class ServerController extends AbstractServerController {
 			$tpl_data['url_go_back'] = psm_build_url(array('mod' => 'server'));
 		}
 
+		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id', 'name'), '', 'name');
+
 		switch($this->server_id) {
 			case 0:
 				// insert mode
@@ -178,27 +180,37 @@ class ServerController extends AbstractServerController {
 				}
 				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
+				$user_idc_selected = $this->getServerUsers($this->server_id);
+				foreach($users as &$user) {
+					if(in_array($user['user_id'], $user_idc_selected)) {
+						$user['edit_checked'] = 'checked="checked"';
+					}
+				}
 
 				break;
 		}
-		// attempt to prefill previously posted fields
-		foreach($edit_server as $key => $value) {
-			$edit_server[$key] = psm_POST($key, $value);
-		}
+		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
 
-		$tpl_data = array_merge($tpl_data, array(
-			'edit_value_label' => $edit_server['label'],
-			'edit_value_ip' => $edit_server['ip'],
-			'edit_value_port' => $edit_server['port'],
-			'edit_value_timeout' => $edit_server['timeout'],
-			'default_value_timeout' => PSM_CURL_TIMEOUT,
-			'edit_value_pattern' => $edit_server['pattern'],
-			'edit_value_warning_threshold' => $edit_server['warning_threshold'],
-			'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
-			'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
-			'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
-			'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
-		));
+		if(!empty($edit_server)) {
+			// attempt to prefill previously posted fields
+			foreach($edit_server as $key => $value) {
+				$edit_server[$key] = psm_POST($key, $value);
+			}
+
+			$tpl_data = array_merge($tpl_data, array(
+				'edit_value_label' => $edit_server['label'],
+				'edit_value_ip' => $edit_server['ip'],
+				'edit_value_port' => $edit_server['port'],
+				'edit_value_timeout' => $edit_server['timeout'],
+				'default_value_timeout' => PSM_CURL_TIMEOUT,
+				'edit_value_pattern' => $edit_server['pattern'],
+				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
+				'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
+				'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
+				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
+				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+			));
+		}
 
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
@@ -262,6 +274,22 @@ class ServerController extends AbstractServerController {
 			$clean['status'] = 'on';
 			$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
 			$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
+		}
+
+		// update users
+		$user_idc = psm_POST('user_id', array());
+		$user_idc_save = array();
+
+		foreach($user_idc as $user_id) {
+			$user_idc_save[] = array(
+				'user_id' => intval($user_id),
+				'server_id' => intval($this->server_id),
+			);
+		}
+		$this->db->delete(PSM_DB_PREFIX.'users_servers', array('server_id' => $this->server_id));
+		if(!empty($user_idc_save)) {
+			// add all new users
+			$this->db->insertMultiple(PSM_DB_PREFIX.'users_servers', $user_idc_save);
 		}
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
@@ -382,6 +410,7 @@ class ServerController extends AbstractServerController {
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+				'label_users' => psm_get_lang('servers', 'users'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
 				'label_action' => psm_get_lang('system', 'action'),
@@ -396,5 +425,23 @@ class ServerController extends AbstractServerController {
 		);
 
 		return parent::createHTMLLabels();
+	}
+
+	/**
+	 * Get all user ids for a server
+	 * @param int $server_id
+	 * @return array with ids only
+	 */
+	protected function getServerUsers($server_id) {
+		$users = $this->db->select(
+			PSM_DB_PREFIX.'users_servers',
+			array('server_id' => $server_id),
+			array('user_id')
+		);
+		$result = array();
+		foreach($users as $user) {
+			$result[] = $user['user_id'];
+		}
+		return $result;
 	}
 }
