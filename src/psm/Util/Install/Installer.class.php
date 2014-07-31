@@ -138,7 +138,7 @@ class Installer {
 					('email_smtp_port', ''),
 					('email_smtp_username', ''),
 					('email_smtp_password', ''),
-					('sms_status', '1'),
+					('sms_status', '0'),
 					('sms_gateway', 'mollie'),
 					('sms_gateway_username', 'username'),
 					('sms_gateway_password', 'password'),
