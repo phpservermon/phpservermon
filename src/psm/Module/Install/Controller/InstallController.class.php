@@ -224,6 +224,8 @@ class InstallController extends AbstractController {
 			'email' => psm_POST('email', ''),
 			'mobile' => '',
 			'level' => PSM_USER_ADMIN,
+			'pushover_key' => '',
+			'pushover_device' => '',
 		);
 
 		$validator = new \psm\Util\User\UserValidator($this->user);
