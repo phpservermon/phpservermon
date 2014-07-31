@@ -124,17 +124,14 @@ class ConfigController extends AbstractController {
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
 
-		$modal = new \psm\Util\Module\Modal($this->tpl, 'testEmail', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
-		$this->addModal($modal);
-		$modal->setTitle(psm_get_lang('servers', 'send_email'));
-		$modal->setMessage(psm_get_lang('config', 'test_email'));
-		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
-
-		$modal = new \psm\Util\Module\Modal($this->tpl, 'testSMS', \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
-		$this->addModal($modal);
-		$modal->setTitle(psm_get_lang('servers', 'send_sms'));
-		$modal->setMessage(psm_get_lang('config', 'test_sms'));
-		$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
+		$testmodals = array('email', 'sms', 'pushover');
+		foreach($testmodals as $modal_id) {
+			$modal = new \psm\Util\Module\Modal($this->tpl, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+			$this->addModal($modal);
+			$modal->setTitle(psm_get_lang('servers', 'send_' . $modal_id));
+			$modal->setMessage(psm_get_lang('config', 'test_' . $modal_id));
+			$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
+		}
 
 		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
@@ -160,73 +157,21 @@ class ConfigController extends AbstractController {
 					$clean[$input_key] = $_POST[$input_key];
 				}
 			}
-
-			// save all values to the database
-			$changed = false;
+			$language_refresh = ($clean['language'] != psm_get_conf('language'));
 			foreach($clean as $key => $value) {
-				// check if key already exists, otherwise add it
-				$old_value = psm_get_conf($key);
-				if($old_value === null) {
-					// not yet set, add it
-					$this->db->save(
-						PSM_DB_PREFIX . 'config',
-						array(
-							'key' => $key,
-							'value' => $value,
-						)
-					);
-					$changed = true;
-				} else if($value != $old_value) {
-					// update
-					$this->db->save(
-						PSM_DB_PREFIX . 'config',
-						array('value' => $value),
-						array('key' => $key)
-					);
-					$changed = true;
-				}
+				psm_update_conf($key, $value);
 			}
-
-			if($changed) {
-				$this->addMessage(psm_get_lang('config', 'updated'), 'success');
-			} else {
-				$this->addMessage(psm_get_lang('config', 'nochanges'));
-			}
+			$this->addMessage(psm_get_lang('config', 'updated'), 'success');
 
 			if(!empty($_POST['test_email'])) {
-				// build mail object
-				$mail = psm_build_mail();
-				$message = psm_get_lang('config', 'test_message');
-				$mail->Subject	= $message;
-				$mail->Priority	= 1;
-				$mail->Body		= $message;
-				$mail->AltBody	= str_replace('<br/>', "\n", $message);
-				$user = $this->user->getUser();
-				$mail->AddAddress($user->email, $user->name);
-				if($mail->Send()) {
-					$this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
-				} else {
-					$this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
-				}
+				$this->testEmail();
 			} elseif(!empty($_POST['test_sms'])) {
-				// build sms object
-				$sms = psm_build_sms();
-				if($sms) {
-					$user = $this->user->getUser();
-					if(empty($user->mobile)) {
-						$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
-					} else {
-						$sms->addRecipients($user->mobile);
-						if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
-							$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
-						} else {
-							$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
-						}
-					}
-				}
+				$this->testSMS();
+			} elseif(!empty($_POST['test_pushover'])) {
+				$this->testPushover();
 			}
 
-			if($clean['language'] != psm_get_conf('language')) {
+			if($language_refresh) {
 				header('Location: ' . psm_build_url(array('mod' => 'config'), true, false));
 				die();
 			}
@@ -237,11 +182,92 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'email';
 			} elseif(isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
 				$this->default_tab = 'sms';
-			} elseif(isset($_POST['pushover_submit'])) {
+			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
 			}
 		}
 		$this->initializeAction('index');
+	}
+
+	/**
+	 * Execute email test
+	 *
+	 * @todo move test to separate class
+	 */
+	protected function testEmail() {
+		$mail = psm_build_mail();
+		$message = psm_get_lang('config', 'test_message');
+		$mail->Subject	= psm_get_lang('config', 'test_subject');
+		$mail->Priority	= 1;
+		$mail->Body		= $message;
+		$mail->AltBody	= str_replace('<br/>', "\n", $message);
+		$user = $this->user->getUser();
+		$mail->AddAddress($user->email, $user->name);
+		if($mail->Send()) {
+			$this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
+		} else {
+			$this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
+		}
+	}
+
+	/**
+	 * Execute SMS test
+	 *
+	 * @todo move test to separate class
+	 */
+	protected function testSMS() {
+		$sms = psm_build_sms();
+		if($sms) {
+			$user = $this->user->getUser();
+			if(empty($user->mobile)) {
+				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
+			} else {
+				$sms->addRecipients($user->mobile);
+				if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+					$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
+				} else {
+					$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+				}
+			}
+		}
+	}
+
+	/**
+	 * Execute pushover test
+	 *
+	 * @todo move test to separate class
+	 */
+	protected function testPushover() {
+		$pushover = psm_build_pushover();
+		$pushover->setDebug(true);
+		$user = $this->user->getUser();
+		$api_token = psm_get_conf('pushover_api_token');
+
+		if(empty($api_token)) {
+			$this->addMessage(psm_get_lang('config', 'pushover_error_noapp'), 'error');
+		} elseif(empty($user->pushover_key)) {
+			$this->addMessage(psm_get_lang('config', 'pushover_error_nokey'), 'error');
+		} else {
+			$pushover->setPriority(0);
+			$pushover->setTitle(psm_get_lang('config', 'test_subject'));
+			$pushover->setMessage(psm_get_lang('config', 'test_message'));
+			$pushover->setUser($user->pushover_key);
+			if($user->pushover_device != '') {
+				$pushover->setDevice($user->pushover_device);
+			}
+			$result = $pushover->send();
+
+			if(isset($result['output']->status) && $result['output']->status == 1) {
+				$this->addMessage(psm_get_lang('config', 'pushover_sent'), 'success');
+			} else {
+				if(isset($result['output']->errors->error)) {
+					$error = $result['output']->errors->error;
+				} else {
+					$error = 'Unknown';
+				}
+				$this->addMessage(sprintf(psm_get_lang('config', 'pushover_error'), $error), 'error');
+			}
+		}
 	}
 
 	// override parent::createHTMLLabels()
@@ -283,8 +309,10 @@ class ConfigController extends AbstractController {
 				'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 				'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 				'label_sms_from' => psm_get_lang('config', 'sms_from'),
+				'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
 				'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
 				'label_pushover_api_token' => psm_get_lang('config', 'pushover_api_token'),
+				'label_pushover_api_token_description' => psm_get_lang('config', 'pushover_api_token_description'),
 				'label_alert_type' => psm_get_lang('config', 'alert_type'),
 				'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 				'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),

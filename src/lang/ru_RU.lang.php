@@ -195,8 +195,10 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Пользователь',
 		'sms_gateway_password' => 'Пароль',
 		'sms_from' => 'Номер отправителя',
-		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_status' => 'Allow sending Pushover messages',
+		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_api_token' => 'Pushover App API Token',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
 		'alert_type' => 'Выбирите, какие вы хотите получать уведомления<br/>',
         'alert_type_description' => '<b>Изменение статуса :</b> '.
 		    'Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br/>'.
@@ -215,7 +217,6 @@ $sm_lang = array(
 		'log_sms' => 'Уведомления отправленые по Email',
 		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => 'Параметры были успешно применены.',
-		'nochanges' => 'Параметры не изменились.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
@@ -234,13 +235,19 @@ $sm_lang = array(
 		'test' => 'Тест',
 		'test_email' => 'Сообщение будет отправлено на адрес указаный в профиле пользователя.',
 		'test_sms' => 'Сообщение будет отправлено на номер телефона указаный в профиле пользователя.',
+		'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user profile.',
 		'send' => 'Отправить',
+		'test_subject' => 'Test',
 		'test_message' => 'Тестовое сообщение',
 		'email_sent' => 'Email отправлен',
 		'email_error' => 'Ошибка при отправке email',
 		'sms_sent' => 'Sms отправлено',
 		'sms_error' => 'Ошибка при отправке sms',
 		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
+		'pushover_sent' => 'Pushover notification sent',
+		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
+		'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global configuration.',
+		'pushover_error_nokey' => 'Unable to send test notification: no Pushover key found in your profile.',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
@@ -277,5 +284,9 @@ $sm_lang = array(
 		'error_reset_invalid_link' => 'Ссылка для сброса пароля недействительна.',
 		'success_password_forgot' => 'Вам был отправлен email, с описанием сброса пароля.',
 		'success_password_reset' => 'Ваш пароль был сброшен. Пожалуйста авторизуйтесь.',
+	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
 	),
 );

@@ -241,8 +241,6 @@ class StatusNotifier {
 			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
 			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
 		}
-		$pushover->setTimestamp(time());
-
 		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
 
 		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));

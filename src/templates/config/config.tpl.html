@@ -169,7 +169,7 @@
             </div>
 			<div class="control-group">
 				<div class="controls">
-					<button class="btn btn-primary show-modal" data-modal-id="testSMS">{label_test}</button>
+					<button class="btn btn-primary show-modal" data-modal-id="testSms">{label_test}</button>
 					<input type="hidden" name="test_sms" value="0" />
 				</div>
 			</div>
@@ -184,6 +184,7 @@
             <div class="control-group">
                 <div class="controls">
 					<label class="checkbox" for="pushover_status"><input type="checkbox" id="pushover_status" name="pushover_status[]" {pushover_status_checked} /> {label_pushover_status}</label>
+					<p class="help-block">{label_pushover_description}</p>
 				</div>
             </div>
             <div class="control-group">
@@ -195,8 +196,15 @@
                 <label class="control-label" for="pushover_api">{label_pushover_api_token}</label>
                 <div class="controls">
                     <input type="text" id="pushover_api_token" name="pushover_api_token" value="{pushover_api_token}" maxlength="255" />
+					<p class="help-block">{label_pushover_api_token_description}</p>
                 </div>
             </div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testPushover">{label_test}</button>
+					<input type="hidden" name="test_pushover" value="0" />
+				</div>
+			</div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit" name="pushover_submit">{label_save}</button>
             </div>
