@@ -111,7 +111,6 @@ function psm_get_langs() {
 
 /**
  * Get a setting from the config.
- * The config must have been loaded first using psm_load_conf()
  *
  * @param string $key
  * @param mixed $alt if not set, return this alternative
@@ -119,6 +118,9 @@ function psm_get_langs() {
  * @see psm_load_conf()
  */
 function psm_get_conf($key, $alt = null) {
+	if(!isset($GLOBALS['sm_config'])) {
+		psm_load_conf();
+	}
 	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : $alt;
 
 	return $result;
