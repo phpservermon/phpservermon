@@ -132,8 +132,11 @@ class ProfileController extends AbstractController {
 				'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
 				'label_level' => psm_get_lang('users', 'level'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
+				'label_pushover' => psm_get_lang('users', 'pushover'),
+				'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
 				'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 				'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
+				'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
 				'label_email' => psm_get_lang('users', 'email'),
 				'label_save' => psm_get_lang('system', 'save'),
 			)

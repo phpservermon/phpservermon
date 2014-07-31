@@ -111,6 +111,17 @@ class UserController extends AbstractController {
 				$user['emp_servers'] .= $servers_labels[$server_id] . '<br/>';
 			}
 			$user['emp_servers'] = substr($user['emp_servers'], 0, -5);
+
+			$user['url_delete'] = psm_build_url(array(
+				'mod' => 'user',
+				'action' => 'delete',
+				'id' => $user['user_id'],
+			));
+			$user['url_edit'] = psm_build_url(array(
+				'mod' => 'user',
+				'action' => 'edit',
+				'id' => $user['user_id'],
+			));
 		}
 		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
 	}
@@ -166,6 +177,11 @@ class UserController extends AbstractController {
 			'titlemode' => $title,
 			'placeholder_password' => $placeholder_password,
 			'edit_user_id' => $user_id,
+			'url_save' => psm_build_url(array(
+				'mod' => 'user',
+				'action' => 'save',
+				'id' => $user_id,
+			)),
 		);
 		foreach($fields_prefill as $field) {
 			if(isset($edit_user->$field)) {
@@ -301,8 +317,10 @@ class UserController extends AbstractController {
 				'label_level_description' => psm_get_lang('users', 'level_description'),
 				'label_mobile' => psm_get_lang('users', 'mobile'),
 				'label_pushover' => psm_get_lang('users', 'pushover'),
+				'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
 				'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 				'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
+				'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
 				'label_email' => psm_get_lang('users', 'email'),
 				'label_servers' => psm_get_lang('menu', 'server'),
 				'label_action' => psm_get_lang('system', 'action'),
@@ -311,6 +329,8 @@ class UserController extends AbstractController {
 				'label_edit' => psm_get_lang('system', 'edit'),
 				'label_delete' => psm_get_lang('system', 'delete'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
+				'label_check_all' => psm_get_lang('system', 'check_all'),
+				'label_uncheck_all' => psm_get_lang('system', 'uncheck_all'),
 				'icon_level_10' => 'icon-admin',
 				'icon_level_20' => 'icon-user',
 			)

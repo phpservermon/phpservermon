@@ -417,6 +417,7 @@ div.tabbable ul.nav-tabs li{
 }
 legend{
     border-color: -moz-use-text-color -moz-use-text-color #CCCCCC;
+	margin-bottom: 10px;
 }
 .form-actions {
     background-color: transparent;

@@ -103,11 +103,6 @@ abstract class AbstractServerController extends AbstractController {
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
 		$server['pushover'] = psm_get_lang('system', $server['pushover']);
-		$server['url_view'] = psm_build_url(array(
-			'mod' => 'server',
-			'action' => 'view',
-			'id' => $server['server_id'],
-		));
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';
@@ -116,6 +111,15 @@ abstract class AbstractServerController extends AbstractController {
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+
+		$url_actions = array('delete', 'edit', 'view');
+		foreach($url_actions as $action) {
+			$server['url_' . $action] = psm_build_url(array(
+				'mod' => 'server',
+				'action' => $action,
+				'id' => $server['server_id'],
+			));
+		}
 
 		return $server;
 	}

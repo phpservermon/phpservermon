@@ -355,9 +355,12 @@ class ServerController extends AbstractServerController {
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
 			$tpl_id_actions = 'server_view_admin_actions';
 			$this->tpl->newTemplate($tpl_id_actions, 'server/view.tpl.html');
-			$tpl_data['html_actions'] = $this->tpl->getTemplate($tpl_id_actions);
+			// template magic: push the actions html to the front of the server array
+			// so the template handler will add it first. that way the other server vars
+			// will also be replaced in the html_actions template itself
+			$tpl_data = array('html_actions' => $this->tpl->getTemplate($tpl_id_actions)) + $tpl_data;
+
 			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
-			$tpl_data['url_delete'] = psm_build_url(array('mod' => 'server', 'action' => 'delete', 'id' => $this->server_id));
 			$tpl_data['server_name'] = $server['label'];
 
 			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
@@ -432,6 +435,8 @@ class ServerController extends AbstractServerController {
 				'label_yes' => psm_get_lang('system', 'yes'),
 				'label_no' => psm_get_lang('system', 'no'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
+				'label_check_all' => psm_get_lang('system', 'check_all'),
+				'label_uncheck_all' => psm_get_lang('system', 'uncheck_all'),
 			)
 		);
 
