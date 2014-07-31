@@ -15,7 +15,7 @@ Features
 ++++++++
 
 * Monitor services and websites (see below).
-* Email and SMS notifications.
+* Email, SMS and Pushover notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -44,16 +44,17 @@ There are two different ways to monitor a server:
 Notifications
 -------------
 Each server has its own settings regarding notification.
-You can choose for email notification or text message (SMS).
+You can choose for email, text message (SMS) and Pushover.net notifications.
 The following SMS gateways are currently available:
 
-* Mollie - http://www.mollie.nl
-* Spryng - http://www.spryng.nl
-* Inetworx - http://www.inetworx.ch
-* Clickatell - https://www.clickatell.com
-* Mosms - http://www.mosms.com
-* Textmarketer - http://www.textmarketer.co.uk
-* SMSit - http://smsit.dk
+* Clickatell - <https://www.clickatell.com>
+* Inetworx - <http://www.inetworx.ch>
+* Mollie - <http://www.mollie.nl>
+* Mosms - <http://www.mosms.com>
+* Smsglobal - <http://smsglobal.com/>
+* SMSit - <http://www.smsit.dk/>
+* Spryng - <http://www.spryng.nl>
+* Textmarketer - <http://www.textmarketer.co.uk>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

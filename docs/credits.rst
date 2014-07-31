@@ -114,3 +114,4 @@ The following libraries are being used by PHP Server Monitor:
 * jqPlot - http://www.jqplot.com
 * Twitter Bootstrap - http://getbootstrap.com
 * PHP Mailer - https://github.com/PHPMailer/PHPMailer
+* php-pushover - https://github.com/kryap/php-pushover
