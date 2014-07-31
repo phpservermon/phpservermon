@@ -6,6 +6,7 @@ not yet released
 
 Features:
 * #52: Uptime percentage per server for the last week.
+* #101: Pushover.net support.
 * #54: Improved phone/tablet compatibility.
 * #75: Test mode for email and SMS settings.
 * #86: Different design styles on status page (list, table).

@@ -54,6 +54,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Custom time-out per server
 
+* Mathias Lange <https://github.com/remmedia>
+
+  * Pushover.net support
+
 
 Translators
 +++++++++++
