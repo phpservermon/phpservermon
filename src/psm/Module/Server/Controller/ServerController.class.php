@@ -93,6 +93,11 @@ class ServerController extends AbstractServerController {
 
 		// we need an array for our template magic (see below):
 		$html_actions = array('html_actions' => $html_actions);
+		$icons = array(
+			'email' => 'icon-envelope',
+			'sms' => 'icon-mobile',
+			'pushover' => 'icon-pushover',
+		);
 
 		$servers = $this->getServers();
 		$server_count = count($servers);
@@ -120,13 +125,15 @@ class ServerController extends AbstractServerController {
 			if(($servers[$x]['active'] == 'yes')) {
 				$servers[$x]['active_icon'] = 'icon-eye-open';
 				$servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
-				$servers[$x]['email_icon'] = ($servers[$x]['email'] == 'yes') ? 'icon-envelope' : '';
-				$servers[$x]['sms_icon'] = ($servers[$x]['sms'] == 'yes') ? 'icon-mobile' : '';
+
+				foreach($icons as $i_id => $i_icon) {
+					if(psm_get_conf($i_id . '_status') && $servers[$x][$i_id] == 'yes') {
+						$servers[$x][$i_id . '_icon'] = $i_icon;
+					}
+				}
 			} else {
 				$servers[$x]['active_icon'] = 'icon-eye-close';
 				$servers[$x]['active_title'] = psm_get_lang('servers', 'no_monitoring');
-				$servers[$x]['email_icon'] = '';
-				$servers[$x]['sms_icon'] = '';
 			}
 
 			$servers[$x] = $this->formatServer($servers[$x]);
@@ -240,6 +247,7 @@ class ServerController extends AbstractServerController {
 			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
+			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
 		);
 		// make sure websites start with http://
 		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
@@ -412,7 +420,7 @@ class ServerController extends AbstractServerController {
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
 				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
-				'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
+				'label_pushover' => psm_get_lang('servers', 'pushover'),
 				'label_users' => psm_get_lang('servers', 'users'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

@@ -45,12 +45,7 @@ class LogController extends AbstractServerController {
 	 */
 	protected function executeIndex() {
 		$this->setTemplateId('server_log_list', 'server/log.tpl.html');
-
-		$entries = array();
-		$entries['status'] = $this->getEntries('status');
-		$entries['email'] = $this->getEntries('email');
-		$entries['sms'] = $this->getEntries('sms');
-		$entries['pushover'] = $this->getEntries('pushover');
+		$log_types = array('status', 'email', 'sms', 'pushover');
 
 		// get users
 		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
@@ -60,7 +55,8 @@ class LogController extends AbstractServerController {
 			$users_labels[$user['user_id']] = $user['name'];
 		}
 
-		foreach($entries as $key => $records) {
+		foreach($log_types as $key) {
+			$records = $this->getEntries($key);
 			$log_count = count($records);
 
 			for ($x = 0; $x < $log_count; $x++) {

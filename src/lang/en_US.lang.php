@@ -131,7 +131,7 @@ $sm_lang = array(
 		'send_email' => 'Send Email',
 		'sms' => 'SMS',
 		'send_sms' => 'Send SMS',
-		'send_pushover' => 'Send Pushover',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Delete server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -201,8 +201,7 @@ $sm_lang = array(
 		    'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
 		    'You will get 1 notification at 1 am and thats it.<br/>'.
 		    '<br><b>Always:</b> '.
-		    'You will receive a notification every time the script runs and a site is down, even if the site has been '.
-		    'offline for hours.',
+		    'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
@@ -216,7 +215,6 @@ $sm_lang = array(
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
-		'tab_log' => 'Log',
 		'settings_email' => 'Email settings',
 		'settings_sms' => 'Text message settings',
 		'settings_pushover' => 'Pushover settings',
@@ -245,17 +243,13 @@ $sm_lang = array(
 		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
 		'off_email_body' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'off_pushover_title' => '\'%LABEL%\' Offline',
-		'off_pushover_message' => 'Server \'%LABEL%\'<br/>ist Offline<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%',
-		'off_pushover_url_title' => 'SERVER MONITOR',
-		'off_pushover_url' => '%MONITORURL%',
+		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
+		'off_pushover_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
 		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
-		'on_pushover_title' => '\'%LABEL%\' Online',
-		'on_pushover_message' => 'Server \'%LABEL%\'<br/>ist wieder Online<br/>IP: %IP%<br/>Port: %PORT%',
-		'on_pushover_url_title' => 'SERVER MONITOR',
-		'on_pushover_url' => '%MONITORURL%',
+		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
+		'on_pushover_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

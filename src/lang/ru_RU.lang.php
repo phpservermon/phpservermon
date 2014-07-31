@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Администраторы</b> имеют полный доступ: они могут управлять серверами, пользователями и изменять общую конфигурацию.<br/><b>Пользователи</b> могут только просматривать и запускать проверку для серверов которые были к ним прикрепплены.',
 		'mobile' => 'Телефон',
 		'email' => 'Email',
+		'pushover' => 'Pushover',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
 		'delete_title' => 'Удалить пользователя',
 		'delete_message' => 'Вы точно хотите удалить пользователя \'%1\'?',
 		'deleted' => 'Пользователь удален.',
@@ -104,6 +107,7 @@ $sm_lang = array(
 		'status' => 'Статус',
 		'email' => 'Email',
 		'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'Записей нет',
 	),
 	'servers' => array(
@@ -127,6 +131,7 @@ $sm_lang = array(
 		'send_email' => 'Отправить Email',
 		'sms' => 'SMS',
 		'send_sms' => 'Отправить SMS',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Удалить сервер',
 		'delete_message' => 'Вы точно хотите удалить сервер \'%1\'?',
@@ -186,6 +191,8 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Пользователь',
 		'sms_gateway_password' => 'Пароль',
 		'sms_from' => 'Номер отправителя',
+		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_api_token' => 'Pushover App API Token',
 		'alert_type' => 'Выбирите, какие вы хотите получать уведомления<br/>',
         'alert_type_description' => '<b>Изменение статуса :</b> '.
 		    'Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br/>'.
@@ -194,8 +201,7 @@ $sm_lang = array(
 		    'Задание Cron выставлено на каждые 15 минут. Сервер перейдет в статус оффлайн в 1:00 и не измениться до 6:00. '.
 		    'Вы получите 1 уведомление только в 1:00<br/>'.
 		    '<br><b>Всегда:</b> '.
-		    'Вы будете получать уведомление при каждом запуске скрипта проверки, как только сервер перейдет в статус оффлайн, даже если'.
-		    'сервер находится в этом статусе несколько часов',
+		    'Вы будете получать уведомление при каждом запуске скрипта проверки, как только сервер перейдет в статус оффлайн, даже если сервер находится в этом статусе несколько часов',
 		'alert_type_status' => 'Изменение статуса',
 		'alert_type_offline' => 'Оффлайн',
 		'alert_type_always' => 'Всегда',
@@ -203,13 +209,15 @@ $sm_lang = array(
 		'log_status_description' => 'Если лог установлен в TRUE, монитор будет логировать все события режим которых выбран в типе уведомлений.',
 		'log_email' => 'Уведомления отправленые по Email',
 		'log_sms' => 'Уведомления отправленые по Email',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => 'Параметры были успешно применены.',
 		'nochanges' => 'Параметры не изменились.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
-		'tab_log' => 'Лог',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Настройка Email',
 		'settings_sms' => 'Настройка SMS',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Настройка уведомлений',
 		'settings_log' => 'Настройка логирования',
 		'auto_refresh' => 'Авто-обновление',
@@ -235,9 +243,13 @@ $sm_lang = array(
 		'off_sms' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН: ip=%IP%, port=%PORT%. Ошибка=%ERROR%',
 		'off_email_subject' => 'ВАЖНО: сервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
 		'off_email_body' => "Невозможно подключиться к следующему серверу:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
+		'off_pushover_title' => 'Cервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
+		'off_pushover_message' => "Невозможно подключиться к следующему серверу:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
 		'on_sms' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'ВАЖНО: Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
 		'on_email_body' => "Сервер '%LABEL%' снова доступен:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_title' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
+		'on_pushover_message' => "Сервер '%LABEL%' снова доступен:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Здравствуйте, %user_name%',

@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Administradores</b> Tem total acesso: podem gerenciar servidores, usuários e configurações globais.<br/><b>Usuários</b> só podem executar atualizações para servidores que lhe foram atribuídos.',
         'mobile' => 'Celular',
         'email' => 'Email',
+		'pushover' => 'Pushover',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
 		'delete_title' => 'Delete User',
 		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
 		'deleted' => 'User deleted.',
@@ -104,6 +107,7 @@ $sm_lang = array(
         'status' => 'Status',
         'email' => 'Email',
         'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
     ),
     'servers' => array(
@@ -127,6 +131,7 @@ $sm_lang = array(
         'send_email' => 'Enviar Email',
         'sms' => 'SMS',
         'send_sms' => 'Enviar SMS',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Delete Server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -186,6 +191,8 @@ $sm_lang = array(
         'sms_gateway_username' => 'Usuário do Gateway',
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',
+		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_api_token' => 'Pushover App API Token',
         'alert_type' => 'Selecione como você gostaria de ser notificado.<br/>',
         'alert_type_description' => '<b>Mudança de Status:</b> '.
             'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br/>'.
@@ -194,8 +201,7 @@ $sm_lang = array(
             'A cronjob é a cada 15 minutos e seu servidor caiu em 1:00 e permanece offline até 6 am. '.
             'Você receberá uma notificação a 1:00 apenas<br/>'.
             '<br><b>Sempre:</b> '.
-            'Você receberá uma notificação toda vez que o script é executado e um site esta offline, mesmo se o site tenha ficado '.
-            'offline por horas.',
+            'Você receberá uma notificação toda vez que o script é executado e um site esta offline, mesmo se o site tenha ficado offline por horas.',
         'alert_type_status' => 'Mudança de Status',
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Sempre',
@@ -203,13 +209,15 @@ $sm_lang = array(
         'log_status_description' => 'Se o status de registro é definido como TRUE, o monitor irá registrar o evento sempre que as configurações de notificação forem passadas.',
         'log_email' => 'Registrar no Log os envios de email feitos pelo script?',
         'log_sms' => 'Registrar no Log os envios de mensagens de texto feitos pelo script?',
+		'log_pushover' => 'Log pushover messages sent by the script',
         'updated' => 'A configuração foi atualizada.',
 		'nochanges' => 'The configuration didn\'t change.',
         'tab_email' => 'Email',
         'tab_sms' => 'Texto',
-        'tab_log' => 'Logs',
+		'tab_pushover' => 'Pushover',
         'settings_email' => 'Configuração de email',
         'settings_sms' => 'Configuração de mensagens de texto',
+		'settings_pushover' => 'Pushover settings',
         'settings_notification' => 'Configuração de notificações',
         'settings_log' => 'Configuração de Logs',
         'auto_refresh' => 'Atualizar automaticamente',
@@ -235,9 +243,13 @@ $sm_lang = array(
         'off_sms' => 'Servidor \'%LABEL%\' está OFFLINE: ip=%IP%, porta=%PORT%. Erro=%ERROR%',
         'off_email_subject' => 'IMPORTANTE: Servidor \'%LABEL%\' está OFFLINE',
         'off_email_body' => "Falha ao conectar ao servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Erro: %ERROR%<br/>Data: %DATE%",
+        'off_pushover_title' => 'Servidor \'%LABEL%\' está OFFLINE',
+        'off_pushover_message' => "Falha ao conectar ao servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Erro: %ERROR%<br/>Data: %DATE%",
         'on_sms' => 'Servidor \'%LABEL%\' esta ONLINE: ip=%IP%, porta=%PORT%',
         'on_email_subject' => 'IMPORTANTE: Servidor \'%LABEL%\' esta ONLINE',
         'on_email_body' => "Servidor '%LABEL%' esta ONLINE novamente:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+        'on_pushover_title' => 'Servidor \'%LABEL%\' esta ONLINE',
+        'on_pushover_message' => "Servidor '%LABEL%' esta ONLINE novamente:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
     ),
 	'login' => array(
 		'welcome_usermenu' => 'Bem vindo, %user_name%',

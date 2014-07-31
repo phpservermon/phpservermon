@@ -164,22 +164,28 @@ class StatusNotifier {
 			);
 		}
 
+		$users = $this->getUsers($this->server_id);
+
+		if(empty($users)) {
+			return $notify;
+		}
+
 		// check if email is enabled for this server
 		if($this->send_emails && $this->server['email'] == 'yes') {
 			// send email
-			$this->notifyByEmail();
+			$this->notifyByEmail($users);
 		}
 
 		// check if sms is enabled for this server
 		if($this->send_sms && $this->server['sms'] == 'yes') {
 			// yay lets wake those nerds up!
-			$this->notifyByTxtMsg();
+			$this->notifyByTxtMsg($users);
 		}
 
 		// check if pushover is enabled for this server
 		if($this->send_pushover && $this->server['pushover'] == 'yes') {
 			// yay lets wake those nerds up!
-			$this->notifyByPushover();
+			$this->notifyByPushover($users);
 		}
 
 		return $notify;
@@ -188,16 +194,11 @@ class StatusNotifier {
 	/**
 	 * This functions performs the email notifications
 	 *
+	 * @param array $users
 	 * @return boolean
 	 */
-	protected function notifyByEmail() {
+	protected function notifyByEmail($users) {
 		$userlist = array();
-
-		$users = $this->getUsers($this->server_id);
-
-		if (empty($users)) {
-			return false;
-		}
 
 		// build mail object with some default values
 		$mail = psm_build_mail();
@@ -226,53 +227,43 @@ class StatusNotifier {
 	/**
 	 * This functions performs the pushover notifications
 	 *
+	 * @param array $users
 	 * @return boolean
 	 */
-	protected function notifyByPushover() {
+	protected function notifyByPushover($users) {
 		$userlist = array();
-
-		$users = $this->getUsers($this->server_id);
-
-		if (empty($users)) {
-			return false;
-		}
-
-		// build pushover object with some default values
 		$pushover = psm_build_pushover();
 
-		if($this->status_new === true)
-		{
+		if($this->status_new === true) {
 			$pushover->setPriority(0);
-		}else
-		{
+		} else {
 			$pushover->setPriority(2);
 			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
 			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
 		}
-		//$pushover->setCallback('http://some.url/runscript.php'); // The callback parameter must be a URL (HTTP or HTTPS) that is reachable from the Internet that our servers will call out to as soon as the notification has been acknowledged.
 		$pushover->setTimestamp(time());
-		//$pushover->setDebug(true);
-		//$pushover->setSound('bike');
-
-		$this->server['MONITORURL']=$url = "http".(!empty($_SERVER['HTTPS'])?"s":"").":\/\/".$_SERVER['SERVER_NAME'];
 
 		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
-		
+
 		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
 		$pushover->setMessage(str_replace('<br/>', "\n", $message));
+		// @todo fix url when script is executed via CLI
+//		$pushover->setUrl($url);
+//		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
 
-		$pushover->setUrl(psm_parse_msg($this->status_new, 'pushover_url', $this->server));
-		$pushover->setUrlTitle(psm_parse_msg($this->status_new, 'pushover_url_title', $this->server));
-
-		// go through empl
-	    foreach ($users as $user) {
+	    foreach($users as $user) {
+			if(trim($user['pushover_key']) == '') {
+				continue;
+			}
+			$userlist[] = $user['user_id'];
 			$pushover->setUser($user['pushover_key']);
-			$pushover->setDevice($user['pushover_device']);
+			if($user['pushover_device'] != '') {
+				$pushover->setDevice($user['pushover_device']);
+			}
 			$pushover->send();
 	    }
 
 	    if(psm_get_conf('log_pushover')) {
-	    	// save to log
 	    	psm_add_log($this->server_id, 'pushover', $message, implode(',', $userlist));
 	    }
 	}
@@ -280,16 +271,10 @@ class StatusNotifier {
 	/**
 	 * This functions performs the text message notifications
 	 *
-	 * @return unknown
+	 * @param array $users
+	 * @return boolean
 	 */
-	protected function notifyByTxtMsg() {
-		// send sms to all users for this server using defined gateway
-		$users = $this->getUsers($this->server_id);
-
-		if (empty($users)) {
-			return false;
-		}
-
+	protected function notifyByTxtMsg($users) {
 		$sms = psm_build_sms();
 		if(!$sms) {
 			return false;

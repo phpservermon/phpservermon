@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Administratore</b> har fuld adgang: De kan styre servere, brugere og indstillingere.<br/><b>Brugere</b> kan kun se og køre opdatere for servere som er tildelt til dem.',
 		'mobile' => 'Mobil',
 		'email' => 'Email',
+		'pushover' => 'Pushover',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
 		'delete_title' => 'Slet bruger',
 		'delete_message' => 'Er du sikker på du vil slette bruger \'%1\'?',
 		'deleted' => 'Bruger slettet.',
@@ -104,6 +107,7 @@ $sm_lang = array(
 		'status' => 'Status',
 		'email' => 'Email',
 		'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'Intet i loggen',
 	),
 	'servers' => array(
@@ -127,6 +131,7 @@ $sm_lang = array(
 		'send_email' => 'Send Email',
 		'sms' => 'SMS',
 		'send_sms' => 'Send SMS',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Slet server',
 		'delete_message' => 'Er du sikker på du vil slette server \'%1\'?',
@@ -186,16 +191,17 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
 		'sms_from' => 'Afsenders navn.',
+		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_api_token' => 'Pushover App API Token',
 		'alert_type' => 'Vælg hvornår du vil modtage besked.<br/>',
-       'alert_type_description' => '<b>Status ændring:</b> '.
+		'alert_type_description' => '<b>Status ændring:</b> '.
 		    'Du vil modtage en notifcation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
 		    '<br /><b>Offline:</b> '.
 		    'Du vil modtage en meddelelse, når en server går offline for * kun første gang *. for eksempel, '.
 		    'Hvis dit cronjob køre hvert kvatere og din server går ned kl 01 og kommer først op kl 06 '.
 		    ' så vil du kun modtage en mail kl 01.<br/>'.
 		    '<br><b>Altid:</b> '.
-		    'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været '.
-		    'offline i flere timer.',
+		    'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
 		'alert_type_status' => 'Status ændret',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altid',
@@ -203,13 +209,15 @@ $sm_lang = array(
 		'log_status_description' => 'Hvis log status er sat til TRUE, vil monitoren logge hændelsen hver gang status ændre sig.',
 		'log_email' => 'Log mails sendt af systemet',
 		'log_sms' => 'Log SMS sendt af systemet',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => 'Indstillingerne er blevet opdateret.',
 		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
-		'tab_log' => 'Log',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Email indstillinger',
 		'settings_sms' => 'SMS indstillinger',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Meddelelse indstillinger',
 		'settings_log' => 'Log indstillinger',
 		'auto_refresh' => 'Genopfriske automatisk',
@@ -235,9 +243,13 @@ $sm_lang = array(
 		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Fejl=%ERROR%',
 		'off_email_subject' => 'VIGTIG: Server \'%LABEL%\' is DOWN',
 		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
+		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Date: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'VIGTIG: Server \'%LABEL%\' is RUNNING',
 		'on_email_body' => "Server '%LABEL%' køre igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
+		'on_pushover_message' => "Server '%LABEL%' køre igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Velkommen, %user_name%',

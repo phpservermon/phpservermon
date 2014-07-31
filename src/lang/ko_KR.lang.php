@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
 		'mobile' => '휴대폰',
 		'email' => 'Email',
+		'pushover' => 'Pushover',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
 		'delete_title' => 'Delete User',
 		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
 		'deleted' => 'User deleted.',
@@ -104,6 +107,7 @@ $sm_lang = array(
 		'status' => '상태',
 		'email' => 'email',
 		'sms' => 'sms',
+		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
 	),
 	'servers' => array(
@@ -127,6 +131,7 @@ $sm_lang = array(
 		'send_email' => '메일 전송',
 		'sms' => 'SMS 전송',
 		'send_sms' => 'SMS 전송',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Delete Server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -186,6 +191,8 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
+		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_api_token' => 'Pushover App API Token',
 		'alert_type' => '알림을 원하면 다음과 같이 변경하십시오..<br/>',
 		'alert_type_description' => '<b>상태 변경: </b><br/>'.
 			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.
@@ -194,6 +201,7 @@ $sm_lang = array(
 			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />' .
 			'<br/><b>항상: </b><br/>'.
 			'사이트가 다운되었을 때 매시간 알림을 받습니다.',
+
 		'alert_type_status' => '상태 변경',
 		'alert_type_offline' => '오프라인',
 		'alert_type_always' => '항상',
@@ -201,13 +209,15 @@ $sm_lang = array(
 		'log_status_description' => '로그상태가 TRUE이면 알림설정이 통과할때마다 이벤트를 기록합니다.',
 		'log_email' => '이메일로 로그를 전송하시겠습니까?',
 		'log_sms' => 'SMS로 로그를 전송하시겠습니까?',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => '설정이 수정되었습니다.',
 		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
-		'tab_log' => '로그',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Email 설정',
 		'settings_sms' => 'SMS 설정',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => '알림 설정',
 		'settings_log' => '로그 설정',
 		'auto_refresh' => 'Auto-refresh',
@@ -233,9 +243,13 @@ $sm_lang = array(
 		'off_sms' => '서버(\'%LABEL%\')가 다운되었습니다. : ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => '중요: 서버(\'%LABEL%\')가 다운되었습니다.',
 		'off_email_body' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_title' => '서버(\'%LABEL%\')가 다운되었습니다.',
+		'off_pushover_message' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%',
 		'on_email_subject' => '중요: 서버(\'%LABEL%\')가 가동중입니다.',
 		'on_email_body' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_title' => '서버(\'%LABEL%\')가 가동중입니다.',
+		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

@@ -143,7 +143,7 @@ class Installer {
 					('sms_gateway_username', 'username'),
 					('sms_gateway_password', 'password'),
 					('sms_from', '1234567890'),
-					('pushover_status', '1'),
+					('pushover_status', '0'),
 					('pushover_api_token', ''),
 					('alert_type', 'status'),
 					('log_status', '1'),
@@ -200,7 +200,7 @@ class Installer {
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
-						  `type` enum('status','email','sms') NOT NULL,
+						  `type` enum('status','email','sms','pushover') NOT NULL,
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  `user_id` varchar(255) NOT NULL,
@@ -221,7 +221,7 @@ class Installer {
 						  `active` enum('yes','no') NOT NULL default 'yes',
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
-						  `pushover` enum('yes','no') NOT NULL default 'no',
+						  `pushover` enum('yes','no') NOT NULL default 'yes',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
@@ -398,14 +398,16 @@ class Installer {
 
 	protected function upgrade310() {
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('pushover_status', '1');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('log_pushover', '1');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('pushover_api_token', '');";
-
+		psm_update_conf('pushover_status', 1);
+		psm_update_conf('log_pushover', 1);
+		psm_update_conf('pushover_api_token', '');
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";		
-		
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENOM( 'yes','no' ) NOT NULL DEFAULT 'no' AFTER  `sms`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
 						`user_id` int(11) unsigned NOT NULL,
@@ -413,7 +415,7 @@ class Installer {
 						`value` varchar(255) NOT NULL,
 						PRIMARY KEY (`user_id`, `key`)
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
+
 		$this->execSQL($queries);
 	}
 }

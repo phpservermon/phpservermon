@@ -10,9 +10,6 @@
 			<th class="hidden-phone">{label_rtime}</th>
 			<th class="hidden-phone">{label_last_online}</th>
 			<th class="hidden-phone">{label_monitoring}</th>
-			<th class="visible-desktop">{label_email}</th>
-			<th class="visible-desktop">{label_sms}</th>
-			<th class="visible-desktop">{label_pushover}</th>
 			<th class="hidden-phone">{label_action}</th>
 		</tr>
 	</thead>
@@ -27,10 +24,7 @@
 			<td class="nowrap visible-desktop"><div class="table-cell-title">{type}</div></td>
 			<td class="nowrap hidden-phone"><div class="table-cell-title">{rtime} s</div></td>
 			<td class="nowrap hidden-phone"><div class="table-cell-title">{last_online}</div></td>
-			<td class="tight visible-tablet"><div class="table-cell-title"><i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i></div></td>
-			<td class="tight visible-desktop"><div class="table-cell-title">{active}</div></td>
-			<td class="tight visible-desktop"><div class="table-cell-title">{email}</div></td>
-			<td class="tight visible-desktop"><div class="table-cell-title">{sms}</div></td>
+			<td class="tight hidden-phone"><div class="table-cell-title"><i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i> <i class="{pushover_icon}" title="Pushover"></i></div></td>
 			<td class="tight hidden-phone">
 				<div class="table-cell-title">
 					<a class="btn btn-small" href="index.php?mod=server&amp;action=view&amp;id={server_id}"><i class="icon-chart"></i></a>
@@ -52,7 +46,7 @@
 					<div class="table-row">
 						<div class="table-cell"><i class="{type_icon}" title="{type}"></i> {ip_short}</div>
 						<div class="table-cell tight">
-							<i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i>
+							<i class="{active_icon}" title="{active_title}"></i> <i class="{email_icon}" title="{label_email}"></i> <i class="{sms_icon}" title="{label_sms}"></i> <i class="{pushover_icon}" title="Pushover"></i>
 						</div>
 					</div>
 				</div>
@@ -142,7 +136,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="pushover">{label_send_pushover}</label>
+			<label class="control-label" for="pushover">{label_pushover}</label>
 			<div class="controls">
 				<select id="pushover" name="pushover">
 					<option value="yes" {edit_pushover_selected_yes}>{label_yes}</option>

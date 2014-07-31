@@ -3,8 +3,34 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "63c9618391ed04b38b098c0139b50570",
+    "hash": "6a941e5369d421e16d869151569bc5c7",
     "packages": [
+        {
+            "name": "php-pushover/php-pushover",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpservermon/php-pushover.git",
+                "reference": "d13d08dbf5f1cfa73f4adca7e8d27f79c804dd7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpservermon/php-pushover/zipball/d13d08dbf5f1cfa73f4adca7e8d27f79c804dd7b",
+                "reference": "d13d08dbf5f1cfa73f4adca7e8d27f79c804dd7b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Pushover.php"
+                ]
+            },
+            "description": "PHP class for the Pushover.net project",
+            "support": {
+                "source": "https://github.com/phpservermon/php-pushover/tree/master"
+            },
+            "time": "2014-07-30 13:55:53"
+        },
         {
             "name": "phpmailer/phpmailer",
             "version": "v5.2.6",
@@ -60,17 +86,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.4.3",
+            "version": "v2.4.8",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "11ad7352c7bfa12145a0df8e1c4c303c585ce169"
+                "reference": "68abe34601c519359b60363b99c29ecfb6679bc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/11ad7352c7bfa12145a0df8e1c4c303c585ce169",
-                "reference": "11ad7352c7bfa12145a0df8e1c4c303c585ce169",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/68abe34601c519359b60363b99c29ecfb6679bc4",
+                "reference": "68abe34601c519359b60363b99c29ecfb6679bc4",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +137,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-26 11:35:33"
+            "time": "2014-07-15 14:07:10"
         }
     ],
     "packages-dev": [
@@ -121,9 +147,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "php-pushover/php-pushover": 20
+    },
     "platform": {
         "php": ">=5.3.7"
     },

@@ -237,8 +237,8 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'email';
 			} elseif(isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
 				$this->default_tab = 'sms';
-			} elseif(isset($_POST['logging_submit'])) {
-				$this->default_tab = 'logging';
+			} elseif(isset($_POST['pushover_submit'])) {
+				$this->default_tab = 'pushover';
 			}
 		}
 		$this->initializeAction('index');
@@ -253,7 +253,6 @@ class ConfigController extends AbstractController {
 				'label_tab_email' => psm_get_lang('config', 'tab_email'),
 				'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 				'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
-				'label_tab_log' => psm_get_lang('config', 'tab_log'),
 				'label_settings_email' => psm_get_lang('config', 'settings_email'),
 				'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 				'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),

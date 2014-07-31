@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Администраторите</b> имат пълен достъп: могат да управляват сървърите, потребителите и да редактират глобалните настройки.<br/><b>Потребителите</b> могат само да виждат статуса на сървърите и да обнояват информацията за даден сървър, за който им е разрешен достъп.',
 		'mobile' => 'Мобилен телефон',
 		'email' => 'Имейл',
+		'pushover' => 'Pushover',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
 		'delete_title' => 'Изтриване на потребител',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете потребител \'%1\'?',
 		'deleted' => 'Потребителят е изтрит успешно.',
@@ -104,6 +107,7 @@ $sm_lang = array(
 		'status' => 'Статус',
 		'email' => 'Имейл',
 		'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'Няма налични логове',
 	),
 	'servers' => array(
@@ -127,6 +131,7 @@ $sm_lang = array(
 		'send_email' => 'Имейл',
 		'sms' => 'SMS',
 		'send_sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'users' => 'Users',
 		'delete_title' => 'Изтриване на сървър',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете сървър \'%1\'?',
@@ -186,6 +191,8 @@ $sm_lang = array(
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
+		'pushover_status' => 'Allow sending pushover messages',
+		'pushover_api_token' => 'Pushover App API Token',
 		'alert_type' => 'Изберете кога желаете да получавате известия<br/>',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
 			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
@@ -194,8 +201,7 @@ $sm_lang = array(
 			'вашия cron скрипт проверява всеки 15 минути и връзката до сървъра е изгубена в 1 часа през нощта и не работи до 6 часа сутринта '.
 			'Вие ще получите едно известие в 1 часа за това<br/>'.
 			'<br><b>Винаги:</b><br> '.
-			'Ще получавате известие при всяка проверка на Вашия крон скрипт дори когато връзката до даден сървър или сайт е била'.
-			'прекъсната в продължение на часове.',
+			'Ще получавате известие при всяка проверка на Вашия крон скрипт дори когато връзката до даден сървър или сайт е била прекъсната в продължение на часове.',
 		'alert_type_status' => 'Промяна на статуса',
 		'alert_type_offline' => 'Офлайн',
 		'alert_type_always' => 'Винаги',
@@ -203,13 +209,15 @@ $sm_lang = array(
 		'log_status_description' => 'Ако е отметнато, системата ще записва всяка промяна.',
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => 'Настройките са обновени успешно.',
 		'nochanges' => 'Не бяха направени промени!',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
-		'tab_log' => 'Логове',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
@@ -235,9 +243,13 @@ $sm_lang = array(
 		'off_sms' => 'Сървър \'%LABEL%\' е Офлайн: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
+		'off_pushover_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
+		'off_pushover_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
 		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_pushover_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
+		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Добре дошъл, %user_name%',

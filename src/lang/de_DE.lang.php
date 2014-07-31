@@ -201,8 +201,7 @@ $sm_lang = array(
 			'Sie bekommen eine Benachrichtigung, wenn ein Server Offline ist.<br/>'.
 			'Es wird nur eine Mitteilung versendet.<br/>'.
 			'<br/><b>Immer: </b>'.
-			'Sie werden jedesmal wenn der CronJob oder das Script ausgef&uuml;hrt wird benachrichtigt,<br>'.
-			'auch wenn der Dienst mehreres Stunden offline ist',
+			'Sie werden jedesmal wenn der CronJob oder das Script ausgef&uuml;hrt wird benachrichtigt auch wenn der Dienst mehreres Stunden offline ist',
 		'alert_type_status' => 'Status ge&auml;ndert',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Immer',
@@ -216,10 +215,9 @@ $sm_lang = array(
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
-		'tab_log' => 'Log',
 		'settings_email' => 'Email',
 		'settings_sms' => 'SMS Nachricht',
-		'settings_pushover' => 'Pushover',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Benachrichtigung',
 		'settings_log' => 'Log',
 		'auto_refresh' => 'Auto-refresh',
@@ -245,17 +243,13 @@ $sm_lang = array(
 		'off_sms' => 'Server \'%LABEL%\' ist Offline: ip=%IP%, port=%PORT%. Fehler=%ERROR%',
 		'off_email_subject' => 'Wichtig: Server \'%LABEL%\' ist Offline',
 		'off_email_body' => "Kann keine Verbindung zum Server aufbauen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE%",
-		'off_pushover_title' => '\'%LABEL%\' Offline',
-		'off_pushover_message' => 'Server \'%LABEL%\'<br/>ist Offline<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%',
-		'off_pushover_url_title' => 'SERVER MONITOR',
-		'off_pushover_url' => '%MONITORURL%',
+		'off_pushover_title' => 'Server \'%LABEL%\' ist Offline',
+		'off_pushover_message' => "Kann keine Verbindung zum Server aufbauen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' ist wieder Online: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Wichtig: Server \'%LABEL%\' ist wieder Online',
 		'on_email_body' => "Server '%LABEL%' l&auml;uft wieder:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%",
-		'on_pushover_title' => '\'%LABEL%\' Online',
-		'on_pushover_message' => 'Server \'%LABEL%\'<br/>ist wieder Online<br/>IP: %IP%<br/>Port: %PORT%',
-		'on_pushover_url_title' => 'SERVER MONITOR',
-		'on_pushover_url' => '%MONITORURL%',
+		'on_pushover_title' => 'Server \'%LABEL%\' ist wieder Online',
+		'on_pushover_message' => "Server '%LABEL%' l&auml;uft wieder:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',
