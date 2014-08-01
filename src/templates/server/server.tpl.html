@@ -131,8 +131,8 @@
 						</select>
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="email">{label_send_email}</label>
+				<div class="control-group {control_class_email}">
+					<label class="control-label" for="email">{label_send_email} {warning_email}</label>
 					<div class="controls">
 						<select id="email" name="email">
 							<option value="yes" {edit_email_selected_yes}>{label_yes}</option>
@@ -140,8 +140,8 @@
 						 </select>
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="sms">{label_send_sms}</label>
+				<div class="control-group {control_class_sms}">
+					<label class="control-label" for="sms">{label_send_sms} {warning_sms}</label>
 					<div class="controls">
 						<select id="sms" name="sms">
 							<option value="yes" {edit_sms_selected_yes}>{label_yes}</option>
@@ -149,8 +149,8 @@
 						</select>
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="pushover">{label_pushover}</label>
+				<div class="control-group {control_class_pushover}">
+					<label class="control-label" for="pushover">{label_pushover} {warning_pushover}</label>
 					<div class="controls">
 						<select id="pushover" name="pushover">
 							<option value="yes" {edit_pushover_selected_yes}>{label_yes}</option>
@@ -182,3 +182,7 @@
 	</fieldset>
 </form>
 <!--%%tpl_server_update-->
+
+<!--%tpl_server_update_warning-->
+<p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{label_warning}"></i></p>
+<!--%%tpl_server_update_warning-->

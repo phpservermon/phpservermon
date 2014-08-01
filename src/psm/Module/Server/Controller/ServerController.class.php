@@ -220,10 +220,20 @@ class ServerController extends AbstractServerController {
 			));
 		}
 
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			$tpl_data
-		);
+		$notifications = array('email', 'sms', 'pushover');
+		$this->tpl->newTemplate('server_update_warning', 'server/server.tpl.html');
+		foreach($notifications as $notification) {
+			if(psm_get_conf($notification . '_status') == 0) {
+				$tpl_data['control_class_' . $notification] = 'warning';
+				$tpl_data['warning_' . $notification] = $this->tpl->addTemplateData(
+					$this->tpl->getTemplate('server_update_warning'),
+					array('label_warning' => psm_get_lang('servers', 'warning_notifications_disabled_' . $notification)),
+					true
+				);
+			}
+		}
+
+		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
 	}
 
 	/**
@@ -234,8 +244,6 @@ class ServerController extends AbstractServerController {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
-
-
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),

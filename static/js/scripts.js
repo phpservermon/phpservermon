@@ -77,6 +77,10 @@ function psm_tooltips() {
 		'placement': 'right',
 		'container': 'body'
 	});
+	$('i[data-toggle="tooltip"]').tooltip({
+		'trigger':'hover',
+		'placement': 'bottom'
+	});
 }
 
 function psm_goTo(url) {
