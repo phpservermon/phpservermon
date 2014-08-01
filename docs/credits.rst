@@ -58,6 +58,9 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Pushover.net support
 
+* Alexander Moore <http://www.famfamfam.com/>
+
+  * Icon
 
 Translators
 +++++++++++
