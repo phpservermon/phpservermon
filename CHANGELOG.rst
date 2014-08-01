@@ -5,6 +5,7 @@ not yet released
 ----------------
 
 Features:
+
 * #52: Uptime percentage per server for the last week.
 * #101: Pushover.net support.
 * #54: Improved phone/tablet compatibility.
@@ -17,6 +18,7 @@ Features:
 * #82: Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 
 Bugs:
+
 * #50: Validation on servers page.
 * #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
 * #66: Unable to add users with MySQL in strict mode.
