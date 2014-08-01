@@ -190,7 +190,7 @@ class ServerController extends AbstractServerController {
 				$user_idc_selected = $this->getServerUsers($this->server_id);
 				foreach($users as &$user) {
 					if(in_array($user['user_id'], $user_idc_selected)) {
-						$user['edit_checked'] = 'checked="checked"';
+						$user['edit_selected'] = 'selected="selected"';
 					}
 				}
 
@@ -443,8 +443,6 @@ class ServerController extends AbstractServerController {
 				'label_yes' => psm_get_lang('system', 'yes'),
 				'label_no' => psm_get_lang('system', 'no'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
-				'label_check_all' => psm_get_lang('system', 'check_all'),
-				'label_uncheck_all' => psm_get_lang('system', 'uncheck_all'),
 			)
 		);
 

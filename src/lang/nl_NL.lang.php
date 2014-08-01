@@ -58,8 +58,6 @@ $sm_lang = array(
 		'a_minute_ago' => 'een minuut geleden',
 		'seconds_ago' => '%d seconden geleden',
 		'a_second_ago' => 'een seconde geleden',
-		'check_all' => 'Selecteer alles',
-		'uncheck_all' => 'Deselecteer alles',
 	),
 	'menu' => array(
 		'config' => 'Configuratie',

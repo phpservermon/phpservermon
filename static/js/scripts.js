@@ -40,6 +40,11 @@ $().ready(function() {
 		}
 		return false;
 	});
+	$('select.multiselect').multiselect({
+		includeSelectAllOption: true,
+		maxHeight: 400,
+		enableCaseInsensitiveFiltering: true
+	});
 
 	psm_flash_message();
 	psm_tooltips();

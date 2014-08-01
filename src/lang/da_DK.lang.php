@@ -58,8 +58,6 @@ $sm_lang = array(
 		'a_minute_ago' => 'omkring et minut siden',
 		'seconds_ago' => '%d sekunder siden',
 		'a_second_ago' => 'et sekund siden',
-		'check_all' => 'Check all',
-		'uncheck_all' => 'Uncheck all',
 	),
 	'menu' => array(
 		'config' => 'Indstillinger',

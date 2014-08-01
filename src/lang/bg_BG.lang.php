@@ -58,8 +58,6 @@ $sm_lang = array(
 		'a_minute_ago' => 'преди минута',
 		'seconds_ago' => 'преди %d секунди',
 		'a_second_ago' => 'преди секунда',
-		'check_all' => 'Check all',
-		'uncheck_all' => 'Uncheck all',
 	),
 	'menu' => array(
 		'config' => 'Настройки',

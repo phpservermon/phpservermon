@@ -58,8 +58,6 @@ $sm_lang = array(
 		'a_minute_ago' => '1分钟前',
 		'seconds_ago' => '%d 秒前',
 		'a_second_ago' => '刚刚',
-		'check_all' => 'Check all',
-		'uncheck_all' => 'Uncheck all',
 	),
 	'menu' => array(
 		'config' => '设置',

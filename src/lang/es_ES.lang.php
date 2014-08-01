@@ -58,8 +58,6 @@ $sm_lang = array(
 		'a_minute_ago' => 'about a minute ago',
 		'seconds_ago' => '%d seconds ago',
 		'a_second_ago' => 'a second ago',
-		'check_all' => 'Check all',
-		'uncheck_all' => 'Uncheck all',
 	),
 	'menu' => array(
 		'config' => 'Configurar',

@@ -168,7 +168,7 @@ class UserController extends AbstractController {
 
 			foreach($this->servers as &$server) {
 				if(in_array($server['server_id'], $user_servers)) {
-					$server['edit_checked'] = 'checked="checked"';
+					$server['edit_selected'] = 'selected="selected"';
 					$server['class'] = 'active';
 				}
 			}
@@ -329,8 +329,6 @@ class UserController extends AbstractController {
 				'label_edit' => psm_get_lang('system', 'edit'),
 				'label_delete' => psm_get_lang('system', 'delete'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
-				'label_check_all' => psm_get_lang('system', 'check_all'),
-				'label_uncheck_all' => psm_get_lang('system', 'uncheck_all'),
 				'icon_level_10' => 'icon-admin',
 				'icon_level_20' => 'icon-user',
 			)
