@@ -1,0 +1,15 @@
+{% extends "module/install/main.tpl.html" %}
+{% use "module/install/results.tpl.html" %}
+
+{% block install %}
+<p>Welcome to the installation of PHP Server Monitor. This page will guide you through the steps to install or upgrade your monitor.</p>
+<p>Before we start, we need to verify your system meets the requirements.
+   If you see any errors in the list below, you may still continue, but PHP Server Monitor may not work correctly.
+   It is recommended you fix any errors before continuing.
+</p>
+{{ block('results') }}
+<p>&nbsp;</p>
+<p>
+	<a class="btn btn-primary btn-large" href="install.php?action=config">Let's go</a>
+</p>
+{% endblock %}

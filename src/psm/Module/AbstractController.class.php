@@ -27,7 +27,6 @@
 
 namespace psm\Module;
 use psm\Service\Database;
-use psm\Service\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController implements ControllerInterface {
@@ -99,17 +98,10 @@ abstract class AbstractController implements ControllerInterface {
 	protected $db;
 
 	/**
-	 * Template object
-	 * @var \psm\Service\Template $tpl
+	 * Twig object
+	 * @var \Twig_Environment $twig
 	 */
-	protected $tpl;
-
-	/**
-	 * Template Id that should be added to the main template
-	 * @var string
-	 * @see setTemplateId() getTemplateId()
-	 */
-	protected $tpl_id;
+	protected $twig;
 
 	/**
 	 * User service
@@ -144,9 +136,9 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected $xhr = false;
 
-	function __construct(Database $db, Template $tpl) {
+	function __construct(Database $db, \Twig_Environment $twig) {
 		$this->db = $db;
-		$this->tpl = $tpl;
+		$this->twig = $twig;
 	}
 
 	/**
@@ -170,7 +162,7 @@ abstract class AbstractController implements ControllerInterface {
 		}
 
 		// no response returned from execute, create regular HTML
-		return $this->createHTML();
+		return $this->createHTML($result);
 	}
 
 	/**
@@ -202,29 +194,23 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Create the HTML code for the module.
 	 *
-	 * First the createHTMLLabels() will be called to add all labels to the template,
-	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically.
 	 * If XHR is on, no main template will be added.
 	 *
+	 * @param string $html HTML code to add to the main body
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	protected function createHTML() {
-		$tpl_id_content = $this->getTemplateId();
-		$html = '';
-
-		if($this->xhr) {
+	protected function createHTML($html = null) {
+		if(!$this->xhr) {
 			// in XHR mode, we will not add the main template
-			if($tpl_id_content) {
-				$this->createHTMLLabels();
-				$html = $this->tpl->display($tpl_id_content);
-			}
-		} else {
-			// regular request, add main frame
-			$tpl_data = array();
+			$tpl_data = array(
+				'title' => strtoupper(psm_get_lang('system', 'title')),
+				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
+				'add_footer' => $this->add_footer,
+				'version' => 'v' . PSM_VERSION,
+				'messages' => $this->getMessages(),
+				'html_content' => $html,
+			);
 
-			if(!empty($this->messages)) {
-				$this->tpl->addTemplateDataRepeat('main', 'messages', $this->messages);
-			}
 			// add menu to page?
 			if($this->add_menu) {
 				$tpl_data['html_menu'] = $this->createHTMLMenu();
@@ -245,16 +231,6 @@ abstract class AbstractController implements ControllerInterface {
 			if($this->sidebar !== null) {
 				$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
 			}
-			// add footer to page?
-			if($this->add_footer) {
-				$this->tpl->newTemplate('main_footer', 'main.tpl.html');
-				$tpl_data['html_footer'] = $this->tpl->getTemplate('main_footer');
-				$tpl_data['version'] = 'v' . PSM_VERSION;
-			}
-
-			if($tpl_id_content) {
-				$tpl_data['content'] = $this->tpl->getTemplate($tpl_id_content);
-			}
 
 			if(psm_update_available()) {
 				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
@@ -263,12 +239,7 @@ abstract class AbstractController implements ControllerInterface {
 			if($this->black_background) {
 				$tpl_data['body_class'] = 'black_background';
 			}
-
-			// add the module's custom template to the main template to get some content
-			$this->setTemplateId('main');
-			$this->tpl->addTemplatedata($this->getTemplateId(), $tpl_data);
-			$this->createHTMLLabels();
-			$html = $this->tpl->display($this->getTemplateId());
+			$html = $this->twig->render('main/body.tpl.html', $tpl_data);
 		}
 
 		$response = new Response($html);
@@ -282,9 +253,6 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected function createHTMLMenu() {
 		$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
-
-		$tpl_id = 'main_menu';
-		$this->tpl->newTemplate($tpl_id, 'main.tpl.html');
 
 		$tpl_data = array(
 			'label_help' => psm_get_lang('menu', 'help'),
@@ -305,16 +273,13 @@ abstract class AbstractController implements ControllerInterface {
 				$items = array();
 				break;
 		}
-		$menu = array();
+		$tpl_data['menu'] = array();
 		foreach($items as $key) {
-			$menu[] = array(
+			$tpl_data['menu'][] = array(
 				'active' => ($key == psm_GET('mod')) ? 'active' : '',
 				'url' => psm_build_url(array('mod' => $key)),
 				'label' => psm_get_lang('menu', $key),
 			);
-		}
-		if(!empty($menu)) {
-			$this->tpl->addTemplateDataRepeat($tpl_id, 'menu', $menu);
 		}
 
 		if($ulvl != PSM_USER_ANONYMOUS) {
@@ -325,51 +290,7 @@ abstract class AbstractController implements ControllerInterface {
 				psm_get_lang('login', 'welcome_usermenu')
 			);
 		}
-		$this->tpl->addTemplateData($tpl_id, $tpl_data);
-
-		return $this->tpl->getTemplate($tpl_id);
-	}
-
-	/**
-	 * Use this to add language specific labels to template
-	 *
-	 * @see createHTML()
-	 */
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			'main',
-			array(
-				'title' => strtoupper(psm_get_lang('system', 'title')),
-				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
-			)
-		);
-	}
-
-	/**
-	 * Set a template id that will be added to the main template automatically
-	 * once you call the parent::createHTML()
-	 *
-	 * @param string $tpl_id
-	 * @param string $tpl_file if given, the tpl_id will be created automatically from this file
-	 * @see getTemplateId() createHTML()
-	 */
-	public function setTemplateId($tpl_id, $tpl_file = null) {
-		$this->tpl_id = $tpl_id;
-
-		if($tpl_file != null) {
-			// tpl_file given, try to load the template..
-			$this->tpl->newTemplate($tpl_id, $tpl_file);
-		}
-	}
-
-	/**
-	 * Get the mpalte id that will be added to the main template
-	 *
-	 * @return string
-	 * @see setTemplateId()
-	 */
-	public function getTemplateId() {
-		return $this->tpl_id;
+		return $this->twig->render('main/menu.tpl.html', $tpl_data);
 	}
 
 	/**
@@ -424,7 +345,8 @@ abstract class AbstractController implements ControllerInterface {
 	 * Add one or multiple message to the stack to be displayed to the user
 	 * @param string|array $msg
 	 * @param string $shortcode info/success/warning/error
-	 * @return \psm\Module\AbstractModule
+	 * @return \psm\Module\ControllerInterface
+	 * @see getMessages()
 	 */
 	public function addMessage($msg, $shortcode = 'info') {
 		if(!is_array($msg)) {
@@ -453,6 +375,20 @@ abstract class AbstractController implements ControllerInterface {
 			);
 		}
 		return $this;
+	}
+
+	/**
+	 * Get all messages (and optionally clear them)
+	 * @param boolean $clear
+	 * @return array
+	 * @see addMessage()
+	 */
+	public function getMessages($clear = true) {
+		$msgs = $this->messages;
+		if($clear) {
+			$this->messages = array();
+		}
+		return $msgs;
 	}
 
 	/**

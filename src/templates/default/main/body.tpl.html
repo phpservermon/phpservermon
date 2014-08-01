@@ -1,0 +1,79 @@
+{% block header %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+	<link rel="icon" type="image/png" href="favicon.png" />
+	{% if auto_refresh %}
+	<meta http-equiv="refresh" content="{{ auto_refresh_seconds }}" />
+	{% endif %}
+    <!-- Le styles -->
+    <link href="static/plugin/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/plugin/twitter-bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    <script type="text/javascript" src="static/plugin/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+    <script type="text/javascript" src="static/js/scripts.js"></script>
+  </head>
+{% endblock %}
+  <body data-spy="scroll" data-target=".subnav" data-offset="50" class="{{ body_class }}">
+    <!-- navbar -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="index.php">{{ title }}</a>
+{{ html_menu|raw }}
+        </div>
+      </div>
+    </div>
+    <!-- /navbar -->
+
+	{{ html_modal|raw }}
+    <!-- container -->
+    <div id="main-container">
+		<div class="page-header">
+			<div class="header-label"><h1>{{ subtitle }}</h1></div>
+			<div class="header-accessories">{{ header_accessories|raw }}</div>
+		</div>
+		<div id="main-content">
+			{{ html_sidebar|raw }}
+			<div id="page-container">
+				<div id="flashmessage" class="hide">
+					{% for msg in messages %}
+					<div class="alert alert-{{ msg.shortcode }}">
+						<p class="pull-left span1"><i class="icon-{{ msg.icon }}"></i></p>
+						<p>{{ msg.message }}</p>
+					</div>
+					{% endfor %}
+				</div>
+				{{ html_content|raw }}
+			</div>
+		</div>
+		{% if add_footer %}
+			{% block footer %}
+			<footer class="footer">
+			  <p class="pull-right"><a href="#">{{ label_back_to_top }}</a></p>
+			  <p class="powered"><small>Powered by <a href="http://www.phpservermonitor.org/" target="_blank">PHP Server Monitor {{ version }}</a>.<br/>{{ update_available }}</small></p>
+			</footer>
+			{% endblock %}
+		{% endif %}
+	</div>
+    <!-- /container -->
+    </body>
+</html>

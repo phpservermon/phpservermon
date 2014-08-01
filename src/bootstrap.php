@@ -47,7 +47,10 @@ if(file_exists($path_conf)) {
 	include_once $path_conf;
 }
 // check for a debug var
-if(defined('PSM_DEBUG') && PSM_DEBUG) {
+if(!defined('PSM_DEBUG')) {
+	define('PSM_DEBUG', false);
+}
+if(PSM_DEBUG) {
 	error_reporting(E_ALL);
 	ini_set('display_erors', 1);
 } else {

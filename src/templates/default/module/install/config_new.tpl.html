@@ -1,0 +1,61 @@
+{% extends "module/install/main.tpl.html" %}
+{% use "module/install/results.tpl.html" %}
+
+{% block install %}
+<div class="row-fluid">
+	<div class="span12">{{ block('results') }}</div>
+</div>
+<div class="row-fluid">
+   <div class="span6">
+	<form id="psm_config" class="form-horizontal" action="install.php?action=config" method="post">
+	  <p>Please enter your database info:</p>
+	  <div class="control-group">
+		<label class="control-label" for="host">Database host</label>
+		<div class="controls">
+		  <input type="text" id="host" name="host" value="{{ host }}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="name">Database name</label>
+		<div class="controls">
+		  <input type="text" id="name" name="name" value="{{ name }}" placeholder="db name" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="user">Database user</label>
+		<div class="controls">
+		  <input type="text" id="user" name="user" value="{{ user }}" placeholder="db user" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="pass">Database password</label>
+		<div class="controls">
+		  <input type="password" id="pass" name="pass" value="{{ pass }}" placeholder="db password" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="prefix">Table prefix</label>
+		<div class="controls">
+		  <input type="text" id="prefix" name="prefix" value="{{ prefix }}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<div class="controls">
+		  <button type="submit" class="btn">Save configuration</button>
+		</div>
+	  </div>
+	</form>
+   </div>
+   {% if include_config_new_copy %}
+	<div class="span6">
+		<h3>Your config file:</h3>
+		<div class="alert alert-error">Unable to save your configuration.</div>
+		<p>Your database information is valid, however we are unable to create the configuration file automatically.
+		Please create a new file in the project directory called "config.php" and copy the information below.</p>
+		<p>After you have copied the configuration, press the button to continue.</p>
+		<p class="pull-left"><textarea rows="10">{{ php_config }}</textarea></p>
+		<p class="offset2"><input type="submit" class="btn btn-primary" value="I have saved the configuration" onclick="location.reload(true);" /></p>
+	</div>
+   {% endif %}
+</div>
+{% endblock %}

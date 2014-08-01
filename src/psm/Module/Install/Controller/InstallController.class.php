@@ -29,7 +29,6 @@
 namespace psm\Module\Install\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 class InstallController extends AbstractController {
 
@@ -45,8 +44,8 @@ class InstallController extends AbstractController {
 	 */
 	protected $path_config_old;
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
 		$this->addMenu(false);
@@ -57,33 +56,14 @@ class InstallController extends AbstractController {
 		$this->setActions(array(
 			'index', 'config', 'install'
 		), 'index');
-	}
 
-	protected function createHTML() {
-		$html_results = '';
-		if(!empty($this->messages)) {
-			$this->tpl->newTemplate('install_results', 'install/install.tpl.html');
-			$this->tpl->addTemplateDataRepeat('install_results', 'resultmsgs', $this->messages);
-			$html_results = $this->tpl->getTemplate('install_results');
-			$this->messages = array();
-		}
-		$tpl_id = $this->getTemplateId();
-		$this->setTemplateId('install', 'install/install.tpl.html');
-
-		$this->tpl->addTemplateData($this->getTemplateId(), array(
-			'html_install' => $this->tpl->getTemplate($tpl_id),
-			'html_results' => $html_results,
-		));
-
-		return parent::createHTML();
+		$this->twig->addGlobal('subtitle', psm_get_lang('system,', 'install'));
 	}
 
 	/**
 	 * Say hi to our new user
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('install_index', 'install/install.tpl.html');
-
 		// build prerequisites
 		$errors = 0;
 
@@ -110,13 +90,17 @@ class InstallController extends AbstractController {
 		if($errors > 0) {
 			$this->addMessage($errors . ' error(s) have been encountered. Please fix them and refresh this page.', 'error');
 		}
+
+		return $this->twig->render('module/install/index.tpl.html', array(
+			'messages' => $this->getMessages()
+		));
 	}
 
 	/**
 	 * Help the user create a new config file
 	 */
 	protected function executeConfig() {
-		$this->setTemplateId('install_config_new', 'install/install.tpl.html');
+		$tpl_name = 'module/install/config_new.tpl.html';
 		$tpl_data = array();
 
 		if(!defined('PSM_DB_PREFIX')) {
@@ -168,8 +152,7 @@ class InstallController extends AbstractController {
 						$this->addMessage('Configuration file written successfully.', 'success');
 					} else {
 						$this->addMessage('Config file is not writable, we cannot save it for you.', 'error');
-						$this->tpl->newTemplate('install_config_new_copy', 'install/install.tpl.html');
-						$tpl_data['html_config_copy'] = $this->tpl->getTemplate('install_config_new_copy');
+						$tpl_data['include_config_new_copy'] = true;
 						$tpl_data['php_config'] = $config_php;
 					}
 				} else {
@@ -185,14 +168,14 @@ class InstallController extends AbstractController {
 					if(version_compare($this->getPreviousVersion(), '3.0.0', '<')) {
 						// upgrade from before 3.0, does not have passwords yet.. create new user first
 						$this->addMessage('Your current version does not have an authentication system, but since v3.0 access to the monitor is restricted by user accounts. Please set up a new account to be able to login after the upgrade, and which you can use to change the passwords for your other accounts.', 'info');
-						$this->setTemplateId('install_config_new_user', 'install/install.tpl.html');
+						$tpl_name = 'module/install/config_new_user.tpl.html';
 					} else {
-						$this->setTemplateId('install_config_upgrade', 'install/install.tpl.html');
+						$tpl_name = 'module/install/config_upgrade.tpl.html';
 						$tpl_data['version'] = PSM_VERSION;
 					}
 				} else {
 					// fresh install ahead
-					$this->setTemplateId('install_config_new_user', 'install/install.tpl.html');
+					$tpl_name = 'module/install/config_new_user.tpl.html';
 
 					$tpl_data['username'] = (isset($_POST['username'])) ? $_POST['username'] : '';
 					$tpl_data['email'] = (isset($_POST['email'])) ? $_POST['email'] : '';
@@ -201,7 +184,8 @@ class InstallController extends AbstractController {
 				$this->addMessage('Configuration file found, but unable to connect to MySQL. Please check your information.', 'error');
 			}
 		}
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		$tpl_data['messages'] = $this->getMessages();
+		return $this->twig->render($tpl_name, $tpl_data);
 	}
 
 	/**
@@ -280,7 +264,9 @@ class InstallController extends AbstractController {
 			}
 		}
 
-		$this->setTemplateId('install_success', 'install/install.tpl.html');
+		return $this->twig->render('module/install/success.tpl.html', array(
+			'messages' => $this->getMessages()
+		));
 	}
 
 	/**
@@ -362,16 +348,5 @@ class InstallController extends AbstractController {
 			}
 			return $version_from;
 		}
-	}
-
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('system', 'install'),
-			)
-		);
-
-		return parent::createHTMLLabels();
 	}
 }

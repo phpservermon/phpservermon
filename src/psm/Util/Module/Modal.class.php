@@ -27,52 +27,51 @@
  **/
 
 namespace psm\Util\Module;
-use psm\Service\Template;
 
 class Modal implements ModalInterface {
-	
+
 	const MODAL_TYPE_OK = 0;
 	const MODAL_TYPE_OKCANCEL = 1;
 	const MODAL_TYPE_DANGER = 2;
 
 	/**
-	 * Template service
-	 * @var \psm\Service\Template $tpl
-	 */
-	protected $tpl;
-	
-	/**
 	 * prefix used for modal dialog box elements
-	 * @var string $modal_id 
+	 * @var string $modal_id
 	 */
 	protected $modal_id;
-	
+
 	/**
-	 * @var int $type Type of modal dialog 
+	 * @var int $type Type of modal dialog
 	 */
 	protected $type;
-	
+
 	/**
 	 * Modal dialog title
 	 * @var string $title
 	 */
 	protected $title;
-	
+
 	/**
 	 * Modal dialog message
 	 * @var string $body
 	 */
 	protected $message;
-	
+
 	/**
 	 * label of the OK button
 	 * @var string $ok_label
 	 */
 	protected $ok_label;
 
-	public function __construct(Template $tpl, $modal_id = 'main', $type = self::MODAL_TYPE_OK ) {
+	/**
+	 * Twig environment
+	 * @var \Twig_Environment $twig
+	 */
+	protected $twig;
+
+	public function __construct(\Twig_Environment $twig, $modal_id = 'main', $type = self::MODAL_TYPE_OK ) {
 		$this->modal_id = $modal_id;
-		$this->tpl = $tpl;
+		$this->twig = $twig;
 		$this->type = $type;
 	}
 
@@ -83,7 +82,7 @@ class Modal implements ModalInterface {
 	public function getModalID() {
 		return $this->modal_id;
 	}
-	
+
 	/**
 	 * Set the modal dialog type
 	 * @param int $type
@@ -95,7 +94,7 @@ class Modal implements ModalInterface {
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the modal dialog title
 	 * @param string $title
@@ -105,7 +104,7 @@ class Modal implements ModalInterface {
 		$this->title = $title;
 		return $this;
 	}
-	
+
 	/**
 	 * Set the modal dialog message
 	 * @param string $message
@@ -115,41 +114,36 @@ class Modal implements ModalInterface {
 		$this->message = $message;
 		return $this;
 	}
-	
+
 	public function setOKButtonLabel($label) {
 		$this->ok_label = $label;
 		return $this;
 	}
-	
-	public function createHTML() {
-		$tpl_id = 'main_modal_container';
-		$this->tpl->newTemplate($tpl_id, 'main_modal.tpl.html');
 
+	public function createHTML() {
 		$has_cancel = ($this->type == self::MODAL_TYPE_OK) ? false : true;
 		$button_type = ($this->type == self::MODAL_TYPE_DANGER) ? 'danger' : 'primary';
 		$button_label = empty($this->ok_label) ? psm_get_lang('system', 'ok') : $this->ok_label;
-
 		$message = !empty($this->message) ? $this->message : '';
+
 		$matches = array();
 		if(preg_match_all('/%(\d)/', $message, $matches, PREG_SET_ORDER)) {
 			foreach($matches as $match) {
 				$message = str_replace($match[0], '<span class="modalP' . $match[1] . '"></span>', $message);
 			}
 		}
-		
-		$this->tpl->addTemplateData($tpl_id, array(
-			'modal_id'			=> $this->modal_id,
-			'modal_title'		=> !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
-			'modal_body'		=> $message,
-			'?has_cancel'		=> $has_cancel,
-			'label_cancel'		=> psm_get_lang('system', 'cancel'),
+
+		$tpl = $this->twig->loadTemplate('util/module/modal.tpl.html');
+		$html = $tpl->render(array(
+			'modal_id'          => $this->modal_id,
+			'modal_title'       => !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
+			'modal_body'        => $message,
+			'has_cancel'       => $has_cancel,
+			'label_cancel'      => psm_get_lang('system', 'cancel'),
 			'modal_button_type' => $button_type,
 			'modal_button_label'=> $button_label,
 		));
-		
-		
-		$html = $this->tpl->getTemplate($tpl_id);
 
 		return $html;
-	}	
+	}
 }

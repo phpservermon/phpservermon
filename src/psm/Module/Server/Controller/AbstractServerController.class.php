@@ -29,12 +29,11 @@
 namespace psm\Module\Server\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 abstract class AbstractServerController extends AbstractController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 	}
 
 	/**

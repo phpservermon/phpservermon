@@ -1,0 +1,20 @@
+{% extends "module/install/main.tpl.html" %}
+{% use "module/install/results.tpl.html" %}
+
+{% block install %}
+<div class="row-fluid">
+	<div class="span12">{{ block('results') }}</div>
+</div>
+<div class="row-fluid">
+   <div class="span12">
+	   <p>&nbsp;</p>
+	   <p>The installation is complete. Please check above if errors have occurred.<br>
+If no errors have occurred, you are good to go.<br><br></p>
+	<p>
+		<a class="btn btn-primary btn-large" href="index.php">Go to your monitor</a>
+		<a class="btn btn-large" target="_blank" href="http://www.phpservermonitor.org/">PHP Server Monitor</a>
+		<a class="btn btn-large" target="_blank" href="http://docs.phpservermonitor.org/">Documentation</a>
+	</p>
+   </div>
+</div>
+{% endblock %}

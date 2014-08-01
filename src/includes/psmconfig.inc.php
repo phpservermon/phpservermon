@@ -101,3 +101,9 @@ define('PSM_CRON_TIMEOUT', 600);
  * Default timeout in seconds for curl requests (can be overwritten per-server).
  */
 define('PSM_CURL_TIMEOUT', 10);
+
+
+/**
+ * Name of the default theme.
+ */
+define('PSM_THEME', 'default');

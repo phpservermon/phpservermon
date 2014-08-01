@@ -200,7 +200,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
-		'alert_type' => 'Изберете кога желаете да получавате известия<br/>',
+		'alert_type' => 'Изберете кога желаете да получавате известия',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
 			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
 			'<br/><b>Офлайн</b><br>'.

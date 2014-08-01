@@ -27,15 +27,14 @@
 
 namespace psm\Module\Server\Controller;
 use psm\Service\Database;
-use psm\Service\Template;
 
 /**
  * Log module. Create the page to view previous log messages
  */
 class LogController extends AbstractServerController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setActions('index', 'index');
 	}
@@ -44,7 +43,21 @@ class LogController extends AbstractServerController {
 	 * Prepare the template with a list of all log entries
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('server_log_list', 'server/log.tpl.html');
+		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_log'));
+		$tpl_data = array(
+			'label_status' => psm_get_lang('log', 'status'),
+			'label_email' => psm_get_lang('log', 'email'),
+			'label_sms' => psm_get_lang('log', 'sms'),
+			'label_pushover' => psm_get_lang('log', 'pushover'),
+			'label_title' => psm_get_lang('log', 'title'),
+			'label_server' => psm_get_lang('servers', 'server'),
+			'label_type' => psm_get_lang('log', 'type'),
+			'label_message' => psm_get_lang('system', 'message'),
+			'label_date' => psm_get_lang('system', 'date'),
+			'label_users' => ucfirst(psm_get_lang('menu', 'user')),
+			'label_no_logs' => psm_get_lang('log', 'no_logs'),
+			'tabs' => array(),
+		);
 		$log_types = array('status', 'email', 'sms', 'pushover');
 
 		// get users
@@ -58,6 +71,13 @@ class LogController extends AbstractServerController {
 		foreach($log_types as $key) {
 			$records = $this->getEntries($key);
 			$log_count = count($records);
+
+			$tab_data = array(
+				'id' => $key,
+				'has_users' => ($key == 'status') ? false : true,
+				'no_logs' => ($log_count == 0) ? true : false,
+				'tab_active' => ($key == 'status') ? 'active' : '',
+			);
 
 			for ($x = 0; $x < $log_count; $x++) {
 				$record = &$records[$x];
@@ -88,25 +108,10 @@ class LogController extends AbstractServerController {
 					$record['user_list'] = implode('&nbsp;&bull; ', $names);
 				}
 			}
-
-			// add entries to template
-			$this->tpl->newTemplate('server_log_entries', 'server/log.tpl.html');
-			$this->tpl->addTemplateDataRepeat('server_log_entries', 'entries', $records);
-			$this->tpl->addTemplateData(
-				'server_log_entries',
-				array(
-					'logtitle' => $key,
-					'?has_users' => ($key == 'status') ? false : true,
-					'?no_logs' => ($log_count == 0) ? true : false,
-				)
-			);
-			$this->tpl->addTemplateData(
-				$this->getTemplateId(),
-				array(
-					'content_' . $key => $this->tpl->getTemplate('server_log_entries'),
-				)
-			);
+			$tab_data['entries'] = $records;
+			$tpl_data['tabs'][] = $tab_data;
 		}
+		return $this->twig->render('module/server/log.tpl.html', $tpl_data);
 	}
 
 	/**
@@ -142,28 +147,5 @@ class LogController extends AbstractServerController {
 			'LIMIT 0,20'
 		);
 		return $entries;
-	}
-
-	// override parent::createHTMLLabels()
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('menu', 'server_log'),
-				'label_status' => psm_get_lang('log', 'status'),
-				'label_email' => psm_get_lang('log', 'email'),
-				'label_sms' => psm_get_lang('log', 'sms'),
-				'label_pushover' => psm_get_lang('log', 'pushover'),
-				'label_title' => psm_get_lang('log', 'title'),
-				'label_server' => psm_get_lang('servers', 'server'),
-				'label_type' => psm_get_lang('log', 'type'),
-				'label_message' => psm_get_lang('system', 'message'),
-				'label_date' => psm_get_lang('system', 'date'),
-				'label_users' => ucfirst(psm_get_lang('menu', 'user')),
-				'label_no_logs' => psm_get_lang('log', 'no_logs'),
-			)
-		);
-
-		return parent::createHTMLLabels();
 	}
 }

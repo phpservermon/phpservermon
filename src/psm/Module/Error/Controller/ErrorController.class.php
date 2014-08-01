@@ -29,12 +29,11 @@
 namespace psm\Module\Error\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 class ErrorController extends AbstractController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
 
@@ -45,10 +44,11 @@ class ErrorController extends AbstractController {
 
 	/**
 	 * 401 error page
+	 *
+	 * @return string
 	 */
 	protected function execute401() {
-		$this->setTemplateId('error', 'error/error.tpl.html');
-		$this->tpl->addTemplateData('error', array(
+		return $this->twig->render('module/error/401.tpl.html', array(
 			'label_title' => psm_get_lang('error', '401_unauthorized'),
 			'label_description' => psm_get_lang('error', '401_unauthorized_description'),
 		));

@@ -28,7 +28,6 @@
 
 namespace psm\Util\Server;
 use psm\Service\Database;
-use psm\Service\Template;
 
 /**
  * History util, create HTML for server graphs
@@ -42,14 +41,14 @@ class HistoryGraph {
 	protected $db;
 
 	/**
-	 * Template service
-	 * @var \psm\Service\Template $tpl
+	 * Twig environment
+	 * @var \Twig_Environment $twig
 	 */
-	protected $tpl;
+	protected $twig;
 
-	function __construct(Database $db, Template $tpl) {
+	function __construct(Database $db, \Twig_Environment $twig) {
 		$this->db = $db;
-		$this->tpl = $tpl;
+		$this->twig = $twig;
 	}
 
 	/**
@@ -57,9 +56,6 @@ class HistoryGraph {
 	 * @return string
 	 */
 	public function createHTML($server_id) {
-		$tpl_id = 'server_history';
-		$this->tpl->newTemplate($tpl_id, 'server/history.tpl.html');
-
 		$graphs = array(
 			0 => $this->generateGraphUptime($server_id),
 			1 => $this->generateGraphHistory($server_id),
@@ -84,20 +80,16 @@ class HistoryGraph {
 			}
 		}
 
-		$this->tpl->addTemplateDataRepeat($tpl_id, 'graphs', $graphs);
-
-		$this->tpl->addTemplateData(
-			$tpl_id,
-			array(
-				'label_server' => psm_get_lang('servers', 'server'),
-				'day_format' => psm_get_lang('servers', 'chart_day_format'),
-				'long_date_format' => psm_get_lang('servers', 'chart_long_date_format'),
-				'short_date_format' => psm_get_lang('servers', 'chart_short_date_format'),
-				'short_time_format' => psm_get_lang('servers', 'chart_short_time_format'),
-			)
+		$tpl_data = array(
+			'graphs' => $graphs,
+			'label_server' => psm_get_lang('servers', 'server'),
+			'day_format' => psm_get_lang('servers', 'chart_day_format'),
+			'long_date_format' => psm_get_lang('servers', 'chart_long_date_format'),
+			'short_date_format' => psm_get_lang('servers', 'chart_short_date_format'),
+			'short_time_format' => psm_get_lang('servers', 'chart_short_time_format'),
 		);
 
-		return $this->tpl->getTemplate($tpl_id);
+		return $this->twig->render('module/server/history.tpl.html', $tpl_data);
 	}
 
 	/**

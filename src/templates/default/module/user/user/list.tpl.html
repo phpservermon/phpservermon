@@ -1,0 +1,66 @@
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="hidden-phone">{{ label_user }}</th>
+			<th class="visible-desktop">{{ label_name }}</th>
+			<th class="visible-desktop">{{ label_level }}</th>
+			<th class="hidden-phone">{{ label_email }}</th>
+			<th class="hidden-phone">{{ label_mobile }}</th>
+			<th class="hidden-phone">{{ label_servers }}</th>
+			<th class="hidden-phone tight">{{ label_action }}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for user in users %}
+	<tr>
+		<td>
+			<div class="table-body">
+				<div class="table-cell-title">
+					<span class="nowrap">
+						<span class="hidden-desktop">
+							{% if user.level == '10' %}
+							<i class="icon-admin" title="{{ user.level_text }}"></i>&nbsp;
+							{% elseif user.level == '20' %}
+							<i class="icon-user" title="{{ user.level_text }}"></i>&nbsp;
+							{% endif %}
+						</span>
+						<span class="title">{{ user.user_name }}</span>
+					</span>
+					<span class="hidden-desktop">({{ user.name }})</span>
+				</div>
+				<div class="table-cell tight">
+					<div class="visible-phone">
+						<a class="btn btn-small" href="{{ user.url_edit|raw }}" title="{{ user.label_edit }}">
+							<i class="icon-pencil"></i>
+						</a>
+						<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
+							<i class="icon-remove icon-white"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="visible-phone">
+				<div class="table-body">
+					<div class="table-row"><div class="table-cell-details tight">{{ label_email }}:&nbsp;</div><div class="table-cell-details">{{ user.email }}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{{ label_mobile }}:&nbsp;</div><div class="table-cell-details">{{ user.mobile }}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{{ label_servers }}:&nbsp;</div><div class="table-cell-details">{% for server in user.emp_servers %} {{ server.label }}<br/> {% endfor %}</div></div>
+				</div>
+			</div>
+		</td>
+		<td class="visible-desktop nowrap"><div class="table-cell-title">{{ user.name }}</div></td>
+		<td class="visible-desktop tight"><div class="table-cell-title">{{ user.level_text }}</div></td>
+		<td class="hidden-phone tight"><div class="table-cell-title">{{ user.email }}</div></td>
+		<td class="hidden-phone tight"><div class="table-cell-title">{{ user.mobile }}</div></td>
+		<td class="hidden-phone"><div class="table-cell-title">{% for server in user.emp_servers %} {{ server.label }}<br/> {% endfor %}</div></td>
+		<td class="hidden-phone tight">
+			<a class="btn btn-small" href="{{ user.url_edit|raw }}" title="{{ label_edit }}">
+				<i class="icon-pencil"></i>
+			</a>
+			<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
+				<i class="icon-remove icon-white"></i>
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+ </table>

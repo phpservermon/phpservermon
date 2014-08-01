@@ -28,11 +28,10 @@
 
 namespace psm\Module;
 use psm\Service\Database;
-use psm\Service\Template;
 
 interface ControllerInterface {
 
-	public function __construct(Database $db, Template $tpl);
+	public function __construct(Database $db, \Twig_Environment $twig);
 
 	/**
 	 * Initialize the module

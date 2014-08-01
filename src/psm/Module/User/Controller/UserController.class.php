@@ -28,7 +28,6 @@
 namespace psm\Module\User\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 /**
  * User module. Add, edit and delete users, or assign
@@ -43,14 +42,15 @@ class UserController extends AbstractController {
 	 */
 	protected $user_validator;
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ADMIN);
 
 		$this->setActions(array(
 			'index', 'edit', 'delete', 'save',
 		), 'index');
+		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'user'));
 	}
 
 	public function initialize() {
@@ -65,11 +65,12 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * Prepare the template to show a list of all users
+	 * Create HTML to show a list of all users
+	 *
+	 * @return string
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('user_list', 'user/user.tpl.html');
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
 		$this->setSidebar($sidebar);
 
 		$sidebar->addButton(
@@ -79,7 +80,7 @@ class UserController extends AbstractController {
 			'plus icon-white', 'success'
 		);
 
-		$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+		$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
 		$this->addModal($modal);
 		$modal->setTitle(psm_get_lang('users', 'delete_title'));
 		$modal->setMessage(psm_get_lang('users', 'delete_message'));
@@ -102,15 +103,17 @@ class UserController extends AbstractController {
 		foreach($users as $x => &$user) {
 			$user_servers = $this->getUserServers($user['user_id']);
 			$user['class'] = ($x & 1) ? 'odd' : 'even';
+			$user['level_text'] = psm_get_lang('users', 'level_' . $user['level']);
 
-			$user['emp_servers'] = '';
+			$user['emp_servers'] = array();
 
 			// fix server list
 			foreach($user_servers as $server_id) {
 				if (!isset($servers_labels[$server_id])) continue;
-				$user['emp_servers'] .= $servers_labels[$server_id] . '<br/>';
+				$user['emp_servers'][] = array(
+					'label' => $servers_labels[$server_id]
+				);
 			}
-			$user['emp_servers'] = substr($user['emp_servers'], 0, -5);
 
 			$user['url_delete'] = psm_build_url(array(
 				'mod' => 'user',
@@ -123,14 +126,18 @@ class UserController extends AbstractController {
 				'id' => $user['user_id'],
 			));
 		}
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
+		$tpl_data = $this->getLabels();
+		$tpl_data['users'] = $users;
+
+		return $this->twig->render('module/user/user/list.tpl.html', $tpl_data);
 	}
 
 	/**
-	 * Prepare the template to show the update screen for a user
+	 * Crate HTML for the update screen for a user
+	 *
+	 * @return string
 	 */
 	protected function executeEdit() {
-		$this->setTemplateId('user_update', 'user/user.tpl.html');
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
 
@@ -182,6 +189,8 @@ class UserController extends AbstractController {
 				'action' => 'save',
 				'id' => $user_id,
 			)),
+			'servers' => $this->servers,
+			'user_level' => $lvl_selected,
 		);
 		foreach($fields_prefill as $field) {
 			if(isset($edit_user->$field)) {
@@ -189,17 +198,17 @@ class UserController extends AbstractController {
 			}
 		}
 
-		$ulvls_tpl = array();
+		$tpl_data['levels'] = array();
 		foreach($this->user_validator->getUserLevels() as $lvl) {
-			$ulvls_tpl[] = array(
+			$tpl_data['levels'][] = array(
 				'value' => $lvl,
 				'label' => psm_get_lang('users', 'level_' . $lvl),
-				'selected' => ($lvl == $lvl_selected) ? 'selected="selected"' : '',
 			);
 		}
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'levels', $ulvls_tpl);
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $this->servers);
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+
+		$tpl_data = array_merge($this->getLabels(), $tpl_data);
+
+		return $this->twig->render('module/user/user/update.tpl.html', $tpl_data);
 	}
 
 	/**
@@ -299,42 +308,31 @@ class UserController extends AbstractController {
 		return $this->executeIndex();
 	}
 
-	// override parent::createHTMLLabels()
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('menu', 'user'),
-				'label_users' => psm_get_lang('menu', 'users'),
-				'label_user' => psm_get_lang('users', 'user'),
-				'label_name' => psm_get_lang('users', 'name'),
-				'label_user_name' => psm_get_lang('users', 'user_name'),
-				'label_password' => psm_get_lang('users', 'password'),
-				'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
-				'label_level' => psm_get_lang('users', 'level'),
-				'label_level_10' => psm_get_lang('users', 'level_10'),
-				'label_level_20' => psm_get_lang('users', 'level_20'),
-				'label_level_description' => psm_get_lang('users', 'level_description'),
-				'label_mobile' => psm_get_lang('users', 'mobile'),
-				'label_pushover' => psm_get_lang('users', 'pushover'),
-				'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
-				'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
-				'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
-				'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
-				'label_email' => psm_get_lang('users', 'email'),
-				'label_servers' => psm_get_lang('menu', 'server'),
-				'label_action' => psm_get_lang('system', 'action'),
-				'label_save' => psm_get_lang('system', 'save'),
-				'label_go_back' => psm_get_lang('system', 'go_back'),
-				'label_edit' => psm_get_lang('system', 'edit'),
-				'label_delete' => psm_get_lang('system', 'delete'),
-				'label_add_new' => psm_get_lang('system', 'add_new'),
-				'icon_level_10' => 'icon-admin',
-				'icon_level_20' => 'icon-user',
-			)
+	protected function getLabels() {
+		return array(
+			'label_users' => psm_get_lang('menu', 'users'),
+			'label_user' => psm_get_lang('users', 'user'),
+			'label_name' => psm_get_lang('users', 'name'),
+			'label_user_name' => psm_get_lang('users', 'user_name'),
+			'label_password' => psm_get_lang('users', 'password'),
+			'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
+			'label_level' => psm_get_lang('users', 'level'),
+			'label_level_description' => psm_get_lang('users', 'level_description'),
+			'label_mobile' => psm_get_lang('users', 'mobile'),
+			'label_pushover' => psm_get_lang('users', 'pushover'),
+			'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
+			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
+			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
+			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+			'label_email' => psm_get_lang('users', 'email'),
+			'label_servers' => psm_get_lang('menu', 'server'),
+			'label_action' => psm_get_lang('system', 'action'),
+			'label_save' => psm_get_lang('system', 'save'),
+			'label_go_back' => psm_get_lang('system', 'go_back'),
+			'label_edit' => psm_get_lang('system', 'edit'),
+			'label_delete' => psm_get_lang('system', 'delete'),
+			'label_add_new' => psm_get_lang('system', 'add_new'),
 		);
-
-		return parent::createHTMLLabels();
 	}
 
 	/**

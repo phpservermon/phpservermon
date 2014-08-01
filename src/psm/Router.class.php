@@ -64,8 +64,13 @@ class Router {
 	public function __construct() {
 		global $db;
 		$this->services['db'] = $db;
-		$this->services['tpl'] = new \psm\Service\Template();
 		$this->services['user'] = new \psm\Service\User($db);
+
+		$loader = new \Twig_Loader_Filesystem(PSM_PATH_TPL . PSM_THEME);
+		$this->services['twig'] = new \Twig_Environment($loader);
+		if(PSM_DEBUG) {
+			$this->services['twig']->enableDebug();
+		}
 
 		$modules = $this->getModules();
 
@@ -156,7 +161,7 @@ class Router {
 		if($controller === false) {
 			throw new \InvalidArgumentException('Controller is not registered');
 		}
-		$controller = new $controller($this->services['db'], $this->services['tpl']);
+		$controller = new $controller($this->services['db'], $this->services['twig']);
 
 		if(!$controller instanceof \psm\Module\ControllerInterface) {
 			throw new \Exception('Controller does not use ControllerInterface');

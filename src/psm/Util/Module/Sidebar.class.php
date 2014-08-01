@@ -26,7 +26,6 @@
  **/
 
 namespace psm\Util\Module;
-use psm\Service\Template;
 
 class Sidebar implements SidebarInterface {
 
@@ -51,13 +50,13 @@ class Sidebar implements SidebarInterface {
 	protected $subtitle;
 
 	/**
-	 * Template service
-	 * @var \psm\Service\Template $tpl
+	 * Twig environment
+	 * @var \Twig_Environment $twig
 	 */
-	protected $tpl;
+	protected $twig;
 
-	public function __construct(Template $tpl) {
-		$this->tpl = $tpl;
+	public function __construct(\Twig_Environment $twig) {
+		$this->twig = $twig;
 	}
 
 	/**
@@ -73,7 +72,7 @@ class Sidebar implements SidebarInterface {
 	/**
 	 * Set a custom subtitle (default is module subitle)
 	 * @param string $title
-	 * @return \psm\Util\Moduke\Sidebar
+	 * @return \psm\Util\Module\Sidebar
 	 */
 	public function setSubtitle($title) {
 		$this->subtitle = $title;
@@ -154,11 +153,11 @@ class Sidebar implements SidebarInterface {
 	}
 
 	public function createHTML() {
-		$tpl_id = 'main_sidebar_container';
-		$this->tpl->newTemplate($tpl_id, 'main_sidebar.tpl.html');
-
+		$tpl_data = array(
+			'subtitle' => $this->subtitle,
+		);
 		$types = array('dropdown', 'button', 'link');
-		$items = array();
+		$tpl_data['items'] = array();
 
 		// loop through all types and build their html
 		foreach($types as $type) {
@@ -166,37 +165,17 @@ class Sidebar implements SidebarInterface {
 				// no items for this type
 				continue;
 			}
-			// retrieve template for this type once so we can use it in the loop
-			$tpl_id_type = 'main_sidebar_types_' . $type;
-			$this->tpl->newTemplate($tpl_id_type, 'main_sidebar.tpl.html');
-			$html_type = $this->tpl->getTemplate($tpl_id_type);
 
 			// build html for each individual item
 			foreach($this->items[$type] as $id => $item) {
-				$html_item = $html_type;
-
-				if(isset($item['options'])) {
-					$item['options'] = $this->tpl->addTemplateDataRepeat($html_item, 'options', $item['options'], true);
-
-				}
-				$html_item = $this->tpl->addTemplateData($html_type, $item, true);
-
-				$items[] = array(
-					'html_item' => $html_item,
-					'class_active' => ($id === $this->active_id) ? 'active' : '',
-				);
+				$item['type'] = $type;
+				$item['class_active'] = ($id === $this->active_id) ? 'active' : '';
+				$tpl_data['items'][] = $item;
 			}
 		}
-		if(!empty($items)) {
-			$this->tpl->addTemplateDataRepeat($tpl_id, 'items', $items);
-		}
-		if($this->subtitle !== null) {
-			$this->tpl->addTemplateData($tpl_id, array(
-				'subtitle' => $this->subtitle,
-			));
-		}
 
-		$html = $this->tpl->getTemplate($tpl_id);
+		$tpl = $this->twig->loadTemplate('util/module/sidebar.tpl.html');
+		$html = $tpl->render($tpl_data);
 
 		return $html;
 	}

@@ -200,7 +200,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
-		'alert_type' => 'Cuando desea recibir notificaciones ?<br/>',
+		'alert_type' => 'Cuando desea recibir notificaciones ?',
         'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
 		    'p.ej. online -> offline o offline -> online.<br/>'.
 		    '<br /><b>Offline:</b> '.

@@ -27,7 +27,6 @@
 
 namespace psm\Module\Server\Controller;
 use psm\Service\Database;
-use psm\Service\Template;
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
@@ -40,8 +39,8 @@ class ServerController extends AbstractServerController {
 	 */
 	protected $server_id;
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -53,19 +52,21 @@ class ServerController extends AbstractServerController {
 		$this->setMinUserLevelRequiredForAction(PSM_USER_ADMIN, array(
 			'delete', 'edit', 'save'
 		));
+		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server'));
 	}
 
 	/**
 	 * Prepare the template to show a list of all servers
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('server_list', 'server/server.tpl.html');
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$tpl_data = $this->getLabels();
+		$tpl_data['user_level'] = $this->user->getUserLevel();
+		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
 		$this->setSidebar($sidebar);
 
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
 			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
@@ -77,11 +78,6 @@ class ServerController extends AbstractServerController {
 				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 				'plus icon-white', 'success'
 			);
-			// get the action buttons per server
-			$this->tpl->newTemplate('server_list_admin_actions', 'server/server.tpl.html');
-			$html_actions = $this->tpl->getTemplate('server_list_admin_actions');
-		} else {
-			$html_actions = '';
 		}
 
 		$sidebar->addButton(
@@ -91,8 +87,6 @@ class ServerController extends AbstractServerController {
 			'refresh'
 		);
 
-		// we need an array for our template magic (see below):
-		$html_actions = array('html_actions' => $html_actions);
 		$icons = array(
 			'email' => 'icon-envelope',
 			'sms' => 'icon-mobile',
@@ -103,10 +97,6 @@ class ServerController extends AbstractServerController {
 		$server_count = count($servers);
 
 		for ($x = 0; $x < $server_count; $x++) {
-			// template magic: push the actions html to the front of the server array
-			// so the template handler will add it first. that way the other server vars
-			// will also be replaced in the html_actions template itself
-			$servers[$x] = $html_actions + $servers[$x];
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 
 			if($servers[$x]['type'] == 'website') {
@@ -138,27 +128,24 @@ class ServerController extends AbstractServerController {
 
 			$servers[$x] = $this->formatServer($servers[$x]);
 		}
-		// add servers to template
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers', $servers);
+		$tpl_data['servers'] = $servers;
+		return $this->twig->render('module/server/server/list.tpl.html', $tpl_data);
 	}
 
 	/**
 	 * Prepare the template to show the update screen for a single server
 	 */
 	protected function executeEdit() {
-		$this->setTemplateId('server_update', 'server/server.tpl.html');
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
 
-		$tpl_data = array(
-			'edit_server_id' => $this->server_id,
-			// form url:
-			'url_save' => psm_build_url(array(
-				'mod' => 'server',
-				'action' => 'save',
-				'id' => $this->server_id,
-				'back_to' => $back_to,
-			)),
-		);
+		$tpl_data = $this->getLabels();
+		$tpl_data['edit_server_id'] = $this->server_id;
+		$tpl_data['url_save'] = psm_build_url(array(
+			'mod' => 'server',
+			'action' => 'save',
+			'id' => $this->server_id,
+			'back_to' => $back_to,
+		));
 
 		// depending on where the user came from, add the go back url:
 		if($back_to == 'view' && $this->server_id > 0) {
@@ -167,7 +154,7 @@ class ServerController extends AbstractServerController {
 			$tpl_data['url_go_back'] = psm_build_url(array('mod' => 'server'));
 		}
 
-		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id', 'name'), '', 'name');
+		$tpl_data['users'] = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id', 'name'), '', 'name');
 
 		switch($this->server_id) {
 			case 0:
@@ -188,7 +175,7 @@ class ServerController extends AbstractServerController {
 				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
 				$user_idc_selected = $this->getServerUsers($this->server_id);
-				foreach($users as &$user) {
+				foreach($tpl_data['users'] as &$user) {
 					if(in_array($user['user_id'], $user_idc_selected)) {
 						$user['edit_selected'] = 'selected="selected"';
 					}
@@ -196,7 +183,6 @@ class ServerController extends AbstractServerController {
 
 				break;
 		}
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'users', $users);
 
 		if(!empty($edit_server)) {
 			// attempt to prefill previously posted fields
@@ -221,19 +207,19 @@ class ServerController extends AbstractServerController {
 		}
 
 		$notifications = array('email', 'sms', 'pushover');
-		$this->tpl->newTemplate('server_update_warning', 'server/server.tpl.html');
 		foreach($notifications as $notification) {
 			if(psm_get_conf($notification . '_status') == 0) {
+				$tpl_data['warning_' . $notification] = true;
 				$tpl_data['control_class_' . $notification] = 'warning';
-				$tpl_data['warning_' . $notification] = $this->tpl->addTemplateData(
-					$this->tpl->getTemplate('server_update_warning'),
-					array('label_warning' => psm_get_lang('servers', 'warning_notifications_disabled_' . $notification)),
-					true
+				$tpl_data['label_warning_' . $notification] = psm_get_lang(
+					'servers', 'warning_notifications_disabled_' . $notification
 				);
+			} else {
+				$tpl_data['warning_' . $notification] = false;
 			}
 		}
 
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/server/server/update.tpl.html', $tpl_data);
 	}
 
 	/**
@@ -312,9 +298,9 @@ class ServerController extends AbstractServerController {
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
 		if($back_to == 'view') {
-			$this->initializeAction('view');
+			return $this->initializeAction('view');
 		} else {
-			$this->initializeAction('index');
+			return $this->initializeAction('index');
 		}
 	}
 
@@ -335,7 +321,7 @@ class ServerController extends AbstractServerController {
 			}
 			$this->addMessage(psm_get_lang('servers', 'deleted'), 'success');
 		}
-		$this->initializeAction('index');
+		return $this->initializeAction('index');
 	}
 
 	/**
@@ -351,27 +337,19 @@ class ServerController extends AbstractServerController {
 			return $this->initializeAction('index');
 		}
 
-		$this->setTemplateId('server_view', 'server/view.tpl.html');
-
-		$tpl_data = $this->formatServer($server);
+		$tpl_data = $this->getLabels();
+		$tpl_data = array_merge($tpl_data, $this->formatServer($server));
 
 		// create history HTML
-		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->tpl);
+		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->twig);
 		$tpl_data['html_history'] = $history->createHTML($this->server_id);
 
 		// add edit/delete buttons for admins
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
-			$tpl_id_actions = 'server_view_admin_actions';
-			$this->tpl->newTemplate($tpl_id_actions, 'server/view.tpl.html');
-			// template magic: push the actions html to the front of the server array
-			// so the template handler will add it first. that way the other server vars
-			// will also be replaced in the html_actions template itself
-			$tpl_data = array('html_actions' => $this->tpl->getTemplate($tpl_id_actions)) + $tpl_data;
-
+			$tpl_data['has_admin_actions'] = true;
 			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
-			$tpl_data['server_name'] = $server['label'];
 
-			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
 			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
@@ -380,17 +358,16 @@ class ServerController extends AbstractServerController {
 
 		// add all available servers to the menu
 		$servers = $this->getServers();
-		$options = array();
+		$tpl_data['options'] = array();
 		foreach($servers as $i => $server_available) {
-			$options[] = array(
+			$tpl_data['options'][] = array(
 				'class_active' => ($server_available['server_id'] == $this->server_id) ? 'active' : '',
 				'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server_available['server_id'])),
 				'label' => $server_available['label'],
 			);
 		}
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'options', $options);
 
-		$sidebar = new \psm\Util\Module\Sidebar($this->tpl);
+		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
 		$this->setSidebar($sidebar);
 
 		// check which module the user came from, and add a link accordingly
@@ -402,51 +379,44 @@ class ServerController extends AbstractServerController {
 			'th-list'
 		);
 
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/server/server/view.tpl.html', $tpl_data);
 	}
 
-	// override parent::createHTMLLabels()
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('menu', 'server'),
-				'label_label' => psm_get_lang('servers', 'label'),
-				'label_status' => psm_get_lang('servers', 'status'),
-				'label_domain' => psm_get_lang('servers', 'domain'),
-				'label_timeout' => psm_get_lang('servers', 'timeout'),
-				'label_timeout_description' => psm_get_lang('servers', 'timeout_description'),
-				'label_port' => psm_get_lang('servers', 'port'),
-				'label_type' => psm_get_lang('servers', 'type'),
-				'label_website' => psm_get_lang('servers', 'type_website'),
-				'label_service' => psm_get_lang('servers', 'type_service'),
-				'label_type' => psm_get_lang('servers', 'type'),
-				'label_pattern' => psm_get_lang('servers', 'pattern'),
-				'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
-				'label_last_check' => psm_get_lang('servers', 'last_check'),
-				'label_rtime' => psm_get_lang('servers', 'latency'),
-				'label_last_online' => psm_get_lang('servers', 'last_online'),
-				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
-				'label_email' => psm_get_lang('servers', 'email'),
-				'label_send_email' => psm_get_lang('servers', 'send_email'),
-				'label_sms' => psm_get_lang('servers', 'sms'),
-				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
-				'label_pushover' => psm_get_lang('servers', 'pushover'),
-				'label_users' => psm_get_lang('servers', 'users'),
-				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
-				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
-				'label_action' => psm_get_lang('system', 'action'),
-				'label_save' => psm_get_lang('system', 'save'),
-				'label_go_back' => psm_get_lang('system', 'go_back'),
-				'label_edit' => psm_get_lang('system', 'edit'),
-				'label_delete' => psm_get_lang('system', 'delete'),
-				'label_yes' => psm_get_lang('system', 'yes'),
-				'label_no' => psm_get_lang('system', 'no'),
-				'label_add_new' => psm_get_lang('system', 'add_new'),
-			)
+	protected function getLabels() {
+		return array(
+			'label_label' => psm_get_lang('servers', 'label'),
+			'label_status' => psm_get_lang('servers', 'status'),
+			'label_domain' => psm_get_lang('servers', 'domain'),
+			'label_timeout' => psm_get_lang('servers', 'timeout'),
+			'label_timeout_description' => psm_get_lang('servers', 'timeout_description'),
+			'label_port' => psm_get_lang('servers', 'port'),
+			'label_type' => psm_get_lang('servers', 'type'),
+			'label_website' => psm_get_lang('servers', 'type_website'),
+			'label_service' => psm_get_lang('servers', 'type_service'),
+			'label_type' => psm_get_lang('servers', 'type'),
+			'label_pattern' => psm_get_lang('servers', 'pattern'),
+			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
+			'label_last_check' => psm_get_lang('servers', 'last_check'),
+			'label_rtime' => psm_get_lang('servers', 'latency'),
+			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
+			'label_email' => psm_get_lang('servers', 'email'),
+			'label_send_email' => psm_get_lang('servers', 'send_email'),
+			'label_sms' => psm_get_lang('servers', 'sms'),
+			'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_users' => psm_get_lang('servers', 'users'),
+			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
+			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
+			'label_action' => psm_get_lang('system', 'action'),
+			'label_save' => psm_get_lang('system', 'save'),
+			'label_go_back' => psm_get_lang('system', 'go_back'),
+			'label_edit' => psm_get_lang('system', 'edit'),
+			'label_delete' => psm_get_lang('system', 'delete'),
+			'label_yes' => psm_get_lang('system', 'yes'),
+			'label_no' => psm_get_lang('system', 'no'),
+			'label_add_new' => psm_get_lang('system', 'add_new'),
 		);
-
-		return parent::createHTMLLabels();
 	}
 
 	/**

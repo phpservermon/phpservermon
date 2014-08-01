@@ -1,0 +1,106 @@
+<form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
+	<fieldset>
+		<legend>{{ titlemode }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="label">{{ label_label }}</label>
+			<div class="controls">
+				<input type="text" id="label" name="label" value="{{ edit_value_label }}" maxlength="255" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="ip">{{ label_domain }}</label>
+			<div class="controls">
+				<input type="text" id="ip" name="ip" value="{{ edit_value_ip }}" maxlength="100" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="type">{{ label_type }}</label>
+			<div class="controls">
+				<select id="type" name="type">
+					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
+					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
+				 </select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="port">{{ label_port }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="pattern">{{ label_pattern }}</label>
+			<div class="controls">
+				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="timeout">{{ label_timeout }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="timeout" name="timeout" value="{{ edit_value_timeout }}" placeholder="{{ default_value_timeout }}" maxlength="10" data-toggle="tooltip" title="{{ label_timeout_description }}" /> s
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="active">{{ label_monitoring }}</label>
+			<div class="controls">
+				<select id="active" name="active">
+					<option value="yes" {{ edit_active_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_active_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_email }}">
+			<label class="control-label" for="email">{{ label_send_email }}
+			{% if warning_email %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_email }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="email" name="email">
+					<option value="yes" {{ edit_email_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_email_selected_no|raw }}>{{ label_no }}</option>
+				 </select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_sms }}">
+			<label class="control-label" for="sms">{{ label_send_sms }}
+			{% if warning_sms %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_sms }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="sms" name="sms">
+					<option value="yes" {{ edit_sms_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_sms_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover">{{ label_pushover }}
+			{% if warning_pushover %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushover }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="pushover" name="pushover">
+					<option value="yes" {{ edit_pushover_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_pushover_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="user_id">{{ label_users }}</label>
+			<div class="controls">
+				<select class="multiselect" multiple="multiple" id="user_id" name="user_id[]">
+					{% for user in users %}
+					<option value="{{ user.user_id }}" {{ user.edit_selected|raw }}> {{ user.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-success" type="submit">{{ label_save }}</button>
+			<a class="btn" href="{{ url_go_back|raw }}" >{{ label_go_back }}</a>
+		</div>
+	</fieldset>
+</form>

@@ -200,7 +200,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
-		'alert_type' => 'Choisissez quand vous souhaitez être notifié.<br/>',
+		'alert_type' => 'Choisissez quand vous souhaitez être notifié',
 		'alert_type_description' => '<b>Changement d\'état : </b>'.
 			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br/>'.
 			 '<br/><b>Hors service : </b>'.
