@@ -30,6 +30,7 @@ Bugs:
 * #28: Permission denied page.
 * #53: User selection on server edit page.
 * #115: Warning on server page when notifications are disabled.
+* #117: Template service has been replaced by Twig.
 * Composer added for dependencies.
 
 v3.0.1 (released April 12, 2014)
