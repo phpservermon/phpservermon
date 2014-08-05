@@ -2,8 +2,14 @@ tag = $(shell git describe)
 export_name = phpservermon-$(tag)
 
 help:
-	@echo ' PHP Server Monitor - $(tag) '
-	@echo ' - make export [tag=...]      - create a new release from tag '
+	@echo ' PHP Server Monitor       - $(tag) '
+	@echo ' - make export [tag=...]  - create a new release from tag '
+	@echo ' - make install           - install all dependencies '
+
+install:
+	@echo 'Downloading dependencies using Composer'
+	php composer.phar install
+	@echo 'Install complete '
 
 export:
 	@echo 'Building release for tag $(tag) '
