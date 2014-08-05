@@ -136,9 +136,11 @@ function psm_get_conf($key, $alt = null) {
 function psm_load_conf() {
 	global $db;
 
-	// load config from database into global scope
 	$GLOBALS['sm_config'] = array();
 
+	if(!defined('PSM_DB_PREFIX') || !$db->status()) {
+		return false;
+	}
 	if(!$db->ifTableExists(PSM_DB_PREFIX.'config')) {
 		return false;
 	}

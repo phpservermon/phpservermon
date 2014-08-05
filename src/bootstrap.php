@@ -90,14 +90,7 @@ foreach($includes as $file) {
 $db = new psm\Service\Database();
 
 // sanity check!
-if(defined('PSM_INSTALL') && PSM_INSTALL) {
-	// install mode
-	if($db->status()) {
-		// connection established, attempt to load config.
-		// no biggie if it doesnt work because the user is still in the install module.
-		psm_load_conf();
-	}
-} else {
+if(!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if($db->getDbHost() === null) {
 		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');
