@@ -308,8 +308,13 @@ class ConfigController extends AbstractController {
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),
 			'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
 			'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
+			'label_pushover_clone_app' => psm_get_lang('config', 'pushover_clone_app'),
+			'pushover_clone_url' => PSM_PUSHOVER_CLONE_URL,
 			'label_pushover_api_token' => psm_get_lang('config', 'pushover_api_token'),
-			'label_pushover_api_token_description' => psm_get_lang('config', 'pushover_api_token_description'),
+			'label_pushover_api_token_description' => sprintf(
+				psm_get_lang('config', 'pushover_api_token_description'),
+				PSM_PUSHOVER_CLONE_URL
+			),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),

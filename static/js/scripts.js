@@ -120,13 +120,3 @@ function psm_flash_message(message) {
 		}
 	}
 }
-
-/**
-* This function toggles all grouped checkboxes by name
-*/
-function psm_onClickCheckboxIDCToggleAll(name, value) {
-	var $visible = $('input[name="'+name+'"]:visible');
-
-	var value = (typeof value === 'undefined') ? !$visible.first().is(':checked') : value;
-	$visible.prop('checked', value);
-}

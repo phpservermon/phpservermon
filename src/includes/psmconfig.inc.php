@@ -107,3 +107,8 @@ define('PSM_CURL_TIMEOUT', 10);
  * Name of the default theme.
  */
 define('PSM_THEME', 'default');
+
+/**
+ * Clone URL for the Pushover.net service.
+ */
+define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_monitor');

@@ -193,6 +193,7 @@
             <div class="control-group">
                 <label class="control-label" for="pushover_api_token">{{ label_pushover_api_token }}</label>
                 <div class="controls">
+					<p><button class="btn btn-primary" onclick="window.open('{{ pushover_clone_url }}');return false;">{{ label_pushover_clone_app }}</button></p>
                     <input type="text" id="pushover_api_token" name="pushover_api_token" value="{{ pushover_api_token }}" maxlength="255" />
 					<p class="help-block">{{ label_pushover_api_token_description|raw }}</p>
                 </div>

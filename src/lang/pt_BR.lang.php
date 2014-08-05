@@ -198,8 +198,9 @@ $sm_lang = array(
         'sms_from' => 'Número de telefone de envio',
 		'pushover_status' => 'Allow sending Pushover messages',
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
+		'pushover_clone_app' => 'Click here to create your Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
         'alert_type' => 'Selecione como você gostaria de ser notificado.',
         'alert_type_description' => '<b>Mudança de Status:</b> '.
             'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br/>'.

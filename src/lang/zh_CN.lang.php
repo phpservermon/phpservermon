@@ -198,8 +198,9 @@ $sm_lang = array(
 		'sms_from' => '发信人电话号',
 		'pushover_status' => 'Allow sending Pushover messages',
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
+		'pushover_clone_app' => 'Click here to create your Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to register an App at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
 		'alert_type' => '如果想要收到提醒请选中此项.',
         'alert_type_description' => '<b>状态变化:</b> '.
 		    '服务器 online -> offline 或 offline -> online 的状态变化将会收到提醒.<br/>'.
