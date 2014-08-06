@@ -2,7 +2,7 @@ tag = $(shell git describe)
 export_name = phpservermon-$(tag)
 
 help:
-	@echo ' PHP Server Monitor       - $(tag) '
+	@echo ' PHP Server Monitor - $(tag) '
 	@echo ' - make export [tag=...]  - create a new release from tag '
 	@echo ' - make install           - install all dependencies '
 
@@ -16,7 +16,8 @@ export:
 	mkdir -p ./build ./build/$(export_name)
 	rm -rf ./build/$(export_name)/*
 	git archive $(tag) | tar -xf - -C ./build/$(export_name)/
-	find ./build/$(export_name) -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
+	#find ./build/$(export_name) -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \; # for osx
+	find ./build/$(export_name) -name "*.php" -exec sed -i "s/@package_version@/$(tag)/" {} \; # for linux
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
 	find ./build/$(export_name) -name "*.php" | xargs -I file php -l file
 	@echo 'Downloading dependencies'
@@ -24,7 +25,8 @@ export:
 	rm -f ./build/$(export_name)/composer.phar
 	rm -f ./build/$(export_name)/composer.json
 	rm -f ./build/$(export_name)/composer.lock
-	@echo 'Building HTML documentation'
+	@echo 'Building HTML documentation using sphinx (http://sphinx-doc.org/)'
+	mkdir -p ./build/$(export_name)/docs/html
 	cd ./build/$(export_name)/docs; make BUILDDIR=. html; cd ../../../;
 	@echo 'Cleaning up docs dir'
 	rm -f ./build/$(export_name)/Makefile
