@@ -150,6 +150,7 @@ class Installer {
 					('log_email', '1'),
 					('log_sms', '1'),
 					('log_pushover', '1'),
+					('log_retention_period', '365'),
 					('version', '" . PSM_VERSION . "'),
 					('version_update_check', '" . PSM_VERSION . "'),
 					('auto_refresh_servers', '0'),
@@ -398,6 +399,8 @@ class Installer {
 
 	protected function upgrade310() {
 		$queries = array();
+		psm_update_conf('log_retention_period', '365');
+
 		psm_update_conf('pushover_status', 1);
 		psm_update_conf('log_pushover', 1);
 		psm_update_conf('pushover_api_token', '');

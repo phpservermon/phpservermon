@@ -29,7 +29,6 @@
 namespace psm\Util\Updater;
 use psm\Service\Database;
 use psm\Service\User;
-use psm\Service\Archiver;
 
 /**
  * Run an update on all servers.
@@ -87,9 +86,10 @@ class Autorun {
 			$notifier->notify($server['server_id'], $status_old, $status_new);
 		}
 
-		// clean-up time!! archive all records older than 1 week
-		$archiver = new Archiver($this->db);
-		$archiver->archiveStatus();
+		// clean-up time!! archive all records
+		$archive = new \psm\Util\Server\ArchiveManager($this->db);
+		$archive->archive();
+		$archive->cleanup();
 	}
 
 	/**

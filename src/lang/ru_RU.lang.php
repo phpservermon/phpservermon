@@ -250,6 +250,9 @@ $sm_lang = array(
 		'pushover_error' => 'Произошла ошибка во время отправки Pushover уведомления: %s',
 		'pushover_error_noapp' => 'Не удалось отправить пробное уведомление: Pushover "App API token" не был найден в основных настройках.',
 		'pushover_error_nokey' => 'Не удалось отправить пробное уведомление: Pushover ключ не был найден в вашем профиле.',
+		'log_retention_period' => 'Log retention period',
+		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
+		'log_retention_days' => 'days',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

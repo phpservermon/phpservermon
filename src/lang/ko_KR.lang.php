@@ -250,6 +250,9 @@ $sm_lang = array(
 		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
 		'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global configuration.',
 		'pushover_error_nokey' => 'Unable to send test notification: no Pushover key found in your profile.',
+		'log_retention_period' => 'Log retention period',
+		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
+		'log_retention_days' => 'days',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

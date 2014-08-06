@@ -250,6 +250,9 @@ $sm_lang = array(
 		'pushover_error' => 'De volgende fout is opgetreden bij het versturen van de Pushover notificatie: %s',
 		'pushover_error_noapp' => 'Kan test notificatie niet verzenden: er is geen Pushover App API token gevonden in de algemene configuratie.',
 		'pushover_error_nokey' => 'Kan test notificatie niet verzenden: er is geen Pushover key gevonden in je profiel.',
+		'log_retention_period' => 'Log retentie periode',
+		'log_retention_period_description' => 'Aantal dagen dat logs van notificaties en archieven van server uptime worden bewaard. Vul 0 in om log opruiming uit te zetten.',
+		'log_retention_days' => 'dagen',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

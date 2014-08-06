@@ -112,6 +112,7 @@ class ConfigController extends AbstractController {
 		$tpl_data['sms_selected_' . $config['sms_gateway']] = 'selected="selected"';
 		$tpl_data['alert_type_selected_' . $config['alert_type']] = 'selected="selected"';
 		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
+		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
 
 		foreach($this->checkboxes as $input_key) {
 			$tpl_data[$input_key . '_checked'] =
@@ -148,7 +149,8 @@ class ConfigController extends AbstractController {
 				'language' => $_POST['language'],
 				'sms_gateway' => $_POST['sms_gateway'],
 				'alert_type' => $_POST['alert_type'],
-				'auto_refresh_servers' => (isset($_POST['auto_refresh_servers'])) ? intval($_POST['auto_refresh_servers']) : '0',
+				'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
+				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
 			);
 			foreach($this->checkboxes as $input_key) {
 				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
@@ -330,6 +332,9 @@ class ConfigController extends AbstractController {
 			'label_seconds' => psm_get_lang('config', 'seconds'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'label_test' => psm_get_lang('config', 'test'),
+			'label_log_retention_period' => psm_get_lang('config', 'log_retention_period'),
+			'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
+			'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
 		);
 	}
 }

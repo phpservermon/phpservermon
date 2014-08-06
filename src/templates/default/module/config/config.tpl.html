@@ -27,8 +27,7 @@
             <div class="control-group">
                 <label class="control-label" for="auto_refresh_servers">{{ label_auto_refresh }}</label>
                 <div class="controls">
-                    <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" />&nbsp;{{ label_seconds }}
-					<p class="help-block">{{ label_auto_refresh_servers|raw }}</p>
+                    <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" data-toggle="tooltip" title="{{ label_auto_refresh_servers }}" />&nbsp;{{ label_seconds }}
                 </div>
             </div>
 		  </fieldset>
@@ -50,10 +49,15 @@
             <legend>{{ label_settings_log }}</legend>
             <div class="control-group">
 				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="log_status" name="log_status[]" {{ log_status_checked|raw }} /> {{ label_log_status }}</label>
-					<p class="help-block">{{ label_log_status_description|raw }}</p>
+					<label class="checkbox"><input type="checkbox" id="log_status" name="log_status[]" {{ log_status_checked|raw }} data-toggle="tooltip" title="{{ label_log_status_description }}" /> {{ label_log_status }}</label>
 				</div>
 			</div>
+            <div class="control-group">
+                <label class="control-label" for="log_retention_period">{{ label_log_retention_period }}</label>
+                <div class="controls">
+					<input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
+                </div>
+            </div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
             </div>

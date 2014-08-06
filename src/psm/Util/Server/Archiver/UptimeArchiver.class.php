@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Pepijn Over <pep@neanderthal-technology.com>
+ *              Jérôme Cabanis <http://lauraly.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -36,10 +37,10 @@
  *
  * @see \psm\Util\Updater\Autorun
  */
-namespace psm\Service;
+namespace psm\Util\Server\Archiver;
 use psm\Service\Database;
 
-class Archiver {
+class UptimeArchiver implements ArchiverInterface {
 
 	/**
 	 * Database service
@@ -56,29 +57,23 @@ class Archiver {
 	 *
 	 * Archiving means calculating averages per day, and storing 1 single
 	 * history row for each day for each server.
+	 *
+	 * @param int $server_id
 	 */
-	public function archiveStatus() {
+	public function archive($server_id = null) {
 		$latest_date = new \DateTime('-1 week 0:0:0');
-		$timestamp = $latest_date->getTimestamp();
-
-		// Check if archiving is necessary
-		$last_archive = psm_get_conf('last_archive_time', 0);
-		if($timestamp <= $last_archive) {
-			return false;
-		}
-
-		psm_update_conf('last_archive_time', $timestamp);
 
 		// Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
 		$this->db->exec('LOCK TABLES ' . PSM_DB_PREFIX . 'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
 
 		$latest_date_str = $latest_date->format('Y-m-d 00:00:00');
 
+		$sql_where_server = $this->createSQLWhereServer($server_id);
+
 		$records = $this->db->execute(
 			"SELECT `server_id`,`date`,`status`,`latency`
 				FROM `" . PSM_DB_PREFIX."servers_uptime`
-				WHERE `date` < :latest_date
-				ORDER BY `date` ASC",
+				WHERE {$sql_where_server} `date` < :latest_date",
 			array('latest_date'	=> $latest_date_str));
 
 		if(!empty($records)) {
@@ -106,22 +101,24 @@ class Archiver {
 
 			// now remove all records from the uptime table
 			$this->db->execute(
-				"DELETE FROM `".PSM_DB_PREFIX."servers_uptime` WHERE `date` < :latest_date",
+				"DELETE FROM `".PSM_DB_PREFIX."servers_uptime` WHERE {$sql_where_server} `date` < :latest_date",
 				array('latest_date' => $latest_date_str),
 				false
 			);
 		}
 
-		// Remove older history entries
-		$latest_date->modify('-1 year');
+		$this->db->exec('UNLOCK TABLES');
+
+		return true;
+	}
+
+	public function cleanup(\DateTime $retention_date, $server_id = null) {
+		$sql_where_server = $this->createSQLWhereServer($server_id);
 		$this->db->execute(
-			"DELETE FROM `".PSM_DB_PREFIX."servers_history` WHERE `date` < :latest_date",
-			array('latest_date' => $latest_date->format('Y-m-d 00:00:00')),
+			"DELETE FROM `".PSM_DB_PREFIX."servers_history` WHERE {$sql_where_server} `date` < :latest_date",
+			array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
 			false
 		);
-
-		$this->db->exec('UNLOCK TABLES');
-		
 		return true;
 	}
 
@@ -155,5 +152,14 @@ class Archiver {
 			'checks_failed' => $checks_failed,
 		);
 		return $history;
+	}
+
+	protected function createSQLWhereServer($server_id) {
+		$sql_where_server = ($server_id !== null)
+				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
+				? ' `server_id` = ' . intval($server_id) . ' AND '
+				: '';
+
+		return $sql_where_server;
 	}
 }

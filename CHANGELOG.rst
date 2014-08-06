@@ -14,6 +14,7 @@ Features:
 * #82: Added Danish translation.
 * #103: Added Russian translation.
 * #109: Custom time-out per server.
+* #119: Log and archive retention period.
 * #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
 * #82: Support for Danish SMS provider Smsit <http://www.smsit.dk/>
 
