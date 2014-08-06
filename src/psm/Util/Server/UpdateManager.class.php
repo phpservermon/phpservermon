@@ -26,7 +26,7 @@
  * @since       phpservermon 3.0.0
  **/
 
-namespace psm\Util\Updater;
+namespace psm\Util\Server;
 use psm\Service\Database;
 use psm\Service\User;
 
@@ -36,7 +36,7 @@ use psm\Service\User;
  * If you provide a User service instance it will be
  * restricted to that user only.
  */
-class Autorun {
+class UpdateManager {
 
 	/**
 	 * Database service
@@ -76,8 +76,8 @@ class Autorun {
 
 		$servers = $this->db->query($sql);
 
-		$updater = new StatusUpdater($this->db);
-		$notifier = new StatusNotifier($this->db);
+		$updater = new Updater\StatusUpdater($this->db);
+		$notifier = new Updater\StatusNotifier($this->db);
 
 		foreach($servers as $server) {
 			$status_old = ($server['status'] == 'on') ? true : false;
@@ -87,7 +87,7 @@ class Autorun {
 		}
 
 		// clean-up time!! archive all records
-		$archive = new \psm\Util\Server\ArchiveManager($this->db);
+		$archive = new ArchiveManager($this->db);
 		$archive->archive();
 		$archive->cleanup();
 	}

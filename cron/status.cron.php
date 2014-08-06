@@ -44,7 +44,7 @@ if(!defined('PSM_DEBUG') || !PSM_DEBUG) {
 }
 psm_update_conf('cron_running_time', $time);
 
-$autorun = new \psm\Util\Updater\Autorun($db);
+$autorun = new \psm\Util\Server\UpdateManager($db);
 $autorun->run();
 
 psm_update_conf('cron_running', 0);

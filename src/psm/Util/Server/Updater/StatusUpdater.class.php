@@ -28,10 +28,10 @@
 /**
  * The status class is for checking the status of a server.
  *
- * @see \psm\Util\Updater\StatusNotifier
- * @see \psm\Util\Updater\Autorun
+ * @see \psm\Util\Server\Updater\StatusNotifier
+ * @see \psm\Util\Server\Updater\Autorun
  */
-namespace psm\Util\Updater;
+namespace psm\Util\Server\Updater;
 use psm\Service\Database;
 
 class StatusUpdater {

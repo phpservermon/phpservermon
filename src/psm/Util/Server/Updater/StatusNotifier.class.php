@@ -28,10 +28,10 @@
 /**
  * The status updater is for sending notifications to the users.
  *
- * @see \psm\Util\Updater\StatusUpdater
- * @see \psm\Util\Updater\Autorun
+ * @see \psm\Util\Server\Updater\StatusUpdater
+ * @see \psm\Util\Server\Updater\Autorun
  */
-namespace psm\Util\Updater;
+namespace psm\Util\Server\Updater;
 use psm\Service\Database;
 
 class StatusNotifier {

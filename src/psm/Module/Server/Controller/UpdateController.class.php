@@ -40,7 +40,7 @@ class UpdateController extends AbstractController {
 	}
 
 	protected function executeIndex() {
-		$autorun = new \psm\Util\Updater\Autorun($this->db);
+		$autorun = new \psm\Util\Server\UpdateManager($this->db);
 		$autorun->setUser($this->user);
 		$autorun->run();
 
