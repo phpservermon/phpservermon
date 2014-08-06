@@ -88,9 +88,6 @@ body.black_background .page-header  h1 {
 table {
   background-color: white;
 }
-fieldset {
-	display: inline-block;
-}
 .tab-content {
 	display: block;
 	width: auto;
