@@ -64,7 +64,13 @@ class UptimeArchiver implements ArchiverInterface {
 		$latest_date = new \DateTime('-1 week 0:0:0');
 
 		// Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
-		$this->db->exec('LOCK TABLES ' . PSM_DB_PREFIX . 'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
+		try {
+			$this->db->pdo()->exec('LOCK TABLES ' . PSM_DB_PREFIX . 'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
+			$locked = true;
+		} catch (\PDOException $e) {
+			// user does not have lock rights, ignore
+			$locked = false;
+		}
 
 		$latest_date_str = $latest_date->format('Y-m-d 00:00:00');
 
@@ -107,7 +113,9 @@ class UptimeArchiver implements ArchiverInterface {
 			);
 		}
 
-		$this->db->exec('UNLOCK TABLES');
+		if($locked) {
+			$this->db->exec('UNLOCK TABLES');
+		}
 
 		return true;
 	}
