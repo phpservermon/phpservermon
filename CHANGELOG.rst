@@ -1,8 +1,8 @@
 Changelog
 =========
 
-not yet released
-----------------
+v3.1.0 (released August 7, 2014)
+--------------------------------
 
 Features:
 
@@ -35,7 +35,7 @@ Bugs:
 * Composer added for dependencies.
 
 v3.0.1 (released April 12, 2014)
-----------------
+--------------------------------
 
 * #56: Minimum PHP version is PHP 5.3.7 (not PHP 5.3.0).
 * #58: Server order on users page now matches the order on servers page.
