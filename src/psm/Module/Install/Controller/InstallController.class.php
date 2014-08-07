@@ -286,7 +286,6 @@ class InstallController extends AbstractController {
 			);
 			$config .= $line;
 		}
-		$config .= "?>".PHP_EOL;
 		if(is_writeable($this->path_config)) {
 			file_put_contents($this->path_config, $config);
 			return true;
