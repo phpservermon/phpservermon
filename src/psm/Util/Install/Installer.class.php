@@ -401,7 +401,7 @@ class Installer {
 		$queries = array();
 		psm_update_conf('log_retention_period', '365');
 
-		psm_update_conf('pushover_status', 1);
+		psm_update_conf('pushover_status', 0);
 		psm_update_conf('log_pushover', 1);
 		psm_update_conf('pushover_api_token', '');
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
