@@ -39,12 +39,12 @@ $time = time();
 if(psm_get_conf('cron_running') == 1 && ($time - psm_get_conf('cron_running_time') < PSM_CRON_TIMEOUT)) {
    die('Cron is already running. Exiting.');
 }
-if(!PSM_DEBUG) {
+if(!defined('PSM_DEBUG') || !PSM_DEBUG) {
 	psm_update_conf('cron_running', 1);
 }
 psm_update_conf('cron_running_time', $time);
 
-$autorun = new \psm\Util\Updater\Autorun($db);
+$autorun = new \psm\Util\Server\UpdateManager($db);
 $autorun->run();
 
 psm_update_conf('cron_running', 0);

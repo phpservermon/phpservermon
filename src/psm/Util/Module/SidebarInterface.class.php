@@ -29,7 +29,7 @@ namespace psm\Util\Module;
 
 interface SidebarInterface {
 
-	public function __construct(\psm\Service\Template $tpl);
+	public function __construct(\Twig_Environment $twig);
 
 	public function createHTML();
 

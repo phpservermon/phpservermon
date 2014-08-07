@@ -28,7 +28,6 @@
 
 // Include paths
 define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('PSM_PATH_VENDOR', PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_INC', PSM_PATH_SRC . 'includes' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_TPL', PSM_PATH_SRC . 'templates' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
@@ -48,7 +47,10 @@ if(file_exists($path_conf)) {
 	include_once $path_conf;
 }
 // check for a debug var
-if(defined('PSM_DEBUG') && PSM_DEBUG) {
+if(!defined('PSM_DEBUG')) {
+	define('PSM_DEBUG', false);
+}
+if(PSM_DEBUG) {
 	error_reporting(E_ALL);
 	ini_set('display_erors', 1);
 } else {
@@ -56,29 +58,28 @@ if(defined('PSM_DEBUG') && PSM_DEBUG) {
 	ini_set('display_errors', 0);
 }
 
+$vendor_autoload = PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+if(!file_exists($vendor_autoload)) {
+	die('No dependencies found in vendor dir. Did you install the dependencies? Please run "php composer.phar install".');
+}
+require_once $vendor_autoload;
+
 // set autoloader, make sure to set $prepend = true so that our autoloader is called first
-function __autoload($class) {
+spl_autoload_register(function($class) {
 	// remove leading \
 	$class = ltrim($class, '\\');
 	$path_parts = explode('\\', $class);
 
 	$filename = array_pop($path_parts);
-	$path = implode(DIRECTORY_SEPARATOR, $path_parts) .
+	$path = PSM_PATH_SRC . implode(DIRECTORY_SEPARATOR, $path_parts) .
 			DIRECTORY_SEPARATOR .
 			$filename . '.class.php'
 	;
-	// search in these dirs:
-	$basedirs = array(
-		PSM_PATH_SRC,
-		PSM_PATH_VENDOR
-	);
-	foreach($basedirs as $dir) {
-		if(file_exists($dir . $path)) {
-			require_once $dir . $path;
-			return;
-		}
+	if(file_exists($path)) {
+		require_once $path;
+		return;
 	}
-}
+});
 
 // auto-find all include files
 $includes = glob(PSM_PATH_INC . '*.inc.php');
@@ -89,14 +90,7 @@ foreach($includes as $file) {
 $db = new psm\Service\Database();
 
 // sanity check!
-if(defined('PSM_INSTALL') && PSM_INSTALL) {
-	// install mode
-	if($db->status()) {
-		// connection established, attempt to load config.
-		// no biggie if it doesnt work because the user is still in the install module.
-		psm_load_conf();
-	}
-} else {
+if(!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if($db->getDbHost() === null) {
 		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');

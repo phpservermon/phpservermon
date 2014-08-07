@@ -1,0 +1,26 @@
+<div id="sidebar-container">
+	<div class="sidebar-nav">
+		<ul class="nav nav-list">
+			<li class="nav-header">{{ subtitle }}</li>
+	{% for item in items %}
+	<li class="{{ item.class_active }}">
+	{% if item.type == 'link' %}
+		<a href="{{ item.url|raw }}"><i class="icon-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
+	{% elseif item.type == 'button' %}
+		<button class="btn btn-{{ item.btn_class }}" onclick="{{ item.onclick|raw }}"><i class="icon-{{ item.icon }}"></i>&nbsp;{{ item.label }}</button>
+	{% elseif item.type == 'dropdown' %}
+		<div class="btn-group">
+		  <button class="btn btn-{{ item.btn_class }} dropdown-toggle" data-toggle="dropdown"><i class="icon-{{ item.icon }}"></i>&nbsp;{{ item.label }} <span class="caret"></span></button>
+		  <ul class="dropdown-menu">
+		  {% for option in item.options %}
+		  <li class="{{ option.class_active }}"><a href="{{ option.url|raw }}">{{ option.label }}</a></li>
+		  {% endfor %}
+		  </ul>
+		</div>
+	{% endif %}
+	</li>
+	{% endfor %}
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+</div>

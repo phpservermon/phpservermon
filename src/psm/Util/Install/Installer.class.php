@@ -78,7 +78,7 @@ class Installer {
 
 		// different DB version, check if the version requires any changes
 		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
-		if(version_compare($version_db, '3.0.0', '<')) {
+		if(version_compare($version_db, '3.1.0', '<')) {
 			return true;
 		} else {
 			// change database version to current version so this check won't be required next time
@@ -126,7 +126,7 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`, `pushover`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -138,15 +138,19 @@ class Installer {
 					('email_smtp_port', ''),
 					('email_smtp_username', ''),
 					('email_smtp_password', ''),
-					('sms_status', '1'),
+					('sms_status', '0'),
 					('sms_gateway', 'mollie'),
 					('sms_gateway_username', 'username'),
 					('sms_gateway_password', 'password'),
 					('sms_from', '1234567890'),
+					('pushover_status', '0'),
+					('pushover_api_token', ''),
 					('alert_type', 'status'),
 					('log_status', '1'),
 					('log_email', '1'),
 					('log_sms', '1'),
+					('log_pushover', '1'),
+					('log_retention_period', '365'),
 					('version', '" . PSM_VERSION . "'),
 					('version_update_check', '" . PSM_VERSION . "'),
 					('auto_refresh_servers', '0'),
@@ -177,10 +181,18 @@ class Installer {
 							`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
 							`name` varchar(255) NOT NULL,
 							`mobile` varchar(15) NOT NULL,
+							`pushover_key` varchar(255) NOT NULL,
+							`pushover_device` varchar(255) NOT NULL,
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+							`user_id` int(11) unsigned NOT NULL,
+							`key` varchar(255) NOT NULL,
+							`value` varchar(255) NOT NULL,
+							PRIMARY KEY (`user_id`, `key`)
+						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
 							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
@@ -189,7 +201,7 @@ class Installer {
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
-						  `type` enum('status','email','sms') NOT NULL,
+						  `type` enum('status','email','sms','pushover') NOT NULL,
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  `user_id` varchar(255) NOT NULL,
@@ -210,8 +222,10 @@ class Installer {
 						  `active` enum('yes','no') NOT NULL default 'yes',
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
+						  `pushover` enum('yes','no') NOT NULL default 'yes',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+                          `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -263,6 +277,10 @@ class Installer {
 		if(version_compare($version_from, '3.0.0', '<')) {
 			// upgrade to 3.0.0
 			$this->upgrade300();
+		}
+		if(version_compare($version_from, '3.1.0', '<')) {
+			// upgrade to 3.1.0
+			$this->upgrade310();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -377,5 +395,30 @@ class Installer {
 			}
 		}
 		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
+	}
+
+	protected function upgrade310() {
+		$queries = array();
+		psm_update_conf('log_retention_period', '365');
+
+		psm_update_conf('pushover_status', 0);
+		psm_update_conf('log_pushover', 1);
+		psm_update_conf('pushover_api_token', '');
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
+
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+						`user_id` int(11) unsigned NOT NULL,
+						`key` varchar(255) NOT NULL,
+						`value` varchar(255) NOT NULL,
+						PRIMARY KEY (`user_id`, `key`)
+					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$this->execSQL($queries);
 	}
 }

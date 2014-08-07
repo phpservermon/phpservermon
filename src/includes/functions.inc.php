@@ -111,7 +111,6 @@ function psm_get_langs() {
 
 /**
  * Get a setting from the config.
- * The config must have been loaded first using psm_load_conf()
  *
  * @param string $key
  * @param mixed $alt if not set, return this alternative
@@ -119,6 +118,9 @@ function psm_get_langs() {
  * @see psm_load_conf()
  */
 function psm_get_conf($key, $alt = null) {
+	if(!isset($GLOBALS['sm_config'])) {
+		psm_load_conf();
+	}
 	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : $alt;
 
 	return $result;
@@ -134,9 +136,11 @@ function psm_get_conf($key, $alt = null) {
 function psm_load_conf() {
 	global $db;
 
-	// load config from database into global scope
 	$GLOBALS['sm_config'] = array();
 
+	if(!defined('PSM_DB_PREFIX') || !$db->status()) {
+		return false;
+	}
 	if(!$db->ifTableExists(PSM_DB_PREFIX.'config')) {
 		return false;
 	}
@@ -163,19 +167,22 @@ function psm_load_conf() {
 function psm_update_conf($key, $value) {
 	global $db;
 
-	$result = $db->save(
-		PSM_DB_PREFIX.'config',
-		array('value' => $value),
-		array('key' => $key)
-	);
-	// save returns the # rows updated, if 0, key doenst exist yet
-	if($result === 0) {
+	// check if key exists
+	$exists = psm_get_conf($key, false);
+	if($exists === false) {
+		// add new config record
 		$db->save(
 			PSM_DB_PREFIX . 'config',
 			array(
 				'key' => $key,
 				'value' => $value,
 			)
+		);
+	} else {
+		$db->save(
+			PSM_DB_PREFIX.'config',
+			array('value' => $value),
+			array('key' => $key)
 		);
 	}
 	$GLOBALS['sm_config'][$key] = $value;
@@ -260,16 +267,20 @@ function psm_parse_msg($status, $type, $vars) {
  * @param string $href
  * @param boolean $header return headers?
  * @param boolean $body return body?
- * @param int $timeout connection timeout in seconds
+ * @param int $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
  * @param boolean $add_agent add user agent?
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_agent = true) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true) {
+	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
@@ -335,12 +346,9 @@ function psm_date($time) {
  * Check if an update is available for PHP Server Monitor.
  *
  * Will only check for new version if user turned updates on in config.
- * @global object $db
  * @return boolean
  */
 function psm_update_available() {
-	global $db;
-
 	if(!psm_get_conf('show_update')) {
 		// user does not want updates, fair enough.
 		return false;
@@ -370,15 +378,15 @@ function psm_update_available() {
 }
 
 /**
- * Prepare a new Mailer util.
+ * Prepare a new phpmailer instance.
  *
  * If the from name and email are left blank they will be prefilled from the config.
  * @param string $from_name
  * @param string $from_email
- * @return \psm\Util\Mailer
+ * @return \PHPMailer
  */
 function psm_build_mail($from_name = null, $from_email = null) {
-	$phpmailer = new \psm\Util\Mailer();
+	$phpmailer = new \PHPMailer();
 	$phpmailer->Encoding = "base64";
 	$phpmailer->SMTPDebug = false;
 
@@ -410,29 +418,92 @@ function psm_build_mail($from_name = null, $from_email = null) {
 }
 
 /**
+ * Prepare a new Pushover util.
+ *
+ * @return \Pushover
+ */
+function psm_build_pushover() {
+	$pushover = new \Pushover();
+	$pushover->setToken(psm_get_conf('pushover_api_token'));
+
+	return $pushover;
+}
+
+/**
+ * Prepare a new SMS util.
+ *
+ * @return \psm\Txtmsg\TxtmsgInterface
+ */
+function psm_build_sms() {
+	$sms = null;
+
+	// open the right class
+	// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
+	switch(strtolower(psm_get_conf('sms_gateway'))) {
+		case 'mosms':
+			$sms = new \psm\Txtmsg\Mosms();
+			break;
+		case 'smsit':
+			$sms = new \psm\Txtmsg\Smsit();
+			break;
+		case 'inetworx':
+			$sms = new \psm\Txtmsg\Inetworx();
+			break;
+		case 'mollie':
+			$sms = new \psm\Txtmsg\Mollie();
+			$sms->setGateway(1);
+			break;
+		case 'spryng':
+			$sms = new \psm\Txtmsg\Spryng();
+			break;
+		case 'clickatell':
+			$sms = new \psm\Txtmsg\Clickatell();
+			break;
+		case 'textmarketer':
+			$sms = new \psm\Txtmsg\Textmarketer();
+			break;
+		case 'smsglobal':
+			$sms = new \psm\Txtmsg\Smsglobal();
+			break;
+	}
+
+	// copy login information from the config file
+	if($sms) {
+		$sms->setLogin(psm_get_conf('sms_gateway_username'), psm_get_conf('sms_gateway_password'));
+		$sms->setOriginator(psm_get_conf('sms_from'));
+	}
+
+	return $sms;
+}
+
+/**
  * Generate a new link to the current monitor
- * @param array $params key value pairs
+ * @param array|string $params key value pairs or pre-formatted string
  * @param boolean $urlencode urlencode all params?
  * @param boolean $htmlentities use entities in url?
  * @return string
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
-	$defports = array(80, 443);
 	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
-		$url .= ':' . $_SERVER['SERVER_PORT'];
-	}
+
+	// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
+	// for urls, we only want the forward slashes.
 	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+	$url = str_replace('\\', '', $url);
 
 	if($params != null) {
 		$url .= '?';
-		$delim = ($htmlentities) ? '&amp;' : '&';
+		if(is_array($params)) {
+			$delim = ($htmlentities) ? '&amp;' : '&';
 
-		foreach($params as $k => $v) {
-			if($urlencode) {
-				$v = urlencode($v);
+			foreach($params as $k => $v) {
+				if($urlencode) {
+					$v = urlencode($v);
+				}
+				$url .= $delim . $k . '=' . $v;
 			}
-			$url .= $delim . $k . '=' . $v;
+		} else {
+			$url .= $params;
 		}
 	}
 
@@ -470,12 +541,11 @@ function psm_POST($key, $alt = null) {
 /**
  * Check if we are in CLI mode
  *
- * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli
- * source: https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/drupal_is_cli/7
+ * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli.
  * @return boolean
  */
 function psm_is_cli() {
-	return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
+	return (!isset($_SERVER['SERVER_SOFTWARE']) || php_sapi_name() == 'cli');
 }
 
 ###############################################
@@ -491,7 +561,9 @@ function psm_is_cli() {
  */
 function pre($arr = null) {
 	echo "<pre>";
-	if ($arr === null) debug_print_backtrace();
+	if ($arr === null) {
+		debug_print_backtrace();
+	}
 	print_r($arr);
 	echo "</pre>";
 }

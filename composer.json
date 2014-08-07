@@ -1,0 +1,18 @@
+{
+	"name": "phpservermon/phpservermon",
+	"description": "PHP Server Monitor",
+	"homepage": "http://www.phpservermonitor.org",
+    "repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/phpservermon/php-pushover"
+		}
+	],
+	"require": {
+		"php": ">=5.3.7",
+		"phpmailer/phpmailer": "5.2.6",
+		"symfony/http-foundation": "2.4.*",
+		"php-pushover/php-pushover": "dev-master",
+		"twig/twig": "1.*"
+	}
+}

@@ -64,6 +64,15 @@ One of the new features introduced in 3.0 is a user authentication system. Becau
 For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
 If, for whatever reason this does not work, the upgrade script automatically changes the username of all existing users to their email addresses, which you could use for the forgot password screen.
 
+
+Installing from GitHub
+++++++++++++++++++++++
+If you have downloaded the source from GitHub (and not a pre-built package), the dependencies are not included.
+To be able to run an installation from the repo, you need to run the following command to install the dependencies::
+
+     php composer.phar install
+
+
 Setting up a cronjob
 ++++++++++++++++++++
 
@@ -78,9 +87,14 @@ If it is your own server or you have shell access and permission to open the cro
 As you can see, this line will run the status.cron.php script every 15 minutes. Change the line to suit your needs.
 If you do not have shell access, ask your web hosting provider to set it up for you.
 
+Please note that some distros have user-specific crontabs (e.g. Debian). If that is the case, you need to omit the user part::
+
+     */15 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php
+
 The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
 After that the script is assumed dead and the cronjob will run again.
 If you want to change the 10 minutes timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
+
 
 Troubleshooting
 +++++++++++++++

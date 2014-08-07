@@ -1,8 +1,41 @@
 Changelog
 =========
 
+v3.1.0 (released August 7, 2014)
+--------------------------------
+
+Features:
+
+* #52: Uptime percentage per server for the last week.
+* #101: Pushover.net support.
+* #54: Improved phone/tablet compatibility.
+* #75: Test mode for email and SMS settings.
+* #86: Different design styles on status page (list, table).
+* #82: Added Danish translation.
+* #103: Added Russian translation.
+* #109: Custom time-out per server.
+* #119: Log and archive retention period.
+* #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
+* #82: Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+
+Bugs:
+
+* #50: Validation on servers page.
+* #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
+* #66: Unable to add users with MySQL in strict mode.
+* #83: Invalid redirect after switching languages and logging in.
+* #105: Fixing check for websites with unverified SSL certificates.
+* #107: Fixing update job for Synology DSM Task Scheduler.
+* #108: URLs on Windows contained both back- and forward slashes.
+* #111: Generated urls for non-default ports included the port twice.
+* #28: Permission denied page.
+* #53: User selection on server edit page.
+* #115: Warning on server page when notifications are disabled.
+* #117: Template service has been replaced by Twig.
+* Composer added for dependencies.
+
 v3.0.1 (released April 12, 2014)
-----------------
+--------------------------------
 
 * #56: Minimum PHP version is PHP 5.3.7 (not PHP 5.3.0).
 * #58: Server order on users page now matches the order on servers page.

@@ -29,7 +29,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.0.1');
+define('PSM_VERSION', '3.1.0');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
@@ -96,3 +96,19 @@ define('PSM_LOGIN_RESET_RUNTIME', 3600);
  * Number of seconds the cron is supposedly dead and we will run another cron anyway.
  */
 define('PSM_CRON_TIMEOUT', 600);
+
+/**
+ * Default timeout in seconds for curl requests (can be overwritten per-server).
+ */
+define('PSM_CURL_TIMEOUT', 10);
+
+
+/**
+ * Name of the default theme.
+ */
+define('PSM_THEME', 'default');
+
+/**
+ * Clone URL for the Pushover.net service.
+ */
+define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_monitor');

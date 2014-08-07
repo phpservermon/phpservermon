@@ -28,17 +28,16 @@
 
 namespace psm\Module\Server\Controller;
 use psm\Service\Database;
-use psm\Service\Template;
 
 /**
  * Status module
  */
 class StatusController extends AbstractServerController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
-		$this->setActions(array('index'), 'index');
+		$this->setActions(array('index', 'saveLayout'), 'index');
 	}
 
 	/**
@@ -46,14 +45,28 @@ class StatusController extends AbstractServerController {
 	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('server_status', 'server/status.tpl.html');
+		// set background color to black
+		$this->black_background = true;
+		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_status'));
+
+		// add header accessories
+		$layout = $this->user->getUserPref('status_layout', 0);
+		$layout_data = array(
+			'label_last_check' => psm_get_lang('servers', 'last_check'),
+			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_rtime' => psm_get_lang('servers', 'latency'),
+			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
+			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+		);
+		$this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
+
 		$this->addFooter(false);
 
 		// get the active servers from database
 		$servers = $this->getServers();
 
-		$offline = array();
-		$online = array();
+		$layout_data['servers_offline'] = array();
+		$layout_data['servers_online'] = array();
 
 		foreach ($servers as $server) {
 			if($server['active'] == 'no') {
@@ -64,40 +77,33 @@ class StatusController extends AbstractServerController {
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
 			if ($server['status'] == "off") {
-				$offline[$server['server_id']] = $server;
+				$layout_data['servers_offline'][] = $server;
 			} elseif($server['warning_threshold_counter'] > 0) {
 				$server['class_warning'] = 'warning';
-				$offline[$server['server_id']] = $server;
+				$layout_data['servers_offline'][] = $server;
 			} else {
-				$online[$server['server_id']] = $server;
+				$layout_data['servers_online'][] = $server;
 			}
 		}
 
-		// add servers to template
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_offline', $offline);
-		$this->tpl->addTemplateDataRepeat($this->getTemplateId(), 'servers_online', $online);
-
-		// check if we need to add the auto refresh
-		$auto_refresh = psm_get_conf('auto_refresh_servers');
-		if(intval($auto_refresh) > 0) {
-			// add it
-			$this->tpl->newTemplate('main_auto_refresh', 'main.tpl.html');
-			$this->tpl->addTemplateData('main_auto_refresh', array('seconds' => $auto_refresh));
-			$this->tpl->addTemplateData('main', array('auto_refresh' => $this->tpl->getTemplate('main_auto_refresh')));
+		$auto_refresh_seconds = psm_get_conf('auto_refresh_servers');
+		if(intval($auto_refresh_seconds) > 0) {
+			$this->twig->addGlobal('auto_refresh', true);
+			$this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
 		}
+		return $this->twig->render('module/server/status/index.tpl.html', $layout_data);
 	}
 
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('menu', 'server_status'),
-				'label_last_check' => psm_get_lang('servers', 'last_check'),
-				'label_last_online' => psm_get_lang('servers', 'last_online'),
-				'label_rtime' => psm_get_lang('servers', 'latency'),
-			)
-		);
+	protected function executeSaveLayout() {
+		if($this->isXHR()) {
+			$layout = psm_POST('layout', 0);
+			$this->user->setUserPref('status_layout', $layout);
 
-		return parent::createHTMLLabels();
+			$response = new \Symfony\Component\HttpFoundation\JsonResponse();
+			$response->setData(array(
+				'layout' => $layout,
+			));
+			return $response;
+		 }
 	}
 }

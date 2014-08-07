@@ -29,12 +29,11 @@
 namespace psm\Module\Server\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 abstract class AbstractServerController extends AbstractController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 	}
 
 	/**
@@ -73,8 +72,10 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
+					`s`.`pushover`,
 					`s`.`warning_threshold`,
-					`s`.`warning_threshold_counter`
+					`s`.`warning_threshold_counter`,
+					`s`.`timeout`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -100,11 +101,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
-		$server['url_view'] = psm_build_url(array(
-			'mod' => 'server',
-			'action' => 'view',
-			'id' => $server['server_id'],
-		));
+		$server['pushover'] = psm_get_lang('system', $server['pushover']);
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';
@@ -112,6 +109,16 @@ abstract class AbstractServerController extends AbstractController {
 
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+
+		$url_actions = array('delete', 'edit', 'view');
+		foreach($url_actions as $action) {
+			$server['url_' . $action] = psm_build_url(array(
+				'mod' => 'server',
+				'action' => $action,
+				'id' => $server['server_id'],
+			));
+		}
 
 		return $server;
 	}

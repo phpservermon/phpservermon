@@ -29,12 +29,11 @@
 namespace psm\Module\User\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 class LoginController extends AbstractController {
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
 
@@ -46,8 +45,6 @@ class LoginController extends AbstractController {
 	}
 
 	protected function executeLogin() {
-		$this->setTemplateId('user_login', 'user/login.tpl.html');
-
 		if(isset($_POST['user_name']) && isset($_POST['user_password'])) {
 			$rememberme = (isset($_POST['user_rememberme'])) ? true : false;
 			$result = $this->user->loginWithPostData(
@@ -58,7 +55,7 @@ class LoginController extends AbstractController {
 
 			if($result) {
 				// success login, redirect
-				header('Location: ' . $_SERVER['REQUEST_URI']);
+				header('Location: ' . psm_build_url($_SERVER['QUERY_STRING']));
 				die();
 			} else {
 				$this->addMessage(psm_get_lang('login', 'error_login_incorrect'), 'error');
@@ -76,15 +73,15 @@ class LoginController extends AbstractController {
 			'value_rememberme' => (isset($rememberme) && $rememberme) ? 'checked="checked"' : '',
 		);
 
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/user/login/login.tpl.html', $tpl_data);
 	}
 
 	/**
 	 * Show/process the password forgot form (before the mail)
+	 *
+	 * @return string
 	 */
 	protected function executeForgot() {
-		$this->setTemplateId('user_login_forgot', 'user/login.tpl.html');
-
 		if(isset($_POST['user_name'])) {
 			$user = $this->user->getUserByUsername($_POST['user_name']);
 
@@ -110,16 +107,13 @@ class LoginController extends AbstractController {
 			'label_submit' => psm_get_lang('login', 'submit'),
 			'label_go_back' => psm_get_lang('system', 'go_back'),
 		);
-
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/user/login/forgot.tpl.html', $tpl_data);
 	}
 
 	/**
 	 * Show/process the password reset form (after the mail)
 	 */
 	protected function executeReset() {
-		$this->setTemplateId('user_login_reset', 'user/login.tpl.html');
-
 		$user_id = (isset($_GET['user_id'])) ? intval($_GET['user_id']) : 0;
 		$token = (isset($_GET['token'])) ? $_GET['token'] : '';
 
@@ -153,8 +147,7 @@ class LoginController extends AbstractController {
 			'label_go_back' => psm_get_lang('system', 'go_back'),
 			'value_user_name' => $user->user_name,
 		);
-
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/user/login/reset.tpl.html', $tpl_data);
 	}
 
     /**

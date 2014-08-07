@@ -27,6 +27,7 @@
  **/
 
 namespace psm;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The router class opens the controller and initializes the module.
@@ -63,8 +64,13 @@ class Router {
 	public function __construct() {
 		global $db;
 		$this->services['db'] = $db;
-		$this->services['tpl'] = new \psm\Service\Template();
 		$this->services['user'] = new \psm\Service\User($db);
+
+		$loader = new \Twig_Loader_Filesystem(PSM_PATH_TPL . PSM_THEME);
+		$this->services['twig'] = new \Twig_Environment($loader);
+		if(PSM_DEBUG) {
+			$this->services['twig']->enableDebug();
+		}
 
 		$modules = $this->getModules();
 
@@ -82,6 +88,7 @@ class Router {
 	public function getModules() {
 		return array(
 			'config' => new Module\Config\ConfigModule(),
+			'error' => new Module\Error\ErrorModule(),
 			'server' => new Module\Server\ServerModule(),
 			'user' => new Module\User\UserModule(),
 			'install' => new Module\Install\InstallModule(),
@@ -97,8 +104,16 @@ class Router {
 	 * If no mod is given it will attempt to load the default module.
 	 * @param string $mod if empty, the mod getvar will be used, or fallback to default
 	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
 	 */
 	public function run($mod = null) {
+		if(!psm_is_cli() && isset($_GET["logout"])) {
+			$this->services['user']->doLogout();
+			// logged out, redirect to login
+			header('Location: ' . psm_build_url());
+			die();
+		}
+
 		if($mod === null) {
 			$mod = psm_GET('mod', $this->default_module);
 		}
@@ -113,21 +128,25 @@ class Router {
 		}
 		// get min required level for this controller and make sure the user matches
 		$min_lvl = $controller->getMinUserLevelRequired();
+		$action = null;
 
 		if($min_lvl < PSM_USER_ANONYMOUS) {
 			// if user is not logged in, load login module
 			if(!$this->services['user']->isUserLoggedIn()) {
-				// redirect to login
 				$controller = $this->getController('user_login');
 			} elseif($this->services['user']->getUserLevel() > $min_lvl) {
-				// @todo perhaps show a nice permission denied page
-				die('You do not have the privileges to view this page.');
+				$controller = $this->getController('error');
+				$action = '401';
 			}
 		}
 
 		$controller->setUser($this->services['user']);
-		// let the module prepare it's HTML code
-		$controller->initialize();
+		$response = $controller->initialize($action);
+
+		if(!($response instanceof Response)) {
+			throw new \LogicException('Controller did not return a Response object.');
+		}
+		$response->send();
 	}
 
 	/**
@@ -142,7 +161,7 @@ class Router {
 		if($controller === false) {
 			throw new \InvalidArgumentException('Controller is not registered');
 		}
-		$controller = new $controller($this->services['db'], $this->services['tpl']);
+		$controller = new $controller($this->services['db'], $this->services['twig']);
 
 		if(!$controller instanceof \psm\Module\ControllerInterface) {
 			throw new \Exception('Controller does not use ControllerInterface');

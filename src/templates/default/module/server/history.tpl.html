@@ -1,0 +1,55 @@
+<link href="static/plugin/jqplot/jquery.jqplot.min.css" rel="stylesheet" >
+<!--[if lt IE 9]><script type="text/javascript" src="static/plugin/excanvas.js"></script><![endif]-->
+<script type="text/javascript" src="static/plugin/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.canvasOverlay.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="static/plugin/jqplot/jqplot.highlighter.min.js"></script>
+
+<link href="static/css/history.css" rel="stylesheet" >
+<script type="text/javascript">
+	var day_format = '{{ day_format }}';
+	var long_date_format = '{{ long_date_format }}';
+	var short_date_format = '{{ short_date_format }}';
+	var short_time_format = '{{ short_time_format }}';
+</script>
+<script type="text/javascript" src="static/js/history.js"></script>
+
+<div id="history-panel">
+{% for graph in graphs %}
+<div class="chart-row">
+	<div class="chart-container">
+		<div class="chart-content">
+			<div id="chart{{ graph.chart_id }}" class="chart" data-title="{{ graph.title }}" data-plotMode="{{ graph.plotmode }}" data-endTime="{{ graph.end_timestamp }}" data-series="{{ graph.series|raw }}" data-lines="{{ graph.server_lines }}" data-down="{{ graph.server_down }}"></div>
+		</div>
+	</div>
+	<div class="info-container">
+		<div class="info-content">
+			<div class="info-dropdown btn-group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-info-sign"></i></button>
+				<ul class="dropdown-menu">
+				{% for record in graph.info %}
+				<li><span>{{ record.label }}: {{ record.value }}</span></li>
+				{% endfor %}
+				</ul>
+			</div>
+			<div class="server-info">
+				<ul>
+				{% for record in graph.info %}
+				<li><span>{{ record.label }}: {{ record.value }}</span></li>
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="chart-selector">
+			<div class="btn-group">
+				{% for button in graph.buttons %}
+				<button class="btn {{ button.class_active }}" data-chartId="{{ graph.chart_id }}" data-chartMode="{{ button.mode }}" >{{ button.label }}</button>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+<div style="clear: both;">&nbsp;</div>
+{% endfor %}
+</div>

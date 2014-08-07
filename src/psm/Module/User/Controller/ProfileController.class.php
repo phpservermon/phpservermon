@@ -28,7 +28,6 @@
 namespace psm\Module\User\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
-use psm\Service\Template;
 
 class ProfileController extends AbstractController {
 
@@ -36,10 +35,10 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
 
-	function __construct(Database $db, Template $tpl) {
-		parent::__construct($db, $tpl);
+	function __construct(Database $db, \Twig_Environment $twig) {
+		parent::__construct($db, $twig);
 
 		$this->setActions(array(
 			'index', 'save',
@@ -48,13 +47,26 @@ class ProfileController extends AbstractController {
 
 	/**
 	 * Show the profile page
+	 * @return string
 	 */
 	protected function executeIndex() {
-		$this->setTemplateId('user_profile', 'user/profile.tpl.html');
-
+		$this->twig->addGlobal('subtitle', psm_get_lang('users', 'profile'));
 		$user = $this->user->getUser(null, true);
 
 		$tpl_data = array(
+			'label_name' => psm_get_lang('users', 'name'),
+			'label_user_name' => psm_get_lang('users', 'user_name'),
+			'label_password' => psm_get_lang('users', 'password'),
+			'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
+			'label_level' => psm_get_lang('users', 'level'),
+			'label_mobile' => psm_get_lang('users', 'mobile'),
+			'label_pushover' => psm_get_lang('users', 'pushover'),
+			'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
+			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
+			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
+			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+			'label_email' => psm_get_lang('users', 'email'),
+			'label_save' => psm_get_lang('system', 'save'),
 			'form_action' => psm_build_url(array(
 				'mod' => 'user_profile',
 				'action' => 'save',
@@ -65,7 +77,7 @@ class ProfileController extends AbstractController {
 		foreach($this->profile_fields as $field) {
 			$tpl_data[$field] = (isset($user->$field)) ? $user->$field : '';
 		}
-		$this->tpl->addTemplateData($this->getTemplateId(), $tpl_data);
+		return $this->twig->render('module/user/profile.tpl.html', $tpl_data);
 	}
 
 	/**
@@ -118,25 +130,5 @@ class ProfileController extends AbstractController {
 		$this->addMessage(psm_get_lang('users', 'profile_updated'), 'success');
 
 		return $this->executeIndex();
-	}
-
-	// override parent::createHTMLLabels()
-	protected function createHTMLLabels() {
-		$this->tpl->addTemplateData(
-			$this->getTemplateId(),
-			array(
-				'subtitle' => psm_get_lang('users', 'profile'),
-				'label_name' => psm_get_lang('users', 'name'),
-				'label_user_name' => psm_get_lang('users', 'user_name'),
-				'label_password' => psm_get_lang('users', 'password'),
-				'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
-				'label_level' => psm_get_lang('users', 'level'),
-				'label_mobile' => psm_get_lang('users', 'mobile'),
-				'label_email' => psm_get_lang('users', 'email'),
-				'label_save' => psm_get_lang('system', 'save'),
-			)
-		);
-
-		return parent::createHTMLLabels();
 	}
 }

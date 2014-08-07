@@ -1,0 +1,14 @@
+<div id="{{ modal_id  }}Modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{ modal_id }}ModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<h3 id="{{ modal_id }}ModalLabel">{{ modal_title }}</h3>
+	</div>
+	<div class="modal-body">
+		<p>{{ modal_body|raw }}</p>
+	</div>
+	<div class="modal-footer">
+		{% if has_cancel %}
+		<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ label_cancel }}</button>
+		{% endif %}
+		<button class="btn btn-{{ modal_button_type }} modalOKButton" >{{ modal_button_label }}</button>
+	</div>
+</div>
