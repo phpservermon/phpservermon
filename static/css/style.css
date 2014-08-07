@@ -385,13 +385,21 @@ span.hidden-desktop, span.hidden-desktop {
 body.install{
     padding-top:20px;
 }
+.install_header h2 {
+	line-height: 100px;
+}
+.install_header img {
+	height: 100px;
+}
+
 .label-status-on, .label-status-off, .label-status-warning {
 	vertical-align: baseline;
 }
 .label-status-on {
     background-color: #468847;
 }
-.label-status-off {
+.label-status-off,
+.label-error {
    background-color: #B94A48;
 }
 .label-status-warning {
