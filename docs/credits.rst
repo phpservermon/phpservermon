@@ -67,13 +67,17 @@ Translators
 
 The following people have contributed to the translation of PHP Server Monitor:
 
+* Bulgarian
+
+  * Plamen Vasilev - https://github.com/PVasileff
+
 * Chinese
 
   * manhere - https://github.com/manhere
 
-* Bulgarian
+* Czech
 
-  * Plamen Vasilev - https://github.com/PVasileff
+  * Simon Berka - https://github.com/berkas1
 
 * Danish
 
