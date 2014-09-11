@@ -32,6 +32,8 @@ if(!psm_is_cli()) {
 	die('This script can only be run from the command line.');
 }
 
+psm_set_cli_uri();
+
 // prevent cron from running twice at the same time
 // however if the cron has been running for X mins, we'll assume it died and run anyway
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
