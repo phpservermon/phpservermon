@@ -91,6 +91,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 * German
 
   * Brunbaur Herbert
+  * Jean Pierre Kolb - https://github.com/JPKCom
 
 * Italian
 
