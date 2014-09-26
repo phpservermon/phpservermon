@@ -245,9 +245,8 @@ class StatusNotifier {
 
 		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
 		$pushover->setMessage(str_replace('<br/>', "\n", $message));
-		// @todo fix url when script is executed via CLI
-//		$pushover->setUrl($url);
-//		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
+		$pushover->setUrl(psm_build_url());
+		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
 
 	    foreach($users as $user) {
 			if(trim($user['pushover_key']) == '') {

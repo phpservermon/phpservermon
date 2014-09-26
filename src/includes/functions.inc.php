@@ -548,6 +548,32 @@ function psm_is_cli() {
 	return (!isset($_SERVER['SERVER_SOFTWARE']) || php_sapi_name() == 'cli');
 }
 
+/**
+ * Set _server vars from the cli argument --uri=
+ * Example: php cron/status.cron.php --uri="http://www.phpservermonitor.org/"
+ */
+function psm_set_cli_uri() {
+    foreach ($_SERVER['argv'] as $argv) {
+        if (0 === strpos($argv, '--uri=')) {
+            $uriArray = parse_url(substr($argv, 6));
+            if (!empty($uriArray['scheme'])) {
+                $_SERVER['REQUEST_SCHEME'] = $uriArray['scheme'];
+                $_SERVER['SERVER_PORT']    = ($uriArray['scheme'] == 'https') ? 443 : 80;
+            }
+            if (!empty($uriArray['host'])) {
+                $_SERVER['HTTP_HOST'] = $uriArray['host'];
+            }
+            if (!empty($uriArray['port'])) {
+                $_SERVER['SERVER_PORT'] = $uriArray['port'];
+            }
+            if (!empty($uriArray['path'])) {
+                $_SERVER['SCRIPT_NAME'] = $uriArray['path'];
+            }
+            break;
+        }
+    }
+}
+
 ###############################################
 #
 # Debug functions
