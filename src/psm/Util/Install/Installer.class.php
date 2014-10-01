@@ -204,9 +204,13 @@ class Installer {
 						  `type` enum('status','email','sms','pushover') NOT NULL,
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
-						  `user_id` varchar(255) NOT NULL,
 						  PRIMARY KEY  (`log_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+            PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+                                   `log_id`  int(11) UNSIGNED NOT NULL ,
+                                   `user_id`  int(11) UNSIGNED NOT NULL ,
+                                   PRIMARY KEY (`log_id`, `user_id`),
+         						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(100) NOT NULL,
