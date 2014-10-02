@@ -78,7 +78,7 @@ class Installer {
 
 		// different DB version, check if the version requires any changes
 		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
-		if(version_compare($version_db, '3.1.0', '<')) {
+		if(version_compare($version_db, '3.1.1', '<')) {
 			return true;
 		} else {
 			// change database version to current version so this check won't be required next time
@@ -209,7 +209,7 @@ class Installer {
             PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
                                    `log_id`  int(11) UNSIGNED NOT NULL ,
                                    `user_id`  int(11) UNSIGNED NOT NULL ,
-                                   PRIMARY KEY (`log_id`, `user_id`),
+                                   PRIMARY KEY (`log_id`, `user_id`)
          						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -285,6 +285,10 @@ class Installer {
 		if(version_compare($version_from, '3.1.0', '<')) {
 			// upgrade to 3.1.0
 			$this->upgrade310();
+		}
+		if(version_compare($version_from, '3.1.1', '<')) {
+			// upgrade to 3.1.1
+			$this->upgrade311();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -425,4 +429,33 @@ class Installer {
 
 		$this->execSQL($queries);
 	}
+
+    /**
+   	 * Upgrade for v3.1.1 release (all log-users relations are in a separate table)
+   	 */
+   	protected function upgrade311() {
+        // Create log_users table
+        $this->execSQL("CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+                        `log_id`  int(11) UNSIGNED NOT NULL ,
+                        `user_id`  int(11) UNSIGNED NOT NULL ,
+                        PRIMARY KEY (`log_id`, `user_id`)
+                      ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+        // Migrate the data
+        $logs = $this->db->select(PSM_DB_PREFIX . 'log', null, array('log_id', 'user_id'));
+        foreach ($logs as $log) {
+            // Validation
+            if (empty($log['user_id']) || trim($log['user_id']) == '') {
+                continue;
+            }
+
+            // Insert into new table
+            foreach (explode(',', $log['user_id']) as $user_id) {
+                psm_add_log_user($log['log_id'], $user_id);
+            }
+        }
+
+        // Drop old user_id('s) column
+        $this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
+    }
 }
