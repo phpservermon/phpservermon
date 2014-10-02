@@ -296,7 +296,7 @@ class StatusNotifier {
 
         // Log
         if(psm_get_conf('log_sms')) {
-			psm_add_log($this->server_id, 'sms', $message);
+            $log_id = psm_add_log($this->server_id, 'sms', $message);
 		}
 
 		// add all users to the recipients list
