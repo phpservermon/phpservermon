@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Haydar KULEKCI <haydarkulekci@gmail.com>
+ * @author      Haydar Kulekci <haydarkulekci@gmail.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -26,7 +26,7 @@
  **/
 
 $sm_lang = array(
-    'name' => 'Turkish',
+    'name' => 'Türkçe - Turkish',
     'locale' => array('tr_TR.UTF-8', 'tr_TR', 'turkish', 'turkish-tr'),
     'system' => array(
         'title' => 'Server Monitor',
@@ -199,7 +199,7 @@ $sm_lang = array(
         'pushover_status' => 'Pushover mesaj gönderimine izin ver',
         'pushover_description' => 'Pushover gerçek zamanlı bildirim alabilmek için bir servistir. Daha fazla bilgi için <a href="https://pushover.net/">sitesine</a> bakabilirsiniz.',
         'pushover_clone_app' => 'Pushover uygulaması oluşturmak için buraya tıklayınız.',
-        'pushover_api_token' => 'Pushover Uygulaması API Token Bilgisi', 
+        'pushover_api_token' => 'Pushover Uygulaması API Token Bilgisi',
         'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank">Pushover sitesi üzerinden</a> bir uygulama oluşturmalısınız ve API Token bilgilerini buraya yazmalısınız.',
         'alert_type' => 'Ne zaman uyarılmak istediğinizi seçin.',
         'alert_type_description' => '<b>Durum değişikliği:</b> '.

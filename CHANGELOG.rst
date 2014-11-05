@@ -6,9 +6,14 @@ not yet released
 ----------------
 
 * #130: Added Czech translation.
+* #138: Added Polish translation.
+* #148: Added Turkish translation.
 * #124: Updated Bulgarian translation.
 * #132: Updated German translation.
 * #134: Updated French translation.
+* #144: Updated Brazilian translation.
+* #146: Updated Russian translation.
+* #147: Updated Spanish translation.
 
 
 v3.1.0 (released August 7, 2014)
