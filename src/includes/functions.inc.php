@@ -484,12 +484,15 @@ function psm_build_sms() {
  * @return string
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
-	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-
-	// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
-	// for urls, we only want the forward slashes.
-	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
-	$url = str_replace('\\', '', $url);
+	if(defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
+		$url = PSM_BASE_URL;
+	} else {
+		$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
+		// for urls, we only want the forward slashes.
+		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+		$url = str_replace('\\', '', $url);
+	}
 
 	if($params != null) {
 		$url .= '?';
@@ -546,32 +549,6 @@ function psm_POST($key, $alt = null) {
  */
 function psm_is_cli() {
 	return (!isset($_SERVER['SERVER_SOFTWARE']) || php_sapi_name() == 'cli');
-}
-
-/**
- * Set _server vars from the cli argument --uri=
- * Example: php cron/status.cron.php --uri="http://www.phpservermonitor.org/"
- */
-function psm_set_cli_uri() {
-    foreach ($_SERVER['argv'] as $argv) {
-        if (0 === strpos($argv, '--uri=')) {
-            $uriArray = parse_url(substr($argv, 6));
-            if (!empty($uriArray['scheme'])) {
-                $_SERVER['REQUEST_SCHEME'] = $uriArray['scheme'];
-                $_SERVER['SERVER_PORT']    = ($uriArray['scheme'] == 'https') ? 443 : 80;
-            }
-            if (!empty($uriArray['host'])) {
-                $_SERVER['HTTP_HOST'] = $uriArray['host'];
-            }
-            if (!empty($uriArray['port'])) {
-                $_SERVER['SERVER_PORT'] = $uriArray['port'];
-            }
-            if (!empty($uriArray['path'])) {
-                $_SERVER['SCRIPT_NAME'] = $uriArray['path'];
-            }
-            break;
-        }
-    }
 }
 
 ###############################################
