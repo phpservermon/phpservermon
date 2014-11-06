@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout', 'last_online',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -113,9 +113,6 @@ class StatusUpdater {
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
 			$save['warning_threshold_counter'] = 0;
-			if ($this->server['status'] == 'off') {
-				$save['last_offline'] = $this->server['last_online'];
-			}
 		} else {
 			// server is offline, increase the error counter
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
@@ -127,6 +124,9 @@ class StatusUpdater {
 				$this->status_new = true;
 			} else {
 				$save['status'] = 'off';
+				if ($this->server['status'] == 'on') {
+					$save['last_offline'] = $save['last_check'];
+				}
 			}
 		}
 
