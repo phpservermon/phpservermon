@@ -237,6 +237,25 @@ function psm_log_uptime($server_id, $status, $latency) {
 }
 
 /**
+ * Converts an interval into a string
+ *
+ * @param DateInterval $interval
+ * @return string
+ */
+ function psm_format_interval(DateInterval $interval) {
+    $result = "";
+
+    if ($interval->y) { $result .= $interval->format("%y ") . ( ($interval->y == 1)  ? psm_get_lang('system', 'year') : psm_get_lang('system', 'years') ) . " "; }
+    if ($interval->m) { $result .= $interval->format("%m ") . ( ($interval->m == 1)  ? psm_get_lang('system', 'month') : psm_get_lang('system', 'months') ) . " "; }
+    if ($interval->d) { $result .= $interval->format("%d ") . ( ($interval->d == 1)  ? psm_get_lang('system', 'day') : psm_get_lang('system', 'days') ) . " "; }
+    if ($interval->h) { $result .= $interval->format("%h ") . ( ($interval->h == 1)  ? psm_get_lang('system', 'hour') : psm_get_lang('system', 'hours') ) . " "; }
+    if ($interval->i) { $result .= $interval->format("%i ") . ( ($interval->i == 1)  ? psm_get_lang('system', 'minute') : psm_get_lang('system', 'minutes') ) . " "; }
+    if ($interval->s) { $result .= $interval->format("%s ") . ( ($interval->s == 1)  ? psm_get_lang('system', 'second') : psm_get_lang('system', 'seconds') ) . " "; }
+
+    return $result;
+}
+
+/**
  * Parses a string from the language file with the correct variables replaced in the message
  *
  * @param boolean $status
@@ -253,6 +272,11 @@ function psm_parse_msg($status, $type, $vars) {
 		return $message;
 	}
 	$vars['date'] = date('Y-m-d H:i:s');
+
+	$online_date = new DateTime($vars['last_online']);
+	$offline_date = new DateTime($vars['last_offline']);
+	$difference = $online_date->diff($offline_date);
+	$vars['downtime'] = psm_format_interval($difference);
 
 	foreach($vars as $k => $v) {
 		$message = str_replace('%' . strtoupper($k) . '%', $v, $message);
