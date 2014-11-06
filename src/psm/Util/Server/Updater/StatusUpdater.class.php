@@ -115,7 +115,7 @@ class StatusUpdater {
 			$save['warning_threshold_counter'] = 0;
 			if ($this->server['status'] == 'off') {
 				$save['last_offline'] = $this->server['last_online'];
-			}			
+			}
 		} else {
 			// server is offline, increase the error counter
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;

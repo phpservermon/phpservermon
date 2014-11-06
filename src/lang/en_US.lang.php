@@ -69,7 +69,7 @@ $sm_lang = array(
 		'minute' => 'minute',
 		'minutes' => 'minutes',
 		'second' => 'second',
-		'seconds' => 'seconds',		
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Config',
