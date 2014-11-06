@@ -1,6 +1,25 @@
 Changelog
 =========
 
+
+v3.1.1 (released November 6, 2014)
+----------------------------------
+
+* #130: Added Czech translation.
+* #138: Added Polish translation.
+* #148: Added Turkish translation.
+* #124: Updated Bulgarian translation.
+* #132: Updated German translation.
+* #134: Updated French translation.
+* #144: Updated Brazilian translation.
+* #146: Updated Russian translation.
+* #147: Updated Spanish translation.
+* #128: Added SSL/TLS option for SMTP config.
+* #131: Allow URL and timeout to be passed as argument to the cronjob.
+* #135: Uptime percentage above 100%.
+* #151: Links in install results were stripped automatically from template.
+
+
 v3.1.0 (released August 7, 2014)
 --------------------------------
 

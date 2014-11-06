@@ -67,13 +67,17 @@ Translators
 
 The following people have contributed to the translation of PHP Server Monitor:
 
+* Bulgarian
+
+  * Plamen Vasilev - https://github.com/PVasileff
+
 * Chinese
 
   * manhere - https://github.com/manhere
 
-* Bulgarian
+* Czech
 
-  * Plamen Vasilev - https://github.com/PVasileff
+  * Simon Berka - https://github.com/berkas1
 
 * Danish
 
@@ -87,6 +91,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 * German
 
   * Brunbaur Herbert
+  * Jean Pierre Kolb - https://github.com/JPKCom
 
 * Italian
 
@@ -96,18 +101,27 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Ik-Jun
 
+* Polish
+
+  * Arkadiusz Klenczar - https://github.com/aklenczar
+
 * Portuguese (Brazil)
 
   * Luiz Alberto S. Ribeiro
-
-* Spanish
-
-  * Klemens Häckel - http://clickdimension.wordpress.com
 
 * Russian
 
   * Roman Beylin - https://github.com/roman-beylin
   * Yuriy Lyutov - https://github.com/delysh
+
+* Spanish
+
+  * Klemens Häckel - http://clickdimension.wordpress.com
+  * Luis Rodriguez - https://github.com/ldrrp
+
+* Turkish
+
+  * Haydar Kulekci - https://github.com/hkulekci
 
 
 Vendors

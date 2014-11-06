@@ -394,6 +394,7 @@ function psm_build_mail($from_name = null, $from_email = null) {
 		$phpmailer->IsSMTP();
 		$phpmailer->Host = psm_get_conf('email_smtp_host');
 		$phpmailer->Port = psm_get_conf('email_smtp_port');
+		$phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
 		$smtp_user = psm_get_conf('email_smtp_username');
 		$smtp_pass = psm_get_conf('email_smtp_password');
@@ -484,12 +485,15 @@ function psm_build_sms() {
  * @return string
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
-	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-
-	// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
-	// for urls, we only want the forward slashes.
-	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
-	$url = str_replace('\\', '', $url);
+	if(defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
+		$url = PSM_BASE_URL;
+	} else {
+		$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
+		// for urls, we only want the forward slashes.
+		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+		$url = str_replace('\\', '', $url);
+	}
 
 	if($params != null) {
 		$url .= '?';

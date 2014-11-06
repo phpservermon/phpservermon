@@ -109,8 +109,11 @@ class ConfigController extends AbstractController {
 			);
 		}
 
+		// @todo these selected values can easily be rewritten in the template using twig
 		$tpl_data['sms_selected_' . $config['sms_gateway']] = 'selected="selected"';
 		$tpl_data['alert_type_selected_' . $config['alert_type']] = 'selected="selected"';
+		$smtp_sec = isset($config['email_smtp_security']) ? $config['email_smtp_security'] : '';
+		$tpl_data['email_smtp_security_selected_' . $smtp_sec] = 'selected="selected"';
 		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
 		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
 
@@ -149,6 +152,10 @@ class ConfigController extends AbstractController {
 				'language' => $_POST['language'],
 				'sms_gateway' => $_POST['sms_gateway'],
 				'alert_type' => $_POST['alert_type'],
+				'email_smtp_security' =>
+					in_array($_POST['email_smtp_security'], array('', 'ssl', 'tls'))
+					? $_POST['email_smtp_security']
+					: '',
 				'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
 				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
 			);
@@ -292,6 +299,8 @@ class ConfigController extends AbstractController {
 			'label_email_smtp' => psm_get_lang('config', 'email_smtp'),
 			'label_email_smtp_host' => psm_get_lang('config', 'email_smtp_host'),
 			'label_email_smtp_port' => psm_get_lang('config', 'email_smtp_port'),
+			'label_email_smtp_security' => psm_get_lang('config', 'email_smtp_security'),
+			'label_email_smtp_security_none' => psm_get_lang('config', 'email_smtp_security_none'),
 			'label_email_smtp_username' => psm_get_lang('config', 'email_smtp_username'),
 			'label_email_smtp_password' => psm_get_lang('config', 'email_smtp_password'),
 			'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
