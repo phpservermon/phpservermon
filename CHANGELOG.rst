@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-not yet released
-----------------
+v3.1.1 (released November 6, 2014)
+----------------------------------
 
 * #130: Added Czech translation.
 * #138: Added Polish translation.
