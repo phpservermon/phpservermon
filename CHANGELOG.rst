@@ -14,6 +14,7 @@ not yet released
 * #144: Updated Brazilian translation.
 * #146: Updated Russian translation.
 * #147: Updated Spanish translation.
+* #128: Added SSL/TLS option for SMTP config.
 * #131: Allow URL and timeout to be passed as argument to the cronjob.
 * #135: Uptime percentage above 100%.
 * #151: Links in install results were stripped automatically from template.

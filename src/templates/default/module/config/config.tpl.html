@@ -101,6 +101,16 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label" for="email_smtp_security">{{ label_email_smtp_security }}</label>
+                <div class="controls">
+                    <select id="email_smtp_security" name="email_smtp_security">
+                        <option value="" {{ email_smtp_security_selected_|raw }}>{{ label_email_smtp_security_none }}</option>
+                        <option value="ssl" {{ email_smtp_security_selected_ssl|raw }}>SSL</option>
+                        <option value="tls" {{ email_smtp_security_selected_tls|raw }}>TLS</option>
+					</select>
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label" for="email_smtp_username">{{ label_email_smtp_username }}</label>
                 <div class="controls">
                     <input type="text" id="email_smtp_username" name="email_smtp_username" value="{{ email_smtp_username }}" maxlength="100" placeholder="{{ label_email_smtp_noauth }}" />
