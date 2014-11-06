@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Jérôme Cabanis <http://lauraly.com>
- *              Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@neanderthal-technology.com>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -181,7 +181,7 @@ class HistoryGraph {
 		$records = $this->db->execute(
 			'SELECT *
 				FROM `' . PSM_DB_PREFIX . "servers_$type`
-				WHERE `server_id` = :server_id AND `date` BETWEEN :start_time AND :end_time",
+				WHERE `server_id` = :server_id AND `date` BETWEEN :start_time AND :end_time ORDER BY `date` ASC",
 			array(
 				'server_id' => $server_id,
 				'start_time' => $start_time->format('Y-m-d H:i:s'),
@@ -192,7 +192,7 @@ class HistoryGraph {
 
 	/**
 	 * Generate data arrays for graphs
-	 * @param array $records all uptime records to parse
+	 * @param array $records all uptime records to parse, MUST BE SORTED BY DATE IN ASCENDING ORDER
 	 * @param array $lines array with keys as line ids to prepare (key must be available in uptime records)
 	 * @param callable $cb_if_up function to check if the server is up or down
 	 * @param string $latency_avg_key which key from uptime records to use for calculating averages
@@ -222,10 +222,10 @@ class HistoryGraph {
 
 			if($cb_if_up($uptime)) {
 				// The server is up
-				foreach($lines as $key => &$value) {
+				foreach($lines as $key => $value) {
 					// add the value for each of the different lines
 					if(isset($uptime[$key])) {
-						$value[] = '[' . $time . ',' . round((float) $uptime[$key], 4) . ']';
+						$lines[$key][] = '[' . $time . ',' . round((float) $uptime[$key], 4) . ']';
 					}
 				}
 				if($last_date) {
@@ -246,16 +246,16 @@ class HistoryGraph {
 		$lines_merged = array();
 
 		foreach($lines as $line_key => $line_value) {
-			if(empty($value)) {
+			if(empty($line_value)) {
 				continue;
 			}
 			$lines_merged[] = '[' . implode(',', $line_value) . ']';
 			$series[] = "{label: '".psm_get_lang('servers', $line_key)."'}";
 		}
 		if($last_date) {
+			// if last_date is still set, the last check was "down" and we are still in down mode
 			$down[] = '[' . $last_date . ',0]';
-			$time = $end_time->getTimestamp() * 1000;
-			$time_down += ($time - $last_date);
+			$time_down += (($end_time->getTimestamp() * 1000) - $last_date);
 		}
 
 		if($add_uptime) {

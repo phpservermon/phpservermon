@@ -15,6 +15,7 @@ not yet released
 * #146: Updated Russian translation.
 * #147: Updated Spanish translation.
 * #131: Allow URL and timeout to be passed as argument to the cronjob.
+* #135: Uptime percentage above 100%.
 * #151: Links in install results were stripped automatically from template.
 
 
