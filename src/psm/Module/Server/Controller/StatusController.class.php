@@ -78,7 +78,7 @@ class StatusController extends AbstractServerController {
 			$server['last_offline_nice'] = psm_timespan($server['last_offline']);
 			$server['last_offline_duration_nice'] = "";
 			if ($server['last_offline_nice'] != psm_get_lang('system', 'never')) {
-				$server['last_offline_duration_nice'] = "(".psm_timespan($server['last_offline_duration']).")";
+				$server['last_offline_duration_nice'] = "(".$server['last_offline_duration'].")";
 			}
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
