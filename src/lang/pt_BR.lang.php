@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Se esse padrão não for encontrado no site, o servidor será marcado offline. As expressões regulares são permitidas.',
         'last_check' => 'Última verificação',
         'last_online' => 'Última vez online',
+		'last_offline' => 'Last offline',
         'monitoring' => 'Monitoramento',
 		'no_monitoring' => 'Sem monitoring',
         'email' => 'Email',

@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Если текст по шаблону не найден на сайте, сервер будет помечен как Оффлайн. Регулярные выражения допустимы.',
 		'last_check' => 'Последняя проверка',
 		'last_online' => 'Был онлайн',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Мониторинг',
 		'no_monitoring' => 'Нет мониторинга',
 		'email' => 'E-mail',

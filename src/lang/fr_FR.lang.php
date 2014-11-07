@@ -140,6 +140,7 @@ $sm_lang = array(
 		'pattern_description' => 'Si ce texte n\'est par retrouvé sur le site web, le serveur est marqué hors-service. Les expressions réguliaires sont autorisées.',
 		'last_check' => 'Dernière vérification',
 		'last_online' => 'Dernière fois OK',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Serveillé',
 		'no_monitoring' => 'Non serveillé',
 		'email' => 'Email',

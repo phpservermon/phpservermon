@@ -139,6 +139,7 @@ $sm_lang = array(
         'pattern_description' => 'Bu pattern web sitenizde bulunamaz ise, sunucu offline olarak işaretlenecek. Regular expression\'a izin verilmiştir.',
         'last_check' => 'Son kontrol',
         'last_online' => 'Son çevrimiçi zamanı',
+		'last_offline' => 'Last offline',
         'monitoring' => 'Monitoring',
         'no_monitoring' => 'No monitoring',
         'email' => 'E-posta',

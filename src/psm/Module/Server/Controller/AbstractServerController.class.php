@@ -75,7 +75,9 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`pushover`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
-					`s`.`timeout`
+					`s`.`timeout`,
+					`s`.`last_offline`,
+					`s`.`last_offline_duration`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -97,6 +99,13 @@ abstract class AbstractServerController extends AbstractController {
 	protected function formatServer($server) {
 		$server['rtime'] = round((float) $server['rtime'], 4);
 		$server['last_online']  = psm_timespan($server['last_online']);
+		$server['last_offline']  = psm_timespan($server['last_offline']);
+		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
+			$server['last_offline_duration'] = "(".psm_timespan($server['last_offline_duration']).")";
+		}
+		else {
+			$server['last_offline_duration'] = "";
+		}
 		$server['last_check']  = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);

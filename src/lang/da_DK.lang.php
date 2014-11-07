@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret offline. Regulære udtryk er tilladt.',
 		'last_check' => 'Sidst kontrolleret',
 		'last_online' => 'Sidst online',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Overvågning',
 		'no_monitoring' => 'Ingen overvågning',
 		'email' => 'Email',

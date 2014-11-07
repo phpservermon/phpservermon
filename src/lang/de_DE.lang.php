@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
 		'last_online' => 'Zuletzt online',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Monitoring inaktiv',
 		'email' => 'E-Mail',

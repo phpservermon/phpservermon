@@ -140,6 +140,7 @@ $sm_lang = array(
 		'pattern_description' => 'Si este patrón no se encuentra en el sitio web, el servidor estará marcada sin conexión. Se permiten expresiones regulares.',
 		'last_check' => 'Ultima verificación',
 		'last_online' => 'Última vez en línea',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Monitoreo',
 		'no_monitoring' => 'Sin monitoreo',
 		'email' => 'Email',

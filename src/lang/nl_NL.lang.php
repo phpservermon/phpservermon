@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Als dit patroon niet gevonden wordt op de website, zal de server als offline gemarkeerd worden. Regular expressions zijn toegestaan.',
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',

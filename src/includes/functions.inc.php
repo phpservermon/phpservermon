@@ -273,11 +273,6 @@ function psm_parse_msg($status, $type, $vars) {
 	}
 	$vars['date'] = date('Y-m-d H:i:s');
 
-	$online_date = new DateTime($vars['last_online']);
-	$offline_date = new DateTime($vars['last_offline']);
-	$difference = $online_date->diff($offline_date);
-	$vars['downtime'] = psm_format_interval($difference);
-
 	foreach($vars as $k => $v) {
 		$message = str_replace('%' . strtoupper($k) . '%', $v, $message);
 	}

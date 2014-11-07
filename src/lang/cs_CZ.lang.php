@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Pokud vzorek nebude na webu nalezen, bude server označen jako offline. Regulární výrazy jsou povoleny.',
 		'last_check' => 'Poslední kontrola',
 		'last_online' => 'Naposledy online',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Žádné monitorované služby',
 		'email' => 'Email',

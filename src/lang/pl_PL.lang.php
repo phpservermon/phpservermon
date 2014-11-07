@@ -139,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Jeśli wzorzec nie zostanie odnaleziony, status zostanie ustawiony na  offline. Wyrażenia regularne są dozwolone.',
 		'last_check' => 'Ostatnie sprawdzenie',
 		'last_online' => 'Ostatnio online',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Monitorowany',
 		'no_monitoring' => 'Brak monitoringu',
 		'email' => 'Email',
