@@ -101,7 +101,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['last_online']  = psm_timespan($server['last_online']);
 		$server['last_offline']  = psm_timespan($server['last_offline']);
 		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
-			$server['last_offline_duration'] = "(".psm_timespan($server['last_offline_duration']).")";
+			$server['last_offline_duration'] = "(".$server['last_offline_duration'].")";
 		}
 		else {
 			$server['last_offline_duration'] = "";
