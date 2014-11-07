@@ -136,6 +136,7 @@ class Installer {
 					('email_smtp', ''),
 					('email_smtp_host', ''),
 					('email_smtp_port', ''),
+					('email_smtp_security', ''),
 					('email_smtp_username', ''),
 					('email_smtp_password', ''),
 					('sms_status', '0'),
