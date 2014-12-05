@@ -77,6 +77,11 @@ To be able to run an installation from the repo, you need to run the following c
 
      php composer.phar install
 
+If you are familiar with Vagrant (https://www.vagrantup.com)::
+
+     vagrant up
+
+.. and browse to http://localhost:8080/psm/.
 
 
 Documentation
