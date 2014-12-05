@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+not yet released
+----------------------------------
+
+* #161: Added Swedish translation.
+
+
 v3.1.1 (released November 6, 2014)
 ----------------------------------
 
