@@ -195,6 +195,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Uživatelské jméno brány',
 		'sms_gateway_password' => 'Heslo brány',
 		'sms_from' => 'Telefonní číslo odesilatele',

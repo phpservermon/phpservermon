@@ -195,6 +195,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway användarnamn',
 		'sms_gateway_password' => 'Gateway lösenord',
 		'sms_from' => 'Avsändarens telefonnummer',

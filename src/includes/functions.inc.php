@@ -466,6 +466,9 @@ function psm_build_sms() {
 		case 'smsglobal':
 			$sms = new \psm\Txtmsg\Smsglobal();
 			break;
+		case 'freevoipdeal':
+			$sms = new \psm\Txtmsg\FreeVoipDeal();
+			break;
 	}
 
 	// copy login information from the config file
