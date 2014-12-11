@@ -46,7 +46,7 @@ class FreeVoipDeal extends Core {
 
 			$result = file_get_contents( $local_url . "?username=" . $this->username
 				. "&password=" . $this->password . "&from=" . $this->originator . "&to=" . $phone
-				. "&text=TEST-" . $local_data );
+				. "&text=" . $local_data );
 		}
 
 		return $result;
