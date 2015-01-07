@@ -210,7 +210,7 @@ class Installer {
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `ip` varchar(100) NOT NULL,
+						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('service','website') NOT NULL default 'service',
