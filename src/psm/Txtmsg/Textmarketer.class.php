@@ -38,22 +38,40 @@ class Textmarketer extends Core {
     public $success = false;
     public $successcount = 0;
 
+	/**
+	 * Send the SMS message
+	 * @param string $message
+	 * @return boolean (true = message was sent successfully, false = there was a problem sending the message)
+	 */
     public function sendSMS($message) {
+		$recipients = join(',', $this->recipients);
 
-        $textmarketer_url = "https://api.textmarketer.co.uk/gateway/";
-        $textmarketer_data = urlencode( $message );
-        $textmarketer_origin = urlencode( 'SERVERALERT' );
+		if(count($recipients) == 0) {
+			return false;
+		}
 
+        $containsLetter  = preg_match('/[a-zA-Z]/', $this->originator);
+        $containsSpecial = preg_match('/[^a-zA-Z\d]/', $this->originator);
 
-        foreach( $this->recipients as $phone ){
-
-            $URL = $textmarketer_url."?username=" . $this->username . "&password=" . $this->password . "&to=" . $phone . "&message=" . $textmarketer_data . "&orig=" . $textmarketer_origin;
-
-            $result = file_get_contents( $URL );
-
+        if ($containsLetter || $containsSpecial) {  // 11 Alphanumeric, 16 for just numbers
+            $from = urlencode(substr($this->originator, 0, 11));
+        }
+        else {
+            $from = urlencode(substr($this->originator, 0, 16));
         }
 
-        return $result;
+        $url = "https://api.textmarketer.co.uk/gateway/" . 
+               "?username=" . $this->username . 
+               "&password=" . $this->password . 
+               "&to=" . rawurlencode($recipients) . 
+               "&message=" . urlencode( $message ) . 
+               "&orig=" . $from;
+        $result = file_get_contents( $url );
+        $isOk = strpos($result, 'SUCCESS') !== false;
+        if(!$isOk) {
+            $result = trim(str_replace("\n", " ", str_replace("\r", " ", $result)));
+            error_log("SMS API Error: '".$result."'", E_USER_NOTICE);
+        }
+        return $isOk;
     }
-
 }
