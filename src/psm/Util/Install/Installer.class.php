@@ -272,16 +272,16 @@ class Installer {
 	 */
 	public function upgrade($version_from, $version_to) {
 		if(version_compare($version_from, '2.1.0', '<')) {
-			// upgrade to 2.1.0
 			$this->upgrade210();
 		}
 		if(version_compare($version_from, '3.0.0', '<')) {
-			// upgrade to 3.0.0
 			$this->upgrade300();
 		}
 		if(version_compare($version_from, '3.1.0', '<')) {
-			// upgrade to 3.1.0
 			$this->upgrade310();
+		}
+		if(version_compare($version_from, '3.2.0', '<')) {
+			$this->upgrade320();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -419,6 +419,14 @@ class Installer {
 						`value` varchar(255) NOT NULL,
 						PRIMARY KEY (`user_id`, `key`)
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$this->execSQL($queries);
+	}
+
+	protected function upgrade320() {
+		$queries = array();
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
 
 		$this->execSQL($queries);
 	}
