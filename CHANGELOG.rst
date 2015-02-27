@@ -7,7 +7,8 @@ not yet released
 
 * #161: Added Swedish translation.
 * #169: Increased server ip char limit to 500.
-* #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>
+* #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
+* #181: Added blank index files to prevent directory listing.
 
 
 v3.1.1 (released November 6, 2014)
