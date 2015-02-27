@@ -71,6 +71,8 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`rtime`,
 					`s`.`last_check`,
 					`s`.`last_online`,
+					`s`.`last_offline`,
+					`s`.`last_offline_duration`,
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
@@ -102,6 +104,13 @@ abstract class AbstractServerController extends AbstractController {
 	protected function formatServer($server) {
 		$server['rtime'] = round((float) $server['rtime'], 4);
 		$server['last_online']  = psm_timespan($server['last_online']);
+		$server['last_offline']  = psm_timespan($server['last_offline']);
+		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
+			$server['last_offline_duration'] = "(".$server['last_offline_duration'].")";
+		}
+		else {
+			$server['last_offline_duration'] = "";
+		}
 		$server['last_check']  = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);
