@@ -9,6 +9,10 @@ Credits
 
 The following people have contributed to the development of PHP Server Monitor:
 
+* Michiel van der Wulp - https://github.com/mvdw
+
+  * FreeVoipDeal SMS gateway
+
 * Pepijn Over - https://github.com/dopeh
 
   * Creator and project maintainer
