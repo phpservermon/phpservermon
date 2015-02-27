@@ -32,6 +32,9 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 			<argument>%db.pass%</argument>
 		</service>
 
+		<service id="event" class="Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher">
+			<argument type="service" id="service_container" />
+		</service>
 		<service id="user" class="psm\Service\User">
 			<argument type="service" id="db" />
 		</service>
@@ -46,6 +49,9 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 		<!--UTIL start-->
 		<service id="util.user.validator" class="psm\Util\User\UserValidator">
 			<argument type="service" id="user" />
+		</service>
+		<service id="util.server.updatemanager" class="psm\Util\Server\UpdateManager">
+			<argument type="service" id="service_container" />
 		</service>
 		<!--UTIL end-->
 	</services>

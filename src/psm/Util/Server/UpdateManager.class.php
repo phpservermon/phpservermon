@@ -27,44 +27,31 @@
  **/
 
 namespace psm\Util\Server;
-use psm\Service\Database;
-use psm\Service\User;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Run an update on all servers.
- *
- * If you provide a User service instance it will be
- * restricted to that user only.
  */
-class UpdateManager {
+class UpdateManager extends ContainerAware {
 
-	/**
-	 * Database service
-	 * @var \psm\Service\Database $db
-	 */
-	protected $db;
-
-	/**
-	 * User service
-	 * @var \psm\Service\User $user
-	 */
-	protected $user;
-
-	function __construct(Database $db) {
-		$this->db = $db;
+	function __construct(ContainerInterface $container) {
+		$this->container = $container;
 	}
 
 	/**
 	 * Go :-)
+	 *
+	 * @param boolean $skip_perms if TRUE, no user permissions will be taken in account and all servers will be updated
 	 */
-	public function run() {
+	public function run($skip_perms = false) {
 		// check if we need to restrict the servers to a certain user
 		$sql_join = '';
 
-		if($this->user != null && $this->user->getUserLevel() > PSM_USER_ADMIN) {
+		if(!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
 			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
-						`us`.`user_id`={$this->user->getUserId()}
+						`us`.`user_id`={$this->container->get('user')->getUserId()}
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
 		}
@@ -74,10 +61,10 @@ class UpdateManager {
 				{$sql_join}
 				WHERE `active`='yes' ";
 
-		$servers = $this->db->query($sql);
+		$servers = $this->container->get('db')->query($sql);
 
-		$updater = new Updater\StatusUpdater($this->db);
-		$notifier = new Updater\StatusNotifier($this->db);
+		$updater = new Updater\StatusUpdater($this->container->get('db'));
+		$notifier = new Updater\StatusNotifier($this->container->get('db'));
 
 		foreach($servers as $server) {
 			$status_old = ($server['status'] == 'on') ? true : false;
@@ -87,16 +74,8 @@ class UpdateManager {
 		}
 
 		// clean-up time!! archive all records
-		$archive = new ArchiveManager($this->db);
+		$archive = new ArchiveManager($this->container->get('db'));
 		$archive->archive();
 		$archive->cleanup();
-	}
-
-	/**
-	 * Set a user to restrict the servers being updated
-	 * @param \psm\Service\User $user
-	 */
-	public function setUser(User $user) {
-		$this->user = $user;
 	}
 }
