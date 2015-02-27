@@ -63,26 +63,6 @@ if(!file_exists($vendor_autoload)) {
 }
 require_once $vendor_autoload;
 
-spl_autoload_register(function($class) {
-	// remove leading \
-	$class = ltrim($class, '\\');
-	$path_parts = explode('\\', $class);
-
-	$filename = array_pop($path_parts);
-	$path = PSM_PATH_SRC . implode(DIRECTORY_SEPARATOR, $path_parts) .
-			DIRECTORY_SEPARATOR .
-			$filename . '.class.php'
-	;
-	if(file_exists($path)) {
-		require_once $path;
-		return;
-	}
-});
-
-$includes = glob(PSM_PATH_SRC . 'includes/*.inc.php');
-foreach($includes as $file) {
-	include_once $file;
-}
 $router = new psm\Router();
 // this may seem insignificant, but right now lots of functions depend on the following global var definition:
 $db = $router->getService('db');

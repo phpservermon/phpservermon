@@ -16,5 +16,15 @@
 		"symfony/http-foundation": "2.6.*",
 		"php-pushover/php-pushover": "dev-master",
 		"twig/twig": "1.*"
+	},
+	"autoload": {
+		"files": [
+			"./src/includes/psmconfig.inc.php",
+			"./src/includes/functions.inc.php",
+			"./src/includes/password_compatibility_library.inc.php"
+		],
+		"psr-4": {
+			"psm\\": "src/psm/"
+		}
 	}
 }
