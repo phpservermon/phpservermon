@@ -23,24 +23,31 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
+ * @since       phpservermon 3.2
  **/
 
-namespace psm\Module\Config;
+namespace psm\Module\User\EventListener;
 
-use psm\Module\ModuleInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use psm\Module\User\UserEvents;
+use psm\Module\User\Event\UserEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ConfigModule implements ModuleInterface {
+class UserSubscriber implements EventSubscriberInterface {
 
-	public function load(ContainerBuilder $container) {
-
+	public static function getSubscribedEvents() {
+		return array(
+			UserEvents::USER_ADD => array('onUserAdd', 0),
+			UserEvents::USER_EDIT => array('onUserEdit', 0),
+			UserEvents::USER_DELETE => array('onUserDelete', 0),
+		);
 	}
 
-	public function getControllers() {
-		return array(
-			'config' => __NAMESPACE__ . '\Controller\ConfigController',
-		);
+	public function onUserAdd(UserEvent $event) {
+	}
 
+	public function onUserEdit(UserEvent $event) {
+	}
+
+	public function onUserDelete(UserEvent $event) {
 	}
 }

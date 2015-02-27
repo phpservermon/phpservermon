@@ -27,9 +27,17 @@
  **/
 
 namespace psm\Module\User;
+
 use psm\Module\ModuleInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class UserModule implements ModuleInterface {
+
+	public function load(ContainerBuilder $container) {
+		$event = $container->get('event');
+		$event->addSubscriber(new EventListener\UserSubscriber);
+	}
+
 	public function getControllers() {
 		return array(
 			'user' => __NAMESPACE__ . '\Controller\UserController',

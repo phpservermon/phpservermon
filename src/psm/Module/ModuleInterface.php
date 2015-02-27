@@ -27,8 +27,11 @@
  **/
 
 namespace psm\Module;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface ModuleInterface {
+
+	public function load(ContainerBuilder $container);
 
 	public function getControllers();
 }

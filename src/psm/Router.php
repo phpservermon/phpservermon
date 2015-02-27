@@ -51,6 +51,13 @@ class Router {
 
 	public function __construct() {
 		$this->container = $this->buildServiceContainer();
+
+		$mods = $this->container->getParameter('modules');
+
+		foreach($mods as $mod) {
+			$mod_loader = $this->container->get($mod);
+			$mod_loader->load($this->container);
+		}
 	}
 
 	/**
@@ -110,7 +117,7 @@ class Router {
 			$controller_id = $module_id;
 		}
 
-		$module = $this->getModule($module_id);
+		$module = $this->container->get('module.' . $module_id);
 		$controllers = $module->getControllers();
 		if(!isset($controllers[$controller_id]) || !class_exists($controllers[$controller_id])) {
 			throw new \InvalidArgumentException('Controller "' . $controller_id . '" is not registered or does not exist.');
@@ -136,16 +143,6 @@ class Router {
 	 */
 	public function getService($id) {
 		return $this->container->get($id);
-	}
-
-	/**
-	 * Get a module
-	 * @param string $module_id
-	 * @return \psm\Module\ModuleInterface
-	 * @throws \InvalidArgumentException
-	 */
-	protected function getModule($module_id) {
-		return $this->container->get('module.' . $module_id);
 	}
 
 	/**

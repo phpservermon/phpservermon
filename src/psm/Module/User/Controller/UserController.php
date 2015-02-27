@@ -253,12 +253,20 @@ class UserController extends AbstractController {
 			unset($clean['password']); // password update is executed separately
 			$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $user_id));
 			$this->addMessage(psm_get_lang('users', 'updated'), 'success');
+
+			$event = \psm\Module\User\UserEvents::USER_EDIT;
 		} else {
 			// add user
 			$clean['password'] = ''; // password update is executed separately
 			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $clean);
 			$this->addMessage(psm_get_lang('users', 'inserted'), 'success');
+
+			$event = \psm\Module\User\UserEvents::USER_ADD;
 		}
+		$this->container->get('event')->dispatch(
+			$event,
+			new \psm\Module\User\Event\UserEvent($user_id, $this->getUser()->getUserId())
+		);
 		if(isset($password)) {
 			$this->getUser()->changePassword($user_id, $password);
 		}
@@ -294,6 +302,12 @@ class UserController extends AbstractController {
 
 			$this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
 			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
+
+			$this->container->get('event')->dispatch(
+				\psm\Module\User\UserEvents::USER_DELETE,
+				new \psm\Module\User\Event\UserEvent($id, $this->getUser()->getUserId())
+			);
+
 			$this->addMessage(psm_get_lang('users', 'deleted'), 'success');
 		} catch(\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');

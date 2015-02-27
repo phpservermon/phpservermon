@@ -6,6 +6,14 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 	<parameters>
 		<parameter key="config.theme" type="constant">PSM_THEME</parameter>
 
+		<parameter key="modules" type="collection">
+			<parameter>module.config</parameter>
+			<parameter>module.error</parameter>
+			<parameter>module.server</parameter>
+			<parameter>module.user</parameter>
+			<parameter>module.install</parameter>
+		</parameter>
+
 		<parameter key="path.src" type="constant">PSM_PATH_SRC</parameter>
 		<parameter key="path.templates">%path.src%templates</parameter>
 

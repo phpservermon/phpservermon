@@ -27,9 +27,16 @@
  **/
 
 namespace psm\Module\Install;
+
 use psm\Module\ModuleInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class InstallModule implements ModuleInterface {
+
+	public function load(ContainerBuilder $container) {
+
+	}
+
 	public function getControllers() {
 		return array(
 			'install' => __NAMESPACE__ . '\Controller\InstallController',

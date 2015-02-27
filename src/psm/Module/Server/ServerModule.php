@@ -27,9 +27,16 @@
  **/
 
 namespace psm\Module\Server;
+
 use psm\Module\ModuleInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ServerModule implements ModuleInterface {
+
+	public function load(ContainerBuilder $container) {
+
+	}
+
 	public function getControllers() {
 		return array(
 			'server' => __NAMESPACE__ . '\Controller\ServerController',

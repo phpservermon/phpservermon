@@ -23,24 +23,26 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
+ * @since       phpservermon 3.2
  **/
 
-namespace psm\Module\Config;
+namespace psm\Module\User;
 
-use psm\Module\ModuleInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+final class UserEvents {
 
-class ConfigModule implements ModuleInterface {
+	/**
+	 * @var string
+	 */
+	const USER_ADD = 'user.add';
 
-	public function load(ContainerBuilder $container) {
+	/**
+	 * @var string
+	 */
+	const USER_EDIT = 'user.edit';
 
-	}
+	/**
+	 * @var string
+	 */
+	const USER_DELETE = 'user.delete';
 
-	public function getControllers() {
-		return array(
-			'config' => __NAMESPACE__ . '\Controller\ConfigController',
-		);
-
-	}
 }

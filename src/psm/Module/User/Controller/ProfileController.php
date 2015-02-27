@@ -123,6 +123,10 @@ class ProfileController extends AbstractController {
 		unset($clean['password_repeat']);
 
 		$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $this->getUser()->getUserId()));
+		$this->container->get('event')->dispatch(
+			\psm\Module\User\UserEvents::USER_EDIT,
+			new \psm\Module\User\Event\UserEvent($this->getUser()->getUserId())
+		);
 		if(isset($password)) {
 			$this->getUser()->changePassword($this->getUser()->getUserId(), $password);
 		}
