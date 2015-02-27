@@ -143,19 +143,19 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	}
 
 	/**
-	 * Initialize the controller.
+	 * Run the controller.
 	 *
 	 * @param string $action if NULL, the action will be retrieved from user input (GET/POST)
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function initialize($action = null) {
+	public function run($action = null) {
 		if($action === null) {
 			$action = psm_GET('action', psm_POST('action', $this->action_default));
 		}
 		$this->xhr = (bool) psm_GET('xhr', psm_POST('xhr', false));
 
-		if(!in_array($action, $this->actions) || !($result = $this->initializeAction($action))) {
-			$result = $this->initializeAction($this->action_default);
+		if(!in_array($action, $this->actions) || !($result = $this->runAction($action))) {
+			$result = $this->runAction($this->action_default);
 		}
 
 		if($result instanceof Response) {
@@ -173,7 +173,7 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	 * @param string $action
 	 * @return mixed FALSE when action couldnt be initialized, response otherwise
 	 */
-	protected function initializeAction($action) {
+	protected function runAction($action) {
 		if(isset($this->user_level_required_actions[$action])) {
 			if($this->getUser()->getUserLevel() > $this->user_level_required_actions[$action]) {
 				// user is not allowed to access this action..

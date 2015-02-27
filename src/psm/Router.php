@@ -33,7 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
- * The router class opens the controller and initializes the module.
+ * The router class opens the controller and runs the module.
  *
  * It uses a so-called $mod param to determine which controller to load.
  * The $mod of run() has 2 components, separated by an underscore. The first part determines
@@ -96,7 +96,7 @@ class Router {
 			}
 		}
 
-		$response = $controller->initialize($action);
+		$response = $controller->run($action);
 
 		if(!($response instanceof Response)) {
 			throw new \LogicException('Controller did not return a Response object.');

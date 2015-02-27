@@ -196,7 +196,7 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'pushover';
 			}
 		}
-		return $this->initializeAction('index');
+		return $this->runAction('index');
 	}
 
 	/**

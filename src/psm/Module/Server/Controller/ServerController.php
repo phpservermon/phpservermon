@@ -170,7 +170,7 @@ class ServerController extends AbstractServerController {
 				$edit_server = $this->getServers($this->server_id);
 				if(empty($edit_server)) {
 					$this->addMessage(psm_get_lang('servers', 'error_server_no_match'), 'error');
-					return $this->initializeAction('index');
+					return $this->runAction('index');
 				}
 				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
@@ -298,9 +298,9 @@ class ServerController extends AbstractServerController {
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
 		if($back_to == 'view') {
-			return $this->initializeAction('view');
+			return $this->runAction('view');
 		} else {
-			return $this->initializeAction('index');
+			return $this->runAction('index');
 		}
 	}
 
@@ -321,7 +321,7 @@ class ServerController extends AbstractServerController {
 			}
 			$this->addMessage(psm_get_lang('servers', 'deleted'), 'success');
 		}
-		return $this->initializeAction('index');
+		return $this->runAction('index');
 	}
 
 	/**
@@ -329,12 +329,12 @@ class ServerController extends AbstractServerController {
 	 */
 	protected function executeView() {
 		if($this->server_id == 0) {
-			return $this->initializeAction('index');
+			return $this->runAction('index');
 		}
 		$server = $this->getServers($this->server_id);
 
 		if(empty($server)) {
-			return $this->initializeAction('index');
+			return $this->runAction('index');
 		}
 
 		$tpl_data = $this->getLabels();

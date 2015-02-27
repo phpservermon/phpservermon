@@ -35,9 +35,9 @@ interface ControllerInterface extends ContainerAwareInterface {
 	public function __construct(Database $db, \Twig_Environment $twig);
 
 	/**
-	 * Initialize the module
+	 * Run the controller
 	 */
-	public function initialize();
+	public function run();
 
 	/**
 	 * Get the minimum required user level for this controller
