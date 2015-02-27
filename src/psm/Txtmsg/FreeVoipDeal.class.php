@@ -19,9 +19,9 @@
  *
  * @package     phpservermon
  * @author      Michiel van der Wulp <michiel@vanderwulp.be>
- * @copyright   Copyright (c) 2014 Michiel van der Wulp
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.0
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
