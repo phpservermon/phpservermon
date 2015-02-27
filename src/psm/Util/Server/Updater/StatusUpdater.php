@@ -198,7 +198,8 @@ class StatusUpdater {
 			$msg = $code_matches[2][0];
 
 			// All status codes starting with a 4 or higher mean trouble!
-			if(substr($code, 0, 1) >= '4') {
+			// Ignore 401 Unauthorized and 403 Forbidden, site is still online.
+			if(substr($code, 0, 1) >= '4' && $code != '401' && $code != '403') {
 				$this->error = $code . ' ' . $msg;
 				$result = false;
 			} else {
