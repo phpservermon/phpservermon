@@ -50,7 +50,7 @@ class StatusController extends AbstractServerController {
 		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_status'));
 
 		// add header accessories
-		$layout = $this->user->getUserPref('status_layout', 0);
+		$layout = $this->getUser()->getUserPref('status_layout', 0);
 		$layout_data = array(
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
@@ -97,7 +97,7 @@ class StatusController extends AbstractServerController {
 	protected function executeSaveLayout() {
 		if($this->isXHR()) {
 			$layout = psm_POST('layout', 0);
-			$this->user->setUserPref('status_layout', $layout);
+			$this->getUser()->setUserPref('status_layout', $layout);
 
 			$response = new \Symfony\Component\HttpFoundation\JsonResponse();
 			$response->setData(array(

@@ -47,7 +47,7 @@ class LoginController extends AbstractController {
 	protected function executeLogin() {
 		if(isset($_POST['user_name']) && isset($_POST['user_password'])) {
 			$rememberme = (isset($_POST['user_rememberme'])) ? true : false;
-			$result = $this->user->loginWithPostData(
+			$result = $this->getUser()->loginWithPostData(
 				$_POST['user_name'],
 				$_POST['user_password'],
 				$rememberme
@@ -83,10 +83,10 @@ class LoginController extends AbstractController {
 	 */
 	protected function executeForgot() {
 		if(isset($_POST['user_name'])) {
-			$user = $this->user->getUserByUsername($_POST['user_name']);
+			$user = $this->getUser()->getUserByUsername($_POST['user_name']);
 
 			if(!empty($user)) {
-				$token = $this->user->generatePasswordResetToken($user->user_id);
+				$token = $this->getUser()->generatePasswordResetToken($user->user_id);
 				// we have a token, send it along
 				$this->sendPasswordForgotMail(
 					$user->user_id,
@@ -114,10 +114,11 @@ class LoginController extends AbstractController {
 	 * Show/process the password reset form (after the mail)
 	 */
 	protected function executeReset() {
+		$service_user = $this->getUser();
 		$user_id = (isset($_GET['user_id'])) ? intval($_GET['user_id']) : 0;
 		$token = (isset($_GET['token'])) ? $_GET['token'] : '';
 
-		if(!$this->user->verifyPasswordResetToken($user_id, $token)) {
+		if(!$service_user->verifyPasswordResetToken($user_id, $token)) {
 			$this->addMessage(psm_get_lang('login', 'error_reset_invalid_link'), 'error');
 			return $this->executeLogin();
 		}
@@ -126,7 +127,7 @@ class LoginController extends AbstractController {
 			if($_POST['user_password_new'] !== $_POST['user_password_repeat']) {
 				$this->addMessage(psm_get_lang('login', 'error_login_passwords_nomatch'), 'error');
 			} else {
-				$result = $this->user->changePassword($user_id, $_POST['user_password_new']);
+				$result = $service_user->changePassword($user_id, $_POST['user_password_new']);
 
 				if($result) {
 					$this->addMessage(psm_get_lang('login', 'success_password_reset'), 'success');
@@ -136,7 +137,7 @@ class LoginController extends AbstractController {
 				}
 			}
 		}
-		$user = $this->user->getUser($user_id);
+		$user = $service_user->getUser($user_id);
 
 		$tpl_data = array(
 			'title_reset' => psm_get_lang('login', 'title_reset'),

@@ -211,7 +211,7 @@ class ConfigController extends AbstractController {
 		$mail->Priority	= 1;
 		$mail->Body		= $message;
 		$mail->AltBody	= str_replace('<br/>', "\n", $message);
-		$user = $this->user->getUser();
+		$user = $this->getUser()->getUser();
 		$mail->AddAddress($user->email, $user->name);
 		if($mail->Send()) {
 			$this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
@@ -228,7 +228,7 @@ class ConfigController extends AbstractController {
 	protected function testSMS() {
 		$sms = psm_build_sms();
 		if($sms) {
-			$user = $this->user->getUser();
+			$user = $this->getUser()->getUser();
 			if(empty($user->mobile)) {
 				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
 			} else {
@@ -250,7 +250,7 @@ class ConfigController extends AbstractController {
 	protected function testPushover() {
 		$pushover = psm_build_pushover();
 		$pushover->setDebug(true);
-		$user = $this->user->getUser();
+		$user = $this->getUser()->getUser();
 		$api_token = psm_get_conf('pushover_api_token');
 
 		if(empty($api_token)) {

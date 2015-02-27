@@ -27,7 +27,6 @@
 
 define('PSM_INSTALL', true);
 
-require 'src/bootstrap.php';
+require __DIR__ . '/src/bootstrap.php';
 
-$router = new psm\Router();
 $router->run('install');

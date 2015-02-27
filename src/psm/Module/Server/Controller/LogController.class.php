@@ -122,10 +122,10 @@ class LogController extends AbstractServerController {
 	 */
 	public function getEntries($type) {
 		$sql_join = '';
-		if($this->user != null && $this->user->getUserLevel() > PSM_USER_ADMIN) {
+		if($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
 			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
-						`us`.`user_id`={$this->user->getUserId()}
+						`us`.`user_id`={$this->getUser()->getUserId()}
 						AND `us`.`server_id`=`servers`.`server_id`
 						)";
 		}

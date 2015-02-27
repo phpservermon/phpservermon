@@ -51,7 +51,7 @@ class ProfileController extends AbstractController {
 	 */
 	protected function executeIndex() {
 		$this->twig->addGlobal('subtitle', psm_get_lang('users', 'profile'));
-		$user = $this->user->getUser(null, true);
+		$user = $this->getUser()->getUser(null, true);
 
 		$tpl_data = array(
 			'label_name' => psm_get_lang('users', 'name'),
@@ -88,8 +88,7 @@ class ProfileController extends AbstractController {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
-		$validator = new \psm\Util\User\UserValidator($this->user);
-		$user = $this->user->getUser();
+		$validator = $this->container->get('util.user.validator');
 		$fields = $this->profile_fields;
 		$fields[] = 'password';
 		$fields[] = 'password_repeat';
@@ -105,7 +104,7 @@ class ProfileController extends AbstractController {
 
 		// validate the lot
 		try {
-			$validator->username($clean['user_name'], $this->user->getUserId());
+			$validator->username($clean['user_name'], $this->getUser()->getUserId());
 			$validator->email($clean['email']);
 
 			// always validate password for new users,
@@ -123,9 +122,9 @@ class ProfileController extends AbstractController {
 		unset($clean['password']);
 		unset($clean['password_repeat']);
 
-		$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $this->user->getUserId()));
+		$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $this->getUser()->getUserId()));
 		if(isset($password)) {
-			$this->user->changePassword($this->user->getUserId(), $password);
+			$this->getUser()->changePassword($this->getUser()->getUserId(), $password);
 		}
 		$this->addMessage(psm_get_lang('users', 'profile_updated'), 'success');
 

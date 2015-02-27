@@ -36,12 +36,6 @@ use psm\Service\Database;
 class UserController extends AbstractController {
 	public $servers;
 
-	/**
-	 * User data validator
-	 * @var \psm\Util\User\UserValidator $user_validator
-	 */
-	protected $user_validator;
-
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
 
@@ -54,7 +48,6 @@ class UserController extends AbstractController {
 	}
 
 	public function initialize() {
-		$this->user_validator = new \psm\Util\User\UserValidator($this->user);
 		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `active` ASC, `status` DESC, `label` ASC");
 		// change the indexes to reflect their server ids
 		foreach($servers as $server) {
@@ -160,12 +153,12 @@ class UserController extends AbstractController {
 		} else {
 			// edit mode
 			try {
-				$this->user_validator->userId($user_id);
+				$this->container->get('util.user.validator')->userId($user_id);
 			} catch(\InvalidArgumentException $e) {
 				$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
 				return $this->executeIndex();
 			}
-			$edit_user = $this->user->getUser($user_id);
+			$edit_user = $this->getUser()->getUser($user_id);
 			$title = psm_get_lang('system', 'edit') . ' ' . $edit_user->name;
 			$placeholder_password = psm_get_lang('users', 'password_leave_blank');
 			$lvl_selected = $edit_user->level;
@@ -199,7 +192,7 @@ class UserController extends AbstractController {
 		}
 
 		$tpl_data['levels'] = array();
-		foreach($this->user_validator->getUserLevels() as $lvl) {
+		foreach($this->container->get('util.user.validator')->getUserLevels() as $lvl) {
 			$tpl_data['levels'][] = array(
 				'value' => $lvl,
 				'label' => psm_get_lang('users', 'level_' . $lvl),
@@ -231,19 +224,20 @@ class UserController extends AbstractController {
 			}
 		}
 
-		// validate the lot
+		$user_validator = $this->container->get('util.user.validator');
+
 		try {
-			$this->user_validator->username($clean['user_name'], $user_id);
-			$this->user_validator->email($clean['email']);
-			$this->user_validator->level($clean['level']);
+			$user_validator->username($clean['user_name'], $user_id);
+			$user_validator->email($clean['email']);
+			$user_validator->level($clean['level']);
 
 			// always validate password for new users,
 			// but only validate it for existing users when they change it.
 			if($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
-				$this->user_validator->password($clean['password'], $clean['password_repeat']);
+				$user_validator->password($clean['password'], $clean['password_repeat']);
 			}
 			if($user_id > 0) {
-				$this->user_validator->userId($user_id);
+				$user_validator->userId($user_id);
 			}
 		} catch(\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
@@ -266,7 +260,7 @@ class UserController extends AbstractController {
 			$this->addMessage(psm_get_lang('users', 'inserted'), 'success');
 		}
 		if(isset($password)) {
-			$this->user->changePassword($user_id, $password);
+			$this->getUser()->changePassword($user_id, $password);
 		}
 
 		// update servers
@@ -296,7 +290,7 @@ class UserController extends AbstractController {
 		$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
 		try {
-			$this->user_validator->userId($id);
+			$this->container->get('util.user.validator')->userId($id);
 
 			$this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
 			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));

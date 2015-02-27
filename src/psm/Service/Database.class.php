@@ -88,12 +88,6 @@ class Database {
 			$this->db_user = $user;
 			$this->db_pass = $pass;
 			$this->connect();
-		} elseif(defined('PSM_DB_HOST') && defined('PSM_DB_USER') && defined('PSM_DB_PASS') && defined('PSM_DB_NAME')) {
-			$this->db_host = PSM_DB_HOST;
-			$this->db_name = PSM_DB_NAME;
-			$this->db_user = PSM_DB_USER;
-			$this->db_pass = PSM_DB_PASS;
-			$this->connect();
 		}
 	}
 

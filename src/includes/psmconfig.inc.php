@@ -102,12 +102,6 @@ define('PSM_CRON_TIMEOUT', 600);
  */
 define('PSM_CURL_TIMEOUT', 10);
 
-
-/**
- * Name of the default theme.
- */
-define('PSM_THEME', 'default');
-
 /**
  * Clone URL for the Pushover.net service.
  */
@@ -118,3 +112,17 @@ define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_mon
  * Useful for cronjobs if it cannot be auto-detected.
  */
 //define('PSM_BASE_URL', null);
+
+if(!defined('PSM_MODULE_DEFAULT')) {
+	/**
+	 * Default theme
+	 */
+	define('PSM_THEME', 'default');
+}
+
+if(!defined('PSM_MODULE_DEFAULT')) {
+	/**
+	 * Default module (if none given or invalid one)
+	 */
+	define('PSM_MODULE_DEFAULT', 'server_status');
+}

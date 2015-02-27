@@ -27,9 +27,8 @@
  **/
 
 // Include paths
-define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('PSM_PATH_INC', PSM_PATH_SRC . 'includes' . DIRECTORY_SEPARATOR);
-define('PSM_PATH_TPL', PSM_PATH_SRC . 'templates' . DIRECTORY_SEPARATOR);
+define('PSM_PATH_SRC', __DIR__ . DIRECTORY_SEPARATOR);
+define('PSM_PATH_CONFIG', PSM_PATH_SRC . 'config' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
 
 // user levels
@@ -64,7 +63,6 @@ if(!file_exists($vendor_autoload)) {
 }
 require_once $vendor_autoload;
 
-// set autoloader, make sure to set $prepend = true so that our autoloader is called first
 spl_autoload_register(function($class) {
 	// remove leading \
 	$class = ltrim($class, '\\');
@@ -81,13 +79,13 @@ spl_autoload_register(function($class) {
 	}
 });
 
-// auto-find all include files
-$includes = glob(PSM_PATH_INC . '*.inc.php');
+$includes = glob(PSM_PATH_SRC . 'includes/*.inc.php');
 foreach($includes as $file) {
 	include_once $file;
 }
-// init db connection
-$db = new psm\Service\Database();
+$router = new psm\Router();
+// this may seem insignificant, but right now lots of functions depend on the following global var definition:
+$db = $router->getService('db');
 
 // sanity check!
 if(!defined('PSM_INSTALL') || !PSM_INSTALL) {

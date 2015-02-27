@@ -28,8 +28,9 @@
 
 namespace psm\Module;
 use psm\Service\Database;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-interface ControllerInterface {
+interface ControllerInterface extends ContainerAwareInterface {
 
 	public function __construct(Database $db, \Twig_Environment $twig);
 

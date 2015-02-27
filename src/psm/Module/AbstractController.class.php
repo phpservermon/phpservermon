@@ -28,8 +28,9 @@
 namespace psm\Module;
 use psm\Service\Database;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-abstract class AbstractController implements ControllerInterface {
+abstract class AbstractController extends ContainerAware implements ControllerInterface {
 
 	/**
 	 * Current action
@@ -174,9 +175,7 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected function initializeAction($action) {
 		if(isset($this->user_level_required_actions[$action])) {
-			$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
-
-			if($ulvl > $this->user_level_required_actions[$action]) {
+			if($this->getUser()->getUserLevel() > $this->user_level_required_actions[$action]) {
 				// user is not allowed to access this action..
 				return false;
 			}
@@ -252,7 +251,7 @@ abstract class AbstractController implements ControllerInterface {
 	 * @return string
 	 */
 	protected function createHTMLMenu() {
-		$ulvl = ($this->user) ? $this->user->getUserLevel() : PSM_USER_ANONYMOUS;
+		$ulvl = $this->getUser()->getUserLevel();
 
 		$tpl_data = array(
 			'label_help' => psm_get_lang('menu', 'help'),
@@ -283,7 +282,7 @@ abstract class AbstractController implements ControllerInterface {
 		}
 
 		if($ulvl != PSM_USER_ANONYMOUS) {
-			$user = $this->user->getUser();
+			$user = $this->getUser()->getUser();
 			$tpl_data['label_usermenu'] = str_replace(
 				'%user_name%',
 				$user->name,
@@ -392,14 +391,6 @@ abstract class AbstractController implements ControllerInterface {
 	}
 
 	/**
-	 * Set user service
-	 * @param \psm\Service\User $user
-	 */
-	public function setUser(\psm\Service\User $user) {
-		$this->user = $user;
-	}
-
-	/**
 	 * Set the minimum required user level for this controller
 	 * @param int $level
 	 * @return \psm\Module\AbstractController
@@ -470,5 +461,13 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	public function isXHR() {
 		return $this->xhr;
+	}
+
+	/**
+	 * Get user service
+	 * @return \psm\Service\User
+	 */
+	public function getUser() {
+		return $this->container->get('user');
 	}
 }

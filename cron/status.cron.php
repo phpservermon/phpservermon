@@ -26,7 +26,7 @@
  **/
 
 // include main configuration and functionality
-require_once dirname(__FILE__) . '/../src/bootstrap.php';
+require_once __DIR__ . '/../src/bootstrap.php';
 
 if(!psm_is_cli()) {
 	die('This script can only be run from the command line.');

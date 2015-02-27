@@ -212,7 +212,7 @@ class InstallController extends AbstractController {
 			'pushover_device' => '',
 		);
 
-		$validator = new \psm\Util\User\UserValidator($this->user);
+		$validator = $this->container->get('util.user.validator');
 
 		$logger = array($this, 'addMessage');
 		$installer = new \psm\Util\Install\Installer($this->db, $logger);
@@ -257,7 +257,7 @@ class InstallController extends AbstractController {
 			unset($new_user['password_repeat']);
 			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $new_user);
 			if(intval($user_id) > 0) {
-				$this->user->changePassword($user_id, $new_user['password']);
+				$this->getUser()->changePassword($user_id, $new_user['password']);
 				$this->addMessage('User account has been created successfully.', 'success');
 			} else {
 				$this->addMessage('There was an error adding your user account.', 'error');

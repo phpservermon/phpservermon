@@ -60,12 +60,12 @@ class ServerController extends AbstractServerController {
 	 */
 	protected function executeIndex() {
 		$tpl_data = $this->getLabels();
-		$tpl_data['user_level'] = $this->user->getUserLevel();
+		$tpl_data['user_level'] = $this->getUser()->getUserLevel();
 		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
 		$this->setSidebar($sidebar);
 
 		// check if user is admin, in that case we add the buttons
-		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
 			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
@@ -345,7 +345,7 @@ class ServerController extends AbstractServerController {
 		$tpl_data['html_history'] = $history->createHTML($this->server_id);
 
 		// add edit/delete buttons for admins
-		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$tpl_data['has_admin_actions'] = true;
 			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
 

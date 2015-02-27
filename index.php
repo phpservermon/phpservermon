@@ -25,9 +25,24 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-require 'src/bootstrap.php';
+require __DIR__ . '/src/bootstrap.php';
 
 psm_no_cache();
 
-$router = new psm\Router();
-$router->run();
+if(isset($_GET["logout"])) {
+	$router->getService('user')->doLogout();
+	// logged out, redirect to login
+	header('Location: ' . psm_build_url());
+	die();
+}
+
+$mod = psm_GET('mod', PSM_MODULE_DEFAULT);
+
+try {
+	$router->run($mod);
+} catch(\InvalidArgumentException $e) {
+	// invalid module, try the default one
+	// it that somehow also doesnt exist, we have a bit of an issue
+	// and we really have no reason catch it
+	$router->run(PSM_MODULE_DEFAULT);
+}
