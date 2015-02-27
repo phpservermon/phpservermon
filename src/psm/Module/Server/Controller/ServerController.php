@@ -477,6 +477,7 @@ class ServerController extends AbstractServerController {
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
 			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 			'label_email' => psm_get_lang('servers', 'email'),
 			'label_send_email' => psm_get_lang('servers', 'send_email'),
