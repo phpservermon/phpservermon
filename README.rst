@@ -46,6 +46,7 @@ The following SMS gateways are currently available:
 * SMSit - <http://www.smsit.dk/>
 * Spryng - <http://www.spryng.nl>
 * Textmarketer - <http://www.textmarketer.co.uk>
+* Nexmo - <https://www.nexmo.com/>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

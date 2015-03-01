@@ -195,6 +195,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Пользователь',
 		'sms_gateway_password' => 'Пароль',
 		'sms_from' => 'Номер отправителя',
