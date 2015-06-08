@@ -26,7 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Finnish',
+	'name' => 'Suomi - Finnish',
 	'locale' => array('fi_FI.UTF-8', 'fi_FI', 'finnish', 'finnish-fi'),
 	'system' => array(
 		'title' => 'Server Monitor',
@@ -39,7 +39,7 @@ $sm_lang = array(
 		'message' => 'Viesti',
 		'yes' => 'Kyllä',
 		'no' => 'Ei',
-		'insert' => 'Aseta',
+		'insert' => 'Asetukset',
 		'add_new' => 'Lisää uusi',
 		'update_available' => 'Uusi versio ({version}) on ladattavissa osoitteessa <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Takaisin ylös',
@@ -114,7 +114,7 @@ $sm_lang = array(
 	),
 	'servers' => array(
 		'server' => 'Palvelin',
-		'status' => 'Tilan',
+		'status' => 'Tila',
 		'label' => 'Nimi',
 		'domain' => 'Isäntänimi/IP',
 		'timeout' => 'Aikakatkaisu',
@@ -123,11 +123,11 @@ $sm_lang = array(
 		'type' => 'Tyyppi',
 		'type_website' => 'Verkkosivu',
 		'type_service' => 'Palvelu',
-		'pattern' => 'Etsi sarja/kuvio',
+		'pattern' => 'Etsittävä sarja/kuvio',
 		'pattern_description' => 'Jos määriteltyä sarjaa ei löydetä verkkosivuilta, palvelin merkitään sammuneeksi. REGEX on sallittua.',
 		'last_check' => 'Viimeisin tarkistus',
 		'last_online' => 'Viimeksi nähty',
-		'monitoring' => 'Valvonta',
+		'monitoring' => 'Valvottava',
 		'no_monitoring' => 'Ei valvontaa',
 		'email' => 'Sähköposti',
 		'send_email' => 'Lähetä sähköposti',
@@ -205,7 +205,7 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover API-avain',
 		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
 		'alert_type' => 'Valitse milloin haluat ilmoituksia.',
-        'alert_type_description' => '<b>Status change:</b> '.
+        'alert_type_description' => '<b>Tilan muutos:</b> '.
 		    'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
 		    '<br /><b>Sammunut:</b> '.
 		    'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
@@ -216,7 +216,7 @@ $sm_lang = array(
 		'alert_type_status' => 'Tilan muutos',
 		'alert_type_offline' => 'Sammunut',
 		'alert_type_always' => 'Aina',
-		'log_status' => 'Merkitse tapahtumat',
+		'log_status' => 'Tallenna tapahtumat',
 		'log_status_description' => 'Jos arvo on tosi, palvelin tallentaa tapahtumamerkinnän jokaisesta tilan muutoksesta.',
 		'log_email' => 'Tallenna lähetetyt sähköpostitapahtumat',
 		'log_sms' => 'Tallenna lähetetyt tekstiviestitapahtumat',
