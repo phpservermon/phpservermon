@@ -260,7 +260,7 @@ $sm_lang = array(
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
 		'off_sms' => 'Palvelin \'%LABEL%\' on SAMMUNUT: ip=%IP%, portti=%PORT%. Virhe=%ERROR%',
-		'off_email_subject' => 'TÄRKEÄÄ: Palvelin \'%LABEL%\' on SAMMUNUT',
+		'off_email_subject' => 'T%C3%84RKEÄÄ: Palvelin \'%LABEL%\' on SAMMUNUT',
 		'off_email_body' => "Virhe yhdistettäessä seuraavaan palvelimeen:<br/><br/>Palvelin: %LABEL%<br/>IP: %IP%<br/>Portti: %PORT%<br/>Virhe: %ERROR%<br/>Aika: %DATE%",
 		'off_pushover_title' => 'Palvelin \'%LABEL%\' on sammunut',
 		'off_pushover_message' => "Virhe yhdistettäessä seuraavaan palvelimeen:<br/><br/>Palvelin: %LABEL%<br/>IP: %IP%<br/>Portti: %PORT%<br/>Virhe: %ERROR%<br/>Aika: %DATE%",
