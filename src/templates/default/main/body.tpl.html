@@ -1,7 +1,7 @@
 {% block header %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+  <head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
@@ -9,7 +9,6 @@
     <meta name="author" content="">
 	<link rel="icon" type="image/x-icon" href="favicon.ico" />
 	<link rel="icon" type="image/png" href="favicon.png" />
-	<link rel="apple-touch-icon" href="favicon.png" />
 	{% if auto_refresh %}
 	<meta http-equiv="refresh" content="{{ auto_refresh_seconds }}" />
 	{% endif %}
@@ -18,6 +17,7 @@
     <link href="static/plugin/twitter-bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet">
     <link href="static/css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="static/plugin/flipclock/flipclock.css">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,6 +26,7 @@
     <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
     <script type="text/javascript" src="static/js/scripts.js"></script>
+    <script src="static/plugin/flipclock/flipclock.min.js"></script>
   </head>
 {% endblock %}
   <body data-spy="scroll" data-target=".subnav" data-offset="50" class="{{ body_class }}">
@@ -66,6 +67,18 @@
 				{{ html_content|raw }}
 			</div>
 		</div>
+        <!-- clock-container -->
+        <div id="clock-container">
+            <h2>Time until browser refresh:</h2>
+            <div class="clock"></div>
+            <script type="text/javascript">
+                var clock = $('.clock').FlipClock({{ auto_refresh_seconds }}, {
+                    countdown: true,
+                    clockFace: 'MinuteCounter'
+                });
+            </script>
+        </div>
+        <!-- /clock-container -->
 		{% if add_footer %}
 			{% block footer %}
 			<footer class="footer">
