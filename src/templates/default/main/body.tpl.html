@@ -1,6 +1,6 @@
 {% block header %}
 <!DOCTYPE html>
-<html lang="en">
+<html {%if language_current%}lang="{{language_current}}"{%endif%} {%if direction_current%}dir="{{direction_current}}" class='{{direction_current}}'{%endif%}>
 	<head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
