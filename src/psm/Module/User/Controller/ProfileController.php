@@ -35,7 +35,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'carriersms', 'email');
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -65,6 +65,10 @@ class ProfileController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+			'label_carriersms' => psm_get_lang('config', 'sms_gateway_carriersms'),
+			'label_carriersms_email' => psm_get_lang('users', 'carriersms_email'),
+      'label_carriersms_description' => psm_get_lang('users', 'carriersms_description_user'),
+      'label_carriersms_help' => psm_get_lang('users', 'carriersms_description_help'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'form_action' => psm_build_url(array(
