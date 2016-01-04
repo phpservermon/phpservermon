@@ -184,6 +184,7 @@ class Installer {
 							`mobile` varchar(15) NOT NULL,
 							`pushover_key` varchar(255) NOT NULL,
 							`pushover_device` varchar(255) NOT NULL,
+							`carriersms` varchar(255) NOT NULL,
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
@@ -407,6 +408,8 @@ class Installer {
 		psm_update_conf('pushover_api_token', '');
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `carriersms` VARCHAR( 255 ) NOT NULL AFTER `pushover_device`;";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
