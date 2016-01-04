@@ -72,6 +72,10 @@ To be able to run an installation from the repo, you need to run the following c
 
      php composer.phar install
 
+If you get "Fatal error: Uncaught exception 'PharException'..." run this and try again:
+
+ curl -s http://getcomposer.org/installer | php
+
 
 Setting up a cronjob
 ++++++++++++++++++++
