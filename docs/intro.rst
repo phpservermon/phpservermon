@@ -59,6 +59,10 @@ The following SMS gateways are currently available:
 
 Please note: for these gateways you will need an account with sufficient credits.
 
+* CarrierSMS - <http://www.CanadianDomainRegistry.ca>
+
+CarrierSMS is free sms messaging using your Mobile Carrier's text messaging gateway.
+
 
 Download
 ++++++++
