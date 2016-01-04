@@ -14,7 +14,7 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Creator and project maintainer
 
-* Jérôme Cabanis - https://github.com/Abawell
+* JÃ©rÃ´me Cabanis - https://github.com/Abawell
 
   * History graphs
   * Date localization
@@ -67,6 +67,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * FreeVoipDeal SMS gateway
 
+* Glen Arason - http://CanadianDomainRegistry.ca
+
+  * CarrierSMS SMS gateway
+
 
 Translators
 +++++++++++
@@ -92,7 +96,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 * French
 
   * David Ribeiro
-  * Jérôme Cabanis
+  * JÃ©rÃ´me Cabanis
 
 * German
 
@@ -122,7 +126,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 
 * Spanish
 
-  * Klemens Häckel - http://clickdimension.wordpress.com
+  * Klemens HÃ¤ckel - http://clickdimension.wordpress.com
   * Luis Rodriguez - https://github.com/ldrrp
 
 * Swedish
