@@ -280,16 +280,32 @@ class StatusNotifier {
 		// we have to build an userlist for the log table..
 		$userlist = array();
 
-		// add all users to the recipients list
-		foreach ($users as $user) {
-			$userlist[] = $user['user_id'];
-			$sms->addRecipients($user['mobile']);
+		// CarrierSMS sends plain/text "email" so pass vars to CarrierSMS class.
+		if($GLOBALS['sm_config']['sms_gateway'] == 'carriersms') {
+			// add all users to the recipients list
+			foreach ($users as $user) {
+				if($user['carriersms'] != ""){
+					// only log users configured with a mobile email address
+					$userlist[] = $user['user_id'];
+					$sms->addRecipients($user['carriersms']);
+				}
+			}
+
+			// Send sms, CarrierSMS class will handle messaging
+		  $result  = $sms->sendSMS($this->status_new, $this->server);
+		  $message = $sms->resultmessage;
+		}else{
+			// add all users to the recipients list
+			foreach ($users as $user) {
+				$userlist[] = $user['user_id'];
+				$sms->addRecipients($user['mobile']);
+			}
+
+			$message = psm_parse_msg($this->status_new, 'sms', $this->server);
+
+			// Send sms
+			$result = $sms->sendSMS($message);
 		}
-
-		$message = psm_parse_msg($this->status_new, 'sms', $this->server);
-
-		// Send sms
-		$result = $sms->sendSMS($message);
 
 		if(psm_get_conf('log_sms')) {
 			// save to log
@@ -306,7 +322,7 @@ class StatusNotifier {
 	public function getUsers($server_id) {
 		// find all the users with this server listed
 		$users = $this->db->query("
-			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`, `u`.`carriersms`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`
