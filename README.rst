@@ -50,6 +50,10 @@ The following SMS gateways are currently available:
 
 Please note: for these gateways you will need an account with sufficient credits.
 
+* CarrierSMS - <http://www.CanadianDomainRegistry.ca>
+
+CarrierSMS is free sms messaging using your Mobile Carrier's text messaging gateway.
+
 
 Download
 --------
@@ -77,6 +81,10 @@ If you have downloaded the source from GitHub (and not a pre-built package), the
 To be able to run an installation from the repo, you need to run the following command to install the dependencies::
 
      php composer.phar install
+
+If you get "Fatal error: Uncaught exception 'PharException'..." run this and try again:
+
+     curl -s http://getcomposer.org/installer | php
 
 If you are familiar with Vagrant (https://www.vagrantup.com)::
 
