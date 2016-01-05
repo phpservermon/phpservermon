@@ -67,8 +67,8 @@ class ProfileController extends AbstractController {
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
 			'label_carriersms' => psm_get_lang('config', 'sms_gateway_carriersms'),
 			'label_carriersms_email' => psm_get_lang('users', 'carriersms_email'),
-      'label_carriersms_description' => psm_get_lang('users', 'carriersms_description_user'),
-      'label_carriersms_help' => psm_get_lang('users', 'carriersms_description_help'),
+			'label_carriersms_description' => psm_get_lang('users', 'carriersms_description_user'),
+			'label_carriersms_help' => psm_get_lang('users', 'carriersms_description_help'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'form_action' => psm_build_url(array(
