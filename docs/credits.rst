@@ -89,6 +89,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * nerdalertdk
 
+* Finnish
+
+  * Sami Nieminen - https://github.com/celeroncool
+
 * French
 
   * David Ribeiro
