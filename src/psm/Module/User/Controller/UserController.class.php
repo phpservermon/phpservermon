@@ -237,8 +237,10 @@ class UserController extends AbstractController {
 			return $this->executeIndex();
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
-
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email');
+		if (!hash_equals($_POST['token'], $_SESSION['token'])) {
+			return $this->executeIndex();
+		}
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email', 'token');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
