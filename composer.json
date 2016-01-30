@@ -14,6 +14,7 @@
 		"symfony/http-foundation": "2.4.*",
 		"php-pushover/php-pushover": "dev-master",
 		"twig/twig": "1.*",
-		"paragonie/random_compat" : "1.1.6"
+		"paragonie/random_compat" : "1.1.6",
+		"indigophp/hash-compat" : "1.1.0"
 	}
 }
