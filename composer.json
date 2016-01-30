@@ -13,6 +13,7 @@
 		"phpmailer/phpmailer": "5.2.6",
 		"symfony/http-foundation": "2.4.*",
 		"php-pushover/php-pushover": "dev-master",
-		"twig/twig": "1.*"
+		"twig/twig": "1.*",
+		"paragonie/random_compat" : "1.1.6"
 	}
 }
