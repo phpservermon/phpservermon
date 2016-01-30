@@ -128,6 +128,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Klemens Häckel - http://clickdimension.wordpress.com
   * Luis Rodriguez - https://github.com/ldrrp
+  * Mauro Vietri - https://github.com/Esselans
 
 * Swedish
 
