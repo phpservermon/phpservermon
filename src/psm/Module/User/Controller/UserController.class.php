@@ -240,7 +240,7 @@ class UserController extends AbstractController {
 		if (!hash_equals($_POST['token'], $_SESSION['token'])) {
 			return $this->executeIndex();
 		}
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email', 'token');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
