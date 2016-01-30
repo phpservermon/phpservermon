@@ -248,7 +248,7 @@ class User {
 	 */
 	protected function setUserLoggedIn($user_id, $regenerate = false) {
 		if($regenerate) {
-			$this->session->migrate();
+			$this->session->invalidate();
 		}
 		$this->session->set('user_id', $user_id);
 		$this->session->set('user_logged_in', 1);
