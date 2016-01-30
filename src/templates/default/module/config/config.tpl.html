@@ -150,6 +150,7 @@
                 <label class="control-label" for="sms_gateway">{{ label_sms_gateway }}</label>
                 <div class="controls">
                     <select id="sms_gateway" name="sms_gateway">
+                        <option value="carriersms" {{ sms_selected_carriersms|raw }}>{{ label_sms_gateway_carriersms }}</option>
                         <option value="mosms" {{ sms_selected_mosms|raw }}>{{ label_sms_gateway_mosms }}</option>
                         <option value="mollie" {{ sms_selected_mollie|raw }}>{{ label_sms_gateway_mollie }}</option>
                         <option value="spryng" {{ sms_selected_spryng|raw }}>{{ label_sms_gateway_spryng }}</option>
@@ -160,6 +161,7 @@
 						<option value="smsit" {{ sms_selected_smsit|raw }}>{{ label_sms_gateway_smsit }}</option>
 						<option value="freevoipdeal" {{ sms_selected_freevoipdeal|raw }}>{{ label_sms_gateway_freevoipdeal }}</option>
                       </select>
+                	<p class="help-block">{{ label_sms_gateway_carriersms_select|raw }}</p>
                 </div>
             </div>
             <div class="control-group">
@@ -178,6 +180,7 @@
                 <label class="control-label" for="sms_from">{{ label_sms_from }}</label>
                 <div class="controls">
                     <input type="text" id="sms_from" name="sms_from" value="{{ sms_from }}" maxlength="255" />
+                    <p class="help-block">{{ label_sms_gateway_carriersms_option|raw }}</p>
                 </div>
             </div>
 			<div class="control-group">

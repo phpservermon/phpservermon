@@ -134,7 +134,9 @@ class ConfigController extends AbstractController {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('servers', 'send_' . $modal_id));
-			$modal->setMessage(psm_get_lang('config', 'test_' . $modal_id));
+			if($modal_id == "sms" && $GLOBALS['sm_config']['sms_gateway'] == 'carriersms'){
+				$modal->setMessage(psm_get_lang('config', 'test_carriersms'));
+			}else{ $modal->setMessage(psm_get_lang('config', 'test_' . $modal_id)); }
 			$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
 		}
 
@@ -229,8 +231,14 @@ class ConfigController extends AbstractController {
 		$sms = psm_build_sms();
 		if($sms) {
 			$user = $this->getUser()->getUser();
+
+			if($GLOBALS['sm_config']['sms_gateway'] == 'carriersms') {
+				$user->mobile = $user->carriersms;
+				$smserr = '_carriersms';
+			} else { $smserr = ''; }
+
 			if(empty($user->mobile)) {
-				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
+				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'.$smserr), 'error');
 			} else {
 				$sms->addRecipients($user->mobile);
 				if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
@@ -306,6 +314,9 @@ class ConfigController extends AbstractController {
 			'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
 			'label_sms_status' => psm_get_lang('config', 'sms_status'),
 			'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
+			'label_sms_gateway_carriersms' => psm_get_lang('config', 'sms_gateway_carriersms'),
+      'label_sms_gateway_carriersms_select' => psm_get_lang('config', 'sms_gateway_carriersms_select'),
+      'label_sms_gateway_carriersms_option' => psm_get_lang('config', 'sms_gateway_carriersms_option'),
 			'label_sms_gateway_mosms' => psm_get_lang('config', 'sms_gateway_mosms'),
 			'label_sms_gateway_mollie' => psm_get_lang('config', 'sms_gateway_mollie'),
 			'label_sms_gateway_spryng' => psm_get_lang('config', 'sms_gateway_spryng'),

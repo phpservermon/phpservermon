@@ -442,6 +442,9 @@ function psm_build_sms() {
 	// open the right class
 	// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
 	switch(strtolower(psm_get_conf('sms_gateway'))) {
+		case 'carriersms':
+			$sms = new \psm\Txtmsg\CarrierSMS();
+			break;
 		case 'mosms':
 			$sms = new \psm\Txtmsg\Mosms();
 			break;

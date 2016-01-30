@@ -6,6 +6,7 @@
 			<th class="visible-desktop">{{ label_level }}</th>
 			<th class="hidden-phone">{{ label_email }}</th>
 			<th class="hidden-phone">{{ label_mobile }}</th>
+			<th class="hidden-phone">{{ label_carriersms }}</th>
 			<th class="hidden-phone">{{ label_servers }}</th>
 			<th class="hidden-phone tight">{{ label_action }}</th>
 		</tr>
@@ -43,6 +44,7 @@
 				<div class="table-body">
 					<div class="table-row"><div class="table-cell-details tight">{{ label_email }}:&nbsp;</div><div class="table-cell-details">{{ user.email }}</div></div>
 					<div class="table-row"><div class="table-cell-details tight">{{ label_mobile }}:&nbsp;</div><div class="table-cell-details">{{ user.mobile }}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{{ label_carriersms }}:&nbsp;</div><div class="table-cell-details">{{ user.carriersms }}</div></div>
 					<div class="table-row"><div class="table-cell-details tight">{{ label_servers }}:&nbsp;</div><div class="table-cell-details">{% for server in user.emp_servers %} {{ server.label }}<br/> {% endfor %}</div></div>
 				</div>
 			</div>
@@ -51,6 +53,7 @@
 		<td class="visible-desktop tight"><div class="table-cell-title">{{ user.level_text }}</div></td>
 		<td class="hidden-phone tight"><div class="table-cell-title">{{ user.email }}</div></td>
 		<td class="hidden-phone tight"><div class="table-cell-title">{{ user.mobile }}</div></td>
+		<td class="hidden-phone tight"><div class="table-cell-title">{{ user.carriersms }}</div></td>
 		<td class="hidden-phone"><div class="table-cell-title">{% for server in user.emp_servers %} {{ server.label }}<br/> {% endfor %}</div></td>
 		<td class="hidden-phone tight">
 			<a class="btn btn-small" href="{{ user.url_edit|raw }}" title="{{ label_edit }}">

@@ -102,6 +102,12 @@ $sm_lang = array(
 		'error_user_no_match' => 'The user could not be found in the database.',
 		'error_user_password_invalid' => 'The entered password is invalid.',
 		'error_user_password_no_match' => 'The entered passwords do not match.',
+		'error_carriersms_from_email_invalid' => 'No valid "From" email address, sending notifications failed.',
+		'error_carriersms_to_email_invalid' => 'No valid "To" email address, sending notifications failed.',
+		'error_carriersms_not_unique' => 'The "To" and "From" email addresses can not be the same, sending notifications failed.',
+		'carriersms_description_user' => 'Receive real-time sms notifications using your "Mobile Carrier\'s SMS Gateway".<br /><strong>CarrierSMS Email</strong> addresses usually look like: <span style="color:navy;">&lt;10DigitNumber&gt;&#64;&lt;host.MobileCarrier.dom&gt;',
+		'carriersms_description_help' => 'A well maintained "Email-To-SMS Database" of mobile carrier gateways is available at <a href="http://avtech.com/Support/Email/index.htm" target="_blank">AVTECH</a><br />Or, send a text message from your mobile device to an email account.<br />The "From" address in the email should be your device\'s gateway email address.',
+		'carriersms_email' => 'CarrierSMS Email',
 	),
 	'log' => array(
 		'title' => 'Log entries',
@@ -256,6 +262,11 @@ $sm_lang = array(
 		'log_retention_period' => 'Log retention period',
 		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
 		'log_retention_days' => 'days',
+		'sms_gateway_carriersms' => 'CarrierSMS',
+		'sms_gateway_carriersms_select' => 'For CarrierSMS, the Email settings must be configured correctly even if Email is not being used.',
+		'sms_gateway_carriersms_option' => 'For CarrierSMS, you can enter an alternate "From:" email address or leave blank to use the "Email from address".',
+		'test_carriersms' => 'An SMS will be sent to the CarrierSMS Email specified in your user profile.',
+		'sms_error_nomobile_carriersms' => 'Testing SMS failed: No assinged "CarrierSMS Email" in your profile.',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
@@ -269,6 +280,12 @@ $sm_lang = array(
 		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
 		'on_pushover_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_carrier' => '<br />%IP%:%PORT%',
+		'off_carrier' => '<br />%IP%:%PORT%<br />%ERROR%',
+		'on_carrier_subject' => '%LABEL% is UP',
+		'off_carrier_subject' => '%LABEL% is DOWN',
+		'on_carrier_log' => '[%LABEL% was UP] &nbsp;&nbsp;%IP%:%PORT%',
+		'off_carrier_log' => '[%LABEL% was Down] &nbsp;&nbsp;%IP%:%PORT% &nbsp;&nbsp;( %ERROR% )',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

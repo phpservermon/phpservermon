@@ -49,8 +49,18 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">{{ label_carriersms }}</label>
+			<div class="controls" style="padding-top:5px">{{ label_carriersms_description|raw }}<p class="help-block">{{ label_carriersms_help|raw }}</p></div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="carriersms">{{ label_carriersms_email }}</label>
+			<div class="controls">
+				<input type="text" id="carriersms" name="carriersms" value="{{ edit_value_carriersms }}" maxlength="255" />
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">{{ label_pushover }}</label>
-			<div class="controls">{{ label_pushover_description|raw }}	</div>
+			<div class="controls" style="padding-top:5px">{{ label_pushover_description|raw }}	</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="mobile">{{ label_pushover_key }}</label>

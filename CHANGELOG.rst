@@ -10,6 +10,7 @@ not yet released
 * #169: Increased server ip char limit to 500.
 * #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
 * #181: Added blank index files to prevent directory listing.
+* #245: Added support for CarrierSMS SMS gateway
 
 
 v3.1.1 (released November 6, 2014)
