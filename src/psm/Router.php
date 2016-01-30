@@ -28,6 +28,7 @@
 
 namespace psm;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -51,6 +52,7 @@ class Router {
 
 	public function __construct() {
 		$this->container = $this->buildServiceContainer();
+		$this->buildTwigEnvironment();
 
 		$mods = $this->container->getParameter('modules');
 
@@ -72,8 +74,6 @@ class Router {
 	 * @throws \LogicException
 	 */
 	public function run($mod) {
-		$user = $this->container->get('user');
-
 		if(strpos($mod, '_') !== false) {
 			list($mod, $controller) = explode('_', $mod);
 		} else {
@@ -81,18 +81,21 @@ class Router {
 		}
 
 		$controller = $this->getController($mod, $controller);
-
-		// get min required level for this controller and make sure the user matches
-		$min_lvl = $controller->getMinUserLevelRequired();
 		$action = null;
 
-		if($min_lvl < PSM_USER_ANONYMOUS) {
-			// if user is not logged in, load login module
-			if(!$user->isUserLoggedIn()) {
-				$controller = $this->getController('user', 'login');
-			} elseif($user->getUserLevel() > $min_lvl) {
-				$controller = $this->getController('error');
-				$action = '401';
+		try {
+			$this->validateRequest($controller);
+		} catch (\InvalidArgumentException $ex) {
+			switch($ex->getMessage()) {
+				case 'login_required':
+					$controller = $this->getController('user', 'login');
+					break;
+				case 'invalid_csrf_token':
+				case 'invalid_user_level':
+				default:
+					$controller = $this->getController('error');
+					$action = '401';
+					break;
 			}
 		}
 
@@ -146,6 +149,48 @@ class Router {
 	}
 
 	/**
+	 * Validate requets before heading to a controller
+	 * @param \psm\Module\ControllerInterface $controller
+	 * @throws \InvalidArgumentException
+	 */
+	protected function validateRequest(\psm\Module\ControllerInterface $controller) {
+		$request = Request::createFromGlobals();
+
+		if($request->getMethod() == 'POST') {
+			// require CSRF token for all POST calls
+			$session = $this->container->get('user')->getSession();
+			$token_in = $request->request->get('csrf', '');
+			$csrf_key = $controller->getCSRFKey();
+
+			if(empty($csrf_key)) {
+				if(!hash_equals($session->get('csrf_token'), $token_in)) {
+					throw new \InvalidArgumentException('invalid_csrf_token');
+				}
+			} else {
+				if(!hash_equals(
+					hash_hmac('sha256', $csrf_key, $session->get('csrf_token2')),
+					$token_in
+				)) {
+					throw new \InvalidArgumentException('invalid_csrf_token');
+				}
+			}
+		}
+
+		// get min required level for this controller and make sure the user matches
+		$min_lvl = $controller->getMinUserLevelRequired();
+
+		if($min_lvl < PSM_USER_ANONYMOUS) {
+			// if user is not logged in, load login module
+			if(!$this->container->get('user')->isUserLoggedIn()) {
+				throw new \InvalidArgumentException('login_required');
+			} elseif($this->container->get('user')->getUserLevel() > $min_lvl) {
+				throw new \InvalidArgumentException('invalid_user_level');
+			}
+		}
+	}
+
+
+	/**
 	 * Build a new service container
 	 * @return \Symfony\Component\DependencyInjection\ContainerBuilder
 	 * @throws \InvalidArgumentException
@@ -156,5 +201,33 @@ class Router {
 		$loader->load('services.xml');
 
 		return $builder;
+	}
+
+	/**
+	 * Prepare twig environment
+	 * @return \Twig_Environment
+	 */
+	protected function buildTwigEnvironment() {
+		$twig = $this->container->get('twig');
+		$session = $this->container->get('user')->getSession();
+		if(!$session->has('csrf_token')) {
+			$session->set('csrf_token', bin2hex(random_bytes(32)));
+		}
+		if(!$session->has('csrf_token2')) {
+			$session->set('csrf_token2', random_bytes(32));
+		}
+
+		$twig->addFunction(
+			new \Twig_SimpleFunction(
+				'csrf_token',
+				function($lock_to = null) use ($session) {
+					if(empty($lock_to)) {
+						return $session->get('csrf_token');
+					}
+					return hash_hmac('sha256', $lock_to, $session->get('csrf_token2'));
+				}
+			)
+		);
+		return $twig;
 	}
 }

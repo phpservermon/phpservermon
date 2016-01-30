@@ -1,4 +1,6 @@
+{% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
+	{{ macro.csrf_input() }}
 	<fieldset>
 	<legend>{{ titlemode }}</legend>
 		<div class="control-group">

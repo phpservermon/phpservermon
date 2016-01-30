@@ -48,6 +48,7 @@ class InstallController extends AbstractController {
 		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
+		$this->setCSRFKey('install');
 		$this->addMenu(false);
 
 		$this->path_config = PSM_PATH_SRC . '../config.php';

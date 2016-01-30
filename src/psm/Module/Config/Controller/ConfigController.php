@@ -70,6 +70,7 @@ class ConfigController extends AbstractController {
 		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ADMIN);
+		$this->setCSRFKey('config');
 
 		$this->setActions(array(
 			'index', 'save',

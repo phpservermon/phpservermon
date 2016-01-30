@@ -40,6 +40,7 @@ class UserController extends AbstractController {
 		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ADMIN);
+		$this->setCSRFKey('user');
 
 		$this->setActions(array(
 			'index', 'edit', 'delete', 'save',

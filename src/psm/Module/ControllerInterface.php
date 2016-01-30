@@ -44,4 +44,10 @@ interface ControllerInterface extends ContainerAwareInterface {
 	 * @return int
 	 */
 	public function getMinUserLevelRequired();
+
+	/**
+	 * Get custom key for CSRF validation
+	 * @return string
+	 */
+	public function getCSRFKey();
 }

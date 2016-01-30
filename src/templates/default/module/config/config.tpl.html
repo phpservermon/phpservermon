@@ -1,3 +1,4 @@
+{% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal" name="edit_config" action="index.php?mod=config&amp;action=save" id="edit_config" method="post">
     <ul class="nav nav-tabs">
       <li class="{{ general_active }}"><a href="#config-general" data-toggle="tab">{{ label_general }}</a></li>
@@ -225,4 +226,5 @@
 		</fieldset>
 		</div>
 	</div>
+	{{ macro.csrf_input() }}
 </form>

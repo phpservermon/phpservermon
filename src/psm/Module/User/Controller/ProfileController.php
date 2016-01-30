@@ -43,6 +43,7 @@ class ProfileController extends AbstractController {
 		$this->setActions(array(
 			'index', 'save',
 		), 'index');
+		$this->setCSRFKey('profile');
 	}
 
 	/**

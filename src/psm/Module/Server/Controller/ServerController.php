@@ -44,6 +44,7 @@ class ServerController extends AbstractServerController {
 
 		$this->server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+		$this->setCSRFKey('server');
 		$this->setActions(array(
 			'index', 'edit', 'save', 'delete', 'view',
 		), 'index');

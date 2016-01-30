@@ -16,7 +16,9 @@
 		"symfony/event-dispatcher": "2.8.*",
 		"symfony/http-foundation": "2.8.*",
 		"php-pushover/php-pushover": "dev-master",
-		"twig/twig": "1.*"
+		"twig/twig": "1.*",
+		"paragonie/random_compat" : "1.1.6",
+		"indigophp/hash-compat" : "1.1.0"
 	},
 	"autoload": {
 		"files": [

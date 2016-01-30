@@ -68,6 +68,11 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	protected $add_menu = true;
 
 	/**
+	 * @var string $csrf_key
+	 */
+	protected $csrf_key;
+
+	/**
 	 * Messages to show the user
 	 * @var array $messages
 	 * @see addMessage()
@@ -469,5 +474,24 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	 */
 	public function getUser() {
 		return $this->container->get('user');
+	}
+
+	/**
+	 * Get custom key for CSRF validation
+	 * @return string
+	 */
+	public function getCSRFKey() {
+		return $this->csrf_key;
+	}
+
+	/**
+	 * Set CSRF key for validation
+	 * @param string $key
+	 * @return \psm\Module\ControllerInterface
+	 */
+	protected function setCSRFKey($key) {
+		$this->csrf_key = $key;
+		$this->twig->addGlobal('csrf_key', $key);
+		return $this;
 	}
 }

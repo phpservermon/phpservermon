@@ -1,4 +1,6 @@
+{% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal well" action="{{ form_action|raw }}" method="post">
+	{{ macro.csrf_input() }}
 	<fieldset>
 	<div class="row-fluid">
 		<div class="span6">

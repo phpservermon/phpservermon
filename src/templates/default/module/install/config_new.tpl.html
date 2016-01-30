@@ -1,5 +1,6 @@
 {% extends "module/install/main.tpl.html" %}
 {% use "module/install/results.tpl.html" %}
+{% import 'main/macros.tpl.html' as macro %}
 
 {% block install %}
 <div class="row-fluid">
@@ -8,6 +9,7 @@
 <div class="row-fluid">
    <div class="span6">
 	<form id="psm_config" class="form-horizontal" action="install.php?action=config" method="post">
+	  {{ macro.csrf_input() }}
 	  <p>Please enter your database info:</p>
 	  <div class="control-group">
 		<label class="control-label" for="host">Database host</label>
