@@ -51,6 +51,23 @@ class UserController extends AbstractController {
 			'index', 'edit', 'delete', 'save',
 		), 'index');
 		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'user'));
+		$this->twig->addFunction(
+		    new \Twig_SimpleFunction(
+		        'form_token',
+		        function($lock_to = null) {
+		            if (empty($_SESSION['token'])) {
+		                $_SESSION['token'] = bin2hex(random_bytes(32));
+		            }
+		            if (empty($_SESSION['token2'])) {
+		                $_SESSION['token2'] = random_bytes(32);
+		            }
+		            if (empty($lock_to)) {
+		                return $_SESSION['token'];
+		            }
+		            return hash_hmac('sha256', $lock_to, $_SESSION['token2']);
+		        }
+		    )
+		);
 	}
 
 	public function initialize() {
