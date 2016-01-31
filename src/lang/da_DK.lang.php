@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Dansk - Danish',
 	'locale' => array('da_DK.UTF-8', 'da_DK', 'danish', 'danish-dk'),
+	'locale_tag' => 'da',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installere',

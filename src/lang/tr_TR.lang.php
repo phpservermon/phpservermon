@@ -28,6 +28,8 @@
 $sm_lang = array(
     'name' => 'Türkçe - Turkish',
     'locale' => array('tr_TR.UTF-8', 'tr_TR', 'turkish', 'turkish-tr'),
+	'locale_tag' => 'tr',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
         'install' => 'Yükle',

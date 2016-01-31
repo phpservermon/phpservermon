@@ -29,6 +29,8 @@
 $sm_lang = array(
 	'name' => 'Français - French',
 	'locale' => array('fr_FR.UTF-8', 'fr_FR', 'french'),
+	'locale_tag' => 'fr',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installer',

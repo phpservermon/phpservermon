@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Suomi - Finnish',
 	'locale' => array('fi_FI.UTF-8', 'fi_FI', 'finnish', 'finnish-fi'),
+	'locale_tag' => 'fi',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Asenna',

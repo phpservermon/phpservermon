@@ -52,7 +52,6 @@ class Router {
 
 	public function __construct() {
 		$this->container = $this->buildServiceContainer();
-		$this->buildTwigEnvironment();
 
 		$mods = $this->container->getParameter('modules');
 
@@ -79,6 +78,7 @@ class Router {
 		} else {
 			$controller = $mod;
 		}
+		$this->buildTwigEnvironment();
 
 		$controller = $this->getController($mod, $controller);
 		$action = null;
@@ -228,6 +228,9 @@ class Router {
 				}
 			)
 		);
+		$twig->addGlobal('direction_current', psm_get_lang('locale_dir'));
+		$twig->addGlobal('language_current', psm_get_lang('locale_tag'));
+
 		return $twig;
 	}
 }

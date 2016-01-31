@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Português - Brazilian Portuguese',
 	'locale' => array('pt_BR.UTF-8', 'pt_BR', 'portuguese-brazilian'),
+	'locale_tag' => 'BR',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
 		'install' => 'Instalar',
