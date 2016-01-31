@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => '中文 - Chinese',
 	'locale' => array('zh_CN.UTF-8', 'zh_CN', 'chinese', 'chinese-cn'),
+	'locale_tag' => 'zh',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => '安装',

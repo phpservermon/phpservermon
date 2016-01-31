@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Česky - Czech',
 	'locale' => array('cs_CZ.UTF-8', 'cs_CZ', 'czech', 'czech'),
+	'locale_tag' => 'cs',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Instalace',

@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Russian - Русский',
 	'locale' => array('ru_RU.UTF-8', 'ru_RU', 'russian', 'russian'),
+	'locale_tag' => 'ru',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Сервер Мониторинг',
 		'install' => 'Установка',

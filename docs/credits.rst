@@ -111,6 +111,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Ik-Jun
 
+* Persian
+
+  * Javad Evazzadeh Kakroudi - https://github.com/evazzadeh
+
 * Polish
 
   * Arkadiusz Klenczar - https://github.com/aklenczar

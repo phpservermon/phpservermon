@@ -30,6 +30,8 @@
 $sm_lang = array(
 	'name' => 'Español - Spanish',
 	'locale' => array('es_ES.UTF-8', 'es_ES', 'spanish', 'esp'),
+	'locale_tag' => 'es',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Instalar',

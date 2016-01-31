@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
+	'locale_tag' => 'bg',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Мониторинг',
 		'install' => 'Инсталация',

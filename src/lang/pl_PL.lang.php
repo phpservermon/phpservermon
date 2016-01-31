@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Polski - Polish',
 	'locale' => array('pl_PL.UTF-8', 'pl_PL', 'polski', 'polski'),
+	'locale_tag' => 'pl',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Instalacja',

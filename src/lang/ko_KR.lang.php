@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => '한국 - Korean',
 	'locale' => array('ko_KR.UTF-8', 'ko_KR', 'korean'),
+	'locale_tag' => 'ko',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',

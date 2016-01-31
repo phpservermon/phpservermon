@@ -21,13 +21,15 @@
  * @author      andlil
  * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Svenska - Swedish',
 	'locale' => array('sv_SE.UTF-8', 'sv_SE', 'svenska', 'svenska-SE'),
+	'locale_tag' => 'sv',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installera',
