@@ -6,6 +6,7 @@ not yet released
 ----------------------------------
 
 * #161: Added Swedish translation.
+* #185: Added Estonian translation.
 * #210: Added Finnish translation.
 * #201: Added Persian translation.
 * #195: Updated Spanish translation.

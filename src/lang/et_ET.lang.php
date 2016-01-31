@@ -18,15 +18,18 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Richard A.
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Estonian - Eesti keel',
+	'locale' => array('et_ET.UTF-8', 'et_ET', 'estonian'),
+	'locale_tag' => 'et',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Serveri Monitor',
 		'install' => 'Installeeri',
@@ -194,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Värava kasutajanimi',
 		'sms_gateway_password' => 'Värava parool',
 		'sms_from' => 'Saatja telefoni number',
