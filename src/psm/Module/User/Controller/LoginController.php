@@ -36,7 +36,6 @@ class LoginController extends AbstractController {
 		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
-		$this->setCSRFKey('login');
 
 		$this->setActions(array(
 			'login', 'forgot', 'reset',
