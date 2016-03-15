@@ -46,17 +46,30 @@ class Octopush extends Core {
             return false;
 
        $testMode = false;
+       $highPriority = true;
+
+       if ($highPriority) {
+           $sms_type = 'FR';
+           $sms_sender = 'phpServerMon';
+           $sms_more = ' STOP au XXXXX';
+       }
+       else {
+           $sms_type = 'XXX';
+           $sms_more = '';
+       }
+
 
         $recipients = urlencode(implode(',', $this->recipients));
         $octopush_url = "https://www.octopush-dm.com/api/sms/";
-        $octopush_data = urlencode( $message );
+        $octopush_data = urlencode( $message . $sms_more );
 
         $URL = $octopush_url. "?" .
             "user_login=" . $this->username .
             "&api_key=" . $this->password .
             "&sms_recipients=" . $recipients .
-            "&sms_type=XXX" .
+            "&sms_type=" . $sms_type .
             ($testMode ? '&request_mode=simu' : '') .
+            (isset($sms_sender) ? '&sms_sender='.$sms_sender : '') .
             "&sms_text=" . $octopush_data;
 
         $result = file_get_contents( $URL );
