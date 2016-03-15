@@ -314,6 +314,7 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
 			'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
 			'label_sms_gateway_smsglobal' => psm_get_lang('config', 'sms_gateway_smsglobal'),
+			'label_sms_gateway_octopush' => psm_get_lang('config', 'sms_gateway_octopush'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),

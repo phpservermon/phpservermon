@@ -466,6 +466,9 @@ function psm_build_sms() {
 		case 'smsglobal':
 			$sms = new \psm\Txtmsg\Smsglobal();
 			break;
+		case 'octopush':
+			$sms = new \psm\Txtmsg\Octopush();
+			break;
 	}
 
 	// copy login information from the config file
