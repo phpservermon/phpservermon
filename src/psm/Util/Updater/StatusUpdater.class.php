@@ -204,7 +204,7 @@ class StatusUpdater {
 		}
 		if($this->server['pattern'] != '') {
 			// Check to see if the pattern was found.
-			if(!preg_match("/{$this->server['pattern']}/i", $curl_result) && strpos($curl_result, $this->server['pattern']) === false) {
+			if(!preg_match("/{$this->server['pattern']}/i", $curl_result) && stripos($curl_result, $this->server['pattern']) === false) {
 				$this->error = 'Pattern not found.';
 				$result = false;
 			}
