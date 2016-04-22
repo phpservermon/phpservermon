@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Luiz Alberto S. Ribeiro <madeinnordeste@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'cerca de um minuto atrás',
 		'seconds_ago' => '%d segundos atrás',
 		'a_second_ago' => 'um segundo atrás',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
     ),
 	'menu' => array(
 		'config' => 'Configuração',
@@ -127,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Se esse padrão não for encontrado no site, o servidor será marcado offline. As expressões regulares são permitidas.',
         'last_check' => 'Última verificação',
         'last_online' => 'Última vez online',
+		'last_offline' => 'Última vez offline',
         'monitoring' => 'Monitoramento',
 		'no_monitoring' => 'Sem monitoring',
         'email' => 'Email',
@@ -195,6 +208,7 @@ $sm_lang = array(
 		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
         'sms_gateway_username' => 'Usuário do Gateway',
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',

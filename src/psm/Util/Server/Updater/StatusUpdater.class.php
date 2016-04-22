@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout', 'last_offline',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -113,6 +113,12 @@ class StatusUpdater {
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
 			$save['warning_threshold_counter'] = 0;
+			if ($this->server['status'] == 'off') {
+				$online_date = new \DateTime($save['last_online']);
+				$offline_date = new \DateTime($this->server['last_offline']);			
+				$difference = $online_date->diff($offline_date);
+				$save['last_offline_duration'] = trim(psm_format_interval($difference));
+			}
 		} else {
 			// server is offline, increase the error counter
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
@@ -124,6 +130,9 @@ class StatusUpdater {
 				$this->status_new = true;
 			} else {
 				$save['status'] = 'off';
+				if ($this->server['status'] == 'on') {
+					$save['last_offline'] = $save['last_check'];
+				}
 			}
 		}
 

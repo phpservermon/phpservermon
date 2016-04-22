@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      manhere <https://github.com/manhere>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => '1分钟前',
 		'seconds_ago' => '%d 秒前',
 		'a_second_ago' => '刚刚',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => '设置',
@@ -127,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => '如果在网站上未找到对应匹配内容, 则标记该网站为离线. 支持正则表达式.',
 		'last_check' => '最后检查',
 		'last_online' => '最后在线',
+		'last_offline' => 'Last offline',
 		'monitoring' => '监控中',
 		'no_monitoring' => 'No monitoring',
 		'email' => '邮件',
@@ -195,6 +208,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'SMS网关用户名',
 		'sms_gateway_password' => 'SMS网关密码',
 		'sms_from' => '发信人电话号',

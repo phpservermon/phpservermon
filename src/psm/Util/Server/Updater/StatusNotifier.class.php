@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -121,7 +121,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover', 'last_online', 'last_offline', 'last_offline_duration',
 		));
 		if(empty($this->server)) {
 			return false;

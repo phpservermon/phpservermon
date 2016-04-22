@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'een minuut geleden',
 		'seconds_ago' => '%d seconden geleden',
 		'a_second_ago' => 'een seconde geleden',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Configuratie',
@@ -127,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Als dit patroon niet gevonden wordt op de website, zal de server als offline gemarkeerd worden. Regular expressions zijn toegestaan.',
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
+		'last_offline' => 'Laatst offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',
@@ -195,6 +208,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',

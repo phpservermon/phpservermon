@@ -1,0 +1,9 @@
+rvm::system_rubies:
+  '1.9': {}
+  '2.0':
+    default_use: true
+  '2.1': {}
+  'jruby-1.7': {}
+
+rvm::system_users:
+  - root

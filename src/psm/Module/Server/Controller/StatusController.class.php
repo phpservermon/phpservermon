@@ -19,8 +19,8 @@
  *
  * @package     phpservermon
  * @author      Michael Greenhill
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -54,6 +54,7 @@ class StatusController extends AbstractServerController {
 		$layout_data = array(
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
 			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
@@ -74,6 +75,11 @@ class StatusController extends AbstractServerController {
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
+			$server['last_offline_nice'] = psm_timespan($server['last_offline']);
+			$server['last_offline_duration_nice'] = "";
+			if ($server['last_offline_nice'] != psm_get_lang('system', 'never')) {
+				$server['last_offline_duration_nice'] = "(".$server['last_offline_duration'].")";
+			}
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
 			if ($server['status'] == "off") {

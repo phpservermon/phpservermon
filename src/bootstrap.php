@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -52,7 +52,7 @@ if(!defined('PSM_DEBUG')) {
 }
 if(PSM_DEBUG) {
 	error_reporting(E_ALL);
-	ini_set('display_erors', 1);
+	ini_set('display_errors', 1);
 } else {
 	error_reporting(0);
 	ini_set('display_errors', 0);

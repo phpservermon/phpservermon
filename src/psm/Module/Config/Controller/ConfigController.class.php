@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -313,6 +313,7 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
 			'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
 			'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
+			'label_sms_gateway_freevoipdeal' => psm_get_lang('config', 'sms_gateway_freevoipdeal'),
 			'label_sms_gateway_smsglobal' => psm_get_lang('config', 'sms_gateway_smsglobal'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),

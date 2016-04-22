@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -399,6 +399,7 @@ class ServerController extends AbstractServerController {
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
 			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 			'label_email' => psm_get_lang('servers', 'email'),
 			'label_send_email' => psm_get_lang('servers', 'send_email'),

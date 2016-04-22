@@ -55,6 +55,16 @@ To make sure these requests can be identified, the monitor uses a custom user ag
 
      Mozilla/5.0 (compatible; phpservermon/3.0.1; +http://www.phpservermonitor.org)
 
+What is the log retention period?
+---------------------------------
+
+The monitor uses 2 different tables in the database to store history information regarding servers.
+The first one is called the "uptime" table. This one keeps full track of the past 7 days, so that detailed information is available (e.g. which checks failed/passed etc).
+This allows the monitor to create a detailed graph on the server info page.
+In order to prevent the uptime table growing beyond reasonable, after a week the uptime records are archived to a different table.
+Archiving means that per day only one record is stored with averages. This still allows some basic statistics, although they are not as detailed as the uptime records.
+
+The retention period tells the monitor how long to keep records in the archive table.
 
 Configuration
 +++++++++++++

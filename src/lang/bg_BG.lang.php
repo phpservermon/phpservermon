@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'преди минута',
 		'seconds_ago' => 'преди %d секунди',
 		'a_second_ago' => 'преди секунда',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Настройки',
@@ -127,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Ако този текст не е намерен в интернет страницата (когато имате добавен сайт), той ще бъде маркиран като Офлайн. Регулярните изрази са разрешени.',
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Мониторинг',
 		'no_monitoring' => 'Не се наблюдава',
 		'email' => 'Имейл',
@@ -194,6 +207,7 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',

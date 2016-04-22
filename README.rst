@@ -46,6 +46,7 @@ The following SMS gateways are currently available:
 * SMSit - <http://www.smsit.dk/>
 * Spryng - <http://www.spryng.nl>
 * Textmarketer - <http://www.textmarketer.co.uk>
+* FreeVoipDeal - <http://www.freevoipdeal.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
@@ -77,6 +78,11 @@ To be able to run an installation from the repo, you need to run the following c
 
      php composer.phar install
 
+If you are familiar with Vagrant (https://www.vagrantup.com)::
+
+     vagrant up
+
+.. and browse to http://localhost:8080/psm/.
 
 
 Documentation

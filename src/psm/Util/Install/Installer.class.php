@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -210,7 +210,7 @@ class Installer {
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `ip` varchar(100) NOT NULL,
+						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('service','website') NOT NULL default 'service',
@@ -227,6 +227,8 @@ class Installer {
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
+						  `last_offline` datetime NULL,
+						  `last_offline_duration` varchar(255) NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -272,16 +274,16 @@ class Installer {
 	 */
 	public function upgrade($version_from, $version_to) {
 		if(version_compare($version_from, '2.1.0', '<')) {
-			// upgrade to 2.1.0
 			$this->upgrade210();
 		}
 		if(version_compare($version_from, '3.0.0', '<')) {
-			// upgrade to 3.0.0
 			$this->upgrade300();
 		}
 		if(version_compare($version_from, '3.1.0', '<')) {
-			// upgrade to 3.1.0
 			$this->upgrade310();
+		}
+		if(version_compare($version_from, '3.2.0', '<')) {
+			$this->upgrade320();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -302,6 +304,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$this->execSQL($queries);
 	}
@@ -333,6 +337,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '1';";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold_counter` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
@@ -412,6 +418,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
 						`user_id` int(11) unsigned NOT NULL,
@@ -419,6 +427,17 @@ class Installer {
 						`value` varchar(255) NOT NULL,
 						PRIMARY KEY (`user_id`, `key`)
 					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$this->execSQL($queries);
+	}
+
+	protected function upgrade320() {
+		$queries = array();
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
+
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$this->execSQL($queries);
 	}

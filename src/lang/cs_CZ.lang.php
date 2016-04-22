@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Simon Berka <berka@berkasimon.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'cca před minutou',
 		'seconds_ago' => 'před %d vteřinami',
 		'a_second_ago' => 'před chvílí',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Konfigurace',
@@ -127,6 +139,7 @@ $sm_lang = array(
 		'pattern_description' => 'Pokud vzorek nebude na webu nalezen, bude server označen jako offline. Regulární výrazy jsou povoleny.',
 		'last_check' => 'Poslední kontrola',
 		'last_online' => 'Naposledy online',
+		'last_offline' => 'Naposledy offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Žádné monitorované služby',
 		'email' => 'Email',
@@ -195,6 +208,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Uživatelské jméno brány',
 		'sms_gateway_password' => 'Heslo brány',
 		'sms_from' => 'Telefonní číslo odesilatele',

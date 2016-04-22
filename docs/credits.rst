@@ -9,6 +9,7 @@ Credits
 
 The following people have contributed to the development of PHP Server Monitor:
 
+
 * Pepijn Over - https://github.com/dopeh
 
   * Creator and project maintainer
@@ -61,6 +62,11 @@ The following people have contributed to the development of PHP Server Monitor:
 * Alexander Moore - http://www.famfamfam.com
 
   * Icon
+
+* Michiel van der Wulp - https://github.com/mvdw
+
+  * FreeVoipDeal SMS gateway
+
 
 Translators
 +++++++++++
@@ -118,6 +124,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Klemens Häckel - http://clickdimension.wordpress.com
   * Luis Rodriguez - https://github.com/ldrrp
+
+* Swedish
+
+  * Andlil - https://github.com/andlil
 
 * Turkish
 

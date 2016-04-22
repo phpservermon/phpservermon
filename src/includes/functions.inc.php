@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -234,6 +234,25 @@ function psm_log_uptime($server_id, $status, $latency) {
             'latency' => $latency,
         )
     );
+}
+
+/**
+ * Converts an interval into a string
+ *
+ * @param DateInterval $interval
+ * @return string
+ */
+ function psm_format_interval(DateInterval $interval) {
+    $result = "";
+
+    if ($interval->y) { $result .= $interval->format("%y ") . ( ($interval->y == 1)  ? psm_get_lang('system', 'year') : psm_get_lang('system', 'years') ) . " "; }
+    if ($interval->m) { $result .= $interval->format("%m ") . ( ($interval->m == 1)  ? psm_get_lang('system', 'month') : psm_get_lang('system', 'months') ) . " "; }
+    if ($interval->d) { $result .= $interval->format("%d ") . ( ($interval->d == 1)  ? psm_get_lang('system', 'day') : psm_get_lang('system', 'days') ) . " "; }
+    if ($interval->h) { $result .= $interval->format("%h ") . ( ($interval->h == 1)  ? psm_get_lang('system', 'hour') : psm_get_lang('system', 'hours') ) . " "; }
+    if ($interval->i) { $result .= $interval->format("%i ") . ( ($interval->i == 1)  ? psm_get_lang('system', 'minute') : psm_get_lang('system', 'minutes') ) . " "; }
+    if ($interval->s) { $result .= $interval->format("%s ") . ( ($interval->s == 1)  ? psm_get_lang('system', 'second') : psm_get_lang('system', 'seconds') ) . " "; }
+
+    return $result;
 }
 
 /**
@@ -465,6 +484,9 @@ function psm_build_sms() {
 			break;
 		case 'smsglobal':
 			$sms = new \psm\Txtmsg\Smsglobal();
+			break;
+		case 'freevoipdeal':
+			$sms = new \psm\Txtmsg\FreeVoipDeal();
 			break;
 	}
 
