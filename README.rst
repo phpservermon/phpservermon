@@ -1,7 +1,11 @@
 PHP Server Monitor
 ==================
 
-Version 3.1.0-dev
+.. image:: https://badges.gitter.im/phpservermon/phpservermon.svg
+   :alt: Join the chat at https://gitter.im/phpservermon/phpservermon
+   :target: https://gitter.im/phpservermon/phpservermon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+Version 3.1.1
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -12,7 +16,7 @@ Features:
 ---------
 
 * Monitor services and websites (see below).
-* Email and SMS notifications.
+* Email, SMS and Pushover notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -35,16 +39,18 @@ There are two different ways to monitor a server:
   In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has its own settings regarding notification.
-You can choose for email notification or text message (SMS).
+You can choose for email, text message (SMS) and Pushover.net notifications.
 The following SMS gateways are currently available:
 
-* Mollie - <http://www.mollie.nl>
-* Spryng - <http://www.spryng.nl>
-* Inetworx - <http://www.inetworx.ch>
 * Clickatell - <https://www.clickatell.com>
+* Inetworx - <http://www.inetworx.ch>
+* Mollie - <http://www.mollie.nl>
 * Mosms - <http://www.mosms.com>
+* Smsglobal - <http://smsglobal.com/>
+* SMSit - <http://www.smsit.dk/>
+* Spryng - <http://www.spryng.nl>
 * Textmarketer - <http://www.textmarketer.co.uk>
-* SMSit - <http://smsit.dk>
+* FreeVoipDeal - <http://www.freevoipdeal.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
@@ -76,6 +82,11 @@ To be able to run an installation from the repo, you need to run the following c
 
      php composer.phar install
 
+If you are familiar with Vagrant (https://www.vagrantup.com)::
+
+     vagrant up
+
+.. and browse to http://localhost:8080/psm/.
 
 
 Documentation
