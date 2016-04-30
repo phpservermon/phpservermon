@@ -197,7 +197,7 @@ table {
 	-moz-border-radius-bottomleft:0;
 	border-bottom-left-radius:0;
 }
-.rtl .table th,.table td{
+.rtl .table th, .rtl .table td {
 	text-align:right;
 }
 .rtl .dropdown-menu{
