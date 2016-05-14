@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Simon Berka <berka@berkasimon.com>
+ * @author      Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
