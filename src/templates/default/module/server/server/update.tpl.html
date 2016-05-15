@@ -24,8 +24,34 @@
 				 </select>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="port">{{ label_port }}</label>
+		<div class="control-group popularPortsGroup">
+			<label class="control-label" for="popularPorts">{{ label_port }}</label>
+			<div class="controls">
+				<select id="popularPorts" name="popularPorts">
+                    <option value="">{{ label_please_select }}</option>
+                    <option value="custom">{{ label_custom_port }}</option>
+                    <optgroup label="{{ label_popular_ports }}">
+                        <option value="80">HTTP (80)</option>
+                        <option value="443">HTTPS (443)</option>
+                        <option value="21">FTP (21)</option>
+                        <option value="25">SMTP (25)</option>
+                        <option value="465">SMTP Secure (465)</option>
+                        <option value="110">POP3 (110)</option>
+                        <option value="995">POP3 Secure (995)</option>
+                        <option value="143">IMAP (143)</option>
+                        <option value="993">IMAP over SSL (993)</option>
+                        <option value="22">SSH (22)</option>
+                        <option value="389">LDAP (389)</option>
+                        <option value="3306">MySQL (3306)</option>
+                        <option value="115">SFTP (115)</option>
+                        <option value="43">WHOIS (43)</option>
+                        <option value="53">BIND (53)</option>
+                    </optgroup>
+				</select>
+			</div>
+		</div>
+		<div class="control-group portGroup">
+			<label class="control-label" for="port">{{ label_custom_port }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
 			</div>
