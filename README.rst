@@ -34,7 +34,7 @@ There are two different ways to monitor a server:
 * Website
 
   You can enter a link to a website, it will then use cURL to open the website and check the HTTP status code.
-  If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
+  If the HTTP status code is in the 4xx/5xx, it means an error occurred and the website is not accessible to the public.
   You can also set a regular expression to match for content on the page itself.
   If the regular expression returns no matches, the website is considered down.
   In both cases the script will return a "status offline", and will start sending out notifications.
