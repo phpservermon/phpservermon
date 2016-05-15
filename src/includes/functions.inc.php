@@ -40,26 +40,17 @@
 function psm_get_lang() {
 	$args = func_get_args();
 
-	if (empty($args)) return $GLOBALS['sm_lang'];
+	if(empty($args)) return $GLOBALS['sm_lang'];
 
 	$result = null;
-	$resultDefault = null;
 	$node = null;
-	$nodeDefault = null;
 
-	if ($args) {
+	if($args) {
 		$node = '$GLOBALS[\'sm_lang\'][\'' . implode('\'][\'', $args) . '\']';
-		$nodeDefault = '$GLOBALS[\'sm_lang_default\'][\'' . implode('\'][\'', $args) . '\']';
 	}
+	eval('if (isset('.$node.')) $result = '.$node.';');
 
-	eval('if (isset(' . $node . ')) $result = ' . $node . ';');
-	eval('if (isset(' . $nodeDefault . ')) $resultDefault = ' . $nodeDefault . ';');
-
-	if (empty($result)) {
-		return $resultDefault;
-	} else {
-		return $result;
-	}
+	return $result;
 }
 
 /**
@@ -69,25 +60,12 @@ function psm_get_lang() {
  * @see psm_get_lang()
  */
 function psm_load_lang($lang) {
-	// if not in the language translation must always be available starting translation - English
-	$default_lang_file = PSM_PATH_LANG . 'en_US.lang.php';
-
-	if (file_exists($default_lang_file)) {
-		require $default_lang_file;
-
-		if (isset($sm_lang)) {
-			$GLOBALS['sm_lang_default'] = $sm_lang;
-			unset($sm_lang);
-		}
-	}
-
-	// translated language
 	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
 
-	if (!file_exists($lang_file)) {
+	if(!file_exists($lang_file)) {
 		// If the file has been removed, we use the english one
 		$en_file = PSM_PATH_LANG . 'en_US.lang.php';
-		if (!file_exists($en_file)) {
+		if(!file_exists($en_file)) {
 			// OK, nothing we can do
 			die('unable to load language file: ' . $lang_file);
 		}
@@ -95,7 +73,7 @@ function psm_load_lang($lang) {
 	}
 
 	require $lang_file;
-	if (isset($sm_lang['locale'])) {
+	if(isset($sm_lang['locale'])) {
 		setlocale(LC_TIME, $sm_lang['locale']);
 	}
 
@@ -245,17 +223,17 @@ function psm_add_log($server_id, $type, $message, $user_id = null) {
  * @param string $latency
  */
 function psm_log_uptime($server_id, $status, $latency) {
-	global $db;
+    global $db;
 
-	$db->save(
-		PSM_DB_PREFIX.'servers_uptime',
-		array(
-			'server_id' => $server_id,
-			'date' => date('Y-m-d H:i:s'),
-			'status' => $status,
-			'latency' => $latency,
-		)
-	);
+    $db->save(
+        PSM_DB_PREFIX.'servers_uptime',
+        array(
+            'server_id' => $server_id,
+            'date' => date('Y-m-d H:i:s'),
+            'status' => $status,
+            'latency' => $latency,
+        )
+    );
 }
 
 /**
