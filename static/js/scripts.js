@@ -48,6 +48,33 @@ $().ready(function() {
 
 	psm_flash_message();
 	psm_tooltips();
+
+	// popularPorts
+    // initial
+    $('.portGroup').hide();
+    var portInput = $('#port').val();
+
+    if (portInput != '') {
+        var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
+
+        if(findPopularPorts.length) {
+            $(findPopularPorts).attr("selected", "selected");
+        } else {
+            $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
+            $('.portGroup').slideDown();
+        }
+    }
+
+	$('#popularPorts').change(function () {
+		var popularPorts = $(this).val();
+
+		if (popularPorts == 'custom') {
+			$('.portGroup').slideDown();
+		} else {
+			$('#port').val(popularPorts);
+			$('.portGroup').slideUp();
+		}
+	});
 });
 
 function psm_xhr(mod, params, method, on_complete, options) {
