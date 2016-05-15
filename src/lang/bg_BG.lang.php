@@ -198,6 +198,7 @@ $sm_lang = array(
 		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',

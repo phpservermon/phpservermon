@@ -68,6 +68,10 @@ The following people have contributed to the development of PHP Server Monitor:
   * FreeVoipDeal SMS gateway
 
 
+* Luis Rodriguez - https://github.com/ldrrp
+
+  * Nexmo SMS gateway
+
 Translators
 +++++++++++
 

@@ -5,6 +5,7 @@ Changelog
 not yet released
 ----------------------------------
 
+* #170: Implement Nexmo SMS.
 * #161: Added Swedish translation.
 * #185: Added Estonian translation.
 * #210: Added Finnish translation.

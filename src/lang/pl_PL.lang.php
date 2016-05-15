@@ -198,6 +198,7 @@ $sm_lang = array(
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Login do bramki',
 		'sms_gateway_password' => 'Hasło do bramki',
 		'sms_from' => 'Numer nadawcy',

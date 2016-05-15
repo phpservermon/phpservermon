@@ -470,6 +470,9 @@ function psm_build_sms() {
 		case 'freevoipdeal':
 			$sms = new \psm\Txtmsg\FreeVoipDeal();
 			break;
+		case 'nexmo':
+			$sms = new \psm\Txtmsg\Nexmo();
+			break;
 	}
 
 	// copy login information from the config file
