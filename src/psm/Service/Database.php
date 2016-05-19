@@ -82,7 +82,7 @@ class Database {
 	 * @param string $db
 	 */
 	function __construct($host = null, $user = null, $pass = null, $db = null) {
-		if($host != null && $user != null && $pass != null && $db != null) {
+		if($host != null && $user != null && $pass !== null && $db != null) {
 			$this->db_host = $host;
 			$this->db_name = $db;
 			$this->db_user = $user;
