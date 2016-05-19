@@ -172,6 +172,7 @@ $sm_lang = array(
 		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
 		'error_server_ip_bad_service' => 'The IP address is not valid.',
 		'error_server_ip_bad_website' => 'The website URL is not valid.',
+        'error_server_ip_bad_imap' => 'The IMAP URL need to be in format imap://username:password@hostname/options ',
 		'error_server_type_invalid' => 'The selected server type is invalid.',
 		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
 	),

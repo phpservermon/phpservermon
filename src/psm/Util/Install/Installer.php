@@ -213,7 +213,7 @@ class Installer {
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
-						  `type` enum('service','website') NOT NULL default 'service',
+						  `type` varchar(255) NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,
@@ -282,6 +282,9 @@ class Installer {
 		}
 		if(version_compare($version_from, '3.2.0', '<')) {
 			$this->upgrade320();
+		}
+		if(version_compare($version_from, '3.2.1', '<')) {
+			$this->upgrade321();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -430,4 +433,12 @@ class Installer {
 
 		$this->execSQL($queries);
 	}
+
+    protected function upgrade321(){
+        $queries = array();
+        $queries[] = "ALTER TABLE  `".PSM_DB_PREFIX."servers` CHANGE  `type`  `type` CHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'service'";
+        $this->execSQL($queries);
+
+
+    }
 }

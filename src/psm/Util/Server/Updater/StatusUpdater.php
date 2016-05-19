@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,18 +28,17 @@
 /**
  * The status class is for checking the status of a server.
  *
- * @see \psm\Util\Server\Updater\StatusNotifier
- * @see \psm\Util\Server\Updater\Autorun
+ * @see \psm\Util\Updater\StatusNotifier
+ * @see \psm\Util\Updater\Autorun
  */
 namespace psm\Util\Server\Updater;
+
 use psm\Service\Database;
+use psm\Util\Updater\Types;
 
-class StatusUpdater {
-	public $error = '';
 
-	public $rtime = 0;
-
-	public $status_new = false;
+class StatusUpdater
+{
 
 	/**
 	 * Database service
@@ -59,8 +58,58 @@ class StatusUpdater {
 	 */
 	protected $server;
 
-	function __construct(Database $db) {
+	protected $handlers = array ();
+
+	function __construct(Database $db)
+	{
 		$this->db = $db;
+
+
+		$this->LoadHandlers();
+	}
+
+
+	private function LoadHandlers()
+	{
+
+		foreach (glob(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'types' . DIRECTORY_SEPARATOR . '*.Updater.php') as $path)
+		{
+			$filename = basename($path);
+
+			if ( !preg_match('/(?P<name>[a-zA-Z0-9]+).Updater.php$/', $filename, $matches))
+				continue;
+
+			if ($matches === null || empty( $matches['name'] ))
+				continue;
+
+			$name = $matches['name'];
+			if (array_key_exists($name, $this->handlers))
+				continue;
+
+			include_once $path;
+
+			$class_name = 'psm\\Util\\Updater\\Types\\' . $name . 'Updater';
+
+			if ( !class_exists($class_name))
+				continue;
+
+			$this->handlers[strtolower($name)] = new $class_name($this->db);
+		}
+	}
+
+
+	public function GetHandlers()
+	{
+		return $this->handlers;
+	}
+
+	public function GetHandler($name)
+	{
+
+		if ( !array_key_exists($name, $this->handlers))
+			throw new \InvalidArgumentException('server_type_invalid');
+
+		return $this->handlers[strtolower($name)];
 	}
 
 	/**
@@ -69,175 +118,86 @@ class StatusUpdater {
 	 *
 	 * Please note: if the server is down but has not met the warning threshold, this will return true
 	 * to avoid any "we are down" events.
+	 *
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
+	 *
 	 * @return boolean TRUE if server is up, FALSE otherwise
 	 */
-	public function update($server_id, $max_runs = 2) {
+	public function update($server_id, $max_runs = 2)
+	{
 		$this->server_id = $server_id;
-		$this->error = '';
-		$this->rtime = '';
+		$this->error     = '';
+		$this->rtime     = '';
 
 		// get server info from db
-		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
+		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array (
 			'server_id' => $server_id,
-		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
-		));
-		if(empty($this->server)) {
+		), array (
+										  'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter',
+									  ));
+
+
+		if (empty( $this->server ))
+		{
 			return false;
 		}
 
-		switch($this->server['type']) {
-			case 'service':
-				$this->status_new = $this->updateService($max_runs);
-				break;
-			case 'website':
-				$this->status_new = $this->updateWebsite($max_runs);
-				break;
-		}
+
+		$cur_run = 1;
+
+		$handler = $this->GetHandler($this->server['type']);
+
+
+		$status_new = true;
+		do
+		{
+
+
+			$status_new = $handler->Update($this->server);
+
+		} while ($status_new == false && $cur_run++ <= $max_runs);
+
 
 		// update server status
-		$save = array(
+		$save = array (
 			'last_check' => date('Y-m-d H:i:s'),
-			'error' => $this->error,
-			'rtime' => $this->rtime,
+			'error'      => $handler->GetError(),
+			'rtime'      => $handler->GetRunTime(),
 		);
 
 		// log the uptime before checking the warning threshold,
 		// so that the warnings can still be reviewed in the server history.
-		psm_log_uptime($this->server_id, (int) $this->status_new, $this->rtime);
+		psm_log_uptime($this->server_id, (int)$status_new, $handler->GetRunTime());
 
-		if($this->status_new == true) {
+		if ($status_new == true)
+		{
 			// if the server is on, add the last_online value and reset the error threshold counter
-			$save['status'] = 'on';
-			$save['last_online'] = date('Y-m-d H:i:s');
+			$save['status']                    = 'on';
+			$save['last_online']               = date('Y-m-d H:i:s');
 			$save['warning_threshold_counter'] = 0;
-		} else {
+		}
+		else
+		{
 			// server is offline, increase the error counter
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
 
-			if($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
+			if ($save['warning_threshold_counter'] < $this->server['warning_threshold'])
+			{
 				// the server is offline but the error threshold has not been met yet.
 				// so we are going to leave the status "on" for now while we are in a sort of warning state..
 				$save['status'] = 'on';
-				$this->status_new = true;
-			} else {
+				$status_new     = true;
+			}
+			else
+			{
 				$save['status'] = 'off';
 			}
 		}
 
-		$this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
+		$this->db->save(PSM_DB_PREFIX . 'servers', $save, array ( 'server_id' => $this->server_id ));
 
-		return $this->status_new;
+		return $status_new;
 
-	}
-
-	/**
-	 * Check the current server as a service
-	 * @param int $max_runs
-	 * @param int $run
-	 * @return boolean
-	 */
-	protected function updateService($max_runs, $run = 1) {
-		$errno = 0;
-		// save response time
-		$starttime = microtime(true);
-
-		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
-
-		$status = ($fp === false) ? false : true;
-		$this->rtime = (microtime(true) - $starttime);
-
-		if(is_resource($fp)) {
-			fclose($fp);
-		}
-
-		// check if server is available and rerun if asked.
-		if(!$status && $run < $max_runs) {
-			return $this->updateService($max_runs, $run + 1);
-		}
-
-		return $status;
-	}
-
-	/**
-	 * Check the current server as a website
-	 * @param int $max_runs
-	 * @param int $run
-	 * @return boolean
-	 */
-	protected function updateWebsite($max_runs, $run = 1) {
-		$starttime = microtime(true);
-
-		// We're only interested in the header, because that should tell us plenty!
-		// unless we have a pattern to search for!
-		$curl_result = psm_curl_get(
-			$this->server['ip'],
-			true,
-			($this->server['pattern'] == '' ? false : true),
-			$this->server['timeout']
-		);
-
-		$this->rtime = (microtime(true) - $starttime);
-
-		// the first line would be the status code..
-		$status_code = strtok($curl_result, "\r\n");
-		// keep it general
-		// $code[1][0] = status code
-		// $code[2][0] = name of status code
-		$code_matches = array();
-		preg_match_all("/[A-Z]{2,5}\/\d\.\d\s(\d{3})\s(.*)/", $status_code, $code_matches);
-
-		if(empty($code_matches[0])) {
-			// somehow we dont have a proper response.
-			$this->error = 'TIMEOUT ERROR: no response from server';
-			$result = false;
-		} else {
-			$code = $code_matches[1][0];
-			$msg = $code_matches[2][0];
-
-			// All status codes starting with a 4 or higher mean trouble!
-			if(substr($code, 0, 1) >= '4') {
-				$this->error = "HTTP STATUS ERROR: ".$code . ' ' . $msg;
-				$result = false;
-			} else {
-				$result = true;
-				
-				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
-				if($this->server['pattern'] != '') {
-					// Check to see if the pattern was found.
-					if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-						$this->error = 'TEXT ERROR : Pattern not found.';
-						$result = false;
-					}
-				}
-			}
-		}
-
-		// check if server is available and rerun if asked.
-		if(!$result && $run < $max_runs) {
-			return $this->updateWebsite($max_runs, $run + 1);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Get the error returned by the update function
-	 *
-	 * @return string
-	 */
-	public function getError() {
-		return $this->error;
-	}
-
-	/**
-	 * Get the response time of the server
-	 *
-	 * @return string
-	 */
-	public function getRtime() {
-		return $this->rtime;
 	}
 }

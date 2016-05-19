@@ -27,6 +27,7 @@
  **/
 
 namespace psm\Util\Server;
+use psm\Util\Updater\StatusUpdater;
 
 /**
  * The ServerValidator helps you to check input data for servers.
@@ -39,9 +40,13 @@ class ServerValidator {
 	 */
 	protected $db;
 
-	public function __construct(\psm\Service\Database $db) {
+    protected $statusUpdater ;
+    public function __construct(\psm\Service\Database $db) {
 		$this->db = $db;
-	}
+
+        $this->statusUpdater = new \psm\Util\Server\Updater\StatusUpdater($this->db);
+
+    }
 
 	/**
 	 * Check if the server id exists
@@ -86,22 +91,8 @@ class ServerValidator {
 			throw new \InvalidArgumentException('server_ip_bad_length');
 		}
 
-		switch($type) {
-			case 'website':
-				if(!filter_var($value, FILTER_VALIDATE_URL)) {
-					throw new \InvalidArgumentException('server_ip_bad_website');
-				}
-				break;
-			case 'service':
-				if(
-					!filter_var($value, FILTER_VALIDATE_IP)
-					// domain regex as per http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address :
-					&& !preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])/", $value)
-				) {
-					throw new \InvalidArgumentException('server_ip_bad_service');
-				}
-				break;
-		}
+
+        $this->statusUpdater->GetHandler($type)->ValidateIP($value);
 
 		return true;
 	}
@@ -113,7 +104,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function type($type) {
-		if(!in_array($type, array('service', 'website'))) {
+		if( $this->statusUpdater->GetHandler($type) == null) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
 		return true;
