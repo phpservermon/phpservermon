@@ -198,6 +198,7 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         	'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Usuario',

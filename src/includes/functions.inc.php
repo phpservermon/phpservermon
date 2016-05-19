@@ -495,7 +495,9 @@ function psm_build_sms() {
 		case 'nexmo':
 			$sms = new \psm\Txtmsg\Nexmo();
 			break;
-	}
+		case 'octopush':
+			$sms = new \psm\Txtmsg\Octopush();
+			break;	}
 
 	// copy login information from the config file
 	if($sms) {
