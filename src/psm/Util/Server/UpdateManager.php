@@ -63,7 +63,7 @@ class UpdateManager extends ContainerAware {
 
 		$servers = $this->container->get('db')->query($sql);
 
-		$updater = new Updater\StatusUpdater($this->container->get('db'));
+		$updater = new \psm\Util\Server\Updater\StatusUpdater($this->container->get('db'));
 		$notifier = new Updater\StatusNotifier($this->container->get('db'));
 
 		foreach($servers as $server) {

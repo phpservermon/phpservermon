@@ -29,7 +29,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.2.0');
+define('PSM_VERSION', '3.2.1');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.

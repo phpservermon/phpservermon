@@ -63,6 +63,9 @@ class LogController extends AbstractServerController {
 		// get users
 		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
 
+        $statusUpdater = new \psm\Util\Server\Updater\StatusUpdater($this->db);
+
+
 		$users_labels = array();
 		foreach ($users as $user) {
 			$users_labels[$user['user_id']] = $user['name'];
@@ -84,7 +87,7 @@ class LogController extends AbstractServerController {
 				$record['class'] = ($x & 1) ? 'odd' : 'even';
 				$record['users'] = '';
 				$record['server'] = $record['label'];
-				$record['type_icon'] = ($record['server_type'] == 'website') ? 'icon-globe' : 'icon-cog';
+				$record['type_icon'] = $statusUpdater->GetHandler($record['server_type'])->GetIcon() ;
 				$record['type_title'] = psm_get_lang('servers', 'type_' . $record['server_type']);
 				$ip = '(' . $record['ip'];
 				if(!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
