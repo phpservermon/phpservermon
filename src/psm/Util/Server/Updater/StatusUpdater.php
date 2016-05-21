@@ -180,7 +180,7 @@ class StatusUpdater {
 			$this->server['timeout'],
 			true,
 			$this->server['website_username'],
-			psm_password_decrypt($this->server['website_password'])
+			psm_password_decrypt($this->server['server_id'] . psm_get_conf('password_encrypt_key'), $this->server['website_password'])
 		);
 
 		$this->rtime = (microtime(true) - $starttime);
