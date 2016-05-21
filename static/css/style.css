@@ -285,6 +285,17 @@ legend {
 }
 
 /* Status page */
+
+h2 {
+	font-size: 16px;
+	line-height: 12px;
+}
+
+h2 small {
+	font-size: 18px;
+}
+
+
 .offline, .online {
 	display: inline-block;
 	width: 100%;
