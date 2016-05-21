@@ -19,12 +19,13 @@
 			<label class="control-label" for="type">{{ label_type }}</label>
 			<div class="controls">
 				<select id="type" name="type">
+					<option value="">{{ label_please_select }}</option>
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
 				 </select>
 			</div>
 		</div>
-		<div class="control-group popularPortsGroup">
+		<div class="control-group popularPortsGroup types typeService">
 			<label class="control-label" for="popularPorts">{{ label_port }}</label>
 			<div class="controls">
 				<select id="popularPorts" name="popularPorts">
@@ -50,30 +51,50 @@
 				</select>
 			</div>
 		</div>
-		<div class="control-group portGroup">
+		<div class="control-group portGroup types typeService">
 			<label class="control-label" for="port">{{ label_custom_port }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group types typeWebsite">
 			<label class="control-label" for="pattern">{{ label_pattern }}</label>
 			<div class="controls">
 				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group types typeWebsite">
 			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group types typeWebsite">
 			<label class="control-label" for="timeout">{{ label_timeout }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="timeout" name="timeout" value="{{ edit_value_timeout }}" placeholder="{{ default_value_timeout }}" maxlength="10" data-toggle="tooltip" title="{{ label_timeout_description }}" /> s
 			</div>
 		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend class="types typeWebsite">{{ label_authentication_settings}}</legend>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="website_username">{{ label_website_username }}</label>
+			<div class="controls">
+				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" />
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="website_password">{{ label_website_password }}</label>
+			<div class="controls">
+				<input type="text" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ label_fieldset_monitoring }}</legend>
 		<div class="control-group">
 			<label class="control-label" for="active">{{ label_monitoring }}</label>
 			<div class="controls">
@@ -116,6 +137,10 @@
 				</select>
 			</div>
 		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ label_fieldset_permissions }}</legend>
 		<div class="control-group">
 			<label class="control-label" for="user_id">{{ label_users }}</label>
 			<div class="controls">
