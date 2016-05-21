@@ -630,6 +630,9 @@ function psm_no_cache() {
  */
 function psm_password_encrypt($password)
 {
+	if(empty($password))
+		return '';
+
 	$key = psm_get_conf('password_encrypt_key');
 
 	$iv = mcrypt_create_iv(
@@ -641,7 +644,7 @@ function psm_password_encrypt($password)
 		$iv .
 		mcrypt_encrypt(
 			MCRYPT_RIJNDAEL_128,
-			hash('sha256', $key, true),
+			hash('sha256',  $key, true),
 			$password,
 			MCRYPT_MODE_CBC,
 			$iv
@@ -660,6 +663,9 @@ function psm_password_encrypt($password)
  */
 function psm_password_decrypt($encryptedString)
 {
+	if(empty($encryptedString))
+		return '';
+
 	$key = psm_get_conf('password_encrypt_key');
 
 	$data = base64_decode($encryptedString);
@@ -668,7 +674,7 @@ function psm_password_decrypt($encryptedString)
 	$decrypted = rtrim(
 		mcrypt_decrypt(
 			MCRYPT_RIJNDAEL_128,
-			hash('sha256', $key, true),
+			hash('sha256',  $key, true),
 			substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
 			MCRYPT_MODE_CBC,
 			$iv
