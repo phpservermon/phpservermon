@@ -291,9 +291,11 @@ function psm_parse_msg($status, $type, $vars) {
  * @param boolean $body return body?
  * @param int $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
  * @param boolean $add_agent add user agent?
+ * @param string|bool $website_username Username website
+ * @param string|bool $website_password Password website
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
@@ -306,7 +308,13 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
+
+    if($website_username !== false && $website_password !== false && !empty($website_username) && !empty($website_password)) {
+        curl_setopt($ch, CURLOPT_USERPWD, $website_username . ":" . $website_password);
+    }
+
 	curl_setopt($ch, CURLOPT_URL, $href);
+
 	if($add_agent) {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
 	}
@@ -611,4 +619,62 @@ function psm_no_cache() {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Pragma: no-cache");
+}
+
+/**
+ * Encrypts the password for storage in the database
+ *
+ * @param string $password
+ * @return string
+ * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+ */
+function psm_password_encrypt($password)
+{
+	$key = psm_get_conf('password_encrypt_key');
+
+	$iv = mcrypt_create_iv(
+		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
+		MCRYPT_DEV_URANDOM
+	);
+
+	$encrypted = base64_encode(
+		$iv .
+		mcrypt_encrypt(
+			MCRYPT_RIJNDAEL_128,
+			hash('sha256', $key, true),
+			$password,
+			MCRYPT_MODE_CBC,
+			$iv
+		)
+	);
+
+	return $encrypted;
+}
+
+/**
+ * Decrypts password stored in the database for future use
+ *
+ * @param string $encryptedString
+ * @return string
+ * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+ */
+function psm_password_decrypt($encryptedString)
+{
+	$key = psm_get_conf('password_encrypt_key');
+
+	$data = base64_decode($encryptedString);
+	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+
+	$decrypted = rtrim(
+		mcrypt_decrypt(
+			MCRYPT_RIJNDAEL_128,
+			hash('sha256', $key, true),
+			substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
+			MCRYPT_MODE_CBC,
+			$iv
+		),
+		"\0"
+	);
+
+	return $decrypted;
 }
