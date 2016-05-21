@@ -31,7 +31,17 @@
                     <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" data-toggle="tooltip" title="{{ label_auto_refresh_servers }}" />&nbsp;{{ label_seconds }}
                 </div>
             </div>
-		  </fieldset>
+              <div class="control-group">
+                  <label class="control-label" for="password_encrypt_key">
+                      {{ label_password_encrypt_key }}
+                  </label>
+                  <div class="controls">
+                      <input type="text" class="input-xxlarge" id="password_encrypt_key" name="password_encrypt_key"
+                             value="{{ password_encrypt_key }}" maxlength="40" data-toggle="tooltip"
+                             title="{{ label_password_encrypt_key_note }}"/>
+                  </div>
+              </div>
+          </fieldset>
 		  <fieldset>
             <legend>{{ label_settings_notification }}</legend>
             <div class="control-group">
