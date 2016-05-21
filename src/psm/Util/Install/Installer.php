@@ -146,7 +146,7 @@ class Installer {
 					('sms_from', '1234567890'),
 					('pushover_status', '0'),
 					('pushover_api_token', ''),
-					('password_encrypt_key', " . sha1(microtime()) . "),
+					('password_encrypt_key', '" . sha1(microtime()) . "'),
 					('alert_type', 'status'),
 					('log_status', '1'),
 					('log_email', '1'),

@@ -200,7 +200,7 @@ class ServerController extends AbstractServerController {
 				'edit_value_pattern' => $edit_server['pattern'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 				'edit_website_username' => $edit_server['website_username'],
-				'edit_website_password' => psm_password_decrypt($edit_server['website_password']),
+				'edit_website_password' => empty($edit_server['website_password']) ? '' : sha1($edit_server['website_password']),
 				'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
 				'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
@@ -233,12 +233,38 @@ class ServerController extends AbstractServerController {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
+
+         $encrypted_password  = '';
+
+         if(!empty($_POST['website_password']))
+         {
+             $new_password = psm_POST('website_password');
+             if($this->server_id > 0)
+             {
+                 $edit_server = $this->getServers($this->server_id);
+                 $hash = sha1($edit_server['website_password']);
+
+                 if($new_password == $hash)
+                 {
+                     $encrypted_password = $edit_server['website_password'];
+                 }
+                 else
+                 {
+                     $encrypted_password =  psm_password_encrypt( $new_password);
+                 }
+             }
+             else
+             {
+                 $encrypted_password =  psm_password_encrypt($new_password);
+             }
+         }
+
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),
 			'timeout' => (isset($_POST['timeout']) && intval($_POST['timeout']) > 0) ? intval($_POST['timeout']) : null,
 			'website_username' => psm_POST('website_username', null),
-            'website_password' => (isset($_POST['website_password'])) ? psm_password_encrypt(psm_POST('website_password')) : '',
+               'website_password' => $encrypted_password,
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
