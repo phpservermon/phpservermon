@@ -221,8 +221,51 @@
                 <label class="control-label" for="pushover_api_token">{{ label_pushover_api_token }}</label>
                 <div class="controls">
 					<p><button class="btn btn-primary" onclick="window.open('{{ pushover_clone_url }}');return false;">{{ label_pushover_clone_app }}</button></p>
-                    <input type="text" id="pushover_api_token" name="pushover_api_token" value="{{ pushover_api_token }}" maxlength="255" />
+                    <input class="input-xxlarge" type="text" id="pushover_api_token" name="pushover_api_token" value="{{ pushover_api_token }}" maxlength="255" />
 					<p class="help-block">{{ label_pushover_api_token_description|raw }}</p>
+                </div>
+            </div>
+            <div class="control-group {{ control_class_pushover }}">
+                <label class="control-label" for="pushover_default_priority_online">{{ label_pushover_default_priority_offline }}</label>
+                <div class="controls">
+                    <select id="pushover_default_priority_online" name="pushover_default_priority_online">
+                        {% for value in pushover_default_priority_online %}
+                        <option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group {{ control_class_pushover }}">
+                <label class="control-label" for="pushover_default_priority_offline">{{ label_pushover_default_priority_offline }}</label>
+                <div class="controls">
+                    <select id="pushover_default_priority_offline" name="pushover_default_priority_offline">
+                        {% for value in pushover_default_priority_offline %}
+                        <option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group {{ control_class_pushover }}">
+                <label class="control-label" for="pushover_default_sound">{{ label_pushover_default_sound }}</label>
+                <div class="controls">
+                    <select class="span3" id="pushover_default_sound" name="pushover_default_sound">
+                        <option value="">({{ label_pushover_default_sound_device }})</option>
+                        {% for value in pushover_default_sound %}
+                        <option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group {{ control_class_pushover }}">
+                <label class="control-label" for="pushover_default_retry">{{ label_pushover_default_retry }}</label>
+                <div class="controls">
+                    <input class="input-mini" type="text" id="pushover_default_retry" name="pushover_default_retry" value="{{ pushover_default_retry }}" placeholder="300" maxlength="10" data-toggle="tooltip" title="{{ label_pushover_default_retry_description }}" /> {{ label_seconds }}
+                </div>
+            </div>
+            <div class="control-group {{ control_class_pushover }}">
+                <label class="control-label" for="pushover_default_expire">{{ label_pushover_default_expire }}</label>
+                <div class="controls">
+                    <input class="input-mini" type="text" id="pushover_default_expire" name="pushover_default_expire" value="{{ pushover_default_expire }}" placeholder="3600" maxlength="10" data-toggle="tooltip" title="{{ label_pushover_default_expire_description }}" /> {{ label_seconds }}
                 </div>
             </div>
 			<div class="control-group">

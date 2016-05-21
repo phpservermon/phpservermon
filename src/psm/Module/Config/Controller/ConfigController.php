@@ -62,6 +62,8 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'pushover_default_retry',
+		'pushover_default_expire',
 	);
 
 	private $default_tab = 'general';
@@ -131,6 +133,66 @@ class ConfigController extends AbstractController {
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
 
+		// pushover default settings
+		$pushoverDefaultPriority = [
+			'-2' => [
+				'value' => '-2',
+				'label' => psm_get_lang('config', 'pushover_priority_-2'),
+				'selected' => '',
+			],
+			'-1' => [
+				'value' => '-1',
+				'label' => psm_get_lang('config', 'pushover_priority_-1'),
+				'selected' => '',
+			],
+			'0' => [
+				'value' => '0',
+				'label' => psm_get_lang('config', 'pushover_priority_0'),
+				'selected' => '',
+			],
+			'1' => [
+				'value' => '1',
+				'label' => psm_get_lang('config', 'pushover_priority_1'),
+				'selected' => '',
+			],
+			'2' => [
+				'value' => '2',
+				'label' => psm_get_lang('config', 'pushover_priority_2'),
+				'selected' => '',
+			],
+		];
+
+		$tpl_data['pushover_default_priority_online'] = $pushoverDefaultPriority;
+		if (
+			isset($config['pushover_default_priority_online']) &&
+			isset($tpl_data['pushover_default_priority_online'][$config['pushover_default_priority_online']])
+		) {
+			$tpl_data['pushover_default_priority_online'][$config['pushover_default_priority_online']]['selected'] = ' selected="selected"';
+		}
+
+		$tpl_data['pushover_default_priority_offline'] = $pushoverDefaultPriority;
+		if (
+			isset($config['pushover_default_priority_offline']) &&
+			isset($tpl_data['pushover_default_priority_offline'][$config['pushover_default_priority_offline']])
+		) {
+			$tpl_data['pushover_default_priority_offline'][$config['pushover_default_priority_offline']]['selected'] = ' selected="selected"';
+		}
+
+		$pushover = psm_build_pushover();
+		$pushoverSound = $pushover->getSounds();
+
+		if ($pushoverSound !== false) {
+			foreach ($pushoverSound as $key => $name) {
+				$tpl_data['pushover_default_sound'][$key] = [
+					'value' => $key,
+					'label' => $name,
+					'selected' => (isset($config['pushover_default_sound']) && $config['pushover_default_sound'] == $key) ? ' selected="selected"' : '',
+				];
+			}
+		} else {
+			$tpl_data['pushover_default_sound'] = [];
+		}
+
 		$testmodals = array('email', 'sms', 'pushover');
 		foreach($testmodals as $modal_id) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
@@ -161,6 +223,11 @@ class ConfigController extends AbstractController {
 				'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
 				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
 				'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
+				'pushover_default_priority_online' => psm_POST('pushover_default_priority_online', '0'),
+				'pushover_default_priority_offline' => psm_POST('pushover_default_priority_offline', '2'),
+				'pushover_default_sound' => psm_POST('pushover_default_sound', 'pushover'),
+				'pushover_default_retry' => psm_POST('pushover_default_retry', 300),
+				'pushover_default_expire' => psm_POST('pushover_default_expire', 3600),
 			);
 			foreach($this->checkboxes as $input_key) {
 				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
@@ -328,7 +395,15 @@ class ConfigController extends AbstractController {
 			'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
 			'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
 			'label_pushover_clone_app' => psm_get_lang('config', 'pushover_clone_app'),
-			'pushover_clone_url' => PSM_PUSHOVER_CLONE_URL,
+			'label_pushover_default_priority_online' => psm_get_lang('config', 'pushover_default_priority_online'),
+			'label_pushover_default_priority_offline' => psm_get_lang('config', 'pushover_default_priority_offline'),
+			'label_pushover_default_sound' => psm_get_lang('config', 'pushover_default_sound'),
+			'label_pushover_default_sound_device' => psm_get_lang('config', 'pushover_default_sound_device'),
+			'label_pushover_default_retry' => psm_get_lang('config', 'pushover_default_retry'),
+			'label_pushover_default_retry_description' => psm_get_lang('config', 'pushover_default_retry_description'),
+			'label_pushover_default_expire' => psm_get_lang('config', 'pushover_default_expire'),
+			'label_pushover_default_expire_description' => psm_get_lang('config', 'pushover_default_expire_description'),
+			'label_pushover_clone_url' => PSM_PUSHOVER_CLONE_URL,
 			'label_pushover_api_token' => psm_get_lang('config', 'pushover_api_token'),
 			'label_pushover_api_token_description' => sprintf(
 				psm_get_lang('config', 'pushover_api_token_description'),
