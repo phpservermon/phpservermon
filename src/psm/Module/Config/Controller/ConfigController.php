@@ -117,6 +117,7 @@ class ConfigController extends AbstractController {
 		$tpl_data['email_smtp_security_selected_' . $smtp_sec] = 'selected="selected"';
 		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
 		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
+		$tpl_data['password_encrypt_key'] = (isset($config['password_encrypt_key'])) ? $config['password_encrypt_key'] : sha1(microtime());
 
 		foreach($this->checkboxes as $input_key) {
 			$tpl_data[$input_key . '_checked'] =
@@ -159,6 +160,7 @@ class ConfigController extends AbstractController {
 					: '',
 				'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
 				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
+				'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
 			);
 			foreach($this->checkboxes as $input_key) {
 				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
@@ -294,6 +296,8 @@ class ConfigController extends AbstractController {
 			'label_general' => psm_get_lang('config', 'general'),
 			'label_language' => psm_get_lang('config', 'language'),
 			'label_show_update' => psm_get_lang('config', 'show_update'),
+			'label_password_encrypt_key' => psm_get_lang('config', 'password_encrypt_key'),
+			'label_password_encrypt_key_note' => psm_get_lang('config', 'password_encrypt_key_note'),
 			'label_email_status' => psm_get_lang('config', 'email_status'),
 			'label_email_from_email' => psm_get_lang('config', 'email_from_email'),
 			'label_email_from_name' => psm_get_lang('config', 'email_from_name'),
