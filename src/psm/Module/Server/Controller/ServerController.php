@@ -229,42 +229,37 @@ class ServerController extends AbstractServerController {
 	 * Executes the saving of one of the servers
 	 */
 	protected function executeSave() {
-		if(empty($_POST)) {
+		if (empty($_POST)) {
 			// dont process anything if no data has been posted
 			return $this->executeIndex();
 		}
 
          $encrypted_password  = '';
 
-         if(!empty($_POST['website_password']))
-         {
-             $new_password = psm_POST('website_password');
-             if($this->server_id > 0)
-             {
-                 $edit_server = $this->getServers($this->server_id);
-                 $hash = sha1($edit_server['website_password']);
+		if (!empty($_POST['website_password'])) {
+			$new_password = psm_POST('website_password');
 
-                 if($new_password == $hash)
-                 {
-                     $encrypted_password = $edit_server['website_password'];
-                 }
-                 else
-                 {
-                     $encrypted_password =  psm_password_encrypt( $new_password);
-                 }
-             }
-             else
-             {
-                 $encrypted_password =  psm_password_encrypt($new_password);
-             }
-         }
+			if ($this->server_id > 0) {
+				$edit_server = $this->getServers($this->server_id);
+				$hash = sha1($edit_server['website_password']);
+
+				if ($new_password == $hash) {
+					$encrypted_password = $edit_server['website_password'];
+				} else {
+					$encrypted_password = psm_password_encrypt($this->server_id . psm_get_conf('password_encrypt_key'), $new_password);
+				}
+			} else {
+				// if server_id=0 necessary after adding to encrypt again
+				$encrypted_password = psm_password_encrypt('0' . psm_get_conf('password_encrypt_key'), $new_password);
+			}
+		}
 
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),
 			'timeout' => (isset($_POST['timeout']) && intval($_POST['timeout']) > 0) ? intval($_POST['timeout']) : null,
 			'website_username' => psm_POST('website_username', null),
-               'website_password' => $encrypted_password,
+			'website_password' => $encrypted_password,
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
@@ -308,6 +303,23 @@ class ServerController extends AbstractServerController {
 			// add
 			$clean['status'] = 'on';
 			$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
+
+			// server has been added, re-encrypt
+			if (!empty($_POST['website_password'])) {
+				$cleanWebsitePassword = array(
+					'website_password' => psm_password_encrypt(
+						$this->server_id . psm_get_conf('password_encrypt_key'),
+						psm_POST('website_password')
+					),
+				);
+
+				$this->db->save(
+					PSM_DB_PREFIX . 'servers',
+					$cleanWebsitePassword,
+					array('server_id' => $this->server_id)
+				);
+			}
+
 			$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
 		}
 

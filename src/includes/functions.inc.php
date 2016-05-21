@@ -624,16 +624,15 @@ function psm_no_cache() {
 /**
  * Encrypts the password for storage in the database
  *
+ * @param string $key
  * @param string $password
  * @return string
  * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  */
-function psm_password_encrypt($password)
+function psm_password_encrypt($key, $password)
 {
-	if(empty($password))
-		return '';
-
-	$key = psm_get_conf('password_encrypt_key');
+	if (empty($password)) return '';
+	if (empty($key)) return '';
 
 	$iv = mcrypt_create_iv(
 		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
@@ -657,16 +656,15 @@ function psm_password_encrypt($password)
 /**
  * Decrypts password stored in the database for future use
  *
+ * @param string $key
  * @param string $encryptedString
  * @return string
  * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  */
-function psm_password_decrypt($encryptedString)
+function psm_password_decrypt($key, $encryptedString)
 {
-	if(empty($encryptedString))
-		return '';
-
-	$key = psm_get_conf('password_encrypt_key');
+	if (empty($encryptedString)) return '';
+	if (empty($key)) return '';
 
 	$data = base64_decode($encryptedString);
 	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
