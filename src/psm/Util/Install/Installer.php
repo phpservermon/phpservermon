@@ -152,6 +152,11 @@ class Installer {
 					('log_email', '1'),
 					('log_sms', '1'),
 					('log_pushover', '1'),
+					('pushover_default_priority_online', '0'),
+					('pushover_default_priority_offline', '2'),
+					('pushover_default_sound', 'pushover'),
+					('pushover_default_retry', '300'),
+					('pushover_default_expire', '3600'),
 					('log_retention_period', '365'),
 					('version', '" . PSM_VERSION . "'),
 					('version_update_check', '" . PSM_VERSION . "'),
@@ -436,6 +441,11 @@ class Installer {
 		$queries = array();
 
 		psm_update_conf('password_encrypt_key', sha1(microtime()));
+		psm_update_conf('pushover_default_priority_online', '0');
+		psm_update_conf('pushover_default_priority_offline', '2');
+		psm_update_conf('pushover_default_sound', 'pushover');
+		psm_update_conf('pushover_default_retry', '300');
+		psm_update_conf('pushover_default_expire', '3600');
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
 
