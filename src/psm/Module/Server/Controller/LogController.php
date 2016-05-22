@@ -60,14 +60,6 @@ class LogController extends AbstractServerController {
 		);
 		$log_types = array('status', 'email', 'sms', 'pushover');
 
-		// get users
-		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
-
-		$users_labels = array();
-		foreach ($users as $user) {
-			$users_labels[$user['user_id']] = $user['name'];
-		}
-
 		foreach($log_types as $key) {
 			$records = $this->getEntries($key);
 			$log_count = count($records);
@@ -95,15 +87,12 @@ class LogController extends AbstractServerController {
 				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list
-				if(!empty($record['user_id'])) {
+                $users = $this->getLogUsers($record['log_id']);
+				if(!empty($users)) {
 					$names = array();
-					$users = explode(',', $record['user_id']);
-					foreach($users as $user_id) {
-						if(isset($users_labels[$user_id])) {
-							$names[] = $users_labels[$user_id];
-						}
+					foreach($users as $user) {
+                        $names[] = $user['name'];
 					}
-					sort($names);
 					$record['users'] = implode('<br/>', $names);
 					$record['user_list'] = implode('&nbsp;&bull; ', $names);
 				}
@@ -135,10 +124,10 @@ class LogController extends AbstractServerController {
 				'`servers`.`ip`, '.
 				'`servers`.`port`, '.
 				'`servers`.`type` AS server_type, '.
+				'`log`.`log_id`, '.
 				'`log`.`type`, '.
 				'`log`.`message`, '.
-				'`log`.`datetime`, '.
-				'`log`.`user_id` '.
+				'`log`.`datetime` '.
 			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
 			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
 			$sql_join .
@@ -148,4 +137,22 @@ class LogController extends AbstractServerController {
 		);
 		return $entries;
 	}
+
+    /**
+     * Get all the user entries for a specific $log_id
+     *
+     * @param $log_id
+     * @return array
+     */
+    protected function getLogUsers($log_id) {
+        return $this->db->query(
+            "SELECT
+                u.`user_id`,
+                u.`name`
+            FROM `" . PSM_DB_PREFIX . "log_users` AS lu
+            LEFT JOIN `" . PSM_DB_PREFIX . "users` AS u ON lu.`user_id` = u.`user_id`
+            WHERE lu.`log_id` = " . (int)$log_id . "
+            ORDER BY u.`name` ASC"
+        );
+    }
 }

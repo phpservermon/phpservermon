@@ -198,8 +198,6 @@ class StatusNotifier {
 	 * @return boolean
 	 */
 	protected function notifyByEmail($users) {
-		$userlist = array();
-
 		// build mail object with some default values
 		$mail = psm_build_mail();
 		$mail->Subject	= utf8_decode(psm_parse_msg($this->status_new, 'email_subject', $this->server));
@@ -209,18 +207,20 @@ class StatusNotifier {
 		$mail->Body		= utf8_decode($body);
 		$mail->AltBody	= str_replace('<br/>', "\n", $body);
 
+        if(psm_get_conf('log_email')) {
+            $log_id = psm_add_log($this->server_id, 'email', $body);
+   	    }
+
 		// go through empl
 	    foreach ($users as $user) {
+            if(!empty($log_id)) {
+       	    	psm_add_log_user($log_id, $user['user_id']);
+       	    }
+
 	    	// we sent a seperate email to every single user.
-	    	$userlist[] = $user['user_id'];
 	    	$mail->AddAddress($user['email'], $user['name']);
 	    	$mail->Send();
 	    	$mail->ClearAddresses();
-	    }
-
-	    if(psm_get_conf('log_email')) {
-	    	// save to log
-	    	psm_add_log($this->server_id, 'email', $body, implode(',', $userlist));
 	    }
 	}
 
@@ -231,38 +231,51 @@ class StatusNotifier {
 	 * @return boolean
 	 */
 	protected function notifyByPushover($users) {
-		$userlist = array();
-		$pushover = psm_build_pushover();
+        // Remove users that have no pushover_key
+        foreach($users as $k => $user) {
+            if (trim($user['pushover_key']) == '') {
+                unset($users[$k]);
+            }
+        }
 
-		if($this->status_new === true) {
-			$pushover->setPriority(0);
-		} else {
-			$pushover->setPriority(2);
-			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
-			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
-		}
-		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+        // Validation
+        if (empty($users)) {
+            return;
+        }
 
+        // Pushover
+        $message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+        $pushover = psm_build_pushover();
+        if($this->status_new === true) {
+            $pushover->setPriority(0);
+        } else {
+            $pushover->setPriority(2);
+            $pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
+            $pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
+        }
 		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
 		$pushover->setMessage(str_replace('<br/>', "\n", $message));
 		$pushover->setUrl(psm_build_url());
 		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
 
+        // Log
+        if(psm_get_conf('log_pushover')) {
+            $log_id = psm_add_log($this->server_id, 'pushover', $message);
+   	    }
+
 	    foreach($users as $user) {
-			if(trim($user['pushover_key']) == '') {
-				continue;
-			}
-			$userlist[] = $user['user_id'];
+            // Log
+            if(!empty($log_id)) {
+       	    	psm_add_log_user($log_id, $user['user_id']);
+       	    }
+
+            // Set recipient + send
 			$pushover->setUser($user['pushover_key']);
 			if($user['pushover_device'] != '') {
 				$pushover->setDevice($user['pushover_device']);
 			}
 			$pushover->send();
-	    }
-
-	    if(psm_get_conf('log_pushover')) {
-	    	psm_add_log($this->server_id, 'pushover', $message, implode(',', $userlist));
-	    }
+        }
 	}
 
 	/**
@@ -277,24 +290,26 @@ class StatusNotifier {
 			return false;
 		}
 
-		// we have to build an userlist for the log table..
-		$userlist = array();
+        $message = psm_parse_msg($this->status_new, 'sms', $this->server);
+
+        // Log
+        if(psm_get_conf('log_sms')) {
+            $log_id = psm_add_log($this->server_id, 'sms', $message);
+		}
 
 		// add all users to the recipients list
 		foreach ($users as $user) {
-			$userlist[] = $user['user_id'];
+            // Log
+            if(!empty($log_id)) {
+       	    	psm_add_log_user($log_id, $user['user_id']);
+       	    }
+
 			$sms->addRecipients($user['mobile']);
 		}
-
-		$message = psm_parse_msg($this->status_new, 'sms', $this->server);
 
 		// Send sms
 		$result = $sms->sendSMS($message);
 
-		if(psm_get_conf('log_sms')) {
-			// save to log
-			psm_add_log($this->server_id, 'sms', $message, implode(',', $userlist));
-		}
 		return $result;
 	}
 

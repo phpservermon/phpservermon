@@ -221,20 +221,40 @@ function psm_update_conf($key, $value) {
  * everything should have been handled when calling this function
  *
  * @param string $server_id
+ * @param string $type
  * @param string $message
+ *
+ * @return int log_id
  */
-function psm_add_log($server_id, $type, $message, $user_id = null) {
+function psm_add_log($server_id, $type, $message) {
 	global $db;
 
-	$db->save(
+	return $db->save(
 		PSM_DB_PREFIX.'log',
 		array(
 			'server_id' => $server_id,
 			'type' => $type,
 			'message' => $message,
-			'user_id' => ($user_id === null) ? '' : $user_id,
 		)
 	);
+}
+
+/**
+ * This function just adds a user to the log_users table.
+ *
+ * @param $log_id
+ * @param $user_id
+ */
+function psm_add_log_user($log_id, $user_id) {
+	global $db;
+
+    $db->save(
+        PSM_DB_PREFIX . 'log_users',
+        array(
+            'log_id'  => $log_id,
+            'user_id' => $user_id,
+        )
+    );
 }
 
 /**
