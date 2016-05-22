@@ -121,7 +121,8 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms',
+			'pushover', 'pushover_priority_online', 'pushover_priority_offline', 'pushover_sound', 'pushover_retry', 'pushover_expire'
 		));
 		if(empty($this->server)) {
 			return false;
@@ -234,13 +235,40 @@ class StatusNotifier {
 		$userlist = array();
 		$pushover = psm_build_pushover();
 
-		if($this->status_new === true) {
-			$pushover->setPriority(0);
+		if ($this->status_new === true) {
+			if ($this->server['pushover_priority_online'] != '') {
+				$pushover->setPriority($this->server['pushover_priority_online']);
+			} else {
+				$pushover->setPriority(psm_get_conf('pushover_default_priority_online', '0'));
+			}
 		} else {
-			$pushover->setPriority(2);
-			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
-			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
+			if ($this->server['pushover_priority_offline'] != '') {
+				$pushover->setPriority($this->server['pushover_priority_offline']);
+			} else {
+				$pushover->setPriority(psm_get_conf('pushover_default_priority_offline', '2'));
+			}
+
+			// Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
+			if ($this->server['pushover_retry'] != '') {
+				$pushover->setRetry($this->server['pushover_retry']);
+			} else {
+				$pushover->setRetry(psm_get_conf('pushover_default_retry', '300'));
+			}
+
+			// Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
+			if ($this->server['pushover_expire'] != '') {
+				$pushover->setExpire($this->server['pushover_expire']);
+			} else {
+				$pushover->setExpire(psm_get_conf('pushover_default_expire', '300'));
+			}
 		}
+
+		if ($this->server['pushover_sound'] != '') {
+			$pushover->setSound($this->server['pushover_sound']);
+		} else {
+			$pushover->setSound(psm_get_conf('pushover_default_sound', 'pushover'));
+		}
+
 		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
 
 		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));

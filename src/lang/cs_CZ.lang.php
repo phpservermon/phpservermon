@@ -299,7 +299,7 @@ $sm_lang = array(
 		'off_sms' => 'Server \'%LABEL%\' je offline: ip=%IP%, port=%PORT%. Chyba=%ERROR%',
 		'off_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je offline',
 		'off_email_body' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
-		'off_pushover_title' => 'Server \'%LABEL%\'je offline',
+		'off_pushover_title' => 'Server \'%LABEL%\' je offline',
 		'off_pushover_message' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
 		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je online',
