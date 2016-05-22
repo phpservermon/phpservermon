@@ -23,6 +23,7 @@ v3.2.0 not yet released
 * #287: Default language - English
 * #286: Add popular ports drop dowwn
 * #269: Added Slovenian language 
+* #96:  Authentication for website checks
 
 v3.1.1 (released November 6, 2014)
 ----------------------------------
