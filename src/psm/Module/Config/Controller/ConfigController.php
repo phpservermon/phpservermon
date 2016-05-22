@@ -179,7 +179,7 @@ class ConfigController extends AbstractController {
 		}
 
 		$pushover = psm_build_pushover();
-		$pushoverSound = $pushover->getSounds();
+		$pushoverSound = $pushover->getSoundsList();
 
 		if ($pushoverSound !== false) {
 			foreach ($pushoverSound as $key => $name) {
