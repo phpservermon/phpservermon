@@ -146,6 +146,7 @@ class Installer {
 					('sms_from', '1234567890'),
 					('pushover_status', '0'),
 					('pushover_api_token', ''),
+					('password_encrypt_key', '" . sha1(microtime()) . "'),
 					('alert_type', 'status'),
 					('log_status', '1'),
 					('log_email', '1'),
@@ -227,6 +228,8 @@ class Installer {
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
+                          `website_username` varchar(255) DEFAULT NULL,
+						  `website_password` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -398,6 +401,9 @@ class Installer {
 		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
 	}
 
+	/**
+	 * Upgrade for v3.1.0 release
+	 */
 	protected function upgrade310() {
 		$queries = array();
 		psm_update_conf('log_retention_period', '365');
@@ -423,10 +429,15 @@ class Installer {
 		$this->execSQL($queries);
 	}
 
+	/**
+	 * Upgrade for v3.2.0 release
+	 */
 	protected function upgrade320() {
 		$queries = array();
 
+		psm_update_conf('password_encrypt_key', sha1(microtime()));
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
 
 		$this->execSQL($queries);
 	}

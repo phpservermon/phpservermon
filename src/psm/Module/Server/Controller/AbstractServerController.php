@@ -75,7 +75,9 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`pushover`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
-					`s`.`timeout`
+					`s`.`timeout`,
+					`s`.`website_username`,
+					`s`.`website_password`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
