@@ -235,6 +235,11 @@ class Installer {
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
                           `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
+						  `pushover_priority_online` varchar(255) DEFAULT NULL,
+						  `pushover_priority_offline` varchar(255) DEFAULT NULL,
+						  `pushover_sound` varchar(255) DEFAULT NULL,
+						  `pushover_retry` varchar(255) DEFAULT NULL,
+						  `pushover_expire` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -448,6 +453,11 @@ class Installer {
 		psm_update_conf('pushover_default_expire', '3600');
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `pushover_priority_online` varchar(255) COLLATE 'utf8_general_ci' NULL,
+						ADD `pushover_priority_offline` varchar(255) COLLATE 'utf8_general_ci' NULL AFTER `pushover_priority_online`,
+						ADD `pushover_sound` varchar(255) COLLATE 'utf8_general_ci' NULL AFTER `pushover_priority_offline`,
+						ADD `pushover_retry` varchar(255) COLLATE 'utf8_general_ci' NULL AFTER `pushover_sound`,
+						ADD `pushover_expire` varchar(255) COLLATE 'utf8_general_ci' NULL AFTER `pushover_retry`;";
 
 		$this->execSQL($queries);
 	}

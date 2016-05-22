@@ -140,6 +140,52 @@
 	</fieldset>
 
 	<fieldset>
+		<legend>{{ label_fieldset_pushover }}</legend>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover_priority_online">{{ label_pushover_priority_online }}</label>
+			<div class="controls">
+				<select id="pushover_priority_online" name="pushover_priority_online">
+					{% for value in pushover_priority_online %}
+					<option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover_priority_offline">{{ label_pushover_priority_offline }}</label>
+			<div class="controls">
+				<select id="pushover_priority_offline" name="pushover_priority_offline">
+					{% for value in pushover_priority_offline %}
+					<option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover_sound">{{ label_pushover_sound }}</label>
+			<div class="controls">
+				<select class="span3" id="pushover_sound" name="pushover_sound">
+					{% for value in pushover_sound %}
+					<option value="{{ value.value }}"{{ value.selected }}>{{ value.label }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover_retry">{{ label_pushover_retry }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="pushover_retry" name="pushover_retry" value="{{ edit_pushover_retry }}" placeholder="{{ default_pushover_retry }}" maxlength="10" data-toggle="tooltip" title="{{ label_pushover_retry_description }}" /> {{ label_seconds }}
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover_expire">{{ label_pushover_expire }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="pushover_expire" name="pushover_expire" value="{{ edit_pushover_expire }}" placeholder="{{ default_pushover_expire }}" maxlength="10" data-toggle="tooltip" title="{{ label_pushover_expire_description }}" /> {{ label_seconds }}
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
 		<legend>{{ label_fieldset_permissions }}</legend>
 		<div class="control-group">
 			<label class="control-label" for="user_id">{{ label_users }}</label>

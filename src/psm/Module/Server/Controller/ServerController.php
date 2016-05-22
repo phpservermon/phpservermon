@@ -157,6 +157,9 @@ class ServerController extends AbstractServerController {
 
 		$tpl_data['users'] = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id', 'name'), '', 'name');
 
+		$tpl_data['default_pushover_retry'] = psm_get_conf('pushover_default_retry');
+		$tpl_data['default_pushover_expire'] = psm_get_conf('pushover_default_expire');
+
 		switch($this->server_id) {
 			case 0:
 				// insert mode
@@ -206,6 +209,8 @@ class ServerController extends AbstractServerController {
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
 				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+				'edit_pushover_retry' => $edit_server['pushover_retry'],
+				'edit_pushover_expire' => $edit_server['pushover_expire'],
 			));
 		}
 
@@ -220,6 +225,84 @@ class ServerController extends AbstractServerController {
 			} else {
 				$tpl_data['warning_' . $notification] = false;
 			}
+		}
+
+		// pushover settings
+		$pushoverPriority = [
+			'' => [
+				'value' => '',
+				'label' => psm_get_lang('servers', 'pushover_default'),
+				'selected' => '',
+			],
+			'-2' => [
+				'value' => '-2',
+				'label' => psm_get_lang('config', 'pushover_priority_-2'),
+				'selected' => '',
+			],
+			'-1' => [
+				'value' => '-1',
+				'label' => psm_get_lang('config', 'pushover_priority_-1'),
+				'selected' => '',
+			],
+			'0' => [
+				'value' => '0',
+				'label' => psm_get_lang('config', 'pushover_priority_0'),
+				'selected' => '',
+			],
+			'1' => [
+				'value' => '1',
+				'label' => psm_get_lang('config', 'pushover_priority_1'),
+				'selected' => '',
+			],
+			'2' => [
+				'value' => '2',
+				'label' => psm_get_lang('config', 'pushover_priority_2'),
+				'selected' => '',
+			],
+		];
+
+		$tpl_data['pushover_priority_online'] = $pushoverPriority;
+		$tpl_data['pushover_priority_online']['']['label'] = sprintf($tpl_data['pushover_priority_online']['']['label'], psm_get_conf('pushover_default_priority_online'));
+		if (
+			isset($edit_server['pushover_priority_online']) &&
+			isset($tpl_data['pushover_priority_online'][$edit_server['pushover_priority_online']])
+		) {
+			$tpl_data['pushover_priority_online'][$edit_server['pushover_priority_online']]['selected'] = ' selected="selected"';
+		}
+
+		$tpl_data['pushover_priority_offline'] = $pushoverPriority;
+		$tpl_data['pushover_priority_offline']['']['label'] = sprintf($tpl_data['pushover_priority_offline']['']['label'], psm_get_conf('pushover_default_priority_offline'));
+		if (
+			isset($edit_server['pushover_priority_offline']) &&
+			isset($tpl_data['pushover_priority_offline'][$edit_server['pushover_priority_offline']])
+		) {
+			$tpl_data['pushover_priority_offline'][$edit_server['pushover_priority_offline']]['selected'] = ' selected="selected"';
+		}
+
+		$pushover = psm_build_pushover();
+		$pushoverSound = $pushover->getSoundsList();
+
+		$tpl_data['pushover_sound'][''] = [
+			'value' => '',
+			'label' => psm_get_lang('servers', 'pushover_default'),
+			'selected' => (isset($edit_server['pushover_sound']) && $edit_server['pushover_sound'] == psm_get_conf('pushover_default_sound')) ? ' selected="selected"' : '',
+		];
+
+		if ($pushoverSound !== false) {
+			foreach ($pushoverSound as $key => $name) {
+				$tpl_data['pushover_sound'][$key] = [
+					'value' => $key,
+					'label' => $name,
+					'selected' => (isset($edit_server['pushover_sound']) && $edit_server['pushover_sound'] == $key) ? ' selected="selected"' : '',
+				];
+			}
+
+			$tpl_data['pushover_sound']['']['label'] = sprintf(
+				$tpl_data['pushover_sound']['']['label'],
+				(isset($pushoverSound[psm_get_conf('pushover_default_sound')]) ? $pushoverSound[psm_get_conf('pushover_default_sound')] : psm_get_conf('pushover_default_sound'))
+			);
+		} else {
+			$tpl_data['pushover_sound']['']['label'] = sprintf($tpl_data['pushover_sound']['']['label'], psm_get_conf('pushover_default_sound'));
 		}
 
 		return $this->twig->render('module/server/server/update.tpl.html', $tpl_data);
@@ -247,6 +330,11 @@ class ServerController extends AbstractServerController {
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+			'pushover_priority_online' => psm_POST('pushover_priority_online', ''),
+			'pushover_priority_offline' => psm_POST('pushover_priority_offline', ''),
+			'pushover_sound' => psm_POST('pushover_sound', ''),
+			'pushover_retry' => psm_POST('pushover_retry', ''),
+			'pushover_expire' => psm_POST('pushover_expire', ''),
 		);
 		// make sure websites start with http://
 		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
@@ -401,6 +489,15 @@ class ServerController extends AbstractServerController {
 			'label_website_password_description' => psm_get_lang('servers', 'website_password_description'),
 			'label_fieldset_monitoring' => psm_get_lang('servers', 'fieldset_monitoring'),
 			'label_fieldset_permissions' => psm_get_lang('servers', 'fieldset_permissions'),
+			'label_fieldset_pushover' => psm_get_lang('servers', 'fieldset_pushover'),
+			'label_seconds' => psm_get_lang('config', 'seconds'),
+			'label_pushover_priority_online' => psm_get_lang('servers', 'pushover_priority_online'),
+			'label_pushover_priority_offline' => psm_get_lang('servers', 'pushover_priority_offline'),
+			'label_pushover_sound' => psm_get_lang('servers', 'pushover_sound'),
+			'label_pushover_retry' => psm_get_lang('servers', 'pushover_retry'),
+			'label_pushover_retry_description' => psm_get_lang('servers', 'pushover_retry_description'),
+			'label_pushover_expire' => psm_get_lang('servers', 'pushover_expire'),
+			'label_pushover_expire_description' => psm_get_lang('servers', 'pushover_expire_description'),
 			'label_port' => psm_get_lang('servers', 'port'),
 			'label_custom_port' => psm_get_lang('servers', 'custom_port'),
 			'label_please_select' => psm_get_lang('servers', 'please_select'),
