@@ -103,6 +103,22 @@ To specify the base url to your monitor installation, use the "--uri" argument, 
 
      php status.cron.php --uri="http://www.phpservermonitor.org/mymonitor/"
 
+If you're work with cPanel you can follow these steps:
+
+     Log into your cPanel account
+
+     Go to cron jobs
+
+     Add a new cronjob
+
+          Type `*/15` in the minute field
+
+          Type `*` in the other field
+
+          Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
+
+     Submit
+     
 
 Troubleshooting
 +++++++++++++++
