@@ -130,7 +130,7 @@ $sm_lang = array(
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
-		'no_monitoring' => 'No monitoring',
+		'no_monitoring' => 'Geen monitoring',
 		'email' => 'Email',
 		'send_email' => 'Stuur email',
 		'sms' => 'SMS',
@@ -209,7 +209,7 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Voordat je Pushover kunt gebruiken moet je een <a href="%1$s" target="_blank">App registreren</a> via hun website, en daarvan de App API Token hier invullen.',
 		'alert_type' => 'Selecteer wanneer je een notificatie wilt',
-		'alert_type_description' => '<b>Status change:</b> '.
+		'alert_type_description' => '<b>Status verandert:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
 			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
@@ -236,7 +236,7 @@ $sm_lang = array(
 		'settings_log' => 'Log instellingen',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers pagina.<br/>'.
+			'Auto-herladen servers pagina.<br/>'.
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
