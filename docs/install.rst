@@ -108,19 +108,19 @@ CPanel
 
 If you're work with cPanel you can follow these steps:
 
-     Log into your cPanel account
+1. Log into your cPanel account
 
-     Go to cron jobs
+2. Go to cron jobs
 
-     Add a new cronjob
+3. Add a new cronjob
 
-          Type `*/15` in the minute field
+- Type `*/15` in the minute field
 
-          Type `*` in the other field
+- Type `*` in the other field
 
-          Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
+- Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
 
-     Submit
+4. Submit
      
 
 Troubleshooting
