@@ -523,6 +523,9 @@ function psm_build_sms() {
 		case 'nexmo':
 			$sms = new \psm\Txtmsg\Nexmo();
 			break;
+		case 'freemobilesms':
+			$sms = new \psm\Txtmsg\FreeMobileSMS();
+			break;
 		case 'octopush':
 			$sms = new \psm\Txtmsg\Octopush();
 			break;	}
