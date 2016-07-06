@@ -1,0 +1,12 @@
+{% import 'main/macros.tpl.html' as macro %}
+<div class="container">
+  <form class="form-signin" method="post">
+	{{ macro.csrf_input() }}
+    <h3 class="form-signin-heading">{{ title_reset }}</h3>
+    <input type="text" name="user_name" class="input-block-level" placeholder="{{ label_username }}" value="{{ value_user_name }}" required disabled="disabled">
+	<input type="password" name="user_password_new" class="input-block-level" placeholder="{{ label_password }}" required autocomplete="off">
+	<input type="password" name="user_password_repeat" class="input-block-level" placeholder="{{ label_password_repeat }}" required autocomplete="off">
+    <button class="btn btn-primary" type="submit">{{ label_reset }}</button>
+    <a class="btn" href="?">{{ label_go_back }}</a>
+  </form>
+</div>

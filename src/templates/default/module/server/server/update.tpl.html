@@ -1,0 +1,159 @@
+{% import 'main/macros.tpl.html' as macro %}
+<form class="form-horizontal well" action="{{ url_save|raw }}" method="post" autocomplete="off">
+	{{ macro.csrf_input() }}
+	<fieldset>
+		<legend>{{ titlemode }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="label">{{ label_label }}</label>
+			<div class="controls">
+				<input type="text" id="label" name="label" value="{{ edit_value_label }}" maxlength="255" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="ip">{{ label_domain }}</label>
+			<div class="controls">
+				<input type="text" id="ip" name="ip" value="{{ edit_value_ip }}" maxlength="500" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="type">{{ label_type }}</label>
+			<div class="controls">
+				<select id="type" name="type">
+					<option value="">{{ label_please_select }}</option>
+					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
+					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
+				 </select>
+			</div>
+		</div>
+		<div class="control-group popularPortsGroup types typeService">
+			<label class="control-label" for="popularPorts">{{ label_port }}</label>
+			<div class="controls">
+				<select id="popularPorts" name="popularPorts">
+                    <option value="">{{ label_please_select }}</option>
+                    <option value="custom">{{ label_custom_port }}</option>
+                    <optgroup label="{{ label_popular_ports }}">
+                        <option value="80">HTTP (80)</option>
+                        <option value="443">HTTPS (443)</option>
+                        <option value="21">FTP (21)</option>
+                        <option value="25">SMTP (25)</option>
+                        <option value="465">SMTP Secure (465)</option>
+                        <option value="110">POP3 (110)</option>
+                        <option value="995">POP3 Secure (995)</option>
+                        <option value="143">IMAP (143)</option>
+                        <option value="993">IMAP over SSL (993)</option>
+                        <option value="22">SSH (22)</option>
+                        <option value="389">LDAP (389)</option>
+                        <option value="3306">MySQL (3306)</option>
+                        <option value="115">SFTP (115)</option>
+                        <option value="43">WHOIS (43)</option>
+                        <option value="53">BIND (53)</option>
+                    </optgroup>
+				</select>
+			</div>
+		</div>
+		<div class="control-group portGroup types typeService">
+			<label class="control-label" for="port">{{ label_custom_port }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="pattern">{{ label_pattern }}</label>
+			<div class="controls">
+				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="timeout">{{ label_timeout }}</label>
+			<div class="controls">
+				<input class="input-mini" type="text" id="timeout" name="timeout" value="{{ edit_value_timeout }}" placeholder="{{ default_value_timeout }}" maxlength="10" data-toggle="tooltip" title="{{ label_timeout_description }}" /> s
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend class="types typeWebsite">{{ label_authentication_settings}}</legend>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="website_username">{{ label_website_username }}</label>
+			<div class="controls">
+				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="website_password">{{ label_website_password }}</label>
+			<div class="controls">
+				<input type="password" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ label_fieldset_monitoring }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="active">{{ label_monitoring }}</label>
+			<div class="controls">
+				<select id="active" name="active">
+					<option value="yes" {{ edit_active_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_active_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_email }}">
+			<label class="control-label" for="email">{{ label_send_email }}
+			{% if warning_email %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_email }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="email" name="email">
+					<option value="yes" {{ edit_email_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_email_selected_no|raw }}>{{ label_no }}</option>
+				 </select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_sms }}">
+			<label class="control-label" for="sms">{{ label_send_sms }}
+			{% if warning_sms %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_sms }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="sms" name="sms">
+					<option value="yes" {{ edit_sms_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_sms_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_pushover }}">
+			<label class="control-label" for="pushover">{{ label_pushover }}
+			{% if warning_pushover %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushover }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="pushover" name="pushover">
+					<option value="yes" {{ edit_pushover_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_pushover_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{{ label_fieldset_permissions }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="user_id">{{ label_users }}</label>
+			<div class="controls">
+				<select class="multiselect" multiple="multiple" id="user_id" name="user_id[]">
+					{% for user in users %}
+					<option value="{{ user.user_id }}" {{ user.edit_selected|raw }}> {{ user.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-success" type="submit">{{ label_save }}</button>
+			<a class="btn" href="{{ url_go_back|raw }}" >{{ label_go_back }}</a>
+		</div>
+	</fieldset>
+</form>

@@ -1,0 +1,73 @@
+{% import 'main/macros.tpl.html' as macro %}
+<form class="form-horizontal well" action="{{ form_action|raw }}" method="post">
+	{{ macro.csrf_input() }}
+	<fieldset>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="user_name">{{ label_user_name }}</label>
+				<div class="controls">
+					<input type="text" id="user_name" name="user_name" value="{{ user_name }}" maxlength="64" required autofocus=>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="name">{{ label_name }}</label>
+				<div class="controls">
+					<input type="text" id="name" name="name" value="{{ name }}" maxlength="255" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="level">{{ label_level }}</label>
+				<div class="controls"><input type="text" value="{{ level }}" disabled="disabled" /></div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password">{{ label_password }}</label>
+				<div class="controls">
+					<input type="password" id="password" name="password" maxlength="255" placeholder="{{ placeholder_password }}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="password_repeat">{{ label_password_repeat }}</label>
+				<div class="controls">
+					<input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{{ placeholder_password }}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="email">{{ label_email }}</label>
+				<div class="controls">
+					<input type="text" id="email" name="email" value="{{ email }}" maxlength="255" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="email">{{ label_mobile }}</label>
+				<div class="controls">
+					<input type="text" id="mobile" name="mobile" value="{{ mobile }}" maxlength="15" />
+				</div>
+			</div>
+		</div>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label">{{ label_pushover }}</label>
+				<div class="controls">{{ label_pushover_description|raw }}	</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="mobile">{{ label_pushover_key }}</label>
+				<div class="controls">
+					<input type="text" id="pushover_key" name="pushover_key" value="{{ pushover_key }}" maxlength="255" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="mobile">{{ label_pushover_device }}</label>
+				<div class="controls">
+					<input type="text" id="pushover_device" name="pushover_device" value="{{ pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="form-actions">
+			<button class="btn btn-success" type="submit">{{ label_save }}</button>
+		</div>
+	</div>
+	 </fieldset>
+</form>

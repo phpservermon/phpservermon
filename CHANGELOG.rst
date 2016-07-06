@@ -1,25 +1,83 @@
 Changelog
 =========
 
+
 not yet released
-----------------
+----------------------------------
+
+
+
+v3.2.0 not yet released
+----------------------------------
+
+* #170: Implement Nexmo SMS.
+* #161: Added Swedish translation.
+* #185: Added Estonian translation.
+* #210: Added Finnish translation.
+* #201: Added Persian translation.
+* #195: Updated Spanish translation.
+* #169: Increased server ip char limit to 500.
+* #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
+* #181: Added blank index files to prevent directory listing.
+* #237: Adding CSRF protection.
+* #287: Default language - English
+* #286: Add popular ports drop dowwn
+* #269: Added Slovenian language 
+* #96:  Authentication for website checks
+
+v3.1.1 (released November 6, 2014)
+----------------------------------
+
+* #130: Added Czech translation.
+* #138: Added Polish translation.
+* #148: Added Turkish translation.
+* #124: Updated Bulgarian translation.
+* #132: Updated German translation.
+* #134: Updated French translation.
+* #144: Updated Brazilian translation.
+* #146: Updated Russian translation.
+* #147: Updated Spanish translation.
+* #128: Added SSL/TLS option for SMTP config.
+* #131: Allow URL and timeout to be passed as argument to the cronjob.
+* #135: Uptime percentage above 100%.
+* #151: Links in install results were stripped automatically from template.
+
+
+v3.1.0 (released August 7, 2014)
+--------------------------------
+
+Features:
+
+* #52: Uptime percentage per server for the last week.
+* #101: Pushover.net support.
+* #54: Improved phone/tablet compatibility.
+* #75: Test mode for email and SMS settings.
+* #86: Different design styles on status page (list, table).
+* #82: Added Danish translation.
+* #103: Added Russian translation.
+* #109: Custom time-out per server.
+* #119: Log and archive retention period.
+* #110: Support for SMSGlobal SMS gateway <https://www.smsglobal.com/>.
+* #82: Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+
+Bugs:
 
 * #50: Validation on servers page.
-* #54: Improved phone/tablet compatibility.
 * #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
 * #66: Unable to add users with MySQL in strict mode.
-* #75: Test mode for email and SMS settings.
-* #82: Added Danish translation.
 * #83: Invalid redirect after switching languages and logging in.
-* #86: Different design styles on status page (list, table).
-* #103: Added Russian translation.
 * #105: Fixing check for websites with unverified SSL certificates.
-* Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+* #107: Fixing update job for Synology DSM Task Scheduler.
+* #108: URLs on Windows contained both back- and forward slashes.
+* #111: Generated urls for non-default ports included the port twice.
+* #28: Permission denied page.
+* #53: User selection on server edit page.
+* #115: Warning on server page when notifications are disabled.
+* #117: Template service has been replaced by Twig.
 * Composer added for dependencies.
 
-
 v3.0.1 (released April 12, 2014)
-----------------
+--------------------------------
 
 * #56: Minimum PHP version is PHP 5.3.7 (not PHP 5.3.0).
 * #58: Server order on users page now matches the order on servers page.

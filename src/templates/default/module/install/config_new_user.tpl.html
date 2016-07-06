@@ -1,0 +1,46 @@
+{% extends "module/install/main.tpl.html" %}
+{% use "module/install/results.tpl.html" %}
+{% import 'main/macros.tpl.html' as macro %}
+
+{% block install %}
+<p>Sweet, your database connection is up and running!</p>
+<p>Next, please set up a new account to access your monitor:</p>
+{{ block('results') }}
+<p>&nbsp;</p>
+<div class="row-fluid">
+   <div class="span6">
+	<form id="psm_config" class="form-horizontal" action="install.php?action=install" method="post">
+	  {{ macro.csrf_input() }}
+	  <div class="control-group">
+		<label class="control-label" for="username">Username</label>
+		<div class="controls">
+		  <input type="text" id="username" name="username" value="{{ username }}">
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="password">Password</label>
+		<div class="controls">
+		  <input type="password" id="password" name="password" value="">
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="password_repeat">Password repeat</label>
+		<div class="controls">
+		  <input type="password" id="password_repeat" name="password_repeat" value="">
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+		  <input type="text" id="email" name="email" value="{{ email }}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<div class="controls">
+		  <button type="submit" class="btn btn-primary btn-large">Install</button>
+		</div>
+	  </div>
+	</form>
+   </div>
+</div>
+{% endblock %}

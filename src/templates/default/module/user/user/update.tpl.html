@@ -1,0 +1,84 @@
+{% import 'main/macros.tpl.html' as macro %}
+<form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
+	{{ macro.csrf_input() }}
+	<fieldset>
+	<legend>{{ titlemode }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="user_name">{{ label_user_name }}</label>
+			<div class="controls">
+				<input type="text" id="user_name" name="user_name" value="{{ edit_value_user_name }}" maxlength="64" required>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="name">{{ label_name }}</label>
+			<div class="controls">
+				<input type="text" id="name" name="name" value="{{ edit_value_name }}" maxlength="255" required>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="level">{{ label_level }}</label>
+			<div class="controls">
+				<select id="level" name="level">
+					{% for level in levels %}
+					<option value="{{ level.value }}" {% if level.value == user_level %} selected="selected" {% endif %}>{{ level.label }}</option>
+					{% endfor %}
+				 </select>
+				<p class="help-block">{{ label_level_description|raw }}</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="password">{{ label_password }}</label>
+			<div class="controls">
+				<input type="password" id="password" name="password" maxlength="255" placeholder="{{ placeholder_password }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="password_repeat">{{ label_password_repeat }}</label>
+			<div class="controls">
+				<input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{{ placeholder_password }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="email">{{ label_email }}</label>
+			<div class="controls">
+				<input type="text" id="email" name="email" value="{{ edit_value_email }}" maxlength="255" required>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_mobile }}</label>
+			<div class="controls">
+				<input type="text" id="mobile" name="mobile" value="{{ edit_value_mobile }}" maxlength="15" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">{{ label_pushover }}</label>
+			<div class="controls">{{ label_pushover_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_pushover_key }}</label>
+			<div class="controls">
+				<input type="text" id="pushover_key" name="pushover_key" value="{{ edit_value_pushover_key }}" maxlength="255" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_pushover_device }}</label>
+			<div class="controls">
+				<input type="text" id="pushover_device" name="pushover_device" value="{{ edit_value_pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="server_id">{{ label_servers }}</label>
+			<div class="controls">
+				<select class="multiselect" multiple="multiple" id="server_id" name="server_id[]">
+					{% for server in servers %}
+					<option value="{{ server.server_id }}" {{ server.edit_selected }}> {{ server.label }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-success" type="submit">{{ label_save }}</button>
+			<button class="btn" onclick="history.back();return false;" >{{ label_go_back }}</button>
+		</div>
+	 </fieldset>
+</form>

@@ -94,7 +94,34 @@ Please note that some distros have user-specific crontabs (e.g. Debian). If that
 The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
 After that the script is assumed dead and the cronjob will run again.
 If you want to change the 10 minutes timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
+You can also provide it as an argument (in seconds!). The following example would change to timeout to 10 seconds::
 
+     php status.cron.php --timeout=10
+
+By default, no URLs are generated for notifications created in the cronjob.
+To specify the base url to your monitor installation, use the "--uri" argument, like so::
+
+     php status.cron.php --uri="http://www.phpservermonitor.org/mymonitor/"
+
+CPanel
+-------
+
+If you're work with cPanel you can follow these steps:
+
+1. Log into your cPanel account
+
+2. Go to cron jobs
+
+3. Add a new cronjob
+
+- Type `*/15` in the minute field
+
+- Type `*` in the other field
+
+- Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
+
+4. Submit
+     
 
 Troubleshooting
 +++++++++++++++

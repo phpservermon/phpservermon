@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -29,7 +29,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.1.0-dev');
+define('PSM_VERSION', '3.2.0');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
@@ -66,7 +66,7 @@ define('PSM_UPDATE_INTERVAL', 7 * 24 * 60 * 60);
  *
  * This constant will be used in the login and the registration class.
  */
-define("PSM_LOGIN_HASH_COST_FACTOR", "10");
+define('PSM_LOGIN_HASH_COST_FACTOR', '10');
 
 /**
  * Configuration for: Cookies
@@ -83,9 +83,9 @@ define("PSM_LOGIN_HASH_COST_FACTOR", "10");
  * COOKIE_DOMAIN: The domain where the cookie is valid for, like '.mydomain.com'
  * COOKIE_SECRET_KEY: Put a random value here to make your app more secure. When changed, all cookies are reset.
  */
-define("PSM_LOGIN_COOKIE_RUNTIME", 1209600);
-define("PSM_LOGIN_COOKIE_DOMAIN", null);
-define("PSM_LOGIN_COOKIE_SECRET_KEY", "4w900de52e3ap7y77y8675jy6c594286");
+define('PSM_LOGIN_COOKIE_RUNTIME', 1209600);
+define('PSM_LOGIN_COOKIE_DOMAIN', null);
+define('PSM_LOGIN_COOKIE_SECRET_KEY', '4w900de52e3ap7y77y8675jy6c594286');
 
 /**
  * Number of seconds the reset link is valid after sending it to the user.
@@ -93,6 +93,36 @@ define("PSM_LOGIN_COOKIE_SECRET_KEY", "4w900de52e3ap7y77y8675jy6c594286");
 define('PSM_LOGIN_RESET_RUNTIME', 3600);
 
 /**
- * Number of seconds the cron is supposedly dead and we will run another cron anyway.
+ * Number of seconds the cron is supposedly dead and we will run another cron anyway. Set to 0 to disable.
  */
 define('PSM_CRON_TIMEOUT', 600);
+
+/**
+ * Default timeout in seconds for curl requests (can be overwritten per-server).
+ */
+define('PSM_CURL_TIMEOUT', 10);
+
+/**
+ * Clone URL for the Pushover.net service.
+ */
+define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_monitor');
+
+/**
+ * By defining the PSM_BASE_URL, you will force the psm_build_url() to use this.
+ * Useful for cronjobs if it cannot be auto-detected.
+ */
+//define('PSM_BASE_URL', null);
+
+if(!defined('PSM_MODULE_DEFAULT')) {
+	/**
+	 * Default theme
+	 */
+	define('PSM_THEME', 'default');
+}
+
+if(!defined('PSM_MODULE_DEFAULT')) {
+	/**
+	 * Default module (if none given or invalid one)
+	 */
+	define('PSM_MODULE_DEFAULT', 'server_status');
+}

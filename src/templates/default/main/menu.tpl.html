@@ -1,0 +1,22 @@
+<div class="nav-collapse">
+  <ul class="nav">
+	  {% for item in menu %}
+	  <li class="{{ item.active }}"><a href="{{ item.url|raw }}">{{ item.label }}</a></li>
+	  {% endfor %}
+	  <li id="nav_option_help">
+		  <a href="http://www.phpservermonitor.org/support" target="_blank">{{ label_help }}</a>
+	  </li>
+  </ul>
+  <ul class="nav pull-right">
+	<li class="dropdown visible-desktop">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ label_usermenu }} <b class="caret"></b></a>
+	  <ul class="dropdown-menu">
+		<li><a href="{{ url_profile|raw }}"><i class="icon-cog"></i>&nbsp;{{ label_profile }}</a></li>
+		<li><a href="{{ url_logout|raw }}"><i class="icon-off"></i>&nbsp;{{ label_logout }}</a></li>
+	  </ul>
+	</li>
+	<li class="hidden-desktop divider"></li>
+	<li class="hidden-desktop"><a href="{{ url_profile|raw }}">{{ label_profile }}</a></li>
+	<li class="hidden-desktop"><a href="{{ url_logout|raw }}">{{ label_logout }}</a></li>
+  </ul>
+</div>

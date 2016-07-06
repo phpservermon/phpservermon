@@ -1,0 +1,225 @@
+---
+vagrantfile-local:
+    vm:
+        box: puphpet/centos65-x64
+        box_url: puphpet/centos65-x64
+        hostname: ''
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
+        network:
+            private_network: 192.168.56.101
+            forwarded_port:
+                h2nLRhrSzIlF:
+                    host: '8080'
+                    guest: '80'
+        post_up_message: ''
+        provider:
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: on
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
+        provision:
+            puppet:
+                manifests_path: puphpet/puppet
+                manifest_file: site.pp
+                module_path: puphpet/puppet/modules
+                options:
+                    - '--verbose'
+                    - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            w8S8WFz0oRfc:
+                owner: ''
+                group: ''
+                source: ./
+                target: /var/www/default/psm
+                sync_type: default
+                rsync:
+                    auto: 'false'
+        usable_port_range:
+            start: 10200
+            stop: 10500
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: detect
+server:
+    install: '1'
+    packages:
+        - vim-common
+firewall:
+    install: '1'
+    rules: null
+apache:
+    install: '1'
+    settings:
+        user: www-data
+        group: www-data
+        default_vhost: true
+        manage_user: false
+        manage_group: false
+        sendfile: 0
+    modules:
+        - rewrite
+    vhosts: {  }
+    mod_pagespeed: 0
+nginx:
+    install: '0'
+    settings:
+        default_vhost: 1
+        proxy_buffer_size: 128k
+        proxy_buffers: '4 256k'
+    upstreams: {  }
+    vhosts: {  }
+php:
+    install: '1'
+    version: '56'
+    composer: '1'
+    composer_home: ''
+    modules:
+        php:
+            - cli
+            - intl
+            - mcrypt
+            - mysqlnd
+        pear: {  }
+        pecl:
+            - pecl_http
+    ini:
+        display_errors: On
+        error_reporting: E_ALL
+        session.save_path: /var/lib/php/session
+    timezone: America/Chicago
+    mod_php: 0
+hhvm:
+    install: '0'
+    nightly: 0
+    composer: '1'
+    composer_home: ''
+    settings:
+        host: '0'
+        port: '0'
+    ini: {  }
+    timezone: null
+xdebug:
+    install: '1'
+    settings:
+        xdebug.default_enable: '1'
+        xdebug.remote_autostart: '0'
+        xdebug.remote_connect_back: '1'
+        xdebug.remote_enable: '1'
+        xdebug.remote_handler: dbgp
+        xdebug.remote_port: '9000'
+        xdebug.remote_host: 192.168.56.101
+        xdebug.idekey: XDEBUGPSM
+xhprof:
+    install: '0'
+wpcli:
+    install: '0'
+    version: ''
+drush:
+    install: '0'
+    version: ''
+ruby:
+    install: '1'
+    versions: {  }
+nodejs:
+    install: '0'
+    npm_packages: {  }
+python:
+    install: '1'
+    packages: {  }
+    versions:
+        sAxFy93LRP7G:
+            version: ''
+mysql:
+    install: '1'
+    override_options: {  }
+    root_password: psm
+    adminer: '1'
+    databases:
+        TiL7OqnkkdEw:
+            grant:
+                - ALL
+            name: psm
+            host: localhost
+            user: psm
+            password: psm
+            sql_file: ''
+postgresql:
+    install: '0'
+    settings:
+        root_password: '123'
+        user_group: postgres
+        encoding: UTF8
+        version: '9.3'
+    databases: {  }
+    adminer: 0
+mariadb:
+    install: '0'
+    override_options: {  }
+    root_password: '123'
+    adminer: 0
+    databases: {  }
+sqlite:
+    install: '0'
+    adminer: 0
+    databases: {  }
+mongodb:
+    install: '0'
+    settings:
+        auth: 1
+        port: '27017'
+    databases: {  }
+redis:
+    install: '0'
+    settings:
+        conf_port: '6379'
+mailcatcher:
+    install: '0'
+    settings:
+        smtp_ip: 0.0.0.0
+        smtp_port: 1025
+        http_ip: 0.0.0.0
+        http_port: '1080'
+        mailcatcher_path: /usr/local/rvm/wrappers/default
+        from_email_method: inline
+beanstalkd:
+    install: '0'
+    settings:
+        listenaddress: 0.0.0.0
+        listenport: '13000'
+        maxjobsize: '65535'
+        maxconnections: '1024'
+        binlogdir: /var/lib/beanstalkd/binlog
+        binlogfsync: null
+        binlogsize: '10485760'
+    beanstalk_console: 0
+    binlogdir: /var/lib/beanstalkd/binlog
+rabbitmq:
+    install: '0'
+    settings:
+        port: '5672'
+elastic_search:
+    install: '0'
+    settings:
+        version: ''
+        java_install: true
+solr:
+    install: '0'
+    settings:
+        version: ''
+        port: ''
+

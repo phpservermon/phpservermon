@@ -1,0 +1,66 @@
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="hidden-phone">&nbsp;</th>
+			<th class="hidden-phone">{{ label_label }}</th>
+			<th class="hidden-phone">{{ label_domain }}</th>
+			<th class="visible-desktop">{{ label_port }}</th>
+			<th class="visible-desktop">{{ label_type }}</th>
+			<th class="hidden-phone">{{ label_rtime }}</th>
+			<th class="hidden-phone">{{ label_last_online }}</th>
+			<th class="hidden-phone">{{ label_monitoring }}</th>
+			<th class="hidden-phone">{{ label_action }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for server in servers %}
+		<tr>
+			<td class="hidden-phone"><div class="table-cell-title"><span class="label label-status-{{ server.status }}"><a href="{{ server.url_view|raw }}" title="{{ server.error }}">{{ server.status }}</a></span></div></td>
+			<td class="hidden-phone"><div class="table-cell-title"><a href="{{ server.url_view|raw }}">{{ server.label }}</a></div></td>
+			<td class="nowrap visible-tablet"><div class="table-cell-title"><i class="{{ server.type_icon }}" title="{{ server.type }}"></i> {{ server.ip_short|raw }}</div></td>
+			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.ip|raw }}</div></td>
+			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.port }}</div></td>
+			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.type }}</div></td>
+			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.rtime }} s</div></td>
+			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.last_online }}</div></td>
+			<td class="tight hidden-phone"><div class="table-cell-title"><i class="{{ server.active_icon }}" title="{{ server.active_title }}"></i> <i class="{{ server.email_icon }}" title="{{ label_email }}"></i> <i class="{{ server.sms_icon }}" title="{{ label_sms }}"></i> <i class="{{ server.pushover_icon }}" title="Pushover"></i></div></td>
+			<td class="tight hidden-phone">
+				<div class="table-cell-title">
+					<a class="btn btn-small" href="{{ server.url_view|raw }}"><i class="icon-chart"></i></a>
+					{% if user_level == 10 %}
+						<a class="btn btn-small" href="{{ server.url_edit|raw }}" title="{{ label_edit }}"><i class="icon-pencil"></i></a>
+						<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
+					{% endif %}
+				</div>
+			</td>
+			<td class="visible-phone">
+				<div class="table-body">
+					<div class="table-cell-title">
+						<span class="label label-status-{{ server.status }}"><a href="{{ server.url_view|raw }}" title="{{ server.error }}">{{ server.status }}</a></span>
+						<a class="title" href="{{ server.url_view|raw }}">{{ server.label }}</a>
+					</div>
+					<div class="table-cell tight">
+						&nbsp;<a class="btn btn-small" href="{{ server.url_view|raw }}"><i class="icon-chart"></i></a>
+						{% if user_level == 10 %}
+							<a class="btn btn-small" href="{{ server.url_edit|raw }}" title="{{ label_edit }}"><i class="icon-pencil"></i></a>
+							<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
+						{% endif %}
+					</div>
+				</div>
+				<div class="table-body">
+					<div class="table-row">
+						<div class="table-cell"><i class="{{ server.type_icon }}" title="{{ server.type }}"></i> {{ server.ip_short|raw }}</div>
+						<div class="table-cell tight">
+							<i class="{{ server.active_icon }}" title="{{ server.active_title }}"></i> <i class="{{ server.email_icon }}" title="{{ label_email }}"></i> <i class="{{ server.sms_icon }}" title="{{ label_sms }}"></i> <i class="{{ server.pushover_icon }}" title="Pushover"></i>
+						</div>
+					</div>
+				</div>
+				<div class="table-body">
+					<div class="table-row"><div class="table-cell-details tight">{{ label_rtime }}: &nbsp;</div><div class="table-cell-details">{{ server.rtime }} s</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online }}</div></div>
+				</div>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

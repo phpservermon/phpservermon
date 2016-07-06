@@ -1,0 +1,12 @@
+{% block results %}
+{% if messages %}
+	{% for msg in messages %}
+	<div>
+		<p class="pull-left"><span class="label label-{{ msg.shortcode }}">{{ msg.shortcode }}</span></p>
+		{% autoescape false %}
+		<p class="offset1">{{ msg.message }}</p>
+		{% endautoescape %}
+	</div>
+	{% endfor %}
+{% endif %}
+{% endblock %}

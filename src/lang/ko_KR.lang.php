@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Ik-Jun
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => '한국 - Korean',
 	'locale' => array('ko_KR.UTF-8', 'ko_KR', 'korean'),
+	'locale_tag' => 'ko',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -81,6 +83,11 @@ $sm_lang = array(
 		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
 		'mobile' => '휴대폰',
 		'email' => 'Email',
+		'pushover' => 'Pushover',
+		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
+		'pushover_device_description' => 'Device name to send the message to. Leave empty to send it to all devices.',
 		'delete_title' => 'Delete User',
 		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
 		'deleted' => 'User deleted.',
@@ -104,6 +111,7 @@ $sm_lang = array(
 		'status' => '상태',
 		'email' => 'email',
 		'sms' => 'sms',
+		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
 	),
 	'servers' => array(
@@ -111,6 +119,8 @@ $sm_lang = array(
 		'status' => 'Status',
 		'label' => 'Label',
 		'domain' => 'Domain/IP',
+		'timeout' => 'Timeout',
+		'timeout_description' => 'Number of seconds to wait for the server to respond.',
 		'port' => 'Port',
 		'type' => 'Type',
 		'type_website' => 'Website',
@@ -125,6 +135,8 @@ $sm_lang = array(
 		'send_email' => '메일 전송',
 		'sms' => 'SMS 전송',
 		'send_sms' => 'SMS 전송',
+		'pushover' => 'Pushover',
+		'users' => 'Users',
 		'delete_title' => 'Delete Server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
 		'deleted' => 'Server deleted.',
@@ -149,6 +161,9 @@ $sm_lang = array(
 		'chart_long_date_format' => '%Y-%m-%d %H:%M:%S',
 		'chart_short_date_format' => '%m/%d %H:%M',
 		'chart_short_time_format' => '%H:%M',
+		'warning_notifications_disabled_sms' => 'SMS notifications are disabled.',
+		'warning_notifications_disabled_email' => 'Email notifications are disabled.',
+		'warning_notifications_disabled_pushover' => 'Pushover notifications are disabled.',
 		'error_server_no_match' => 'Server not found.',
 		'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
 		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
@@ -167,6 +182,8 @@ $sm_lang = array(
 		'email_smtp' => 'Enable SMTP',
 		'email_smtp_host' => 'SMTP host',
 		'email_smtp_port' => 'SMTP port',
+		'email_smtp_security' => 'SMTP security',
+		'email_smtp_security_none' => 'None',
 		'email_smtp_username' => 'SMTP username',
 		'email_smtp_password' => 'SMTP password',
 		'email_smtp_noauth' => 'Leave blank for no authentication',
@@ -178,11 +195,20 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_nexmo' => 'Nexmo',
         'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
-		'alert_type' => '알림을 원하면 다음과 같이 변경하십시오..<br/>',
+		'pushover_status' => 'Allow sending Pushover messages',
+		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
+		'pushover_clone_app' => 'Click here to create your Pushover app',
+		'pushover_api_token' => 'Pushover App API Token',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
+		'alert_type' => '알림을 원하면 다음과 같이 변경하십시오.',
 		'alert_type_description' => '<b>상태 변경: </b><br/>'.
 			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.
 			 '<br/><b>오프라인: </b><br/>'.
@@ -190,6 +216,7 @@ $sm_lang = array(
 			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />' .
 			'<br/><b>항상: </b><br/>'.
 			'사이트가 다운되었을 때 매시간 알림을 받습니다.',
+
 		'alert_type_status' => '상태 변경',
 		'alert_type_offline' => '오프라인',
 		'alert_type_always' => '항상',
@@ -197,13 +224,14 @@ $sm_lang = array(
 		'log_status_description' => '로그상태가 TRUE이면 알림설정이 통과할때마다 이벤트를 기록합니다.',
 		'log_email' => '이메일로 로그를 전송하시겠습니까?',
 		'log_sms' => 'SMS로 로그를 전송하시겠습니까?',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => '설정이 수정되었습니다.',
-		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
-		'tab_log' => '로그',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Email 설정',
 		'settings_sms' => 'SMS 설정',
+		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => '알림 설정',
 		'settings_log' => '로그 설정',
 		'auto_refresh' => 'Auto-refresh',
@@ -216,21 +244,35 @@ $sm_lang = array(
 		'test' => 'Test',
 		'test_email' => 'An email will be sent to the address specified in your user profile.',
 		'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
+		'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user profile.',
 		'send' => 'Send',
+		'test_subject' => 'Test',
 		'test_message' => 'Test message',
 		'email_sent' => 'Email sent',
 		'email_error' => 'Error in email sending',
 		'sms_sent' => 'Sms sent',
 		'sms_error' => 'Error in sms sending',
+		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
+		'pushover_sent' => 'Pushover notification sent',
+		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
+		'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global configuration.',
+		'pushover_error_nokey' => 'Unable to send test notification: no Pushover key found in your profile.',
+		'log_retention_period' => 'Log retention period',
+		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
+		'log_retention_days' => 'days',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
 		'off_sms' => '서버(\'%LABEL%\')가 다운되었습니다. : ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => '중요: 서버(\'%LABEL%\')가 다운되었습니다.',
 		'off_email_body' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_title' => '서버(\'%LABEL%\')가 다운되었습니다.',
+		'off_pushover_message' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%',
 		'on_email_subject' => '중요: 서버(\'%LABEL%\')가 가동중입니다.',
 		'on_email_body' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_title' => '서버(\'%LABEL%\')가 가동중입니다.',
+		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',
@@ -254,5 +296,9 @@ $sm_lang = array(
 		'error_reset_invalid_link' => 'The reset link you provided is invalid.',
 		'success_password_forgot' => 'An email has been sent to you with information how to reset your password.',
 		'success_password_reset' => 'Your password has been reset successfully. Please login.',
+	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
 	),
 );

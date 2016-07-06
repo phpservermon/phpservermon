@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<parameters>
+		<parameter key="config.theme" type="constant">PSM_THEME</parameter>
+
+		<parameter key="modules" type="collection">
+			<parameter>module.config</parameter>
+			<parameter>module.error</parameter>
+			<parameter>module.server</parameter>
+			<parameter>module.user</parameter>
+			<parameter>module.install</parameter>
+		</parameter>
+
+		<parameter key="path.src" type="constant">PSM_PATH_SRC</parameter>
+		<parameter key="path.templates">%path.src%templates</parameter>
+
+		<parameter key="db.host" type="constant">PSM_DB_HOST</parameter>
+		<parameter key="db.user" type="constant">PSM_DB_USER</parameter>
+		<parameter key="db.pass" type="constant">PSM_DB_PASS</parameter>
+		<parameter key="db.name" type="constant">PSM_DB_NAME</parameter>
+	</parameters>
+
+	<services>
+		<!--MODULES start-->
+		<service id="module.config" class="psm\Module\Config\ConfigModule" />
+		<service id="module.error" class="psm\Module\Error\ErrorModule" />
+		<service id="module.server" class="psm\Module\Server\ServerModule" />
+		<service id="module.user" class="psm\Module\User\UserModule" />
+		<service id="module.install" class="psm\Module\Install\InstallModule" />
+		<!--MODULES end-->
+
+		<!--SERVICES start-->
+		<service id="db" class="psm\Service\Database">
+			<argument>%db.host%</argument>
+			<argument>%db.user%</argument>
+			<argument>%db.pass%</argument>
+			<argument>%db.name%</argument>
+		</service>
+
+		<service id="event" class="Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher">
+			<argument type="service" id="service_container" />
+		</service>
+		<service id="user" class="psm\Service\User">
+			<argument type="service" id="db" />
+		</service>
+		<service id="twig.loader" class="Twig_Loader_Filesystem">
+			<argument>%path.templates%/%config.theme%</argument>
+		</service>
+		<service id="twig" class="Twig_Environment">
+			<argument type="service" id="twig.loader" />
+		</service>
+		<!--SERVICES end-->
+
+		<!--UTIL start-->
+		<service id="util.user.validator" class="psm\Util\User\UserValidator">
+			<argument type="service" id="user" />
+		</service>
+		<service id="util.server.updatemanager" class="psm\Util\Server\UpdateManager">
+			<argument type="service" id="service_container" />
+		</service>
+		<!--UTIL end-->
+	</services>
+</container>
