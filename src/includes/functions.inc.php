@@ -526,6 +526,9 @@ function psm_build_sms() {
 		case 'freemobilesms':
 			$sms = new \psm\Txtmsg\FreeMobileSMS();
 			break;
+		case 'clicksend':
+			$sms = new \psm\Txtmsg\ClickSend();
+			break;
 		case 'octopush':
 			$sms = new \psm\Txtmsg\Octopush();
 			break;	}
