@@ -553,7 +553,7 @@ function psm_build_url($params = array(), $urlencode = true, $htmlentities = tru
 	if(defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
 		$url = PSM_BASE_URL;
 	} else {
-		$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+		$url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
 		// for urls, we only want the forward slashes.
 		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
