@@ -53,5 +53,12 @@ The following SMS gateways are currently available:
 * Clickatell - https://www.clickatell.com
 * Mosms - http://www.mosms.com
 * Textmarketer - http://www.textmarketer.co.uk
+* SMSit - http://smsit.dk
 
 Please note: for these gateways you will need an account with sufficient credits.
+
+
+Download
+++++++++
+
+The latest version can be downloaded from http://www.phpservermonitor.org/.

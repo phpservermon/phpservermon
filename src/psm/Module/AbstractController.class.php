@@ -28,6 +28,7 @@
 namespace psm\Module;
 use psm\Service\Database;
 use psm\Service\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController implements ControllerInterface {
 
@@ -80,6 +81,18 @@ abstract class AbstractController implements ControllerInterface {
 	protected $sidebar;
 
 	/**
+	 * array of Modal to add
+	 * @var \psm\Util\Module\ModalInterface[] $modal
+	 */
+	protected $modal = array();
+
+	/**
+	 * html code of header accessories
+	 * @var string $header_accessories
+	 */
+	protected $header_accessories;
+
+	/**
 	 * Database object
 	 * @var \psm\Service\Database $db
 	 */
@@ -118,22 +131,43 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected $user_level_required_actions = array();
 
+	/*
+	 * Required using black background layout
+	 * @var boolean $black_background
+	 */
+	protected $black_background = false;
+	
+	/**
+	 * XHR mode?
+	 * @var boolean $xhr
+	 * @see isXHR()
+	 */
+	protected $xhr = false;
+
 	function __construct(Database $db, Template $tpl) {
 		$this->db = $db;
 		$this->tpl = $tpl;
 	}
 
 	/**
-	 * Initialize the module
+	 * Initialize the controller.
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function initialize() {
 		$action = psm_GET('action', psm_POST('action', $this->action_default));
+		$this->xhr = (bool) psm_GET('xhr', psm_POST('xhr', false));
 
-		if(!in_array($action, $this->actions) || !$this->initializeAction($action)) {
-			$this->initializeAction($this->action_default);
+		if(!in_array($action, $this->actions) || !($result = $this->initializeAction($action))) {
+			$result = $this->initializeAction($this->action_default);
 		}
 
-		$this->createHTML();
+		if($result instanceof Response) {
+			return $result;
+		}
+
+		// no response returned from execute, create regular HTML
+		return $this->createHTML();
 	}
 
 	/**
@@ -141,7 +175,7 @@ abstract class AbstractController implements ControllerInterface {
 	 *
 	 * For it to run, the "execute$action" method must exist.
 	 * @param string $action
-	 * @return boolean whether action has been initialized successfully
+	 * @return mixed FALSE when action couldnt be initialized, response otherwise
 	 */
 	protected function initializeAction($action) {
 		if(isset($this->user_level_required_actions[$action])) {
@@ -155,57 +189,88 @@ abstract class AbstractController implements ControllerInterface {
 		$method = 'execute' . ucfirst($action);
 		if(method_exists($this, $method)) {
 			$this->action = $action;
-			$this->$method();
-			return true;
+			$result = $this->$method();
+			// if result from execute is null, no return value given so return true to indicate a successful execute
+			return ($result === null) ? true : $result;
 		}
 		return false;
 	}
 
 	/**
 	 * Create the HTML code for the module.
+	 *
 	 * First the createHTMLLabels() will be called to add all labels to the template,
-	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically
+	 * Then the tpl_id set in $this->getTemplateId() will be added to the main template automatically.
+	 * If XHR is on, no main template will be added.
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	protected function createHTML() {
-		$tpl_data = array();
-
-		if(!empty($this->messages)) {
-			$this->tpl->addTemplateDataRepeat('main', 'messages', $this->messages);
-		}
-		// add menu to page?
-		if($this->add_menu) {
-			$tpl_data['html_menu'] = $this->createHTMLMenu();
-		}
-		// add sidebar to page?
-		if($this->sidebar !== null) {
-			$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
-			$tpl_data['content_span'] = '10';
-		} else {
-			$tpl_data['content_span'] = '12';
-		}
-		// add footer to page?
-		if($this->add_footer) {
-			$this->tpl->newTemplate('main_footer', 'main.tpl.html');
-			$tpl_data['html_footer'] = $this->tpl->getTemplate('main_footer');
-			$tpl_data['version'] = 'v' . PSM_VERSION;
-		}
-
 		$tpl_id_content = $this->getTemplateId();
-		if($tpl_id_content) {
-			$tpl_data['content'] = $this->tpl->getTemplate($tpl_id_content);
+		$html = '';
+
+		if($this->xhr) {
+			// in XHR mode, we will not add the main template
+			if($tpl_id_content) {
+				$this->createHTMLLabels();
+				$html = $this->tpl->display($tpl_id_content);
+			}
+		} else {
+			// regular request, add main frame
+			$tpl_data = array();
+
+			if(!empty($this->messages)) {
+				$this->tpl->addTemplateDataRepeat('main', 'messages', $this->messages);
+			}
+			// add menu to page?
+			if($this->add_menu) {
+				$tpl_data['html_menu'] = $this->createHTMLMenu();
+			}
+			// add header accessories to page ?
+			if($this->header_accessories) {
+				$tpl_data['header_accessories'] = $this->header_accessories;
+			}
+			// add modal dialog to page ?
+			if(sizeof($this->modal)) {
+				$html_modal = '';
+				foreach($this->modal as $modal) {
+					$html_modal .= $modal->createHTML();
+				}
+				$tpl_data['html_modal'] = $html_modal;
+			}
+			// add sidebar to page?
+			if($this->sidebar !== null) {
+				$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
+			}
+			// add footer to page?
+			if($this->add_footer) {
+				$this->tpl->newTemplate('main_footer', 'main.tpl.html');
+				$tpl_data['html_footer'] = $this->tpl->getTemplate('main_footer');
+				$tpl_data['version'] = 'v' . PSM_VERSION;
+			}
+
+			if($tpl_id_content) {
+				$tpl_data['content'] = $this->tpl->getTemplate($tpl_id_content);
+			}
+
+			if(psm_update_available()) {
+				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
+			}
+			
+			if($this->black_background) {
+				$tpl_data['body_class'] = 'black_background';
+			}
+
+			// add the module's custom template to the main template to get some content
+			$this->setTemplateId('main');
+			$this->tpl->addTemplatedata($this->getTemplateId(), $tpl_data);
+			$this->createHTMLLabels();
+			$html = $this->tpl->display($this->getTemplateId());
 		}
 
-		if(psm_update_available()) {
-			$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
-		}
+		$response = new Response($html);
 
-		// add the module's custom template to the main template to get some content
-		$this->setTemplateId('main');
-		$this->tpl->addTemplatedata($this->getTemplateId(), $tpl_data);
-		$this->createHTMLLabels();
-
-		// display main template
-		echo $this->tpl->display($this->getTemplateId());
+		return $response;
 	}
 
 	/**
@@ -268,8 +333,6 @@ abstract class AbstractController implements ControllerInterface {
 	 * @see createHTML()
 	 */
 	protected function createHTMLLabels() {
-		global $type;
-
 		$this->tpl->addTemplateData(
 			'main',
 			array(
@@ -442,5 +505,31 @@ abstract class AbstractController implements ControllerInterface {
 	public function setSidebar(\psm\Util\Module\SidebarInterface $sidebar) {
 		$this->sidebar = $sidebar;
 		return $this;
+	}
+
+	/**
+	 * Add a modal dialog to the page
+	 * @param \psm\Util\Module\ModalInterface $modal
+	 * @return \psm\Module\ControllerInterface
+	 */
+	public function addModal(\psm\Util\Module\ModalInterface $modal) {
+		$this->modal[$modal->getModalID()] = $modal;
+		return $this;
+	}
+
+	/**
+	 * Set the html code of the header accessories
+	 * @param string $html
+	 */
+	public function setHeaderAccessories($html) {
+		$this->header_accessories = $html;
+	}
+	
+	/**
+	 * Check if XHR is on
+	 * @return boolean
+	 */
+	public function isXHR() {
+		return $this->xhr;
 	}
 }

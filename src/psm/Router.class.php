@@ -27,6 +27,7 @@
  **/
 
 namespace psm;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The router class opens the controller and initializes the module.
@@ -97,8 +98,16 @@ class Router {
 	 * If no mod is given it will attempt to load the default module.
 	 * @param string $mod if empty, the mod getvar will be used, or fallback to default
 	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
 	 */
 	public function run($mod = null) {
+		if(!psm_is_cli() && isset($_GET["logout"])) {
+			$this->services['user']->doLogout();
+			// logged out, redirect to login
+			header('Location: ' . psm_build_url());
+			die();
+		}
+
 		if($mod === null) {
 			$mod = psm_GET('mod', $this->default_module);
 		}
@@ -127,7 +136,12 @@ class Router {
 
 		$controller->setUser($this->services['user']);
 		// let the module prepare it's HTML code
-		$controller->initialize();
+		$response = $controller->initialize();
+
+		if(!($response instanceof Response)) {
+			throw new \LogicException('Controller did not return a Response object.');
+		}
+		$response->send();
 	}
 
 	/**

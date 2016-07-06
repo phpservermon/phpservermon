@@ -35,17 +35,17 @@ $sm_lang = array(
 		'save' => 'Save',
 		'edit' => 'Edit',
 		'delete' => 'Delete',
-		'deleted' => 'Record has been deleted',
 		'date' => 'Date',
 		'message' => 'Message',
 		'yes' => 'Yes',
 		'no' => 'No',
-		'edit' => 'Edit',
 		'insert' => 'Insert',
 		'add_new' => 'Add new',
 		'update_available' => 'A new version ({version}) is available from <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
+		'ok' => 'OK',
+		'cancel' => 'Cancel',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
@@ -69,7 +69,7 @@ $sm_lang = array(
 		'help' => 'Help',
 	),
 	'users' => array(
-		'user' => 'user',
+		'user' => 'User',
 		'name' => 'Name',
 		'user_name' => 'Username',
 		'password' => 'Password',
@@ -81,6 +81,9 @@ $sm_lang = array(
 		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
 		'mobile' => 'Mobile',
 		'email' => 'Email',
+		'delete_title' => 'Delete User',
+		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
+		'deleted' => 'User deleted.',
 		'updated' => 'User updated.',
 		'inserted' => 'User added.',
 		'profile' => 'Profile',
@@ -101,9 +104,11 @@ $sm_lang = array(
 		'status' => 'Status',
 		'email' => 'Email',
 		'sms' => 'SMS',
+		'no_logs' => 'No logs',
 	),
 	'servers' => array(
 		'server' => 'Server',
+		'status' => 'Status',
 		'label' => 'Label',
 		'domain' => 'Domain/IP',
 		'port' => 'Port',
@@ -115,14 +120,21 @@ $sm_lang = array(
 		'last_check' => 'Last check',
 		'last_online' => 'Last online',
 		'monitoring' => 'Monitoring',
+		'no_monitoring' => 'No monitoring',
+		'email' => 'Email',
 		'send_email' => 'Send Email',
+		'sms' => 'SMS',
 		'send_sms' => 'Send SMS',
+		'delete_title' => 'Delete Server',
+		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
+		'deleted' => 'Server deleted.',
 		'updated' => 'Server updated.',
 		'inserted' => 'Server added.',
 		'latency' => 'Latency',
 		'latency_max' => 'Latency (maximum)',
 		'latency_min' => 'Latency (minimum)',
 		'latency_avg' => 'Latency (average)',
+		'uptime' => 'Uptime',
 		'year' => 'Year',
 		'month' => 'Month',
 		'week' => 'Week',
@@ -137,6 +149,13 @@ $sm_lang = array(
 		'chart_long_date_format' => '%Y-%m-%d %H:%M:%S',
 		'chart_short_date_format' => '%m/%d %H:%M',
 		'chart_short_time_format' => '%H:%M',
+		'error_server_no_match' => 'Server not found.',
+		'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
+		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
+		'error_server_ip_bad_service' => 'The IP address is not valid.',
+		'error_server_ip_bad_website' => 'The website URL is not valid.',
+		'error_server_type_invalid' => 'The selected server type is invalid.',
+		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
 	),
 	'config' => array(
 		'general' => 'General',
@@ -158,21 +177,22 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
 		'alert_type' => 'Select when you\'d like to be notified.<br/>',
-        'alert_type_description' => '<b>Status change:</b> '.
-		    'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
-		    'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
-		    'You will get 1 notification at 1 am and thats it.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'You will receive a notification every time the script runs and a site is down, even if the site has been '.
-		    'offline for hours.',
+		'alert_type_description' => '<b>Status change:</b> '.
+			'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
+			'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
+			'You will get 1 notification at 1 am and thats it.<br/>'.
+			'<br><b>Always:</b> '.
+			'You will receive a notification every time the script runs and a site is down, even if the site has been '.
+			'offline for hours.',
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
@@ -181,6 +201,7 @@ $sm_lang = array(
 		'log_email' => 'Log emails sent by the script',
 		'log_sms' => 'Log text messages sent by the script',
 		'updated' => 'The configuration has been updated.',
+		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_log' => 'Log',
@@ -195,6 +216,15 @@ $sm_lang = array(
 			'Time in seconds, if 0 the page won\'t refresh.'.
 			'</span>',
 		'seconds' => 'seconds',
+		'test' => 'Test',
+		'test_email' => 'An email will be sent to the address specified in your user profile.',
+		'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
+		'send' => 'Send',
+		'test_message' => 'Test message',
+		'email_sent' => 'Email sent',
+		'email_error' => 'Error in email sending',
+		'sms_sent' => 'Sms sent',
+		'sms_error' => 'Error in sms sending',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

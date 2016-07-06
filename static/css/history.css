@@ -1,3 +1,7 @@
+#main-container {
+	overflow: hidden;
+}
+
 #history-panel {
 	width: 100%;
 	max-width: 1100px;
@@ -39,6 +43,10 @@
 	padding-top: 40px;
 	height: 200px;
 }
+.server-info ul {
+	list-style: none;
+	margin: 0;
+}
 
 .chart-selector {
 }
@@ -47,11 +55,11 @@
 	.chart-container {
 		margin-right: 0;
 	}
-	
+
 	.chart-content {
 		margin-right: 0;
 	}
-	
+
 	.info-container {
 		float: none;
 		clear: both;
@@ -62,11 +70,11 @@
 		display: block;
 		float: left;
 	}
-	
+
 	.server-info {
 		display: none;
 	}
-	
+
 	.chart-selector {
 		float: right;
 	}

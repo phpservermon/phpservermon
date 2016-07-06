@@ -126,7 +126,7 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -181,6 +181,12 @@ class Installer {
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+							`user_id` int(11) unsigned NOT NULL,
+							`key` varchar(255) NOT NULL,
+							`value` varchar(255) NOT NULL,
+							PRIMARY KEY (`user_id`, `key`)
+						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
 							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
@@ -263,6 +269,10 @@ class Installer {
 		if(version_compare($version_from, '3.0.0', '<')) {
 			// upgrade to 3.0.0
 			$this->upgrade300();
+		}
+		if(version_compare($version_from, '3.1.0', '<')) {
+			// upgrade to 3.1.0
+			$this->upgrade310();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -377,5 +387,16 @@ class Installer {
 			}
 		}
 		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
+	}
+
+	protected function upgrade310() {
+		$queries = array();
+		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+						`user_id` int(11) unsigned NOT NULL,
+						`key` varchar(255) NOT NULL,
+						`value` varchar(255) NOT NULL,
+						PRIMARY KEY (`user_id`, `key`)
+					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		$this->execSQL($queries);
 	}
 }

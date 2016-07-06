@@ -1,6 +1,23 @@
 Changelog
 =========
 
+not yet released
+----------------
+
+* #50: Validation on servers page.
+* #54: Improved phone/tablet compatibility.
+* #62: Replace javascript confirm dialogs with Bootstrap modal dialogs.
+* #66: Unable to add users with MySQL in strict mode.
+* #75: Test mode for email and SMS settings.
+* #82: Added Danish translation.
+* #83: Invalid redirect after switching languages and logging in.
+* #86: Different design styles on status page (list, table).
+* #103: Added Russian translation.
+* #105: Fixing check for websites with unverified SSL certificates.
+* Support for Danish SMS provider Smsit <http://www.smsit.dk/>
+* Composer added for dependencies.
+
+
 v3.0.1 (released April 12, 2014)
 ----------------
 

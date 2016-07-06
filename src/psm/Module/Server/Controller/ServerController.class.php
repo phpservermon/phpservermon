@@ -65,6 +65,12 @@ class ServerController extends AbstractServerController {
 
 		// check if user is admin, in that case we add the buttons
 		if($this->user->getUserLevel() == PSM_USER_ADMIN) {
+			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
+			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
+			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
 			$sidebar->addButton(
 				'add_new',
 				psm_get_lang('system', 'add_new'),
@@ -99,9 +105,30 @@ class ServerController extends AbstractServerController {
 			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
 
 			if($servers[$x]['type'] == 'website') {
+				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
-				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$servers[$x]['ip'].'</a>';
+				$ip = $servers[$x]['ip'];
+				if(!empty($servers[$x]['port']) && ($servers[$x]['port']  != 80)) {
+					$ip .= ' : ' . $servers[$x]['port'];
+				}
+				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$ip.'</a>';
+				$servers[$x]['ip_short'] = $ip;
+			} else {
+				$servers[$x]['type_icon'] = 'icon-cog';
+				$servers[$x]['ip_short'] = $servers[$x]['ip'] . ' : ' . $servers[$x]['port'];
 			}
+			if(($servers[$x]['active'] == 'yes')) {
+				$servers[$x]['active_icon'] = 'icon-eye-open';
+				$servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
+				$servers[$x]['email_icon'] = ($servers[$x]['email'] == 'yes') ? 'icon-envelope' : '';
+				$servers[$x]['sms_icon'] = ($servers[$x]['sms'] == 'yes') ? 'icon-mobile' : '';
+			} else {
+				$servers[$x]['active_icon'] = 'icon-eye-close';
+				$servers[$x]['active_title'] = psm_get_lang('servers', 'no_monitoring');
+				$servers[$x]['email_icon'] = '';
+				$servers[$x]['sms_icon'] = '';
+			}
+
 			$servers[$x] = $this->formatServer($servers[$x]);
 		}
 		// add servers to template
@@ -116,6 +143,7 @@ class ServerController extends AbstractServerController {
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
 
 		$tpl_data = array(
+			'edit_server_id' => $this->server_id,
 			// form url:
 			'url_save' => psm_build_url(array(
 				'mod' => 'server',
@@ -136,34 +164,39 @@ class ServerController extends AbstractServerController {
 			case 0:
 				// insert mode
 				$tpl_data['titlemode'] = psm_get_lang('system', 'insert');
-				$tpl_data['edit_server_id'] = '0';
 				$tpl_data['edit_value_warning_threshold'] = '1';
+
+				$edit_server = $_POST;
 				break;
 			default:
 				// edit mode
 				// get server entry
 				$edit_server = $this->getServers($this->server_id);
-				if (empty($edit_server)) {
-					$this->addMessage('Invalid server', 'error');
+				if(empty($edit_server)) {
+					$this->addMessage(psm_get_lang('servers', 'error_server_no_match'), 'error');
 					return $this->initializeAction('index');
 				}
+				$tpl_data['titlemode'] = psm_get_lang('system', 'edit') . ' ' . $edit_server['label'];
 
-				$tpl_data = array_merge($tpl_data, array(
-					'titlemode' => psm_get_lang('system', 'edit') . ' ' . $edit_server['label'],
-					'edit_server_id' => $edit_server['server_id'],
-					'edit_value_label' => $edit_server['label'],
-					'edit_value_ip' => $edit_server['ip'],
-					'edit_value_port' => $edit_server['port'],
-					'edit_value_pattern' => $edit_server['pattern'],
-					'edit_value_warning_threshold' => $edit_server['warning_threshold'],
-					'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
-					'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
-					'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
-					'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
-				));
 
 				break;
 		}
+		// attempt to prefill previously posted fields
+		foreach($edit_server as $key => $value) {
+			$edit_server[$key] = psm_POST($key, $value);
+		}
+
+		$tpl_data = array_merge($tpl_data, array(
+			'edit_value_label' => $edit_server['label'],
+			'edit_value_ip' => $edit_server['ip'],
+			'edit_value_port' => $edit_server['port'],
+			'edit_value_pattern' => $edit_server['pattern'],
+			'edit_value_warning_threshold' => $edit_server['warning_threshold'],
+			'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
+			'edit_active_selected_' . $edit_server['active'] => 'selected="selected"',
+			'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
+			'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
+		));
 
 		$this->tpl->addTemplateData(
 			$this->getTemplateId(),
@@ -175,35 +208,57 @@ class ServerController extends AbstractServerController {
 	 * Executes the saving of one of the servers
 	 */
 	protected function executeSave() {
-		// check for add/edit mode
-		if(isset($_POST['label']) && isset($_POST['ip']) && isset($_POST['port'])) {
-			$clean = array(
-				'label' => strip_tags($_POST['label']),
-				'ip' => strip_tags($_POST['ip']),
-				'port' => intval($_POST['port']),
-				'type' => in_array($_POST['type'], array('website', 'service')) ? $_POST['type'] : 'website',
-				'pattern' => $_POST['pattern'],
-				'warning_threshold' => intval($_POST['warning_threshold']),
-				'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
-				'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
-				'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
-			);
+		if(empty($_POST)) {
+			// dont process anything if no data has been posted
+			return $this->executeIndex();
+		}
 
-			// check for edit or add
+		$clean = array(
+			'label' => trim(strip_tags(psm_POST('label', ''))),
+			'ip' => trim(strip_tags(psm_POST('ip', ''))),
+			'port' => intval(psm_POST('port', 0)),
+			'type' => psm_POST('type', ''),
+			'pattern' => psm_POST('pattern', ''),
+			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
+			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
+			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
+			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
+		);
+		// make sure websites start with http://
+		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
+			$clean['ip'] = 'http://' . $clean['ip'];
+		}
+
+		// validate the lot
+		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
+
+		try {
 			if($this->server_id > 0) {
-				// edit
-				$this->db->save(
-					PSM_DB_PREFIX.'servers',
-					$clean,
-					array('server_id' => $this->server_id)
-				);
-				$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
-			} else {
-				// add
-				$clean['status'] = 'on';
-				$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
-				$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
+				$server_validator->serverId($this->server_id);
 			}
+			$server_validator->label($clean['label']);
+			$server_validator->type($clean['type']);
+			$server_validator->ip($clean['ip'], $clean['type']);
+			$server_validator->warningThreshold($clean['warning_threshold']);
+		} catch(\InvalidArgumentException $ex) {
+			$this->addMessage(psm_get_lang('servers', 'error_' . $ex->getMessage()), 'error');
+			return $this->executeEdit();
+		}
+
+		// check for edit or add
+		if($this->server_id > 0) {
+			// edit
+			$this->db->save(
+				PSM_DB_PREFIX.'servers',
+				$clean,
+				array('server_id' => $this->server_id)
+			);
+			$this->addMessage(psm_get_lang('servers', 'updated'), 'success');
+		} else {
+			// add
+			$clean['status'] = 'on';
+			$this->server_id = $this->db->save(PSM_DB_PREFIX.'servers', $clean);
+			$this->addMessage(psm_get_lang('servers', 'inserted'), 'success');
 		}
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
@@ -229,7 +284,7 @@ class ServerController extends AbstractServerController {
 				$this->db->delete(PSM_DB_PREFIX.'servers_uptime', array('server_id' => $id));
 				$this->db->delete(PSM_DB_PREFIX.'servers_history', array('server_id' => $id));
 			}
-			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
+			$this->addMessage(psm_get_lang('servers', 'deleted'), 'success');
 		}
 		$this->initializeAction('index');
 	}
@@ -261,6 +316,14 @@ class ServerController extends AbstractServerController {
 			$this->tpl->newTemplate($tpl_id_actions, 'server/view.tpl.html');
 			$tpl_data['html_actions'] = $this->tpl->getTemplate($tpl_id_actions);
 			$tpl_data['url_edit'] = psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view'));
+			$tpl_data['url_delete'] = psm_build_url(array('mod' => 'server', 'action' => 'delete', 'id' => $this->server_id));
+			$tpl_data['server_name'] = $server['label'];
+
+			$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
+			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
+			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
 		}
 
 		// add all available servers to the menu
@@ -297,7 +360,7 @@ class ServerController extends AbstractServerController {
 			array(
 				'subtitle' => psm_get_lang('menu', 'server'),
 				'label_label' => psm_get_lang('servers', 'label'),
-				'label_status' => psm_get_lang('menu', 'server_status'),
+				'label_status' => psm_get_lang('servers', 'status'),
 				'label_domain' => psm_get_lang('servers', 'domain'),
 				'label_port' => psm_get_lang('servers', 'port'),
 				'label_type' => psm_get_lang('servers', 'type'),
@@ -310,7 +373,9 @@ class ServerController extends AbstractServerController {
 				'label_rtime' => psm_get_lang('servers', 'latency'),
 				'label_last_online' => psm_get_lang('servers', 'last_online'),
 				'label_monitoring' => psm_get_lang('servers', 'monitoring'),
+				'label_email' => psm_get_lang('servers', 'email'),
 				'label_send_email' => psm_get_lang('servers', 'send_email'),
+				'label_sms' => psm_get_lang('servers', 'sms'),
 				'label_send_sms' => psm_get_lang('servers', 'send_sms'),
 				'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 				'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

@@ -63,19 +63,32 @@ class LogController extends AbstractServerController {
 			$log_count = count($records);
 
 			for ($x = 0; $x < $log_count; $x++) {
-				$records[$x]['class'] = ($x & 1) ? 'odd' : 'even';
-				$records[$x]['users'] = '';
-				$records[$x]['server'] = $records[$x]['label'] . ' (' . $records[$x]['label_adv'] . ')';
-				$records[$x]['datetime_format'] = psm_date($records[$x]['datetime']);
+				$record = &$records[$x];
+				$record['class'] = ($x & 1) ? 'odd' : 'even';
+				$record['users'] = '';
+				$record['server'] = $record['label'];
+				$record['type_icon'] = ($record['server_type'] == 'website') ? 'icon-globe' : 'icon-cog';
+				$record['type_title'] = psm_get_lang('servers', 'type_' . $record['server_type']);
+				$ip = '(' . $record['ip'];
+				if(!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
+					$ip .= ':' . $record['port'];
+				}
+				$ip .= ')';
+				$record['ip'] = $ip;
+				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list
-				if($records[$x]['user_id'] == '') continue;
-
-				$users = explode(',', $records[$x]['user_id']);
-				foreach($users as $user_id) {
-					if((int) $user_id == 0 || !isset($users_labels[$user_id])) continue;
-
-					$records[$x]['users'] .= '<br/>'.$users_labels[$user_id];
+				if(!empty($record['user_id'])) {
+					$names = array();
+					$users = explode(',', $record['user_id']);
+					foreach($users as $user_id) {
+						if(isset($users_labels[$user_id])) {
+							$names[] = $users_labels[$user_id];
+						}
+					}
+					sort($names);
+					$record['users'] = implode('<br/>', $names);
+					$record['user_list'] = implode('&nbsp;&bull; ', $names);
 				}
 			}
 
@@ -86,6 +99,8 @@ class LogController extends AbstractServerController {
 				'server_log_entries',
 				array(
 					'logtitle' => $key,
+					'?has_users' => ($key == 'status') ? false : true,
+					'?no_logs' => ($log_count == 0) ? true : false,
 				)
 			);
 			$this->tpl->addTemplateData(
@@ -115,11 +130,9 @@ class LogController extends AbstractServerController {
 		$entries = $this->db->query(
 			'SELECT '.
 				'`servers`.`label`, '.
-				'CONCAT_WS('.
-					'\':\','.
-					'`servers`.`ip`, '.
-					'`servers`.`port`'.
-				') AS `label_adv`, '.
+				'`servers`.`ip`, '.
+				'`servers`.`port`, '.
+				'`servers`.`type` AS server_type, '.
 				'`log`.`type`, '.
 				'`log`.`message`, '.
 				'`log`.`datetime`, '.
@@ -149,6 +162,7 @@ class LogController extends AbstractServerController {
 				'label_message' => psm_get_lang('system', 'message'),
 				'label_date' => psm_get_lang('system', 'date'),
 				'label_users' => ucfirst(psm_get_lang('menu', 'user')),
+				'label_no_logs' => psm_get_lang('log', 'no_logs'),
 			)
 		);
 

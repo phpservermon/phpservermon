@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+	<link rel="icon" type="image/png" href="favicon.png" />
 	{auto_refresh}
     <!-- Le styles -->
     <link href="static/plugin/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -19,14 +21,8 @@
     <script type="text/javascript" src="static/plugin/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/js/scripts.js"></script>
-    <script type="text/javascript">
-        $(document).bind('ready', function(){
-			psm_flash_message();
-			psm_tooltips();
-        });
-    </script>
   </head>
-  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+  <body data-spy="scroll" data-target=".subnav" data-offset="50" class="{body_class}">
     <!-- navbar -->
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -43,28 +39,30 @@
     </div>
     <!-- /navbar -->
 
+	{html_modal}
     <!-- container -->
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1>{subtitle}</h1>
-        </div>
-        <div class="row-fluid">
+    <div id="main-container">
+		<div class="page-header">
+			<div class="header-label"><h1>{subtitle}</h1></div>
+			<div class="header-accessories">{header_accessories}</div>
+		</div>
+		<div id="main-content">
 			{html_sidebar}
-			<div class="span{content_span}">
+			<div id="page-container">
 				<div id="flashmessage" class="hide">
-				<!--%tpl_repeat_messages-->
-				<div class="alert alert-{shortcode}">
-					<p class="pull-left span1"><i class="icon-{icon}"></i></p>
-					<p>{message}</p>
-				</div>
-				<!--%%tpl_repeat_messages-->
-				{messages}
+					<!--%tpl_repeat_messages-->
+					<div class="alert alert-{shortcode}">
+						<p class="pull-left span1"><i class="icon-{icon}"></i></p>
+						<p>{message}</p>
+					</div>
+					<!--%%tpl_repeat_messages-->
+					{messages}
 				</div>
 				{content}
 			</div>
 		</div>
 		{html_footer}
-    </div>
+	</div>
     <!-- /container -->
     </body>
 </html>
@@ -80,7 +78,7 @@
 				<!--%%tpl_repeat_menu-->
 				{menu}
                 <li id="nav_option_help">
-                    <a href="http://www.phpservermonitor.org/" target="_blank">{label_help}</a>
+                    <a href="http://www.phpservermonitor.org/support" target="_blank">{label_help}</a>
                 </li>
             </ul>
 			<ul class="nav pull-right">

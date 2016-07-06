@@ -1,4 +1,5 @@
 tag = $(shell git describe)
+export_name = phpservermon-$(tag)
 
 help:
 	@echo ' PHP Server Monitor - $(tag) '
@@ -6,24 +7,29 @@ help:
 
 export:
 	@echo 'Building release for tag $(tag) '
-	mkdir -p ./build ./build/phpservermon
-	rm -rf ./build/phpservermon/*
-	git archive $(tag) | tar -xf - -C ./build/phpservermon/
+	mkdir -p ./build ./build/$(export_name)
+	rm -rf ./build/$(export_name)/*
+	git archive $(tag) | tar -xf - -C ./build/$(export_name)/
+	find ./build/$(export_name) -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
-	find ./build/phpservermon -name "*.php" | xargs -I file php -l file
-	find ./build/phpservermon -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \;
+	find ./build/$(export_name) -name "*.php" | xargs -I file php -l file
+	@echo 'Downloading dependencies'
+	cd ./build/$(export_name); php composer.phar install; cd ../../;
+	rm -f ./build/$(export_name)/composer.phar
+	rm -f ./build/$(export_name)/composer.json
+	rm -f ./build/$(export_name)/composer.lock
 	@echo 'Building HTML documentation'
-	cd ./build/phpservermon/docs; make BUILDDIR=. html; cd ../../../;
+	cd ./build/$(export_name)/docs; make BUILDDIR=. html; cd ../../../;
 	@echo 'Cleaning up docs dir'
-	rm -f ./build/phpservermon/Makefile
-	rm -f ./build/phpservermon/docs/Makefile
-	rm -f ./build/phpservermon/docs/make.bat
-	rm -f ./build/phpservermon/docs/conf.py
+	rm -f ./build/$(export_name)/Makefile
+	rm -f ./build/$(export_name)/docs/Makefile
+	rm -f ./build/$(export_name)/docs/make.bat
+	rm -f ./build/$(export_name)/docs/conf.py
 	@echo 'Setting folder and file permissions'
-	find ./build/phpservermon -type f | xargs chmod 0644
-	find ./build/phpservermon -type d | xargs chmod 0755
+	find ./build/$(export_name) -type f | xargs chmod 0644
+	find ./build/$(export_name) -type d | xargs chmod 0755
 	@echo 'Creating archives'
-	cd ./build; zip -rq phpservermon-$(tag).zip ./phpservermon; cd ../;
-	cd ./build; tar -pczf phpservermon-$(tag).tar.gz ./phpservermon; cd ../;
-	rm -rf ./build/phpservermon
+	cd ./build; zip -rq $(export_name).zip ./$(export_name); cd ../;
+	cd ./build; tar -pczf $(export_name).tar.gz ./$(export_name); cd ../;
+	#rm -rf ./build/$(export_name)
 	@echo 'Building release finished '

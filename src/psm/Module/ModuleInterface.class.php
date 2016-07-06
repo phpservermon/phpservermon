@@ -27,8 +27,6 @@
  **/
 
 namespace psm\Module;
-use psm\Service\Database;
-use psm\Service\Template;
 
 interface ModuleInterface {
 

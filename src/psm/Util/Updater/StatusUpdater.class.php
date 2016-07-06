@@ -149,7 +149,9 @@ class StatusUpdater {
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);
 
-		fclose($fp);
+		if(is_resource) {
+			fclose($fp);
+		}
 
 		// check if server is available and rerun if asked.
 		if(!$status && $run < $max_runs) {

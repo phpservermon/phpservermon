@@ -79,6 +79,12 @@ class UserController extends AbstractController {
 			'plus icon-white', 'success'
 		);
 
+		$modal = new \psm\Util\Module\Modal($this->tpl, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+		$this->addModal($modal);
+		$modal->setTitle(psm_get_lang('users', 'delete_title'));
+		$modal->setMessage(psm_get_lang('users', 'delete_message'));
+		$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
 		// build label array for the next loop
 		$servers_labels = array();
 		foreach ($this->servers as $server) {
@@ -221,15 +227,16 @@ class UserController extends AbstractController {
 		if(!empty($clean['password'])) {
 			$password = $clean['password'];
 		}
-		unset($clean['password']);
 		unset($clean['password_repeat']);
 
 		if($user_id > 0) {
 			// edit user
+			unset($clean['password']); // password update is executed separately
 			$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $user_id));
 			$this->addMessage(psm_get_lang('users', 'updated'), 'success');
 		} else {
 			// add user
+			$clean['password'] = ''; // password update is executed separately
 			$user_id = $this->db->save(PSM_DB_PREFIX.'users', $clean);
 			$this->addMessage(psm_get_lang('users', 'inserted'), 'success');
 		}
@@ -268,7 +275,7 @@ class UserController extends AbstractController {
 
 			$this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
 			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
-			$this->addMessage(psm_get_lang('system', 'deleted'), 'success');
+			$this->addMessage(psm_get_lang('users', 'deleted'), 'success');
 		} catch(\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
 		}
@@ -283,6 +290,7 @@ class UserController extends AbstractController {
 			array(
 				'subtitle' => psm_get_lang('menu', 'user'),
 				'label_users' => psm_get_lang('menu', 'users'),
+				'label_user' => psm_get_lang('users', 'user'),
 				'label_name' => psm_get_lang('users', 'name'),
 				'label_user_name' => psm_get_lang('users', 'user_name'),
 				'label_password' => psm_get_lang('users', 'password'),
@@ -297,9 +305,11 @@ class UserController extends AbstractController {
 				'label_action' => psm_get_lang('system', 'action'),
 				'label_save' => psm_get_lang('system', 'save'),
 				'label_go_back' => psm_get_lang('system', 'go_back'),
-				'label_edit' => psm_get_lang('system', 'edit') . ' ' . psm_get_lang('users', 'user'),
-				'label_delete' => psm_get_lang('system', 'delete') . ' ' . psm_get_lang('users', 'user'),
+				'label_edit' => psm_get_lang('system', 'edit'),
+				'label_delete' => psm_get_lang('system', 'delete'),
 				'label_add_new' => psm_get_lang('system', 'add_new'),
+				'icon_level_10' => 'icon-admin',
+				'icon_level_20' => 'icon-user',
 			)
 		);
 

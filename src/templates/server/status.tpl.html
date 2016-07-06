@@ -1,43 +1,73 @@
 <!--%tpl_server_status-->
-<style type="text/css">
-	body {
-		background: black;
-	}
-
-	.page-header {
-		border-bottom: 0;
-	}
-
-	h2, p {
-		margin: 0;
-		padding: 0;
-	}
-
-	h2 {
-		margin-bottom: 10px;
-	}
-
-</style>
-<div class="entity-container">
-	<!--%tpl_repeat_servers_offline-->
-	<div class="offline">
-		<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
-			<h2>{label}</h2>
-			<p>{label_last_online}: {last_online_nice}</p>
-			<p>{label_last_check}: {last_checked_nice}</p>
+<div class="tab-content">
+	<div id="flow-layout" class="tab-pane {block_layout_active}">
+		<div class="entity-container">
+			<!--%tpl_repeat_servers_offline-->
+			<div class="offline">
+				<div class="entity {class_warning}" onclick="window.location.href='{url_view}'">
+					<h2>{label}</h2>
+					<p>{label_last_online}: {last_online_nice}</p>
+					<p>{label_last_check}: {last_checked_nice}</p>
+				</div>
+			</div>
+			<!--%%tpl_repeat_servers_offline-->
+			{servers_offline}
+			<!--%tpl_repeat_servers_online-->
+			<div class="online">
+				<div class="entity" onclick="window.location.href='{url_view}'">
+					<h2>{label}</h2>
+					<p>{label_last_online}: {last_online_nice}</p>
+					<p>{label_rtime}: {rtime}s</p>
+				</div>
+			</div>
+			<!--%%tpl_repeat_servers_online-->
+			{servers_online}
 		</div>
 	</div>
-	<!--%%tpl_repeat_servers_offline-->
-	{servers_offline}
-	<!--%tpl_repeat_servers_online-->
-	<div class="online">
-		<div class="entity" onclick="window.location.href='{url_view}'">
-			<h2>{label}</h2>
-			<p>{label_last_online}: {last_checked_nice}</p>
-			<p>{label_rtime}: {rtime}s</p>
+	<div id="list-layout" class="tab-pane {list_layout_active}">
+		<div class="entity-container">
+			<table class="table table-bordered">
+				<tbody>
+					<!--%tpl_repeat_servers_offline2-->
+						<tr class="row-offline" onclick="window.location.href='{url_view}'">
+							<td class="{class_warning}"><div class="server-name">{label}</div>
+								<div class="visible-phone">
+									<div class="table-body">
+										<div class="table-row"><div class="table-cell-details tight">{label_last_online}: &nbsp;</div><div class="table-cell-details">{last_online_nice}</div></div>
+										<div class="table-row"><div class="table-cell-details tight">{label_last_check}: &nbsp;</div><div class="table-cell-details">{last_checked_nice}</div></div>
+									</div>
+								</div>
+							</td>
+							<td class="{class_warning} hidden-phone">{label_last_online}: {last_online_nice}</td>
+							<td class="{class_warning} hidden-phone">{label_last_check}: {last_checked_nice}</td>
+						</tr>
+					<!--%%tpl_repeat_servers_offline2-->
+					{servers_offline2}
+					<!--%tpl_repeat_servers_online2-->
+						<tr class="row-online" onclick="window.location.href='{url_view}'">
+							<td><div class="server-name">{label}</div>
+								<div class="visible-phone">
+									<div class="table-body">
+										<div class="table-row"><div class="table-cell-details tight">{label_last_online}: &nbsp;</div><div class="table-cell-details">{last_online_nice}</div></div>
+										<div class="table-row"><div class="table-cell-details tight">{label_rtime}: &nbsp;</div><div class="table-cell-details">{rtime}</div></div>
+									</div>
+								</div>
+							</td>
+							<td class="hidden-phone">{label_last_online}: {last_online_nice}</td>
+							<td class="hidden-phone">{label_rtime}: {rtime}s</td>
+						</tr>
+					<!--%%tpl_repeat_servers_online2-->
+					{servers_online2}
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<!--%%tpl_repeat_servers_online-->
-	{servers_online}
 </div>
 <!--%%tpl_server_status-->
+
+<!--%tpl_status_layout_selector-->
+<div class="btn-group" data-toggle="buttons-radio">
+	<button class="btn {block_layout_active}" data-toggle="tab" data-target="#flow-layout" onclick="psm_saveLayout(0)"><i class="icon-th-large"></i></button>
+	<button class="btn {list_layout_active}" data-toggle="tab" data-target="#list-layout" onclick="psm_saveLayout(1)"><i class="icon-th-list"></i></button>
+</div>
+<!--%%tpl_status_layout_selector-->
