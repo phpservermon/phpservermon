@@ -1,2 +1,14 @@
+# Autodetect text files
+* text=auto
+
+# Force the following filetypes to have unix eols, so Windows does not break them
+*.txt text eol=lf
+*.php text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.phar binary
+
 .gitignore export-ignore
-.gitattributes export-ignore  
+.gitattributes export-ignore
+Vagrantfile export-ignore
+puphpet export-ignore

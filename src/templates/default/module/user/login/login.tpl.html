@@ -1,0 +1,15 @@
+{% import 'main/macros.tpl.html' as macro %}
+<div class="container">
+  <form class="form-signin" method="post">
+	{{ macro.csrf_input() }}
+    <h3 class="form-signin-heading">{{ title_sign_in }}</h3>
+    <input type="text" name="user_name" class="input-block-level" placeholder="{{ label_username }}" value="{{ value_user_name }}" required>
+    <input type="password" name="user_password" class="input-block-level" placeholder="{{ label_password }}" required>
+	<input type="hidden" name="action" value="login">
+    <label class="checkbox">
+  	  <input type="checkbox" name="user_rememberme" value="1" {{ value_rememberme }}> {{ label_remember_me }}
+    </label>
+    <button class="btn btn-primary" type="submit">{{ label_login }}</button>
+    <a class="btn" href="?action=forgot">{{ label_password_forgot }}</a>
+  </form>
+</div>

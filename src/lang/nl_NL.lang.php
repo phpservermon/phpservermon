@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,9 +28,11 @@
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
 	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
+	'locale_tag' => 'nl',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
-		'install' => 'Install',
+		'install' => 'Installeren',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -60,7 +62,7 @@ $sm_lang = array(
 		'a_second_ago' => 'een seconde geleden',
 	),
 	'menu' => array(
-		'config' => 'Config',
+		'config' => 'Configuratie',
 		'server' => 'Servers',
 		'server_log' => 'Log',
 		'server_status' => 'Status',
@@ -81,9 +83,14 @@ $sm_lang = array(
 		'level_description' => '<b>Beheerders</b> hebben volledige toegang: ze kunnen servers en gebruiker beheren en de globale configuratie aanpassen.<br/><b>Gebruikers</b> kunnen alleen de servers bekijken en op fouten testen die aan hun zijn toegewezen.',
 		'mobile' => 'Mobiel',
 		'email' => 'Email',
-		'delete_title' => 'Delete User',
-		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
-		'deleted' => 'User deleted.',
+		'pushover' => 'Pushover',
+		'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer informatie.',
+		'pushover_key' => 'Pushover Key',
+		'pushover_device' => 'Pushover Device',
+		'pushover_device_description' => 'Apparaat waar de berichten naar toe gaan. Laat leeg voor alle apparaten.',
+		'delete_title' => 'Verwijder gebruiker',
+		'delete_message' => 'Weet je zeker dat je deze gebruiker wilt verwijderen: \'%1\'?',
+		'deleted' => 'Gebruiker verwijderd.',
 		'updated' => 'Gebruiker gewijzigd.',
 		'inserted' => 'Gebruiker toegevoegd.',
 		'profile' => 'Profiel',
@@ -104,6 +111,7 @@ $sm_lang = array(
 		'status' => 'Status',
 		'email' => 'Email',
 		'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
 	),
 	'servers' => array(
@@ -111,6 +119,8 @@ $sm_lang = array(
 		'status' => 'Status',
 		'label' => 'Label',
 		'domain' => 'Domein/IP',
+		'timeout' => 'Timeout',
+		'timeout_description' => 'Aantal seconden te wachten op een reactie van de server.',
 		'port' => 'Poort',
 		'type' => 'Type',
 		'type_website' => 'Website',
@@ -120,14 +130,16 @@ $sm_lang = array(
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
-		'no_monitoring' => 'No monitoring',
+		'no_monitoring' => 'Geen monitoring',
 		'email' => 'Email',
 		'send_email' => 'Stuur email',
 		'sms' => 'SMS',
 		'send_sms' => 'Stuur SMS',
-		'delete_title' => 'Delete Server',
-		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
-		'deleted' => 'Server deleted.',
+		'pushover' => 'Pushover',
+		'users' => 'Gebruikers',
+		'delete_title' => 'Verwijder server',
+		'delete_message' => 'Weet je zeker dat je deze server wilt verwijderen: \'%1\'?',
+		'deleted' => 'Server verwijderd.',
 		'updated' => 'Server gewijzigd.',
 		'inserted' => 'Server toegevoegd.',
 		'latency' => 'Response tijd',
@@ -149,6 +161,9 @@ $sm_lang = array(
 		'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',
 		'chart_short_date_format' => '%d-%m %H:%M',
 		'chart_short_time_format' => '%H:%M',
+		'warning_notifications_disabled_sms' => 'SMS notificaties zijn uitgeschakeld.',
+		'warning_notifications_disabled_email' => 'Email notificaties zijn uitgeschakeld.',
+		'warning_notifications_disabled_pushover' => 'Pushover notificaties zijn uitgeschakeld.',
 		'error_server_no_match' => 'Server niet gevonden.',
 		'error_server_label_bad_length' => 'Het label moet tussen de 1 en 255 karakters lang zijn.',
 		'error_server_ip_bad_length' => 'Het domein / IP moet tussen de 1 en 255 karakters lang zijn.',
@@ -167,6 +182,8 @@ $sm_lang = array(
 		'email_smtp' => 'SMTP gebruiken',
 		'email_smtp_host' => 'SMTP host',
 		'email_smtp_port' => 'SMTP poort',
+		'email_smtp_security' => 'SMTP beveiliging',
+		'email_smtp_security_none' => 'Geen',
 		'email_smtp_username' => 'SMTP gebruikersnaam',
 		'email_smtp_password' => 'SMTP wachtwoord',
 		'email_smtp_noauth' => 'Laat leeg voor geen authenticatie',
@@ -178,12 +195,21 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
-		'alert_type' => 'Selecteer wanneer je een notificatie wilt.<br/>',
-		'alert_type_description' => '<b>Status change:</b> '.
+		'pushover_status' => 'Sta Pushover berichten toe?',
+		'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer informatie.',
+		'pushover_clone_app' => 'Klik hier om je Pushover app te maken',
+		'pushover_api_token' => 'Pushover App API Token',
+		'pushover_api_token_description' => 'Voordat je Pushover kunt gebruiken moet je een <a href="%1$s" target="_blank">App registreren</a> via hun website, en daarvan de App API Token hier invullen.',
+		'alert_type' => 'Selecteer wanneer je een notificatie wilt',
+		'alert_type_description' => '<b>Status verandert:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
 			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
@@ -198,18 +224,19 @@ $sm_lang = array(
 		'log_status_description' => 'Als de log status aan staat, zal de monitor een log aanmaken elke keer dat hij door de notificatie instellingen komt.',
 		'log_email' => 'Log emails verstuurd bij het script?',
 		'log_sms' => 'Log sms berichten verstuurd bij het script?',
+		'log_pushover' => 'Log Pushover berichten verstuurd bij het script?',
 		'updated' => 'De configuratie is gewijzigd.',
-		'nochanges' => 'The configuration didn\'t change.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
-		'tab_log' => 'Log',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Email instellingen',
 		'settings_sms' => 'SMS instellingen',
+		'settings_pushover' => 'Pushover instellingen',
 		'settings_notification' => 'Notificatie instellingen',
 		'settings_log' => 'Log instellingen',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers pagina.<br/>'.
+			'Auto-herladen servers pagina.<br/>'.
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
@@ -217,21 +244,35 @@ $sm_lang = array(
 		'test' => 'Test',
 		'test_email' => 'Er zal een email verstuurd worden naar het email adres in je profiel.',
 		'test_sms' => 'Er zal een SMS verstuurd worden naar het telefoonnummer in je profiel.',
+		'test_pushover' => 'Er zal een Pushover notificatie verstuurd worden naar de user key/device in je profiel.',
 		'send' => 'Verstuur',
+		'test_subject' => 'Test',
 		'test_message' => 'Test bericht',
 		'email_sent' => 'Email verzonden',
 		'email_error' => 'Er is een fout opgetreden tijdens het verzenden',
 		'sms_sent' => 'SMS verzonden',
 		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden',
+		'sms_error_nomobile' => 'Kan test SMS niet verzenden: er is geen telefoonnummer ingevuld in je profiel.',
+		'pushover_sent' => 'Pushover notificatie verzonden',
+		'pushover_error' => 'De volgende fout is opgetreden bij het versturen van de Pushover notificatie: %s',
+		'pushover_error_noapp' => 'Kan test notificatie niet verzenden: er is geen Pushover App API token gevonden in de algemene configuratie.',
+		'pushover_error_nokey' => 'Kan test notificatie niet verzenden: er is geen Pushover key gevonden in je profiel.',
+		'log_retention_period' => 'Log retentie periode',
+		'log_retention_period_description' => 'Aantal dagen dat logs van notificaties en archieven van server uptime worden bewaard. Vul 0 in om log opruiming uit te zetten.',
+		'log_retention_days' => 'dagen',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
 		'off_sms' => 'Server %LABEL% is DOWN: ip=%IP%, poort=%PORT%. Fout=%ERROR%',
 		'off_email_subject' => 'BELANGRIJK: Server %LABEL% is DOWN',
 		'off_email_body' => "De server kon niet worden bereikt:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Fout: %ERROR%<br/>Datum: %DATE%",
+		'off_pushover_title' => 'Server %LABEL% is DOWN',
+		'off_pushover_message' => "De server kon niet worden bereikt:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Fout: %ERROR%<br/>Datum: %DATE%",
 		'on_sms' => 'Server %LABEL% is RUNNING: ip=%IP%, poort=%PORT%',
 		'on_email_subject' => 'BELANGRIJK: Server %LABEL% is RUNNING',
 		'on_email_body' => "Server %LABEL% is weer online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Datum: %DATE%",
+		'on_pushover_title' => 'Server %LABEL% is RUNNING',
+		'on_pushover_message' => "Server %LABEL% is weer online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Datum: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welkom, %user_name%',
@@ -248,12 +289,16 @@ $sm_lang = array(
 		'password_forgot' => 'Wachtwoord vergeten?',
 		'password_reset' => 'Wachtwoord herstellen',
 		'password_reset_email_subject' => 'Wijzig je wachtwoord voor PHP Server Monitor',
-		'password_reset_email_body' => 'Gebruik de onderstaande link om uw wachtwoord te wijzigen. Let op, deze link verloopt na 1 uur.<br/><br/>%link%',
+		'password_reset_email_body' => 'Gebruik de onderstaande link om je wachtwoord te wijzigen. Let op, deze link verloopt na 1 uur.<br/><br/>%link%',
 		'error_user_incorrect' => 'De opgegeven gebruikersnaam is onjuist.',
 		'error_login_incorrect' => 'De informatie is niet juist.',
 		'error_login_passwords_nomatch' => 'De ingevulde wachtwoorden komen niet overeen.',
 		'error_reset_invalid_link' => 'De reset link is ongeldig.',
 		'success_password_forgot' => 'Er is een mail verstuurd met informatie om je wachtwoord aan te passen.',
 		'success_password_reset' => 'Je wachtwoord is aangepast. Je kunt nu inloggen.',
+	),
+	'error' => array(
+		'401_unauthorized' => 'Unauthorized',
+		'401_unauthorized_description' => 'Je hebt niet de juiste bevoegdheden om deze pagina te bekijken.',
 	),
 );

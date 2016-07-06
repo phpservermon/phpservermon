@@ -1,0 +1,103 @@
+<table class="table table-bordered">
+	<colgroup>
+		<col class="oce-first" />
+		<col />
+	</colgroup>
+	<thead>
+		<tr class="head">
+			<th colspan="2">
+				<div class="btn-group">
+				  <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+					<i class="icon-th icon-white"></i>&nbsp;{{ label }}
+					<span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+					{% for option in options %}
+					<li class="{{ option.class_active }}"><a href="{{ option.url|raw }}">{{ option.label }}</a>
+					{% endfor %}
+				  </ul>
+				</div>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>{{ label_status }}:</td>
+			<td>
+				<span class="label label-status-{{ status }}">
+					<a href="#" title="{{ error }}">{{ status }}</a>
+				</span>&nbsp;{{ error }}
+			</td>
+		</tr>
+		<tr>
+			<td>{{ label_type }}:</td>
+			<td>{{ type }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_domain }}:</td>
+			<td>{{ ip|raw }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_port }}:</td>
+			<td>{{ port }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_last_check }}:</td>
+			<td>{{ last_check }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_last_online }}:</td>
+			<td>{{ last_online }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_rtime }}:</td>
+			<td>{{ rtime }} s</td>
+		</tr>
+		<tr>
+			<td>{{ label_monitoring }}:</td>
+			<td>{{ active }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_email }}:</td>
+			<td>{{ email }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_sms }}:</td>
+			<td>{{ sms }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_pushover }}:</td>
+			<td>{{ pushover }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_timeout }}:</td>
+			<td>{{ timeout }} s</td>
+		</tr>
+		<tr>
+			<td>{{ label_website_username }}:</td>
+			<td>{{ website_username }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_website_password }}:</td>
+			<td>
+                {% if (website_password is not empty) %}
+				******
+				{% endif %}
+			</td>
+		</tr>
+		{% if has_admin_actions %}
+		<tr>
+			<td class="hidden-small">&nbsp;</td>
+			<td class="action-small" colspan="2">
+				<a class="btn btn-success" href="{{ url_edit|raw }}">
+					<i class="icon-edit icon-white"></i>&nbsp;{{ label_edit }}
+				</a>
+				<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" data-modal-id="delete" data-modal-param="{{ label }}">
+					<i class="icon-remove icon-white"></i>&nbsp;{{ label_delete }}
+				</a>
+			</td>
+		</tr>
+		{% endif %}
+	</tbody>
+</table>
+{{ html_history|raw }}

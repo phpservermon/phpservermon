@@ -1,0 +1,60 @@
+<div class="tabbable">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#log_status_content" data-toggle="tab">{{ label_status }}</a></li>
+		<li><a href="#log_email_content" data-toggle="tab">{{ label_email }}</a></li>
+		<li><a href="#log_sms_content" data-toggle="tab">{{ label_sms }}</a></li>
+		<li><a href="#log_pushover_content" data-toggle="tab">{{ label_pushover }}</a></li>
+	</ul>
+	<div class="tab-content well">
+		{% for tab in tabs %}
+		<div class="tab-pane {{ tab.tab_active }}" id="log_{{ tab.id }}_content">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="hidden-phone">{{ label_server }}</th>
+						<th class="hidden-phone">{{ label_message }}</th>
+						<th class="hidden-phone">{{ label_date }}</th>
+						{% if tab.has_users %} <th class="hidden-phone">{{ label_users }}</th> {% endif %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for entry in tab.entries %}
+					<tr class="{{ entry.class }}">
+						<td>
+							<div class="table-body">
+								<div class="table-cell">
+									<div class="visible-phone pull-right">
+										&nbsp;{{ entry.datetime_format }}
+									</div>
+									<i class="{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> <span class="title">{{ entry.server }}</span> {{ entry.ip }}
+								</div>
+							</div>
+							<div class="visible-phone">
+								<div class="table-separator"/></div>
+								<div class="table-body">
+									<div class="table-cell-details">{{ entry.message|raw }}</div>
+								</div>
+							</div>
+							{% if tab.has_users %}<div class="visible-phone">
+								<div class="table-separator"/></div>
+								<div class="table-body">
+									<div class="table-cell-details">{{ label_users }}: {{ entry.user_list|raw }}</div>
+								</div>
+							</div>{% endif %}
+						</td>
+						<td class="hidden-phone">{{ entry.message|raw }}</td>
+						<td class="hidden-phone tight">{{ entry.datetime_format }}</td>
+						{% if tab.has_users %}<td class="hidden-phone tight">{{ entry.users|raw }}</td>{% endif %}
+					</tr>
+					{% endfor %}
+					{% if tab.no_logs %}
+					<tr class="{{ class }}">
+						<td colspan="4" class="cell-center">{{ label_no_logs }}</td>
+					</tr>
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+		{% endfor %}
+	</div>
+</div>

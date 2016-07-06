@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -27,9 +27,8 @@
  **/
 
 // Include paths
-define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('PSM_PATH_INC', PSM_PATH_SRC . 'includes' . DIRECTORY_SEPARATOR);
-define('PSM_PATH_TPL', PSM_PATH_SRC . 'templates' . DIRECTORY_SEPARATOR);
+define('PSM_PATH_SRC', __DIR__ . DIRECTORY_SEPARATOR);
+define('PSM_PATH_CONFIG', PSM_PATH_SRC . 'config' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
 
 // user levels
@@ -47,9 +46,12 @@ if(file_exists($path_conf)) {
 	include_once $path_conf;
 }
 // check for a debug var
-if(defined('PSM_DEBUG') && PSM_DEBUG) {
+if(!defined('PSM_DEBUG')) {
+	define('PSM_DEBUG', false);
+}
+if(PSM_DEBUG) {
 	error_reporting(E_ALL);
-	ini_set('display_erors', 1);
+	ini_set('display_errors', 1);
 } else {
 	error_reporting(0);
 	ini_set('display_errors', 0);
@@ -61,40 +63,12 @@ if(!file_exists($vendor_autoload)) {
 }
 require_once $vendor_autoload;
 
-// set autoloader, make sure to set $prepend = true so that our autoloader is called first
-spl_autoload_register(function($class) {
-	// remove leading \
-	$class = ltrim($class, '\\');
-	$path_parts = explode('\\', $class);
-
-	$filename = array_pop($path_parts);
-	$path = PSM_PATH_SRC . implode(DIRECTORY_SEPARATOR, $path_parts) .
-			DIRECTORY_SEPARATOR .
-			$filename . '.class.php'
-	;
-	if(file_exists($path)) {
-		require_once $path;
-		return;
-	}
-});
-
-// auto-find all include files
-$includes = glob(PSM_PATH_INC . '*.inc.php');
-foreach($includes as $file) {
-	include_once $file;
-}
-// init db connection
-$db = new psm\Service\Database();
+$router = new psm\Router();
+// this may seem insignificant, but right now lots of functions depend on the following global var definition:
+$db = $router->getService('db');
 
 // sanity check!
-if(defined('PSM_INSTALL') && PSM_INSTALL) {
-	// install mode
-	if($db->status()) {
-		// connection established, attempt to load config.
-		// no biggie if it doesnt work because the user is still in the install module.
-		psm_load_conf();
-	}
-} else {
+if(!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if($db->getDbHost() === null) {
 		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');

@@ -1,0 +1,60 @@
+<div class="tab-content">
+	<div id="flow-layout" class="tab-pane {{ block_layout_active }}">
+		<div class="entity-container">
+			{% for server in servers_offline %}
+			<div class="offline">
+				<div class="entity {{ server.class_warning }}" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<h2>{{ server.label }}</h2>
+					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
+					<p>{{ label_last_check }}: {{ server.last_checked_nice }}</p>
+				</div>
+			</div>
+			{% endfor %}
+			{% for server in servers_online %}
+			<div class="online">
+				<div class="entity" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<h2>{{ server.label }}</h2>
+					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
+					<p>{{ label_rtime }}: {{ server.rtime }}s</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div id="list-layout" class="tab-pane {{ list_layout_active }}">
+		<div class="entity-container">
+			<table class="table table-bordered">
+				<tbody>
+					{% for server in servers_offline %}
+						<tr class="row-offline" onclick="window.location.href='{{ server.url_view|raw }}'">
+							<td class="{{ server.class_warning }}"><div class="server-name">{{ server.label }}</div>
+								<div class="visible-phone">
+									<div class="table-body">
+										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
+										<div class="table-row"><div class="table-cell-details tight">{{ label_last_check }}: &nbsp;</div><div class="table-cell-details">{{ server.last_checked_nice }}</div></div>
+									</div>
+								</div>
+							</td>
+							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
+							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_check }}: {{ server.last_checked_nice }}</td>
+						</tr>
+					{% endfor %}
+					{% for server in servers_online %}
+						<tr class="row-online" onclick="window.location.href='{{ server.url_view|raw }}'">
+							<td><div class="server-name">{{ server.label }}</div>
+								<div class="visible-phone">
+									<div class="table-body">
+										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
+										<div class="table-row"><div class="table-cell-details tight">{{ label_rtime }}: &nbsp;</div><div class="table-cell-details">{{ server.rtime }}</div></div>
+									</div>
+								</div>
+							</td>
+							<td class="hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
+							<td class="hidden-phone">{{ label_rtime }}: {{ server.rtime }}s</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

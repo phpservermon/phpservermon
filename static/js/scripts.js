@@ -28,7 +28,7 @@ $().ready(function() {
 		}
 		return false;
 	});
-	
+
 	$('.modalOKButton').click(function(e) {
 		var $this = $(this);
 		var $origin = $this.data('modal-origin');
@@ -40,10 +40,79 @@ $().ready(function() {
 		}
 		return false;
 	});
+	$('select.multiselect').multiselect({
+		includeSelectAllOption: true,
+		maxHeight: 400,
+		enableCaseInsensitiveFiltering: true
+	});
 
 	psm_flash_message();
 	psm_tooltips();
+
+	// popularPorts
+    // initial
+    $('.portGroup').hide();
+    var portInput = $('#port').val();
+
+    if (portInput != '') {
+        var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
+        if(findPopularPorts.length) {
+            $(findPopularPorts).attr("selected", "selected");
+        } else {
+            $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
+            $('.portGroup').slideDown();
+        }
+    }
+
+	$('#popularPorts').change(function () {
+		changePopularPorts($(this).val(), false, $('#type').val());
+	});
+
+	// server type
+	$('.types').hide();
+	changeTypeSwitch($('#type').val());
+
+	$('#type').change(function () {
+		changeTypeSwitch($('#type').val());
+		changePopularPorts($('#popularPorts').val(), true, $('#type').val());
+	});
 });
+
+function changeTypeSwitch(typeInput) {
+	switch (typeInput) {
+		case 'service':
+			$('.types').slideUp();
+			$('.typeService').slideDown();
+			break;
+
+		case 'website':
+			$('.types').slideUp();
+			$('.typeWebsite').slideDown();
+			break;
+
+		default:
+			$('.types').hide();
+	}
+}
+
+function changePopularPorts(popularPorts, changeType, typeInput) {
+	if (changeType === true) {
+		if (typeInput == 'service') {
+			if (popularPorts == 'custom') {
+				$('.portGroup').slideDown();
+			} else {
+				$('.portGroup').hide();
+			}
+		}
+	} else {
+		if (popularPorts == 'custom') {
+			$('.portGroup').slideDown();
+		} else {
+			$('#port').val(popularPorts);
+			$('.portGroup').slideUp();
+		}
+	}
+}
 
 function psm_xhr(mod, params, method, on_complete, options) {
 	method = (typeof method == 'undefined') ? 'GET' : method;
@@ -76,6 +145,10 @@ function psm_tooltips() {
 		'trigger':'hover',
 		'placement': 'right',
 		'container': 'body'
+	});
+	$('i[data-toggle="tooltip"]').tooltip({
+		'trigger':'hover',
+		'placement': 'bottom'
 	});
 }
 

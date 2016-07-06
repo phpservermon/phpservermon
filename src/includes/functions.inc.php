@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -40,17 +40,26 @@
 function psm_get_lang() {
 	$args = func_get_args();
 
-	if(empty($args)) return $GLOBALS['sm_lang'];
+	if (empty($args)) return $GLOBALS['sm_lang'];
 
 	$result = null;
+	$resultDefault = null;
 	$node = null;
+	$nodeDefault = null;
 
-	if($args) {
+	if ($args) {
 		$node = '$GLOBALS[\'sm_lang\'][\'' . implode('\'][\'', $args) . '\']';
+		$nodeDefault = '$GLOBALS[\'sm_lang_default\'][\'' . implode('\'][\'', $args) . '\']';
 	}
-	eval('if (isset('.$node.')) $result = '.$node.';');
 
-	return $result;
+	eval('if (isset(' . $node . ')) $result = ' . $node . ';');
+	eval('if (isset(' . $nodeDefault . ')) $resultDefault = ' . $nodeDefault . ';');
+
+	if (empty($result)) {
+		return $resultDefault;
+	} else {
+		return $result;
+	}
 }
 
 /**
@@ -60,12 +69,25 @@ function psm_get_lang() {
  * @see psm_get_lang()
  */
 function psm_load_lang($lang) {
+	// if not in the language translation must always be available starting translation - English
+	$default_lang_file = PSM_PATH_LANG . 'en_US.lang.php';
+
+	if (file_exists($default_lang_file)) {
+		require $default_lang_file;
+
+		if (isset($sm_lang)) {
+			$GLOBALS['sm_lang_default'] = $sm_lang;
+			unset($sm_lang);
+		}
+	}
+
+	// translated language
 	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
 
-	if(!file_exists($lang_file)) {
+	if (!file_exists($lang_file)) {
 		// If the file has been removed, we use the english one
 		$en_file = PSM_PATH_LANG . 'en_US.lang.php';
-		if(!file_exists($en_file)) {
+		if (!file_exists($en_file)) {
 			// OK, nothing we can do
 			die('unable to load language file: ' . $lang_file);
 		}
@@ -73,7 +95,7 @@ function psm_load_lang($lang) {
 	}
 
 	require $lang_file;
-	if(isset($sm_lang['locale'])) {
+	if (isset($sm_lang['locale'])) {
 		setlocale(LC_TIME, $sm_lang['locale']);
 	}
 
@@ -111,7 +133,6 @@ function psm_get_langs() {
 
 /**
  * Get a setting from the config.
- * The config must have been loaded first using psm_load_conf()
  *
  * @param string $key
  * @param mixed $alt if not set, return this alternative
@@ -119,6 +140,9 @@ function psm_get_langs() {
  * @see psm_load_conf()
  */
 function psm_get_conf($key, $alt = null) {
+	if(!isset($GLOBALS['sm_config'])) {
+		psm_load_conf();
+	}
 	$result = (isset($GLOBALS['sm_config'][$key])) ? $GLOBALS['sm_config'][$key] : $alt;
 
 	return $result;
@@ -134,9 +158,11 @@ function psm_get_conf($key, $alt = null) {
 function psm_load_conf() {
 	global $db;
 
-	// load config from database into global scope
 	$GLOBALS['sm_config'] = array();
 
+	if(!defined('PSM_DB_PREFIX') || !$db->status()) {
+		return false;
+	}
 	if(!$db->ifTableExists(PSM_DB_PREFIX.'config')) {
 		return false;
 	}
@@ -195,20 +221,40 @@ function psm_update_conf($key, $value) {
  * everything should have been handled when calling this function
  *
  * @param string $server_id
+ * @param string $type
  * @param string $message
+ *
+ * @return int log_id
  */
-function psm_add_log($server_id, $type, $message, $user_id = null) {
+function psm_add_log($server_id, $type, $message) {
 	global $db;
 
-	$db->save(
+	return $db->save(
 		PSM_DB_PREFIX.'log',
 		array(
 			'server_id' => $server_id,
 			'type' => $type,
 			'message' => $message,
-			'user_id' => ($user_id === null) ? '' : $user_id,
 		)
 	);
+}
+
+/**
+ * This function just adds a user to the log_users table.
+ *
+ * @param $log_id
+ * @param $user_id
+ */
+function psm_add_log_user($log_id, $user_id) {
+	global $db;
+
+    $db->save(
+        PSM_DB_PREFIX . 'log_users',
+        array(
+            'log_id'  => $log_id,
+            'user_id' => $user_id,
+        )
+    );
 }
 
 /**
@@ -219,17 +265,17 @@ function psm_add_log($server_id, $type, $message, $user_id = null) {
  * @param string $latency
  */
 function psm_log_uptime($server_id, $status, $latency) {
-    global $db;
+	global $db;
 
-    $db->save(
-        PSM_DB_PREFIX.'servers_uptime',
-        array(
-            'server_id' => $server_id,
-            'date' => date('Y-m-d H:i:s'),
-            'status' => $status,
-            'latency' => $latency,
-        )
-    );
+	$db->save(
+		PSM_DB_PREFIX.'servers_uptime',
+		array(
+			'server_id' => $server_id,
+			'date' => date('Y-m-d H:i:s'),
+			'status' => $status,
+			'latency' => $latency,
+		)
+	);
 }
 
 /**
@@ -263,11 +309,15 @@ function psm_parse_msg($status, $type, $vars) {
  * @param string $href
  * @param boolean $header return headers?
  * @param boolean $body return body?
- * @param int $timeout connection timeout in seconds
+ * @param int $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
  * @param boolean $add_agent add user agent?
+ * @param string|bool $website_username Username website
+ * @param string|bool $website_password Password website
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_agent = true) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
+	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
@@ -278,7 +328,13 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = 10, $add_
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
+
+    if($website_username !== false && $website_password !== false && !empty($website_username) && !empty($website_password)) {
+        curl_setopt($ch, CURLOPT_USERPWD, $website_username . ":" . $website_password);
+    }
+
 	curl_setopt($ch, CURLOPT_URL, $href);
+
 	if($add_agent) {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
 	}
@@ -382,12 +438,14 @@ function psm_update_available() {
 function psm_build_mail($from_name = null, $from_email = null) {
 	$phpmailer = new \PHPMailer();
 	$phpmailer->Encoding = "base64";
+	$phpmailer->CharSet = 'UTF-8';
 	$phpmailer->SMTPDebug = false;
 
 	if(psm_get_conf('email_smtp') == '1') {
 		$phpmailer->IsSMTP();
 		$phpmailer->Host = psm_get_conf('email_smtp_host');
 		$phpmailer->Port = psm_get_conf('email_smtp_port');
+		$phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
 		$smtp_user = psm_get_conf('email_smtp_username');
 		$smtp_pass = psm_get_conf('email_smtp_password');
@@ -409,6 +467,18 @@ function psm_build_mail($from_name = null, $from_email = null) {
 	$phpmailer->SetFrom($from_email, $from_name);
 
 	return $phpmailer;
+}
+
+/**
+ * Prepare a new Pushover util.
+ *
+ * @return \Pushover
+ */
+function psm_build_pushover() {
+	$pushover = new \Pushover();
+	$pushover->setToken(psm_get_conf('pushover_api_token'));
+
+	return $pushover;
 }
 
 /**
@@ -447,7 +517,18 @@ function psm_build_sms() {
 		case 'smsglobal':
 			$sms = new \psm\Txtmsg\Smsglobal();
 			break;
-	}
+		case 'freevoipdeal':
+			$sms = new \psm\Txtmsg\FreeVoipDeal();
+			break;
+		case 'nexmo':
+			$sms = new \psm\Txtmsg\Nexmo();
+			break;
+		case 'freemobilesms':
+			$sms = new \psm\Txtmsg\FreeMobileSMS();
+			break;
+		case 'octopush':
+			$sms = new \psm\Txtmsg\Octopush();
+			break;	}
 
 	// copy login information from the config file
 	if($sms) {
@@ -466,12 +547,15 @@ function psm_build_sms() {
  * @return string
  */
 function psm_build_url($params = array(), $urlencode = true, $htmlentities = true) {
-	$defports = array(80, 443);
-	$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-	if(!in_array($_SERVER['SERVER_PORT'], $defports)) {
-		$url .= ':' . $_SERVER['SERVER_PORT'];
+	if(defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
+		$url = PSM_BASE_URL;
+	} else {
+		$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
+		// for urls, we only want the forward slashes.
+		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+		$url = str_replace('\\', '', $url);
 	}
-	$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
 
 	if($params != null) {
 		$url .= '?';
@@ -523,12 +607,11 @@ function psm_POST($key, $alt = null) {
 /**
  * Check if we are in CLI mode
  *
- * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli
- * source: https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/drupal_is_cli/7
+ * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli.
  * @return boolean
  */
 function psm_is_cli() {
-	return (!isset($_SERVER['SERVER_SOFTWARE']) && (php_sapi_name() == 'cli' || (is_numeric($_SERVER['argc']) && $_SERVER['argc'] > 0)));
+	return (!isset($_SERVER['SERVER_SOFTWARE']) || php_sapi_name() == 'cli');
 }
 
 ###############################################
@@ -559,4 +642,72 @@ function psm_no_cache() {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Pragma: no-cache");
+}
+
+/**
+ * Encrypts the password for storage in the database
+ *
+ * @param string $key
+ * @param string $password
+ * @return string
+ * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+ */
+function psm_password_encrypt($key, $password)
+{
+    if(empty($password))
+        return '';
+
+    if (empty($key))
+        throw new \InvalidArgumentException('invalid_encryption_key');
+
+    $iv = mcrypt_create_iv(
+		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
+		MCRYPT_DEV_URANDOM
+	);
+
+	$encrypted = base64_encode(
+		$iv .
+		mcrypt_encrypt(
+			MCRYPT_RIJNDAEL_128,
+			hash('sha256',  $key, true),
+			$password,
+			MCRYPT_MODE_CBC,
+			$iv
+		)
+	);
+
+	return $encrypted;
+}
+
+/**
+ * Decrypts password stored in the database for future use
+ *
+ * @param string $key
+ * @param string $encryptedString
+ * @return string
+ * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+ */
+function psm_password_decrypt($key, $encryptedString)
+{
+	if(empty($encryptedString))
+		return '';
+
+	if (empty($key))
+         throw new \InvalidArgumentException('invalid_encryption_key');
+	
+	$data = base64_decode($encryptedString);
+	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+
+	$decrypted = rtrim(
+		mcrypt_decrypt(
+			MCRYPT_RIJNDAEL_128,
+			hash('sha256',  $key, true),
+			substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
+			MCRYPT_MODE_CBC,
+			$iv
+		),
+		"\0"
+	);
+
+	return $decrypted;
 }

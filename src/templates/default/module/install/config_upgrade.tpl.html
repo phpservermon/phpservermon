@@ -1,0 +1,9 @@
+{% extends "module/install/main.tpl.html" %}
+
+{% block install %}
+<p>We have discovered a previous version.</p>
+<p>In the next step we will upgrade your database to the latest version.</p>
+{{ block('results') }}
+<p>&nbsp;</p>
+<p><a class="btn btn-primary btn-large" href="install.php?action=install">Upgrade to {{ version }}</a></p>
+{% endblock %}

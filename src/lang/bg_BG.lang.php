@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
+	'locale_tag' => 'bg',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Мониторинг',
 		'install' => 'Инсталация',
@@ -81,6 +83,11 @@ $sm_lang = array(
 		'level_description' => '<b>Администраторите</b> имат пълен достъп: могат да управляват сървърите, потребителите и да редактират глобалните настройки.<br/><b>Потребителите</b> могат само да виждат статуса на сървърите и да обнояват информацията за даден сървър, за който им е разрешен достъп.',
 		'mobile' => 'Мобилен телефон',
 		'email' => 'Имейл',
+		'pushover' => 'Pushover',
+		'pushover_description' => 'Pushover е услуга, която улеснява получаването на известия в реално време. Посетете <a href="https://pushover.net/">техния сайт</a> за повече информация.',
+		'pushover_key' => 'Pushover Ключ',
+		'pushover_device' => 'Pushover Устройство',
+		'pushover_device_description' => 'Име на устройство, което да получава съобщение. Оставете празно, за изпращане до всички устройства.',
 		'delete_title' => 'Изтриване на потребител',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете потребител \'%1\'?',
 		'deleted' => 'Потребителят е изтрит успешно.',
@@ -104,6 +111,7 @@ $sm_lang = array(
 		'status' => 'Статус',
 		'email' => 'Имейл',
 		'sms' => 'SMS',
+		'pushover' => 'Pushover',
 		'no_logs' => 'Няма налични логове',
 	),
 	'servers' => array(
@@ -111,6 +119,8 @@ $sm_lang = array(
 		'status' => 'Статус',
 		'label' => 'Име',
 		'domain' => 'Хост',
+		'timeout' => 'Изчакване',
+		'timeout_description' => 'Брой секунди, който да изчака отговор от сървъра',
 		'port' => 'Порт',
 		'type' => 'Тип',
 		'type_website' => 'Сайт',
@@ -125,6 +135,8 @@ $sm_lang = array(
 		'send_email' => 'Имейл',
 		'sms' => 'SMS',
 		'send_sms' => 'SMS',
+		'pushover' => 'Pushover',
+		'users' => 'Потребители',
 		'delete_title' => 'Изтриване на сървър',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете сървър \'%1\'?',
 		'deleted' => 'Сървъра е изтрит успешно.',
@@ -149,13 +161,16 @@ $sm_lang = array(
 		'chart_long_date_format' => '%d.%m.%Y %H:%M:%S',
 		'chart_short_date_format' => '%d.%m %H:%M',
 		'chart_short_time_format' => '%H:%M',
-		'error_server_no_match' => 'Server not found.',
-		'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
-		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
-		'error_server_ip_bad_service' => 'The IP address is not valid.',
-		'error_server_ip_bad_website' => 'The website URL is not valid.',
-		'error_server_type_invalid' => 'The selected server type is invalid.',
-		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
+		'warning_notifications_disabled_sms' => 'SMS известията са изключени.',
+		'warning_notifications_disabled_email' => 'Имейл известията са изключени.',
+		'warning_notifications_disabled_pushover' => 'Pushover известията са изключени.',
+		'error_server_no_match' => 'Сървърът не е намерен.',
+		'error_server_label_bad_length' => 'Името трябва да е между 1 и 255 символа.',
+		'error_server_ip_bad_length' => 'Хоста/IP адреса трябва да е между 1 и 255 символа.',
+		'error_server_ip_bad_service' => 'IP адреса е невалиден.',
+		'error_server_ip_bad_website' => 'Сайта е невалиден.',
+		'error_server_type_invalid' => 'Избраният тип сървър е невалиден.',
+		'error_server_warning_threshold_invalid' => 'Броя неуспешни проверки, преди сървъра или сайта да бъдат маркирани като Офлайн трябва да е цифра по-голяма от 0.',
 	),
 	'config' => array(
 		'general' => 'Основни настройки',
@@ -167,6 +182,8 @@ $sm_lang = array(
 		'email_smtp' => 'Активиране на SMTP',
 		'email_smtp_host' => 'SMTP сървър',
 		'email_smtp_port' => 'SMTP порт',
+		'email_smtp_security' => 'SMTP security',
+		'email_smtp_security_none' => 'None',
 		'email_smtp_username' => 'SMTP потребителско име',
 		'email_smtp_password' => 'SMTP парола',
 		'email_smtp_noauth' => 'Оставете празно за "без аутентикация"',
@@ -179,10 +196,19 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
-		'alert_type' => 'Изберете кога желаете да получавате известия<br/>',
+		'pushover_status' => 'Позволява изпращането на Pushover съобщения',
+		'pushover_description' => 'Pushover е услуга, която улеснява получаването на известия в реално време. Посетете <a href="https://pushover.net/">техния сайт</a> за повече информация.',
+		'pushover_clone_app' => 'Кликнете тук за да създаване на вашият Pushover App',
+		'pushover_api_token' => 'Pushover App API Token',
+		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
+		'alert_type' => 'Изберете кога желаете да получавате известия',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
 			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
 			'<br/><b>Офлайн</b><br>'.
@@ -190,8 +216,7 @@ $sm_lang = array(
 			'вашия cron скрипт проверява всеки 15 минути и връзката до сървъра е изгубена в 1 часа през нощта и не работи до 6 часа сутринта '.
 			'Вие ще получите едно известие в 1 часа за това<br/>'.
 			'<br><b>Винаги:</b><br> '.
-			'Ще получавате известие при всяка проверка на Вашия крон скрипт дори когато връзката до даден сървър или сайт е била'.
-			'прекъсната в продължение на часове.',
+			'Ще получавате известие при всяка проверка на Вашия крон скрипт дори когато връзката до даден сървър или сайт е била прекъсната в продължение на часове.',
 		'alert_type_status' => 'Промяна на статуса',
 		'alert_type_offline' => 'Офлайн',
 		'alert_type_always' => 'Винаги',
@@ -199,13 +224,14 @@ $sm_lang = array(
 		'log_status_description' => 'Ако е отметнато, системата ще записва всяка промяна.',
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
+		'log_pushover' => 'Log pushover messages sent by the script',
 		'updated' => 'Настройките са обновени успешно.',
-		'nochanges' => 'Не бяха направени промени!',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
-		'tab_log' => 'Логове',
+		'tab_pushover' => 'Pushover',
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
+		'settings_pushover' => 'Pushover настройки',
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
@@ -218,21 +244,35 @@ $sm_lang = array(
 		'test' => 'Тест',
 		'test_email' => 'Ще бъде изпратенo тестово съобщение до имейл адреса, който сте задали в профила си.',
 		'test_sms' => 'Ще бъде изпратен тестово SMS съобщение до телефонния номер, който сте задали в профила си.',
+		'test_pushover' => 'Pushover известоята ще бъдат изпратени до потребителски ключ/устройство посочено във вашият профил.',
 		'send' => 'Изпрати',
-		'test_message' => 'Тестово съобщение',
+		'test_subject' => 'Тестово съобщение',
+		'test_message' => 'Тестово съобщение изпртено от PHP Сървър мониторинг',
 		'email_sent' => 'Тестовия имейл е изпратен успешно.',
 		'email_error' => 'Възникна грешка при изпращането на тесовия имейл',
 		'sms_sent' => 'Тестовото SMS съобщение е изпратеното успешно.',
 		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS',
+		'sms_error_nomobile' => 'Неуспешно изпращане на тестов SMS: не е намерен валиден телефонен номер във вашия профил.',
+		'pushover_sent' => 'Pushover тестово известие',
+		'pushover_error' => 'Възникна грешка при изпращане на тестово Pushover известие: %s',
+		'pushover_error_noapp' => 'Unable to send test notification: не е зададен валиден Pushover App API token в настройките.',
+		'pushover_error_nokey' => 'Unable to send test notification: не е зададен валиден Pushover ключ във вашия профил.',
+		'log_retention_period' => 'Период на съхранение на логовете',
+		'log_retention_period_description' => 'Какъв брой дни да се пазят логовете от известията и архиви за ъптайм на сървърите. Въведете 0 ако желаете логовете да не се трият.',
+		'log_retention_days' => 'дни',
 	),
 	// За нов ред в имейл съобщението, моля използвайте тага <br/>
 	'notifications' => array(
 		'off_sms' => 'Сървър \'%LABEL%\' е Офлайн: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
+		'off_pushover_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
+		'off_pushover_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
 		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_pushover_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
+		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Добре дошъл, %user_name%',
@@ -256,5 +296,9 @@ $sm_lang = array(
 		'error_reset_invalid_link' => 'Линкът за възстановяване на паролата не е валиден.',
 		'success_password_forgot' => 'Изпратен е имейл с информация за възстановяване на паролата.',
 		'success_password_reset' => 'Вашата парола е променена успешно. Моля, влезте в системата.',
+	),
+	'error' => array(
+		'401_unauthorized' => 'Неоторизиран достъп',
+		'401_unauthorized_description' => 'Нямате нужното ниво на достъп за да прегледате тази страница.',
 	),
 );
