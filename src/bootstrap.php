@@ -33,6 +33,7 @@ define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
 
 // user levels
 define('PSM_USER_ADMIN', 10);
+define('PSM_USER_MANAGER', 15);
 define('PSM_USER_USER', 20);
 define('PSM_USER_ANONYMOUS', 30);
 
