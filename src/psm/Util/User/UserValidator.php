@@ -37,7 +37,7 @@ class UserValidator {
 	 * Available editable user levels
 	 * @var array $user_levels
 	 */
-	protected $user_levels = array(PSM_USER_ADMIN, PSM_USER_USER);
+	protected $user_levels = array(PSM_USER_ADMIN, PSM_USER_MANAGER, PSM_USER_USER);
 
 	/**
 	 * User service
