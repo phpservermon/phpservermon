@@ -254,6 +254,24 @@ class StatusUpdater {
 						$result = false;
 					}
 				}
+
+				// Should we check a header ?
+				if($this->server['header_name'] != '') {
+					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n"));
+					foreach (explode("\r\n", $header_text) as $i => $line) {
+						if ($i === 0)
+							continue; // We skip the status code
+						else {
+							list ($key, $value) = explode(': ', $line);
+							if ($key == $this->server['header_name']) {
+								if(!preg_match("/{$this->server['header_value']}/i", $value)) { // The value doesn't match what we needed
+									$result = false;
+								}
+								break; // No need to go further
+							}
+						}
+					}
+				}
 			}
 		}
 
