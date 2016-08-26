@@ -218,21 +218,26 @@ class StatusUpdater {
 				}
 
 				// Should we check a header ?
-				if($this->server['header_name'] != '') {
-					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n"));
+				if($this->server['header_name'] != '' && $this->server['header_value'] != '') {
+					$header_flag = false;
+					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n")); // Only get the header text if the result also includes the body
 					foreach (explode("\r\n", $header_text) as $i => $line) {
-						if ($i === 0)
-							continue; // We skip the status code
-						else {
+						if ($i === 0 || strpos($line, ':') == false) {
+							continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
+						} else {
 							list ($key, $value) = explode(': ', $line);
-							if ($key == $this->server['header_name']) {
+							if (strcasecmp($key, $this->server['header_name']) == 0) { // Header found (case-insensitive)
 								if(!preg_match("/{$this->server['header_value']}/i", $value)) { // The value doesn't match what we needed
 									$result = false;
+								} else {
+									$header_flag = true;
+									break; // No need to go further
 								}
-								break; // No need to go further
 							}
 						}
 					}
+
+					if(!$header_flag) $result = false; // Header was not present
 				}
 			}
 		}
