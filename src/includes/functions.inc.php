@@ -313,15 +313,18 @@ function psm_parse_msg($status, $type, $vars) {
  * @param boolean $add_agent add user agent?
  * @param string|bool $website_username Username website
  * @param string|bool $website_password Password website
+ * @param integer &$maxredirect max redirects
  * @return string cURL result
+ *
+ * @see http://www.php.net/manual/en/function.curl-setopt.php#102121
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, &$maxredirect = null) {
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
-
+	$mr = $maxredirect === null ? 10 : intval($maxredirect); 
 	$ch = curl_init();
+
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -334,6 +337,73 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
     }
 
 	curl_setopt($ch, CURLOPT_URL, $href);
+
+	if (ini_get('open_basedir') == '') {
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, $mr);
+	} else {
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+		if ($mr > 0) {
+			$newurl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL); 
+			$urlData = parse_url($newurl);
+
+			$rch = curl_copy_handle($ch);
+			curl_setopt($rch, CURLOPT_HEADER, true);
+			curl_setopt($rch, CURLOPT_NOBODY, false);
+			curl_setopt($rch, CURLOPT_FORBID_REUSE, false);
+			curl_setopt($rch, CURLOPT_RETURNTRANSFER, true);
+
+			do {
+				curl_setopt($rch, CURLOPT_URL, $newurl);
+				$header = curl_exec($rch);
+
+				if (curl_errno($rch)) {
+					$code = 0;
+				} else {
+					$code = curl_getinfo($rch, CURLINFO_HTTP_CODE);
+
+					if ($code == 301 || $code == 302 || $code == 303 || $code == 307) {
+						preg_match('/Location:(.*?)\n/', $header, $matches);
+						$newurl = trim(array_pop($matches));
+
+						$newurlData = parse_url($newurl);
+
+						// When redirect URL is relative
+						// Used poor man's relative url resolution
+						// http://stackoverflow.com/questions/8250259/is-a-302-redirect-to-relative-url-valid-or-invalid
+						if (!isset($newurlData['host'])) {
+							$newurl = $urlData['scheme']
+								. '://'
+								. (isset($urlData['user']) && isset($urlData['password']) ? $urlData['user'] . ':' . $urlData['password'] . '@' : '')
+								. $urlData['host']
+								. (isset($urlData['port']) ? ':' . $urlData['port'] : '')
+								. $newurlData['path']
+								. (isset($urlData['query']) ? '?' . $urlData['query'] : '')
+							;
+						}
+					} else {
+						$code = 0;
+					}
+				}
+			} while ($code && --$mr);
+
+			curl_close($rch);
+
+			if (!$mr) {
+
+				if ($maxredirect === null) {
+					trigger_error('Too many redirects. When following redirects, libcurl hit the maximum amount.', E_USER_WARNING);
+				} else {
+					$maxredirect = 0;
+				}
+
+				return false;
+			}
+
+			curl_setopt($ch, CURLOPT_URL, $newurl); 
+		}
+	}
 
 	if($add_agent) {
 		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
