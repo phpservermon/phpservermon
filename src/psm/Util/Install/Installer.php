@@ -130,6 +130,10 @@ class Installer {
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
+					('proxy', '0'),
+					('proxy_url', ''),
+					('proxy_user', ''),
+					('proxy_password', ''),
 					('email_status', '1'),
 					('email_from_email', 'monitor@example.org'),
 					('email_from_name', 'Server Monitor'),
