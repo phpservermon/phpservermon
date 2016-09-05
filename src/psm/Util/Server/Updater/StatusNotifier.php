@@ -61,6 +61,18 @@ class StatusNotifier {
 	protected $send_pushover = false;
 
 	/**
+	 * Account for sending StatusCake Notification
+	 * @var string send_statuscake_account_id
+	 */
+	protected $send_statuscake_account_id = null;
+
+	/**
+	 * Test for sending StatusCake Notification
+	 * @var string send_statuscake_test_id
+	 */
+	protected $send_statuscake_test_id = null;
+
+	/**
 	 * Save log records?
 	 * @var boolean $save_log
 	 */
@@ -96,6 +108,8 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
+		$this->send_statuscake_account_id = psm_get_conf('statuscake_account_id');
+		$this->send_statuscake_test_id    = psm_get_conf('statuscake_test_id');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -188,6 +202,12 @@ class StatusNotifier {
 			$this->notifyByPushover($users);
 		}
 
+		// check if statuscake is enabled for this server
+		if( !is_null($this->send_statuscake_account_id) && !is_null($this->send_statuscake_test_id) && $this->server['send_statuscake'] == 'yes') {
+			// yay lets wake those nerds up!
+			$this->notifyByStatusCake($users, $this->send_statuscake_test_id);
+		}
+
 		return $notify;
 	}
 
@@ -222,6 +242,18 @@ class StatusNotifier {
 	    	$mail->Send();
 	    	$mail->ClearAddresses();
 	    }
+	}
+
+	protected function notifyByStatusCake($users, $send_statuscake_test_id) {
+
+		$statuscake = psm_build_statuscake();
+		$statuscake->setTestId($send_statuscake_test_id)
+
+		// Log
+		if(psm_get_conf('log_pushover')) {
+			$log_id = psm_add_log($this->server_id, 'statuscake', $message);
+		}
+
 	}
 
 	/**

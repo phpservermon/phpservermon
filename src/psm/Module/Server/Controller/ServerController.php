@@ -457,6 +457,8 @@ class ServerController extends AbstractServerController {
 			'label_sms' => psm_get_lang('servers', 'sms'),
 			'label_send_sms' => psm_get_lang('servers', 'send_sms'),
 			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_statuscake' => psm_get_lang('servers', 'statuscake'),
+			'label_statuscake_test_id' => psm_get_lang('servers', 'statuscake_test_id'),
 			'label_users' => psm_get_lang('servers', 'users'),
 			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

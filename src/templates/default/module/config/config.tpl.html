@@ -5,6 +5,7 @@
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+      <li class="{{ statuscake_active }}"><a href="#config-statuscake" data-toggle="tab">{{ label_tab_statuscake }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -238,6 +239,40 @@
             </div>
 		</fieldset>
 		</div>
+        <!-- Start Statuscake -->
+        <div id="config-statuscake" class="tab-pane {{ statuscake_active }}">
+		<fieldset>
+          <legend>{{ label_settings_statuscake }}</legend>
+<!--
+            <div class="control-group">
+                <div class="controls">
+					<label class="checkbox" for="pushover_status"><input type="checkbox" id="pushover_status" name="pushover_status[]" {{ pushover_status_checked|raw }} /> {{ label_pushover_status }}</label>
+					<p class="help-block">{{ label_pushover_description|raw }}</p>
+				</div>
+            </div>
+            <div class="control-group">
+				<div class="controls">
+					<label class="checkbox"><input type="checkbox" id="log_pushover" name="log_pushover[]" {{ log_pushover_checked|raw }} /> {{ label_log_pushover }}</label>
+				</div>
+			</div>
+        -->
+            <div class="control-group">
+                <label class="control-label" for="statuscake_api_token">{{ label_statuscake_account_token }}</label>
+                <div class="controls">
+					<p><button class="btn btn-primary" onclick="window.open('{{ statuscake_url }}');return false;">{{ label_statuscake_app }}</button></p>
+                    <input type="text" id="statuscake_account_token" name="statuscake_account_token" value="{{ statuscake_account_token }}" maxlength="255" />
+					<p class="help-block">{{ label_statuscake_account_token_description|raw }}</p>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit" name="statuscake_submit">{{ label_save }}</button>
+            </div>
+		</fieldset>
+		</div>
+        <!-- End Statuscake -->
+
+
+
 	</div>
 	{{ macro.csrf_input() }}
 </form>
