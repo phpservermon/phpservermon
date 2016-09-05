@@ -480,6 +480,18 @@ function psm_build_mail($from_name = null, $from_email = null) {
 }
 
 /**
+ * Prepare a new StatusCake util.
+ *
+ * @return \Pushover
+ */
+function psm_build_statuscake() {
+	$statuscake = new \StatusCake();
+	$statuscake->setAccountToken(psm_get_conf('statuscake_account_token'));
+
+	return $statuscake;
+}
+
+/**
  * Prepare a new Pushover util.
  *
  * @return \Pushover
@@ -712,7 +724,7 @@ function psm_password_decrypt($key, $encryptedString)
 
 	if (empty($key))
          throw new \InvalidArgumentException('invalid_encryption_key');
-	
+
 	$data = base64_decode($encryptedString);
 	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 

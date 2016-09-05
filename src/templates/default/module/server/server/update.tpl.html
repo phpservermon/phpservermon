@@ -146,6 +146,23 @@
 				</select>
 			</div>
 		</div>
+		<!-- -->
+		<div class="control-group {{ control_class_statuscake }}">
+			<label class="control-label" for="statuscake_test_id">{{ label_statuscake }}</label>
+			{% if warning_statuscake %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_statuscake }}"></i></p> {% endif %}
+			<div class="controls">
+				<select id="statuscake" name="statuscake">
+					<option value="yes" {{ edit_statuscake_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_statuscake_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+			<br />
+			<label class="control-label" for="statuscake_test_id">{{ label_statuscake_test_id }}</label>
+			<div class="controls">
+				<input type="text" id="statuscake_test_id" name="statuscake_test_id" value="{{ edit_value_statuscake_test_id }}" maxlength="10" />
+			</div>
+		</div>
+		<!-- -->
 	</fieldset>
 
 	<fieldset>
