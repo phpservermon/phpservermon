@@ -67,12 +67,6 @@ class StatusNotifier {
 	protected $send_statuscake_account_id = null;
 
 	/**
-	 * Test for sending StatusCake Notification
-	 * @var string send_statuscake_test_id
-	 */
-	protected $send_statuscake_test_id = null;
-
-	/**
 	 * Save log records?
 	 * @var boolean $save_log
 	 */
@@ -108,8 +102,7 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
-		$this->send_statuscake_account_id = psm_get_conf('statuscake_account_id');
-		$this->send_statuscake_test_id    = psm_get_conf('statuscake_test_id');
+		$this->send_statuscake_account_token = psm_get_conf('statuscake_account_token');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -122,6 +115,7 @@ class StatusNotifier {
 	 * @return boolean
 	 */
 	public function notify($server_id, $status_old, $status_new) {
+
 		if(!$this->send_emails && !$this->send_sms && !$this->save_logs) {
 			// seems like we have nothing to do. skip the rest
 			return false;
@@ -134,9 +128,9 @@ class StatusNotifier {
 		// get server info from db
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
-		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover',
-		));
+			), array(
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'rtime', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover', 'statuscake','statuscake_test_id',
+			));
 		if(empty($this->server)) {
 			return false;
 		}
@@ -146,70 +140,73 @@ class StatusNotifier {
 		// check which type of alert the user wants
 		switch(psm_get_conf('alert_type')) {
 			case 'always':
-				if($status_new == false) {
+			if($status_new == false) {
 					// server is offline. we are in error state.
-					$notify = true;
-				}
-				break;
+				$notify = true;
+			}
+			break;
 			case 'offline':
 				// only send a notification if the server goes down for the first time!
-				if($status_new == false && $status_old == true) {
-					$notify = true;
-				}
-				break;
+			if($status_new == false && $status_old == true) {
+				$notify = true;
+			}
+			break;
 			case 'status':
-				if($status_new != $status_old) {
+			if($status_new != $status_old) {
 					// status has been changed!
-					$notify = true;
-				}
-				break;
-		}
-
-		if(!$notify) {
-			return false;
-		}
-
-		// first add to log (we use the same text as the SMS message because its short..)
-		if($this->save_logs) {
-			psm_add_log(
-				$this->server_id,
-				'status',
-				psm_parse_msg($status_new, 'sms', $this->server)
-			);
-		}
-
-		$users = $this->getUsers($this->server_id);
-
-		if(empty($users)) {
-			return $notify;
-		}
-
-		// check if email is enabled for this server
-		if($this->send_emails && $this->server['email'] == 'yes') {
-			// send email
-			$this->notifyByEmail($users);
-		}
-
-		// check if sms is enabled for this server
-		if($this->send_sms && $this->server['sms'] == 'yes') {
-			// yay lets wake those nerds up!
-			$this->notifyByTxtMsg($users);
-		}
-
-		// check if pushover is enabled for this server
-		if($this->send_pushover && $this->server['pushover'] == 'yes') {
-			// yay lets wake those nerds up!
-			$this->notifyByPushover($users);
+				$notify = true;
+			}
+			break;
 		}
 
 		// check if statuscake is enabled for this server
-		if( !is_null($this->send_statuscake_account_id) && !is_null($this->send_statuscake_test_id) && $this->server['send_statuscake'] == 'yes') {
+		if( !is_null($this->send_statuscake_account_token) && !empty($this->send_statuscake_account_token)
+			&& $this->server['statuscake'] == 'yes'
+			&& !is_null($this->server['statuscake_test_id']) && !empty($this->server['statuscake_test_id'])
+			) {
 			// yay lets wake those nerds up!
-			$this->notifyByStatusCake($users, $this->send_statuscake_test_id);
-		}
+			$this->notifyByStatusCake($users, $this->server['statuscake_test_id']);
+	}
 
+	if(!$notify) {
+		return false;
+	}
+
+		// first add to log (we use the same text as the SMS message because its short..)
+	if($this->save_logs) {
+		psm_add_log(
+			$this->server_id,
+			'status',
+			psm_parse_msg($status_new, 'sms', $this->server)
+			);
+	}
+
+	$users = $this->getUsers($this->server_id);
+
+	if(empty($users)) {
 		return $notify;
 	}
+
+		// check if email is enabled for this server
+	if($this->send_emails && $this->server['email'] == 'yes') {
+			// send email
+		$this->notifyByEmail($users);
+	}
+
+		// check if sms is enabled for this server
+	if($this->send_sms && $this->server['sms'] == 'yes') {
+			// yay lets wake those nerds up!
+		$this->notifyByTxtMsg($users);
+	}
+
+		// check if pushover is enabled for this server
+	if($this->send_pushover && $this->server['pushover'] == 'yes') {
+			// yay lets wake those nerds up!
+		$this->notifyByPushover($users);
+	}
+
+	return $notify;
+}
 
 	/**
 	 * This functions performs the email notifications
@@ -227,33 +224,36 @@ class StatusNotifier {
 		$mail->Body		= utf8_decode($body);
 		$mail->AltBody	= str_replace('<br/>', "\n", $body);
 
-        if(psm_get_conf('log_email')) {
-            $log_id = psm_add_log($this->server_id, 'email', $body);
-   	    }
-
-		// go through empl
-	    foreach ($users as $user) {
-            if(!empty($log_id)) {
-       	    	psm_add_log_user($log_id, $user['user_id']);
-       	    }
-
-	    	// we sent a seperate email to every single user.
-	    	$mail->AddAddress($user['email'], $user['name']);
-	    	$mail->Send();
-	    	$mail->ClearAddresses();
-	    }
-	}
-
-	protected function notifyByStatusCake($users, $send_statuscake_test_id) {
-
-		$statuscake = psm_build_statuscake();
-		$statuscake->setTestId($send_statuscake_test_id)
-
-		// Log
-		if(psm_get_conf('log_pushover')) {
-			$log_id = psm_add_log($this->server_id, 'statuscake', $message);
+		if(psm_get_conf('log_email')) {
+			$log_id = psm_add_log($this->server_id, 'email', $body);
 		}
 
+		// go through empl
+		foreach ($users as $user) {
+			if(!empty($log_id)) {
+				psm_add_log_user($log_id, $user['user_id']);
+			}
+
+	    	// we sent a seperate email to every single user.
+			$mail->AddAddress($user['email'], $user['name']);
+			$mail->Send();
+			$mail->ClearAddresses();
+		}
+	}
+
+	protected function notifyByStatusCake($users, $statuscake_test_id) {
+
+		$statuscake = psm_build_statuscake();
+		$statuscake->setTestId($statuscake_test_id);
+		$statuscake->setTime(11);
+		$statuscake->setStatusCode(200);
+
+		// Log
+		//if(psm_get_conf('log_statuscake')) {
+		//	$log_id = psm_add_log($this->server_id, 'statuscake', $message);
+		//}
+
+		$statuscake->send();
 	}
 
 	/**
@@ -264,51 +264,51 @@ class StatusNotifier {
 	 */
 	protected function notifyByPushover($users) {
         // Remove users that have no pushover_key
-        foreach($users as $k => $user) {
-            if (trim($user['pushover_key']) == '') {
-                unset($users[$k]);
-            }
-        }
+		foreach($users as $k => $user) {
+			if (trim($user['pushover_key']) == '') {
+				unset($users[$k]);
+			}
+		}
 
         // Validation
-        if (empty($users)) {
-            return;
-        }
+		if (empty($users)) {
+			return;
+		}
 
         // Pushover
-        $message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
-        $pushover = psm_build_pushover();
-        if($this->status_new === true) {
-            $pushover->setPriority(0);
-        } else {
-            $pushover->setPriority(2);
+		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+		$pushover = psm_build_pushover();
+		if($this->status_new === true) {
+			$pushover->setPriority(0);
+		} else {
+			$pushover->setPriority(2);
             $pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
             $pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
         }
-		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
-		$pushover->setMessage(str_replace('<br/>', "\n", $message));
-		$pushover->setUrl(psm_build_url());
-		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
+        $pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
+        $pushover->setMessage(str_replace('<br/>', "\n", $message));
+        $pushover->setUrl(psm_build_url());
+        $pushover->setUrlTitle(psm_get_lang('system', 'title'));
 
         // Log
         if(psm_get_conf('log_pushover')) {
-            $log_id = psm_add_log($this->server_id, 'pushover', $message);
-   	    }
+        	$log_id = psm_add_log($this->server_id, 'pushover', $message);
+        }
 
-	    foreach($users as $user) {
+        foreach($users as $user) {
             // Log
-            if(!empty($log_id)) {
-       	    	psm_add_log_user($log_id, $user['user_id']);
-       	    }
+        	if(!empty($log_id)) {
+        		psm_add_log_user($log_id, $user['user_id']);
+        	}
 
             // Set recipient + send
-			$pushover->setUser($user['pushover_key']);
-			if($user['pushover_device'] != '') {
-				$pushover->setDevice($user['pushover_device']);
-			}
-			$pushover->send();
+        	$pushover->setUser($user['pushover_key']);
+        	if($user['pushover_device'] != '') {
+        		$pushover->setDevice($user['pushover_device']);
+        	}
+        	$pushover->send();
         }
-	}
+    }
 
 	/**
 	 * This functions performs the text message notifications
@@ -322,19 +322,19 @@ class StatusNotifier {
 			return false;
 		}
 
-        $message = psm_parse_msg($this->status_new, 'sms', $this->server);
+		$message = psm_parse_msg($this->status_new, 'sms', $this->server);
 
         // Log
-        if(psm_get_conf('log_sms')) {
-            $log_id = psm_add_log($this->server_id, 'sms', $message);
+		if(psm_get_conf('log_sms')) {
+			$log_id = psm_add_log($this->server_id, 'sms', $message);
 		}
 
 		// add all users to the recipients list
 		foreach ($users as $user) {
             // Log
-            if(!empty($log_id)) {
-       	    	psm_add_log_user($log_id, $user['user_id']);
-       	    }
+			if(!empty($log_id)) {
+				psm_add_log_user($log_id, $user['user_id']);
+			}
 
 			$sms->addRecipients($user['mobile']);
 		}
@@ -356,10 +356,10 @@ class StatusNotifier {
 			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
-				`us`.`user_id`=`u`.`user_id`
-				AND `us`.`server_id` = {$server_id}
+			`us`.`user_id`=`u`.`user_id`
+			AND `us`.`server_id` = {$server_id}
 			)
-		");
+			");
 		return $users;
 	}
 }

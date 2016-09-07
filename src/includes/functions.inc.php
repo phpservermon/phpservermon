@@ -482,7 +482,7 @@ function psm_build_mail($from_name = null, $from_email = null) {
 /**
  * Prepare a new StatusCake util.
  *
- * @return \Pushover
+ * @return \Statuscake
  */
 function psm_build_statuscake() {
 	$statuscake = new \StatusCake();

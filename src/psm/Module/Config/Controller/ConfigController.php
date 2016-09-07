@@ -66,6 +66,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'statuscake_account_token',
 	);
 
 	private $default_tab = 'general';
