@@ -146,6 +146,7 @@ class Installer {
 					('sms_from', '1234567890'),
 					('pushover_status', '0'),
 					('pushover_api_token', ''),
+					('statuscake_account_token', ''),
 					('password_encrypt_key', '" . sha1(microtime()) . "'),
 					('alert_type', 'status'),
 					('log_status', '1'),
@@ -229,6 +230,8 @@ class Installer {
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
 						  `pushover` enum('yes','no') NOT NULL default 'yes',
+						  `statuscake` enum('yes','no') NOT NULL default 'yes',
+						  `statuscake_test_id` varchar(50) NULL,
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
@@ -289,6 +292,9 @@ class Installer {
 		}
 		if(version_compare($version_from, '3.2.0', '<')) {
 			$this->upgrade320();
+		}
+		if(version_compare($version_from, '3.2.1', '<')) {
+			$this->upgrade321();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -468,5 +474,18 @@ class Installer {
 
         // Drop old user_id('s) column
         $this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
+	}
+
+	/**
+	 * Upgrade for v3.2.1 release
+	 */
+	protected function upgrade321() {
+		$queries = array();
+
+		psm_update_conf('statuscake_account_token', '');
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `statuscake` enum('yes','no') NOT NULL default 'yes', ADD `statuscake_test_id` varchar(50) NULL AFTER `pushover`;";
+
+		$this->execSQL($queries);
+
 	}
 }

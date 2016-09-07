@@ -18,7 +18,8 @@
 		"php-pushover/php-pushover": "dev-master",
 		"twig/twig": "1.*",
 		"paragonie/random_compat" : "1.1.6",
-		"indigophp/hash-compat" : "1.1.0"
+		"indigophp/hash-compat" : "1.1.0",
+		"php-statuscake/php-statuscake": "0.2"
 	},
 	"autoload": {
 		"files": [

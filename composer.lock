@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8f27400edd82e99aa35998a3e01fc23e",
-    "content-hash": "3d1c36ee7e11634bc149bfc9a250e4ae",
+    "hash": "ee6fcd5efd7619a347226c9ea90caf32",
+    "content-hash": "96a691d2bd6f2b93d99df6599cd6c24e",
     "packages": [
         {
             "name": "indigophp/hash-compat",
@@ -173,6 +173,36 @@
                 "source": "https://github.com/phpservermon/php-pushover/tree/master"
             },
             "time": "2014-07-30 13:55:53"
+        },
+        {
+            "name": "php-statuscake/php-statuscake",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easylo/php-statuscake.git",
+                "reference": "567e734404b77178527c510623431df7753bdb5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easylo/php-statuscake/zipball/567e734404b77178527c510623431df7753bdb5e",
+                "reference": "567e734404b77178527c510623431df7753bdb5e",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Statuscake.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Laurent RICHARD",
+                    "email": "easylo@gmail.com"
+                }
+            ],
+            "description": "PHP class for the statuscake.com project",
+            "time": "2016-09-06 22:55:34"
         },
         {
             "name": "phpmailer/phpmailer",

@@ -206,10 +206,12 @@ class ServerController extends AbstractServerController {
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
 				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+				'edit_statuscake_selected_' . $edit_server['statuscake'] => 'selected="selected"',
+				'edit_value_statuscake_test_id' => $edit_server['statuscake_test_id'],
 			));
 		}
 
-		$notifications = array('email', 'sms', 'pushover');
+		$notifications = array('email', 'sms', 'pushover','statuscake');
 		foreach($notifications as $notification) {
 			if(psm_get_conf($notification . '_status') == 0) {
 				$tpl_data['warning_' . $notification] = true;
@@ -268,6 +270,8 @@ class ServerController extends AbstractServerController {
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+			'statuscake' => in_array($_POST['statuscake'], array('yes', 'no')) ? $_POST['statuscake'] : 'no',
+			'statuscake_test_id' => trim(strip_tags(psm_POST('statuscake_test_id', ''))),
 		);
 		// make sure websites start with http://
 		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {

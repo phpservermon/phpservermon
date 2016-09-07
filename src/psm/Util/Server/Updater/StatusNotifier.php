@@ -67,12 +67,6 @@ class StatusNotifier {
 	protected $send_statuscake_account_id = null;
 
 	/**
-	 * Test for sending StatusCake Notification
-	 * @var string send_statuscake_test_id
-	 */
-	protected $send_statuscake_test_id = null;
-
-	/**
 	 * Save log records?
 	 * @var boolean $save_log
 	 */
@@ -108,8 +102,7 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
-		$this->send_statuscake_account_id = psm_get_conf('statuscake_account_id');
-		$this->send_statuscake_test_id    = psm_get_conf('statuscake_test_id');
+		$this->send_statuscake_account_token = psm_get_conf('statuscake_account_token');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -122,6 +115,7 @@ class StatusNotifier {
 	 * @return boolean
 	 */
 	public function notify($server_id, $status_old, $status_new) {
+
 		if(!$this->send_emails && !$this->send_sms && !$this->save_logs) {
 			// seems like we have nothing to do. skip the rest
 			return false;
@@ -135,7 +129,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover', 'statuscake','statuscake_test_id',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -165,6 +159,15 @@ class StatusNotifier {
 				break;
 		}
 
+		// check if statuscake is enabled for this server
+		if( !is_null($this->send_statuscake_account_token) && !empty($this->send_statuscake_account_token)
+			&& $this->server['statuscake'] == 'yes'
+			&& !is_null($this->server['statuscake_test_id']) && !empty($this->server['statuscake_test_id'])
+			) {
+			// yay lets wake those nerds up!
+			$this->notifyByStatusCake($users, $this->server['statuscake_test_id']);
+		}
+		
 		if(!$notify) {
 			return false;
 		}
@@ -200,12 +203,6 @@ class StatusNotifier {
 		if($this->send_pushover && $this->server['pushover'] == 'yes') {
 			// yay lets wake those nerds up!
 			$this->notifyByPushover($users);
-		}
-
-		// check if statuscake is enabled for this server
-		if( !is_null($this->send_statuscake_account_id) && !is_null($this->send_statuscake_test_id) && $this->server['send_statuscake'] == 'yes') {
-			// yay lets wake those nerds up!
-			$this->notifyByStatusCake($users, $this->send_statuscake_test_id);
 		}
 
 		return $notify;
@@ -244,16 +241,19 @@ class StatusNotifier {
 	    }
 	}
 
-	protected function notifyByStatusCake($users, $send_statuscake_test_id) {
+	protected function notifyByStatusCake($users, $statuscake_test_id) {
 
 		$statuscake = psm_build_statuscake();
-		$statuscake->setTestId($send_statuscake_test_id)
+		$statuscake->setTestId($statuscake_test_id);
+		$statuscake->setTime(11);
+		$statuscake->setStatusCode(200);
 
 		// Log
-		if(psm_get_conf('log_pushover')) {
-			$log_id = psm_add_log($this->server_id, 'statuscake', $message);
-		}
+		//if(psm_get_conf('log_statuscake')) {
+		//	$log_id = psm_add_log($this->server_id, 'statuscake', $message);
+		//}
 
+		$statuscake->send();
 	}
 
 	/**
