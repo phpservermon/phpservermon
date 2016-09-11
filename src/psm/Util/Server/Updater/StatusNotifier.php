@@ -129,7 +129,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover', 'statuscake','statuscake_test_id',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'rtime', 'error', 'active', 'email', 'sms', 'pushover', 'statuscake','statuscake_test_id',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -160,14 +160,14 @@ class StatusNotifier {
 		}
 
 		// check if statuscake is enabled for this server
-		if( !is_null($this->send_statuscake_account_token) && !empty($this->send_statuscake_account_token)
+		if( $this->server['status'] == 'on' && !is_null($this->send_statuscake_account_token) && !empty($this->send_statuscake_account_token)
 			&& $this->server['statuscake'] == 'yes'
 			&& !is_null($this->server['statuscake_test_id']) && !empty($this->server['statuscake_test_id'])
 			) {
 			// yay lets wake those nerds up!
-			$this->notifyByStatusCake($users, $this->server['statuscake_test_id']);
+			$this->notifyByStatusCake($users, $this->server['statuscake_test_id'], $this->server['rtime']);
 		}
-		
+
 		if(!$notify) {
 			return false;
 		}
@@ -241,11 +241,11 @@ class StatusNotifier {
 	    }
 	}
 
-	protected function notifyByStatusCake($users, $statuscake_test_id) {
+	protected function notifyByStatusCake($users, $statuscake_test_id, $rtime) {
 
 		$statuscake = psm_build_statuscake();
 		$statuscake->setTestId($statuscake_test_id);
-		$statuscake->setTime(11);
+		$statuscake->setTime(($rtime*1000));
 		$statuscake->setStatusCode(200);
 
 		// Log
