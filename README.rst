@@ -54,6 +54,7 @@ The following SMS gateways are currently available:
 * FreeVoipDeal - <http://www.freevoipdeal.com>
 * Nexmo - <https://www.nexmo.com/>
 * OctoPush - <http://www.octopush.com/>
+* FreeMobile (FR) - <http://mobile.free.fr/>
 
 
 
