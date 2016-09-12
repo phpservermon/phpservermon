@@ -40,10 +40,12 @@ class ConfigController extends AbstractController {
 		'email_smtp',
 		'sms_status',
 		'pushover_status',
+		'pushbullet_status',
 		'log_status',
 		'log_email',
 		'log_sms',
 		'log_pushover',
+		'log_pushbullet',
 		'show_update',
 	);
 
@@ -197,6 +199,8 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'sms';
 			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
+			} elseif(isset($_POST['pushbullet_submit'])) {
+				$this->default_tab = 'pushbullet';
 			}
 		}
 		return $this->runAction('index');
@@ -288,6 +292,7 @@ class ConfigController extends AbstractController {
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+			'label_tab_pushbullet' => psm_get_lang('config', 'tab_pushbullet'),
 			'label_settings_email' => psm_get_lang('config', 'settings_email'),
 			'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 			'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
@@ -336,6 +341,8 @@ class ConfigController extends AbstractController {
 				psm_get_lang('config', 'pushover_api_token_description'),
 				PSM_PUSHOVER_CLONE_URL
 			),
+            'label_pushbullet_description' => psm_get_lang('config', 'pushbullet_description'),
+			'label_pushbullet_status' => psm_get_lang('config', 'pushbullet_status'),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
@@ -346,6 +353,7 @@ class ConfigController extends AbstractController {
 			'label_log_email' => psm_get_lang('config', 'log_email'),
 			'label_log_sms' => psm_get_lang('config', 'log_sms'),
 			'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+			'label_log_pushbullet' => psm_get_lang('config', 'log_pushover'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
 			'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
 			'label_seconds' => psm_get_lang('config', 'seconds'),

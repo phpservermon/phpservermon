@@ -67,6 +67,22 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">{{ label_pushbullet }}</label>
+			<div class="controls">{{ label_pushbullet_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="pushbullet_key">{{ label_pushbullet_key }}</label>
+			<div class="controls">
+				<input type="text" id="pushbullet_key" name="pushbullet_key" value="{{ edit_value_pushbullet_key }}" maxlength="255" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="pushbullet_device">{{ label_pushbullet_device }}</label>
+			<div class="controls">
+				<input type="text" id="pushbullet_device" name="pushbullet_device" value="{{ edit_value_pushbullet_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushbullet_device_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label" for="server_id">{{ label_servers }}</label>
 			<div class="controls">
 				<select class="multiselect" multiple="multiple" id="server_id" name="server_id[]">

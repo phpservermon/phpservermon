@@ -290,6 +290,9 @@ class Installer {
 		if(version_compare($version_from, '3.2.0', '<')) {
 			$this->upgrade320();
 		}
+        if(version_compare($version_from, '3.3.0', '<')) {
+            $this->upgrade320();
+        }
 		psm_update_conf('version', $version_to);
 	}
 
@@ -469,4 +472,30 @@ class Installer {
         // Drop old user_id('s) column
         $this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
 	}
+
+
+    /**
+     * Upgrade for v3.3.0 release ( ADD PUSHBULLET SERVICE, Valentin DEVILLE )
+     */
+	protected function upgrade330(){
+
+	    $queries = array();
+
+        // ADD OPTION TO EACH SERVERS BY DEFAULT YES
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `pushbullet` ENUM('yes','no') NOT NULL DEFAULT 'yes' AFTER `pushover`;";
+
+        // ADD OPTION TO LOG
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM('status','email','sms','pushover','pushbullet');";
+
+        // ADD OPTION TO CONFIG
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` VALUES('pushbullet_status', 0);";
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` VALUES('log_pushbullet', 0);";
+
+        // ADD OPTION ON USER PROFILE
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD `pushbullet_key` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pushover_device`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD `pushbullet_device` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pushbullet_key`;";
+
+        $this->execSQL($queries);
+
+    }
 }

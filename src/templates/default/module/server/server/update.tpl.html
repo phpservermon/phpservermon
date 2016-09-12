@@ -137,6 +137,17 @@
 				</select>
 			</div>
 		</div>
+		<div class="control-group {{ control_class_pushbullet }}">
+			<label class="control-label" for="pushbullet">{{ label_pushbullet }}
+			{% if warning_pushbullet %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushbullet }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="pushbullet" name="pushbullet">
+					<option value="yes" {{ edit_pushbullet_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_pushbullet_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset>

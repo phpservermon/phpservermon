@@ -482,6 +482,17 @@ function psm_build_pushover() {
 }
 
 /**
+ * Prepare a new Pushbullet util.
+ *
+ * @return \Pushbullet\Pushbullet
+ */
+function psm_build_pushbullet($apiKey) {
+    $pushbullet = new \Pushbullet\Pushbullet($apiKey);
+
+    return $pushbullet;
+}
+
+/**
  * Prepare a new SMS util.
  *
  * @return \psm\Txtmsg\TxtmsgInterface

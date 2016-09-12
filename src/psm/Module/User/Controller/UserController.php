@@ -89,7 +89,7 @@ class UserController extends AbstractController {
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'email'),
+			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'email', 'pushbullet_key', 'pushbullet_device'),
 			null,
 			array('name')
 		);
@@ -133,7 +133,7 @@ class UserController extends AbstractController {
 	 */
 	protected function executeEdit() {
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
+		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email', 'pushbullet_key', 'pushbullet_device');
 
 		if($user_id == 0) {
 			// insert mode
@@ -215,7 +215,7 @@ class UserController extends AbstractController {
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email', 'pushbullet_key', 'pushbullet_device');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
@@ -333,6 +333,11 @@ class UserController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+            'label_pushbullet' => psm_get_lang('users', 'pushbullet'),
+			'label_pushbullet_description' => psm_get_lang('users', 'pushbullet_description'),
+			'label_pushbullet_key' => psm_get_lang('users', 'pushbullet_key'),
+			'label_pushbullet_device' => psm_get_lang('users', 'pushbullet_device'),
+			'label_pushbullet_device_description' => psm_get_lang('users', 'pushbullet_device_description'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_servers' => psm_get_lang('menu', 'server'),
 			'label_action' => psm_get_lang('system', 'action'),
@@ -362,4 +367,5 @@ class UserController extends AbstractController {
 		}
 		return $result;
 	}
+
 }

@@ -63,6 +63,33 @@
 				</div>
 			</div>
 		</div>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label">{{ label_pushbullet }}</label>
+				<div class="controls">{{ label_pushbullet_description|raw }}	</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="pushbullet_key">{{ label_pushbullet_key }}</label>
+				<div class="controls">
+					<input type="text" id="pushbullet_key" name="pushbullet_key" value="{{ pushbullet_key }}" maxlength="255" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="pushbullet_device">{{ label_pushbullet_device }}</label>
+				<div class="controls">
+					<input type="text" id="pushbullet_device" name="pushbullet_device" value="{{ pushbullet_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushbullet_device_description }}" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testPushbullet">{{ label_test }}</button>
+					<input type="hidden" name="test_pushbullet" value="0" />
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-success" type="submit" name="pushbullet_submit">{{ label_save }}</button>
+			</div>
+		</div>
 	</div>
 	<div class="row-fluid">
 		<div class="form-actions">

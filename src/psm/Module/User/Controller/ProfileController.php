@@ -28,6 +28,7 @@
 namespace psm\Module\User\Controller;
 use psm\Module\AbstractController;
 use psm\Service\Database;
+use Pushbullet\Pushbullet;
 
 class ProfileController extends AbstractController {
 
@@ -35,7 +36,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email', 'pushbullet_key', 'pushbullet_device');
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -66,8 +67,14 @@ class ProfileController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+            'label_pushbullet' => psm_get_lang('users', 'pushbullet'),
+			'label_pushbullet_description' => psm_get_lang('users', 'pushbullet_description'),
+			'label_pushbullet_key' => psm_get_lang('users', 'pushbullet_key'),
+			'label_pushbullet_device' => psm_get_lang('users', 'pushbullet_device'),
+			'label_pushbullet_device_description' => psm_get_lang('users', 'pushbullet_device_description'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_save' => psm_get_lang('system', 'save'),
+			'label_test' => psm_get_lang('config', 'test'),
 			'form_action' => psm_build_url(array(
 				'mod' => 'user_profile',
 				'action' => 'save',
@@ -78,6 +85,14 @@ class ProfileController extends AbstractController {
 		foreach($this->profile_fields as $field) {
 			$tpl_data[$field] = (isset($user->$field)) ? $user->$field : '';
 		}
+
+
+        $modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst('pushbullet'), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+        $this->addModal($modal);
+        $modal->setTitle(psm_get_lang('servers', 'send_' . 'pushbullet'));
+        $modal->setMessage(psm_get_lang('config', 'test_' . 'pushbullet'));
+        $modal->setOKButtonLabel(psm_get_lang('config', 'send'));
+
 		return $this->twig->render('module/user/profile.tpl.html', $tpl_data);
 	}
 
@@ -133,6 +148,21 @@ class ProfileController extends AbstractController {
 		}
 		$this->addMessage(psm_get_lang('users', 'profile_updated'), 'success');
 
+        if(!empty($_POST['test_pushbullet'])){
+            $this->testPushbullet($clean['pushbullet_key'], $clean['pushbullet_device']);
+        }
+
 		return $this->executeIndex();
 	}
+
+
+    public function testPushbullet($apiKey, $device = null){
+        $pb = new Pushbullet($apiKey);
+        if($device != null || $device != ''){
+            $pb->device($device)->pushNote(psm_get_lang('config', 'test_subject'), psm_get_lang('config', 'test_pushbullet'));
+        } else{
+            $test = psm_get_lang('test_subject');
+            $pb->allDevices()->pushNote(psm_get_lang('config', 'test_subject'), psm_get_lang('config', 'test_pushbullet'));
+        }
+    }
 }

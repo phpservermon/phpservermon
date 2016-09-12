@@ -60,6 +60,12 @@ class StatusNotifier {
 	 */
 	protected $send_pushover = false;
 
+    /**
+     * Send Pushbullet?
+     * @var boolean $send_pushbullet
+     */
+    protected $send_pushbullet = false;
+
 	/**
 	 * Save log records?
 	 * @var boolean $save_log
@@ -96,6 +102,7 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
+		$this->send_pushbullet = psm_get_conf('pushbullet_status');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -121,7 +128,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover', 'pushbullet'
 		));
 		if(empty($this->server)) {
 			return false;
@@ -187,6 +194,12 @@ class StatusNotifier {
 			// yay lets wake those nerds up!
 			$this->notifyByPushover($users);
 		}
+
+        // check if pushover is enabled for this server
+        if($this->send_pushbullet && $this->server['pushbullet'] == 'yes') {
+            // yay lets wake those nerds up!
+            $this->notifyByPusbullet($users);
+        }
 
 		return $notify;
 	}
@@ -278,6 +291,52 @@ class StatusNotifier {
         }
 	}
 
+    /**
+     * This functions performs the pusubullet notifications
+     *
+     * @param array $users
+     * @return boolean
+     */
+    protected function notifyByPusbullet($users) {
+
+        // Remove users that have no pushbullet_key
+        foreach($users as $k => $user) {
+            if (trim($user['pushbullet_key']) == '') {
+                unset($users[$k]);
+            }
+        }
+
+        // Validation
+        if (empty($users)) {
+            return;
+        }
+
+        $title = psm_parse_msg($this->status_new, 'pushbullet_title', $this->server);
+        $message1 = psm_get_lang('system', 'title');
+        $message2 = psm_parse_msg($this->status_new, 'pushbullet_message', $this->server);
+        $message = $message1 . " " . $message2;
+
+        // Log
+        if(psm_get_conf('log_pushbullet')) {
+            $log_id = psm_add_log($this->server_id, 'pushbullet', $message);
+        }
+
+        foreach($users as $user) {
+            // Log
+            if(!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+
+            $pushbullet = psm_build_pushbullet($user['pushbullet_key']);
+
+            if($user['pushbullet_device'] != '') {
+                $pushbullet->device($user['pushbullet_device'])->pushNote($title, $message);
+            } else{
+                $pushbullet->allDevices()->pushNote($title, $message);
+            }
+        }
+    }
+
 	/**
 	 * This functions performs the text message notifications
 	 *
@@ -321,7 +380,7 @@ class StatusNotifier {
 	public function getUsers($server_id) {
 		// find all the users with this server listed
 		$users = $this->db->query("
-			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`, `u`.`pushbullet_key`, `u`.`pushbullet_device`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`

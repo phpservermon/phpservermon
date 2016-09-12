@@ -73,6 +73,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`email`,
 					`s`.`sms`,
 					`s`.`pushover`,
+					`s`.`pushbullet`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
 					`s`.`timeout`,

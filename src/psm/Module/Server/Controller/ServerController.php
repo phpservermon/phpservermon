@@ -92,6 +92,7 @@ class ServerController extends AbstractServerController {
 			'email' => 'icon-envelope',
 			'sms' => 'icon-mobile',
 			'pushover' => 'icon-pushover',
+            'pushbullet' => 'icon-pushbullet'
 		);
 
 		$servers = $this->getServers();
@@ -206,10 +207,11 @@ class ServerController extends AbstractServerController {
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
 				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+				'edit_pushbullet_selected_' . $edit_server['pushbullet'] => 'selected="selected"',
 			));
 		}
 
-		$notifications = array('email', 'sms', 'pushover');
+		$notifications = array('email', 'sms', 'pushover', 'pushbullet');
 		foreach($notifications as $notification) {
 			if(psm_get_conf($notification . '_status') == 0) {
 				$tpl_data['warning_' . $notification] = true;
@@ -268,6 +270,7 @@ class ServerController extends AbstractServerController {
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+			'pushbullet' => in_array($_POST['pushbullet'], array('yes', 'no')) ? $_POST['pushbullet'] : 'no',
 		);
 		// make sure websites start with http://
 		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
@@ -457,6 +460,7 @@ class ServerController extends AbstractServerController {
 			'label_sms' => psm_get_lang('servers', 'sms'),
 			'label_send_sms' => psm_get_lang('servers', 'send_sms'),
 			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_pushbullet' => psm_get_lang('servers', 'pushbullet'),
 			'label_users' => psm_get_lang('servers', 'users'),
 			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
