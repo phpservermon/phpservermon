@@ -290,9 +290,9 @@ class Installer {
 		if(version_compare($version_from, '3.2.0', '<')) {
 			$this->upgrade320();
 		}
-        if(version_compare($version_from, '3.3.0', '<')) {
-            $this->upgrade320();
-        }
+	        if(version_compare($version_from, '3.3.0', '<')) {
+	            $this->upgrade330();
+	        }
 		psm_update_conf('version', $version_to);
 	}
 
