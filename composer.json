@@ -2,12 +2,6 @@
 	"name": "phpservermon/phpservermon",
 	"description": "PHP Server Monitor",
 	"homepage": "http://www.phpservermonitor.org",
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/phpservermon/php-pushover"
-		}
-	],
 	"require": {
 		"php": ">=5.3.7",
 		"phpmailer/phpmailer": "5.2.6",
