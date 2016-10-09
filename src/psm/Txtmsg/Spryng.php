@@ -46,6 +46,7 @@ class Spryng extends Core {
 
 	public function sendSMS($message) {
 		$recipients = implode(',', $this->recipients);
+		$message = urlencode($message);
 
 		$result = $this->_auth_https_post('http://www.spryng.nl', '/SyncTextService',
 			'?OPERATION=send' .
