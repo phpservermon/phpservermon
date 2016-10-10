@@ -277,6 +277,18 @@ class ServerController extends AbstractServerController {
 		// validate the lot
 		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
 
+		// format port from http/s url
+		if($clean['type'] == 'website' && empty($clean['port'])) {
+		    $tmp = parse_url($clean["ip"]);
+		    if(isset($tmp["port"])) {
+		        $clean["port"] = $tmp["port"];
+		    } elseif ($tmp["scheme"] === "https") {
+		        $clean["port"] = 443;
+		    } elseif ($tmp["scheme"] === "http") {
+		        $clean["port"] = 80;
+		    }
+		}
+
 		try {
 			if($this->server_id > 0) {
 				$server_validator->serverId($this->server_id);
