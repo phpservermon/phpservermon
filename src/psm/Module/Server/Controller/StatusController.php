@@ -91,6 +91,13 @@ class StatusController extends AbstractServerController {
 			$this->twig->addGlobal('auto_refresh', true);
 			$this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
 		}
+
+		if($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
+			$this->xhr = true;
+			//disable auto refresh in ajax return html
+			$layout_data["auto_refresh"] = 0;
+		}
+
 		return $this->twig->render('module/server/status/index.tpl.html', $layout_data);
 	}
 

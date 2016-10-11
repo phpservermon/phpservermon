@@ -58,3 +58,16 @@
 		</div>
 	</div>
 </div>
+
+{% if auto_refresh %}
+<script>
+setInterval(function(){
+	$.ajax({
+		url:"?",
+		success: function(html, status){
+			$("#page-container").html(html);
+		}
+	});
+}, {{ auto_refresh_seconds }} * 1000);
+</script>
+{% endif %}
