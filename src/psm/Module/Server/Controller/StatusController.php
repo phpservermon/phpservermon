@@ -37,6 +37,7 @@ class StatusController extends AbstractServerController {
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
 
+		$this->setCSRFKey('status');
 		$this->setActions(array('index', 'saveLayout'), 'index');
 	}
 
