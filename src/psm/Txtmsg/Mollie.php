@@ -61,7 +61,7 @@ class Mollie extends Core {
 	public function sendSMS($message) {
 		$recipients = implode(',', $this->recipients);
 
-		$result = $this->_auth_https_post('www.mollie.nl', '/xml/sms/',
+		$result = $this->_auth_https_post('api.messagebird.com', '/xml/sms/',
 							 		'gateway='.urlencode($this->gateway).
 							 		'&username='.urlencode($this->username).
 							 		'&password='.urlencode($this->password).
