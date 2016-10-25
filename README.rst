@@ -116,3 +116,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.
+
+Docker
+-------
+
+PHPServerMonitor is now available on Docker : https://github.com/phpservermon/docker-phpservermonitor
