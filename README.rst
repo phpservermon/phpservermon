@@ -119,4 +119,4 @@ along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.
 Docker
 -------
 
-PHPServerMonitor is now available on Docker : https://hub.docker.com/r/quentinv/phpservermonitor/
+PHPServerMonitor is now available on Docker : https://github.com/phpservermon/docker-phpservermonitor
