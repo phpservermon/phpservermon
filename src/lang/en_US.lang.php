@@ -214,6 +214,7 @@ $sm_lang = array(
 		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
 		'sms_gateway_clicksend' => 'ClickSend',
 		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_smsgw' => 'SMSgw',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
