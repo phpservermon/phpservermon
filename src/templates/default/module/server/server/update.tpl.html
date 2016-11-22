@@ -1,5 +1,5 @@
 {% import 'main/macros.tpl.html' as macro %}
-<form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
+<form class="form-horizontal well" action="{{ url_save|raw }}" method="post" autocomplete="off">
 	{{ macro.csrf_input() }}
 	<fieldset>
 		<legend>{{ titlemode }}</legend>
@@ -63,7 +63,7 @@
 				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
 			</div>
 		</div>
-		<div class="control-group types typeWebsite">
+		<div class="control-group">
 			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
@@ -82,13 +82,13 @@
 		<div class="control-group types typeWebsite">
 			<label class="control-label" for="website_username">{{ label_website_username }}</label>
 			<div class="controls">
-				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" />
+				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
 			</div>
 		</div>
 		<div class="control-group types typeWebsite">
 			<label class="control-label" for="website_password">{{ label_website_password }}</label>
 			<div class="controls">
-				<input type="password" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" />
+				<input type="password" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
 			</div>
 		</div>
 	</fieldset>
