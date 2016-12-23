@@ -36,6 +36,12 @@ class Database {
 	protected $db_host;
 
 	/**
+	 * DB port
+	 * @var string $db_port
+	 */
+	protected $db_port;
+
+	/**
 	 * DB name
 	 * @var string $db_name
 	 */
