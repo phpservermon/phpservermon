@@ -286,6 +286,8 @@ class ServerController extends AbstractServerController {
 		        $clean["port"] = 443;
 		    } elseif ($tmp["scheme"] === "http") {
 		        $clean["port"] = 80;
+		    } elseif ($tmp["scheme"] === "rdp") {
+		        $clean["port"] = 3389;
 		    }
 		}
 
