@@ -81,9 +81,10 @@ class Database {
 	 * @param string $pass
 	 * @param string $db
 	 */
-	function __construct($host = null, $user = null, $pass = null, $db = null) {
+	function __construct($host = null, $user = null, $pass = null, $db = null, $port = null) {
 		if($host != null && $user != null && $pass !== null && $db != null) {
 			$this->db_host = $host;
+			$this->db_port = $port || 3306;
 			$this->db_name = $db;
 			$this->db_user = $user;
 			$this->db_pass = $pass;
@@ -498,7 +499,7 @@ class Database {
 		// Initizale connection
 		try {
 			$this->pdo = new \PDO(
-				'mysql:host='.$this->db_host.';dbname='.$this->db_name.';charset=utf8',
+				'mysql:host='.$this->db_host.';port='.$this->db_port.';dbname='.$this->db_name.';charset=utf8',
 				$this->db_user,
 				$this->db_pass
 			);
