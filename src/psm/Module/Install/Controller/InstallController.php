@@ -145,7 +145,7 @@ class InstallController extends AbstractController {
 					$config['user'],
 					$config['pass'],
 					$config['name'],
-					$config['port'],
+					$config['port']
 				);
 
 				if($this->db->status()) {
@@ -309,7 +309,7 @@ class InstallController extends AbstractController {
 			'pass' => '',
 			'name' => '',
 			'host' => '',
-			'port' => '3306',
+			'port' => '3306'
 		);
 		$pattern = "/define\('SM_DB_{key}', '(.*?)'/u";
 
