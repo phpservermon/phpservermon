@@ -138,7 +138,7 @@ class StatusUpdater {
 	}
 
 	/**
-	 * Check the current servers ping status
+	 * Check the current servers ping status - Code from http://stackoverflow.com/a/20467492
 	 * @param int $max_runs
 	 * @param int $run
 	 * @return boolean
