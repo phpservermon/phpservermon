@@ -221,20 +221,40 @@ function psm_update_conf($key, $value) {
  * everything should have been handled when calling this function
  *
  * @param string $server_id
+ * @param string $type
  * @param string $message
+ *
+ * @return int log_id
  */
-function psm_add_log($server_id, $type, $message, $user_id = null) {
+function psm_add_log($server_id, $type, $message) {
 	global $db;
 
-	$db->save(
+	return $db->save(
 		PSM_DB_PREFIX.'log',
 		array(
 			'server_id' => $server_id,
 			'type' => $type,
 			'message' => $message,
-			'user_id' => ($user_id === null) ? '' : $user_id,
 		)
 	);
+}
+
+/**
+ * This function just adds a user to the log_users table.
+ *
+ * @param $log_id
+ * @param $user_id
+ */
+function psm_add_log_user($log_id, $user_id) {
+	global $db;
+
+    $db->save(
+        PSM_DB_PREFIX . 'log_users',
+        array(
+            'log_id'  => $log_id,
+            'user_id' => $user_id,
+        )
+    );
 }
 
 /**
@@ -503,9 +523,19 @@ function psm_build_sms() {
 		case 'nexmo':
 			$sms = new \psm\Txtmsg\Nexmo();
 			break;
+		case 'freemobilesms':
+			$sms = new \psm\Txtmsg\FreeMobileSMS();
+			break;
+		case 'clicksend':
+			$sms = new \psm\Txtmsg\ClickSend();
+			break;
 		case 'octopush':
 			$sms = new \psm\Txtmsg\Octopush();
-			break;	}
+			break;
+		case 'smsgw':
+			$sms = new \psm\Txtmsg\Smsgw();
+			break;
+	}
 
 	// copy login information from the config file
 	if($sms) {
@@ -527,7 +557,7 @@ function psm_build_url($params = array(), $urlencode = true, $htmlentities = tru
 	if(defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
 		$url = PSM_BASE_URL;
 	} else {
-		$url = ($_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+		$url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
 		// for urls, we only want the forward slashes.
 		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';

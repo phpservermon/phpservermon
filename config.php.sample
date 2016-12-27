@@ -4,4 +4,5 @@ define('PSM_DB_USER', 'db_user');
 define('PSM_DB_PASS', 'db_pass');
 define('PSM_DB_NAME', 'db_name');
 define('PSM_DB_HOST', 'localhost');
+define('PSM_DB_PORT', '3306');
 

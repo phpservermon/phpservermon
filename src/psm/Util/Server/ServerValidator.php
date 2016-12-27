@@ -101,6 +101,11 @@ class ServerValidator {
 					throw new \InvalidArgumentException('server_ip_bad_service');
 				}
 				break;
+			case 'ping':
+				if(!filter_var($value, FILTER_VALIDATE_IP)) {
+					throw new \InvalidArgumentException('server_ip_bad_service');
+				}
+				break;
 		}
 
 		return true;
@@ -113,7 +118,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function type($type) {
-		if(!in_array($type, array('service', 'website'))) {
+		if(!in_array($type, array('ping', 'service', 'website'))) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
 		return true;

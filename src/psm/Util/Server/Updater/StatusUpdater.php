@@ -90,6 +90,9 @@ class StatusUpdater {
 		}
 
 		switch($this->server['type']) {
+			case 'ping':
+				$this->status_new = $this->updatePing($max_runs);
+				break;
 			case 'service':
 				$this->status_new = $this->updateService($max_runs);
 				break;
@@ -135,6 +138,41 @@ class StatusUpdater {
 	}
 
 	/**
+	 * Check the current servers ping status - Code from http://stackoverflow.com/a/20467492
+	 * @param int $max_runs
+	 * @param int $run
+	 * @return boolean
+	 */
+	protected function updatePing($max_runs, $run = 1) {
+		$errno = 0;
+		// save response time
+		$starttime = microtime(true);
+		// set ping payload
+		$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+
+		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
+		socket_connect($socket, $this->server['ip'], null);
+		
+		socket_send($socket, $package, strLen($package), 0);
+		if (socket_read($socket, 255)) {
+			$this->rtime =  microtime(true) - $starttime;
+			$status = true;
+		} else {
+			$status = false;
+		}
+		socket_close($socket);
+
+		// check if server is available and rerun if asked.
+		if(!$status && $run < $max_runs) {
+			return $this->updatePing($max_runs, $run + 1);
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Check the current server as a service
 	 * @param int $max_runs
 	 * @param int $run
@@ -145,7 +183,7 @@ class StatusUpdater {
 		// save response time
 		$starttime = microtime(true);
 
-		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);

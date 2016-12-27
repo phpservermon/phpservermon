@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
+ * @author      Michiel van der Wulp <michiel@vanderwulp.be>
  * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -27,7 +27,7 @@
 
 namespace psm\Txtmsg;
 
-class Spryng extends Core {
+class FreeMobileSMS extends Core {
 	// =========================================================================
 	// [ Fields ]
 	// =========================================================================
@@ -37,40 +37,16 @@ class Spryng extends Core {
 	public $success = false;
 	public $successcount = 0;
 
-	// =========================================================================
-	// [ Methods ]
-	// =========================================================================
-	public function setGateway($gateway) {
-		$this->gateway = $gateway;
-	}
-
-	public function sendSMS($message) {
-		$recipients = implode(',', $this->recipients);
-		$message = urlencode($message);
-
-		$result = $this->_auth_https_post('http://www.spryng.nl', '/SyncTextService',
-			'?OPERATION=send' .
-			'&USERNAME=' . $this->username .
-			'&PASSWORD=' . $this->password .
-			'&DESTINATION=' . $recipients .
-			'&SENDER=' . $this->originator .
-			'&BODY=' . $message .
-			'&SMSTYPE=' . 'BUSINESS'
-		);
-		return $result;
-	}
-
-	protected function _auth_https_post($host, $path, $data) {
+public function sendSMS($message) {
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $host . $path . $data);
-		//curl_setopt($ch, CURLOPT_HEADER, 1);
-		//curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-		$data = curl_exec($ch);
+		curl_setopt($ch, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?user=$this->username&pass=$this->password&msg=$message");
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		$result = curl_exec($ch);
 		curl_close($ch);
-		return $data;
+
+		return true;
 	}
 }
