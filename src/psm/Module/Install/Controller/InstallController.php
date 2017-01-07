@@ -121,6 +121,7 @@ class InstallController extends AbstractController {
 
 			$config = array(
 				'db_host' => 'localhost',
+        'db_port' => '3306'
 				'db_name' => '',
 				'db_user' => '',
 				'db_pass' => '',
@@ -142,6 +143,7 @@ class InstallController extends AbstractController {
 				// test db connection
 				$this->db = new \psm\Service\Database(
 					$config['db_host'],
+          $config['db_port'],
 					$config['db_user'],
 					$config['db_pass'],
 					$config['db_name']
@@ -308,6 +310,7 @@ class InstallController extends AbstractController {
 			'pass' => '',
 			'name' => '',
 			'host' => '',
+			'port' => '3306'
 		);
 		$pattern = "/define\('SM_{key}', '(.*?)'/u";
 
