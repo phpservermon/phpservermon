@@ -18,6 +18,7 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 		<parameter key="path.templates">%path.src%templates</parameter>
 
 		<parameter key="db.host" type="constant">PSM_DB_HOST</parameter>
+		<parameter key="db.port" type="constant">PSM_DB_PORT</parameter>
 		<parameter key="db.user" type="constant">PSM_DB_USER</parameter>
 		<parameter key="db.pass" type="constant">PSM_DB_PASS</parameter>
 		<parameter key="db.name" type="constant">PSM_DB_NAME</parameter>
@@ -38,6 +39,7 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 			<argument>%db.user%</argument>
 			<argument>%db.pass%</argument>
 			<argument>%db.name%</argument>
+			<argument>%db.port%</argument>
 		</service>
 
 		<service id="event" class="Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher">
