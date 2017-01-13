@@ -29,7 +29,12 @@
 require_once __DIR__ . '/../src/bootstrap.php';
 
 if(!psm_is_cli()) {
-	die('This script can only be run from the command line.');
+	// check if it's an allowed host
+	$allow = PSM_CRON_ALLOW;
+	if(!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
+		header('HTTP/1.0 404 Not Found');
+		die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL /cron/status.cron.php was not found on this server.</p></body></html>');
+	}
 }
 
 $cron_timeout = PSM_CRON_TIMEOUT;
