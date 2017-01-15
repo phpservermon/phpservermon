@@ -39,7 +39,7 @@ class Database {
 	 * DB port
 	 * @var string $db_port
 	 */
-	protected $db_port = 3306;
+	protected $db_port;
 
 	/**
 	 * DB name
