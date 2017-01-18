@@ -21,7 +21,7 @@ v3.2.0 not yet released
 * #181: Added blank index files to prevent directory listing.
 * #237: Adding CSRF protection.
 * #287: Default language - English
-* #286: Add popular ports drop dowwn
+* #286: Add popular ports drop down
 * #269: Added Slovenian language 
 * #96:  Authentication for website checks
 
