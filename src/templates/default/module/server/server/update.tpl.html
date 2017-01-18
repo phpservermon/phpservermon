@@ -20,6 +20,7 @@
 			<div class="controls">
 				<select id="type" name="type">
 					<option value="">{{ label_please_select }}</option>
+					<option value="ping" {{ edit_type_selected_ping|raw }}>{{ label_ping }}</option>
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
 				 </select>
@@ -47,6 +48,7 @@
                         <option value="115">SFTP (115)</option>
                         <option value="43">WHOIS (43)</option>
                         <option value="53">BIND (53)</option>
+                        <option value="3389">RDP (3389)</option>
                     </optgroup>
 				</select>
 			</div>

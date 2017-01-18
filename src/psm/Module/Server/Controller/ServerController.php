@@ -280,6 +280,20 @@ class ServerController extends AbstractServerController {
 		// validate the lot
 		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
 
+		// format port from http/s url
+		if($clean['type'] == 'website' && empty($clean['port'])) {
+		    $tmp = parse_url($clean["ip"]);
+		    if(isset($tmp["port"])) {
+		        $clean["port"] = $tmp["port"];
+		    } elseif ($tmp["scheme"] === "https") {
+		        $clean["port"] = 443;
+		    } elseif ($tmp["scheme"] === "http") {
+		        $clean["port"] = 80;
+		    } elseif ($tmp["scheme"] === "rdp") {
+		        $clean["port"] = 3389;
+		    }
+		}
+
 		try {
 			if($this->server_id > 0) {
 				$server_validator->serverId($this->server_id);
@@ -449,6 +463,7 @@ class ServerController extends AbstractServerController {
 			'label_type' => psm_get_lang('servers', 'type'),
 			'label_website' => psm_get_lang('servers', 'type_website'),
 			'label_service' => psm_get_lang('servers', 'type_service'),
+			'label_ping' => psm_get_lang('servers', 'type_ping'),
 			'label_pattern' => psm_get_lang('servers', 'pattern'),
 			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
