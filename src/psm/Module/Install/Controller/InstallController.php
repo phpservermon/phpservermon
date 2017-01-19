@@ -121,7 +121,7 @@ class InstallController extends AbstractController {
 
 			$config = array(
 				'db_host' => 'localhost',
-        'db_port' => '3306'
+				'db_port' => '3306',
 				'db_name' => '',
 				'db_user' => '',
 				'db_pass' => '',
