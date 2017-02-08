@@ -90,7 +90,7 @@ class Database {
 	function __construct($host = null, $user = null, $pass = null, $db = null, $port = null) {
 		if($host != null && $user != null && $pass !== null && $db != null) {
 			$this->db_host = $host;
-			$this->db_port = $port || 3306;
+			$this->db_port = (!empty($port)) ? $port : 3306;
 			$this->db_name = $db;
 			$this->db_user = $user;
 			$this->db_pass = $pass;
