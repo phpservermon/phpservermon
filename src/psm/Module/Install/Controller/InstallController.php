@@ -120,11 +120,13 @@ class InstallController extends AbstractController {
 			}
 
 			$config = array(
-				'host' => 'localhost',
-				'name' => '',
-				'user' => '',
-				'pass' => '',
-				'prefix' => 'psm_',
+				'db_host' => 'localhost',
+				'db_port' => '3306',
+				'db_name' => '',
+				'db_user' => '',
+				'db_pass' => '',
+				'db_prefix' => 'psm_',
+				'base_url' => '',
 			);
 
 			$changed = false;
@@ -140,10 +142,11 @@ class InstallController extends AbstractController {
 			if($changed) {
 				// test db connection
 				$this->db = new \psm\Service\Database(
-					$config['host'],
-					$config['user'],
-					$config['pass'],
-					$config['name']
+					$config['db_host'],
+          $config['db_port'],
+					$config['db_user'],
+					$config['db_pass'],
+					$config['db_name']
 				);
 
 				if($this->db->status()) {
@@ -275,11 +278,11 @@ class InstallController extends AbstractController {
 	 * @param array $db_vars prefix,user,pass,name,host
 	 * @return boolean|string TRUE on success, string with config otherwise
 	 */
-	protected function writeConfigFile($db_vars) {
+	protected function writeConfigFile($array_config) {
 		$config = "<?php".PHP_EOL;
 
-		foreach($db_vars as $key => $value) {
-			$line = "define('PSM_DB_{key}', '{value}');".PHP_EOL;
+		foreach($array_config as $key => $value) {
+			$line = "define('PSM_{key}', '{value}');".PHP_EOL;
 			$line = str_replace(
 				array('{key}', '{value}'),
 				array(strtoupper($key), $value),
@@ -307,8 +310,9 @@ class InstallController extends AbstractController {
 			'pass' => '',
 			'name' => '',
 			'host' => '',
+			'port' => '3306'
 		);
-		$pattern = "/define\('SM_DB_{key}', '(.*?)'/u";
+		$pattern = "/define\('SM_{key}', '(.*?)'/u";
 
 		foreach($vars as $key => $value) {
 			$pattern_key = str_replace('{key}', strtoupper($key), $pattern);
