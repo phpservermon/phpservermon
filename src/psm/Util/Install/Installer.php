@@ -130,6 +130,10 @@ class Installer {
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
+					('proxy', '0'),
+					('proxy_url', ''),
+					('proxy_user', ''),
+					('proxy_password', ''),
 					('email_status', '1'),
 					('email_from_email', 'monitor@example.org'),
 					('email_from_name', 'Server Monitor'),
@@ -218,7 +222,7 @@ class Installer {
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
-						  `type` enum('service','website') NOT NULL default 'service',
+						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,
@@ -442,6 +446,11 @@ class Installer {
 		psm_update_conf('password_encrypt_key', sha1(microtime()));
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+					('proxy', '0'),
+					('proxy_url', ''),
+					('proxy_user', ''),
+					('proxy_password', '');";
 
 		$this->execSQL($queries);
 

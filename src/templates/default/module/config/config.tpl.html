@@ -69,6 +69,32 @@
 					<input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
                 </div>
             </div>
+            <legend>{{ label_settings_proxy }}</legend>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox" for="proxy"><input type="checkbox" id="proxy" name="proxy[]" {{ proxy_checked|raw }} />{{ label_proxy }}</label>
+                    <p class="help-block">{{ label_alert_proxy|raw }}</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_url">{{ label_proxy_url }}</label>
+                <div class="controls">
+                    <input type="text" id="proxy_url" name="proxy_url" value="{{ proxy_url }}" maxlength="100" placeholder="{{ label_proxy_url }}" />
+                    <p class="help-block">{{ label_alert_proxy_url|raw }}</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_user">{{ label_proxy_user }}</label>
+                <div class="controls">
+                    <input type="text" id="proxy_user" name="proxy_user" value="{{ proxy_user }}" maxlength="100" placeholder="{{ label_proxy_user }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_password">{{ label_proxy_password }}</label>
+                <div class="controls">
+                    <input type="password" id="proxy_password" name="proxy_password" value="{{ proxy_password }}" maxlength="100" placeholder="{{ label_proxy_password }}" />
+                </div>
+            </div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
             </div>
@@ -173,6 +199,7 @@
 						<option value="octopush" {{ sms_selected_octopush|raw }}>{{ label_sms_gateway_octopush }}</option>
 						<option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
 						<option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
+						<option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
                       </select>
                 </div>
             </div>
