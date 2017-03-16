@@ -200,11 +200,11 @@ class StatusNotifier {
 	protected function notifyByEmail($users) {
 		// build mail object with some default values
 		$mail = psm_build_mail();
-		$mail->Subject	= utf8_decode(psm_parse_msg($this->status_new, 'email_subject', $this->server));
+		$mail->Subject	= psm_parse_msg($this->status_new, 'email_subject', $this->server);
 		$mail->Priority	= 1;
 
 		$body = psm_parse_msg($this->status_new, 'email_body', $this->server);
-		$mail->Body		= utf8_decode($body);
+		$mail->Body		= $body;
 		$mail->AltBody	= str_replace('<br/>', "\n", $body);
 
         if(psm_get_conf('log_email')) {
