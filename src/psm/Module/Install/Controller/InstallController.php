@@ -143,10 +143,10 @@ class InstallController extends AbstractController {
 				// test db connection
 				$this->db = new \psm\Service\Database(
 					$config['db_host'],
-          $config['db_port'],
 					$config['db_user'],
 					$config['db_pass'],
-					$config['db_name']
+					$config['db_name'],
+                    $config['db_port']
 				);
 
 				if($this->db->status()) {
