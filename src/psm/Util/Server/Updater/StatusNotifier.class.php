@@ -302,15 +302,12 @@ class StatusNotifier {
 		$line_color=imagecolorallocate($img,220,220,220);
 
 		# ------ Create the border around the graph ------
-
 		imagefilledrectangle($img,1,1,$img_width-2,$img_height-2,$border_color);
 		imagefilledrectangle($img,$margins,$margins,$img_width-1-$margins,$img_height-1-$margins,$background_color);
-
 
 		# ------- Max value is required to adjust the scale -------
 		$max_value=max($values);
 		$ratio= $graph_height/$max_value;
-
 
 		# -------- Create scale and draw horizontal lines  --------
 		$horizontal_lines=20;
@@ -346,12 +343,11 @@ class StatusNotifier {
 		imagejpeg($img);
 		$contents = ob_get_contents();
 		ob_end_clean();
-		return "data:image/jpeg;base64," . base64_encode($contents);
+		return "data:image/jpeg;base64,".base64_encode($contents);
 	}	 
 	 
 	protected function notifyByPushsafer($users) {
 		$userlist = array();
-
 		$message = str_replace('<br/>', "\n", psm_parse_msg($this->status_new, 'pushsafer_message', $this->server));
 		$title = psm_parse_msg($this->status_new, 'pushover_title', $this->server);
 		$url = psm_build_url();
@@ -367,7 +363,7 @@ class StatusNotifier {
 			$vibration = psm_get_conf('pushsafer_vibration_off');
 		}
 			
-		// GET Latency and generte Chart as png image
+		// GET Latency and generate Chart as jpg image
 		if (extension_loaded('gd') && function_exists('gd_info')) {
 			$now = new \DateTime();
 			$last_week = new \DateTime('-1 week 0:0:0');
