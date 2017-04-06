@@ -19,17 +19,15 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.1.1
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
-	'locale_tag' => 'bg',
-	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Мониторинг',
 		'install' => 'Инсталация',
@@ -88,6 +86,11 @@ $sm_lang = array(
 		'pushover_key' => 'Pushover Ключ',
 		'pushover_device' => 'Pushover Устройство',
 		'pushover_device_description' => 'Име на устройство, което да получава съобщение. Оставете празно, за изпращане до всички устройства.',
+		'pushsafer' => 'Pushsafer',
+		'pushsafer_description' => 'Pushsafer е услуга, за да получавате известия в реално време с <strong>диаграма изображение</strong> в IOS, Android и Windows 10. Вижте <a href="https://www.pushsafer.com/"> сайта им </ а> за повече информация.',
+		'pushsafer_key' => 'Pushsafer Частна или Алиас Ключ',
+		'pushsafer_device' => 'Pushsafer Устройство (група)',
+		'pushsafer_device_description' => 'ID на устройствата или медицински изделия, ID, за да изпратите съобщението до. Оставете празно, за да го изпратите на всички устройства.',				
 		'delete_title' => 'Изтриване на потребител',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете потребител \'%1\'?',
 		'deleted' => 'Потребителят е изтрит успешно.',
@@ -112,6 +115,7 @@ $sm_lang = array(
 		'email' => 'Имейл',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'no_logs' => 'Няма налични логове',
 	),
 	'servers' => array(
@@ -136,6 +140,7 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'users' => 'Потребители',
 		'delete_title' => 'Изтриване на сървър',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете сървър \'%1\'?',
@@ -164,6 +169,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'SMS известията са изключени.',
 		'warning_notifications_disabled_email' => 'Имейл известията са изключени.',
 		'warning_notifications_disabled_pushover' => 'Pushover известията са изключени.',
+		'warning_notifications_disabled_pushsafer' => 'Pushsafer известията са изключени.',
 		'error_server_no_match' => 'Сървърът не е намерен.',
 		'error_server_label_bad_length' => 'Името трябва да е между 1 и 255 символа.',
 		'error_server_ip_bad_length' => 'Хоста/IP адреса трябва да е между 1 и 255 символа.',
@@ -196,10 +202,7 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
@@ -208,6 +211,13 @@ $sm_lang = array(
 		'pushover_clone_app' => 'Кликнете тук за да създаване на вашият Pushover App',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
+		'pushsafer_status' => 'Позволява изпращането на Pushsafer съобщения',
+		'pushsafer_description' => '<p>Pushsafer е услуга, която го прави лесен за да получавате известия в реално време с <strong>диаграма изображение </strong> за iOS, Android и Windows 10 устройства. Вижте <a target="_blank" href="https://www.pushsafer.com/">сайта им</a> за повече информация.</p><p>За подмяна на параметрите по-долу, моля, прочетете на <a target="_blank" href="https://www.pushsafer.com/en/pushapi"> Pushsafer описание API!.</a></p>',
+		'pushsafer_device' => 'Устройството или Група ID',
+		'pushsafer_icon' => 'Икона',
+		'pushsafer_sound' => 'Звук',
+		'pushsafer_vibration' => 'Вибрация',
+		'pushsafer_time2live' => 'Време е да се живее',
 		'alert_type' => 'Изберете кога желаете да получавате известия',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
 			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
@@ -225,13 +235,16 @@ $sm_lang = array(
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
 		'log_pushover' => 'Log pushover messages sent by the script',
+		'log_pushsafer' => 'Да се пази ли лог на изпратените Pushsafer уведомления от системата',
 		'updated' => 'Настройките са обновени успешно.',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
+		'tab_pushsafer' => 'Pushsafer',
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
 		'settings_pushover' => 'Pushover настройки',
+		'settings_pushsafer' => 'Pushsafer настройки',
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
@@ -245,6 +258,7 @@ $sm_lang = array(
 		'test_email' => 'Ще бъде изпратенo тестово съобщение до имейл адреса, който сте задали в профила си.',
 		'test_sms' => 'Ще бъде изпратен тестово SMS съобщение до телефонния номер, който сте задали в профила си.',
 		'test_pushover' => 'Pushover известоята ще бъдат изпратени до потребителски ключ/устройство посочено във вашият профил.',
+		'test_pushsafer' => 'Нотификация Pushsafer ще бъде изпратен на указаните устройства.',
 		'send' => 'Изпрати',
 		'test_subject' => 'Тестово съобщение',
 		'test_message' => 'Тестово съобщение изпртено от PHP Сървър мониторинг',
@@ -257,6 +271,10 @@ $sm_lang = array(
 		'pushover_error' => 'Възникна грешка при изпращане на тестово Pushover известие: %s',
 		'pushover_error_noapp' => 'Unable to send test notification: не е зададен валиден Pushover App API token в настройките.',
 		'pushover_error_nokey' => 'Unable to send test notification: не е зададен валиден Pushover ключ във вашия профил.',
+		'pushsafer_sent' => 'Pushsafer тестово известие',
+		'pushsafer_error' => 'Възникна грешка при изпращане на тестово Pushsafer известие:: %s',
+		'pushsafer_error_noapp' => 'Не може да се изпрати уведомление тест: не Pushsafer ключ намерена в глобалната конфигурация.',
+		'pushsafer_error_nokey' => 'Не може да се изпрати уведомление тест: не Pushsafer лично или псевдоним ключ намерени в профила ви.',
 		'log_retention_period' => 'Период на съхранение на логовете',
 		'log_retention_period_description' => 'Какъв брой дни да се пазят логовете от известията и архиви за ъптайм на сървърите. Въведете 0 ако желаете логовете да не се трият.',
 		'log_retention_days' => 'дни',
@@ -268,11 +286,15 @@ $sm_lang = array(
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
 		'off_pushover_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_pushover_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
+		'off_pushsafer_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
+		'off_pushsafer_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
 		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 		'on_pushover_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
 		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_pushsafer_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
+		'on_pushsafer_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Добре дошъл, %user_name%',

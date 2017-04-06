@@ -18,21 +18,19 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.1.1
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
 	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
-	'locale_tag' => 'nl',
-	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
-		'install' => 'Installeren',
+		'install' => 'Intalleren',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -88,6 +86,11 @@ $sm_lang = array(
 		'pushover_key' => 'Pushover Key',
 		'pushover_device' => 'Pushover Device',
 		'pushover_device_description' => 'Apparaat waar de berichten naar toe gaan. Laat leeg voor alle apparaten.',
+		'pushsafer' => 'Pushsafer',
+		'pushsafer_description' => 'Pushsafer is a service to get real-time notifications with <strong>chart image</strong> in iOS, Android and Windows 10. See <a href="https://www.pushsafer.com/">their website</a> for more info.',
+		'pushsafer_key' => 'Pushsafer Private or Alias Key',
+		'pushsafer_device' => 'Pushsafer Device (Group)',
+		'pushsafer_device_description' => 'Device ID or Device Group ID to send the message to. Leave empty to send it to all devices.',
 		'delete_title' => 'Verwijder gebruiker',
 		'delete_message' => 'Weet je zeker dat je deze gebruiker wilt verwijderen: \'%1\'?',
 		'deleted' => 'Gebruiker verwijderd.',
@@ -112,6 +115,7 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'no_logs' => 'No logs',
 	),
 	'servers' => array(
@@ -130,12 +134,13 @@ $sm_lang = array(
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
-		'no_monitoring' => 'Geen monitoring',
+		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',
 		'send_email' => 'Stuur email',
 		'sms' => 'SMS',
 		'send_sms' => 'Stuur SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'users' => 'Gebruikers',
 		'delete_title' => 'Verwijder server',
 		'delete_message' => 'Weet je zeker dat je deze server wilt verwijderen: \'%1\'?',
@@ -164,6 +169,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'SMS notificaties zijn uitgeschakeld.',
 		'warning_notifications_disabled_email' => 'Email notificaties zijn uitgeschakeld.',
 		'warning_notifications_disabled_pushover' => 'Pushover notificaties zijn uitgeschakeld.',
+		'warning_notifications_disabled_pushsafer' => 'Pushsafer notificaties zijn uitgeschakeld.',
 		'error_server_no_match' => 'Server niet gevonden.',
 		'error_server_label_bad_length' => 'Het label moet tussen de 1 en 255 karakters lang zijn.',
 		'error_server_ip_bad_length' => 'Het domein / IP moet tussen de 1 en 255 karakters lang zijn.',
@@ -196,10 +202,7 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
@@ -208,8 +211,15 @@ $sm_lang = array(
 		'pushover_clone_app' => 'Klik hier om je Pushover app te maken',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Voordat je Pushover kunt gebruiken moet je een <a href="%1$s" target="_blank">App registreren</a> via hun website, en daarvan de App API Token hier invullen.',
+		'pushsafer_status' => 'Allow sending Pushsafer messages',
+		'pushsafer_description' => '<p>Pushsafer is a service that makes it easy to get real-time notifications with <strong>chart image</strong> to iOS, Android and Windows 10 devices. See <a target="_blank" href="https://www.pushsafer.com/">their website</a> for more info.</p><p>For the replacement of the parameters below, please read the <a target="_blank" href="https://www.pushsafer.com/en/pushapi">Pushsafer API description!.</a></p>',
+		'pushsafer_device' => 'Device or Device Group ID',
+		'pushsafer_icon' => 'Icon',
+		'pushsafer_sound' => 'Sound',
+		'pushsafer_vibration' => 'Vibration',
+		'pushsafer_time2live' => 'Time to live',
 		'alert_type' => 'Selecteer wanneer je een notificatie wilt',
-		'alert_type_description' => '<b>Status verandert:</b> '.
+		'alert_type_description' => '<b>Status change:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
 			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
@@ -225,18 +235,21 @@ $sm_lang = array(
 		'log_email' => 'Log emails verstuurd bij het script?',
 		'log_sms' => 'Log sms berichten verstuurd bij het script?',
 		'log_pushover' => 'Log Pushover berichten verstuurd bij het script?',
+		'log_pushsafer' => 'Log Pushsafer berichten verstuurd bij het script?',
 		'updated' => 'De configuratie is gewijzigd.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
+		'tab_pushsafer' => 'Pushsafer',
 		'settings_email' => 'Email instellingen',
 		'settings_sms' => 'SMS instellingen',
 		'settings_pushover' => 'Pushover instellingen',
+		'settings_pushsafer' => 'Pushsafer instellingen',
 		'settings_notification' => 'Notificatie instellingen',
 		'settings_log' => 'Log instellingen',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-herladen servers pagina.<br/>'.
+			'Auto-refresh servers pagina.<br/>'.
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
@@ -245,6 +258,7 @@ $sm_lang = array(
 		'test_email' => 'Er zal een email verstuurd worden naar het email adres in je profiel.',
 		'test_sms' => 'Er zal een SMS verstuurd worden naar het telefoonnummer in je profiel.',
 		'test_pushover' => 'Er zal een Pushover notificatie verstuurd worden naar de user key/device in je profiel.',
+		'test_pushsafer' => 'Er zal een Pushsafer notificatie verstuurd worden naar de user key/device in je profiel.',
 		'send' => 'Verstuur',
 		'test_subject' => 'Test',
 		'test_message' => 'Test bericht',
@@ -257,6 +271,10 @@ $sm_lang = array(
 		'pushover_error' => 'De volgende fout is opgetreden bij het versturen van de Pushover notificatie: %s',
 		'pushover_error_noapp' => 'Kan test notificatie niet verzenden: er is geen Pushover App API token gevonden in de algemene configuratie.',
 		'pushover_error_nokey' => 'Kan test notificatie niet verzenden: er is geen Pushover key gevonden in je profiel.',
+		'pushsafer_sent' => 'Pushsafer notificatie verzonden',
+		'pushsafer_error' => 'An error has occurred while sending the Pushsafer notification: %s',
+		'pushsafer_error_noapp' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
+		'pushsafer_error_nokey' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
 		'log_retention_period' => 'Log retentie periode',
 		'log_retention_period_description' => 'Aantal dagen dat logs van notificaties en archieven van server uptime worden bewaard. Vul 0 in om log opruiming uit te zetten.',
 		'log_retention_days' => 'dagen',
@@ -268,11 +286,15 @@ $sm_lang = array(
 		'off_email_body' => "De server kon niet worden bereikt:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Fout: %ERROR%<br/>Datum: %DATE%",
 		'off_pushover_title' => 'Server %LABEL% is DOWN',
 		'off_pushover_message' => "De server kon niet worden bereikt:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Fout: %ERROR%<br/>Datum: %DATE%",
+		'off_pushsafer_title' => 'Server %LABEL% is DOWN',
+		'off_pushsafer_message' => "De server kon niet worden bereikt:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Fout: %ERROR%<br/>Datum: %DATE%",
 		'on_sms' => 'Server %LABEL% is RUNNING: ip=%IP%, poort=%PORT%',
 		'on_email_subject' => 'BELANGRIJK: Server %LABEL% is RUNNING',
 		'on_email_body' => "Server %LABEL% is weer online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Datum: %DATE%",
 		'on_pushover_title' => 'Server %LABEL% is RUNNING',
 		'on_pushover_message' => "Server %LABEL% is weer online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Datum: %DATE%",
+		'on_pushsafer_title' => 'Server %LABEL% is RUNNING',
+		'on_pushsafer_message' => "Server %LABEL% is weer online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Poort: %PORT%<br/>Datum: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welkom, %user_name%',
@@ -299,6 +321,6 @@ $sm_lang = array(
 	),
 	'error' => array(
 		'401_unauthorized' => 'Unauthorized',
-		'401_unauthorized_description' => 'Je hebt niet de juiste bevoegdheden om deze pagina te bekijken.',
+		'401_unauthorized_description' => 'U heeft niet de juiste bevoegdheden om deze pagina te bekijken.',
 	),
 );

@@ -19,17 +19,15 @@
  *
  * @package     phpservermon
  * @author      Arkadiusz Klenczar <a.klenczar@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.1.1
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Polski - Polish',
 	'locale' => array('pl_PL.UTF-8', 'pl_PL', 'polski', 'polski'),
-	'locale_tag' => 'pl',
-	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Instalacja',
@@ -88,6 +86,11 @@ $sm_lang = array(
 		'pushover_key' => 'Pushover Key',
 		'pushover_device' => 'Urządzenie dla Pushover',
 		'pushover_device_description' => 'Nazwa urządzenia do którego wysłać powiadomienie. Pozostaw puste aby wysłać do wszystkich urządzeń.',
+		'pushsafer' => 'Pushsafer',
+		'pushsafer_description' => 'Pushsafer is a service to get real-time notifications with <strong>chart image</strong> in iOS, Android and Windows 10. See <a href="https://www.pushsafer.com/">their website</a> for more info.',
+		'pushsafer_key' => 'Pushsafer Private or Alias Key',
+		'pushsafer_device' => 'Pushsafer Device (Group)',
+		'pushsafer_device_description' => 'Device ID or Device Group ID to send the message to. Leave empty to send it to all devices.',
 		'delete_title' => 'Usuń użytkownika',
 		'delete_message' => 'Czy jesteś pewny że chcesz usunąć użytkownika \'%1\'?',
 		'deleted' => 'Użytkownik usunięty.',
@@ -112,6 +115,7 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'no_logs' => 'Brak logów',
 	),
 	'servers' => array(
@@ -136,6 +140,7 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'Wyślij SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'users' => 'Użytkownicy',
 		'delete_title' => 'Usuń serwer',
 		'delete_message' => 'Czy jesteś pewny że chcesz usunąć serwer \'%1\'?',
@@ -164,6 +169,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'Powiadomienia SMS są wyłączone.',
 		'warning_notifications_disabled_email' => 'Powiadomienia Email są wyłączone.',
 		'warning_notifications_disabled_pushover' => 'Powiadomienia Pushover są wyłączone.',
+		'warning_notifications_disabled_pushsafer' => 'Powiadomienia Pushsafer są wyłączone.',
 		'error_server_no_match' => 'Nie odnaleziono serwera.',
 		'error_server_label_bad_length' => 'Etykieta musi mieć pomiędzy 1 a 255 znaków.',
 		'error_server_ip_bad_length' => 'Domena/IP musi mieć pomiędzy 1 a 255 znaków.',
@@ -196,10 +202,7 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Login do bramki',
 		'sms_gateway_password' => 'Hasło do bramki',
 		'sms_from' => 'Numer nadawcy',
@@ -208,6 +211,13 @@ $sm_lang = array(
 		'pushover_clone_app' => 'Kliknij tutaj aby stworzyć aplikację korzystającą z Pushover',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"> zarejestrować aplikację</a> na ich stronie internetowej i wpisać tutaj App API Token.',
+		'pushsafer_status' => 'Pozwól na wysyłkę notyfikacji Pushsafer',
+		'pushsafer_description' => '<p>Pushsafer is a service that makes it easy to get real-time notifications with <strong>chart image</strong> to iOS, Android and Windows 10 devices. See <a target="_blank" href="https://www.pushsafer.com/">their website</a> for more info.</p><p>For the replacement of the parameters below, please read the <a target="_blank" href="https://www.pushsafer.com/en/pushapi">Pushsafer API description!.</a></p>',
+		'pushsafer_device' => 'Device or Device Group ID',
+		'pushsafer_icon' => 'Icon',
+		'pushsafer_sound' => 'Sound',
+		'pushsafer_vibration' => 'Vibration',
+		'pushsafer_time2live' => 'Time to live',
 		'alert_type' => 'Wybierz kiedy chcesz być powiadomiony.',
         'alert_type_description' => '<b>Zmiana statusu:</b> '.
 		    'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
@@ -225,13 +235,16 @@ $sm_lang = array(
 		'log_email' => 'Emaile wysłane przez skrypt',
 		'log_sms' => 'SMS wysłane przez skrypt',
 		'log_pushover' => 'Notyfikacje Pushover wysłane przez skrypt',
+		'log_pushsafer' => 'Notyfikacje Pushsafer wysłane przez skrypt',
 		'updated' => 'Konfiguracja została zaktualizowana.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
+		'tab_pushsafer' => 'Pushsafer',
 		'settings_email' => 'Ustawienia Email',
 		'settings_sms' => 'Ustawienia SMS',
 		'settings_pushover' => 'Ustawienia Pushover',
+		'settings_pushsafer' => 'Ustawienia Pushsafer',
 		'settings_notification' => 'Ustawienia powiadomień',
 		'settings_log' => 'Ustawienia Logowania',
 		'auto_refresh' => 'Auto-odświeżanie',
@@ -245,6 +258,7 @@ $sm_lang = array(
 		'test_email' => 'Email zostanie wysłany na adres podany w Twoim profilu.',
 		'test_sms' => 'SMS zostanie wysłany na numer podany w Twoim profilu.',
 		'test_pushover' => 'Powiadomienie Pushover zostanie wysłany na klucz użytkownika/urządzenie podane w Twoim profilu..',
+		'test_pushsafer' => 'Powiadomienie Pushsafer zostanie wysłany na klucz użytkownika/urządzenie podane w Twoim profilu..',
 		'send' => 'Wyślij',
 		'test_subject' => 'Test',
 		'test_message' => 'Testowa wiadomość',
@@ -257,6 +271,10 @@ $sm_lang = array(
 		'pushover_error' => 'Błąd podczas wysyłania powiadomienia Pushover: %s',
 		'pushover_error_noapp' => 'Błąd podczas wysyłania testowego powiadomienia: brak Pushover App API token w konfuguracji globalnej.',
 		'pushover_error_nokey' => 'Błąd podczas wysyłania testowego powiadomienia: brak Pushover key na Twoim profilu.',
+		'pushsafer_sent' => 'Powiadomienie Pushsafer wysłane.',
+		'pushsafer_error' => 'An error has occurred while sending the Pushsafer notification: %s',
+		'pushsafer_error_noapp' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
+		'pushsafer_error_nokey' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
 		'log_retention_period' => 'Czas rotacji logów',
 		'log_retention_period_description' => 'Liczba dni przez którą należy przetrzymywać logi powiadomień i archiwizować uptime serwera. Wpisz 0 aby wyłączyć czyszczenie logów.',
 		'log_retention_days' => 'dni',
@@ -268,11 +286,15 @@ $sm_lang = array(
 		'off_email_body' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
 		'off_pushover_title' => 'Serwer \'%LABEL%\' nie odpowiada',
 		'off_pushover_message' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
+		'off_pushsafer_title' => 'Serwer \'%LABEL%\' nie odpowiada',
+		'off_pushsafer_message' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
 		'on_sms' => 'Serwer \'%LABEL%\' działa poprawnie: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Uwaga: Serwer \'%LABEL%\' działa poprawnie',
 		'on_email_body' => "Serwer '%LABEL%' znów odpowiada:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%",
 		'on_pushover_title' => 'Serwer \'%LABEL%\' działa poprawnie',
 		'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%',
+		'on_pushsafer_title' => 'Serwer \'%LABEL%\' działa poprawnie',
+		'on_pushsafer_message' => 'Serwer \'%LABEL%\' znów działa poprawnie:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Witaj, %user_name%',
