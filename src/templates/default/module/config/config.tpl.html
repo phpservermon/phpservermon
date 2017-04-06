@@ -1,10 +1,10 @@
-{% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal" name="edit_config" action="index.php?mod=config&amp;action=save" id="edit_config" method="post">
     <ul class="nav nav-tabs">
       <li class="{{ general_active }}"><a href="#config-general" data-toggle="tab">{{ label_general }}</a></li>
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+	  <li class="{{ pushsafer_active }}"><a href="#config-pushsafer" data-toggle="tab">{{ label_tab_pushsafer }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -31,17 +31,7 @@
                     <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" data-toggle="tooltip" title="{{ label_auto_refresh_servers }}" />&nbsp;{{ label_seconds }}
                 </div>
             </div>
-              <div class="control-group">
-                  <label class="control-label" for="password_encrypt_key">
-                      {{ label_password_encrypt_key }}
-                  </label>
-                  <div class="controls">
-                      <input type="text" class="input-xxlarge" id="password_encrypt_key" name="password_encrypt_key"
-                             value="{{ password_encrypt_key }}" maxlength="40" data-toggle="tooltip"
-                             title="{{ label_password_encrypt_key_note }}"/>
-                  </div>
-              </div>
-          </fieldset>
+		  </fieldset>
 		  <fieldset>
             <legend>{{ label_settings_notification }}</legend>
             <div class="control-group">
@@ -67,32 +57,6 @@
                 <label class="control-label" for="log_retention_period">{{ label_log_retention_period }}</label>
                 <div class="controls">
 					<input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
-                </div>
-            </div>
-            <legend>{{ label_settings_proxy }}</legend>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox" for="proxy"><input type="checkbox" id="proxy" name="proxy[]" {{ proxy_checked|raw }} />{{ label_proxy }}</label>
-                    <p class="help-block">{{ label_alert_proxy|raw }}</p>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_url">{{ label_proxy_url }}</label>
-                <div class="controls">
-                    <input type="text" id="proxy_url" name="proxy_url" value="{{ proxy_url }}" maxlength="100" placeholder="{{ label_proxy_url }}" />
-                    <p class="help-block">{{ label_alert_proxy_url|raw }}</p>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_user">{{ label_proxy_user }}</label>
-                <div class="controls">
-                    <input type="text" id="proxy_user" name="proxy_user" value="{{ proxy_user }}" maxlength="100" placeholder="{{ label_proxy_user }}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_password">{{ label_proxy_password }}</label>
-                <div class="controls">
-                    <input type="password" id="proxy_password" name="proxy_password" value="{{ proxy_password }}" maxlength="100" placeholder="{{ label_proxy_password }}" />
                 </div>
             </div>
             <div class="form-actions">
@@ -195,11 +159,6 @@
                         <option value="textmarketer" {{ sms_selected_textmarketer|raw }}>{{ label_sms_gateway_textmarketer }}</option>
 						<option value="smsglobal" {{ sms_selected_smsglobal|raw }}>{{ label_sms_gateway_smsglobal }}</option>
 						<option value="smsit" {{ sms_selected_smsit|raw }}>{{ label_sms_gateway_smsit }}</option>
-						<option value="freevoipdeal" {{ sms_selected_freevoipdeal|raw }}>{{ label_sms_gateway_freevoipdeal }}</option>
-						<option value="octopush" {{ sms_selected_octopush|raw }}>{{ label_sms_gateway_octopush }}</option>
-						<option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
-						<option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
-						<option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
                       </select>
                 </div>
             </div>
@@ -265,6 +224,78 @@
             </div>
 		</fieldset>
 		</div>
+		<div id="config-pushsafer" class="tab-pane {{ pushsafer_active }}">
+		<fieldset>
+          <legend>{{ label_settings_pushsafer }}</legend>
+            <div class="control-group">
+                <div class="controls">
+					<label class="checkbox" for="pushsafer_status"><input type="checkbox" id="pushsafer_status" name="pushsafer_status[]" {{ pushsafer_status_checked|raw }} /> {{ label_pushsafer_status }}</label>
+					<p class="help-block">{{ label_pushsafer_description|raw }}</p>
+				</div>
+            </div>
+            <div class="control-group">
+				<div class="controls">
+					<label class="checkbox"><input type="checkbox" id="log_pushsafer" name="log_pushsafer[]" {{ log_pushsafer_checked|raw }} /> {{ label_log_pushsafer }}</label>
+				</div>
+			</div>
+            <div class="control-group">
+                <label class="control-label" for="pushsafer_device">{{ label_pushsafer_device }}</label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_device" name="pushsafer_device" value="{{ pushsafer_device }}" maxlength="255" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_icon_on">{{ label_pushsafer_icon }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_icon_on" name="pushsafer_icon_on" value="{{ pushsafer_icon_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_icon_off">{{ label_pushsafer_icon }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_icon_off" name="pushsafer_icon_off" value="{{ pushsafer_icon_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_sound_on">{{ label_pushsafer_sound }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_sound_on" name="pushsafer_sound_on" value="{{ pushsafer_sound_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_sound_off">{{ label_pushsafer_sound }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_sound_off" name="pushsafer_sound_off" value="{{ pushsafer_sound_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_vibration_on">{{ label_pushsafer_vibration }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_vibration_on" name="pushsafer_vibration_on" value="{{ pushsafer_vibration_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_vibration_off">{{ label_pushsafer_vibration }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_vibration_off" name="pushsafer_vibration_off" value="{{ pushsafer_vibration_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_time2live">{{ label_pushsafer_time2live }}</label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_time2live" name="pushsafer_time2live" value="{{ pushsafer_time2live }}" maxlength="5" />
+                </div>
+            </div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testPushsafer">{{ label_test }}</button>
+					<input type="hidden" name="test_pushsafer" value="0" />
+				</div>
+			</div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit" name="pushsafer_submit">{{ label_save }}</button>
+            </div>
+		</fieldset>
+		</div>		
 	</div>
-	{{ macro.csrf_input() }}
 </form>
