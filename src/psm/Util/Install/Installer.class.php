@@ -147,7 +147,6 @@ class Installer {
 					('pushover_status', '0'),
 					('pushover_api_token', ''),
 					('pushsafer_status', '0'),
-					('pushsafer_device', ''),
 					('pushsafer_icon_on', ''),
 					('pushsafer_icon_off', ''),
 					('pushsafer_sound_on', ''),
@@ -195,6 +194,7 @@ class Installer {
 							`pushover_key` varchar(255) NOT NULL,
 							`pushover_device` varchar(255) NOT NULL,
 							`pushsafer_key` varchar(30) NOT NULL,
+							`pushsafer_device` varchar(255) NOT NULL,
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
