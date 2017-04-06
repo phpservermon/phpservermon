@@ -95,7 +95,7 @@ class UserController extends AbstractController {
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'email'),
+			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'pushsafer_device', 'email'),
 			null,
 			array('name')
 		);
@@ -139,7 +139,7 @@ class UserController extends AbstractController {
 	 */
 	protected function executeEdit() {
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'email');
+		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'pushsafer_device', 'email');
 
 		if($user_id == 0) {
 			// insert mode
@@ -221,7 +221,7 @@ class UserController extends AbstractController {
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'email');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'pushsafer_key', 'pushsafer_device', 'email');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
@@ -326,7 +326,8 @@ class UserController extends AbstractController {
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
 			'label_pushsafer' => psm_get_lang('users', 'pushsafer'),
 			'label_pushsafer_description' => psm_get_lang('users', 'pushsafer_description'),
-			'label_pushsafer_key' => psm_get_lang('users', 'pushsafer_key'),			
+			'label_pushsafer_key' => psm_get_lang('users', 'pushsafer_key'),
+			'label_pushsafer_device' => psm_get_lang('users', 'pushsafer_device'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_servers' => psm_get_lang('menu', 'server'),
 			'label_action' => psm_get_lang('system', 'action'),
