@@ -211,6 +211,7 @@ class InstallController extends AbstractController {
 			'pushover_key' => '',
 			'pushover_device' => '',
 			'pushsafer_key' => '',
+			'pushsafer_device' => '',
 		);
 
 		$validator = new \psm\Util\User\UserValidator($this->user);
