@@ -134,7 +134,7 @@ class StatusNotifier {
 			return false;
 		}
 
-		$notify = false;
+		$notify = true;
 
 		// check which type of alert the user wants
 		switch(psm_get_conf('alert_type')) {
@@ -403,7 +403,7 @@ class StatusNotifier {
 					'i' => $icon,
 					'v' => $vibration,
 					'l' => psm_get_conf('pushsafer_time2live'),
-					'd' => psm_get_conf('pushsafer_device'),
+					'd' => $user['pushsafer_device'],
 					'u' => urldecode($url),
 					'ut' => urldecode($urltitle),
 					'p' => $picture,
@@ -473,7 +473,7 @@ class StatusNotifier {
 	public function getUsers($server_id) {
 		// find all the users with this server listed
 		$users = $this->db->query("
-			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`, `u`.`pushsafer_key`
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`, `u`.`pushsafer_key`, `u`.`pushsafer_device`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`
