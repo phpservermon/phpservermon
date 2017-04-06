@@ -64,7 +64,6 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
-		'pushsafer_device',
 		'pushsafer_icon_on',
 		'pushsafer_icon_off',
 		'pushsafer_sound_on',
@@ -297,6 +296,7 @@ class ConfigController extends AbstractController {
 	protected function testPushsafer() {
 		$user = $this->user->getUser();
 		$api_token = $user->pushsafer_key;
+		$device = $user->pushsafer_device;
 		if(empty($api_token)) {
 			$this->addMessage(psm_get_lang('config', 'pushsafer_error_nokey'), 'error');
 		} else {
@@ -308,7 +308,7 @@ class ConfigController extends AbstractController {
 				'i' => psm_get_conf('pushsafer_icon_on'),
 				'v' => psm_get_conf('pushsafer_sound_on'),
 				's' => psm_get_conf('pushsafer_vibration_on'),
-				'd' => psm_get_conf('pushsafer_device'),
+				'd' => $device,
 				'k' => $api_token
 			);
 			$options = array(
@@ -383,7 +383,6 @@ class ConfigController extends AbstractController {
 			),
 			'label_pushsafer_description' => psm_get_lang('config', 'pushsafer_description'),
 			'label_pushsafer_status' => psm_get_lang('config', 'pushsafer_status'),
-			'label_pushsafer_device' => psm_get_lang('config', 'pushsafer_device'),
 			'label_pushsafer_icon' => psm_get_lang('config', 'pushsafer_icon'),
 			'label_pushsafer_sound' => psm_get_lang('config', 'pushsafer_sound'),
 			'label_pushsafer_vibration' => psm_get_lang('config', 'pushsafer_vibration'),
