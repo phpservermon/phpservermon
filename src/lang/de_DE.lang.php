@@ -19,17 +19,15 @@
  *
  * @package     phpservermon
  * @author      Jean Pierre Kolb <http://www.jpkc.com/>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.1.1
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Deutsch - German',
 	'locale' => array('de_DE.UTF-8', 'de_DE', 'german'),
-	'locale_tag' => 'de',
-	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installation',
@@ -88,6 +86,11 @@ $sm_lang = array(
 		'pushover_key' => 'Pushover Key/Schlüssel',
 		'pushover_device' => 'Pushover Gerät',
 		'pushover_device_description' => 'Name des Gerätes, an das die Nachricht gesendet werden soll. Leer lassen, um die Nachricht an alle registrierten Geräte zu senden.',
+		'pushsafer' => 'Pushsafer',
+		'pushsafer_description' => 'Pushsafer ist ein Service, um Echtzeit-Benachrichtigungen mit <strong>Diagramm Bild</strong> in iOS, Android und Windows 10 zu erhalten. Schau auf <a href="https://www.pushsafer.com/">deren Webseite</a> für mehr Informationen.',
+		'pushsafer_key' => 'Pushsafer Privater oder Alias Schlüssel',
+		'pushsafer_device' => 'Pushsafer Gerät (Gruppe)',
+		'pushsafer_device_description' => 'Geräte ID oder Geräte Gruppen ID, um eine Nachricht nur an diese Geräte zu senden. Lerr lassen um an alle Geräte zu senden.',
 		'delete_title' => 'Benutzer löschen',
 		'delete_message' => 'Sind Sie sicher, dass Sie den Benutzer \'%1\' löschen wollen?',
 		'deleted' => 'Benutzer gelöscht.',
@@ -112,6 +115,7 @@ $sm_lang = array(
 		'email' => 'E-Mail',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'no_logs' => 'Keine Logs vorhanden.',
 	),
 	'servers' => array(
@@ -125,7 +129,6 @@ $sm_lang = array(
 		'type' => 'Typ',
 		'type_website' => 'Webseite',
 		'type_service' => 'Service',
-		'type_ping' => 'Ping',
 		'pattern' => 'Suchstring/-muster',
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
@@ -137,6 +140,7 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'SMS versenden',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'users' => 'Benutzer',
 		'delete_title' => 'Server löschen',
 		'delete_message' => 'Sind Sie sicher, dass Sie den Server \'%1\' löschen wollen?',
@@ -165,6 +169,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'SMS-Benachrichtigungen sind deaktiviert.',
 		'warning_notifications_disabled_email' => 'E-Mail-Benachrichtigungen sind deaktiviert.',
 		'warning_notifications_disabled_pushover' => 'Pushover-Benachrichtigungen sind deaktiviert.',
+		'warning_notifications_disabled_pushsafer' => 'Pushsafer-Benachrichtigungen sind deaktiviert.',
 		'error_server_no_match' => 'Server nicht gefunden.',
 		'error_server_label_bad_length' => 'Das Label muss zwischen 1 und 255 Zeichen lang sein.',
 		'error_server_ip_bad_length' => 'Die Domain/IP muss zwischen 1 und 255 Zeichen lang sein.',
@@ -197,10 +202,7 @@ $sm_lang = array(
         'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS-Sendernummer',
@@ -209,6 +211,13 @@ $sm_lang = array(
 		'pushover_clone_app' => 'Klicken Sie hier, um Ihre Pushover-Anwendung zu erstellen',
 		'pushover_api_token' => 'Pushover-Anwendungs-API-Token',
 		'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s" target="_blank">Anwendung hier registrieren</a> und Ihren Anwendungs-API-Token hier eingeben.',
+		'pushsafer_status' => 'Ermögliche das Senden von Pushsafer-Nachrichten',
+		'pushsafer_description' => '<p>Pushsafer ist ein Service, um Echtzeit-Benachrichtigungen mit <strong>Diagramm Bild</strong> in iOS, Android und Windows 10 zu erhalten. Schau auf <a href="https://www.pushsafer.com/">deren Webseite</a> für mehr Informationen.</p><p>Für das Ersetzten der untenstehenden Parameter, lies dir bitte die <a target="_blank" href="https://www.pushsafer.com/de/pushapi">Pushsafer API Beschreibung</a> durch!</p>',
+		'pushsafer_device' => 'Geräte oder Geräte Gruppen ID',
+		'pushsafer_icon' => 'Icon',
+		'pushsafer_sound' => 'Sound',
+		'pushsafer_vibration' => 'Vibration',
+		'pushsafer_time2live' => 'Time to live',		
 		'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
 		'alert_type_description' => '<b>Status geändert:</b> '.
 			'...  wenn sich der Status ändert<br/>'.
@@ -226,13 +235,16 @@ $sm_lang = array(
 		'log_email' => 'E-Mail-Versand protokollieren?',
 		'log_sms' => 'SMS-Versand protokollieren?',
 		'log_pushover' => 'Pushover-Versand protokollieren?',
+		'log_pushsafer' => 'Pushsafer-Versand protokollieren?',
 		'updated' => 'Die Einstellungen wurden gespeichert.',
 		'tab_email' => 'E-Mail',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
+		'tab_pushsafer' => 'Pushsafer',
 		'settings_email' => 'E-Mail-Einstellungen',
 		'settings_sms' => 'SMS-Einstellungen',
 		'settings_pushover' => 'Pushover-Einstellungen',
+		'settings_pushsafer' => 'Pushsafer-Einstellungen',
 		'settings_notification' => 'Benachrichtigungseinstellungen',
 		'settings_log' => 'Protokollierungseinstellungen',
 		'auto_refresh' => 'Automatische Aktualisierung',
@@ -246,6 +258,7 @@ $sm_lang = array(
 		'test_email' => 'Eine E-Mail wird an die E-Mail-Adresse gesendet, die in Ihrem Profil hinterlegt ist.',
 		'test_sms' => 'Eine SMS wird an die Telefonnummer gesendet, die in Ihrem Profil hinterlegt ist.',
 		'test_pushover' => 'Eine Pushover-Benachrichtigung wird an den Schlüssel/das Gerät gesendet, welche(s) in Ihrem Profil hinterlegt ist.',
+		'test_pushsafer' => 'Eine Pushsafer-Benachrichtigung wird an den Schlüssel/das Gerät gesendet, welche(s) in Ihrem Profil hinterlegt ist.',
 		'send' => 'Senden',
 		'test_subject' => 'Test',
 		'test_message' => 'Testnachricht',
@@ -258,6 +271,10 @@ $sm_lang = array(
 		'pushover_error' => 'Beim Versand der Pushover-Benachrichtigung trat ein Fehler auf: %s',
 		'pushover_error_noapp' => 'Es konnte keine Testbenachrichtigung versendet werden: Kein Pushover-Anwendungs-API-Token in den allgemeinen Einstellungen hinterlegt.',
 		'pushover_error_nokey' => 'Es konnte keine Testbenachrichtigung versendet werden: Es wurde kein Pushover Key/Schlüssel in Ihrem Profil hinterlegt.',
+		'pushsafer_sent' => 'Pushsafer-Benachrichtigung versendet',
+		'pushsafer_error' => 'Beim Versand der Pushsafer-Benachrichtigung trat ein Fehler auf: %s',
+		'pushsafer_error_noapp' => 'Es konnte keine Testbenachrichtigung versendet werden: Es wurde kein Pushsafer Key/Schlüssel in Ihrem Profil hinterlegt.',
+		'pushsafer_error_nokey' => 'Es konnte keine Testbenachrichtigung versendet werden: Es wurde kein Pushsafer Key/Schlüssel in Ihrem Profil hinterlegt.',
 		'log_retention_period' => 'Protokollierungszeitraum',
 		'log_retention_period_description' => 'Anzahl in Tagen bis zur automatischen Bereinigung/Löschung sämtlicher Protokollierungsdaten im System. Geben Sie die Ziffer \'0\' ein, um die automatische Bereinigung/Löschung zu deaktivieren.',
 		'log_retention_days' => 'Tage',
@@ -269,11 +286,15 @@ $sm_lang = array(
 		'off_email_body' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
 		'off_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist offline.',
 		'off_pushover_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
+		'off_pushsafer_title' => 'Dienst/Webseite %LABEL% ist offline.',
+		'off_pushsafer_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",	
 		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
 		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 		'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
 		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
+		'on_pushsafer_title' => 'Dienst/Webseite %LABEL%\ ist wieder online.',
+		'on_pushsafer_message' => "Dienst/Webseite %LABEL% ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",		
 	),
 	'login' => array(
 		'welcome_usermenu' => '%user_name%',

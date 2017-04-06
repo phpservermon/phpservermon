@@ -19,17 +19,15 @@
  *
  * @package     phpservermon
  * @author      Roman Beylin <roman.beylin@yandex.ru>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.1.1
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Russian - Русский',
 	'locale' => array('ru_RU.UTF-8', 'ru_RU', 'russian', 'russian'),
-	'locale_tag' => 'ru',
-	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Сервер Мониторинг',
 		'install' => 'Установка',
@@ -88,6 +86,11 @@ $sm_lang = array(
 		'pushover_key' => 'Pushover ключ',
 		'pushover_device' => 'Pushover устройство',
 		'pushover_device_description' => 'Имя устройства, на которое будут отправляться уведомления. Оставьте пустым, что бы отправлять уведомления на все устройства.',
+		'pushsafer' => 'Pushsafer',
+		'pushsafer_description' => 'Pushsafer is a service to get real-time notifications with <strong>chart image</strong> in iOS, Android and Windows 10. See <a href="https://www.pushsafer.com/">their website</a> for more info.',
+		'pushsafer_key' => 'Pushsafer Private or Alias Key',
+		'pushsafer_device' => 'Pushsafer Device (Group)',
+		'pushsafer_device_description' => 'Device ID or Device Group ID to send the message to. Leave empty to send it to all devices.',
 		'delete_title' => 'Удалить пользователя',
 		'delete_message' => 'Вы уверены что хотите удалить пользователя \'%1\'?',
 		'deleted' => 'Пользователь удален.',
@@ -112,6 +115,7 @@ $sm_lang = array(
 		'email' => 'E-mail',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'no_logs' => 'Записей нет',
 	),
 	'servers' => array(
@@ -136,6 +140,7 @@ $sm_lang = array(
 		'sms' => 'CMC',
 		'send_sms' => 'Отправить CMC',
 		'pushover' => 'Pushover',
+		'pushsafer' => 'Pushsafer',
 		'users' => 'Пользователи',
 		'delete_title' => 'Удалить сервер',
 		'delete_message' => 'Вы уверены что хотите удалить сервер \'%1\'?',
@@ -164,6 +169,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'SMS уведомления отключены.',
 		'warning_notifications_disabled_email' => 'E-mail уведомления отключены.',
 		'warning_notifications_disabled_pushover' => 'Pushover уведомления отключены.',
+		'warning_notifications_disabled_pushsafer' => 'Pushsafer уведомления отключены.',
 		'error_server_no_match' => 'Сервер не найден.',
 		'error_server_label_bad_length' => 'Название должно содержать от 1 до 255 знаков.',
 		'error_server_ip_bad_length' => 'Домен/IP должен содержать от 1 до 255 знаков',
@@ -196,10 +202,7 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Пользователь',
 		'sms_gateway_password' => 'Пароль',
 		'sms_from' => 'Номер отправителя',
@@ -208,6 +211,13 @@ $sm_lang = array(
 		'pushover_clone_app' => 'Click here to create your Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Прежде чем вы сможете начать пользоваться Pushover, вам необходимо зарегестрировать <a href="%1$s" target="_blank">"App"</a> на их веб-сайте и ввести "App API Token" сюда.',
+		'pushsafer_status' => 'Разрешить отправку Pushsafer сообщений',
+		'pushsafer_description' => '<p>Pushsafer is a service that makes it easy to get real-time notifications with <strong>chart image</strong> to iOS, Android and Windows 10 devices. See <a target="_blank" href="https://www.pushsafer.com/">their website</a> for more info.</p><p>For the replacement of the parameters below, please read the <a target="_blank" href="https://www.pushsafer.com/en/pushapi">Pushsafer API description!.</a></p>',
+		'pushsafer_device' => 'Device or Device Group ID',
+		'pushsafer_icon' => 'Icon',
+		'pushsafer_sound' => 'Sound',
+		'pushsafer_vibration' => 'Vibration',
+		'pushsafer_time2live' => 'Time to live',
 		'alert_type' => 'Выбeрите, какие вы хотите получать уведомления',
         'alert_type_description' => '<b>Изменение статуса :</b> '.
 		    'Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br/>'.
@@ -225,13 +235,16 @@ $sm_lang = array(
 		'log_email' => 'Логировать уведомления отправленые по E-mail',
 		'log_sms' => 'Логировать уведомления отправленые по SMS',
 		'log_pushover' => 'Логировать Pushover уведомления',
+		'log_pushsafer' => 'Логировать Pushsafer уведомления',
 		'updated' => 'Параметры были успешно применены.',
 		'tab_email' => 'E-mail',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
+		'tab_pushsafer' => 'Pushsafer',
 		'settings_email' => 'Настройка E-mail',
 		'settings_sms' => 'Настройка SMS',
 		'settings_pushover' => 'Настройка Pushover',
+		'settings_pushsafer' => 'Настройка Pushsafer',
 		'settings_notification' => 'Настройка уведомлений',
 		'settings_log' => 'Настройка логирования',
 		'auto_refresh' => 'Авто-обновление',
@@ -245,6 +258,7 @@ $sm_lang = array(
 		'test_email' => 'Сообщение будет отправлено на адрес указаный в профиле пользователя.',
 		'test_sms' => 'Сообщение будет отправлено на номер телефона указаный в профиле пользователя.',
 		'test_pushover' => 'Pushover уведомление будет отправленно на устройство указанное в профиле пользователя.',
+		'test_pushsafer' => 'Pushsafer уведомление будет отправленно на устройство указанное в профиле пользователя.',
 		'send' => 'Отправить',
 		'test_subject' => 'Проверка',
 		'test_message' => 'Тестовое сообщение',
@@ -257,6 +271,10 @@ $sm_lang = array(
 		'pushover_error' => 'Произошла ошибка во время отправки Pushover уведомления: %s',
 		'pushover_error_noapp' => 'Не удалось отправить пробное уведомление: Pushover "App API token" не был найден в основных настройках.',
 		'pushover_error_nokey' => 'Не удалось отправить пробное уведомление: Pushover ключ не был найден в вашем профиле.',
+		'pushsafer_sent' => 'Pushsafer уведомление отправлено',
+		'pushsafer_error' => 'Произошла ошибка во время отправки Pushsafer уведомления: %s',
+		'pushsafer_error_noapp' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
+		'pushsafer_error_nokey' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
 		'log_retention_period' => 'Период хранения логов',
 		'log_retention_period_description' => 'Количество дней хранения логов уведомлений и архива аптайма серверов. Введите 0 для выключения очистки логов.',
 		'log_retention_days' => 'дней',
@@ -268,11 +286,15 @@ $sm_lang = array(
 		'off_email_body' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
 		'off_pushover_title' => 'Cервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
 		'off_pushover_message' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
+		'off_pushsafer_title' => 'Cервер %LABEL% сейчас НЕДОСТУПЕН',
+		'off_pushsafer_message' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
 		'on_sms' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'ВАЖНО: Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
 		'on_email_body' => "Сервер '%LABEL%' снова доступен:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%",
 		'on_pushover_title' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
 		'on_pushover_message' => "Сервер '%LABEL%' снова доступен:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%",
+		'on_pushsafer_title' => 'Сервер %LABEL% сейчас ДОСТУПЕН',
+		'on_pushsafer_message' => "Сервер %LABEL% снова доступен:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Здравствуйте, %user_name%',

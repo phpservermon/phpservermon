@@ -1,6 +1,4 @@
-{% import 'main/macros.tpl.html' as macro %}
-<form class="form-horizontal well" action="{{ url_save|raw }}" method="post" autocomplete="off">
-	{{ macro.csrf_input() }}
+<form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
 	<fieldset>
 		<legend>{{ titlemode }}</legend>
 		<div class="control-group">
@@ -12,54 +10,25 @@
 		<div class="control-group">
 			<label class="control-label" for="ip">{{ label_domain }}</label>
 			<div class="controls">
-				<input type="text" id="ip" name="ip" value="{{ edit_value_ip }}" maxlength="500" />
+				<input type="text" id="ip" name="ip" value="{{ edit_value_ip }}" maxlength="100" />
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="type">{{ label_type }}</label>
 			<div class="controls">
 				<select id="type" name="type">
-					<option value="">{{ label_please_select }}</option>
-					<option value="ping" {{ edit_type_selected_ping|raw }}>{{ label_ping }}</option>
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
 				 </select>
 			</div>
 		</div>
-		<div class="control-group popularPortsGroup types typeService">
-			<label class="control-label" for="popularPorts">{{ label_port }}</label>
-			<div class="controls">
-				<select id="popularPorts" name="popularPorts">
-                    <option value="">{{ label_please_select }}</option>
-                    <option value="custom">{{ label_custom_port }}</option>
-                    <optgroup label="{{ label_popular_ports }}">
-                        <option value="80">HTTP (80)</option>
-                        <option value="443">HTTPS (443)</option>
-                        <option value="21">FTP (21)</option>
-                        <option value="25">SMTP (25)</option>
-                        <option value="465">SMTP Secure (465)</option>
-                        <option value="110">POP3 (110)</option>
-                        <option value="995">POP3 Secure (995)</option>
-                        <option value="143">IMAP (143)</option>
-                        <option value="993">IMAP over SSL (993)</option>
-                        <option value="22">SSH (22)</option>
-                        <option value="389">LDAP (389)</option>
-                        <option value="3306">MySQL (3306)</option>
-                        <option value="115">SFTP (115)</option>
-                        <option value="43">WHOIS (43)</option>
-                        <option value="53">BIND (53)</option>
-                        <option value="3389">RDP (3389)</option>
-                    </optgroup>
-				</select>
-			</div>
-		</div>
-		<div class="control-group portGroup types typeService">
-			<label class="control-label" for="port">{{ label_custom_port }}</label>
+		<div class="control-group">
+			<label class="control-label" for="port">{{ label_port }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
 			</div>
 		</div>
-		<div class="control-group types typeWebsite">
+		<div class="control-group">
 			<label class="control-label" for="pattern">{{ label_pattern }}</label>
 			<div class="controls">
 				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
@@ -71,32 +40,12 @@
 				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
 			</div>
 		</div>
-		<div class="control-group types typeWebsite">
+		<div class="control-group">
 			<label class="control-label" for="timeout">{{ label_timeout }}</label>
 			<div class="controls">
 				<input class="input-mini" type="text" id="timeout" name="timeout" value="{{ edit_value_timeout }}" placeholder="{{ default_value_timeout }}" maxlength="10" data-toggle="tooltip" title="{{ label_timeout_description }}" /> s
 			</div>
 		</div>
-	</fieldset>
-
-	<fieldset>
-		<legend class="types typeWebsite">{{ label_authentication_settings}}</legend>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="website_username">{{ label_website_username }}</label>
-			<div class="controls">
-				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
-			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="website_password">{{ label_website_password }}</label>
-			<div class="controls">
-				<input type="password" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
-			</div>
-		</div>
-	</fieldset>
-
-	<fieldset>
-		<legend>{{ label_fieldset_monitoring }}</legend>
 		<div class="control-group">
 			<label class="control-label" for="active">{{ label_monitoring }}</label>
 			<div class="controls">
@@ -139,10 +88,17 @@
 				</select>
 			</div>
 		</div>
-	</fieldset>
-
-	<fieldset>
-		<legend>{{ label_fieldset_permissions }}</legend>
+		<div class="control-group {{ control_class_pushsafer }}">
+			<label class="control-label" for="pushsafer">{{ label_pushsafer }}
+			{% if warning_pushsafer %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushsafer }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="pushsafer" name="pushsafer">
+					<option value="yes" {{ edit_pushsafer_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_pushsafer_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label" for="user_id">{{ label_users }}</label>
 			<div class="controls">

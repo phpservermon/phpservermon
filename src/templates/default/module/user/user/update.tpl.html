@@ -1,6 +1,4 @@
-{% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
-	{{ macro.csrf_input() }}
 	<fieldset>
 	<legend>{{ titlemode }}</legend>
 		<div class="control-group">
@@ -66,6 +64,16 @@
 				<input type="text" id="pushover_device" name="pushover_device" value="{{ edit_value_pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">{{ label_pushsafer }}</label>
+			<div class="controls">{{ label_pushsafer_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_pushsafer_key }}</label>
+			<div class="controls">
+				<input type="text" id="pushsafer_key" name="pushsafer_key" value="{{ edit_value_pushsafer_key }}" maxlength="30" />
+			</div>
+		</div>		
 		<div class="control-group">
 			<label class="control-label" for="server_id">{{ label_servers }}</label>
 			<div class="controls">
