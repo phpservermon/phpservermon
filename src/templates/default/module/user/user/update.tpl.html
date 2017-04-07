@@ -67,6 +67,22 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">{{ label_pushsafer }}</label>
+			<div class="controls">{{ label_pushsafer_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_pushsafer_key }}</label>
+			<div class="controls">
+				<input type="text" id="pushsafer_key" name="pushsafer_key" value="{{ edit_value_pushsafer_key }}" maxlength="30" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="mobile">{{ label_pushsafer_device }}</label>
+			<div class="controls">
+				<input type="text" id="pushsafer_device" name="pushsafer_device" value="{{ edit_value_pushsafer_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushsafer_device_description }}" />
+			</div>
+		</div>		
+		<div class="control-group">
 			<label class="control-label" for="server_id">{{ label_servers }}</label>
 			<div class="controls">
 				<select class="multiselect" multiple="multiple" id="server_id" name="server_id[]">
