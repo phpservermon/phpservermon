@@ -5,6 +5,7 @@
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+	  <li class="{{ pushsafer_active }}"><a href="#config-pushsafer" data-toggle="tab">{{ label_tab_pushsafer }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -262,6 +263,73 @@
 			</div>
             <div class="form-actions">
                 <button class="btn btn-success" type="submit" name="pushover_submit">{{ label_save }}</button>
+            </div>
+		</fieldset>
+		</div>
+		<div id="config-pushsafer" class="tab-pane {{ pushsafer_active }}">
+		<fieldset>
+          <legend>{{ label_settings_pushsafer }}</legend>
+            <div class="control-group">
+                <div class="controls">
+					<label class="checkbox" for="pushsafer_status"><input type="checkbox" id="pushsafer_status" name="pushsafer_status[]" {{ pushsafer_status_checked|raw }} /> {{ label_pushsafer_status }}</label>
+					<p class="help-block">{{ label_pushsafer_description|raw }}</p>
+				</div>
+            </div>
+            <div class="control-group">
+				<div class="controls">
+					<label class="checkbox"><input type="checkbox" id="log_pushsafer" name="log_pushsafer[]" {{ log_pushsafer_checked|raw }} /> {{ label_log_pushsafer }}</label>
+				</div>
+			</div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_icon_on">{{ label_pushsafer_icon }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_icon_on" name="pushsafer_icon_on" value="{{ pushsafer_icon_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_icon_off">{{ label_pushsafer_icon }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_icon_off" name="pushsafer_icon_off" value="{{ pushsafer_icon_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_sound_on">{{ label_pushsafer_sound }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_sound_on" name="pushsafer_sound_on" value="{{ pushsafer_sound_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_sound_off">{{ label_pushsafer_sound }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_sound_off" name="pushsafer_sound_off" value="{{ pushsafer_sound_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_vibration_on">{{ label_pushsafer_vibration }} <span class="label label-status-on">on</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_vibration_on" name="pushsafer_vibration_on" value="{{ pushsafer_vibration_on }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_vibration_off">{{ label_pushsafer_vibration }} <span class="label label-status-off">off</span></label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_vibration_off" name="pushsafer_vibration_off" value="{{ pushsafer_vibration_off }}" maxlength="3" />
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="pushsafer_time2live">{{ label_pushsafer_time2live }}</label>
+                <div class="controls">
+                    <input type="text" id="pushsafer_time2live" name="pushsafer_time2live" value="{{ pushsafer_time2live }}" maxlength="5" />
+                </div>
+            </div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="testPushsafer">{{ label_test }}</button>
+					<input type="hidden" name="test_pushsafer" value="0" />
+				</div>
+			</div>
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit" name="pushsafer_submit">{{ label_save }}</button>
             </div>
 		</fieldset>
 		</div>
