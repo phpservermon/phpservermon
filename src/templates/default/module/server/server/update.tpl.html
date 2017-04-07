@@ -139,6 +139,17 @@
 				</select>
 			</div>
 		</div>
+		<div class="control-group {{ control_class_pushsafer }}">
+			<label class="control-label" for="pushsafer">{{ label_pushsafer }}
+			{% if warning_pushsafer %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushsafer }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="pushsafer" name="pushsafer">
+					<option value="yes" {{ edit_pushsafer_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_pushsafer_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset>
