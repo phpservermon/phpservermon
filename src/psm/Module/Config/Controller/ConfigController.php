@@ -41,10 +41,12 @@ class ConfigController extends AbstractController {
 		'email_smtp',
 		'sms_status',
 		'pushover_status',
+		'pushsafer_status',
 		'log_status',
 		'log_email',
 		'log_sms',
 		'log_pushover',
+		'log_pushsafer',
 		'show_update',
 	);
 
@@ -66,6 +68,13 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'pushsafer_icon_on',
+		'pushsafer_icon_off',
+		'pushsafer_sound_on',
+		'pushsafer_sound_off',
+		'pushsafer_vibration_on',
+		'pushsafer_vibration_off',
+		'pushsafer_time2live',
 	);
 
 	private $default_tab = 'general';
@@ -135,7 +144,7 @@ class ConfigController extends AbstractController {
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
 
-		$testmodals = array('email', 'sms', 'pushover');
+		$testmodals = array('email', 'sms', 'pushover', 'pushsafer');
 		foreach($testmodals as $modal_id) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 			$this->addModal($modal);
@@ -186,6 +195,8 @@ class ConfigController extends AbstractController {
 				$this->testSMS();
 			} elseif(!empty($_POST['test_pushover'])) {
 				$this->testPushover();
+			} elseif(!empty($_POST['test_pushsafer'])) {
+				$this->testPushsafer();
 			}
 
 			if($language_refresh) {
@@ -201,6 +212,8 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'sms';
 			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
+			} elseif(isset($_POST['pushsafer_submit']) || !empty($_POST['test_pushsafer'])) {
+				$this->default_tab = 'pushsafer';
 			}
 		}
 		return $this->runAction('index');
@@ -285,16 +298,59 @@ class ConfigController extends AbstractController {
 				$this->addMessage(sprintf(psm_get_lang('config', 'pushover_error'), $error), 'error');
 			}
 		}
-	}
+	}	   
+
+	protected function testPushsafer() {
+		$user = $this->getUser()->getUser();
+		$api_token = $user->pushsafer_key;
+		$device = $user->pushsafer_device;
+		if(empty($api_token)) {
+			$this->addMessage(psm_get_lang('config', 'pushsafer_error_nokey'), 'error');
+		} else {
+		
+			$apiurl = 'https://www.pushsafer.com/api';
+			$data = array(
+				't' => urldecode(psm_get_lang('config', 'test_subject')),
+				'm' => urldecode(psm_get_lang('config', 'test_message')),
+				'i' => psm_get_conf('pushsafer_icon_on'),
+				'v' => psm_get_conf('pushsafer_sound_on'),
+				's' => psm_get_conf('pushsafer_vibration_on'),
+				'd' => $device,
+				'k' => $api_token
+			);
+			$options = array(
+				'http' => array(
+					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+					'method'  => 'POST',
+					'content' => http_build_query($data)
+				)
+			);
+			$context  = stream_context_create($options);
+			$result = json_decode(file_get_contents($apiurl, false, $context), true);
+		
+			if(isset($result['status']) && $result['status'] == 1) {
+				$this->addMessage(psm_get_lang('config', 'pushsafer_sent'), 'success');
+			} else {
+				if(isset($result['status']) && $result['status'] == 0) {
+					$error = $result['error'];
+				} else {
+					$error = 'Unknown';
+				}
+				$this->addMessage(sprintf(psm_get_lang('config', 'pushsafer_error'), $error), 'error');
+			}
+		}
+	}									  
 
 	protected function getLabels() {
 		return array(
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+			'label_tab_pushsafer' => psm_get_lang('config', 'tab_pushsafer'),
 			'label_settings_email' => psm_get_lang('config', 'settings_email'),
 			'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 			'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
+			'label_settings_pushsafer' => psm_get_lang('config', 'settings_pushsafer'),
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
 			'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
@@ -346,6 +402,12 @@ class ConfigController extends AbstractController {
 				psm_get_lang('config', 'pushover_api_token_description'),
 				PSM_PUSHOVER_CLONE_URL
 			),
+			'label_pushsafer_description' => psm_get_lang('config', 'pushsafer_description'),
+			'label_pushsafer_status' => psm_get_lang('config', 'pushsafer_status'),
+			'label_pushsafer_icon' => psm_get_lang('config', 'pushsafer_icon'),
+			'label_pushsafer_sound' => psm_get_lang('config', 'pushsafer_sound'),
+			'label_pushsafer_vibration' => psm_get_lang('config', 'pushsafer_vibration'),
+			'label_pushsafer_time2live' => psm_get_lang('config', 'pushsafer_time2live'),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
@@ -356,6 +418,7 @@ class ConfigController extends AbstractController {
 			'label_log_email' => psm_get_lang('config', 'log_email'),
 			'label_log_sms' => psm_get_lang('config', 'log_sms'),
 			'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+			'label_log_pushsafer' => psm_get_lang('config', 'log_pushsafer'),
 			'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
 			'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
