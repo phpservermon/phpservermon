@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -126,7 +126,7 @@ class InstallController extends AbstractController {
 				'db_user' => '',
 				'db_pass' => '',
 				'db_prefix' => 'psm_',
-				'base_url' => '',
+				'base_url' => $this->getBaseUrl(),
 			);
 
 			$changed = false;
@@ -275,7 +275,7 @@ class InstallController extends AbstractController {
 
 	/**
 	 * Write config file with db variables
-	 * @param array $db_vars prefix,user,pass,name,host
+	 * @param array $array_config prefix,user,pass,name,host
 	 * @return boolean|string TRUE on success, string with config otherwise
 	 */
 	protected function writeConfigFile($array_config) {
@@ -352,5 +352,15 @@ class InstallController extends AbstractController {
 			}
 			return $version_from;
 		}
+	}
+
+	/**
+	 * Get base url of the current application
+	 * @return string
+	 */
+	protected function getBaseUrl() {
+		$sym_request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+		return $sym_request->getSchemeAndHttpHost() . $sym_request->getBasePath();
 	}
 }

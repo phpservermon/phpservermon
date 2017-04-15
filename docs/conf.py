@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PHP Server Monitor'
-copyright = u'2008-2014, Pepijn Over'
+copyright = u'2008-2017, Pepijn Over'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

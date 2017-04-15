@@ -3,12 +3,12 @@ Changelog
 
 
 not yet released
-----------------------------------
+----------------
 
 
 
-v3.2.0 not yet released
-----------------------------------
+v3.2.0 (released April 15, 2017)
+--------------------------------
 
 * #170: Implement Nexmo SMS.
 * #161: Added Swedish translation.
@@ -24,6 +24,7 @@ v3.2.0 not yet released
 * #286: Add popular ports drop down
 * #269: Added Slovenian language 
 * #96:  Authentication for website checks
+
 
 v3.1.1 (released November 6, 2014)
 ----------------------------------
