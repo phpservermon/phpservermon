@@ -5,7 +5,7 @@ Copyright
 
 .. code-block:: none
 
-    Copyright (C) 2008-2014 Pepijn Over <pep_at_neanderthal-technology.com>
+    Copyright (C) 2008-2017 Pepijn Over <pep_at_mailbox_org>
 
 
 PHP Server Monitor is free software: you can redistribute it and/or modify

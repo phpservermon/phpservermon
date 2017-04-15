@@ -21,7 +21,7 @@
  * @author      Klemens Häckel <http://clickdimension.wordpress.com/>
  * @author      Luis Rodriguez <luis@techreanimate.com>
  * @author 		Mauro Vietri <mauro.vietri@outlook.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
