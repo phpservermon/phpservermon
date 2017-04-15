@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -570,9 +570,10 @@ function psm_build_url($params = array(), $urlencode = true, $htmlentities = tru
 		$url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
 		// for urls, we only want the forward slashes.
-		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+		$url .= dirname($_SERVER['SCRIPT_NAME']);
 		$url = str_replace('\\', '', $url);
 	}
+	$url = rtrim($url, '/') . '/';
 
 	if($params != null) {
 		$url .= '?';

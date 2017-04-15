@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -78,7 +78,7 @@ class Installer {
 
 		// different DB version, check if the version requires any changes
 		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
-		if(version_compare($version_db, '3.1.0', '<')) {
+		if(version_compare($version_db, '3.2.0', '<')) {
 			return true;
 		} else {
 			// change database version to current version so this check won't be required next time
