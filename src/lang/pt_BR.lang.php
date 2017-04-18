@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Luiz Alberto S. Ribeiro <madeinnordeste@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Português - Brazilian Portuguese',
 	'locale' => array('pt_BR.UTF-8', 'pt_BR', 'portuguese-brazilian'),
+	'locale_tag' => 'BR',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
 		'install' => 'Instalar',
@@ -156,7 +158,7 @@ $sm_lang = array(
 		'month' => 'Mês',
 		'week' => 'Semana',
 		'day' => 'Dia',
-		'hour' => 'HOra',
+		'hour' => 'Hora',
 		'warning_threshold' => 'Limite de Aviso',
 		'warning_threshold_description' => 'Número de verificações que falharam antes de ser marcado offline.',
 		'chart_last_week' => 'Última semana',
@@ -193,32 +195,38 @@ $sm_lang = array(
 		'email_smtp_username' => 'SMTP username',
 		'email_smtp_password' => 'SMTP password',
 		'email_smtp_noauth' => 'Deixe em branco para nenhuma autenticação',
-        'sms_status' => 'Habilitar o envio de mensagem de texto?',
-        'sms_gateway' => 'Gateway para o uso de envio de mensagens',
-        'sms_gateway_mosms' => 'Mosms',
-        'sms_gateway_mollie' => 'Mollie',
-        'sms_gateway_spryng' => 'Spryng',
-        'sms_gateway_inetworx' => 'Inetworx',
-        'sms_gateway_clickatell' => 'Clickatell',
+	        'sms_status' => 'Habilitar o envio de mensagem de texto?',
+	        'sms_gateway' => 'Gateway para o uso de envio de mensagens',
+	        'sms_gateway_mosms' => 'Mosms',
+	        'sms_gateway_mollie' => 'Mollie',
+	        'sms_gateway_spryng' => 'Spryng',
+	        'sms_gateway_inetworx' => 'Inetworx',
+	        'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
         'sms_gateway_username' => 'Usuário do Gateway',
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',
+		'sms_gateway_nexmo' => 'Nexmo',
+	        'sms_gateway_username' => 'Usuário do Gateway',
+	        'sms_gateway_password' => 'Senha do Gateway',
+	        'sms_from' => 'Número de telefone de envio',
 		'pushover_status' => 'Habilitar envio de mensagens Pushover',
 		'pushover_description' => 'Pushover é um serviço de notificações em tempo real. Veja <a href="https://pushover.net/">o website</a> para mais informações.',
 		'pushover_clone_app' => 'Clique aqui para criar sua app Pushover',
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
-        'pushsafer_status' => 'Habilitar envio de mensagens Pushsafer',
+		'pushsafer_status' => 'Habilitar envio de mensagens Pushsafer',
 		'pushsafer_description' => '<p>Pushsafer is a service that makes it easy to get real-time notifications with <strong>chart image</strong> to iOS, Android and Windows 10 devices. See <a target="_blank" href="https://www.pushsafer.com/">their website</a> for more info.</p><p>For the replacement of the parameters below, please read the <a target="_blank" href="https://www.pushsafer.com/en/pushapi">Pushsafer API description!.</a></p>',
 		'pushsafer_device' => 'Device or Device Group ID',
 		'pushsafer_icon' => 'Icon',
 		'pushsafer_sound' => 'Sound',
 		'pushsafer_vibration' => 'Vibration',
 		'pushsafer_time2live' => 'Time to live',
-		'alert_type' => 'Selecione como você gostaria de ser notificado.',
+        'alert_type' => 'Selecione como você gostaria de ser notificado.',
         'alert_type_description' => '<b>Mudança de Status:</b> '.
             'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br/>'.
             '<br /><b>Offline:</b> '.

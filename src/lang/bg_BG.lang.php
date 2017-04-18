@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
+	'locale_tag' => 'bg',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Мониторинг',
 		'install' => 'Инсталация',
@@ -90,7 +92,7 @@ $sm_lang = array(
 		'pushsafer_description' => 'Pushsafer е услуга, за да получавате известия в реално време с <strong>диаграма изображение</strong> в IOS, Android и Windows 10. Вижте <a href="https://www.pushsafer.com/"> сайта им </ а> за повече информация.',
 		'pushsafer_key' => 'Pushsafer Частна или Алиас Ключ',
 		'pushsafer_device' => 'Pushsafer Устройство (група)',
-		'pushsafer_device_description' => 'ID на устройствата или медицински изделия, ID, за да изпратите съобщението до. Оставете празно, за да го изпратите на всички устройства.',				
+		'pushsafer_device_description' => 'ID на устройствата или медицински изделия, ID, за да изпратите съобщението до. Оставете празно, за да го изпратите на всички устройства.',
 		'delete_title' => 'Изтриване на потребител',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете потребител \'%1\'?',
 		'deleted' => 'Потребителят е изтрит успешно.',
@@ -115,7 +117,7 @@ $sm_lang = array(
 		'email' => 'Имейл',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
-		'pushsafer' => 'Pushsafer',
+		'pushsafer' => 'Pushsafer',					 
 		'no_logs' => 'Няма налични логове',
 	),
 	'servers' => array(
@@ -140,7 +142,7 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'SMS',
 		'pushover' => 'Pushover',
-		'pushsafer' => 'Pushsafer',
+		'pushsafer' => 'Pushsafer',					 
 		'users' => 'Потребители',
 		'delete_title' => 'Изтриване на сървър',
 		'delete_message' => 'Сигурни ли сте, че искате да изтриете сървър \'%1\'?',
@@ -169,7 +171,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_sms' => 'SMS известията са изключени.',
 		'warning_notifications_disabled_email' => 'Имейл известията са изключени.',
 		'warning_notifications_disabled_pushover' => 'Pushover известията са изключени.',
-		'warning_notifications_disabled_pushsafer' => 'Pushsafer известията са изключени.',
+		'warning_notifications_disabled_pushsafer' => 'Pushsafer известията са изключени.',																								  
 		'error_server_no_match' => 'Сървърът не е намерен.',
 		'error_server_label_bad_length' => 'Името трябва да е между 1 и 255 символа.',
 		'error_server_ip_bad_length' => 'Хоста/IP адреса трябва да е между 1 и 255 символа.',
@@ -202,7 +204,10 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
@@ -235,16 +240,16 @@ $sm_lang = array(
 		'log_email' => 'Да се пази ли лог на изпратените имейли от системата',
 		'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от системата',
 		'log_pushover' => 'Log pushover messages sent by the script',
-		'log_pushsafer' => 'Да се пази ли лог на изпратените Pushsafer уведомления от системата',
+		'log_pushsafer' => 'Да се пази ли лог на изпратените Pushsafer уведомления от системата',																																   
 		'updated' => 'Настройките са обновени успешно.',
 		'tab_email' => 'Имейл',
 		'tab_sms' => 'SMS',
 		'tab_pushover' => 'Pushover',
-		'tab_pushsafer' => 'Pushsafer',
+		'tab_pushsafer' => 'Pushsafer',						 
 		'settings_email' => 'Имейл настройки',
 		'settings_sms' => 'SMS настройки',
 		'settings_pushover' => 'Pushover настройки',
-		'settings_pushsafer' => 'Pushsafer настройки',
+		'settings_pushsafer' => 'Pushsafer настройки',												 
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
@@ -258,7 +263,7 @@ $sm_lang = array(
 		'test_email' => 'Ще бъде изпратенo тестово съобщение до имейл адреса, който сте задали в профила си.',
 		'test_sms' => 'Ще бъде изпратен тестово SMS съобщение до телефонния номер, който сте задали в профила си.',
 		'test_pushover' => 'Pushover известоята ще бъдат изпратени до потребителски ключ/устройство посочено във вашият профил.',
-		'test_pushsafer' => 'Нотификация Pushsafer ще бъде изпратен на указаните устройства.',
+		'test_pushsafer' => 'Нотификация Pushsafer ще бъде изпратен на указаните устройства.',																															  
 		'send' => 'Изпрати',
 		'test_subject' => 'Тестово съобщение',
 		'test_message' => 'Тестово съобщение изпртено от PHP Сървър мониторинг',

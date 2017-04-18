@@ -20,15 +20,17 @@
  * @package     phpservermon
  * @author      David Ribeiro
  * @author      Jérôme Cabanis <jerome@lauraly.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Français - French',
 	'locale' => array('fr_FR.UTF-8', 'fr_FR', 'french'),
+	'locale_tag' => 'fr',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installer',
@@ -86,7 +88,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover est un service qui simplifie les notifications en temps réel. Voir <a href="https://pushover.net/">leur site web</a> pour plus d\'informations.',
 		'pushover_key' => 'Clé Pushover',
 		'pushover_device' => 'Appareil Pushover',
-		'pushover_device_description' => 'Nom de l\'appareil auquel le message doit être envoyé. Laissez vide pour l\'envoyer à tout les appareils.',
+		'pushover_device_description' => 'Nom de l\'appareil auquel le message doit être envoyé. Laissez vide pour l\'envoyer à tous les appareils.',
 		'pushsafer' => 'Pushsafer',
 		'pushsafer_description' => 'Pushsafer is a service to get real-time notifications with <strong>chart image</strong> in iOS, Android and Windows 10. See <a href="https://www.pushsafer.com/">their website</a> for more info.',
 		'pushsafer_key' => 'Pushsafer Private or Alias Key',
@@ -100,12 +102,12 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Votre profil a été mis à jour.',
 		'error_user_name_bad_length' => 'Le nom d\'utilisateur doit avoir entre 2 et 64 caractères.',
-		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabetiques (a-z, A-Z), des chiffres (0-9) ou underscore (_).',
+		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabétiques (a-z, A-Z), des chiffres (0-9) ou underscore (_).',
 		'error_user_name_exists' => 'Ce nom d\'utilisateur existe déjà.',
 		'error_user_email_bad_length' => 'L\'adresse email doit avoir entre 5 et 255 caractères.',
 		'error_user_email_invalid' => 'L\'adresse email n\'est pas valide.',
 		'error_user_level_invalid' => 'Le niveau d\'utilisateur n\'est pas valide.',
-		'error_user_no_match' => 'L\'utilisateur n\'a pas été trouvé dans la base de donnée.',
+		'error_user_no_match' => 'L\'utilisateur n\'a pas été trouvé dans la base de données.',
 		'error_user_password_invalid' => 'Le mot de passe n\'est pas valide.',
 		'error_user_password_no_match' => 'Le mot de passe est incorrect.',
 	),
@@ -134,8 +136,8 @@ $sm_lang = array(
 		'pattern_description' => 'Si ce texte n\'est par retrouvé sur le site web, le serveur est marqué hors-service. Les expressions réguliaires sont autorisées.',
 		'last_check' => 'Dernière vérification',
 		'last_online' => 'Dernière fois OK',
-		'monitoring' => 'Serveillé',
-		'no_monitoring' => 'Non serveillé',
+		'monitoring' => 'Surveillé',
+		'no_monitoring' => 'Non surveillé',
 		'email' => 'Email',
 		'send_email' => 'Envoyer un email',
 		'sms' => 'SMS',
@@ -182,7 +184,7 @@ $sm_lang = array(
 	'config' => array(
 		'general' => 'Général',
 		'language' => 'Langue',
-		'show_update' => 'Vérifier les nouvelles mise à jour chaque semaine',
+		'show_update' => 'Vérifier les nouvelles mises à jour chaque semaine',
 		'email_status' => 'Autoriser l\'envoi de mail',
 		'email_from_email' => 'Adresse de l\'expéditeur',
 		'email_from_name' => 'Nom de l\'expéditeur',
@@ -203,7 +205,11 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
 		'sms_gateway_username' => 'Nom utilisateur de la passerelle',
 		'sms_gateway_password' => 'Mot de passe de la passerelle',
 		'sms_from' => 'SMS de l\'expéditeur',
@@ -224,18 +230,18 @@ $sm_lang = array(
 			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br/>'.
 			 '<br/><b>Hors service : </b>'.
 			'Vous ne recevez une notification que quand le serveur passe de l\'état OK à HORS SERVICE. Par exemple, '.
-			'Votre tache planifiée s\'exécute toute les 15 minutes et votre serveur passe à l\'état HORS SERVICE à 1 heure du matin et le reste jusqu\'à 6 heures du matin.'.
+			'Votre tâche planifiée s\'exécute toutes les 15 minutes et votre serveur passe à l\'état HORS SERVICE à 1 heure du matin et le reste jusqu\'à 6 heures du matin.'.
 			'Vous ne recevez qu\'une seule notification à 1 heure du matin.<br/>'.
 			'<br/><b>Toujours : </b>'.
-			'Vous recevez une notification à chaque exécution de la tache planifiée si le serveur est à l\'état HORS SERVICE ',
+			'Vous recevez une notification à chaque exécution de la tâche planifiée si le serveur est à l\'état HORS SERVICE ',
 		'alert_type_status' => 'Changement d\'état',
 		'alert_type_offline' => 'Hors service',
 		'alert_type_always' => 'Toujours',
 		'log_status' => 'Etat des événements',
 		'log_status_description' => 'Si l\'option est activée, un événement est enregistré chaque fois qu\'une notification a lieu.',
-		'log_email' => 'Enregistrer tout les emails envoyés',
-		'log_sms' => 'Enregistrer tout les SMS envoyés',
-		'log_pushover' => 'Enregistrer tout les messages Pushover envoyés',
+		'log_email' => 'Enregistrer tous les emails envoyés',
+		'log_sms' => 'Enregistrer tous les SMS envoyés',
+		'log_pushover' => 'Enregistrer tous les messages Pushover envoyés',
 		'log_pushsafer' => 'Enregistrer tout les messages Pushsafer envoyés',
 		'updated' => 'La configuration a été mise à jour.',
 		'tab_email' => 'Email',
@@ -266,7 +272,7 @@ $sm_lang = array(
 		'email_sent' => 'Email envoyé',
 		'email_error' => 'Erreur lors de l\'envoi de l\'email',
 		'sms_sent' => 'Sms envoyé',
-		'sms_error' => 'Erreur lors de l\'envoi du sms',
+		'sms_error' => 'Erreur lors de l\'envoi du SMS',
 		'sms_error_nomobile' => 'Impossible d\'envoyer un SMS de test: aucun numéro de téléphone défini dans votre profil.',
 		'pushover_sent' => 'Notification Pushover envoyée',
 		'pushover_error' => 'Une erreur s\'est produite lors de l\'envoi de la notification Pushover : %s',
@@ -303,7 +309,7 @@ $sm_lang = array(
 		'title_forgot' => 'Mot de passe oublié ?',
 		'title_reset' => 'Réinitialisation du mot de passe',
 		'submit' => 'Envoyer',
-		'remember_me' => 'Se vouvenir de moi',
+		'remember_me' => 'Se souvenir de moi',
 		'login' => 'Connexion',
 		'logout' => 'Déconnexion',
 		'username' => 'Nom',

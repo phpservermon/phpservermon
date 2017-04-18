@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Haydar Kulekci <haydarkulekci@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
     'name' => 'Türkçe - Turkish',
     'locale' => array('tr_TR.UTF-8', 'tr_TR', 'turkish', 'turkish-tr'),
+	'locale_tag' => 'tr',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
         'install' => 'Yükle',
@@ -86,12 +88,12 @@ $sm_lang = array(
         'pushover_key' => 'Pushover Anahtarı',
         'pushover_device' => 'Pushover Aracı',
         'pushover_device_description' => 'Mesajın gönderileceği cihazın adı. Tüm cihazlara göndermek için boş bırakın.',
-   		'pushsafer' => 'Pushsafer',
+		'pushsafer' => 'Pushsafer',
 		'pushsafer_description' => 'Pushsafer is a service to get real-time notifications with <strong>chart image</strong> in iOS, Android and Windows 10. See <a href="https://www.pushsafer.com/">their website</a> for more info.',
 		'pushsafer_key' => 'Pushsafer Private or Alias Key',
 		'pushsafer_device' => 'Pushsafer Device (Group)',
 		'pushsafer_device_description' => 'Device ID or Device Group ID to send the message to. Leave empty to send it to all devices.',
-		'delete_title' => 'Kullanıcıyı Sil',
+        'delete_title' => 'Kullanıcıyı Sil',
         'delete_message' => '\'%1\' kullanıcısını silmek istediğinize emin misiniz?',
         'deleted' => 'Kullanıcı silindi.',
         'updated' => 'Kullanıcı güncellendi.',
@@ -202,7 +204,10 @@ $sm_lang = array(
         'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
         'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
         'sms_gateway_smsit' => 'Smsit',
+        'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+	'sms_gateway_nexmo' => 'Nexmo',
         'sms_gateway_username' => 'Servis kullanıcı adı',
         'sms_gateway_password' => 'Servis şifresi',
         'sms_from' => 'Gönderen numarası',
@@ -211,14 +216,14 @@ $sm_lang = array(
         'pushover_clone_app' => 'Pushover uygulaması oluşturmak için buraya tıklayınız.',
         'pushover_api_token' => 'Pushover Uygulaması API Token Bilgisi',
         'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank">Pushover sitesi üzerinden</a> bir uygulama oluşturmalısınız ve API Token bilgilerini buraya yazmalısınız.',
-        'pushsafer_status' => 'Pushsafer mesaj gönderimine izin ver',
+		'pushsafer_status' => 'Pushsafer mesaj gönderimine izin ver',
 		'pushsafer_description' => '<p>Pushsafer is a service that makes it easy to get real-time notifications with <strong>chart image</strong> to iOS, Android and Windows 10 devices. See <a target="_blank" href="https://www.pushsafer.com/">their website</a> for more info.</p><p>For the replacement of the parameters below, please read the <a target="_blank" href="https://www.pushsafer.com/en/pushapi">Pushsafer API description!.</a></p>',
 		'pushsafer_device' => 'Device or Device Group ID',
 		'pushsafer_icon' => 'Icon',
 		'pushsafer_sound' => 'Sound',
 		'pushsafer_vibration' => 'Vibration',
 		'pushsafer_time2live' => 'Time to live',
-		'alert_type' => 'Ne zaman uyarılmak istediğinizi seçin.',
+        'alert_type' => 'Ne zaman uyarılmak istediğinizi seçin.',
         'alert_type_description' => '<b>Durum değişikliği:</b> '.
             'Sunucu durumu değişiklik durumunda bildirim alacaksınız. Sunucu çevrimiçi durumundan çevrimdışı durumuna veya çevrimdışı durumundan çevrim için durumuna geçtiğinde.<br/>'.
             '<br /><b>Çevrimdışı:</b> '.
@@ -271,11 +276,11 @@ $sm_lang = array(
         'pushover_error' => 'Pushover bildirimi gönderilirken bir hata meydana geldi: %s',
         'pushover_error_noapp' => 'Test için bildirim gönderilemiyor: Pushover Uygulaması API token bilgisi bulunamadı.',
         'pushover_error_nokey' => 'Test için bildirim gönderilemiyor: Pushover key bilgisi profilinizde bulunamadı.',
-        'pushsafer_sent' => 'Pushsafer bildirimi gönderildi',
+		'pushsafer_sent' => 'Pushsafer bildirimi gönderildi',
 		'pushsafer_error' => 'An error has occurred while sending the Pushsafer notification: %s',
 		'pushsafer_error_noapp' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
 		'pushsafer_error_nokey' => 'Unable to send test notification: no Pushsafer private or alias key found in your profile.',
-		'log_retention_period' => 'Log tutma süresi',
+        'log_retention_period' => 'Log tutma süresi',
         'log_retention_period_description' => 'Bildirim loglarının ve sunucunun çalışma zamanlarının arşivinin saklanması için gün sayısı. Logların temizlenmesini kapatmak için 0 giriniz.',
         'log_retention_days' => 'gün',
     ),

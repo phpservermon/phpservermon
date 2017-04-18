@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Jean Pierre Kolb <http://www.jpkc.com/>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Deutsch - German',
 	'locale' => array('de_DE.UTF-8', 'de_DE', 'german'),
+	'locale_tag' => 'de',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installation',
@@ -129,6 +131,7 @@ $sm_lang = array(
 		'type' => 'Typ',
 		'type_website' => 'Webseite',
 		'type_service' => 'Service',
+		'type_ping' => 'Ping',
 		'pattern' => 'Suchstring/-muster',
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
@@ -202,7 +205,10 @@ $sm_lang = array(
         'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS-Sendernummer',
@@ -217,7 +223,7 @@ $sm_lang = array(
 		'pushsafer_icon' => 'Icon',
 		'pushsafer_sound' => 'Sound',
 		'pushsafer_vibration' => 'Vibration',
-		'pushsafer_time2live' => 'Time to live',		
+		'pushsafer_time2live' => 'Time to live',
 		'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
 		'alert_type_description' => '<b>Status geändert:</b> '.
 			'...  wenn sich der Status ändert<br/>'.
@@ -287,14 +293,14 @@ $sm_lang = array(
 		'off_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist offline.',
 		'off_pushover_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
 		'off_pushsafer_title' => 'Dienst/Webseite %LABEL% ist offline.',
-		'off_pushsafer_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",	
+		'off_pushsafer_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
 		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%',
 		'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
 		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 		'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
 		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 		'on_pushsafer_title' => 'Dienst/Webseite %LABEL%\ ist wieder online.',
-		'on_pushsafer_message' => "Dienst/Webseite %LABEL% ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",		
+		'on_pushsafer_message' => "Dienst/Webseite %LABEL% ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 	),
 	'login' => array(
 		'welcome_usermenu' => '%user_name%',

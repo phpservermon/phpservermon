@@ -18,19 +18,21 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
 	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
+	'locale_tag' => 'nl',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
-		'install' => 'Intalleren',
+		'install' => 'Installeren',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -134,7 +136,7 @@ $sm_lang = array(
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
-		'no_monitoring' => 'No monitoring',
+		'no_monitoring' => 'Geen monitoring',
 		'email' => 'Email',
 		'send_email' => 'Stuur email',
 		'sms' => 'SMS',
@@ -202,7 +204,10 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
@@ -219,7 +224,7 @@ $sm_lang = array(
 		'pushsafer_vibration' => 'Vibration',
 		'pushsafer_time2live' => 'Time to live',
 		'alert_type' => 'Selecteer wanneer je een notificatie wilt',
-		'alert_type_description' => '<b>Status change:</b> '.
+		'alert_type_description' => '<b>Status verandert:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
 			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
@@ -249,7 +254,7 @@ $sm_lang = array(
 		'settings_log' => 'Log instellingen',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers pagina.<br/>'.
+			'Auto-herladen servers pagina.<br/>'.
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
@@ -321,6 +326,6 @@ $sm_lang = array(
 	),
 	'error' => array(
 		'401_unauthorized' => 'Unauthorized',
-		'401_unauthorized_description' => 'U heeft niet de juiste bevoegdheden om deze pagina te bekijken.',
+		'401_unauthorized_description' => 'Je hebt niet de juiste bevoegdheden om deze pagina te bekijken.',
 	),
 );
