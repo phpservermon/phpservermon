@@ -236,6 +236,12 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 				$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
 			}
 
+			if($GLOBALS['sm_lang']['locale']['dir'])
+				$this->twig->addGlobal('direction_current', $GLOBALS['sm_lang']['locale']['dir']);
+
+			if($GLOBALS['sm_lang']['locale']['lang'])
+				$this->twig->addGlobal('language_current', $GLOBALS['sm_lang']['locale']['lang']);
+
 			if(psm_update_available()) {
 				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
 			}
