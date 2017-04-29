@@ -94,7 +94,7 @@ function create_plot($this, mode)
 				xmin: interval[0],
 				xmax: interval[1] || time,
 				yOffset: '1px',
-				color: '#fe5d5d',
+				color: 'rgba(200, 0, 0, 0.3)',
 				showTooltip: true,
 				showTooltipPrecision: 1.0,
 				tooltipFormatString: "&darr; " + d.strftime(long_date_format)
@@ -117,6 +117,7 @@ function create_plot($this, mode)
 		series = [{}];
 		showLegend = false;
 	}
+
 
 	plot = $.jqplot($this.attr('id'), lines, {
 		title: $this.attr('data-title'),
@@ -160,5 +161,15 @@ function create_plot($this, mode)
 			constrainZoomTo: 'x'
 		}
 	});
-	$this.data('psm_plot', plot);
+    
+    $this.data('psm_plot', plot);
+    $.jqplot.postDrawHooks.push(function ()
+    {
+        var overlayCanvas = $($('.jqplot-overlayCanvas-canvas')[0]);
+        var legend        = $($('.jqplot-table-legend')[0]);
+        legend.detach();
+        overlayCanvas.after(legend);
+    });
+
+
 }
