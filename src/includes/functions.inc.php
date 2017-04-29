@@ -462,6 +462,7 @@ function psm_build_mail($from_name = null, $from_email = null) {
 
 		if($smtp_user != '' && $smtp_pass != '') {
 			$phpmailer->SMTPAuth = true;
+                        $phpmailer->SMTPSecure = "tls";
 			$phpmailer->Username = $smtp_user;
 			$phpmailer->Password = $smtp_pass;
 		}
