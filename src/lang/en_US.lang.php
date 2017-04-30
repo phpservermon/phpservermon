@@ -24,7 +24,7 @@
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
-
+ 
 $sm_lang = array(
 	'name' => 'English',
 	'locale' => array('en_US.UTF-8', 'en_US', 'american', 'english-us'),
