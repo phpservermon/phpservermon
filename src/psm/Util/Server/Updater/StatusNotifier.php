@@ -33,6 +33,7 @@
  */
 namespace psm\Util\Server\Updater;
 use psm\Service\Database;
+use psm\Telegram;
 
 class StatusNotifier {
 
@@ -55,10 +56,16 @@ class StatusNotifier {
 	protected $send_sms = false;
 
 	/**
-	 * Send sms?
+	 * Send pushover?
 	 * @var boolean $send_pushover
 	 */
 	protected $send_pushover = false;
+
+	/**
+	 * Send telegram?
+	 * @var boolean $send_telegram
+	 */
+	protected $send_telegram = false;
 
 	/**
 	 * Save log records?
@@ -96,6 +103,7 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
+		$this->send_telegram = psm_get_conf('telegram_status');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -121,7 +129,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'error', 'active', 'email', 'sms', 'pushover', 'telegram',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -186,6 +194,12 @@ class StatusNotifier {
 		if($this->send_pushover && $this->server['pushover'] == 'yes') {
 			// yay lets wake those nerds up!
 			$this->notifyByPushover($users);
+		}
+
+		// check if telegram is enabled for this server
+		if($this->send_telegram && $this->server['telegram'] == 'yes') {
+			// yay lets wake those nerds up!
+			$this->notifyByTelegram($users);
 		}
 
 		return $notify;
@@ -276,6 +290,46 @@ class StatusNotifier {
 			}
 			$pushover->send();
         }
+	}
+	/**
+	 * This functions performs the telegram notifications
+	 *
+	 * @param array $users
+	 * @return boolean
+	 */
+	protected function notifyByTelegram($users) {
+	      // Remove users that have no telegram_chat_id
+	      foreach($users as $k => $user) {
+	          if (trim($user['telegram_chat_id']) == '') {
+	              unset($users[$k]);
+	          }
+	      }
+
+	      // Validation
+	      if (empty($users)) {
+	          return;
+	      }
+
+	      // Telegram
+	      $message = psm_parse_msg($this->status_new, 'telegram_message', $this->server);
+	      $message = str_replace('<br/>', "\n", $message);
+
+	      // Log
+	      if(psm_get_conf('log_telegram')) {
+	          $log_id = psm_add_log($this->server_id, 'telegram', $message);
+	      }
+
+	    foreach($users as $user) {
+	          // Log
+	          if(!empty($log_id)) {
+	            psm_add_log_user($log_id, $user['user_id']);
+	          }
+	          $bot_token = psm_get_conf('telegram_api_token');
+	          $telegram = new Telegram($bot_token);
+	          $chat_id = $user['telegram_chat_id'];
+	          $content = array('chat_id' => $chat_id, 'text' => $message);
+	          $telegram->sendMessage($content);
+	      }
 	}
 
 	/**
