@@ -35,7 +35,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_chat_id', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -66,10 +66,6 @@ class ProfileController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
-			'label_telegram_get_id_button' => psm_get_lang('config', 'telegram_get_id_button'),
-			'label_telegram' => psm_get_lang('users', 'telegram'),
-			'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
-			'label_telegram_chat_id' => psm_get_lang('users', 'telegram_chat_id'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'form_action' => psm_build_url(array(

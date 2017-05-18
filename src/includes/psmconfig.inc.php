@@ -108,12 +108,6 @@ define('PSM_CURL_TIMEOUT', 10);
 define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_monitor');
 
 /**
- * Get telegram chat id.
- */
-define('PSM_TELEGRAM_GET_ID', 'https://t.me/ChatIDBot');
-
-
-/**
  * By defining the PSM_BASE_URL, you will force the psm_build_url() to use this.
  * Useful for cronjobs if it cannot be auto-detected.
  */

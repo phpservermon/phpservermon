@@ -492,18 +492,6 @@ function psm_build_pushover() {
 }
 
 /**
- * Prepare a new Telegram util.
- *
- * @return \Telegram
- */
-function psm_build_telegram() {
-	$telegram = new \Telegram();
-	$telegram->setToken(psm_get_conf('telegram_api_token'));
-
-	return $telegram;
-}
-
-/**
  * Prepare a new SMS util.
  *
  * @return \psm\Txtmsg\TxtmsgInterface
@@ -724,7 +712,7 @@ function psm_password_decrypt($key, $encryptedString)
 
 	if (empty($key))
          throw new \InvalidArgumentException('invalid_encryption_key');
-
+	
 	$data = base64_decode($encryptedString);
 	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
