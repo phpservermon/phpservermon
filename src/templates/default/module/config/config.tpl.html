@@ -1,270 +1,303 @@
 {% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal" name="edit_config" action="index.php?mod=config&amp;action=save" id="edit_config" method="post">
-    <ul class="nav nav-tabs">
-      <li class="{{ general_active }}"><a href="#config-general" data-toggle="tab">{{ label_general }}</a></li>
-      <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
-      <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
-      <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
-    </ul>
-	<div class="tab-content well">
-	  <div id="config-general" class="tab-pane {{ general_active }}">
-          <fieldset>
-            <legend>{{ label_general }}</legend>
-            <div class="control-group">
-                <label class="control-label" for="language">{{ label_language }}</label>
-                <div class="controls">
-                    <select id="language" name="language">
-						{% for language in languages %}
-                        <option value="{{ language.value }}" {% if language.value == language_current %} selected="selected" {% endif %}>{{ language.label }}</option>
-						{% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox" for="show_update"><input type="checkbox" id="show_update" name="show_update[]" {{ show_update_checked|raw }} /> {{ label_show_update }}</label>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="auto_refresh_servers">{{ label_auto_refresh }}</label>
-                <div class="controls">
-                    <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" data-toggle="tooltip" title="{{ label_auto_refresh_servers }}" />&nbsp;{{ label_seconds }}
-                </div>
-            </div>
-              <div class="control-group">
-                  <label class="control-label" for="password_encrypt_key">
-                      {{ label_password_encrypt_key }}
-                  </label>
-                  <div class="controls">
-                      <input type="text" class="input-xxlarge" id="password_encrypt_key" name="password_encrypt_key"
-                             value="{{ password_encrypt_key }}" maxlength="40" data-toggle="tooltip"
-                             title="{{ label_password_encrypt_key_note }}"/>
-                  </div>
-              </div>
-          </fieldset>
-		  <fieldset>
-            <legend>{{ label_settings_notification }}</legend>
-            <div class="control-group">
-                <label class="control-label" for="alert_type">{{ label_alert_type }}</label>
-                <div class="controls">
-                    <select id="alert_type" name="alert_type">
-                        <option value="status" {{ alert_type_selected_status|raw }}>{{ label_alert_type_status }}</option>
-                        <option value="offline" {{ alert_type_selected_offline|raw }}>{{ label_alert_type_offline }}</option>
-                        <option value="always" {{ alert_type_selected_always|raw }}>{{ label_alert_type_always }}</option>
-                      </select>
-                      <p class="help-block">{{ label_alert_type_description|raw }}</p>
-                </div>
-            </div>
-		  </fieldset>
-		  <fieldset>
-            <legend>{{ label_settings_log }}</legend>
-            <div class="control-group">
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="log_status" name="log_status[]" {{ log_status_checked|raw }} data-toggle="tooltip" title="{{ label_log_status_description }}" /> {{ label_log_status }}</label>
-				</div>
-			</div>
-            <div class="control-group">
-                <label class="control-label" for="log_retention_period">{{ label_log_retention_period }}</label>
-                <div class="controls">
-					<input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
-                </div>
-            </div>
-            <legend>{{ label_settings_proxy }}</legend>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox" for="proxy"><input type="checkbox" id="proxy" name="proxy[]" {{ proxy_checked|raw }} />{{ label_proxy }}</label>
-                    <p class="help-block">{{ label_alert_proxy|raw }}</p>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_url">{{ label_proxy_url }}</label>
-                <div class="controls">
-                    <input type="text" id="proxy_url" name="proxy_url" value="{{ proxy_url }}" maxlength="100" placeholder="{{ label_proxy_url }}" />
-                    <p class="help-block">{{ label_alert_proxy_url|raw }}</p>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_user">{{ label_proxy_user }}</label>
-                <div class="controls">
-                    <input type="text" id="proxy_user" name="proxy_user" value="{{ proxy_user }}" maxlength="100" placeholder="{{ label_proxy_user }}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="proxy_password">{{ label_proxy_password }}</label>
-                <div class="controls">
-                    <input type="password" id="proxy_password" name="proxy_password" value="{{ proxy_password }}" maxlength="100" placeholder="{{ label_proxy_password }}" />
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
-            </div>
-		  </fieldset>
-	  </div>
-	  <div id="config-email" class="tab-pane {{ email_active }}">
-		<fieldset>
-            <legend>{{ label_settings_email }}</legend>
-            <div class="control-group">
-                <div class="controls">
-	                <label class="checkbox" for="email_status"><input type="checkbox" id="email_status" name="email_status[]" {{ email_status_checked|raw }} /> {{ label_email_status }}</label>
-                </div>
-            </div>
-            <div class="control-group">
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="log_email" name="log_email[]" {{ log_email_checked|raw }} /> {{ label_log_email }}</label>
-				</div>
-			</div>
-            <div class="control-group">
-                <label class="control-label" for="email_from_name">{{ label_email_from_name }}</label>
-                <div class="controls">
-                    <input type="text" id="email_from_name" name="email_from_name" value="{{ email_from_name }}" maxlength="255" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="email_from_email">{{ label_email_from_email }}</label>
-                <div class="controls">
-                    <input type="text" id="email_from_email" name="email_from_email" value="{{ email_from_email }}" maxlength="255" />
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-	                <label class="checkbox" for="email_smtp"><input type="checkbox" id="email_smtp" name="email_smtp[]" {{ email_smtp_checked|raw }} />{{ label_email_smtp }}</label>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="email_smtp_host">{{ label_email_smtp_host }}</label>
-                <div class="controls">
-                    <input type="text" id="email_smtp_host" name="email_smtp_host" value="{{ email_smtp_host }}" maxlength="100" placeholder="{{ label_email_smtp_host }}" />
-                    <input type="text" class="input-small" id="email_smtp_port" name="email_smtp_port" value="{{ email_smtp_port }}" maxlength="10" placeholder="{{ label_email_smtp_port }}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="email_smtp_security">{{ label_email_smtp_security }}</label>
-                <div class="controls">
-                    <select id="email_smtp_security" name="email_smtp_security">
-                        <option value="" {{ email_smtp_security_selected_|raw }}>{{ label_email_smtp_security_none }}</option>
-                        <option value="ssl" {{ email_smtp_security_selected_ssl|raw }}>SSL</option>
-                        <option value="tls" {{ email_smtp_security_selected_tls|raw }}>TLS</option>
-					</select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="email_smtp_username">{{ label_email_smtp_username }}</label>
-                <div class="controls">
-                    <input type="text" id="email_smtp_username" name="email_smtp_username" value="{{ email_smtp_username }}" maxlength="100" placeholder="{{ label_email_smtp_noauth }}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="email_smtp_password">{{ label_email_smtp_password }}</label>
-                <div class="controls">
-                    <input type="password" id="email_smtp_password" name="email_smtp_password" value="{{ email_smtp_password }}" maxlength="100" placeholder="{{ label_email_smtp_noauth }}" />
-                </div>
-            </div>
-			<div class="control-group">
-				<div class="controls">
-					<button class="btn btn-primary show-modal" data-modal-id="testEmail">{{ label_test }}</button>
-					<input type="hidden" name="test_email" value="0" />
-				</div>
-			</div>
-            <div class="form-actions">
-                <button class="btn btn-success" type="submit" name="email_submit" >{{ label_save }}</button>
-            </div>
-        </fieldset>
-	  </div>
-	  <div id="config-sms" class="tab-pane {{ sms_active }}">
-		<fieldset>
-          <legend>{{ label_settings_sms }}</legend>
-            <div class="control-group">
-                <div class="controls">
-					<label class="checkbox" for="sms_status"><input type="checkbox" id="sms_status" name="sms_status[]" {{ sms_status_checked|raw }} /> {{ label_sms_status }}</label>
-				</div>
-            </div>
-            <div class="control-group">
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="log_sms" name="log_sms[]" {{ log_sms_checked|raw }} /> {{ label_log_sms }}</label>
-				</div>
-			</div>
-            <div class="control-group">
-                <label class="control-label" for="sms_gateway">{{ label_sms_gateway }}</label>
-                <div class="controls">
-                    <select id="sms_gateway" name="sms_gateway">
-                        <option value="mosms" {{ sms_selected_mosms|raw }}>{{ label_sms_gateway_mosms }}</option>
-                        <option value="mollie" {{ sms_selected_mollie|raw }}>{{ label_sms_gateway_mollie }}</option>
-                        <option value="spryng" {{ sms_selected_spryng|raw }}>{{ label_sms_gateway_spryng }}</option>
-                        <option value="inetworx" {{ sms_selected_inetworx|raw }}>{{ label_sms_gateway_inetworx }}</option>
-                        <option value="clickatell" {{ sms_selected_clickatell|raw }}>{{ label_sms_gateway_clickatell }}</option>
-                        <option value="textmarketer" {{ sms_selected_textmarketer|raw }}>{{ label_sms_gateway_textmarketer }}</option>
-						<option value="smsglobal" {{ sms_selected_smsglobal|raw }}>{{ label_sms_gateway_smsglobal }}</option>
-						<option value="smsit" {{ sms_selected_smsit|raw }}>{{ label_sms_gateway_smsit }}</option>
-						<option value="freevoipdeal" {{ sms_selected_freevoipdeal|raw }}>{{ label_sms_gateway_freevoipdeal }}</option>
-						<option value="octopush" {{ sms_selected_octopush|raw }}>{{ label_sms_gateway_octopush }}</option>
-						<option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
-						<option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
-						<option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
-                      </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="sms_gateway_username">{{ label_sms_gateway_username }}</label>
-                <div class="controls">
-                    <input type="text" id="sms_gateway_username" name="sms_gateway_username" value="{{ sms_gateway_username }}" maxlength="255" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="sms_gateway_password">{{ label_sms_gateway_password }}</label>
-                <div class="controls">
-                    <input type="password" id="sms_gateway_password" name="sms_gateway_password" value="{{ sms_gateway_password }}" maxlength="255" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="sms_from">{{ label_sms_from }}</label>
-                <div class="controls">
-                    <input type="text" id="sms_from" name="sms_from" value="{{ sms_from }}" maxlength="255" />
-                </div>
-            </div>
-			<div class="control-group">
-				<div class="controls">
-					<button class="btn btn-primary show-modal" data-modal-id="testSms">{{ label_test }}</button>
-					<input type="hidden" name="test_sms" value="0" />
-				</div>
-			</div>
-            <div class="form-actions">
-                <button class="btn btn-success" type="submit" name="sms_submit">{{ label_save }}</button>
-            </div>
-		</fieldset>
-		</div>
-		<div id="config-pushover" class="tab-pane {{ pushover_active }}">
-		<fieldset>
-          <legend>{{ label_settings_pushover }}</legend>
-            <div class="control-group">
-                <div class="controls">
-					<label class="checkbox" for="pushover_status"><input type="checkbox" id="pushover_status" name="pushover_status[]" {{ pushover_status_checked|raw }} /> {{ label_pushover_status }}</label>
-					<p class="help-block">{{ label_pushover_description|raw }}</p>
-				</div>
-            </div>
-            <div class="control-group">
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" id="log_pushover" name="log_pushover[]" {{ log_pushover_checked|raw }} /> {{ label_log_pushover }}</label>
-				</div>
-			</div>
-            <div class="control-group">
-                <label class="control-label" for="pushover_api_token">{{ label_pushover_api_token }}</label>
-                <div class="controls">
-					<p><button class="btn btn-primary" onclick="window.open('{{ pushover_clone_url }}');return false;">{{ label_pushover_clone_app }}</button></p>
-                    <input type="text" id="pushover_api_token" name="pushover_api_token" value="{{ pushover_api_token }}" maxlength="255" />
-					<p class="help-block">{{ label_pushover_api_token_description|raw }}</p>
-                </div>
-            </div>
-			<div class="control-group">
-				<div class="controls">
-					<button class="btn btn-primary show-modal" data-modal-id="testPushover">{{ label_test }}</button>
-					<input type="hidden" name="test_pushover" value="0" />
-				</div>
-			</div>
-            <div class="form-actions">
-                <button class="btn btn-success" type="submit" name="pushover_submit">{{ label_save }}</button>
-            </div>
-		</fieldset>
-		</div>
-	</div>
-	{{ macro.csrf_input() }}
+  <ul class="nav nav-tabs">
+    <li class="{{ general_active }}"><a href="#config-general" data-toggle="tab">{{ label_general }}</a></li>
+    <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
+    <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
+    <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+    <li class="{{ telegram_active }}"><a href="#config-telegram" data-toggle="tab">{{ label_tab_telegram }}</a></li>
+  </ul>
+  <div class="tab-content well">
+    <div id="config-general" class="tab-pane {{ general_active }}">
+      <fieldset>
+        <legend>{{ label_general }}</legend>
+        <div class="control-group">
+          <label class="control-label" for="language">{{ label_language }}</label>
+          <div class="controls">
+            <select id="language" name="language">
+              {% for language in languages %}
+              <option value="{{ language.value }}" {% if language.value == language_current %} selected="selected" {% endif %}>{{ language.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="show_update"><input type="checkbox" id="show_update" name="show_update[]" {{ show_update_checked|raw }} /> {{ label_show_update }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="auto_refresh_servers">{{ label_auto_refresh }}</label>
+          <div class="controls">
+            <input type="text" class="input-mini" id="auto_refresh_servers" name="auto_refresh_servers" value="{{ auto_refresh_servers }}" maxlength="10" data-toggle="tooltip" title="{{ label_auto_refresh_servers }}" />&nbsp;{{ label_seconds }}
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password_encrypt_key">
+            {{ label_password_encrypt_key }}
+          </label>
+          <div class="controls">
+            <input type="text" class="input-xxlarge" id="password_encrypt_key" name="password_encrypt_key"
+            value="{{ password_encrypt_key }}" maxlength="40" data-toggle="tooltip"
+            title="{{ label_password_encrypt_key_note }}"/>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{{ label_settings_notification }}</legend>
+        <div class="control-group">
+          <label class="control-label" for="alert_type">{{ label_alert_type }}</label>
+          <div class="controls">
+            <select id="alert_type" name="alert_type">
+              <option value="status" {{ alert_type_selected_status|raw }}>{{ label_alert_type_status }}</option>
+              <option value="offline" {{ alert_type_selected_offline|raw }}>{{ label_alert_type_offline }}</option>
+              <option value="always" {{ alert_type_selected_always|raw }}>{{ label_alert_type_always }}</option>
+            </select>
+            <p class="help-block">{{ label_alert_type_description|raw }}</p>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{{ label_settings_log }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_status" name="log_status[]" {{ log_status_checked|raw }} data-toggle="tooltip" title="{{ label_log_status_description }}" /> {{ label_log_status }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="log_retention_period">{{ label_log_retention_period }}</label>
+          <div class="controls">
+            <input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
+          </div>
+        </div>
+        <legend>{{ label_settings_proxy }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="proxy"><input type="checkbox" id="proxy" name="proxy[]" {{ proxy_checked|raw }} />{{ label_proxy }}</label>
+            <p class="help-block">{{ label_alert_proxy|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="proxy_url">{{ label_proxy_url }}</label>
+          <div class="controls">
+            <input type="text" id="proxy_url" name="proxy_url" value="{{ proxy_url }}" maxlength="100" placeholder="{{ label_proxy_url }}" />
+            <p class="help-block">{{ label_alert_proxy_url|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="proxy_user">{{ label_proxy_user }}</label>
+          <div class="controls">
+            <input type="text" id="proxy_user" name="proxy_user" value="{{ proxy_user }}" maxlength="100" placeholder="{{ label_proxy_user }}" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="proxy_password">{{ label_proxy_password }}</label>
+          <div class="controls">
+            <input type="password" id="proxy_password" name="proxy_password" value="{{ proxy_password }}" maxlength="100" placeholder="{{ label_proxy_password }}" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
+    <div id="config-email" class="tab-pane {{ email_active }}">
+      <fieldset>
+        <legend>{{ label_settings_email }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="email_status"><input type="checkbox" id="email_status" name="email_status[]" {{ email_status_checked|raw }} /> {{ label_email_status }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_email" name="log_email[]" {{ log_email_checked|raw }} /> {{ label_log_email }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_from_name">{{ label_email_from_name }}</label>
+          <div class="controls">
+            <input type="text" id="email_from_name" name="email_from_name" value="{{ email_from_name }}" maxlength="255" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_from_email">{{ label_email_from_email }}</label>
+          <div class="controls">
+            <input type="text" id="email_from_email" name="email_from_email" value="{{ email_from_email }}" maxlength="255" />
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="email_smtp"><input type="checkbox" id="email_smtp" name="email_smtp[]" {{ email_smtp_checked|raw }} />{{ label_email_smtp }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_smtp_host">{{ label_email_smtp_host }}</label>
+          <div class="controls">
+            <input type="text" id="email_smtp_host" name="email_smtp_host" value="{{ email_smtp_host }}" maxlength="100" placeholder="{{ label_email_smtp_host }}" />
+            <input type="text" class="input-small" id="email_smtp_port" name="email_smtp_port" value="{{ email_smtp_port }}" maxlength="10" placeholder="{{ label_email_smtp_port }}" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_smtp_security">{{ label_email_smtp_security }}</label>
+          <div class="controls">
+            <select id="email_smtp_security" name="email_smtp_security">
+              <option value="" {{ email_smtp_security_selected_|raw }}>{{ label_email_smtp_security_none }}</option>
+              <option value="ssl" {{ email_smtp_security_selected_ssl|raw }}>SSL</option>
+              <option value="tls" {{ email_smtp_security_selected_tls|raw }}>TLS</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_smtp_username">{{ label_email_smtp_username }}</label>
+          <div class="controls">
+            <input type="text" id="email_smtp_username" name="email_smtp_username" value="{{ email_smtp_username }}" maxlength="100" placeholder="{{ label_email_smtp_noauth }}" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email_smtp_password">{{ label_email_smtp_password }}</label>
+          <div class="controls">
+            <input type="password" id="email_smtp_password" name="email_smtp_password" value="{{ email_smtp_password }}" maxlength="100" placeholder="{{ label_email_smtp_noauth }}" />
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testEmail">{{ label_test }}</button>
+            <input type="hidden" name="test_email" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="email_submit" >{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
+    <div id="config-sms" class="tab-pane {{ sms_active }}">
+      <fieldset>
+        <legend>{{ label_settings_sms }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="sms_status"><input type="checkbox" id="sms_status" name="sms_status[]" {{ sms_status_checked|raw }} /> {{ label_sms_status }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_sms" name="log_sms[]" {{ log_sms_checked|raw }} /> {{ label_log_sms }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="sms_gateway">{{ label_sms_gateway }}</label>
+          <div class="controls">
+            <select id="sms_gateway" name="sms_gateway">
+              <option value="mosms" {{ sms_selected_mosms|raw }}>{{ label_sms_gateway_mosms }}</option>
+              <option value="mollie" {{ sms_selected_mollie|raw }}>{{ label_sms_gateway_mollie }}</option>
+              <option value="spryng" {{ sms_selected_spryng|raw }}>{{ label_sms_gateway_spryng }}</option>
+              <option value="inetworx" {{ sms_selected_inetworx|raw }}>{{ label_sms_gateway_inetworx }}</option>
+              <option value="clickatell" {{ sms_selected_clickatell|raw }}>{{ label_sms_gateway_clickatell }}</option>
+              <option value="textmarketer" {{ sms_selected_textmarketer|raw }}>{{ label_sms_gateway_textmarketer }}</option>
+              <option value="smsglobal" {{ sms_selected_smsglobal|raw }}>{{ label_sms_gateway_smsglobal }}</option>
+              <option value="smsit" {{ sms_selected_smsit|raw }}>{{ label_sms_gateway_smsit }}</option>
+              <option value="freevoipdeal" {{ sms_selected_freevoipdeal|raw }}>{{ label_sms_gateway_freevoipdeal }}</option>
+              <option value="octopush" {{ sms_selected_octopush|raw }}>{{ label_sms_gateway_octopush }}</option>
+              <option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
+              <option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
+              <option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="sms_gateway_username">{{ label_sms_gateway_username }}</label>
+          <div class="controls">
+            <input type="text" id="sms_gateway_username" name="sms_gateway_username" value="{{ sms_gateway_username }}" maxlength="255" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="sms_gateway_password">{{ label_sms_gateway_password }}</label>
+          <div class="controls">
+            <input type="password" id="sms_gateway_password" name="sms_gateway_password" value="{{ sms_gateway_password }}" maxlength="255" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="sms_from">{{ label_sms_from }}</label>
+          <div class="controls">
+            <input type="text" id="sms_from" name="sms_from" value="{{ sms_from }}" maxlength="255" />
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testSms">{{ label_test }}</button>
+            <input type="hidden" name="test_sms" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="sms_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
+    <div id="config-pushover" class="tab-pane {{ pushover_active }}">
+      <fieldset>
+        <legend>{{ label_settings_pushover }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="pushover_status"><input type="checkbox" id="pushover_status" name="pushover_status[]" {{ pushover_status_checked|raw }} /> {{ label_pushover_status }}</label>
+            <p class="help-block">{{ label_pushover_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_pushover" name="log_pushover[]" {{ log_pushover_checked|raw }} /> {{ label_log_pushover }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="pushover_api_token">{{ label_pushover_api_token }}</label>
+          <div class="controls">
+            <p><button class="btn btn-primary" onclick="window.open('{{ pushover_clone_url }}');return false;">{{ label_pushover_clone_app }}</button></p>
+            <input type="text" id="pushover_api_token" name="pushover_api_token" value="{{ pushover_api_token }}" maxlength="255" />
+            <p class="help-block">{{ label_pushover_api_token_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testPushover">{{ label_test }}</button>
+            <input type="hidden" name="test_pushover" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="pushover_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
+    <div id="config-telegram" class="tab-pane {{ telegram_active }}">
+      <fieldset>
+        <legend>{{ label_settings_telegram }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="telegram_status"><input type="checkbox" id="telegram_status" name="telegram_status[]" {{ telegram_status_checked|raw }} /> {{ label_telegram_status }}</label>
+            <p class="help-block">{{ label_telegram_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_telegram" name="log_telegram[]" {{ log_telegram_checked|raw }} /> {{ label_log_telegram }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="telegram_api_token">{{ label_telegram_api_token }}</label>
+          <div class="controls">
+            <input type="text" id="telegram_api_token" name="telegram_api_token" value="{{ telegram_api_token }}" maxlength="255" />
+            <p class="help-block">{{ label_telegram_api_token_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testtelegram">{{ label_test }}</button>
+            <input type="hidden" name="test_telegram" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="telegram_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  {{ macro.csrf_input() }}
 </form>

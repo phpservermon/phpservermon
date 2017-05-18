@@ -25,6 +25,9 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require __DIR__ . '/src/bootstrap.php';
 
 psm_no_cache();
@@ -35,7 +38,9 @@ if(isset($_GET["logout"])) {
 	header('Location: ' . psm_build_url());
 	die();
 }
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $mod = psm_GET('mod', PSM_MODULE_DEFAULT);
 
 try {
@@ -46,3 +51,6 @@ try {
 	// and we really have no reason catch it
 	$router->run(PSM_MODULE_DEFAULT);
 }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);

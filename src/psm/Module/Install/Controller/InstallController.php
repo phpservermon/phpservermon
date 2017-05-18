@@ -214,6 +214,7 @@ class InstallController extends AbstractController {
 			'level' => PSM_USER_ADMIN,
 			'pushover_key' => '',
 			'pushover_device' => '',
+			'telegram_chat_id' => '',
 		);
 
 		$validator = $this->container->get('util.user.validator');

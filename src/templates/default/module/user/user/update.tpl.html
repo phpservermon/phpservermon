@@ -1,4 +1,4 @@
-{% import 'main/macros.tpl.html' as macro %}
+                                                              {% import 'main/macros.tpl.html' as macro %}
 <form class="form-horizontal well" action="{{ url_save|raw }}" method="post">
 	{{ macro.csrf_input() }}
 	<fieldset>
@@ -55,15 +55,25 @@
 			<div class="controls">{{ label_pushover_description|raw }}	</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="mobile">{{ label_pushover_key }}</label>
+			<label class="control-label" for="pushover_key">{{ label_pushover_key }}</label>
 			<div class="controls">
 				<input type="text" id="pushover_key" name="pushover_key" value="{{ edit_value_pushover_key }}" maxlength="255" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="mobile">{{ label_pushover_device }}</label>
+			<label class="control-label" for="pushover_device">{{ label_pushover_device }}</label>
 			<div class="controls">
 				<input type="text" id="pushover_device" name="pushover_device" value="{{ edit_value_pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">{{ label_telegram }}</label>
+			<div class="controls">{{ label_telegram_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="telegram_chat_id">{{ label_telegram_chat_id }}</label>
+			<div class="controls">
+				<input type="text" id="telegram_chat_id" name="telegram_chat_id" value="{{ edit_value_telegram_chat_id }}" maxlength="255" />
 			</div>
 		</div>
 		<div class="control-group">
