@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password'
 		));
 		if(empty($this->server)) {
@@ -253,6 +253,29 @@ class StatusUpdater {
 						$this->error = 'TEXT ERROR : Pattern not found.';
 						$result = false;
 					}
+				}
+
+				// Should we check a header ?
+				if($this->server['header_name'] != '' && $this->server['header_value'] != '') {
+					$header_flag = false;
+					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n")); // Only get the header text if the result also includes the body
+					foreach (explode("\r\n", $header_text) as $i => $line) {
+						if ($i === 0 || strpos($line, ':') == false) {
+							continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
+						} else {
+							list ($key, $value) = explode(': ', $line);
+							if (strcasecmp($key, $this->server['header_name']) == 0) { // Header found (case-insensitive)
+								if(!preg_match("/{$this->server['header_value']}/i", $value)) { // The value doesn't match what we needed
+									$result = false;
+								} else {
+									$header_flag = true;
+									break; // No need to go further
+								}
+							}
+						}
+					}
+
+					if(!$header_flag) $result = false; // Header was not present
 				}
 			}
 		}
