@@ -129,41 +129,42 @@ class Installer {
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `error`, `rtime`, `last_online`, `last_check`, `active`, `email`, `sms`, `pushover`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'yes', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('language', 'en_US'),
-					('proxy', '0'),
-					('proxy_url', ''),
-					('proxy_user', ''),
-					('proxy_password', ''),
-					('email_status', '1'),
-					('email_from_email', 'monitor@example.org'),
-					('email_from_name', 'Server Monitor'),
-					('email_smtp', ''),
-					('email_smtp_host', ''),
-					('email_smtp_port', ''),
-					('email_smtp_security', ''),
-					('email_smtp_username', ''),
-					('email_smtp_password', ''),
-					('sms_status', '0'),
-					('sms_gateway', 'mollie'),
-					('sms_gateway_username', 'username'),
-					('sms_gateway_password', 'password'),
-					('sms_from', '1234567890'),
-					('pushover_status', '0'),
-					('pushover_api_token', ''),
-					('password_encrypt_key', '" . sha1(microtime()) . "'),
-					('alert_type', 'status'),
-					('log_status', '1'),
-					('log_email', '1'),
-					('log_sms', '1'),
-					('log_pushover', '1'),
-					('log_retention_period', '365'),
-					('version', '" . PSM_VERSION . "'),
-					('version_update_check', '" . PSM_VERSION . "'),
-					('auto_refresh_servers', '0'),
-					('show_update', '1'),
-					('last_update_check', '0'),
-					('cron_running', '0'),
-					('cron_running_time', '0');";
+		('language', 'en_US'),
+		('proxy', '0'),
+		('proxy_url', ''),
+		('proxy_user', ''),
+		('proxy_password', ''),
+		('email_status', '1'),
+		('email_from_email', 'monitor@example.org'),
+		('email_from_name', 'Server Monitor'),
+		('email_smtp', ''),
+		('email_smtp_host', ''),
+		('email_smtp_port', ''),
+		('email_smtp_security', ''),
+		('email_smtp_username', ''),
+		('email_smtp_password', ''),
+		('sms_status', '0'),
+		('sms_gateway', 'mollie'),
+		('sms_gateway_username', 'username'),
+		('sms_gateway_password', 'password'),
+		('sms_from', '1234567890'),
+		('pushover_status', '0'),
+		('pushover_api_token', ''),
+		('statuscake_account_token', ''),
+		('password_encrypt_key', '" . sha1(microtime()) . "'),
+		('alert_type', 'status'),
+		('log_status', '1'),
+		('log_email', '1'),
+		('log_sms', '1'),
+		('log_pushover', '1'),
+		('log_retention_period', '365'),
+		('version', '" . PSM_VERSION . "'),
+		('version_update_check', '" . PSM_VERSION . "'),
+		('auto_refresh_servers', '0'),
+		('show_update', '1'),
+		('last_update_check', '0'),
+		('cron_running', '0'),
+		('cron_running_time', '0');";
 		$this->execSQL($queries);
 	}
 
@@ -173,109 +174,111 @@ class Installer {
 	protected function installTables() {
 		$tables = array(
 			PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
-							`key` varchar(255) NOT NULL,
-							`value` varchar(255) NOT NULL,
-							PRIMARY KEY (`key`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+			`key` varchar(255) NOT NULL,
+			`value` varchar(255) NOT NULL,
+			PRIMARY KEY (`key`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
-							`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-							`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
-							`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
-							`password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
-							`password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
-							`rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
-							`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
-							`name` varchar(255) NOT NULL,
-							`mobile` varchar(15) NOT NULL,
-							`pushover_key` varchar(255) NOT NULL,
-							`pushover_device` varchar(255) NOT NULL,
-							`email` varchar(255) NOT NULL,
-							PRIMARY KEY (`user_id`),
-							UNIQUE KEY `unique_username` (`user_name`)
-						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
+			`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
+			`password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
+			`password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
+			`rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
+			`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
+			`name` varchar(255) NOT NULL,
+			`mobile` varchar(15) NOT NULL,
+			`pushover_key` varchar(255) NOT NULL,
+			`pushover_device` varchar(255) NOT NULL,
+			`email` varchar(255) NOT NULL,
+			PRIMARY KEY (`user_id`),
+			UNIQUE KEY `unique_username` (`user_name`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
-							`user_id` int(11) unsigned NOT NULL,
-							`key` varchar(255) NOT NULL,
-							`value` varchar(255) NOT NULL,
-							PRIMARY KEY (`user_id`, `key`)
-						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+			`user_id` int(11) unsigned NOT NULL,
+			`key` varchar(255) NOT NULL,
+			`value` varchar(255) NOT NULL,
+			PRIMARY KEY (`user_id`, `key`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
-							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
-							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
-							PRIMARY KEY ( `user_id` , `server_id` )
-							) ENGINE = MYISAM ;",
+			`user_id` INT( 11 ) UNSIGNED NOT NULL ,
+			`server_id` INT( 11 ) UNSIGNED NOT NULL ,
+			PRIMARY KEY ( `user_id` , `server_id` )
+			) ENGINE = MYISAM ;",
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
-						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `server_id` int(11) unsigned NOT NULL,
-						  `type` enum('status','email','sms','pushover') NOT NULL,
-						  `message` varchar(255) NOT NULL,
-						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
-						  PRIMARY KEY  (`log_id`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
-                                   `log_id`  int(11) UNSIGNED NOT NULL ,
-                                   `user_id`  int(11) UNSIGNED NOT NULL ,
-                                   PRIMARY KEY (`log_id`, `user_id`)
-         						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			`log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`server_id` int(11) unsigned NOT NULL,
+			`type` enum('status','email','sms','pushover') NOT NULL,
+			`message` varchar(255) NOT NULL,
+			`datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`log_id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+			`log_id`  int(11) UNSIGNED NOT NULL ,
+			`user_id`  int(11) UNSIGNED NOT NULL ,
+			PRIMARY KEY (`log_id`, `user_id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
-						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `ip` varchar(500) NOT NULL,
-						  `port` int(5) unsigned NOT NULL,
-						  `label` varchar(255) NOT NULL,
-						  `type` enum('ping','service','website') NOT NULL default 'service',
-						  `pattern` varchar(255) NOT NULL,
-						  `header_name` varchar(255) NOT NULL default '',
-						  `header_value` varchar(255) NOT NULL default '',
-						  `status` enum('on','off') NOT NULL default 'on',
-						  `error` varchar(255) NULL,
-						  `rtime` FLOAT(9, 7) NULL,
-						  `last_online` datetime NULL,
-						  `last_check` datetime NULL,
-						  `active` enum('yes','no') NOT NULL default 'yes',
-						  `email` enum('yes','no') NOT NULL default 'yes',
-						  `sms` enum('yes','no') NOT NULL default 'no',
-						  `pushover` enum('yes','no') NOT NULL default 'yes',
-                          `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
-                          `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
-                          `timeout` smallint(1) unsigned NULL DEFAULT NULL,
-                          `website_username` varchar(255) DEFAULT NULL,
-						  `website_password` varchar(255) DEFAULT NULL,
-						  PRIMARY KEY  (`server_id`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			`server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`ip` varchar(500) NOT NULL,
+			`port` int(5) unsigned NOT NULL,
+			`label` varchar(255) NOT NULL,
+			`type` enum('ping','service','website') NOT NULL default 'service',
+			`pattern` varchar(255) NOT NULL,
+			`header_name` varchar(255) NOT NULL default '',
+			`header_value` varchar(255) NOT NULL default '',
+			`status` enum('on','off') NOT NULL default 'on',
+			`error` varchar(255) NULL,
+			`rtime` FLOAT(9, 7) NULL,
+			`last_online` datetime NULL,
+			`last_check` datetime NULL,
+			`active` enum('yes','no') NOT NULL default 'yes',
+			`email` enum('yes','no') NOT NULL default 'yes',
+			`sms` enum('yes','no') NOT NULL default 'no',
+			`pushover` enum('yes','no') NOT NULL default 'yes',
+			`statuscake` enum('yes','no') NOT NULL default 'yes',
+			`statuscake_test_id` varchar(50) NULL,
+			`warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
+			`warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+			`timeout` smallint(1) unsigned NULL DEFAULT NULL,
+			`website_username` varchar(255) DEFAULT NULL,
+			`website_password` varchar(255) DEFAULT NULL,
+			PRIMARY KEY  (`server_id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
-						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`server_id` int(11) unsigned NOT NULL,
-						`date` datetime NOT NULL,
-						`status` tinyint(1) unsigned NOT NULL,
-						`latency` float(9,7) DEFAULT NULL,
-						PRIMARY KEY (`servers_uptime_id`),
-						KEY `server_id` (`server_id`)
-					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`server_id` int(11) unsigned NOT NULL,
+			`date` datetime NOT NULL,
+			`status` tinyint(1) unsigned NOT NULL,
+			`latency` float(9,7) DEFAULT NULL,
+			PRIMARY KEY (`servers_uptime_id`),
+			KEY `server_id` (`server_id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
-						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `server_id` int(11) unsigned NOT NULL,
-						  `date` date NOT NULL,
-						  `latency_min` float(9,7) NOT NULL,
-						  `latency_avg` float(9,7) NOT NULL,
-						  `latency_max` float(9,7) NOT NULL,
-						  `checks_total` int(11) unsigned NOT NULL,
-						  `checks_failed` int(11) unsigned NOT NULL,
-						  PRIMARY KEY (`servers_history_id`),
-						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-		);
+			`servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`server_id` int(11) unsigned NOT NULL,
+			`date` date NOT NULL,
+			`latency_min` float(9,7) NOT NULL,
+			`latency_avg` float(9,7) NOT NULL,
+			`latency_max` float(9,7) NOT NULL,
+			`checks_total` int(11) unsigned NOT NULL,
+			`checks_failed` int(11) unsigned NOT NULL,
+			PRIMARY KEY (`servers_history_id`),
+			UNIQUE KEY `server_id_date` (`server_id`,`date`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			);
 
-		foreach($tables as $name => $sql) {
-			$if_table_exists = $this->db->query("SHOW TABLES LIKE '{$name}'");
+foreach($tables as $name => $sql) {
+	$if_table_exists = $this->db->query("SHOW TABLES LIKE '{$name}'");
 
-			if(!empty($if_table_exists)) {
-				$this->log('Table ' . $name . ' already exists in your database!');
-			} else {
-				$this->execSQL($sql);
-				$this->log('Table ' . $name . ' added.');
-			}
-		}
+	if(!empty($if_table_exists)) {
+		$this->log('Table ' . $name . ' already exists in your database!');
+	} else {
+		$this->execSQL($sql);
+		$this->log('Table ' . $name . ' added.');
 	}
+}
+}
 
 	/**
 	 * Populate the tables and perform upgrades if necessary
@@ -352,44 +355,44 @@ class Installer {
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
-			ADD `user_name` varchar(64) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s name, unique' AFTER `user_id`,
-			ADD `password` varchar(255) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s password in salted and hashed format' AFTER `user_name`,
-			ADD `password_reset_hash` char(40) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s password reset code' AFTER `password`,
-			ADD `password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request' AFTER `password_reset_hash`,
-			ADD `rememberme_token` varchar(64) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s remember-me cookie token' AFTER `password_reset_timestamp`,
-			ADD `level` TINYINT( 2 ) UNSIGNED NOT NULL DEFAULT '20' AFTER `rememberme_token`;";
+		ADD `user_name` varchar(64) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s name, unique' AFTER `user_id`,
+		ADD `password` varchar(255) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s password in salted and hashed format' AFTER `user_name`,
+		ADD `password_reset_hash` char(40) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s password reset code' AFTER `password`,
+		ADD `password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request' AFTER `password_reset_hash`,
+		ADD `rememberme_token` varchar(64) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s remember-me cookie token' AFTER `password_reset_timestamp`,
+		ADD `level` TINYINT( 2 ) UNSIGNED NOT NULL DEFAULT '20' AFTER `rememberme_token`;";
 		// make sure all current users are admins (previously we didnt have non-admins):
 		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_name`=`email`, `level`=10;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD UNIQUE `unique_username` ( `user_name` );";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
-						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`server_id` int(11) unsigned NOT NULL,
-						`date` datetime NOT NULL,
-						`status` tinyint(1) unsigned NOT NULL,
-						`latency` float(9,7) DEFAULT NULL,
-						PRIMARY KEY (`servers_uptime_id`),
-						KEY `server_id` (`server_id`)
-					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+		`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		`server_id` int(11) unsigned NOT NULL,
+		`date` datetime NOT NULL,
+		`status` tinyint(1) unsigned NOT NULL,
+		`latency` float(9,7) DEFAULT NULL,
+		PRIMARY KEY (`servers_uptime_id`),
+		KEY `server_id` (`server_id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
-						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						  `server_id` int(11) unsigned NOT NULL,
-						  `date` date NOT NULL,
-						  `latency_min` float(9,7) NOT NULL,
-						  `latency_avg` float(9,7) NOT NULL,
-						  `latency_max` float(9,7) NOT NULL,
-						  `checks_total` int(11) unsigned NOT NULL,
-						  `checks_failed` int(11) unsigned NOT NULL,
-						  PRIMARY KEY (`servers_history_id`),
-						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+		`servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		`server_id` int(11) unsigned NOT NULL,
+		`date` date NOT NULL,
+		`latency_min` float(9,7) NOT NULL,
+		`latency_avg` float(9,7) NOT NULL,
+		`latency_max` float(9,7) NOT NULL,
+		`checks_total` int(11) unsigned NOT NULL,
+		`checks_failed` int(11) unsigned NOT NULL,
+		PRIMARY KEY (`servers_history_id`),
+		UNIQUE KEY `server_id_date` (`server_id`,`date`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
 		$queries[] = "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
-						`user_id` INT( 11 ) UNSIGNED NOT NULL ,
-						`server_id` INT( 11 ) UNSIGNED NOT NULL ,
-						PRIMARY KEY ( `user_id` , `server_id` )
-						) ENGINE = MYISAM ;";
+		`user_id` INT( 11 ) UNSIGNED NOT NULL ,
+		`server_id` INT( 11 ) UNSIGNED NOT NULL ,
+		PRIMARY KEY ( `user_id` , `server_id` )
+		) ENGINE = MYISAM ;";
 		$this->execSQL($queries);
 
 		// from 3.0 all user-server relations are in a separate table
@@ -408,7 +411,7 @@ class Installer {
 				$this->db->save(PSM_DB_PREFIX . 'users_servers', array(
 					'user_id' => $user['user_id'],
 					'server_id' => $id,
-				));
+					));
 			}
 		}
 		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."users` DROP `server_id`;");
@@ -433,11 +436,11 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
-						`user_id` int(11) unsigned NOT NULL,
-						`key` varchar(255) NOT NULL,
-						`value` varchar(255) NOT NULL,
-						PRIMARY KEY (`user_id`, `key`)
-					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		`user_id` int(11) unsigned NOT NULL,
+		`key` varchar(255) NOT NULL,
+		`value` varchar(255) NOT NULL,
+		PRIMARY KEY (`user_id`, `key`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$this->execSQL($queries);
 	}
@@ -452,36 +455,36 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('proxy', '0'),
-					('proxy_url', ''),
-					('proxy_user', ''),
-					('proxy_password', '');";
+		('proxy', '0'),
+		('proxy_url', ''),
+		('proxy_user', ''),
+		('proxy_password', '');";
 
 		$this->execSQL($queries);
 
     // Create log_users table
-        $this->execSQL("CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
-                        `log_id`  int(11) UNSIGNED NOT NULL ,
-                        `user_id`  int(11) UNSIGNED NOT NULL ,
-                        PRIMARY KEY (`log_id`, `user_id`)
-                      ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$this->execSQL("CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+			`log_id`  int(11) UNSIGNED NOT NULL ,
+			`user_id`  int(11) UNSIGNED NOT NULL ,
+			PRIMARY KEY (`log_id`, `user_id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
         // Migrate the data
-        $logs = $this->db->select(PSM_DB_PREFIX . 'log', null, array('log_id', 'user_id'));
-        foreach ($logs as $log) {
+		$logs = $this->db->select(PSM_DB_PREFIX . 'log', null, array('log_id', 'user_id'));
+		foreach ($logs as $log) {
             // Validation
-            if (empty($log['user_id']) || trim($log['user_id']) == '') {
-                continue;
-            }
+			if (empty($log['user_id']) || trim($log['user_id']) == '') {
+				continue;
+			}
 
             // Insert into new table
-            foreach (explode(',', $log['user_id']) as $user_id) {
-                psm_add_log_user($log['log_id'], $user_id);
-            }
-        }
+			foreach (explode(',', $log['user_id']) as $user_id) {
+				psm_add_log_user($log['log_id'], $user_id);
+			}
+		}
 
         // Drop old user_id('s) column
-        $this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
+		$this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
 	}
 
 	/**
@@ -489,7 +492,13 @@ class Installer {
 	 */
 	protected function upgrade321() {
 		$queries = array();
+
+		psm_update_conf('statuscake_account_token', '');
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `statuscake` enum('yes','no') NOT NULL default 'yes', ADD `statuscake_test_id` varchar(50) NULL AFTER `pushover`;";
+
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `header_name` VARCHAR(255) AFTER `pattern`, ADD COLUMN `header_value` VARCHAR(255) AFTER `header_name`";
+
 		$this->execSQL($queries);
+
 	}
 }
