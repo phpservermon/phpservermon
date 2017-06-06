@@ -289,15 +289,15 @@ $sm_lang = array(
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
-		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
-		'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
+		'off_sms' => '[CNM] Warning: \'%LABEL%\' is Offline!',
+		'off_email_subject' => '[CNM] Warning: \'%LABEL%\' is Offline!',
 		'off_email_body' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
+		'off_pushover_title' => '[CNM] Warning: \'%LABEL%\' is Offline!',
 		'off_pushover_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
-		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
-		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
+		'on_sms' => '[CNM] Notice: \'%LABEL%\' is back online.',
+		'on_email_subject' => '[CNM] Notice: \'%LABEL%\' is back online.',
+		'on_email_body' => "'%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_title' => '[CNM] \'%LABEL%\' is back online.',
 		'on_pushover_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
 	),
 	'login' => array(
