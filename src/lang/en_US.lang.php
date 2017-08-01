@@ -203,6 +203,8 @@ $sm_lang = array(
 		'hour' => 'Hour',
 		'warning_threshold' => 'Warning threshold',
 		'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
+		'ssl_cert_expiry_days' => 'SSL Certificate Validity',
+		'ssl_cert_expiry_days_description' => 'The minimum remaining days the SSL certificate is still valid.',
 		'chart_last_week' => 'Last week',
 		'chart_history' => 'History',
 		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
@@ -221,6 +223,7 @@ $sm_lang = array(
 		'error_server_ip_bad_website' => 'The website URL is not valid.',
 		'error_server_type_invalid' => 'The selected server type is invalid.',
 		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
+		'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid integer greater than or equal to 0.',
 	),
 	'config' => array(
 		'general' => 'General',

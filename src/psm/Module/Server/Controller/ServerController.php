@@ -205,6 +205,7 @@ class ServerController extends AbstractServerController {
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 				'edit_website_username' => $edit_server['website_username'],
 				'edit_website_password' => empty($edit_server['website_password']) ? '' : sha1($edit_server['website_password']),
+				'edit_value_ssl_cert_expiry_days' => $edit_server['ssl_cert_expiry_days'],
 				'edit_type_selected_'.$edit_server['type'] => 'selected="selected"',
 				'edit_active_selected_'.$edit_server['active'] => 'selected="selected"',
 				'edit_email_selected_'.$edit_server['email'] => 'selected="selected"',
@@ -271,6 +272,7 @@ class ServerController extends AbstractServerController {
 			'header_value' => psm_POST('header_value', ''),
 			'rtime' => psm_POST('rtime', '0.0000000'),
 			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
+			'ssl_cert_expiry_days' => intval(psm_POST('ssl_cert_expiry_days', 0)),
 			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
@@ -307,6 +309,7 @@ class ServerController extends AbstractServerController {
 			$server_validator->type($clean['type']);
 			$server_validator->ip($clean['ip'], $clean['type']);
 			$server_validator->warningThreshold($clean['warning_threshold']);
+			$server_validator->sslCertExpiryDays($clean['ssl_cert_expiry_days']);
 		} catch (\InvalidArgumentException $ex) {
 			$this->addMessage(psm_get_lang('servers', 'error_'.$ex->getMessage()), 'error');
 			return $this->executeEdit();
@@ -490,6 +493,8 @@ class ServerController extends AbstractServerController {
 			'label_users' => psm_get_lang('servers', 'users'),
 			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
+			'label_ssl_cert_expiry_days' => psm_get_lang('servers', 'ssl_cert_expiry_days'),
+			'label_ssl_cert_expiry_days_description' => psm_get_lang('servers', 'ssl_cert_expiry_days_description'),
 			'label_action' => psm_get_lang('system', 'action'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'label_go_back' => psm_get_lang('system', 'go_back'),

@@ -245,6 +245,7 @@ class Installer {
 						  `telegram` enum('yes','no') NOT NULL default 'yes',
 			              `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
 			              `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+						  `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
 			              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
@@ -312,6 +313,9 @@ class Installer {
 		}
 		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
+		}
+		if (version_compare($version_from, '3.3.1', '<')) {
+			$this->upgrade331();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -539,6 +543,16 @@ class Installer {
 		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
+		
+	}
+
+	/**
+	 * Upgrade for v3.3.1 release
+	 */
+	protected function upgrade331() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `ssl_cert_expiry_days` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
+		$this->execSQL($queries);
 		
 	}
 }
