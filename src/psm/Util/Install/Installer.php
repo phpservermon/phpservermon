@@ -237,6 +237,7 @@ class Installer {
 						  `pushover` enum('yes','no') NOT NULL default 'yes',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+                          `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
                           `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
@@ -321,7 +322,7 @@ class Installer {
 
 		$this->execSQL($queries);
 	}
-
+    
 	/**
 	 * Upgrade for v3.0.0 release
 	 */
@@ -490,6 +491,7 @@ class Installer {
 	protected function upgrade321() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `header_name` VARCHAR(255) AFTER `pattern`, ADD COLUMN `header_value` VARCHAR(255) AFTER `header_name`";
+    $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `ssl_cert_expiry_days` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
 		$this->execSQL($queries);
 	}
 }

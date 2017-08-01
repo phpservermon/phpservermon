@@ -52,49 +52,55 @@ class ArchiveManager {
 	 */
 	protected $retention_period;
 
-	public function __construct(\psm\Service\Database $db) {
+	public function __construct( \psm\Service\Database $db ) {
 		$this->db = $db;
 
-		$this->setRetentionPeriod(psm_get_conf('log_retention_period', 365));
+		$this->setRetentionPeriod( psm_get_conf( 'log_retention_period', 365 ) );
 
-		$this->archivers[] = new Archiver\UptimeArchiver($db);
-		$this->archivers[] = new Archiver\LogsArchiver($db);
+		$this->archivers[] = new Archiver\UptimeArchiver( $db );
+		$this->archivers[] = new Archiver\LogsArchiver( $db );
 	}
 
 	/**
 	 * Archive one or more servers.
+	 *
 	 * @param int $server_id
+	 *
 	 * @return boolean
 	 */
-	public function archive($server_id = null) {
+	public function archive( $server_id = null ) {
 		$result = true;
-		foreach($this->archivers as $archiver) {
-			if(!$archiver->archive($server_id)) {
+		foreach ( $this->archivers as $archiver ) {
+			if ( ! $archiver->archive( $server_id ) ) {
 				$result = false;
 			}
 		}
+
 		return $result;
 	}
 
 	/**
 	 * Cleanup old records for one or more servers
+	 *
 	 * @param int $server_id
+	 *
 	 * @return boolean
 	 */
-	public function cleanup($server_id = null) {
+	public function cleanup( $server_id = null ) {
 		$result = true;
-		if(!$this->retention_period) {
+		if ( ! $this->retention_period ) {
 			// cleanup is disabled
 			return $result;
 		}
 		$retdate = new \DateTime();
-		$retdate->sub($this->retention_period);
+		$retdate->sub( $this->retention_period );
 
-		foreach($this->archivers as $archiver) {
-			if(!$archiver->cleanup($retdate, $server_id)) {
+		foreach ( $this->archivers as $archiver ) {
+			if ( ! $archiver->cleanup( $retdate, $server_id ) ) {
 				$result = false;
 			}
 		}
+
 		return $result;
 	}
 
@@ -102,18 +108,21 @@ class ArchiveManager {
 	 * Set retention period for this archive run.
 	 *
 	 * Set period to 0 to disable cleanup altogether.
+	 *
 	 * @param \DateInterval|int $period \DateInterval object or number of days (int)
+	 *
 	 * @return \psm\Util\Server\ArchiveManager
 	 */
-	public function setRetentionPeriod($period) {
-		if(is_object($period) && $period instanceof \DateInterval) {
+	public function setRetentionPeriod( $period ) {
+		if ( is_object( $period ) && $period instanceof \DateInterval ) {
 			$this->retention_period = $period;
-		} elseif(intval($period) == 0) {
+		} elseif ( intval( $period ) == 0 ) {
 			// cleanup disabled
 			$this->retention_period = false;
 		} else {
-			$this->retention_period = new \DateInterval('P' . intval($period) . 'D');
+			$this->retention_period = new \DateInterval( 'P' . intval( $period ) . 'D' );
 		}
+
 		return $this;
 	}
 }

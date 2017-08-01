@@ -77,6 +77,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`pushover`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
+					`s`.`ssl_cert_expiry_days`,
 					`s`.`timeout`,
 					`s`.`website_username`,
 					`s`.`website_password`

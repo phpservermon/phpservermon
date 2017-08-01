@@ -155,6 +155,8 @@ $sm_lang = array(
 		'hour' => 'Stunde',
 		'warning_threshold' => 'Warnschwelle',
 		'warning_threshold_description' => 'Anzahl der fehlgeschlagenen Überprüfungen, bevor der Status als offline markiert wird.',
+		'ssl_cert_expiry_days' => 'Zertifikatsgültigkeit',
+		'ssl_cert_expiry_days_description' => 'Anzahl der Tage, die das SSL-Zertifikat noch gültig sein soll.',
 		'chart_last_week' => 'Letzte Woche',
 		'chart_history' => 'Historie',
 		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
@@ -172,6 +174,7 @@ $sm_lang = array(
 		'error_server_ip_bad_website' => 'Die eingegebene Webseiten-URL ist ungültig.',
 		'error_server_type_invalid' => 'Der gewählte Server-Typ ist ungültig.',
 		'error_server_warning_threshold_invalid' => 'Die Warnschwelle muss eine gültige ganze Zahl größer als 0 sein.',
+		'error_server_ssl_cert_expiry_days_invalid' => 'Die verbleibenden Tage des SSL-Zertifikats müssen eine gültige ganze Zahl größer oder gleich 0 sein.',
 	),
 	'config' => array(
 		'general' => 'Allgemein',

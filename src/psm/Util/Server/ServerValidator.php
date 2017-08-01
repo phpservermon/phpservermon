@@ -136,4 +136,17 @@ class ServerValidator {
 		}
 		return true;
 	}
+
+	/**
+	 * Check SSL expiry days 
+	 * @param int $value
+	 * @return boolean
+	 * @throws \InvalidArgumentException
+	 */
+	public function sslCertExpiryDays($value) {
+		if(!is_numeric($value)) {
+			throw new \InvalidArgumentException('server_ssl_expiry_days_invalid');
+		}
+		return true;
+	}
 }

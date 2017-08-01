@@ -356,6 +356,21 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 }
 
 /**
+ * Get SSL certificate information about the peer 
+ *
+ * @param string $href
+ * @return array
+ */
+function psm_cert_info_get($href, $port) {
+	$host = parse_url($href, PHP_URL_HOST);
+	$stream_context = stream_context_create( array( "ssl" => array("capture_peer_cert" => TRUE ) ) );
+	$stream_client = stream_socket_client("ssl://" . $host . ":$port", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $stream_context );
+	$cert = stream_context_get_params( $stream_client );
+	$cert_info = openssl_x509_parse( $cert['options']['ssl']['peer_certificate'] );
+	return $cert_info;
+}
+
+/**
  * Get a "nice" timespan message
  *
  * Source: http://www.interactivetools.com/forum/forum-posts.php?postNum=2208966

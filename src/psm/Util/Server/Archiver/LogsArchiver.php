@@ -40,7 +40,7 @@ class LogsArchiver implements ArchiverInterface {
 	 */
 	protected $db;
 
-	function __construct(Database $db) {
+	function __construct( Database $db ) {
 		$this->db = $db;
 	}
 
@@ -48,23 +48,25 @@ class LogsArchiver implements ArchiverInterface {
 	 * Currently there is not really a log archive.
 	 *
 	 * It stays in the log table until cleaned up.
+	 *
 	 * @param int $server_id
 	 */
-	public function archive($server_id = null) {
+	public function archive( $server_id = null ) {
 		return true;
 	}
 
-	public function cleanup(\DateTime $retention_date, $server_id = null) {
-		$sql_where_server = ($server_id !== null)
-				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
-				? ' `server_id` = ' . intval($server_id) . ' AND '
-				: '';
+	public function cleanup( \DateTime $retention_date, $server_id = null ) {
+		$sql_where_server = ( $server_id !== null )
+			// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
+			? ' `server_id` = ' . intval( $server_id ) . ' AND '
+			: '';
 
 		$this->db->execute(
-			"DELETE FROM `".PSM_DB_PREFIX."log` WHERE {$sql_where_server} `datetime` < :latest_date",
-			array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
+			"DELETE FROM `" . PSM_DB_PREFIX . "log` WHERE {$sql_where_server} `datetime` < :latest_date",
+			array( 'latest_date' => $retention_date->format( 'Y-m-d 00:00:00' ) ),
 			false
 		);
+
 		return true;
 	}
 }

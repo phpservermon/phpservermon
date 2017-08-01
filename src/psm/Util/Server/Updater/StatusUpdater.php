@@ -83,7 +83,7 @@ class StatusUpdater {
 			'server_id' => $server_id,
 		), array(
 			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
-			'warning_threshold_counter', 'timeout', 'website_username', 'website_password'
+			'warning_threshold_counter', 'ssl_cert_expiry_days', 'timeout', 'website_username', 'website_password'
 		));
 		if(empty($this->server)) {
 			return false;
@@ -192,6 +192,8 @@ class StatusUpdater {
 			fclose($fp);
 		}
 
+                    $this->check_ssl($this->server, $this->error, $status);
+        
 		// check if server is available and rerun if asked.
 		if(!$status && $run < $max_runs) {
 			return $this->updateService($max_runs, $run + 1);
@@ -207,6 +209,7 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updateWebsite($max_runs, $run = 1) {
+                $result = '';
 		$starttime = microtime(true);
 
 		// We're only interested in the header, because that should tell us plenty!
@@ -279,15 +282,51 @@ class StatusUpdater {
 				}
 			}
 		}
-
+        
+                
+                   $this->check_ssl($this->server, $this->error, $result);
+        
+ 
 		// check if server is available and rerun if asked.
 		if(!$result && $run < $max_runs) {
 			return $this->updateWebsite($max_runs, $run + 1);
 		}
-
+            
 		return $result;
 	}
 
+    
+        /**
+         *  Check if a server speaks SSL and if the certificate is not expired.
+         * @param string $error
+         * @param bool $result
+         */
+        private function check_ssl($server, &$error, &$result) {
+                  if(($ssl_cert_expiry_days = $server['ssl_cert_expiry_days']) > 0) {
+                        $cert_info = psm_cert_info_get($server['ip'], $server['port']);
+                        if( empty( $cert_info) ) {
+                            $error = "SSL is disabled.";
+                            $result = false;
+                        } else {
+                            $current_time = time();
+                            $seconds_per_day = 86400;
+                            $cert_valid_until = $cert_info['validTo_time_t'];
+                            $latest_time = $current_time + $seconds_per_day*$ssl_cert_expiry_days;
+                            if( $latest_time > $cert_valid_until ) {
+                                 $remaining_time = $cert_valid_until - $current_time;
+                                 $remaining_days = (int)( $remaining_time / $seconds_per_day );
+                                 if( $remaining_days >= 0 ) {
+                                    $error = "SSL certificate expiring: $remaining_days days left.";
+                                 } else {
+                                     $remaining_days *= -1;
+                                     $error = "SSL certificate expired since $remaining_days.";
+                                 }
+                                 $result = false;
+                            }
+                        }
+                  }
+            }
+    
 	/**
 	 * Get the error returned by the update function
 	 *
