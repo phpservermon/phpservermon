@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Logisid ei eksisteeri',
+		'clear' => 'Puhasta logig',
+		'delete_title' => 'Kustuta logi',
+		'delete_message' => 'Kas olete kindel, et soovite kustutada <b>kõik</b> logid?',
 	),
 	'servers' => array(
 		'server' => 'Server',

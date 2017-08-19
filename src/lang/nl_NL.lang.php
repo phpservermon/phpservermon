@@ -112,7 +112,10 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
-		'no_logs' => 'No logs',
+		'no_logs' => 'Geen logs',
+		'clear' => 'Logboek opschonen',
+		'delete_title' => 'Logboek opschonen',
+		'delete_message' => 'Weet je zeker dat je <b>alle</b> logs wilt opschonen?',
 	),
 	'servers' => array(
 		'server' => 'Server',

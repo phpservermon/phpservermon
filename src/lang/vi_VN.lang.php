@@ -111,6 +111,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
+		'clear' => 'Xoá nhật ký',
+		'delete_title' => 'Xoá nhật ký',
+		'delete_message' => 'Bạn có chắc chắn muốn xóa <b>tất</b> cả các bản ghi?',
 	),
 	'servers' => array(
 		'server' => 'Server',

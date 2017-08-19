@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'Tekstiviesti',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Ei tapahtumia',
+		'clear' => 'Tyhjennä loki',
+		'delete_title' => 'Poista loki',
+		'delete_message' => 'Haluatko varmasti poistaa <b>kaikki</b> lokit?',
 	),
 	'servers' => array(
 		'server' => 'Palvelin',

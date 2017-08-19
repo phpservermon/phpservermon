@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Inga loggar',
+		'clear' => 'Tydlig logg',
+		'delete_title' => 'Tydlig logg',
+		'delete_message' => 'Är du säker på att du vill radera <b>alla</b> loggar?',
 	),
 	'servers' => array(
 		'server' => 'Server',

@@ -113,6 +113,9 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'no_logs' => 'Kayıt yok.',
+        'clear' => 'Günlüğü temizle',
+    		'delete_title' => 'Günlüğü temizle',
+    		'delete_message' => 'Tüm günlükleri silmek istediğinizden emin misiniz?',
     ),
     'servers' => array(
         'server' => 'Sunucu',

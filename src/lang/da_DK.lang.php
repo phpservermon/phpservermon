@@ -111,6 +111,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Intet i loggen',
+		'clear' => 'Ryd log',
+		'delete_title' => 'Slet log',
+		'delete_message' => 'Er du sikker på, at du vil slette <b>alle</b> logfiler?',
 	),
 	'servers' => array(
 		'server' => 'Server',

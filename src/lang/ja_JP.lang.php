@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'プッシュオーバー',
 		'no_logs' => 'ログがありません',
+		'clear' => 'ログをクリアする',
+		'delete_title' => 'ログを削除する',
+		'delete_message' => 'すべてのログを削除してもよろしいですか？',
 	),
 	'servers' => array(
 		'server' => 'サーバー',
