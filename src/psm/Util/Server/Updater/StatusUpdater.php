@@ -160,6 +160,7 @@ class StatusUpdater {
 			$this->rtime =  microtime(true) - $starttime;
 			$status = true;
 		} else {
+			$this->rtime =  microtime(true) - $starttime;
 			$status = false;
 		}
 		socket_close($socket);
