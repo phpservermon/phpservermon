@@ -41,10 +41,12 @@ class ConfigController extends AbstractController {
 		'email_smtp',
 		'sms_status',
 		'pushover_status',
+		'telegram_status',
 		'log_status',
 		'log_email',
 		'log_sms',
 		'log_pushover',
+		'log_telegram',
 		'show_update',
 	);
 
@@ -66,6 +68,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'telegram_api_token',
 	);
 
 	private $default_tab = 'general';
@@ -135,7 +138,7 @@ class ConfigController extends AbstractController {
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
 
-		$testmodals = array('email', 'sms', 'pushover');
+		$testmodals = array('email', 'sms', 'pushover', 'telegram');
 		foreach($testmodals as $modal_id) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 			$this->addModal($modal);
@@ -186,6 +189,8 @@ class ConfigController extends AbstractController {
 				$this->testSMS();
 			} elseif(!empty($_POST['test_pushover'])) {
 				$this->testPushover();
+			} elseif(!empty($_POST['test_telegram'])) {
+				$this->testTelegram();
 			}
 
 			if($language_refresh) {
@@ -201,6 +206,8 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'sms';
 			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
+			} elseif(isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
+				$this->default_tab = 'telegram';
 			}
 		}
 		return $this->runAction('index');
@@ -225,6 +232,38 @@ class ConfigController extends AbstractController {
 		} else {
 			$this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
 		}
+	}
+
+	/**
+	 * Execute telegram test
+	 *
+	 * @todo move test to separate class
+	 */
+	protected function testTelegram() {
+
+		//$this->addMessage('Erro : hahaha', 'error');
+
+		try {
+
+			$api = new \psm\Service\Telegram(psm_get_conf('telegram_api_token'));
+
+			$result = $api->getMe();
+
+			if($result && $result->ok) {
+				$this->addMessage(
+					sprintf(psm_get_lang('config', 'telegram_sent'), $result->result->username),
+				'success');
+				return;
+			}
+
+			throw new \Exception(json_encode($result));
+			//$this->addMessage(psm_get_lang('config', 'telegram_sent'), 'success');
+		} catch (\Exception $e) {
+			$this->addMessage(psm_get_lang('config', 'telegram_error') . ': ' . $e->getMessage(), 'error');
+		}
+
+		
+		
 	}
 
 	/**
@@ -289,6 +328,7 @@ class ConfigController extends AbstractController {
 
 	protected function getLabels() {
 		return array(
+			'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
@@ -298,6 +338,7 @@ class ConfigController extends AbstractController {
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
 			'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
+			'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
 			'label_general' => psm_get_lang('config', 'general'),
 			'label_language' => psm_get_lang('config', 'language'),
 			'label_show_update' => psm_get_lang('config', 'show_update'),
@@ -356,6 +397,7 @@ class ConfigController extends AbstractController {
 			'label_log_email' => psm_get_lang('config', 'log_email'),
 			'label_log_sms' => psm_get_lang('config', 'log_sms'),
 			'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+			'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
 			'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
 			'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
@@ -366,6 +408,12 @@ class ConfigController extends AbstractController {
 			'label_log_retention_period' => psm_get_lang('config', 'log_retention_period'),
 			'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
 			'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
+			'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
+			'label_telegram_bot_api_key' => psm_get_lang('config', 'telegram_bot_api_key'),
+			'label_telegram_api_token_description' => sprintf(
+				psm_get_lang('config', 'telegram_api_token_description'),
+				'https://core.telegram.org/bots#3-how-do-i-create-a-bot'
+			),
 		);
 	}
 }

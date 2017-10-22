@@ -105,7 +105,7 @@ class StatusUpdater {
 		$save = array(
 			'last_check' => date('Y-m-d H:i:s'),
 			'error' => $this->error,
-			'rtime' => $this->rtime,
+			'rtime' => empty($this->rtime) ? 0 : $this->rtime,
 		);
 
 		// log the uptime before checking the warning threshold,
@@ -119,6 +119,7 @@ class StatusUpdater {
 			$save['warning_threshold_counter'] = 0;
 		} else {
 			// server is offline, increase the error counter
+
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
 
 			if($save['warning_threshold_counter'] < $this->server['warning_threshold']) {

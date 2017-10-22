@@ -4,7 +4,7 @@ Changelog
 
 not yet released
 ----------------
-
+* #171: Implement Telegram Bot Notifications.
 
 
 v3.2.0 (released April 15, 2017)

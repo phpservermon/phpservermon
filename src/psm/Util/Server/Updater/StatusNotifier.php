@@ -61,6 +61,12 @@ class StatusNotifier {
 	protected $send_pushover = false;
 
 	/**
+	 * Send telegram?
+	 * @var boolean $send_telegram
+	 */
+	protected $send_telegram = true;
+
+	/**
 	 * Save log records?
 	 * @var boolean $save_log
 	 */
@@ -96,6 +102,7 @@ class StatusNotifier {
 		$this->send_emails = psm_get_conf('email_status');
 		$this->send_sms = psm_get_conf('sms_status');
 		$this->send_pushover = psm_get_conf('pushover_status');
+		$this->send_telegram = psm_get_conf('telegram_status');
 		$this->save_logs = psm_get_conf('log_status');
 	}
 
@@ -121,7 +128,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover', 'telegram',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -188,6 +195,12 @@ class StatusNotifier {
 			$this->notifyByPushover($users);
 		}
 
+		// check if telegram is enabled for this server
+		if($this->send_telegram && $this->server['telegram'] == 'yes') {
+			// yay lets wake those nerds up!
+			$this->notifyByTelegram($users);
+		}
+
 		return $notify;
 	}
 
@@ -223,6 +236,53 @@ class StatusNotifier {
 	    	$mail->ClearAddresses();
 	    }
 	}
+
+	/**
+	 * This functions performs the telegram notifications
+	 *
+	 * @param array $users
+	 * @return boolean
+	 */
+	protected function notifyByTelegram($users) {
+		// Remove users that have no pushover_key
+        foreach($users as $k => $user) {
+            if (trim($user['telegram_user_code']) == '') {
+                unset($users[$k]);
+            }
+        }
+
+        // Validation
+        if (empty($users)) {
+            return;
+		}
+
+		$body = psm_parse_msg($this->status_new, 'email_body', $this->server);
+		$body	= str_replace('<br/>', "\n", $body);
+
+        //if(psm_get_conf('log_telegram')) {
+            $log_id = psm_add_log($this->server_id, 'telegram', $body);
+   	    //}
+
+		$telegram = new \psm\Service\Telegram(psm_get_conf('telegram_api_token'));
+
+		// go through empl
+	    foreach ($users as $user) {
+            if(!empty($log_id)) {
+       	    	psm_add_log_user($log_id, $user['user_id']);
+       	    }
+
+			$uc = $user['telegram_user_code'];
+			$telegram->sendMessage(
+					[
+						'chat_id' => $uc,
+						'text' => $body
+					]
+				);
+	    }
+
+	}
+
+	
 
 	/**
 	 * This functions performs the pushover notifications
@@ -321,7 +381,7 @@ class StatusNotifier {
 	public function getUsers($server_id) {
 		// find all the users with this server listed
 		$users = $this->db->query("
-			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`
+			SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`pushover_device`, `u`.`telegram_user_code`
 			FROM `".PSM_DB_PREFIX."users` AS `u`
 			JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`
