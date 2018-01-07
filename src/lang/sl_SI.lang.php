@@ -195,6 +195,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
         'sms_gateway_smsglobal' => 'SMSGlobal',
         'sms_gateway_smsit' => 'Smsit',
+        'sms_gateway_cmbulksms' => 'CM Telecom',
         'sms_gateway_username' => 'Uporabniško ime SMS prehoda',
         'sms_gateway_password' => 'Geslo SMS prehoda',
         'sms_from' => 'Telefonska številka pošiljatelja',

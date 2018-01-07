@@ -220,6 +220,7 @@ $sm_lang = array(
 		'sms_gateway_clicksend' => 'ClickSend',
 		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_smsgw' => 'SMSgw',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'ゲートウェイのユーザー名',
 		'sms_gateway_password' => 'ゲートウェイのパスワード',
 		'sms_from' => '送信者の電話番号:',

@@ -55,6 +55,7 @@ The following SMS gateways are currently available:
 * Nexmo - <https://www.nexmo.com/>
 * OctoPush - <http://www.octopush.com/>
 * FreeMobile (FR) - <http://mobile.free.fr/>
+* CM Telecom - <https://www.cm.com/>
 
 
 

@@ -202,6 +202,7 @@ $sm_lang = array(
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'Nom utilisateur de la passerelle',
 		'sms_gateway_password' => 'Mot de passe de la passerelle',
 		'sms_from' => 'SMS de l\'expéditeur',

@@ -214,6 +214,7 @@ $sm_lang = array(
 		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
 		'sms_gateway_clicksend' => 'ClickSend',
 		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'Užívateľské meno brány',
 		'sms_gateway_password' => 'Heslo brány',
 		'sms_from' => 'Telefónne číslo odosielateľa',

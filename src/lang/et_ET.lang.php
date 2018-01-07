@@ -198,6 +198,7 @@ $sm_lang = array(
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'Värava kasutajanimi',
 		'sms_gateway_password' => 'Värava parool',
 		'sms_from' => 'Saatja telefoni number',

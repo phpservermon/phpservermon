@@ -216,6 +216,7 @@ $sm_lang = array(
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'SMS网关用户名',
 		'sms_gateway_password' => 'SMS网关密码',
 		'sms_from' => '发信人电话号',

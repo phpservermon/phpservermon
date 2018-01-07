@@ -545,6 +545,9 @@ function psm_build_sms() {
 		case 'smsgw':
 			$sms = new \psm\Txtmsg\Smsgw();
 			break;
+		case 'cmbulksms':
+			$sms = new \psm\Txtmsg\CMBulkSMS();
+			break;
 	}
 
 	// copy login information from the config file

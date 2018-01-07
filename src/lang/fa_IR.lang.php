@@ -198,6 +198,7 @@ $sm_lang = array(
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 		'sms_gateway_username' => 'نام کاربری Gateway',
 		'sms_gateway_password' => 'کلمه عبور Gateway',
 		'sms_from' => 'شماره تلفن ارسال کننده',
