@@ -51,6 +51,7 @@ The following SMS gateways are currently available:
 * Inetworx - <http://www.inetworx.ch>
 * Mollie - <http://www.mollie.nl>
 * Mosms - <http://www.mosms.com>
+* Sendmode - <http://www.sendmode.co.uk>
 * Smsglobal - <http://smsglobal.com/>
 * SMSit - <http://www.smsit.dk/>
 * Spryng - <http://www.spryng.nl>
