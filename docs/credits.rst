@@ -16,7 +16,11 @@ The following people have contributed to the development of PHP Server Monitor:
 
 * Samuel Denis-D'Ortun - https://github.com/sadortun
 
- * Project developer
+  * Project developer
+ 
+* Tim Zandbergen - https://github.com/TimZ99
+
+  * Project developer
 
 * Jérôme Cabanis - https://github.com/Abawell
 
@@ -118,6 +122,11 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Italian
 
   * Marco Gargani
+
+* Japanese
+
+  * Vus520 - https://github.com/vus520
+  * Rht0910 - https://github.com/rht0910
 
 * Korean
 
