@@ -244,6 +244,7 @@ class InstallController extends AbstractController {
 		} else {
 			// validate the lot
 			try {
+				$validator->username_new($new_user['user_name']);
 				$validator->email($new_user['email']);
 				$validator->password($new_user['password'], $new_user['password_repeat']);
 			} catch(\InvalidArgumentException $e) {
