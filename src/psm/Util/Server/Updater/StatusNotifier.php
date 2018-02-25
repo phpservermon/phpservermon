@@ -55,7 +55,7 @@ class StatusNotifier {
 	protected $send_sms = false;
 
 	/**
-	 * Send sms?
+	 * Send Pushover notification?
 	 * @var boolean $send_pushover
 	 */
 	protected $send_pushover = false;
