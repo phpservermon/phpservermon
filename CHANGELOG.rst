@@ -5,7 +5,16 @@ Changelog
 not yet released
 ----------------
 
-
+* #436: Nexmo.class.php updates to Nexmo.php.
+* #535: Updated Japanese translation.
+* #502: Fixed database population bug during installation.
+* #512: Added username validation during installation and added the dot (.) to allowed characters.
+* #475: Added Japanese translation.
+* #454: Updated HistoryGraph.php timestamp to number_format.
+* #343: Added optinal header value check.
+* #437: Octopush.class.php updates to Octopush.php.
+* #170: Added Nexmo SMS to list in config.tpl.html.
+* #464: Updated attributes pushover_key and pushover_device in update.tpl.html.
 
 v3.2.0 (released April 15, 2017)
 --------------------------------
@@ -20,10 +29,10 @@ v3.2.0 (released April 15, 2017)
 * #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
 * #181: Added blank index files to prevent directory listing.
 * #237: Adding CSRF protection.
-* #287: Default language - English
-* #286: Add popular ports drop down
-* #269: Added Slovenian language 
-* #96:  Authentication for website checks
+* #287: Default language - English.
+* #286: Add popular ports drop down.
+* #269: Added Slovenian language.
+* #96:  Authentication for website checks.
 
 
 v3.1.1 (released November 6, 2014)
