@@ -118,9 +118,7 @@ if(!defined('PSM_MODULE_DEFAULT')) {
 	 * Default theme
 	 */
 	define('PSM_THEME', 'default');
-}
 
-if(!defined('PSM_MODULE_DEFAULT')) {
 	/**
 	 * Default module (if none given or invalid one)
 	 */
