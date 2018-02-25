@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'پیامک',
 		'pushover' => 'Pushover',
 		'no_logs' => 'لاگی وجود ندارد.',
+		'clear' => 'پاک کردن ورود',
+		'delete_title' => 'حذف ورود',
+		'delete_message' => 'آیا مطمئن هستید که میخواهید سیاهههای «همه» را حذف کنید؟',
 	),
 	'servers' => array(
 		'server' => 'سرور',
