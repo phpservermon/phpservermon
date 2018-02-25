@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Nessun log',
+		'clear' => 'Pulisci il registro',
+		'delete_title' => 'Elimina log',
+		'delete_message' => 'Sei sicuro di voler eliminare <b>tutti</b> i registri?',
 	),
 	'servers' => array(
 		'server' => 'Server',

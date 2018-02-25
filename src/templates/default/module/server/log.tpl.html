@@ -1,3 +1,9 @@
+{% if has_admin_actions %}
+<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" title="Delete" data-modal-id="delete" data-modal-param="{{ label }}">
+	<i class="icon-trash icon-white"></i>&nbsp;{{ label_clear_log }}
+</a>
+<br><br>
+{% endif %}
 <div class="tabbable">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#log_status_content" data-toggle="tab">{{ label_status }}</a></li>
