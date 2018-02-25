@@ -114,6 +114,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Aucun événement',
+		'clear' => 'Claire registros',
+		'delete_title' => 'Supprimer journaux',
+		'delete_message' => 'Êtes-vous sûr de vouloir supprimer <b>tous</b> les journaux?',
 	),
 	'servers' => array(
 		'server' => 'Serveur',

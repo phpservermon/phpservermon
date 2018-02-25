@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Няма налични логове',
+		'clear' => 'Изчистване на дневника',
+		'delete_title' => 'Изтриване на дневника',
+		'delete_message' => 'Наистина ли искате да изтриете <b>всички</b> дневници?',
 	),
 	'servers' => array(
 		'server' => 'Сървър',

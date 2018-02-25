@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Žiadne záznamy',
+		'clear' => 'Jasný protokol',
+		'delete_title' => 'Jasný protokol',
+		'delete_message' => 'Naozaj chcete odstrániť <b>všetky</b> záznamy?',
 	),
 	'servers' => array(
 		'server' => 'Server',

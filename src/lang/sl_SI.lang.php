@@ -111,6 +111,9 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'no_logs' => 'ni dnevniških zapisov',
+        'clear' => 'Počisti dnevnik',
+    		'delete_title' => 'Brisanje dnevnika',
+    		'delete_message' => 'Ali ste prepričani, da želite izbrisati <b>vse</b> dnevnike?',
     ),
     'servers' => array(
         'server' => 'Strežnik',
