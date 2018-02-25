@@ -83,6 +83,8 @@ $sm_lang = array(
 		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
 		'mobile' => 'Mobile',
 		'email' => 'Email',
+		'telegram_user_code' => 'Telegram User Code',
+		'telegram_user_code_description' => 'Enter your code informed by your telegram bot.',
 		'pushover' => 'Pushover',
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_key' => 'Pushover Key',
@@ -112,10 +114,12 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
+		'telegram' => 'Telegram',
 		'no_logs' => 'No logs',
 	),
 	'servers' => array(
 		'server' => 'Server',
+		'telegram' => 'Telegram',
 		'status' => 'Status',
 		'label' => 'Label',
 		'domain' => 'Domain/IP',
@@ -185,10 +189,12 @@ $sm_lang = array(
 		'error_server_ip_bad_website' => 'The website URL is not valid.',
 		'error_server_type_invalid' => 'The selected server type is invalid.',
 		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
+		'send_telegram' => 'Retrieve information from Bot'
 	),
 	'config' => array(
 		'general' => 'General',
 		'language' => 'Language',
+		'tab_telegram' => 'Telegram Bot',
 		'show_update' => 'Check for updates?',
 		'password_encrypt_key' => 'The encryption key password',
 		'password_encrypt_key_note' => 'This key is used to encrypt passwords that are stored on servers for access to websites. If the key will change the stored password is invalid!',
@@ -250,6 +256,7 @@ $sm_lang = array(
 		'log_email' => 'Log emails sent by the script',
 		'log_sms' => 'Log text messages sent by the script',
 		'log_pushover' => 'Log pushover messages sent by the script',
+		'log_telegram' => 'Log telegram messages sent by the script',
 		'updated' => 'The configuration has been updated.',
 		'tab_email' => 'Email',
 		'tab_sms' => 'SMS',
@@ -259,6 +266,7 @@ $sm_lang = array(
 		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Notification settings',
 		'settings_log' => 'Log settings',
+		'settings_telegram' => 'Telegram Settings',
 		'settings_proxy' => 'Proxy settings',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
@@ -286,6 +294,12 @@ $sm_lang = array(
 		'log_retention_period' => 'Log retention period',
 		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
 		'log_retention_days' => 'days',
+		'telegram_bot_api_key' => 'TelegramBot\'s ApiKey',
+		'telegram_api_token_description' => 'Before using BOT, see the guide on how to create and get your ApiKey on your TelegramBot by <a href="%1$s" target="_blank">clicking here</a>.',
+		'test_telegram' => 'To test if your key is ok let\'s retrieve the information from your bot.',
+		'telegram_status' => 'Enable sending messages with the Telegram',
+		'telegram_sent' => '%s is configured correctly.',
+		'telegram_error' => 'TelegramBotError',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

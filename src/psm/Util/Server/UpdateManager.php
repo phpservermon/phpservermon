@@ -77,5 +77,38 @@ class UpdateManager extends ContainerAware {
 		$archive = new ArchiveManager($this->container->get('db'));
 		$archive->archive();
 		$archive->cleanup();
+
+		// telegram send code
+		if(psm_get_conf('telegram_status')) {
+			$telegram = new \psm\Service\Telegram(psm_get_conf('telegram_api_token'));
+
+			$offset = psm_get_conf('telegram_updates_offset');
+			if(empty($offset)) {
+				$updates = $telegram->getUpdates();
+			} else {
+				$updates = $telegram->getUpdates($offset);
+			}
+
+			if($updates && $updates->ok) {
+				foreach($updates->result as $result) {
+
+					if($result->update_id == $offset) {
+						continue;
+					}
+
+					$telegram->sendMessage(
+						[
+							'chat_id' => $result->message->chat->id,
+							'text' => 'Hello ' . $result->message->chat->first_name . ' ' . $result->message->chat->last_name . "\n" .
+							'Your PhpServerMon code is ' . $result->message->chat->id
+						]
+					);
+
+					psm_update_conf('telegram_updates_offset', $result->update_id);
+				}
+			}
+
+			/**/
+		}
 	}
 }

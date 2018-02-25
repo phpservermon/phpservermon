@@ -190,6 +190,7 @@ class Installer {
 							`pushover_key` varchar(255) NOT NULL,
 							`pushover_device` varchar(255) NOT NULL,
 							`email` varchar(255) NOT NULL,
+							`telegram_user_code` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
@@ -207,7 +208,7 @@ class Installer {
 			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
-						  `type` enum('status','email','sms','pushover') NOT NULL,
+						  `type` enum('status','email','sms','pushover', 'telegram') NOT NULL,
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  PRIMARY KEY  (`log_id`)
@@ -235,6 +236,7 @@ class Installer {
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
 						  `pushover` enum('yes','no') NOT NULL default 'yes',
+						  `telegram` enum('yes','no') NOT NULL default 'no',
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
@@ -298,7 +300,10 @@ class Installer {
 		}
 		if(version_compare($version_from, '3.2.1', '<')) {
 			$this->upgrade321();
+		} if(version_compare($version_from, '3.3.0', '<')) {
+			$this->upgrade320();
 		}
+		
 		psm_update_conf('version', $version_to);
 	}
 
@@ -490,6 +495,17 @@ class Installer {
 	protected function upgrade321() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `header_name` VARCHAR(255) AFTER `pattern`, ADD COLUMN `header_value` VARCHAR(255) AFTER `header_name`";
+		$this->execSQL($queries);
+	}
+
+	/**
+	 * Upgrade for v3.3.0 release
+	 */
+	protected function upgrade330() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `telegram_user_code` VARCHAR( 255 ) NOT NULL AFTER  `pushover_device`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `telegram` ENUM( 'yes', 'no' ) NOT NULL AFTER  `pushover` DEFAULT `no`;";
 		$this->execSQL($queries);
 	}
 }
