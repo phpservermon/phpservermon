@@ -75,6 +75,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`email`,
 					`s`.`sms`,
 					`s`.`pushover`,
+					`s`.`telegram`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
 					`s`.`timeout`,
@@ -106,6 +107,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
 		$server['pushover'] = psm_get_lang('system', $server['pushover']);
+		$server['telegram'] = psm_get_lang('system', $server['telegram']);
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';
