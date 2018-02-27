@@ -157,12 +157,11 @@ class StatusUpdater {
 		
 		socket_send($socket, $package, strLen($package), 0);
 		if (socket_read($socket, 255)) {
-			$this->rtime =  microtime(true) - $starttime;
 			$status = true;
 		} else {
-			$this->rtime =  microtime(true) - $starttime;
 			$status = false;
 		}
+		$this->rtime =  microtime(true) - $starttime;
 		socket_close($socket);
 
 		// check if server is available and rerun if asked.
