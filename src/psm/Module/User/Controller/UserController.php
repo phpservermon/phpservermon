@@ -48,7 +48,7 @@ class UserController extends AbstractController {
 		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'user'));
 	}
 
-	public function run() {
+	public function run($action = NULL) {
 		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `active` ASC, `status` DESC, `label` ASC");
 		// change the indexes to reflect their server ids
 		foreach($servers as $server) {
