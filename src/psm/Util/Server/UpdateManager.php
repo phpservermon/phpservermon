@@ -71,11 +71,10 @@ class UpdateManager extends ContainerAware {
 			$status_new = $updater->update($server['server_id']);
 			// notify the nerds if applicable
 			$notifier->notify($server['server_id'], $status_old, $status_new);
-
-		   // clean-up time!! archive all records
-		   $archive = new ArchiveManager($this->container->get('db'));
-		   $archive->archive($server['server_id']);
-		   $archive->cleanup($server['server_id']);
+			// clean-up time!! archive all records
+			$archive = new ArchiveManager($this->container->get('db'));
+			$archive->archive($server['server_id']);
+			$archive->cleanup($server['server_id']);
 		}
 	}
 }
