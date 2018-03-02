@@ -269,6 +269,7 @@ class ServerController extends AbstractServerController {
 			'pattern' => psm_POST('pattern', ''),
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
+			'rtime' => psm_POST('rtime', '0.0000000'),
 			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
 			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
@@ -515,3 +516,4 @@ class ServerController extends AbstractServerController {
 		return $result;
 	}
 }
+
