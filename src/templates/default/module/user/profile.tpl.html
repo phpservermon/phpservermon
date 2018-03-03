@@ -71,8 +71,14 @@
 			<div class="control-group">
 			  <label class="control-label" for="mobile">{{ label_telegram_chat_id }}</label>
 				 <div class="controls">
-			    <input type="text" id="telegram_id" name="telegram_id" maxlength="255" data-toggle="tooltip" title="{{ label_telegram_chat_id_description }}" />
+			    <input type="text" id="telegram_id" name="telegram_id" value="{{ telegram_id }}" maxlength="255" data-toggle="tooltip" title="{{ label_telegram_chat_id_description }}" />
 			  </div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn btn-primary show-modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
+					<input type="hidden" name="activate_telegram" value="0" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -83,3 +89,4 @@
 	</div>
 	 </fieldset>
 </form>
+
