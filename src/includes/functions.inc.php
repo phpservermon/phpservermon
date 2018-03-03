@@ -742,38 +742,48 @@ function psm_password_decrypt($key, $encryptedString)
 }
 
 /**
-		* Send notification to Telegram
-		*
-		* @return string
-		* @author Tim Zandbergen <tim@xervion.nl>
-		*/
-		class telegram
-		{
-			private $_token;
-		  private $_user;
-		  private $_message;
-		  private $_url;
+* Send notification to Telegram
+*
+* @return string
+* @author Tim Zandbergen <tim@xervion.nl>
+*/
+class telegram
+{
+	private $_token;
+	private $_user;
+	private $_message;
+	private $_url;
 
-		  public function setToken ($token) {
-		    $this->_token = (string)$token;
-
-		  }
-		  public function setUser ($user) {
-		    $this->_user = (string)$user;
-		  }
-		  public function setMessage ($message) {
-		    $this->_message = (string)$message;
-		  }
-		  public function send () {
-		    if(!Empty($this->_token) && !Empty($this->_user) && !Empty($this->_message)) {
-		      $this->_url = 'https://api.telegram.org/bot' . urlencode($this->_token) . '/sendMessage?chat_id=' . urlencode($this->_user) . '&text=' . urlencode($this->_message);
-		    }
-		    $con = curl_init($this->_url);
-		    curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
-		    curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
-		    curl_setopt($con, CURLOPT_TIMEOUT, 60);
-				$response = curl_exec($con);
-		    $response = json_decode($response, true);
-				return $response;
-		  }
+	public function setToken ($token) {
+		$this->_token = (string)$token;
+	}
+	public function setUser ($user) {
+		$this->_user = (string)$user;
+	}
+	public function setMessage ($message) {
+		$this->_message = (string)$message;
+	}
+	public function sendurl () {
+		$con = curl_init($this->_url);
+		curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($con, CURLOPT_TIMEOUT, 60);
+		$response = curl_exec($con);
+		$response = json_decode($response, true);
+		return $response;
+	}
+	public function send () {
+		if(!Empty($this->_token) && !Empty($this->_user) && !Empty($this->_message)) {
+			$this->_url = 'https://api.telegram.org/bot' . urlencode($this->_token) . '/sendMessage?chat_id=' . urlencode($this->_user) . '&text=' . urlencode($this->_message);
 		}
+		return $this->sendurl();
+	}
+	// Get the bots username
+	public function getBotUsername () {
+		if(!Empty($this->_token)) {
+			$this->_url = 'https://api.telegram.org/bot' . urlencode($this->_token) . '/getMe';
+		}
+		return $this->sendurl();
+	}
+}
+

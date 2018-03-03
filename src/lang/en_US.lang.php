@@ -48,6 +48,7 @@ $sm_lang = array(
 		'go_back' => 'Go back',
 		'ok' => 'OK',
 		'cancel' => 'Cancel',
+		'activate' => 'Activate',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
@@ -93,6 +94,11 @@ $sm_lang = array(
 		'telegram_chat_id' => 'Telegram chat id',
 		'telegram_chat_id_description' => 'The message will be send to the corresponding chat.',
 		'telegram_get_chat_id' => 'Click here to get your chat id',
+		'activate_telegram' => 'Activate Telegram notifications',
+		'activate_telegram_description' => 'Allow Telegram notifications to be sent to the specified chat id. Without this permission, Telegram doesn\'t allow us to send notifications to you.',
+		'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank"><button class="btn btn-primary">Next step</button></a> <br>This will open a chat with the bot. Here you need to press start of type /start.',
+		'telegram_bot_username_error_token' => '401 - Unauthorized. Please make sure that the API token is valid.',
+		'telegram_bot_error' => 'An error has occurred while activating Telegram notification: %s',
 		'delete_title' => 'Delete User',
 		'delete_message' => 'Are you sure you want to delete user \'%1\'?',
 		'deleted' => 'User deleted.',
@@ -245,7 +251,7 @@ $sm_lang = array(
 		'telegram_status' => 'Allow sending Telegram messages',
 		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to get real-time notifications. Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for more info and an install guide.',
 		'telegram_api_token' => 'Telegram API Token',
-		'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Open your Telegram app and search for @Botfather.',
+		'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for help.',
 		'alert_type' => 'Select when you\'d like to be notified.',
         'alert_type_description' => '<b>Status change:</b> '.
 		    'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
@@ -353,3 +359,4 @@ $sm_lang = array(
 		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
 	),
 );
+
