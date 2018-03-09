@@ -206,6 +206,7 @@ $sm_lang = array(
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',
 		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_cmbulksms' => 'CM Telecom',
 	        'sms_gateway_username' => 'Usuário do Gateway',
 	        'sms_gateway_password' => 'Senha do Gateway',
 	        'sms_from' => 'Número de telefone de envio',

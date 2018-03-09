@@ -367,6 +367,7 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_spryng' => psm_get_lang('config', 'sms_gateway_spryng'),
 			'label_sms_gateway_inetworx' => psm_get_lang('config', 'sms_gateway_inetworx'),
 			'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
+			'label_sms_gateway_cmbulksms' => psm_get_lang('config', 'sms_gateway_cmbulksms'),
 			'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
 			'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
 			'label_sms_gateway_freevoipdeal' => psm_get_lang('config', 'sms_gateway_freevoipdeal'),
