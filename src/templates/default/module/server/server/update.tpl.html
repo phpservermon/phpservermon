@@ -152,6 +152,17 @@
 				</select>
 			</div>
 		</div>
+		<div class="control-group {{ control_class_telegram }}">
+			<label class="control-label" for="telegram">{{ label_telegram }}
+			{% if warning_telegram %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_telegram }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="telegram" name="telegram">
+					<option value="yes" {{ edit_telegram_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_telegram_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset>

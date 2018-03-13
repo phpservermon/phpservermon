@@ -6,7 +6,7 @@
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <meta name="description" content="">
-    <meta name="robots" content="noindex" />		
+    <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#424242">
 	<link rel="icon" type="image/x-icon" href="favicon.ico" />
 	<link rel="icon" type="image/png" href="favicon.png" />
@@ -57,7 +57,7 @@
 					{% for msg in messages %}
 					<div class="alert alert-{{ msg.shortcode }}">
 						<p class="pull-left span1"><i class="icon-{{ msg.icon }}"></i></p>
-						<p>{{ msg.message }}</p>
+						<p>{{ msg.message|raw }}</p>
 					</div>
 					{% endfor %}
 				</div>
@@ -76,3 +76,4 @@
     <!-- /container -->
     </body>
 </html>
+

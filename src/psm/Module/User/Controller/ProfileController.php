@@ -35,7 +35,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
+	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -54,6 +54,12 @@ class ProfileController extends AbstractController {
 		$this->twig->addGlobal('subtitle', psm_get_lang('users', 'profile'));
 		$user = $this->getUser()->getUser(null, true);
 
+		$modal = new \psm\Util\Module\Modal($this->twig, 'activate' . ucfirst('telegram'), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+		$this->addModal($modal);
+		$modal->setTitle(psm_get_lang('users', 'activate_telegram'));
+		$modal->setMessage(psm_get_lang('users', 'activate_telegram_description'));
+		$modal->setOKButtonLabel(psm_get_lang('system', 'activate'));
+
 		$tpl_data = array(
 			'label_name' => psm_get_lang('users', 'name'),
 			'label_user_name' => psm_get_lang('users', 'user_name'),
@@ -66,6 +72,13 @@ class ProfileController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+			'label_telegram' => psm_get_lang('users', 'telegram'),
+			'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
+			'label_telegram_chat_id' => psm_get_lang('users', 'telegram_chat_id'),
+			'label_telegram_chat_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
+			'label_activate_telegram' => psm_get_lang('users', 'activate_telegram'),
+			'label_telegram_get_chat_id' => psm_get_lang('users', 'telegram_get_chat_id'),
+			'telegram_get_chat_id_url' => PSM_TELEGRAM_GET_ID_URL,
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'form_action' => psm_build_url(array(
@@ -132,7 +145,39 @@ class ProfileController extends AbstractController {
 			$this->getUser()->changePassword($this->getUser()->getUserId(), $password);
 		}
 		$this->addMessage(psm_get_lang('users', 'profile_updated'), 'success');
-
+		if(!empty($_POST['activate_telegram'])) {
+			$this->activateTelegram();
+		}
 		return $this->executeIndex();
 	}
+
+	/**
+	 * Allow the bot to send notifications to chat_id
+	 *
+	 */
+	protected function activateTelegram() {
+		$telegram = psm_build_telegram();
+		$api_token = psm_get_conf('telegram_api_token');
+
+		if(empty($api_token)) {
+			$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
+		} else {
+			$result = $telegram->getBotUsername();
+
+			if(isset($result['ok']) && $result['ok'] != false) {
+				$url = "https://t.me/".$result["result"]["username"];
+				$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_username_found'), $url), 'success');
+			} else {
+				if(isset($result['error_code']) && $result['error_code'] == 401) {
+					$error = psm_get_lang('users', 'telegram_bot_username_error_token');
+				} elseif (isset($result['description'])) {
+					$error = $result['description'];
+				} else {
+					$error = 'Unknown';
+				}
+				$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_error'), $error), 'error');
+			}
+		}
+	}
 }
+

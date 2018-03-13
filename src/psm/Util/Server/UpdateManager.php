@@ -56,13 +56,13 @@ class UpdateManager extends ContainerAware {
 						)";
 		}
 
-		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,`s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`
+		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,`s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				WHERE `active`='yes' ";
 
 		$servers = $this->container->get('db')->query($sql);
-		
+
 		$updater = new Updater\StatusUpdater($this->container->get('db'));
 		$notifier = new Updater\StatusNotifier($this->container->get('db'));
 
@@ -71,11 +71,10 @@ class UpdateManager extends ContainerAware {
 			$status_new = $updater->update($server['server_id']);
 			// notify the nerds if applicable
 			$notifier->notify($server['server_id'], $status_old, $status_new);
+			// clean-up time!! archive all records
+			$archive = new ArchiveManager($this->container->get('db'));
+			$archive->archive($server['server_id']);
+			$archive->cleanup($server['server_id']);
 		}
-
-		// clean-up time!! archive all records
-		$archive = new ArchiveManager($this->container->get('db'));
-		$archive->archive();
-		$archive->cleanup();
 	}
 }

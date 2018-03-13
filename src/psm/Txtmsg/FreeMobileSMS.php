@@ -40,7 +40,7 @@ class FreeMobileSMS extends Core {
 public function sendSMS($message) {
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?user=$this->username&pass=$this->password&msg=$message");
+		curl_setopt($ch, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?user=$this->username&pass=$this->password&msg=" . urlencode( $message ) );
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);

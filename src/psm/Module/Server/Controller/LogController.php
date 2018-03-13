@@ -36,7 +36,9 @@ class LogController extends AbstractServerController {
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
 
-		$this->setActions('index', 'index');
+		$this->setActions(array(
+			'index', 'delete',
+		), 'index');
 	}
 
 	/**
@@ -49,6 +51,7 @@ class LogController extends AbstractServerController {
 			'label_email' => psm_get_lang('log', 'email'),
 			'label_sms' => psm_get_lang('log', 'sms'),
 			'label_pushover' => psm_get_lang('log', 'pushover'),
+			'label_telegram' => psm_get_lang('log', 'telegram'),
 			'label_title' => psm_get_lang('log', 'title'),
 			'label_server' => psm_get_lang('servers', 'server'),
 			'label_type' => psm_get_lang('log', 'type'),
@@ -56,9 +59,20 @@ class LogController extends AbstractServerController {
 			'label_date' => psm_get_lang('system', 'date'),
 			'label_users' => ucfirst(psm_get_lang('menu', 'user')),
 			'label_no_logs' => psm_get_lang('log', 'no_logs'),
+			'label_clear_log' => psm_get_lang('log', 'clear'),
 			'tabs' => array(),
 		);
-		$log_types = array('status', 'email', 'sms', 'pushover');
+
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
+			$modal->setTitle(psm_get_lang('log', 'delete_title'));
+			$modal->setMessage(psm_get_lang('log', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+			$tpl_data['has_admin_actions'] = true;
+		}
+
+		$log_types = array('status', 'email', 'sms', 'pushover', 'telegram');
 
 		foreach($log_types as $key) {
 			$records = $this->getEntries($key);
@@ -99,8 +113,24 @@ class LogController extends AbstractServerController {
 			}
 			$tab_data['entries'] = $records;
 			$tpl_data['tabs'][] = $tab_data;
+			$tpl_data['url_delete'] = psm_build_url(array(
+				'mod' => 'server_log',
+				'action' => 'delete',
+			));
 		}
 		return $this->twig->render('module/server/log.tpl.html', $tpl_data);
+	}
+
+	protected function executeDelete() {
+		/**
+		 * Empty table log and log_users.
+		 * Only when user is admin.
+		 */
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+			$archiver = new \psm\Util\Server\Archiver\LogsArchiver($this->db);
+			$archiver->cleanupall();
+		}
+		return $this->runAction('index');
 	}
 
 	/**
