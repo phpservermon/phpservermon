@@ -243,11 +243,7 @@ class Installer {
               `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
               `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
               `timeout` smallint(1) unsigned NULL DEFAULT NULL,
-              `website_username` varchar(255) DEFAULT NULL,
 							`telegram` enum('yes','no') NOT NULL default 'yes',
-              `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
-              `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
-              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
               `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
