@@ -247,10 +247,11 @@ class ConfigController extends AbstractController {
 				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
 			} else {
 				$sms->addRecipients($user->mobile);
-				if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+				$result = $sms->sendSMS(psm_get_lang('config', 'test_message'));
+				if($result === 1) {
 					$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
 				} else {
-					$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+					$this->addMessage(sprintf(psm_get_lang('config', 'sms_error'), $result), 'error');
 				}
 			}
 		}
@@ -376,6 +377,7 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_octopush' => psm_get_lang('config', 'sms_gateway_octopush'),
 			'label_sms_gateway_freemobilesms' => psm_get_lang('config', 'sms_gateway_freemobilesms'),
 			'label_sms_gateway_clicksend' => psm_get_lang('config', 'sms_gateway_clicksend'),
+			'label_sms_gateway_twilio' => psm_get_lang('config', 'sms_gateway_twilio'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),
