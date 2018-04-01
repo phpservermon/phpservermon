@@ -282,7 +282,7 @@ function psm_log_uptime($server_id, $status, $latency) {
  * Parses a string from the language file with the correct variables replaced in the message
  *
  * @param boolean $status
- * @param string $type is either 'sms' or 'email'
+ * @param string $type is either 'sms', 'email', 'pushover_title', 'pushover_message' or 'telegram_message'
  * @param array $server information about the server which may be placed in a message: %KEY% will be replaced by your value
  * @return string parsed message
  */
