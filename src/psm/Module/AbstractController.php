@@ -28,9 +28,11 @@
 namespace psm\Module;
 use psm\Service\Database;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-abstract class AbstractController extends ContainerAware implements ControllerInterface {
+abstract class AbstractController implements ControllerInterface {
+
+	use ContainerAwareTrait;
 
 	/**
 	 * Current action
