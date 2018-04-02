@@ -240,6 +240,7 @@ $sm_lang = array(
 		'sms_gateway_clicksend' => 'ClickSend',
 		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_smsgw' => 'SMSgw',
+		'sms_gateway_twilio' => 'Twilio',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -302,7 +303,7 @@ $sm_lang = array(
 		'email_sent' => 'Email sent',
 		'email_error' => 'Error in email sending',
 		'sms_sent' => 'Sms sent',
-		'sms_error' => 'Error in sms sending',
+		'sms_error' => 'An error has occurred while sending the SMS: %s',
 		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 		'pushover_sent' => 'Pushover notification sent',
 		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
@@ -359,4 +360,3 @@ $sm_lang = array(
 		'401_unauthorized_description' => 'You do not have the privileges to view this page.',
 	),
 );
-
