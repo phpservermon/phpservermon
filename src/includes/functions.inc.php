@@ -556,6 +556,9 @@ function psm_build_sms() {
 		case 'smsgw':
 			$sms = new \psm\Txtmsg\Smsgw();
 			break;
+		case 'twilio':
+			$sms = new \psm\Txtmsg\Twilio();
+			break;
 	}
 
 	// copy login information from the config file
@@ -786,4 +789,3 @@ class telegram
 		return $this->sendurl();
 	}
 }
-
