@@ -47,7 +47,9 @@ if(!empty($_SERVER['argv'])) {
 		}
 		switch($argi[0]) {
 			case 'uri':
-				define('PSM_BASE_URL', $argi[1]);
+				if(!defined('PSM_BASE_URL')){
+					define('PSM_BASE_URL', $argi[1]);
+				}
 				break;
 			case 'timeout':
 				$cron_timeout = intval($argi[1]);
