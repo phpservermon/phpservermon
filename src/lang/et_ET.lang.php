@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Richard A.
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiil',
 		'profile_updated' => 'Sinu profiil on uuendatud.',
 		'error_user_name_bad_length' => 'Kasutajanimi peab olema 2 kuni 64 tähemärki pikk.',
-		'error_user_name_invalid' => 'Kasutajanimi võib koosneda ainult tähenumbrilistest kombinatsioonidest (a-z, A-Z), numbritest (0-9) ja alakriipsust (_).',
+		'error_user_name_invalid' => 'Kasutajanimi võib koosneda ainult tähenumbrilistest kombinatsioonidest (a-z, A-Z), numbritest (0-9), punktid (.) ja alakriipsust (_).',
 		'error_user_name_exists' => 'Antud kasutaja juba eksisteerib andmebaasis.',
 		'error_user_email_bad_length' => 'Email võib olla 5 kuni 255 tähemärki pikk.',
 		'error_user_email_invalid' => 'Emaili aadress on kehtetu.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Logisid ei eksisteeri',
+		'clear' => 'Puhasta logig',
+		'delete_title' => 'Kustuta logi',
+		'delete_message' => 'Kas olete kindel, et soovite kustutada <b>kõik</b> logid?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -249,7 +252,7 @@ $sm_lang = array(
 		'email_sent' => 'Email saadetud',
 		'email_error' => 'Emaili saatmisel esines error',
 		'sms_sent' => 'Sms saadetud',
-		'sms_error' => 'Smsi saatmisel esines error',
+		'sms_error' => 'Smsi saatmisel esines error. %s',
 		'sms_error_nomobile' => 'Test SMSi ei saadetud: kehtivat telefoni numbrit ei leitud.',
 		'pushover_sent' => 'Pushover teavitus saadetud',
 		'pushover_error' => 'Pushover teavituse saatmisel esines error: %s',

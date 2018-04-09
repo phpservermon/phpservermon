@@ -20,7 +20,7 @@
  * @package     phpservermon
  * @author      David Ribeiro
  * @author      Jérôme Cabanis <jerome@lauraly.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -97,7 +97,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Votre profil a été mis à jour.',
 		'error_user_name_bad_length' => 'Le nom d\'utilisateur doit avoir entre 2 et 64 caractères.',
-		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabétiques (a-z, A-Z), des chiffres (0-9) ou underscore (_).',
+		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabétiques (a-z, A-Z), des chiffres (0-9), points (.) ou underscore (_).',
 		'error_user_name_exists' => 'Ce nom d\'utilisateur existe déjà.',
 		'error_user_email_bad_length' => 'L\'adresse email doit avoir entre 5 et 255 caractères.',
 		'error_user_email_invalid' => 'L\'adresse email n\'est pas valide.',
@@ -114,6 +114,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Aucun événement',
+		'clear' => 'Claire registros',
+		'delete_title' => 'Supprimer journaux',
+		'delete_message' => 'Êtes-vous sûr de vouloir supprimer <b>tous</b> les journaux?',
 	),
 	'servers' => array(
 		'server' => 'Serveur',
@@ -253,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email envoyé',
 		'email_error' => 'Erreur lors de l\'envoi de l\'email',
 		'sms_sent' => 'Sms envoyé',
-		'sms_error' => 'Erreur lors de l\'envoi du SMS',
+		'sms_error' => 'Erreur lors de l\'envoi du SMS. %s',
 		'sms_error_nomobile' => 'Impossible d\'envoyer un SMS de test: aucun numéro de téléphone défini dans votre profil.',
 		'pushover_sent' => 'Notification Pushover envoyée',
 		'pushover_error' => 'Une erreur s\'est produite lors de l\'envoi de la notification Pushover : %s',

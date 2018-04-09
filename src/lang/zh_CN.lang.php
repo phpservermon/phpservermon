@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      manhere <https://github.com/manhere>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => '个人资料',
 		'profile_updated' => '个人资料已更新.',
 		'error_user_name_bad_length' => '用户名长度必须为2-64个字符.',
-		'error_user_name_invalid' => '用户名只允许使用字母 (a-z, A-Z), 数字 (0-9) 及下划线 (_).',
+		'error_user_name_invalid' => '用户名只允许使用字母 (a-z, A-Z), 数字 (0-9), 點（。） 及下划线 (_).',
 		'error_user_name_exists' => '该用户名已存在.',
 		'error_user_email_bad_length' => '电子邮箱长度必须为5-255个字符.',
 		'error_user_email_invalid' => '无效的邮箱地址.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => '短信',
 		'pushover' => 'Pushover',
 		'no_logs' => '没有日志',
+		'clear' => 'Clear log',
+		'delete_title' => 'Delete log',
+		'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
 	),
 	'servers' => array(
 		'server' => '业务',
@@ -270,7 +273,7 @@ $sm_lang = array(
 		'email_sent' => '发送邮件',
 		'email_error' => '发送出错',
 		'sms_sent' => '发送短信',
-		'sms_error' => '短信发送出错',
+		'sms_error' => '短信发送出错 %s',
 		'sms_error_nomobile' => '无法发送短信: 您的账号未设置有效手机号码.',
 		'pushover_sent' => '发送Pushover通知',
 		'pushover_error' => 'Pushover通知发送出错: %s',

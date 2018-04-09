@@ -5,6 +5,7 @@
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+      <li class="{{ telegram_active }}"><a href="#config-telegram" data-toggle="tab">{{ label_tab_telegram }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -200,6 +201,8 @@
 						<option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
 						<option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
 						<option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
+						<option value="nexmo" {{ sms_selected_nexmo|raw }}>{{ label_sms_gateway_nexmo }}</option>
+                        <option value="twilio" {{ sms_selected_twilio|raw }}>{{ label_sms_gateway_twilio }}</option>
                       </select>
                 </div>
             </div>
@@ -265,6 +268,38 @@
             </div>
 		</fieldset>
 		</div>
+    <div id="config-telegram" class="tab-pane {{ telegram_active }}">
+      <fieldset>
+        <legend>{{ label_settings_telegram }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="telegram_status"><input type="checkbox" id="telegram_status" name="telegram_status[]" {{ telegram_status_checked|raw }} /> {{ label_telegram_status }}</label>
+            <p class="help-block">{{ label_telegram_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_telegram" name="log_telegram[]" {{ log_telegram_checked|raw }} /> {{ label_log_telegram }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="telegram_api_token">{{ label_telegram_api_token }}</label>
+          <div class="controls">
+            <input type="text" id="telegram_api_token" name="telegram_api_token" value="{{ telegram_api_token }}" maxlength="255" />
+            <p class="help-block">{{ label_telegram_api_token_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testTelegram">{{ label_test }}</button>
+            <input type="hidden" name="test_telegram" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="telegram_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
 	</div>
 	{{ macro.csrf_input() }}
 </form>

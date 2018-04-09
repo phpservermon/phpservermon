@@ -55,16 +55,26 @@
 			<div class="controls">{{ label_pushover_description|raw }}	</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="mobile">{{ label_pushover_key }}</label>
+			<label class="control-label" for="pushover_key">{{ label_pushover_key }}</label>
 			<div class="controls">
 				<input type="text" id="pushover_key" name="pushover_key" value="{{ edit_value_pushover_key }}" maxlength="255" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="mobile">{{ label_pushover_device }}</label>
+			<label class="control-label" for="pushover_device">{{ label_pushover_device }}</label>
 			<div class="controls">
 				<input type="text" id="pushover_device" name="pushover_device" value="{{ edit_value_pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
 			</div>
+		</div>
+		<div class="control-group">
+		  <label class="control-label">{{ label_telegram }}</label>
+		  <div class="controls">{{ label_telegram_description|raw }}	</div>
+		</div>
+		<div class="control-group">
+		  <label class="control-label" for="telegram_id">{{ label_telegram_id }}</label>
+		  <div class="controls">
+		    <input type="text" id="telegram_id" name="telegram_id" value="{{ edit_value_telegram_id }}" maxlength="255" />
+		  </div>
 		</div>
 		<div class="control-group">
 			<label class="control-label" for="server_id">{{ label_servers }}</label>

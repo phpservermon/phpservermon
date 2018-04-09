@@ -88,3 +88,45 @@ The second part is the actual message. There are a few variables you can use in 
 * %IP% - The ip of the server
 * %PORT% - The port of the server
 * %ERROR% - This one only works for the off_* messages and contains the error returned by the monitor
+
+Notifications
++++++++++++++
+
+How do I setup Telegram?
+------------------------
+A few steps are required to get Telegram notifications working.
+You need to be an administrator for this part.
+
+1. Go to @botfather (https://t.me/BotFather) and type /start .
+2. Type /newbot and give your bot an unique name.
+3. Save the API token.
+
+How do I sent Telegram notifications to a person?
+-------------------------------------------------
+ 
+1. Go to @cid_bot (https://t.me/cid_bot) and start.
+2. Save your chat id.
+3. Press the activation button.
+4. Go to your chat with the bot and press start of type /start.
+
+How do I sent Telegram notifications to a group?
+------------------------------------------------  
+
+1. Add @cid_bot (https://t.me/cid_bot) to the group.
+2. Save the chat id (including the -).
+3. Remove @cid_bot from the group.
+4. Add your bot to the group.
+
+How do I sent Telegram notifications to a channel?
+--------------------------------------------------
+
+1. Create a public channel.
+2. Add the bot as an administator to the channel.
+3. Save chat id as: @channelname.
+
+What is the username of my bot?
+-------------------------------
+
+1. Go to profile on the monitor.
+2. Press activate.
+3. A button will appear, this will direct you to your Telegram bot.

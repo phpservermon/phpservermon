@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Peter Misura <bzurko@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Váš užívateľský profil bol upravený.',
 		'error_user_name_bad_length' => 'Užívateľské meno musí obsahovať 2 až 64 znakov.',
-		'error_user_name_invalid' => 'Užívateľské meno môže obsahovať iba písmena (a-z, A-Z), čísla (0-9) a podtržítka (_).',
+		'error_user_name_invalid' => 'Užívateľské meno môže obsahovať iba písmena (a-z, A-Z), čísla (0-9), bodky (.) a podtržítka (_).',
 		'error_user_name_exists' => 'Zadané uživatelské jméno již existuje v databázi.',
 		'error_user_email_bad_length' => 'E-mailová adresa musí obsahovat 5 až 255 znaků .',
 		'error_user_email_invalid' => 'E-mailová adresa je neplatná',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Žiadne záznamy',
+		'clear' => 'Jasný protokol',
+		'delete_title' => 'Jasný protokol',
+		'delete_message' => 'Naozaj chcete odstrániť <b>všetky</b> záznamy?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -265,7 +268,7 @@ $sm_lang = array(
 		'email_sent' => 'E-mail odoslaný',
 		'email_error' => 'Chyba pri odosielaní e-mailu',
 		'sms_sent' => 'SMS odoslaná',
-		'sms_error' => 'Chyba pri odosielaní SMS',
+		'sms_error' => 'Chyba pri odosielaní SMS. %s',
 		'sms_error_nomobile' => 'Nebolo možné odoslať SMS: v užívateľskom profile nebylo nájdené platné telefónne číslo.',
 		'pushover_sent' => 'Pushover upozornenie odoslané.',
 		'pushover_error' => 'Nastala chyba pri odosielaní Pushover upozornenia: %s',

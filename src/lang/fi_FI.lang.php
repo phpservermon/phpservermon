@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Sami Nieminen <nieminen.sami2@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiili',
 		'profile_updated' => 'Profiilisi on päivitetty.',
 		'error_user_name_bad_length' => 'Käyttäjänimi saa olla 2-64 merkkiä pitkä.',
-		'error_user_name_invalid' => 'Käyttäjänimessä saa olla vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_).',
+		'error_user_name_invalid' => 'Käyttäjänimessä saa olla vain kirjaimia (a-z, A-Z), numeroita (0-9), pisteitä (.) ja alaviivoja (_).',
 		'error_user_name_exists' => 'Annettu käyttäjänimi on jo tietokannassa.',
 		'error_user_email_bad_length' => 'Sähköpostiosoitteen täytyy olla 5-255 merkkiä pitkä.',
 		'error_user_email_invalid' => 'Annettu sähköposti ei kelpaa.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'Tekstiviesti',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Ei tapahtumia',
+		'clear' => 'Tyhjennä loki',
+		'delete_title' => 'Poista loki',
+		'delete_message' => 'Haluatko varmasti poistaa <b>kaikki</b> lokit?',
 	),
 	'servers' => array(
 		'server' => 'Palvelin',
@@ -249,7 +252,7 @@ $sm_lang = array(
 		'email_sent' => 'Sähköposti lähetetty',
 		'email_error' => 'Virhe sähköpostin lähetyksessä',
 		'sms_sent' => 'Tekstiviesti lähetetty',
-		'sms_error' => 'Virhe tekstiviestin lähetyksessä',
+		'sms_error' => 'Virhe tekstiviestin lähetyksessä. %s',
 		'sms_error_nomobile' => 'Testitektiviestin lähetys epäonnistui: toimivaa numeroa ei löydetty profiilistasi.',
 		'pushover_sent' => 'Pushover ilmoitus lähetetty',
 		'pushover_error' => 'Virhe Pushover-ilmoitusta lähetettäessä: %s',

@@ -19,9 +19,9 @@
  *
  * @package     phpservermon
  * @author      nerdalertdk
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -94,7 +94,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Din profil er opdateret.',
 		'error_user_name_bad_length' => 'Brugernavn skal være mellem 2 til 64 tegn.',
-		'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9) og (_).',
+		'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9), prikker (.) og (_).',
 		'error_user_name_exists' => 'Det valgte brugernavn findes allerede.',
 		'error_user_email_bad_length' => 'E-mail addresser skal være mellem 5 til 255 tegn.',
 		'error_user_email_invalid' => 'Den valgte e-mail er ugyldig.',
@@ -111,6 +111,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Intet i loggen',
+		'clear' => 'Ryd log',
+		'delete_title' => 'Slet log',
+		'delete_message' => 'Er du sikker på, at du vil slette <b>alle</b> logfiler?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -248,7 +251,7 @@ $sm_lang = array(
 		'email_sent' => 'E-mail sendt',
 		'email_error' => 'Fejl ved afsendelse af e-mail',
 		'sms_sent' => 'Sms sendt',
-		'sms_error' => 'Fejl ved afsendelse af SMS',
+		'sms_error' => 'Fejl ved afsendelse af SMS. %s',
 		'sms_error_nomobile' => 'Ikke muligt at sende SMS: Intet gyldigt telefonnummer blev fundet i din profil.',
 		'pushover_sent' => 'Pushover notifikation blev sendt',
 		'pushover_error' => 'En fejl opstod under afsendelse af Pushover notifikation: %s',

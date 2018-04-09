@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -282,7 +282,7 @@ function psm_log_uptime($server_id, $status, $latency) {
  * Parses a string from the language file with the correct variables replaced in the message
  *
  * @param boolean $status
- * @param string $type is either 'sms' or 'email'
+ * @param string $type is either 'sms', 'email', 'pushover_title', 'pushover_message' or 'telegram_message'
  * @param array $server information about the server which may be placed in a message: %KEY% will be replaced by your value
  * @return string parsed message
  */
@@ -492,6 +492,17 @@ function psm_build_pushover() {
 }
 
 /**
+ *
+ * @return \psm\Txtmsg\TxtmsgInterface
+ */
+function psm_build_telegram() {
+	$telegram = new \Telegram();
+	$telegram->setToken(psm_get_conf('telegram_api_token'));
+
+	return $telegram;
+}
+
+/**
  * Prepare a new SMS util.
  *
  * @return \psm\Txtmsg\TxtmsgInterface
@@ -545,6 +556,9 @@ function psm_build_sms() {
 		case 'smsgw':
 			$sms = new \psm\Txtmsg\Smsgw();
 			break;
+		case 'twilio':
+			$sms = new \psm\Txtmsg\Twilio();
+			break;
 	}
 
 	// copy login information from the config file
@@ -570,9 +584,10 @@ function psm_build_url($params = array(), $urlencode = true, $htmlentities = tru
 		$url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 		// on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
 		// for urls, we only want the forward slashes.
-		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
+		$url .= dirname($_SERVER['SCRIPT_NAME']);
 		$url = str_replace('\\', '', $url);
 	}
+	$url = rtrim($url, '/') . '/';
 
 	if($params != null) {
 		$url .= '?';
@@ -711,7 +726,7 @@ function psm_password_decrypt($key, $encryptedString)
 
 	if (empty($key))
          throw new \InvalidArgumentException('invalid_encryption_key');
-	
+
 	$data = base64_decode($encryptedString);
 	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
@@ -727,4 +742,50 @@ function psm_password_decrypt($key, $encryptedString)
 	);
 
 	return $decrypted;
+}
+
+/**
+* Send notification to Telegram
+*
+* @return string
+* @author Tim Zandbergen <tim@xervion.nl>
+*/
+class telegram
+{
+	private $_token;
+	private $_user;
+	private $_message;
+	private $_url;
+
+	public function setToken ($token) {
+		$this->_token = (string)$token;
+	}
+	public function setUser ($user) {
+		$this->_user = (string)$user;
+	}
+	public function setMessage ($message) {
+		$this->_message = (string)$message;
+	}
+	public function sendurl () {
+		$con = curl_init($this->_url);
+		curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($con, CURLOPT_TIMEOUT, 60);
+		$response = curl_exec($con);
+		$response = json_decode($response, true);
+		return $response;
+	}
+	public function send () {
+		if(!Empty($this->_token) && !Empty($this->_user) && !Empty($this->_message)) {
+			$this->_url = 'https://api.telegram.org/bot' . urlencode($this->_token) . '/sendMessage?chat_id=' . urlencode($this->_user) . '&text=' . urlencode($this->_message);
+		}
+		return $this->sendurl();
+	}
+	// Get the bots username
+	public function getBotUsername () {
+		if(!Empty($this->_token)) {
+			$this->_url = 'https://api.telegram.org/bot' . urlencode($this->_token) . '/getMe';
+		}
+		return $this->sendurl();
+	}
 }

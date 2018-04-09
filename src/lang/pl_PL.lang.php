@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Arkadiusz Klenczar <a.klenczar@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Twój profil został zaktualizowany.',
 		'error_user_name_bad_length' => 'Login musi mieć od 2 do 64 znaków.',
-		'error_user_name_invalid' => 'Login może zawierać tylko litery (a-z, A-Z), cyfry (0-9) oraz znak podkreślenia (_).',
+		'error_user_name_invalid' => 'Login może zawierać tylko litery (a-z, A-Z), cyfry (0-9), kropki (.) oraz znak podkreślenia (_).',
 		'error_user_name_exists' => 'Wybrana nazwa użytkownika jest już używana.',
 		'error_user_email_bad_length' => 'Email powinien mieć od 5 do 255 znaków.',
 		'error_user_email_invalid' => 'Wprowadzony adres email jest nieprawidłowy.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Brak logów',
+		'clear' => 'Wyczyść log',
+		'delete_title' => 'Wyczyść log',
+		'delete_message' => 'Czy na pewno chcesz usunąć <b>wszystkie</b> dzienniki?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -251,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Email wysłany',
 		'email_error' => 'Błąd podczas wysyłania emaila',
 		'sms_sent' => 'Sms wysłany',
-		'sms_error' => 'Błąd podczas wysyłania sms',
+		'sms_error' => 'Błąd podczas wysyłania sms. %s',
 		'sms_error_nomobile' => 'Nie udało się wysłać testowego SMS: brak poprawnego telefonu w Twoim profilu.',
 		'pushover_sent' => 'Powiadomienie Pushover wysłane.',
 		'pushover_error' => 'Błąd podczas wysyłania powiadomienia Pushover: %s',

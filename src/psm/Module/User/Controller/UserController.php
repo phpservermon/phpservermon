@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -48,7 +48,7 @@ class UserController extends AbstractController {
 		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'user'));
 	}
 
-	public function run($action = null) {
+	public function run($action = NULL) {
 		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `active` ASC, `status` DESC, `label` ASC");
 		// change the indexes to reflect their server ids
 		foreach($servers as $server) {
@@ -89,7 +89,7 @@ class UserController extends AbstractController {
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'email'),
+			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email'),
 			null,
 			array('name')
 		);
@@ -133,7 +133,7 @@ class UserController extends AbstractController {
 	 */
 	protected function executeEdit() {
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'email');
+		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
 
 		if($user_id == 0) {
 			// insert mode
@@ -215,7 +215,7 @@ class UserController extends AbstractController {
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'email');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
 		$clean = array();
 		foreach($fields as $field) {
 			if(isset($_POST[$field])) {
@@ -333,6 +333,10 @@ class UserController extends AbstractController {
 			'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
 			'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+			'label_telegram' => psm_get_lang('users', 'telegram'),
+			'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
+			'label_telegram_id' => psm_get_lang('users', 'telegram_id'),
+			'label_telegram_id_description' => psm_get_lang('users', 'telegram_id_description'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_servers' => psm_get_lang('menu', 'server'),
 			'label_action' => psm_get_lang('system', 'action'),

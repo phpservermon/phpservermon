@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiel',
 		'profile_updated' => 'Je profiel is bijgewerkt.',
 		'error_user_name_bad_length' => 'Een gebruikersnaam moet tussen de 2 en 64 tekens zijn.',
-		'error_user_name_invalid' => 'Een gebruikersnaam mag alleen alfabetische tekens (a-z, A-Z), cijfers (0-9) en underscores (_) bevatten.',
+		'error_user_name_invalid' => 'Een gebruikersnaam mag alleen alfabetische tekens (a-z, A-Z), cijfers (0-9), punten (.) en underscores (_) bevatten.',
 		'error_user_name_exists' => 'De opgegeven gebruikersnaam bestaat al.',
 		'error_user_email_bad_length' => 'Een email adres moet tussen de 5 en 255 tekens zijn.',
 		'error_user_email_invalid' => 'Het email adres is ongeldig.',
@@ -112,7 +112,10 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
-		'no_logs' => 'No logs',
+		'no_logs' => 'Geen logs',
+		'clear' => 'Logboek opschonen',
+		'delete_title' => 'Logboek opschonen',
+		'delete_message' => 'Weet je zeker dat je <b>alle</b> logs wilt opschonen?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -251,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Email verzonden',
 		'email_error' => 'Er is een fout opgetreden tijdens het verzenden',
 		'sms_sent' => 'SMS verzonden',
-		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden',
+		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden. %s',
 		'sms_error_nomobile' => 'Kan test SMS niet verzenden: er is geen telefoonnummer ingevuld in je profiel.',
 		'pushover_sent' => 'Pushover notificatie verzonden',
 		'pushover_error' => 'De volgende fout is opgetreden bij het versturen van de Pushover notificatie: %s',

@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Roman Beylin <roman.beylin@yandex.ru>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Профиль',
 		'profile_updated' => 'Ваш профиль был обновлен.',
 		'error_user_name_bad_length' => 'Логин должен содержать от 2 до 64 знаков.',
-		'error_user_name_invalid' => 'Имя пользователя может содержать только латинские символы (a-z, A-Z), цифры (0-9) и подчеркивание (_).',
+		'error_user_name_invalid' => 'Имя пользователя может содержать только латинские символы (a-z, A-Z), цифры (0-9), точки (.) и подчеркивание (_).',
 		'error_user_name_exists' => 'Данный логин уже существует.',
 		'error_user_email_bad_length' => 'E-mail может содержать от 5 до 255 знаков.',
 		'error_user_email_invalid' => 'E-mail указан неверно.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Записей нет',
+		'clear' => 'Clear log',
+		'delete_title' => 'Delete log',
+		'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
 	),
 	'servers' => array(
 		'server' => 'Сервер',
@@ -251,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Сообщение отправлено',
 		'email_error' => 'Ошибка при отправке сообщения',
 		'sms_sent' => 'SMS отправлено',
-		'sms_error' => 'Ошибка при отправке SMS',
+		'sms_error' => 'Ошибка при отправке SMS. %s',
 		'sms_error_nomobile' => 'Не удалось отправить пробный SMS: действительный телефонный номер не был найден в вашем профиле.',
 		'pushover_sent' => 'Pushover уведомление отправлено',
 		'pushover_error' => 'Произошла ошибка во время отправки Pushover уведомления: %s',

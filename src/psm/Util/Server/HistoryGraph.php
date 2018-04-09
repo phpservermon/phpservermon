@@ -19,8 +19,8 @@
  *
  * @package     phpservermon
  * @author      Jérôme Cabanis <http://lauraly.com>
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -225,13 +225,13 @@ class HistoryGraph {
 				foreach($lines as $key => $value) {
 					// add the value for each of the different lines
 					if(isset($uptime[$key])) {
-						$lines[$key][] = '[' . $time . ',' . round((float) $uptime[$key], 4) . ']';
+						$lines[$key][] = '[' . number_format($time, 0, '', '') . ',' . round((float) $uptime[$key], 4) . ']';
 					}
 				}
 				if($last_date) {
 					// Was down before.
 					// Record the first and last date as a string in the down array
-					$down[] = '[' . $last_date . ',' . $time . ']';
+					$down[] = '[' . number_format($last_date, 0, '', '') . ',' . number_format($time, 0, '', '') . ']';
 					// add the number of microseconds of downtime to counter for %
 					$time_down += ($time - $last_date);
 					$last_date = 0;
@@ -254,7 +254,7 @@ class HistoryGraph {
 		}
 		if($last_date) {
 			// if last_date is still set, the last check was "down" and we are still in down mode
-			$down[] = '[' . $last_date . ',0]';
+			$down[] = '[' . number_format($last_date, 0, '', '') . ',0]';
 			$time_down += (($end_time->getTimestamp() * 1000) - $last_date);
 		}
 
@@ -266,7 +266,7 @@ class HistoryGraph {
 		$data['server_lines'] = sizeof($lines_merged) ? '[' . implode(',', $lines_merged) . ']' : '';
 		$data['server_down'] = sizeof($down) ? '[' . implode(',', $down) . ']' : '';
 		$data['series'] = sizeof($series) ? '[' . implode(',', $series) . ']' : '';
-		$data['end_timestamp'] = $end_time->getTimestamp() * 1000;
+		$data['end_timestamp'] = number_format($end_time->getTimestamp() * 1000, 0, '', '');
 
 		return $data;
 	}

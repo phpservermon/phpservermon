@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Luiz Alberto S. Ribeiro <madeinnordeste@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Perfil',
 		'profile_updated' => 'Seu perfil foi atualizado.',
 		'error_user_name_bad_length' => 'Usernames deve conter entre 2 e 64 caracteres.',
-		'error_user_name_invalid' => 'Só pode conter caracteres alfabéticos (a-z, A-Z), dígitos (0-9) e underscores (_).',
+		'error_user_name_invalid' => 'Só pode conter caracteres alfabéticos (a-z, A-Z), dígitos (0-9), pontos (.) e underscores (_).',
 		'error_user_name_exists' => 'O nome de usuário(username) já existe no banco de dados',
 		'error_user_email_bad_length' => 'Email deve conter entre 5 e 255 caracteres.',
 		'error_user_email_invalid' => 'O endereço de email é inválido.',
@@ -113,6 +113,9 @@ $sm_lang = array(
         'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Sem logs',
+		'clear' => 'Log clara',
+		'delete_title' => 'Log clara',
+		'delete_message' => 'Tem certeza de que deseja excluir <b>todos</b> os logs?',
     ),
     'servers' => array(
         'server' => 'Servidor',
@@ -254,7 +257,7 @@ $sm_lang = array(
 		'email_sent' => 'Email enviado',
 		'email_error' => 'Erro no envio do email',
 		'sms_sent' => 'Sms enviado',
-		'sms_error' => 'Error no envio do SMS',
+		'sms_error' => 'Error no envio do SMS. %s',
 		'sms_error_nomobile' => 'Não foi possível enviar SMS de teste: nenhum número de telefone válido encontrado em seu perfil.',
 		'pushover_sent' => 'Notificação Pushover enviada',
 		'pushover_error' => 'Um erro foi encontrado ao enviar a notificação Pushover: %s',

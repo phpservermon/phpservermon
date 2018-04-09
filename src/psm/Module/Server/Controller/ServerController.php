@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -92,6 +92,7 @@ class ServerController extends AbstractServerController {
 			'email' => 'icon-envelope',
 			'sms' => 'icon-mobile',
 			'pushover' => 'icon-pushover',
+			'telegram' => 'icon-telegram',
 		);
 
 		$servers = $this->getServers();
@@ -198,6 +199,8 @@ class ServerController extends AbstractServerController {
 				'edit_value_timeout' => $edit_server['timeout'],
 				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
+				'edit_value_header_name' => $edit_server['header_name'],
+				'edit_value_header_value' => $edit_server['header_value'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 				'edit_website_username' => $edit_server['website_username'],
 				'edit_website_password' => empty($edit_server['website_password']) ? '' : sha1($edit_server['website_password']),
@@ -206,10 +209,11 @@ class ServerController extends AbstractServerController {
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
 				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+				'edit_telegram_selected_' . $edit_server['telegram'] => 'selected="selected"',
 			));
 		}
 
-		$notifications = array('email', 'sms', 'pushover');
+		$notifications = array('email', 'sms', 'pushover', 'telegram');
 		foreach($notifications as $notification) {
 			if(psm_get_conf($notification . '_status') == 0) {
 				$tpl_data['warning_' . $notification] = true;
@@ -263,11 +267,15 @@ class ServerController extends AbstractServerController {
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
+			'header_name' => psm_POST('header_name', ''),
+			'header_value' => psm_POST('header_value', ''),
+			'rtime' => psm_POST('rtime', '0.0000000'),
 			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
 			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+			'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
 		);
 		// make sure websites start with http://
 		if($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
@@ -463,6 +471,9 @@ class ServerController extends AbstractServerController {
 			'label_ping' => psm_get_lang('servers', 'type_ping'),
 			'label_pattern' => psm_get_lang('servers', 'pattern'),
 			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
+			'label_header' => psm_get_lang('servers', 'header'),
+			'label_header_name_description' => psm_get_lang('servers', 'header_name_description'),
+			'label_header_value_description' => psm_get_lang('servers', 'header_value_description'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
@@ -472,6 +483,7 @@ class ServerController extends AbstractServerController {
 			'label_sms' => psm_get_lang('servers', 'sms'),
 			'label_send_sms' => psm_get_lang('servers', 'send_sms'),
 			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_telegram' => psm_get_lang('servers', 'telegram'),
 			'label_users' => psm_get_lang('servers', 'users'),
 			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
@@ -504,3 +516,4 @@ class ServerController extends AbstractServerController {
 		return $result;
 	}
 }
+

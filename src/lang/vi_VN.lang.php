@@ -19,9 +19,9 @@
  *
  * @package     phpservermon
  * @author      Loi Le <lploi91@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -94,7 +94,7 @@ $sm_lang = array(
 		'profile' => 'Hồ sơ',
 		'profile_updated' => 'Hồ sơ của bạn đã được cập nhật.',
 		'error_user_name_bad_length' => 'Tên người dùng phải có từ 2 và 64 ký tự.',
-		'error_user_name_invalid' => 'Tên người dùng chỉ có thể chứa các chữ cái(a-z, A-Z), số (0-9) và dấu gạch dưới (_).',
+		'error_user_name_invalid' => 'Tên người dùng chỉ có thể chứa các chữ cái(a-z, A-Z), số (0-9), dấu chấm (.) và dấu gạch dưới (_).',
 		'error_user_name_exists' => 'Tên người dùng đã tồn tại trong cơ sở dữ liệu.',
 		'error_user_email_bad_length' => 'Địa chỉ email phải từ 5 đến 255 ký tự.',
 		'error_user_email_invalid' => 'Địa chỉ email không hợp lệ.',
@@ -111,6 +111,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
+		'clear' => 'Xoá nhật ký',
+		'delete_title' => 'Xoá nhật ký',
+		'delete_message' => 'Bạn có chắc chắn muốn xóa <b>tất</b> cả các bản ghi?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -246,7 +249,7 @@ $sm_lang = array(
 		'email_sent' => 'Gửi email',
 		'email_error' => 'Lỗi trong khi gửi mail',
 		'sms_sent' => 'Gửi SMS',
-		'sms_error' => 'Lỗi trong khi gửi sms',
+		'sms_error' => 'Lỗi trong khi gửi sms. %s',
 		'sms_error_nomobile' => 'Không thể gửi thử SMS: không có số điện thoại hợp lệ được tìm thấy trong hồ sơ của bạn.',
 		'pushover_sent' => 'Gửi thông báo Pushover',
 		'pushover_error' => 'Một lỗi đã xảy ra trong khi gửi thông báo Pushover: %s',

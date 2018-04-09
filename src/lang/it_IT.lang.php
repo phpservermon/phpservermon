@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Marco Gargani <http://www.marcogargani.it>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Nessun log',
+		'clear' => 'Pulisci il registro',
+		'delete_title' => 'Elimina log',
+		'delete_message' => 'Sei sicuro di voler eliminare <b>tutti</b> i registri?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -251,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Email inviata',
 		'email_error' => 'Errore in invio Email',
 		'sms_sent' => 'SMS inviato',
-		'sms_error' => 'Errore in invio SMS',
+		'sms_error' => 'Errore in invio SMS. %s',
 		'sms_error_nomobile' => 'Impossibile inviare SMS: nessun numero di telefono valido inserito nel tuo profilo.',
 		'pushover_sent' => 'Notifica Pushover inviata',
 		'pushover_error' => 'Riscontrato un errore durante l\'invio della notifica Pushover: %s',

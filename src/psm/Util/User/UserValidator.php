@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -78,7 +78,7 @@ class UserValidator {
 		if(strlen($username) > 64 || strlen($username) < 2) {
             throw new \InvalidArgumentException('user_name_bad_length');
         }
-		if (!preg_match('/^[a-zA-Z\d_]{2,64}$/i', $username)) {
+		if (!preg_match('/^[a-zA-Z\d_\.]{2,64}$/i', $username)) {
             throw new \InvalidArgumentException('user_name_invalid');
 		}
 		$user_exists = $this->user->getUserByUsername($username);
@@ -107,11 +107,30 @@ class UserValidator {
 	}
 
 	/**
-	 * Check email
-	 * @param string $email
-	 * @return boolean
-	 * @throws \InvalidArgumentException
-	 */
+	* Install only; Check username on:
+	*
+	* - Length (2-64 chars)
+	* - Contents (alphabetic chars and digits only)
+	* @param string $username
+	* @return boolean
+	* @throws \InvalidArgumentException
+	*/
+	public function username_new($username) {
+		if(strlen($username) > 64 || strlen($username) < 2) {
+			throw new \InvalidArgumentException('user_name_bad_length');
+		}
+		if (!preg_match('/^[a-zA-Z\d_\.]{2,64}$/i', $username)) {
+			throw new \InvalidArgumentException('user_name_invalid');
+		}
+		return true;
+	}
+
+	/**
+	* Check email
+	* @param string $email
+	* @return boolean
+	* @throws \InvalidArgumentException
+	*/
 	public function email($email) {
 		if(strlen($email) > 255 || strlen($email) < 5) {
 			throw new \InvalidArgumentException('user_email_bad_length');

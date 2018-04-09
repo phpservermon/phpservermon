@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Javad Evazzadeh Kakroudi
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'پروفایل',
 		'profile_updated' => 'پروفایل شما بروزرسانی شد.',
 		'error_user_name_bad_length' => 'نام های کاربری باید بین 2 و 64 کاراکتر باشد.',
-		'error_user_name_invalid' => 'نام کاربری باید فقط شامل حروف (a-z, A-Z)، اعداد (0-9) و علامت (_) باشد.',
+		'error_user_name_invalid' => 'نام کاربری باید فقط شامل حروف (a-z, A-Z)، نقطه (.) اعداد (0-9) و علامت (_) باشد.',
 		'error_user_name_exists' => 'نام کاربری وارد شده در حال حاضر در پایگاه داده موجود است.',
 		'error_user_email_bad_length' => 'آدرس های ایمیل باید بین 5 و 255 کاراکتر باشد.',
 		'error_user_email_invalid' => 'آدرس ایمیل نامعتبر است.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'پیامک',
 		'pushover' => 'Pushover',
 		'no_logs' => 'لاگی وجود ندارد.',
+		'clear' => 'پاک کردن ورود',
+		'delete_title' => 'حذف ورود',
+		'delete_message' => 'آیا مطمئن هستید که میخواهید سیاهههای «همه» را حذف کنید؟',
 	),
 	'servers' => array(
 		'server' => 'سرور',
@@ -249,7 +252,7 @@ $sm_lang = array(
 		'email_sent' => 'ایمیل ارسال شد',
 		'email_error' => 'خطا در ارسال ایمیل',
 		'sms_sent' => 'پیامک ارسال شد',
-		'sms_error' => 'خطا در ارسال پیامک',
+		'sms_error' => '%s خطا در ارسال پیامک',
 		'sms_error_nomobile' => 'قادر به ارسال پیامک تستی نیستیم: شماره تلفن معتبر در پروفایل شما یافته نشد.',
 		'pushover_sent' => 'اطلاعیه پوش آور ارسال شد.',
 		'pushover_error' => 'یک خطا در هنگام ارسال اطلاعیه پوش آور رخ داده است: %s',

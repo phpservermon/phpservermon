@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -41,10 +41,12 @@ class ConfigController extends AbstractController {
 		'email_smtp',
 		'sms_status',
 		'pushover_status',
+		'telegram_status',
 		'log_status',
 		'log_email',
 		'log_sms',
 		'log_pushover',
+		'log_telegram',
 		'show_update',
 	);
 
@@ -66,6 +68,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'telegram_api_token',
 	);
 
 	private $default_tab = 'general';
@@ -135,7 +138,7 @@ class ConfigController extends AbstractController {
 
 		$tpl_data[$this->default_tab . '_active'] = 'active';
 
-		$testmodals = array('email', 'sms', 'pushover');
+		$testmodals = array('email', 'sms', 'pushover', 'telegram');
 		foreach($testmodals as $modal_id) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 			$this->addModal($modal);
@@ -186,6 +189,8 @@ class ConfigController extends AbstractController {
 				$this->testSMS();
 			} elseif(!empty($_POST['test_pushover'])) {
 				$this->testPushover();
+			} elseif(!empty($_POST['test_telegram'])) {
+				$this->testTelegram();
 			}
 
 			if($language_refresh) {
@@ -201,6 +206,8 @@ class ConfigController extends AbstractController {
 				$this->default_tab = 'sms';
 			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
+			} elseif(isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
+				$this->default_tab = 'telegram';
 			}
 		}
 		return $this->runAction('index');
@@ -240,10 +247,11 @@ class ConfigController extends AbstractController {
 				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
 			} else {
 				$sms->addRecipients($user->mobile);
-				if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+				$result = $sms->sendSMS(psm_get_lang('config', 'test_message'));
+				if($result === 1) {
 					$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
 				} else {
-					$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+					$this->addMessage(sprintf(psm_get_lang('config', 'sms_error'), $result), 'error');
 				}
 			}
 		}
@@ -287,14 +295,49 @@ class ConfigController extends AbstractController {
 		}
 	}
 
+	/**
+		 * Execute telegram test
+		 *
+		 * @todo move test to separate class
+		 */
+		protected function testTelegram() {
+			$telegram = psm_build_telegram();
+			$user = $this->getUser()->getUser();
+			$api_token = psm_get_conf('telegram_api_token');
+
+			if(empty($api_token)) {
+				$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
+			} elseif(empty($user->telegram_id)) {
+				$this->addMessage(psm_get_lang('config', 'telegram_error_noid'), 'error');
+			} else {
+				$telegram->setMessage(psm_get_lang('config', 'test_message'));
+				$telegram->setUser($user->telegram_id);
+
+				$result = $telegram->send();
+
+				if(isset($result['ok']) && $result['ok'] != false) {
+					$this->addMessage(psm_get_lang('config', 'telegram_sent'), 'success');
+				} else {
+					if(isset($result['description'])) {
+						$error = $result['description'];
+					} else {
+						$error = 'Unknown';
+					}
+					$this->addMessage(sprintf(psm_get_lang('config', 'telegram_error'), $error), 'error');
+				}
+			}
+		}
+
 	protected function getLabels() {
 		return array(
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+			'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
 			'label_settings_email' => psm_get_lang('config', 'settings_email'),
 			'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 			'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
+			'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
 			'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
@@ -334,6 +377,7 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_octopush' => psm_get_lang('config', 'sms_gateway_octopush'),
 			'label_sms_gateway_freemobilesms' => psm_get_lang('config', 'sms_gateway_freemobilesms'),
 			'label_sms_gateway_clicksend' => psm_get_lang('config', 'sms_gateway_clicksend'),
+			'label_sms_gateway_twilio' => psm_get_lang('config', 'sms_gateway_twilio'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),
@@ -346,6 +390,10 @@ class ConfigController extends AbstractController {
 				psm_get_lang('config', 'pushover_api_token_description'),
 				PSM_PUSHOVER_CLONE_URL
 			),
+			'label_telegram_description' => psm_get_lang('config', 'telegram_description'),
+			'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
+			'label_telegram_api_token' => psm_get_lang('config', 'telegram_api_token'),
+			'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
@@ -356,6 +404,7 @@ class ConfigController extends AbstractController {
 			'label_log_email' => psm_get_lang('config', 'log_email'),
 			'label_log_sms' => psm_get_lang('config', 'log_sms'),
 			'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+			'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
 			'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
 			'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
