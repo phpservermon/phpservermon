@@ -5,7 +5,7 @@ PHP Server Monitor
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
    
-Version 3.2.0
+Version 3.3.0 (under development)
 
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
@@ -17,7 +17,7 @@ Features:
 ---------
 
 * Monitor services and websites (see below).
-* Email, SMS and Pushover notifications.
+* Email, SMS, Pushover, Telegram notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -40,21 +40,22 @@ There are two different ways to monitor a server:
   In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has its own settings regarding notification.
-You can choose for email, text message (SMS) and Pushover.net notifications.
+You can choose for email, text message (SMS), Pushover.net and Telegram notifications.
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
-* Inetworx - <http://www.inetworx.ch>
-* Mollie - <http://www.mollie.nl>
-* Mosms - <http://www.mosms.com>
-* Smsglobal - <http://smsglobal.com/>
-* SMSit - <http://www.smsit.dk/>
-* Spryng - <http://www.spryng.nl>
-* Textmarketer - <http://www.textmarketer.co.uk>
-* FreeVoipDeal - <http://www.freevoipdeal.com>
+* Inetworx - <https://www.inetworx.ch>
+* Mollie - <https://www.mollie.nl>
+* Mosms - <https://www.mosms.com>
+* Smsglobal - <https://smsglobal.com/>
+* SMSit - <https://www.smsit.dk/>
+* Spryng - <https://www.spryng.nl>
+* Textmarketer - <https://www.textmarketer.co.uk>
+* FreeVoipDeal - <https://www.freevoipdeal.com>
 * Nexmo - <https://www.nexmo.com/>
-* OctoPush - <http://www.octopush.com/>
-* FreeMobile (FR) - <http://mobile.free.fr/>
+* OctoPush - <https://www.octopush.com/>
+* FreeMobile (FR) - <https://mobile.free.fr/>
+* Twilio - <https://twilio.com>
 
 
 
@@ -64,7 +65,7 @@ Please note: for these gateways you will need an account with sufficient credits
 Download
 --------
 
-The latest version can be downloaded from http://www.phpservermonitor.org/.
+The latest version can be downloaded from https://github.com/phpservermon/phpservermon/releases.
 
 
 Requirements
