@@ -55,7 +55,7 @@ class UserController extends AbstractController {
 			$this->servers[$server['server_id']] = $server;
 		}
 
-		return parent::run();
+		return parent::run($action);
 	}
 
 	/**
