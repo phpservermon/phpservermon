@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -65,6 +65,15 @@ class LogsArchiver implements ArchiverInterface {
 			array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
 			false
 		);
+		return true;
+	}
+
+	/**
+	 * Empty tables log and log_users
+	 */
+	public function cleanupall() {
+		$this->db->delete(PSM_DB_PREFIX . "log");
+		$this->db->delete(PSM_DB_PREFIX . "log_users");
 		return true;
 	}
 }

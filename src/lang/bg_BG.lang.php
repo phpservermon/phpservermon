@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Български - Bulgarian',
 	'locale' => array('bg_BG.UTF-8', 'bg_BG', 'bulgarian'),
+	'locale_tag' => 'bg',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Мониторинг',
 		'install' => 'Инсталация',
@@ -94,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Профил',
 		'profile_updated' => 'Профилът е обновен успешно',
 		'error_user_name_bad_length' => 'Потребителското име трябва да съдържа между 2 и 64 символа',
-		'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z), цифри (0-9) и долна черта (_).',
+		'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z), цифри (0-9), точка (.) и долна черта (_).',
 		'error_user_name_exists' => 'Вече съществува акаунт с това потребителско име.',
 		'error_user_email_bad_length' => 'Имейл адреса трябва да съдържа между 5 и 255 символа.',
 		'error_user_email_invalid' => 'Въведения имейл адрес е грешен.',
@@ -111,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Няма налични логове',
+		'clear' => 'Изчистване на дневника',
+		'delete_title' => 'Изтриване на дневника',
+		'delete_message' => 'Наистина ли искате да изтриете <b>всички</b> дневници?',
 	),
 	'servers' => array(
 		'server' => 'Сървър',
@@ -196,6 +201,8 @@ $sm_lang = array(
 		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
@@ -247,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Тестовия имейл е изпратен успешно.',
 		'email_error' => 'Възникна грешка при изпращането на тесовия имейл',
 		'sms_sent' => 'Тестовото SMS съобщение е изпратеното успешно.',
-		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS',
+		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS. %s',
 		'sms_error_nomobile' => 'Неуспешно изпращане на тестов SMS: не е намерен валиден телефонен номер във вашия профил.',
 		'pushover_sent' => 'Pushover тестово известие',
 		'pushover_error' => 'Възникна грешка при изпращане на тестово Pushover известие: %s',

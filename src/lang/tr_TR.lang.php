@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Haydar Kulekci <haydarkulekci@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
     'name' => 'Türkçe - Turkish',
     'locale' => array('tr_TR.UTF-8', 'tr_TR', 'turkish', 'turkish-tr'),
+	'locale_tag' => 'tr',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
         'install' => 'Yükle',
@@ -94,7 +96,7 @@ $sm_lang = array(
         'profile' => 'Profil',
         'profile_updated' => 'Profiliniz güncellendi.',
         'error_user_name_bad_length' => 'Kullanıcı adları en az 2 ve en fazla 64 karakter uzunluğunda olmalıdır.',
-        'error_user_name_invalid' => 'Kullanıcı adları sadece harf (a-z, A-Z), sayı (0-9) and alttan çizgi (_) karakterlerini içerebilir.',
+        'error_user_name_invalid' => 'Kullanıcı adları sadece harf (a-z, A-Z), sayı (0-9), noktalar (.) and alttan çizgi (_) karakterlerini içerebilir.',
         'error_user_name_exists' => 'Bu kullanıcı adı daha önce alınmış.',
         'error_user_email_bad_length' => 'E-posta adresi en az 5 ve en fazla 255 karakter uzunluğunda olmalıdır.',
         'error_user_email_invalid' => 'Geçersiz e-posta adresi.',
@@ -111,6 +113,9 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'no_logs' => 'Kayıt yok.',
+        'clear' => 'Günlüğü temizle',
+    		'delete_title' => 'Günlüğü temizle',
+    		'delete_message' => 'Tüm günlükleri silmek istediğinizden emin misiniz?',
     ),
     'servers' => array(
         'server' => 'Sunucu',
@@ -194,8 +199,10 @@ $sm_lang = array(
         'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
         'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
         'sms_gateway_smsit' => 'Smsit',
         'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+	'sms_gateway_nexmo' => 'Nexmo',
         'sms_gateway_username' => 'Servis kullanıcı adı',
         'sms_gateway_password' => 'Servis şifresi',
         'sms_from' => 'Gönderen numarası',
@@ -247,7 +254,7 @@ $sm_lang = array(
         'email_sent' => 'E-posta gönderildi',
         'email_error' => 'E-posta gönderiminde hata.',
         'sms_sent' => 'Sms gönderildi',
-        'sms_error' => 'SMS gönderiminde hata',
+        'sms_error' => 'SMS gönderiminde hata. %s',
         'sms_error_nomobile' => 'SMS gönderilemiyor: profilinizde geçerli bir telefon numarası yok.',
         'pushover_sent' => 'Pushover bildirimi gönderildi',
         'pushover_error' => 'Pushover bildirimi gönderilirken bir hata meydana geldi: %s',

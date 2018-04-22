@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -61,7 +61,7 @@ class Mollie extends Core {
 	public function sendSMS($message) {
 		$recipients = implode(',', $this->recipients);
 
-		$result = $this->_auth_https_post('www.mollie.nl', '/xml/sms/',
+		$result = $this->_auth_https_post('api.messagebird.com', '/xml/sms/',
 							 		'gateway='.urlencode($this->gateway).
 							 		'&username='.urlencode($this->username).
 							 		'&password='.urlencode($this->password).

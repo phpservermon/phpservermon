@@ -7,3 +7,4 @@
 .project
 /.vagrant/
 /puphpet/files/dot/ssh/
+*.bak

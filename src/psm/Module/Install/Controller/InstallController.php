@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -48,6 +48,7 @@ class InstallController extends AbstractController {
 		parent::__construct($db, $twig);
 
 		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
+		$this->setCSRFKey('install');
 		$this->addMenu(false);
 
 		$this->path_config = PSM_PATH_SRC . '../config.php';
@@ -119,11 +120,13 @@ class InstallController extends AbstractController {
 			}
 
 			$config = array(
-				'host' => 'localhost',
-				'name' => '',
-				'user' => '',
-				'pass' => '',
-				'prefix' => 'psm_',
+				'db_host' => 'localhost',
+				'db_port' => '3306',
+				'db_name' => '',
+				'db_user' => '',
+				'db_pass' => '',
+				'db_prefix' => 'psm_',
+				'base_url' => $this->getBaseUrl(),
 			);
 
 			$changed = false;
@@ -139,10 +142,11 @@ class InstallController extends AbstractController {
 			if($changed) {
 				// test db connection
 				$this->db = new \psm\Service\Database(
-					$config['host'],
-					$config['user'],
-					$config['pass'],
-					$config['name']
+					$config['db_host'],
+					$config['db_user'],
+					$config['db_pass'],
+					$config['db_name'],
+                    $config['db_port']
 				);
 
 				if($this->db->status()) {
@@ -210,6 +214,7 @@ class InstallController extends AbstractController {
 			'level' => PSM_USER_ADMIN,
 			'pushover_key' => '',
 			'pushover_device' => '',
+			'telegram_id' => '',
 		);
 
 		$validator = $this->container->get('util.user.validator');
@@ -240,6 +245,7 @@ class InstallController extends AbstractController {
 		} else {
 			// validate the lot
 			try {
+				$validator->username_new($new_user['user_name']);
 				$validator->email($new_user['email']);
 				$validator->password($new_user['password'], $new_user['password_repeat']);
 			} catch(\InvalidArgumentException $e) {
@@ -271,14 +277,14 @@ class InstallController extends AbstractController {
 
 	/**
 	 * Write config file with db variables
-	 * @param array $db_vars prefix,user,pass,name,host
+	 * @param array $array_config prefix,user,pass,name,host
 	 * @return boolean|string TRUE on success, string with config otherwise
 	 */
-	protected function writeConfigFile($db_vars) {
+	protected function writeConfigFile($array_config) {
 		$config = "<?php".PHP_EOL;
 
-		foreach($db_vars as $key => $value) {
-			$line = "define('PSM_DB_{key}', '{value}');".PHP_EOL;
+		foreach($array_config as $key => $value) {
+			$line = "define('PSM_{key}', '{value}');".PHP_EOL;
 			$line = str_replace(
 				array('{key}', '{value}'),
 				array(strtoupper($key), $value),
@@ -306,8 +312,9 @@ class InstallController extends AbstractController {
 			'pass' => '',
 			'name' => '',
 			'host' => '',
+			'port' => '3306'
 		);
-		$pattern = "/define\('SM_DB_{key}', '(.*?)'/u";
+		$pattern = "/define\('SM_{key}', '(.*?)'/u";
 
 		foreach($vars as $key => $value) {
 			$pattern_key = str_replace('{key}', strtoupper($key), $pattern);
@@ -347,5 +354,15 @@ class InstallController extends AbstractController {
 			}
 			return $version_from;
 		}
+	}
+
+	/**
+	 * Get base url of the current application
+	 * @return string
+	 */
+	protected function getBaseUrl() {
+		$sym_request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+		return $sym_request->getSchemeAndHttpHost() . $sym_request->getBasePath();
 	}
 }

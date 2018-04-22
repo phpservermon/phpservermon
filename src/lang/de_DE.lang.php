@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Jean Pierre Kolb <http://www.jpkc.com/>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Deutsch - German',
 	'locale' => array('de_DE.UTF-8', 'de_DE', 'german'),
+	'locale_tag' => 'de',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installation',
@@ -94,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profileinstellungen',
 		'profile_updated' => 'Ihr Profil wurde aktualisiert.',
 		'error_user_name_bad_length' => 'Benutzernamen müssen zwischen 2 und 64 Zeichen lang sein.',
-		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9) und Unterstriche (_) enthalten.',
+		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9), Punkte (.) und Unterstriche (_) enthalten.',
 		'error_user_name_exists' => 'Der gewählte Benutzername existiert bereits in der Datenbank.',
 		'error_user_email_bad_length' => 'E-Mail-Adressen müssen zwischen 5 und 255 Zeichen lang sein.',
 		'error_user_email_invalid' => 'Die E-Mail-Adresse ist ungültig.',
@@ -111,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Keine Logs vorhanden.',
+		'clear' => 'Protokoll Logs',
+		'delete_title' => 'Protokoll Logs',
+		'delete_message' => 'Bist du sicher, dass du <b>alle</b> logs löschen möchtest?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -123,6 +128,7 @@ $sm_lang = array(
 		'type' => 'Typ',
 		'type_website' => 'Webseite',
 		'type_service' => 'Service',
+		'type_ping' => 'Ping',
 		'pattern' => 'Suchstring/-muster',
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
@@ -194,8 +200,10 @@ $sm_lang = array(
         'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS-Sendernummer',
@@ -247,7 +255,7 @@ $sm_lang = array(
 		'email_sent' => 'E-Mail gesendet.',
 		'email_error' => 'Beim Versand der E-Mail trat ein Fehler auf.',
 		'sms_sent' => 'SMS-Nachricht gesendet.',
-		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf.',
+		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf. %s',
 		'sms_error_nomobile' => 'Versand der SMS-Nachricht nicht möglich: Es wurde keine gültige Telefonnummer in Ihrem Profil hinterlegt.',
 		'pushover_sent' => 'Pushover-Benachrichtigung versendet',
 		'pushover_error' => 'Beim Versand der Pushover-Benachrichtigung trat ein Fehler auf: %s',

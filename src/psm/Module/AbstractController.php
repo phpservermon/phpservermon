@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,9 +28,11 @@
 namespace psm\Module;
 use psm\Service\Database;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-abstract class AbstractController extends ContainerAware implements ControllerInterface {
+abstract class AbstractController implements ControllerInterface {
+
+	use ContainerAwareTrait;
 
 	/**
 	 * Current action
@@ -66,6 +68,11 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	 * @see addMenu()
 	 */
 	protected $add_menu = true;
+
+	/**
+	 * @var string $csrf_key
+	 */
+	protected $csrf_key;
 
 	/**
 	 * Messages to show the user
@@ -469,5 +476,24 @@ abstract class AbstractController extends ContainerAware implements ControllerIn
 	 */
 	public function getUser() {
 		return $this->container->get('user');
+	}
+
+	/**
+	 * Get custom key for CSRF validation
+	 * @return string
+	 */
+	public function getCSRFKey() {
+		return $this->csrf_key;
+	}
+
+	/**
+	 * Set CSRF key for validation
+	 * @param string $key
+	 * @return \psm\Module\ControllerInterface
+	 */
+	protected function setCSRFKey($key) {
+		$this->csrf_key = $key;
+		$this->twig->addGlobal('csrf_key', $key);
+		return $this;
 	}
 }

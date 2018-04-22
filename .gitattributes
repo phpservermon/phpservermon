@@ -2,7 +2,11 @@
 * text=auto
 
 # Force the following filetypes to have unix eols, so Windows does not break them
-*.* text eol=lf
+*.txt text eol=lf
+*.php text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.phar binary
 
 .gitignore export-ignore
 .gitattributes export-ignore

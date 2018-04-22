@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,9 +28,11 @@
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
 	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
+	'locale_tag' => 'nl',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
-		'install' => 'Intalleren',
+		'install' => 'Installeren',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -94,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiel',
 		'profile_updated' => 'Je profiel is bijgewerkt.',
 		'error_user_name_bad_length' => 'Een gebruikersnaam moet tussen de 2 en 64 tekens zijn.',
-		'error_user_name_invalid' => 'Een gebruikersnaam mag alleen alfabetische tekens (a-z, A-Z), cijfers (0-9) en underscores (_) bevatten.',
+		'error_user_name_invalid' => 'Een gebruikersnaam mag alleen alfabetische tekens (a-z, A-Z), cijfers (0-9), punten (.) en underscores (_) bevatten.',
 		'error_user_name_exists' => 'De opgegeven gebruikersnaam bestaat al.',
 		'error_user_email_bad_length' => 'Een email adres moet tussen de 5 en 255 tekens zijn.',
 		'error_user_email_invalid' => 'Het email adres is ongeldig.',
@@ -110,7 +112,10 @@ $sm_lang = array(
 		'email' => 'Email',
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
-		'no_logs' => 'No logs',
+		'no_logs' => 'Geen logs',
+		'clear' => 'Logboek opschonen',
+		'delete_title' => 'Logboek opschonen',
+		'delete_message' => 'Weet je zeker dat je <b>alle</b> logs wilt opschonen?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -128,7 +133,7 @@ $sm_lang = array(
 		'last_check' => 'Laatst gecontroleerd',
 		'last_online' => 'Laatst online',
 		'monitoring' => 'Monitoring',
-		'no_monitoring' => 'No monitoring',
+		'no_monitoring' => 'Geen monitoring',
 		'email' => 'Email',
 		'send_email' => 'Stuur email',
 		'sms' => 'SMS',
@@ -194,8 +199,10 @@ $sm_lang = array(
 		'sms_gateway_clickatell' => 'Clickatell',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
@@ -205,7 +212,7 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Voordat je Pushover kunt gebruiken moet je een <a href="%1$s" target="_blank">App registreren</a> via hun website, en daarvan de App API Token hier invullen.',
 		'alert_type' => 'Selecteer wanneer je een notificatie wilt',
-		'alert_type_description' => '<b>Status change:</b> '.
+		'alert_type_description' => '<b>Status verandert:</b> '.
 			'Je ontvangt alleen bericht wanneer een server van status verandert. Dus van online -> offline of offline -> online.<br/>'.
 			 '<br /><b>Offline:</b> '.
 			'Je ontvangt bericht wanneer een server offline gaat voor de *EERSTE KEER*. Bijvoorbeeld, '.
@@ -232,7 +239,7 @@ $sm_lang = array(
 		'settings_log' => 'Log instellingen',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
-			'Auto-refresh servers pagina.<br/>'.
+			'Auto-herladen servers pagina.<br/>'.
 			'<span class="small">'.
 			'Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.'.
 			'</span>',
@@ -247,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Email verzonden',
 		'email_error' => 'Er is een fout opgetreden tijdens het verzenden',
 		'sms_sent' => 'SMS verzonden',
-		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden',
+		'sms_error' => 'Er is een fout opgetreden tijdens het verzenden. %s',
 		'sms_error_nomobile' => 'Kan test SMS niet verzenden: er is geen telefoonnummer ingevuld in je profiel.',
 		'pushover_sent' => 'Pushover notificatie verzonden',
 		'pushover_error' => 'De volgende fout is opgetreden bij het versturen van de Pushover notificatie: %s',
@@ -295,6 +302,6 @@ $sm_lang = array(
 	),
 	'error' => array(
 		'401_unauthorized' => 'Unauthorized',
-		'401_unauthorized_description' => 'U heeft niet de juiste bevoegdheden om deze pagina te bekijken.',
+		'401_unauthorized_description' => 'Je hebt niet de juiste bevoegdheden om deze pagina te bekijken.',
 	),
 );

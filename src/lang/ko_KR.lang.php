@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Ik-Jun
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => '한국 - Korean',
 	'locale' => array('ko_KR.UTF-8', 'ko_KR', 'korean'),
+	'locale_tag' => 'ko',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -94,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profile',
 		'profile_updated' => 'Your profile has been updated.',
 		'error_user_name_bad_length' => 'Usernames must be between 2 and 64 characters.',
-		'error_user_name_invalid' => 'It may only contain alphabetic characters (a-z, A-Z), digits (0-9) and underscores (_).',
+		'error_user_name_invalid' => 'It may only contain alphabetic characters (a-z, A-Z), digits (0-9), dots (.) and underscores (_).',
 		'error_user_name_exists' => 'The given username already exists in the database.',
 		'error_user_email_bad_length' => 'Email addresses must be between 5 and 255 characters.',
 		'error_user_email_invalid' => 'The email address is invalid.',
@@ -111,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'sms',
 		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
+		'clear' => 'Clear log',
+		'delete_title' => 'Delete log',
+		'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
 	),
 	'servers' => array(
 		'server' => '서버',
@@ -193,9 +198,11 @@ $sm_lang = array(
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_nexmo' => 'Nexmo',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -247,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'Email sent',
 		'email_error' => 'Error in email sending',
 		'sms_sent' => 'Sms sent',
-		'sms_error' => 'Error in sms sending',
+		'sms_error' => 'Error in sms sending. %s',
 		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 		'pushover_sent' => 'Pushover notification sent',
 		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',

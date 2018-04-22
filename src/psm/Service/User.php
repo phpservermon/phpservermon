@@ -19,8 +19,8 @@
  *
  * @package     phpservermon
  * @author      Panique <https://github.com/panique/php-login-advanced/>
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -248,7 +248,7 @@ class User {
 	 */
 	protected function setUserLoggedIn($user_id, $regenerate = false) {
 		if($regenerate) {
-			$this->session->migrate();
+			$this->session->invalidate();
 		}
 		$this->session->set('user_id', $user_id);
 		$this->session->set('user_logged_in', 1);

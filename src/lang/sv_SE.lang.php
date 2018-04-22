@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      andlil
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Svenska - Swedish',
 	'locale' => array('sv_SE.UTF-8', 'sv_SE', 'svenska', 'svenska-SE'),
+	'locale_tag' => 'sv',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installera',
@@ -94,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Din profil har uppdaterats.',
 		'error_user_name_bad_length' => 'Användarnamn måste vara mellan 2 och 64 tecken.',
-		'error_user_name_invalid' => 'Användarnamnet får bara innehålla bokstäver (a-z, A-Z), siffror (0-9) and understreck (_).',
+		'error_user_name_invalid' => 'Användarnamnet får bara innehålla bokstäver (a-z, A-Z), siffror (0-9), prickar (.) and understreck (_).',
 		'error_user_name_exists' => 'Användarnamnet används redan.',
 		'error_user_email_bad_length' => 'Email-adressen måste vara mellan 5 och 255 tecken.',
 		'error_user_email_invalid' => 'Email-adressen är ogiltig.',
@@ -111,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Inga loggar',
+		'clear' => 'Tydlig logg',
+		'delete_title' => 'Tydlig logg',
+		'delete_message' => 'Är du säker på att du vill radera <b>alla</b> loggar?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -192,10 +197,11 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
+        	'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway användarnamn',
 		'sms_gateway_password' => 'Gateway lösenord',
 		'sms_from' => 'Avsändarens telefonnummer',
@@ -247,7 +253,7 @@ $sm_lang = array(
 		'email_sent' => 'Email skickat',
 		'email_error' => 'Sändning av email misslyckades',
 		'sms_sent' => 'Sms skickat',
-		'sms_error' => 'Sändning av SMS misslyckades',
+		'sms_error' => 'Sändning av SMS misslyckades. %s',
 		'sms_error_nomobile' => 'Kan inte skicka test-SMS: det finns inget giltigt mobilnummer i din profil.',
 		'pushover_sent' => 'Pushover-meddelande skickat',
 		'pushover_error' => 'Ett fel uppstod vid sändning av Pushover-meddelande: %s',

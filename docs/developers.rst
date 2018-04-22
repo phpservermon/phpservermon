@@ -25,6 +25,10 @@ Each language file should contain a 'locale' key which can be used for formattin
 
 For more information, see http://www.php.net/manual/en/function.setlocale.php
 
+For display purposes, the language file should also provide the text direction (ltr / rtl) and language subtag.
+Unfortunately they do not match 1:1 with the locales used for the server.
+Valid language subtags can be found on http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry.
+
 Adding a new language
 ---------------------
 

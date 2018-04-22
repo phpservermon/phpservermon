@@ -1,5 +1,6 @@
 {% extends "module/install/main.tpl.html" %}
 {% use "module/install/results.tpl.html" %}
+{% import 'main/macros.tpl.html' as macro %}
 
 {% block install %}
 <div class="row-fluid">
@@ -8,35 +9,49 @@
 <div class="row-fluid">
    <div class="span6">
 	<form id="psm_config" class="form-horizontal" action="install.php?action=config" method="post">
+	  {{ macro.csrf_input() }}
+		<p>Please enter the application url:</p>
+		<div class="control-group">
+		<label class="control-label" for="base_url">Application base url</label>
+		<div class="controls">
+		  <input type="text" id="base_url" name="base_url" value="{{ base_url }}" />
+		</div>
+	  </div>
 	  <p>Please enter your database info:</p>
 	  <div class="control-group">
 		<label class="control-label" for="host">Database host</label>
 		<div class="controls">
-		  <input type="text" id="host" name="host" value="{{ host }}" />
+		  <input type="text" id="host" name="db_host" value="{{ db_host }}" />
+		</div>
+	  </div>
+	  <div class="control-group">
+		<label class="control-label" for="host">Database port</label>
+		<div class="controls">
+		  <input type="text" id="port" name="db_port" value="{{ db_port }}" />
 		</div>
 	  </div>
 	  <div class="control-group">
 		<label class="control-label" for="name">Database name</label>
 		<div class="controls">
-		  <input type="text" id="name" name="name" value="{{ name }}" placeholder="db name" />
+		  <input type="text" id="name" name="db_name" value="{{ db_name }}" placeholder="db name" />
 		</div>
 	  </div>
 	  <div class="control-group">
 		<label class="control-label" for="user">Database user</label>
 		<div class="controls">
-		  <input type="text" id="user" name="user" value="{{ user }}" placeholder="db user" />
+		  <input type="text" id="user" name="db_user" value="{{ db_user }}" placeholder="db user" />
 		</div>
 	  </div>
 	  <div class="control-group">
 		<label class="control-label" for="pass">Database password</label>
 		<div class="controls">
-		  <input type="password" id="pass" name="pass" value="{{ pass }}" placeholder="db password" />
+		  <input type="password" id="pass" name="db_pass" value="{{ db_pass }}" placeholder="db password" />
 		</div>
 	  </div>
 	  <div class="control-group">
 		<label class="control-label" for="prefix">Table prefix</label>
 		<div class="controls">
-		  <input type="text" id="prefix" name="prefix" value="{{ prefix }}" />
+		  <input type="text" id="prefix" name="db_prefix" value="{{ db_prefix }}" />
 		</div>
 	  </div>
 	  <div class="control-group">

@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -64,6 +64,8 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
+					`s`.`header_name`,
+					`s`.`header_value`,
 					`s`.`status`,
 					`s`.`error`,
 					`s`.`rtime`,
@@ -73,9 +75,12 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`email`,
 					`s`.`sms`,
 					`s`.`pushover`,
+					`s`.`telegram`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
-					`s`.`timeout`
+					`s`.`timeout`,
+					`s`.`website_username`,
+					`s`.`website_password`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -102,6 +107,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
 		$server['pushover'] = psm_get_lang('system', $server['pushover']);
+		$server['telegram'] = psm_get_lang('system', $server['telegram']);
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';

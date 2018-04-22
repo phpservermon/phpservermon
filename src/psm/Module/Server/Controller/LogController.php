@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -36,7 +36,9 @@ class LogController extends AbstractServerController {
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
 
-		$this->setActions('index', 'index');
+		$this->setActions(array(
+			'index', 'delete',
+		), 'index');
 	}
 
 	/**
@@ -49,6 +51,7 @@ class LogController extends AbstractServerController {
 			'label_email' => psm_get_lang('log', 'email'),
 			'label_sms' => psm_get_lang('log', 'sms'),
 			'label_pushover' => psm_get_lang('log', 'pushover'),
+			'label_telegram' => psm_get_lang('log', 'telegram'),
 			'label_title' => psm_get_lang('log', 'title'),
 			'label_server' => psm_get_lang('servers', 'server'),
 			'label_type' => psm_get_lang('log', 'type'),
@@ -56,17 +59,20 @@ class LogController extends AbstractServerController {
 			'label_date' => psm_get_lang('system', 'date'),
 			'label_users' => ucfirst(psm_get_lang('menu', 'user')),
 			'label_no_logs' => psm_get_lang('log', 'no_logs'),
+			'label_clear_log' => psm_get_lang('log', 'clear'),
 			'tabs' => array(),
 		);
-		$log_types = array('status', 'email', 'sms', 'pushover');
 
-		// get users
-		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id','name'));
-
-		$users_labels = array();
-		foreach ($users as $user) {
-			$users_labels[$user['user_id']] = $user['name'];
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+			$this->addModal($modal);
+			$modal->setTitle(psm_get_lang('log', 'delete_title'));
+			$modal->setMessage(psm_get_lang('log', 'delete_message'));
+			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+			$tpl_data['has_admin_actions'] = true;
 		}
+
+		$log_types = array('status', 'email', 'sms', 'pushover', 'telegram');
 
 		foreach($log_types as $key) {
 			$records = $this->getEntries($key);
@@ -95,23 +101,36 @@ class LogController extends AbstractServerController {
 				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list
-				if(!empty($record['user_id'])) {
+                $users = $this->getLogUsers($record['log_id']);
+				if(!empty($users)) {
 					$names = array();
-					$users = explode(',', $record['user_id']);
-					foreach($users as $user_id) {
-						if(isset($users_labels[$user_id])) {
-							$names[] = $users_labels[$user_id];
-						}
+					foreach($users as $user) {
+                        $names[] = $user['name'];
 					}
-					sort($names);
 					$record['users'] = implode('<br/>', $names);
 					$record['user_list'] = implode('&nbsp;&bull; ', $names);
 				}
 			}
 			$tab_data['entries'] = $records;
 			$tpl_data['tabs'][] = $tab_data;
+			$tpl_data['url_delete'] = psm_build_url(array(
+				'mod' => 'server_log',
+				'action' => 'delete',
+			));
 		}
 		return $this->twig->render('module/server/log.tpl.html', $tpl_data);
+	}
+
+	protected function executeDelete() {
+		/**
+		 * Empty table log and log_users.
+		 * Only when user is admin.
+		 */
+		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+			$archiver = new \psm\Util\Server\Archiver\LogsArchiver($this->db);
+			$archiver->cleanupall();
+		}
+		return $this->runAction('index');
 	}
 
 	/**
@@ -135,10 +154,10 @@ class LogController extends AbstractServerController {
 				'`servers`.`ip`, '.
 				'`servers`.`port`, '.
 				'`servers`.`type` AS server_type, '.
+				'`log`.`log_id`, '.
 				'`log`.`type`, '.
 				'`log`.`message`, '.
-				'`log`.`datetime`, '.
-				'`log`.`user_id` '.
+				'`log`.`datetime` '.
 			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
 			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
 			$sql_join .
@@ -148,4 +167,22 @@ class LogController extends AbstractServerController {
 		);
 		return $entries;
 	}
+
+    /**
+     * Get all the user entries for a specific $log_id
+     *
+     * @param $log_id
+     * @return array
+     */
+    protected function getLogUsers($log_id) {
+        return $this->db->query(
+            "SELECT
+                u.`user_id`,
+                u.`name`
+            FROM `" . PSM_DB_PREFIX . "log_users` AS lu
+            LEFT JOIN `" . PSM_DB_PREFIX . "users` AS u ON lu.`user_id` = u.`user_id`
+            WHERE lu.`log_id` = " . (int)$log_id . "
+            ORDER BY u.`name` ASC"
+        );
+    }
 }

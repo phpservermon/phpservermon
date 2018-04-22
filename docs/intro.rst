@@ -15,7 +15,7 @@ Features
 ++++++++
 
 * Monitor services and websites (see below).
-* Email, SMS and Pushover notifications.
+* Email, SMS, Pushover and Telegram notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -44,7 +44,7 @@ There are two different ways to monitor a server:
 Notifications
 -------------
 Each server has its own settings regarding notification.
-You can choose for email, text message (SMS) and Pushover.net notifications.
+You can choose for email, text message (SMS), Pushover.net and Telegram notifications.
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
@@ -56,6 +56,7 @@ The following SMS gateways are currently available:
 * Spryng - <http://www.spryng.nl>
 * Textmarketer - <http://www.textmarketer.co.uk>
 * FreeVoipDeal - <http://www.freevoipdeal.com>
+* Nexmo - <https://www.nexmo.com/>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

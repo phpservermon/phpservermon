@@ -2,27 +2,21 @@
 	"name": "phpservermon/phpservermon",
 	"description": "PHP Server Monitor",
 	"homepage": "http://www.phpservermonitor.org",
-    "repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/phpservermon/php-pushover"
-		}
-	],
 	"require": {
-		"php": ">=5.3.7",
-		"phpmailer/phpmailer": "5.2.6",
-		"symfony/config": "2.6.*",
-		"symfony/dependency-injection": "2.6.*",
-		"symfony/event-dispatcher": "2.6.*",
-		"symfony/http-foundation": "2.6.*",
+		"php": ">=5.5.9",
+		"phpmailer/phpmailer": "~6.0",
+		"symfony/config": "~3.4",
+		"symfony/dependency-injection": "~3.4",
+		"symfony/event-dispatcher": "~3.4",
+		"symfony/http-foundation": "~3.4",
 		"php-pushover/php-pushover": "dev-master",
-		"twig/twig": "1.*"
+		"paragonie/random_compat": "^2.0",
+		"twig/twig": "~2.0"
 	},
 	"autoload": {
 		"files": [
 			"./src/includes/psmconfig.inc.php",
-			"./src/includes/functions.inc.php",
-			"./src/includes/password_compatibility_library.inc.php"
+			"./src/includes/functions.inc.php"
 		],
 		"psr-4": {
 			"psm\\": "src/psm/"

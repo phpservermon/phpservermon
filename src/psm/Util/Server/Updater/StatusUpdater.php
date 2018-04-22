@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -82,13 +82,17 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'warning_threshold_counter', 'timeout', 'website_username', 'website_password'
 		));
 		if(empty($this->server)) {
 			return false;
 		}
 
 		switch($this->server['type']) {
+			case 'ping':
+				$this->status_new = $this->updatePing($max_runs);
+				break;
 			case 'service':
 				$this->status_new = $this->updateService($max_runs);
 				break;
@@ -134,6 +138,41 @@ class StatusUpdater {
 	}
 
 	/**
+	 * Check the current servers ping status - Code from http://stackoverflow.com/a/20467492
+	 * @param int $max_runs
+	 * @param int $run
+	 * @return boolean
+	 */
+	protected function updatePing($max_runs, $run = 1) {
+		$errno = 0;
+		// save response time
+		$starttime = microtime(true);
+		// set ping payload
+		$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+
+		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		$socket  = socket_create(AF_INET, SOCK_RAW, 1);
+		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
+		socket_connect($socket, $this->server['ip'], null);
+		
+		socket_send($socket, $package, strLen($package), 0);
+		if (socket_read($socket, 255)) {
+			$status = true;
+		} else {
+			$status = false;
+		}
+		$this->rtime =  microtime(true) - $starttime;
+		socket_close($socket);
+
+		// check if server is available and rerun if asked.
+		if(!$status && $run < $max_runs) {
+			return $this->updatePing($max_runs, $run + 1);
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Check the current server as a service
 	 * @param int $max_runs
 	 * @param int $run
@@ -144,7 +183,7 @@ class StatusUpdater {
 		// save response time
 		$starttime = microtime(true);
 
-		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);
@@ -176,7 +215,10 @@ class StatusUpdater {
 			$this->server['ip'],
 			true,
 			($this->server['pattern'] == '' ? false : true),
-			$this->server['timeout']
+			$this->server['timeout'],
+			true,
+			$this->server['website_username'],
+			psm_password_decrypt($this->server['server_id'] . psm_get_conf('password_encrypt_key'), $this->server['website_password'])
 		);
 
 		$this->rtime = (microtime(true) - $starttime);
@@ -191,7 +233,7 @@ class StatusUpdater {
 
 		if(empty($code_matches[0])) {
 			// somehow we dont have a proper response.
-			$this->error = 'no response from server';
+			$this->error = 'TIMEOUT ERROR: no response from server';
 			$result = false;
 		} else {
 			$code = $code_matches[1][0];
@@ -199,17 +241,42 @@ class StatusUpdater {
 
 			// All status codes starting with a 4 or higher mean trouble!
 			if(substr($code, 0, 1) >= '4') {
-				$this->error = $code . ' ' . $msg;
+				$this->error = "HTTP STATUS ERROR: ".$code . ' ' . $msg;
 				$result = false;
 			} else {
 				$result = true;
-			}
-		}
-		if($this->server['pattern'] != '') {
-			// Check to see if the pattern was found.
-			if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-				$this->error = 'Pattern not found.';
-				$result = false;
+				
+				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
+				if($this->server['pattern'] != '') {
+					// Check to see if the pattern was found.
+					if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
+						$this->error = 'TEXT ERROR : Pattern not found.';
+						$result = false;
+					}
+				}
+
+				// Should we check a header ?
+				if($this->server['header_name'] != '' && $this->server['header_value'] != '') {
+					$header_flag = false;
+					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n")); // Only get the header text if the result also includes the body
+					foreach (explode("\r\n", $header_text) as $i => $line) {
+						if ($i === 0 || strpos($line, ':') == false) {
+							continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
+						} else {
+							list ($key, $value) = explode(': ', $line);
+							if (strcasecmp($key, $this->server['header_name']) == 0) { // Header found (case-insensitive)
+								if(!preg_match("/{$this->server['header_value']}/i", $value)) { // The value doesn't match what we needed
+									$result = false;
+								} else {
+									$header_flag = true;
+									break; // No need to go further
+								}
+							}
+						}
+					}
+
+					if(!$header_flag) $result = false; // Header was not present
+				}
 			}
 		}
 

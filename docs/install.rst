@@ -27,6 +27,7 @@ To change these values correctly, only update the second parameter of the functi
      define('PSM_DB_NAME', 'db_name');
      define('PSM_DB_USER', 'db_user');
      define('PSM_DB_PASS', 'db_user_password');
+     define('PSM_DB_PORT', '3306');
 
 For example: to change your username you should ONLY change the 'db\_user' part.
 Do NOT remove the quotes around your username as that will result in an error.
@@ -103,6 +104,25 @@ To specify the base url to your monitor installation, use the "--uri" argument, 
 
      php status.cron.php --uri="http://www.phpservermonitor.org/mymonitor/"
 
+CPanel
+-------
+
+If you're work with cPanel you can follow these steps:
+
+1. Log into your cPanel account
+
+2. Go to cron jobs
+
+3. Add a new cronjob
+
+- Type `*/15` in the minute field
+
+- Type `*` in the other field
+
+- Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
+
+4. Submit
+     
 
 Troubleshooting
 +++++++++++++++

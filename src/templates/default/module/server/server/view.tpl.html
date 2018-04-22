@@ -70,8 +70,24 @@
 			<td>{{ pushover }}</td>
 		</tr>
 		<tr>
+			<td>{{ label_telegram }}:</td>
+			<td>{{ telegram }}</td>
+		</tr>
+		<tr>
 			<td>{{ label_timeout }}:</td>
 			<td>{{ timeout }} s</td>
+		</tr>
+		<tr>
+			<td>{{ label_website_username }}:</td>
+			<td>{{ website_username }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_website_password }}:</td>
+			<td>
+                {% if (website_password is not empty) %}
+				******
+				{% endif %}
+			</td>
 		</tr>
 		{% if has_admin_actions %}
 		<tr>

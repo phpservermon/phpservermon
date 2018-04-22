@@ -1,4 +1,5 @@
 <div class="tab-content">
+	<input type="hidden" name="saveLayout_csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
 	<div id="flow-layout" class="tab-pane {{ block_layout_active }}">
 		<div class="entity-container">
 			{% for server in servers_offline %}
@@ -58,3 +59,16 @@
 		</div>
 	</div>
 </div>
+
+{% if auto_refresh %}
+<script>
+setInterval(function(){
+	$.ajax({
+		url:"?",
+		success: function(html, status){
+			$("#page-container").html(html);
+		}
+	});
+}, {{ auto_refresh_seconds }} * 1000);
+</script>
+{% endif %}

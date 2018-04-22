@@ -19,8 +19,8 @@
  *
  * @package     phpservermon
  * @author      Michael Greenhill
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -37,6 +37,7 @@ class StatusController extends AbstractServerController {
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
 
+		$this->setCSRFKey('status');
 		$this->setActions(array('index', 'saveLayout'), 'index');
 	}
 
@@ -91,6 +92,13 @@ class StatusController extends AbstractServerController {
 			$this->twig->addGlobal('auto_refresh', true);
 			$this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
 		}
+
+		if($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
+			$this->xhr = true;
+			//disable auto refresh in ajax return html
+			$layout_data["auto_refresh"] = 0;
+		}
+
 		return $this->twig->render('module/server/status/index.tpl.html', $layout_data);
 	}
 

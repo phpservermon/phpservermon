@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -101,6 +101,11 @@ class ServerValidator {
 					throw new \InvalidArgumentException('server_ip_bad_service');
 				}
 				break;
+			case 'ping':
+				if(!filter_var($value, FILTER_VALIDATE_IP)) {
+					throw new \InvalidArgumentException('server_ip_bad_service');
+				}
+				break;
 		}
 
 		return true;
@@ -113,7 +118,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function type($type) {
-		if(!in_array($type, array('service', 'website'))) {
+		if(!in_array($type, array('ping', 'service', 'website'))) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
 		return true;
