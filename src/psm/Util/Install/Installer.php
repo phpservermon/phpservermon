@@ -307,6 +307,9 @@ class Installer {
 		if(version_compare($version_from, '3.2.2', '<')) {
 			$this->upgrade322();
 		}
+		if(version_compare($version_from, '3.3.0', '<')) {
+			$this->upgrade330();
+		}
 		psm_update_conf('version', $version_to);
 	}
 
@@ -513,6 +516,18 @@ class Installer {
 					('telegram_status', '0'),
 					('log_telegram', '1'),
 					('telegram_api_token', '');";
+		$this->execSQL($queries);
+	}
+
+	/**
+	 * Upgrade for v3.3.0 release
+	 */
+	protected function upgrade330() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+			ADD COLUMN VARCHAR(255) `last_offline` AFTER  `last_online`,
+			ADD COLUMN VARCHAR(255) `last_error_raw` AFTER  `website_password`,
+			ADD COLUMN VARCHAR(255) `last_raw` AFTER  `last_error_raw`;";
 		$this->execSQL($queries);
 	}
 }

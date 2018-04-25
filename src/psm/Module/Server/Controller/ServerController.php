@@ -477,6 +477,10 @@ class ServerController extends AbstractServerController {
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
+			'label_last_raw' => psm_get_lang('servers', 'last_raw'),
+			'label_last_error' => psm_get_lang('servers', 'last_error'),
+			'label_last_error_raw' => psm_get_lang('servers', 'last_error_raw'),
 			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 			'label_email' => psm_get_lang('servers', 'email'),
 			'label_send_email' => psm_get_lang('servers', 'send_email'),
@@ -495,6 +499,7 @@ class ServerController extends AbstractServerController {
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+			'label_advanced' => psm_get_lang('system', 'advanced'),
 		);
 	}
 
@@ -516,4 +521,3 @@ class ServerController extends AbstractServerController {
 		return $result;
 	}
 }
-

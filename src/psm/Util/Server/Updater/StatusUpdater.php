@@ -118,8 +118,9 @@ class StatusUpdater {
 			$save['last_online'] = date('Y-m-d H:i:s');
 			$save['warning_threshold_counter'] = 0;
 		} else {
-			// server is offline, increase the error counter
+			// server is offline, increase the error counter and set last offline
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
+			$save['last_offline'] = date('Y-m-d H:i:s');
 
 			if($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
 				// the server is offline but the error threshold has not been met yet.

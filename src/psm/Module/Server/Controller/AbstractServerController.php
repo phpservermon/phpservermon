@@ -71,6 +71,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`rtime`,
 					`s`.`last_check`,
 					`s`.`last_online`,
+					`s`.`last_offline`,
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
@@ -80,7 +81,10 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`warning_threshold_counter`,
 					`s`.`timeout`,
 					`s`.`website_username`,
-					`s`.`website_password`
+					`s`.`website_password`,
+					`s`.`last_offline`,
+					`s`.`last_error_raw`,
+					`s`.`last_raw`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -102,6 +106,7 @@ abstract class AbstractServerController extends AbstractController {
 	protected function formatServer($server) {
 		$server['rtime'] = round((float) $server['rtime'], 4);
 		$server['last_online']  = psm_timespan($server['last_online']);
+		$server['last_offline']  = psm_timespan($server['last_offline']);
 		$server['last_check']  = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);
@@ -116,6 +121,9 @@ abstract class AbstractServerController extends AbstractController {
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+
+		$server['last_error_raw'] = htmlentities($server['last_error_raw']);
+		$server['last_raw'] = htmlentities($server['last_raw']);
 
 		$url_actions = array('delete', 'edit', 'view');
 		foreach($url_actions as $action) {
