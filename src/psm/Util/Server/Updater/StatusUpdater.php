@@ -150,16 +150,19 @@ class StatusUpdater {
 		// set ping payload
 		$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
 
-		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 		$socket  = socket_create(AF_INET, SOCK_RAW, 1);
 		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
 		socket_connect($socket, $this->server['ip'], null);
-		
+
 		socket_send($socket, $package, strLen($package), 0);
 		if (socket_read($socket, 255)) {
 			$status = true;
 		} else {
 			$status = false;
+
+			// set error  message
+			$errorcode = socket_last_error();
+			$this->error = "Couldn't create socket [".$errorcode."]: ".socket_strerror($errorcode);
 		}
 		$this->rtime =  microtime(true) - $starttime;
 		socket_close($socket);
@@ -245,7 +248,7 @@ class StatusUpdater {
 				$result = false;
 			} else {
 				$result = true;
-				
+
 				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if($this->server['pattern'] != '') {
 					// Check to see if the pattern was found.
