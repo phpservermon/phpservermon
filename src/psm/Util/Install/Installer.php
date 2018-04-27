@@ -309,6 +309,9 @@ class Installer {
 		if(version_compare($version_from, '3.2.2', '<')) {
 			$this->upgrade322();
 		}
+		if(version_compare($version_from, '3.3.0', '<')) {
+			$this->upgrade330();
+		}
 		psm_update_conf('version', $version_to);
 	}
 
@@ -529,8 +532,7 @@ class Installer {
 	 */
 	protected function upgrade330() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
 		$this->execSQL($queries);
 	}
 }
