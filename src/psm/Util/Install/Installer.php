@@ -234,16 +234,18 @@ class Installer {
 						  `error` varchar(255) NULL,
 						  `rtime` FLOAT(9, 7) NULL,
 						  `last_online` datetime NULL,
+						  `last_offline` datetime NULL,
+						  `last_offline_duration` varchar(255) NULL,
 						  `last_check` datetime NULL,
 						  `active` enum('yes','no') NOT NULL default 'yes',
 						  `email` enum('yes','no') NOT NULL default 'yes',
 						  `sms` enum('yes','no') NOT NULL default 'no',
 						  `pushover` enum('yes','no') NOT NULL default 'yes',
-							`telegram` enum('yes','no') NOT NULL default 'yes',
-              `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
-              `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
-              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
-              `website_username` varchar(255) DEFAULT NULL,
+						  `telegram` enum('yes','no') NOT NULL default 'yes',
+              			  `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
+              			  `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+            			  `timeout` smallint(1) unsigned NULL DEFAULT NULL,
+              			  `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
@@ -326,6 +328,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$this->execSQL($queries);
 	}
@@ -357,6 +361,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '1';";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold_counter` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
@@ -439,6 +445,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
 
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
 						`user_id` int(11) unsigned NOT NULL,
@@ -513,6 +521,16 @@ class Installer {
 					('telegram_status', '0'),
 					('log_telegram', '1'),
 					('telegram_api_token', '');";
+		$this->execSQL($queries);
+	}
+
+	/**
+	 * Upgrade for v3.3.0 release
+	 */
+	protected function upgrade330() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 		$this->execSQL($queries);
 	}
 }

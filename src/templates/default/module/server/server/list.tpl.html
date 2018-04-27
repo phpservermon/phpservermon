@@ -8,6 +8,7 @@
 			<th class="visible-desktop">{{ label_type }}</th>
 			<th class="hidden-phone">{{ label_rtime }}</th>
 			<th class="hidden-phone">{{ label_last_online }}</th>
+			<th class="hidden-phone">{{ label_last_offline }}</th>
 			<th class="hidden-phone">{{ label_monitoring }}</th>
 			<th class="hidden-phone">{{ label_action }}</th>
 		</tr>
@@ -23,6 +24,8 @@
 			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.type }}</div></td>
 			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.rtime }} s</div></td>
 			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.last_online }}</div></td>
+			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.last_offline }}</div></td>
+			<td class="nowrap hidden-phone"><div class="table-cell-title">{{ server.last_offline_duration }}</div></td>
 			<td class="tight hidden-phone">
 				<div class="table-cell-title">
 					<i class="{{ server.active_icon }}" title="{{ server.active_title }}"></i>
@@ -70,6 +73,7 @@
 				<div class="table-body">
 					<div class="table-row"><div class="table-cell-details tight">{{ label_rtime }}: &nbsp;</div><div class="table-cell-details">{{ server.rtime }} s</div></div>
 					<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online }}</div></div>
+					<div class="table-row"><div class="table-cell-details tight">{{ label_last_offline }}: &nbsp;</div><div class="table-cell-details">{{ server.last_offline }} {{ server.last_offline_duration }}</div></div>
 				</div>
 			</td>
 		</tr>

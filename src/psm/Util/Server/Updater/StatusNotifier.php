@@ -128,7 +128,7 @@ class StatusNotifier {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover', 'telegram',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover', 'telegram', 'last_online', 'last_offline', 'last_offline_duration'
 		));
 		if(empty($this->server)) {
 			return false;
