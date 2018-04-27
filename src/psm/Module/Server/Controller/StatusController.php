@@ -55,6 +55,7 @@ class StatusController extends AbstractServerController {
 		$layout_data = array(
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
 			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
@@ -75,6 +76,11 @@ class StatusController extends AbstractServerController {
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
+			$server['last_offline_nice'] = psm_timespan($server['last_offline']);
+			$server['last_offline_duration_nice'] = "";
+			if ($server['last_offline_nice'] != psm_get_lang('system', 'never')) {
+				$server['last_offline_duration_nice'] = "(".$server['last_offline_duration'].")";
+			}
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
 			if ($server['status'] == "off") {
