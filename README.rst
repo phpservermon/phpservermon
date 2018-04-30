@@ -4,7 +4,7 @@ PHP Server Monitor
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
-   
+
 Version 3.3.0 (under development)
 
 
@@ -56,6 +56,7 @@ The following SMS gateways are currently available:
 * OctoPush - <https://www.octopush.com/>
 * FreeMobile (FR) - <https://mobile.free.fr/>
 * Twilio - <https://twilio.com>
+* CM Telecom - <https://www.cm.com/>
 
 
 
