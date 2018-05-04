@@ -578,6 +578,9 @@ function psm_build_sms() {
 		case 'twilio':
 			$sms = new \psm\Txtmsg\Twilio();
 			break;
+		case 'gatewayapi':
+			$sms = new \psm\Txtmsg\GatewayAPI();
+			break;
 	}
 
 	// copy login information from the config file
