@@ -61,6 +61,8 @@ The following SMS gateways are currently available:
 * FreeMobile (FR) - <https://mobile.free.fr/>
 * Twilio - <https://twilio.com>
 * CM Telecom - <https://www.cm.com/>
+* Plivo - <https://plivo.com>
+* Callr - <https://callr.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
