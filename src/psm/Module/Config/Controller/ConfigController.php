@@ -378,6 +378,8 @@ class ConfigController extends AbstractController {
 			'label_sms_gateway_freemobilesms' => psm_get_lang('config', 'sms_gateway_freemobilesms'),
 			'label_sms_gateway_clicksend' => psm_get_lang('config', 'sms_gateway_clicksend'),
 			'label_sms_gateway_twilio' => psm_get_lang('config', 'sms_gateway_twilio'),
+			'label_sms_gateway_plivo' => psm_get_lang('config', 'sms_gateway_plivo'),
+			'label_sms_gateway_callr' => psm_get_lang('config', 'sms_gateway_callr'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),

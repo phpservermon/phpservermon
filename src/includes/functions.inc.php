@@ -578,6 +578,12 @@ function psm_build_sms() {
 		case 'twilio':
 			$sms = new \psm\Txtmsg\Twilio();
 			break;
+		case 'plivo':
+			$sms = new \psm\Txtmsg\Plivo();
+			break;
+		case 'callr':
+			$sms = new \psm\Txtmsg\Callr();
+			break;
 	}
 
 	// copy login information from the config file
