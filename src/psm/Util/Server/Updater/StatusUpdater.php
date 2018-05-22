@@ -83,7 +83,7 @@ class StatusUpdater {
 			'server_id' => $server_id,
 		), array(
 			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'pattern_online', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
-			'warning_threshold_counter', 'timeout', 'website_username', 'website_password'
+			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if(empty($this->server)) {
 			return false;
@@ -117,6 +117,12 @@ class StatusUpdater {
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
 			$save['warning_threshold_counter'] = 0;
+			if ($this->server['status'] == 'off') {
+				$online_date = new \DateTime($save['last_online']);
+				$offline_date = new \DateTime($this->server['last_offline']);
+				$difference = $online_date->diff($offline_date);
+				$save['last_offline_duration'] = trim(psm_format_interval($difference));
+			}
 		} else {
 			// server is offline, increase the error counter
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
@@ -128,6 +134,9 @@ class StatusUpdater {
 				$this->status_new = true;
 			} else {
 				$save['status'] = 'off';
+				if ($this->server['status'] == 'on') {
+					$save['last_offline'] = $save['last_check'];
+				}
 			}
 		}
 
@@ -150,16 +159,19 @@ class StatusUpdater {
 		// set ping payload
 		$package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
 
-		$fp = @fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
 		$socket  = socket_create(AF_INET, SOCK_RAW, 1);
 		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
 		socket_connect($socket, $this->server['ip'], null);
-		
+
 		socket_send($socket, $package, strLen($package), 0);
 		if (socket_read($socket, 255)) {
 			$status = true;
 		} else {
 			$status = false;
+
+			// set error  message
+			$errorcode = socket_last_error();
+			$this->error = "Couldn't create socket [".$errorcode."]: ".socket_strerror($errorcode);
 		}
 		$this->rtime =  microtime(true) - $starttime;
 		socket_close($socket);
@@ -245,7 +257,7 @@ class StatusUpdater {
 				$result = false;
 			} else {
 				$result = true;
-				
+
 				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if($this->server['pattern'] != '') {
 					// Check to see if the body should not contain specified pattern

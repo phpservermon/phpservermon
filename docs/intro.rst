@@ -48,15 +48,19 @@ You can choose for email, text message (SMS), Pushover.net and Telegram notifica
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
-* Inetworx - <http://www.inetworx.ch>
-* Mollie - <http://www.mollie.nl>
-* Mosms - <http://www.mosms.com>
-* Smsglobal - <http://smsglobal.com/>
-* SMSit - <http://www.smsit.dk/>
-* Spryng - <http://www.spryng.nl>
-* Textmarketer - <http://www.textmarketer.co.uk>
-* FreeVoipDeal - <http://www.freevoipdeal.com>
+* Inetworx - <https://www.inetworx.ch>
+* Mollie - <https://www.mollie.nl>
+* Mosms - <https://www.mosms.com>
+* Smsglobal - <https://smsglobal.com/>
+* SMSit - <https://www.smsit.dk/>
+* Spryng - <https://www.spryng.nl>
+* Textmarketer - <https://www.textmarketer.co.uk>
+* FreeVoipDeal - <https://www.freevoipdeal.com>
 * Nexmo - <https://www.nexmo.com/>
+* OctoPush - <https://www.octopush.com/>
+* FreeMobile (FR) - <https://mobile.free.fr/>
+* Twilio - <https://twilio.com>
+* CM Telecom - <https://www.cm.com/>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
