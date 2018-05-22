@@ -64,6 +64,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
+					`s`.`pattern_online`,
 					`s`.`header_name`,
 					`s`.`header_value`,
 					`s`.`status`,
