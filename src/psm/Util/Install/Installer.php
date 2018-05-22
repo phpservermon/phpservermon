@@ -228,7 +228,7 @@ class Installer {
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
-						  `pattern_online` tinyint(1) unsigned NOT NULL,
+						  `pattern_online` tinyint(1) unsigned NOT NULL default '1',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -534,7 +534,7 @@ class Installer {
 	protected function upgrade330() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern_online`  TINYINT( 1 ) unsigned NOT NULL AFTER  `pattern`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern_online`  TINYINT( 1 ) unsigned NOT NULL DEFAULT '1' AFTER  `pattern`;";
 		$this->execSQL($queries);
 	}
 }
