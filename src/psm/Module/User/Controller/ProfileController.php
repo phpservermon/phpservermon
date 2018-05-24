@@ -157,9 +157,9 @@ class ProfileController extends AbstractController {
 	 */
 	protected function activateTelegram() {
 		$telegram = psm_build_telegram();
-		$api_token = psm_get_conf('telegram_api_token');
+		$apiToken = psm_get_conf('telegram_api_token');
 
-		if(empty($api_token)) {
+		if(empty($apiToken)) {
 			$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
 		} else {
 			$result = $telegram->getBotUsername();
@@ -180,4 +180,3 @@ class ProfileController extends AbstractController {
 		}
 	}
 }
-

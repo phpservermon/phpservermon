@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Perri Vardy-Mason
+ * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -29,31 +30,41 @@
 namespace psm\Txtmsg;
 
 class Textmarketer extends Core {
-    // =========================================================================
-    // [ Fields ]
-    // =========================================================================
-    public $gateway = 1;
-    public $resultcode = null;
-    public $resultmessage = null;
-    public $success = false;
-    public $successcount = 0;
 
+	/**
+	* Send sms using the Textmarketer API
+	* @var string $message
+	* @var array $this->recipients
+	* @var string $recipient
+	* @var string $this->username
+	* @var string $this->password
+	* @var int $success
+	* @var string $error
+	* @return int or string
+	*/
     public function sendSMS($message) {
+        $success = 1;
+		$error = '';
+        foreach( $this->recipients as $recipient ){
 
-        $textmarketer_url = "https://api.textmarketer.co.uk/gateway/";
-        $textmarketer_data = urlencode( $message );
-        $textmarketer_origin = urlencode( 'SERVERALERT' );
+            $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://api.textmarketer.co.uk/gateway/?username=".$this->username."&password=".$this->password."&to=".$recipient."&message=".urlencode($message)."&orig=SERVERALERT");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$headers = array();
+			$headers[] = "Content-Type: application/x-www-form-urlencoded";
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			$result = curl_exec($ch);
+			curl_close($ch);
 
-
-        foreach( $this->recipients as $phone ){
-
-            $URL = $textmarketer_url."?username=" . $this->username . "&password=" . $this->password . "&to=" . $phone . "&message=" . $textmarketer_data . "&orig=" . $textmarketer_origin;
-
-            $result = file_get_contents( $URL );
-
+            // Check on error
+            if (is_numeric(strpos($result, "FAILED"))) {
+                $error = $result;
+                $success = 0;
+            }
         }
-
-        return $result;
+        if($success == 1){
+            return 1;
+        }
+        return $error;
     }
-
 }
