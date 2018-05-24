@@ -199,7 +199,7 @@ class ServerController extends AbstractServerController {
 				'edit_value_timeout' => $edit_server['timeout'],
 				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
-				'edit_value_pattern_online' => !empty($edit_server['pattern_online']),
+				'edit_pattern_selected_' . $edit_server['pattern_online'] => 'selected="selected"',
 				'edit_value_header_name' => $edit_server['header_name'],
 				'edit_value_header_value' => $edit_server['header_value'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
@@ -268,7 +268,7 @@ class ServerController extends AbstractServerController {
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
-			'pattern_online' => !empty(psm_POST('pattern_online', '')),
+			'pattern_online' => in_array($_POST['pattern_online'], array('yes', 'no')) ? $_POST['pattern_online'] : 'yes',
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
 			'rtime' => psm_POST('rtime', '0.0000000'),
@@ -481,6 +481,7 @@ class ServerController extends AbstractServerController {
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
 			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 			'label_email' => psm_get_lang('servers', 'email'),
 			'label_send_email' => psm_get_lang('servers', 'send_email'),
@@ -499,6 +500,8 @@ class ServerController extends AbstractServerController {
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+			'label_online' => psm_get_lang('system', 'online'),
+			'label_offline' => psm_get_lang('system', 'offline'),
 		);
 	}
 
