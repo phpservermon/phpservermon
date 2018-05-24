@@ -132,6 +132,27 @@ function psm_get_langs() {
 }
 
 /**
+ * Retrieve a list with available sms gateways
+ *
+ * @return array
+ */
+function psm_get_sms_gateways() {
+	$sms_gateway_files = glob(PSM_PATH_SMS_GATEWAY . '*.php');
+	$sms_gateways = array();
+
+	foreach($sms_gateway_files as $file) {
+		$name = basename($file, ".php");
+		// filter system files out
+		if($name != "Core" && $name != "TxtmsgInterface"){
+			$sms_gateways[strtolower($name)] = $name;
+		}
+	}
+
+	ksort($sms_gateways);
+	return $sms_gateways;
+}
+
+/**
  * Get a setting from the config.
  *
  * @param string $key
@@ -530,7 +551,7 @@ function psm_build_sms() {
 	$sms = null;
 
 	// open the right class
-	// not making this any more dynamic, because perhaps some gateways need custom settings (like Mollie)
+	// not making this any more dynamic, because perhaps some gateways need custom settings
 	switch(strtolower(psm_get_conf('sms_gateway'))) {
 		case 'mosms':
 			$sms = new \psm\Txtmsg\Mosms();
@@ -541,9 +562,8 @@ function psm_build_sms() {
 		case 'inetworx':
 			$sms = new \psm\Txtmsg\Inetworx();
 			break;
-		case 'mollie':
-			$sms = new \psm\Txtmsg\Mollie();
-			$sms->setGateway(1);
+		case 'messagebird':
+			$sms = new \psm\Txtmsg\Messagebird();
 			break;
 		case 'spryng':
 			$sms = new \psm\Txtmsg\Spryng();
@@ -577,6 +597,9 @@ function psm_build_sms() {
 			break;
 		case 'twilio':
 			$sms = new \psm\Txtmsg\Twilio();
+			break;
+		case 'cmbulksms':
+			$sms = new \psm\Txtmsg\CMBulkSMS();
 			break;
 	}
 

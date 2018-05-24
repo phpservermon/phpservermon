@@ -18,44 +18,55 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@mailbox.org>
+ * @author      Perri Vardy-Mason
  * @author      Tim Zandbergen <Tim@Xervion.nl>
- * @copyright   Copyright (c) 2008-2018 Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
- * @link        https://www.phpservermonitor.org/
+ * @link        http://www.phpservermonitor.org/
+ * @since       phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
 
-class Clickatell extends Core {
+class Messagebird extends Core {
 
 	/**
-	* Send sms using the Clickatell API
+	* Send sms using the Messagebird API
 	* @var string $message
 	* @var array $this->recipients
-	* @var string $recipient
-	* @var string $this->username
-	* @var string $this->originator
+	* @var array $this->originator (Max 11 characters)
+	* @var array $recipients_chunk
+	* @var string $this->password
 	* @var int $success
 	* @var string $error
 	* @return int or string
 	*/
-	public function sendSMS($message) {
-		$success = 1;
+    public function sendSMS($message) {
+        $success = 1;
 		$error = '';
-		foreach($this->recipients as $recipient) {
+
+		// Maximum of 50 users a time.
+		$recipients_chunk = array_chunk($this->recipients, ceil(count($this->recipients) / 50)); 
+
+		foreach ($recipients_chunk as $recipients) {
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, "https://platform.clickatell.com/messages/http/send?apiKey=".urlencode($this->username)."&to=".urlencode($recipient)."&content=".urlencode($message));
+			curl_setopt($ch, CURLOPT_URL, "https://rest.messagebird.com/messages");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 
+			"originator=".urlencode($this->originator == '' ? 'PSM' : $this->originator).
+			"&body=".urlencode($message).
+			"&recipients=".implode(",", $recipients));
+			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$headers = array();
+			$headers[] = "Authorization: AccessKey ".$this->password;
 			$headers[] = "Content-Type: application/x-www-form-urlencoded";
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-		 	// Check on error
-			if (strpos($result, ",\"errorCode\":null,\"error\":null,\"errorDescription\":null") === False) {
+			// Check on error
+			if (is_numeric(strpos($result, "{\"errors\":"))) {
 				$error = $result;
 				$success = 0;
 			}

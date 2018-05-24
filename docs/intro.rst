@@ -49,7 +49,7 @@ The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
 * Inetworx - <https://www.inetworx.ch>
-* Mollie - <https://www.mollie.nl>
+* Messagebird - <https://www.messagebird.com>
 * Mosms - <https://www.mosms.com>
 * Smsglobal - <https://smsglobal.com/>
 * SMSit - <https://www.smsit.dk/>

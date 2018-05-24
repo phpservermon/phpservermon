@@ -70,8 +70,6 @@ class Twilio extends Core {
 		if($success == 1){
 			return 1;
 		}
-		else{
-			return $error;
-		}
+		return $error;
 	}
 }

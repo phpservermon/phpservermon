@@ -83,9 +83,6 @@ class CMBulkSMS extends Core {
             return false;
         }
 
-        // Set message text
-        $this->messageBody = $message;
-
         // Prepare the message in CM's XML or JSON format
         switch($this->apiType) {
             case 'xml':
@@ -133,7 +130,7 @@ class CMBulkSMS extends Core {
                         'from'  => substr($this->originator, 0, 11),
                         'to'    => $recipients,
                         'body'  => array(
-                            'content' => $this->messageBody
+                            'content' => $message
                         )
                     )
                 )
@@ -184,7 +181,7 @@ class CMBulkSMS extends Core {
         }
 
         // Add body text
-        $msg->addChild('BODY', $this->messageBody);
+        $msg->addChild('BODY', $message);
 
         return $xml->asXML();
     }

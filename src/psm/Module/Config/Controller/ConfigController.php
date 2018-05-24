@@ -117,8 +117,19 @@ class ConfigController extends AbstractController {
 			);
 		}
 
+		// generate sms_gateway array
+		$sms_gateways = psm_get_sms_gateways();
+		$tpl_data['sms_gateway_current'] = (isset($config['sms_gateway']))
+				? $config['sms_gateway']
+				: current($sms_gateways);
+		$tpl_data['sms_gateways'] = array();
+		foreach($sms_gateways as $sms_gateway => $label) {
+			$tpl_data['sms_gateways'][] = array(
+				'value' => $sms_gateway,
+				'label' => $label,
+			);
+		}
 		// @todo these selected values can easily be rewritten in the template using twig
-		$tpl_data['sms_selected_' . $config['sms_gateway']] = 'selected="selected"';
 		$tpl_data['alert_type_selected_' . $config['alert_type']] = 'selected="selected"';
 		$smtp_sec = isset($config['email_smtp_security']) ? $config['email_smtp_security'] : '';
 		$tpl_data['email_smtp_security_selected_' . $smtp_sec] = 'selected="selected"';
@@ -266,9 +277,9 @@ class ConfigController extends AbstractController {
 		$pushover = psm_build_pushover();
 		$pushover->setDebug(true);
 		$user = $this->getUser()->getUser();
-		$api_token = psm_get_conf('pushover_api_token');
+		$apiToken = psm_get_conf('pushover_api_token');
 
-		if(empty($api_token)) {
+		if(empty($apiToken)) {
 			$this->addMessage(psm_get_lang('config', 'pushover_error_noapp'), 'error');
 		} elseif(empty($user->pushover_key)) {
 			$this->addMessage(psm_get_lang('config', 'pushover_error_nokey'), 'error');
@@ -303,9 +314,9 @@ class ConfigController extends AbstractController {
 		protected function testTelegram() {
 			$telegram = psm_build_telegram();
 			$user = $this->getUser()->getUser();
-			$api_token = psm_get_conf('telegram_api_token');
+			$apiToken = psm_get_conf('telegram_api_token');
 
-			if(empty($api_token)) {
+			if(empty($apiToken)) {
 				$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
 			} elseif(empty($user->telegram_id)) {
 				$this->addMessage(psm_get_lang('config', 'telegram_error_noid'), 'error');
@@ -363,21 +374,6 @@ class ConfigController extends AbstractController {
 			'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
 			'label_sms_status' => psm_get_lang('config', 'sms_status'),
 			'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
-			'label_sms_gateway_mosms' => psm_get_lang('config', 'sms_gateway_mosms'),
-			'label_sms_gateway_mollie' => psm_get_lang('config', 'sms_gateway_mollie'),
-			'label_sms_gateway_spryng' => psm_get_lang('config', 'sms_gateway_spryng'),
-			'label_sms_gateway_inetworx' => psm_get_lang('config', 'sms_gateway_inetworx'),
-			'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
-			'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
-			'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
-			'label_sms_gateway_freevoipdeal' => psm_get_lang('config', 'sms_gateway_freevoipdeal'),
-			'label_sms_gateway_smsglobal' => psm_get_lang('config', 'sms_gateway_smsglobal'),
-			'label_sms_gateway_nexmo' => psm_get_lang('config', 'sms_gateway_nexmo'),
-			'label_sms_gateway_smsgw' => psm_get_lang('config', 'sms_gateway_smsgw'),
-			'label_sms_gateway_octopush' => psm_get_lang('config', 'sms_gateway_octopush'),
-			'label_sms_gateway_freemobilesms' => psm_get_lang('config', 'sms_gateway_freemobilesms'),
-			'label_sms_gateway_clicksend' => psm_get_lang('config', 'sms_gateway_clicksend'),
-			'label_sms_gateway_twilio' => psm_get_lang('config', 'sms_gateway_twilio'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),

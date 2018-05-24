@@ -144,7 +144,7 @@ class Installer {
 					('email_smtp_username', ''),
 					('email_smtp_password', ''),
 					('sms_status', '0'),
-					('sms_gateway', 'mollie'),
+					('sms_gateway', 'messagebird'),
 					('sms_gateway_username', 'username'),
 					('sms_gateway_password', 'password'),
 					('sms_from', '1234567890'),
@@ -534,5 +534,9 @@ class Installer {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
 		$this->execSQL($queries);
+		if(psm_get_conf('sms_gateway') == 'mollie'){
+			psm_update_conf('sms_gateway', 'messagebird');
+		}
+		
 	}
 }
