@@ -126,7 +126,7 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'yes','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'yes', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -228,6 +228,7 @@ class Installer {
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
+						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -533,6 +534,7 @@ class Installer {
 	protected function upgrade330() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `pattern_online` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `pattern`;";
 		$this->execSQL($queries);
 		if(psm_get_conf('sms_gateway') == 'mollie'){
 			psm_update_conf('sms_gateway', 'messagebird');
