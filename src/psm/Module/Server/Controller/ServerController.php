@@ -268,7 +268,7 @@ class ServerController extends AbstractServerController {
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
-			'pattern_online' => !empty(psm_POST('pattern_online', '')),
+			'pattern_online' => !empty(psm_POST('pattern_online', 1)),
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
 			'rtime' => psm_POST('rtime', '0.0000000'),
