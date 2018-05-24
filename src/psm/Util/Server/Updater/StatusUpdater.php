@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'pattern_online', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if(empty($this->server)) {
@@ -260,9 +260,12 @@ class StatusUpdater {
 
 				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if($this->server['pattern'] != '') {
-					// Check to see if the pattern was found.
-					if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-						$this->error = 'TEXT ERROR : Pattern not found.';
+					// Check to see if the body should not contain specified pattern
+					// Check to see if the pattern was [not] found.
+					if(($this->server['pattern_online'] == 'yes') == !preg_match("/{$this->server['pattern']}/i", $curl_result)){
+						$this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " . 
+							($this->server['pattern_online'] == 'yes' ? 'not' : 'was') . 
+							' found.';
 						$result = false;
 					}
 				}
