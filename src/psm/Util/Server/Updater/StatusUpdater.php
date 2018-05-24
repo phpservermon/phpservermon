@@ -261,10 +261,13 @@ class StatusUpdater {
 				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if($this->server['pattern'] != '') {
 					// Check to see if the body should not contain specified pattern
-					$pattern_online = !!$this->server['pattern_online'];
 					// Check to see if the pattern was [not] found.
-					if($pattern_online ? !preg_match("/{$this->server['pattern']}/i", $curl_result) : preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-						$this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " . ($pattern_online ? 'not' : 'was') . ' found.';
+					if($this->server['pattern_online'] == 'yes' ? 
+					   		preg_match("/{$this->server['pattern']}/i", $curl_result) : 
+					   		!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
+						$this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " . 
+							($this->server['pattern_online'] == 'yes' ? 'not' : 'was') . 
+							' found.';
 						$result = false;
 					}
 				}
