@@ -264,7 +264,7 @@ class StatusUpdater {
 					$pattern_online = !!$this->server['pattern_online'];
 					// Check to see if the pattern was [not] found.
 					if($pattern_online ? !preg_match("/{$this->server['pattern']}/i", $curl_result) : preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-						$this->error = 'TEXT ERROR : Pattern ' . ($pattern_online ? 'not' : 'was') . ' found.';
+						$this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " . ($pattern_online ? 'not' : 'was') . ' found.';
 						$result = false;
 					}
 				}
