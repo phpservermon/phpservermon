@@ -24,25 +24,32 @@
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
+try{
+	require __DIR__ . '/src/bootstrap.php';
 
-require __DIR__ . '/src/bootstrap.php';
+	psm_no_cache();
 
-psm_no_cache();
+	if(isset($_GET["logout"])) {
+		$router->getService('user')->doLogout();
+		// logged out, redirect to login
+		header('Location: ' . psm_build_url());
+		die();
+	}
 
-if(isset($_GET["logout"])) {
-	$router->getService('user')->doLogout();
-	// logged out, redirect to login
-	header('Location: ' . psm_build_url());
-	die();
+	$mod = psm_GET('mod', PSM_MODULE_DEFAULT);
+
+	try {
+		$router->run($mod);
+	} catch(\InvalidArgumentException $e) {
+		// invalid module, try the default one
+		// it that somehow also doesnt exist, we have a bit of an issue
+		// and we really have no reason catch it
+		$router->run(PSM_MODULE_DEFAULT);
+	}
 }
-
-$mod = psm_GET('mod', PSM_MODULE_DEFAULT);
-
-try {
-	$router->run($mod);
-} catch(\InvalidArgumentException $e) {
-	// invalid module, try the default one
-	// it that somehow also doesnt exist, we have a bit of an issue
-	// and we really have no reason catch it
-	$router->run(PSM_MODULE_DEFAULT);
+catch(Exception $e) {
+	echo '<pre><code>';
+    echo 'Message:<br/>' .$e->getMessage();
+	echo '<br/>Stack Trace:<br/>' . $e->getTraceAsString();
+	echo '</code></pre>';
 }
