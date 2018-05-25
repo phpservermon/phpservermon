@@ -11,7 +11,7 @@
 		"symfony/http-foundation": "~3.4",
 		"php-pushover/php-pushover": "dev-master",
 		"paragonie/random_compat": "^2.0",
-		"twig/twig": "~2.0"
+		"twig/twig": "~1.35.3"
 	},
 	"autoload": {
 		"files": [
