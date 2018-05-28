@@ -60,15 +60,11 @@ class FreeMobileSMS extends Core {
 		);
 		
 		$result = curl_exec($curl);
-		$err = curl_error($curl);
 		curl_close($curl);
 		
-		if($err) {
+		if($err = curl_errno($err)) {
 			$success = 0;
-			$error = "cURL Error";
-		}
-		elseif(1 ==1) {
-			//FreeMobileSMS logic (I can't access their API or their documentation, nor was this ever used somewhere)
+    			$error = "cURL error (".$err."): ".curl_strerror($err);
 		}
 		
 		if($success) return 1;
