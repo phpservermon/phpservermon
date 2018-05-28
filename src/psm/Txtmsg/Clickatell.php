@@ -35,7 +35,7 @@ class Clickatell extends Core {
 	* @var string $message
 	* @var array $this->recipients
 	* @var string $recipient
-	* @var string $this->username
+	* @var string $this->password
 	* @var string $this->originator
 	* @var int $success
 	* @var string $error
@@ -46,7 +46,7 @@ class Clickatell extends Core {
 		$error = '';
 		foreach($this->recipients as $recipient) {
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, "https://platform.clickatell.com/messages/http/send?apiKey=".urlencode($this->username)."&to=".urlencode($recipient)."&content=".urlencode($message));
+			curl_setopt($ch, CURLOPT_URL, "https://platform.clickatell.com/messages/http/send?apiKey=".urlencode($this->password)."&to=".urlencode($recipient)."&content=".urlencode($message));
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$headers = array();
 			$headers[] = "Content-Type: application/x-www-form-urlencoded";
