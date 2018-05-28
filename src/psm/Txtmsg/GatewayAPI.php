@@ -29,15 +29,15 @@
 
 namespace psm\Txtmsg;
 
-class Mosms extends Core {
+class GatewayAPI extends Core {
 
 	/**
 	* Send sms using the GatewayAPI API
 	* @var string $message
-	* @var array $this->username
-	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator (Max 11 characters)
+	* @var array $recipients_chunk
+	* @var string $this->password
 	* @var int $success
 	* @var string $error
 	* @return int or string
@@ -46,14 +46,36 @@ class Mosms extends Core {
 		$error = "";
 		$success = 0;
 		
-		$API_URL = "https://www.mosms.com/se/sms-send.php";
-		$message = rawurlencode($message);
+		if(!isset($destaddr) || is_null($destaddr)) $destaddr = 'MOBILE';
+		if(!isset($userref) ||is_null($userref)) $userref = '';
 		
-		foreach($this->recipients as $phone) {
-			$result = file_get_contents($API_URL . "?username=" . $this->username . "&password=" . $this->password . "&customsender=" . $this->originator . "nr=" . $phone . "&type=text&data=" . $message);
-			if($result != "0") $error = $result;
-			else $success = 1;
+		$json = [
+			'sender' => $this->originator,
+			'message' => $message,
+			'recipients' => [],
+			'destaddr' => $destaddr,
+			'userref' => $userref,
+		];
+		
+		foreach($recipients as $msisdn) {
+			$json['recipients'][] = ['msisdn' => $recipient];
 		}
+		
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
+		curl_setopt($ch,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($ch,CURLOPT_USERPWD, $this->password . ":");
+		curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($json));
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+		
+		$result = json_decode($result,true);
+		
+		if($httpcode == 200) $success = 1;
+		else $error = $result['code'];
 		
 		if($success) return true;
 		else return $error;

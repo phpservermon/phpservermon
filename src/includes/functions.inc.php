@@ -601,6 +601,9 @@ function psm_build_sms() {
 		case 'cmbulksms':
 			$sms = new \psm\Txtmsg\CMBulkSMS();
 			break;
+		case 'gatewayapi':
+			$sms = new \psm\Txtmsg\GatewayAPI();
+			break;
 	}
 
 	// copy login information from the config file
