@@ -50,9 +50,7 @@ class Inetworx extends Core {
 		$error = "";
 		$success = 1;
 		
-		if(empty($this->recipients)) return false;
-		
-		foreach($this-recipients as $recipient) {
+		foreach($this->recipients as $recipient) {
 			$curl = curl_init();
 			
 			curl_setopt_array($curl, array(
@@ -78,17 +76,14 @@ class Inetworx extends Core {
 				),
 			));
 
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-			curl_close($curl);
-
-			if($err) {
+			$result = curl_exec($curl);
+			//die(print_r(strpos($result, "200").$result));
+			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			if($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200")  === false) {
 				$success = 0;
-				$error = "cURL Error";
+    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 			}
-			elseif(1 ==1) {
-				//Inetworx logic (I can't access their API or their documentation, nor was this ever used somewhere)
-			}
+			curl_close($curl);
 		}
 		
 		if($success) return 1;
