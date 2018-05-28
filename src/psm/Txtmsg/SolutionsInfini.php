@@ -19,11 +19,12 @@
  *
  * @package		phpservermon
  * @author		Ward Pieters <ward@wardpieters.nl>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
- * @since		phpservermon 3.2
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
@@ -68,16 +69,14 @@ class SolutionsInfini extends Core {
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		
-		$result = curl_exec($curl);
-		$err = curl_error($curl);
-		
-		if($err = curl_errno($curl) || $httpcode != 200 || $result == 2 || $result == 5) {
+
+		$result = json_decode(curl_exec($curl), true);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if($err = curl_errno($curl) || $httpcode != 200 || $result['status'] != "OK") {
 			$success = 0;
-			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['status']." - ".$result['message'].".";
 		}
 		curl_close($curl);
-		
-		
 		if($success) return 1;
 		return $error;
 	}
