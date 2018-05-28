@@ -39,6 +39,7 @@ class Inetworx extends Core {
 	* @var array $this->originator
 	*
 	* @var resource $curl
+	* @var string $err
 	* @Var string $recipient
 	* @var int $success
 	* @var string $error

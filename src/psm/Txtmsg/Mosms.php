@@ -42,6 +42,7 @@ class Mosms extends Core {
 	* @var array $this->originator (Max 11 characters)
 	*
 	* @var resource $curl
+	* @var string $err
 	* @var int $success
 	* @var string $error
 	*

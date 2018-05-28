@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Michiel van der Wulp <michiel@vanderwulp.be>
- * @author      Michiel van der Wulp <michiel@vanderwulp.be>
+ * @author      Ward Pieters <ward@wardpieters.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -38,6 +38,7 @@ class FreeVoipDeal extends Core {
 	* @var array $this->originator
 	*
 	* @var resource $curl
+	* @var string $err
 	* @var string $recipient
 	* @var string $from
 	* @var string $result

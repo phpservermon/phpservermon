@@ -30,32 +30,24 @@
 namespace psm\Txtmsg;
 
 class Nexmo extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
-
-	public function sendSMS($message) {
-		$nexmo_url = "https://rest.nexmo.com/sms/json";
-		$nexmo_data = rawurlencode( $message );
-
-		foreach( $this->recipients as $phone ){
-			$result = file_get_contents( $nexmo_url . 
-						      "?api_key=" . $this->username .
-						      "&api_secret=" . $this->password . 
-						      "&from=" . $this->originator  . 
-						      "&to=" . $phone . 
-						      "&type=text" .
-						      "&text=" . $nexmo_data 
-			);
-		}
-
-		return $result;
-	}
+	
+	
+	/**
+	* Send sms using the GatewayAPI API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	* @Var string $recipient
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
 	
 	public function sendSMS($message) {
 		$success = 1;
@@ -71,14 +63,14 @@ class Nexmo extends Core {
 					array(
 						"api_key" => $this->username,
 						"api_secret" => $this->password,
+						"from" => $this->originator,
 						"to" => $recipient,
-						"type" => "text",
 						"text" => $message,
 					)
 				)
 			);
 			
-			$result = json_decode(curl_exec($curl));
+			$result = json_decode(curl_exec($curl),true);
 			$err =curl_error($curl);
 			curl_close($curl);
 			

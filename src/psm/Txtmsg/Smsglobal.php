@@ -39,6 +39,7 @@ class Smsglobal extends Core {
 	* @var array $this->originator
 	*
 	* @var resource $curl
+	* @var string $err
 	* @var string $recipient
 	* @var string $from
 	* @var string $result

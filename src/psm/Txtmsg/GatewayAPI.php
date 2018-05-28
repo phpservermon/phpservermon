@@ -41,6 +41,7 @@ class GatewayAPI extends Core {
 	* @Var string $recipient
 	*
 	* @var resource $curl
+	* @var string $err
 	* @var int $success
 	* @var string $error
 	*
@@ -70,12 +71,16 @@ class GatewayAPI extends Core {
 		curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($json));
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 		
-		$result = curl_exec($curl);
+		$result = json_decode(curl_exec($curl),true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$err = curl_error($curl);
 		curl_close($curl);
 		
-		$result = json_decode($result,true);
-		if($httpcode != 200) {
+		if($err) {
+			$success = 0;
+			$error = "cURL Error";
+		}
+		elseif($httpcode != 200) {
 			$success = 0;
 			$error = $result['code']." - ".$result['message'];
 		}

@@ -40,6 +40,7 @@ class Smsit extends Core {
 	* @var array $this->originator
 	*
 	* @var resource $curl
+	* @var string $err
 	* @var String $recipient
 	* @var string $result
 	* @var int $success
