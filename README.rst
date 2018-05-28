@@ -58,6 +58,9 @@ The following SMS gateways are currently available:
 * Twilio - <https://twilio.com>
 * CM Telecom - <https://www.cm.com/>
 * GatewayAPI - <https://gatewayapi.com/>
+* SolutionsInfini - <https://solutionsinfini.com/>
+* Plivo - <https://www.plivo.com/>
+* Callr - <https://www.callr.com/>
 
 
 
