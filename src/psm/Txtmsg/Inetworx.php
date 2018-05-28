@@ -77,7 +77,7 @@ class Inetworx extends Core {
 			));
 
 			$result = curl_exec($curl);
-			//die(print_r(strpos($result, "200").$result));
+
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			if($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200")  === false) {
 				$success = 0;
