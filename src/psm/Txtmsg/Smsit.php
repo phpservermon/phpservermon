@@ -31,6 +31,18 @@ namespace psm\Txtmsg;
 
 class Smsit extends Core {
 	
+	/**
+	* Send sms using the Smsit API
+	* @var string $message
+	* @var array $this->recipients
+	* @var String $recipient
+	* @var array $this->originator
+	* @var string $this->password
+	* @var int $success
+	* @var string $error
+	* @return int or string
+	*/
+	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = "":
@@ -38,8 +50,8 @@ class Smsit extends Core {
 		// http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[SENDER]&mobile=[PHONENUMBER]&message=[MESSAGE]
 		$API_URL = "https://www.smsit.dk/api/sendSms.php";
 		
-		foreach( $this->recipients as $phone ){
-			$URL = $API_URL."?apiKey=" . $this->password . "&mobile=" . $phone . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
+		foreach( $this->recipients as $recipient ){
+			$URL = $API_URL."?apiKey=" . $this->password . "&mobile=" . $recipient . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
 			$result = file_get_contents($URL);
 			
 			/*
