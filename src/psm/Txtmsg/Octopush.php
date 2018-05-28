@@ -35,6 +35,7 @@ class Octopush extends Core {
 	/**
 	* Send sms using the Octopush API
 	* @var string $message
+	* @var string $this->username
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator
@@ -43,7 +44,6 @@ class Octopush extends Core {
 	* @var SimpleXMLElement $xmlResults
 	* @var string $err
 	* @var string $recipient
-	* @var boolean $premium_sms
 	* @var string $sms_type
 	* @var string $result
 	* @var int $success
