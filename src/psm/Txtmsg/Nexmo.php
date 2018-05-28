@@ -70,17 +70,16 @@ class Nexmo extends Core {
 			);
 			
 			$result = json_decode(curl_exec($curl),true);
-			$err =curl_error($curl);
+			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			
+			$err = curl_error($curl);
+			
+			if($err = curl_errno($curl) || $httpcode != 200 || $result['messages'][0]['status'] != "0") {
+				$success = 0;
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result['messages'][0]['error-text'];
+			}
 			curl_close($curl);
 			
-			if($err) {
-				$success = 0;
-				$error = "cURL Error";
-			}
-			elseif($result['messages'][]['status'] != "0") {
-				$success = 0;
-				$error = $result['messages'][]['error-text'];
-			}
 		}
 		
 		if($success) return 1;
