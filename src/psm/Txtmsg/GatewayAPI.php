@@ -35,6 +35,7 @@ class GatewayAPI extends Core {
 	* Send sms using the GatewayAPI API
 	* @var string $message
 	* @var array $this->recipients
+	* @Var string $recipient
 	* @var array $this->originator
 	* @var string $this->password
 	* @var int $success
