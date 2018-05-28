@@ -44,7 +44,7 @@ class Octopush extends Core {
 	* @var SimpleXMLElement $xmlResults
 	* @var string $err
 	* @var string $recipient
-	* @var string $sms_type
+	* @var string $smsType
 	* @var string $result
 	* @var int $success
 	* @var string $error
@@ -59,7 +59,7 @@ class Octopush extends Core {
 		
 		$recipients = join(',', $this->recipients);
 		
-		$message = ($smsType == "FR") ? urlencode($message . " STOP au XXXXX") : urlencode($message);
+		$message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
 
 		$curl = curl_init();
 		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
