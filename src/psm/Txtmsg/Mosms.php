@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Perri Vardy-Mason
+ * @author      Ward Pieters <ward@wardpieters.nl>
  * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
@@ -44,20 +44,34 @@ class Mosms extends Core {
 	*/
 	public function sendSMS($message) {
 		$error = "";
-		$success = 1;
+		$success = 0;
 		
-		$API_URL = "https://www.mosms.com/se/sms-send.php";
 		$message = rawurlencode($message);
 		
 		foreach($this->recipients as $phone) {
-			$result = file_get_contents($API_URL . "?username=" . $this->username . "&password=" . $this->password . "&customsender=" . $this->originator . "nr=" . $phone . "&type=text&data=" . $message);
-			if($result != "0"){
-				$success = 0;
-				$error = $result;
-			}
+			$data = http_build_query(array(
+				"username" => $this->username,
+				"password" => $this->password,
+				"customsender" => $this->originator,
+				"nr" => $phone,
+				"type" => "text",
+				"data" => $message,
+			));
+			
+			$ch = curl_init();
+			curl_setopt($ch,CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?".$data);
+			curl_setopt($ch,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+			curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($json));
+			curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+			
+			$result = curl_exec($ch);
+			curl_close($ch);
+			
+			if($result != "0") $error = $result;
+			else $success = 1;
 		}
 		
-		if($success) return 1;
-		return $error;
+		if($success) return true;
+		else return $error;
 	}
 }
