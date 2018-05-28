@@ -19,7 +19,7 @@
  *
  * @package		phpservermon
  * @author		nerdalertdk
- * @author		WardPieters
+ * @author		Ward Pieters <ward@wardpieters.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
@@ -33,13 +33,18 @@ class Smsit extends Core {
 	
 	/**
 	* Send sms using the Smsit API
+	*
 	* @var string $message
-	* @var array $this->recipients
-	* @var String $recipient
-	* @var array $this->originator
 	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @var String $recipient
+	* @var string $result
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
 	
@@ -47,18 +52,34 @@ class Smsit extends Core {
 		$success = 1;
 		$error = "":
 		
-		$API_URL = "https://www.smsit.dk/api/v2";
-		
 		foreach( $this->recipients as $recipient ){
-			$URL = $API_URL."?apiKey=" . $this->password . "&mobile=" . $recipient . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
-			$result = file_get_contents($URL);
 			
+			$curl = curl_init();
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl,CURLOPT_URL, "https://www.smsit.dk/api/v2?" . http_build_query(
+					array(
+						"apiKey" => $this->password,
+						"mobile" => $recipient,
+						"message" => urlencode($message),
+						"senderId" => substr($this->originator,0,11),
+					)
+				)
+			);
 			
-			if (is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
+			$result = curl_exec($curl);
+			$err =curl_error($curl);
+			curl_close($curl);
+			
+			if($err) {
+				$success = 0;
+				$error = "cURL Error";
+			}
+			elseif(is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
 				$success = 0;
 				$error = $result;
 			}
 		}
+		
 		if($success) return 1;
 		return $error;
 	}

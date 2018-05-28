@@ -32,15 +32,19 @@ namespace psm\Txtmsg;
 class Mosms extends Core {
 
 	/**
-	* Send sms using the GatewayAPI API
+	* Send sms using the Mosms API
+	*
 	* @var string $message
 	* @var array $this->username
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var string $recipient
 	* @var array $this->originator (Max 11 characters)
+	*
+	* @var resource $curl
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
 	public function sendSMS($message) {
@@ -50,25 +54,30 @@ class Mosms extends Core {
 		$message = rawurlencode($message);
 		
 		foreach($this->recipients as $recipient) {
-			$data = http_build_query(array(
-				"username" => $this->username,
-				"password" => $this->password,
-				"customsender" => $this->originator,
-				"nr" => $recipient,
-				"type" => "text",
-				"data" => $message,
-			));
 			
-			$ch = curl_init();
-			curl_setopt($ch,CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?".$data);
-			curl_setopt($ch,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-			curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($json));
-			curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+			$curl = curl_init();
+			curl_setopt($curl,CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?" . http_build_query(
+					array(
+						"username" => $this->username,
+						"password" => $this->password,
+						"customsender" => substr($this->originator, 0, 11),
+						"nr" => $recipient,
+						"type" => "text",
+						"data" => $message,
+					)
+				)
+			);
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 			
-			$result = curl_exec($ch);
-			curl_close($ch);
+			$result = curl_exec($curl);
+			$err = curl_error($curl);
+			curl_close($curl);
 			
-			if($result != "0") {
+			if($err) {
+				$success = 0;
+				$error = "cURL Error";
+			}
+			elseif($result != "0") {
 				$error = $result;
 				$success = 0;
 			}

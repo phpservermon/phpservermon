@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Victor Macko
+ * @author      Ward Pieters <ward@wardpieters.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -31,33 +32,60 @@ namespace psm\Txtmsg;
 class Smsglobal extends Core {
 
 	/**
-	 * Send the SMS message
-	 * @param string $message
-	 * @return boolean (true = message was sent successfully, false = there was a problem sending the message)
-	 */
+	* Send sms using the Smsglobal API
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @var string $recipient
+	* @var string $from
+	* @var string $result
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
 	public function sendSMS($message) {
-		$success = 0;
 		$error = "";
+		$success = 1;
 		
-		if(count($recipients) == 0) return false;
+		if(empty($this->recipients)) return false;
+		
 		$recipients = join(',', $this->recipients);
 		
-		$from = urlencode(substr($this->originator,0 , 11)); // Max 11 Char.
+		$from = substr($this->originator,0 , 11); // Max 11 Characters
+		$message = substr(rawurlencode($message), 0, 153);
 		
-		$url = 'https://www.smsglobal.com/http-api.php' .
-			'?action=sendsms' .
-			'&user=' . $this->username .
-			'&password=' . $this->password .
-			'&from=' . $from .
-			'&to=' . rawurlencode($recipients) .
-			'&clientcharset=ISO-8859-1' .
-			'&text=' . substr(rawurlencode($message), 0, 153);
-
-		$returnedData = file_get_contents($url);
-		if($returnedData == "OK: 0") $success = 1;
-		else $error = $returnedData;
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl,CURLOPT_URL, "https://www.smsglobal.com/http-api.php?" . http_build_query(
+			array(
+				"action" => "sendsms",
+				"user" => $this->username,
+				"password" => $this->password,
+				"from" => $from,
+				"to" => $recipients,
+				"clientcharset" => "ISO-8859-1",
+				"text" => $message,
+			)
+		);
 		
-		if($success) return true;
-		else return $error;
+		$result = curl_exec($curl);
+		curl_close($curl);
+		
+		if($err) {
+			$success = 0;
+			$error = "cURL Error";
+		}
+		elseif(substr($result, 0, 5) != "OK: 0") {
+			$success = 0;
+			$error = $result;
+		}
+		
+		if($success) return 1;
+		return $error;
 	}
 }

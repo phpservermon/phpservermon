@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Pepijn Over <pep@mailbox.org>
+ * @author      Ward Pieters <ward@wardpieters.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -28,118 +29,69 @@
 namespace psm\Txtmsg;
 
 class Inetworx extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-
-	// =========================================================================
-	// [ Methods ]
-	// =========================================================================
-
+	
 	/**
-	 * Send a text message to one or more recipients
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 * @return boolean
-	 */
+	* Send sms using the Inetworx API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @Var string $recipient
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
 	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+		
+		if(empty($this->recipients)) return false;
+		
+		foreach($this-recipients as $recipient) {
+			$curl = curl_init();
+			
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => "https://sms.inetworx.ch/smsapp/sendsms.php",
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 30,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => http_build_query(
+					array(
+						"user" => $this->username,
+						"pass" => $this->password,
+						"sender" => $this->originator,
+						"rcpt" => $recipient,
+						"msgbody" => $message,
+					)
+				),
+				CURLOPT_HTTPHEADER => array(
+					"authorization: Basic " . base64_encode("inetworxag:conn2smsapp"),
+					"content-type: application/x-www-form-urlencoded"
+				),
+			));
 
-		if(empty($this->recipients)) {
-			return false;
-		}
+			$response = curl_exec($curl);
+			$err = curl_error($curl);
+			curl_close($curl);
 
-		$errors = 0;
-
-		foreach($this->recipients as $receiver) {
-			if(!$this->executeSend($message, $receiver, $this->originator)) {
-				$errors++;
+			if($err) {
+				$success = 0;
+				$error = "cURL Error";
+			}
+			elseif(1 ==1) {
+				//Inetworx logic (I can't access their API or their documentation, nor was this ever used somewhere)
 			}
 		}
-		$this->recipients = array();
-
-		return ($errors > 0) ? false : true;
+		
+		if($success) return 1;
+		return $error;
 	}
-
-	/**
-	 * Performs the actual send operation
-	 *
-	 * @param string $subject
-	 * @param string $body
-	 * @param string $receiver
-	 * @param string $sender
-	 * @return unknown
-	 */
-	protected function executeSend($message, $receiver, $sender) {
-		$con_https[0] = 'sms.inetworx.ch';
-		$con_https[1] = '443';
-		$con_https[2] = 'inetworxag:conn2smsapp';
-		$posturl      = "/smsapp/sendsms.php";
-
-		if(!empty($receiver)) {
-			$postvars = 'user=' . urlencode($this->username) .
-						'&pass=' . urlencode($this->password) .
-						'&sender=' . urldecode($sender) .
-						'&rcpt=' . urlencode($receiver) .
-						'&msgbody=' . urlencode($message)
-			;
-			//if enabled, it sends a flash-message (not stored in Inbox!!)
-			//$postvars .= "&mclass=1";
-
-			$rtnval = $this->_auth_https_post(array($con_https[0], $con_https[1], $con_https[2], $posturl, $postvars));
-
-			return $rtnval;
-			//echo "SMS-Send-Result: $rtnval";
-		} else {
-			return false;
-		}
-	}
-
-	protected function _auth_https_post($inarray) {
-		// AUTH_HTTPS_POST: Request POST URL using basic authentication and SSL.
-		// Input: inarray[0]: host name
-		//        inarray[1]: service port
-		//        inarray[2]: user/password
-		//        inarray[3]: URL request
-		//        inarray[4]: POST variables
-		// Output: Message returned by server.
-
-		// Build the header.
-		$header = "POST ".$inarray[3]." HTTP/1.0\r\n";
-		$header .= "Authorization: Basic ".base64_encode("$inarray[2]")."\r\n";
-		$header .= "Host: ".$inarray[0]."\r\n";
-		$header .= "Content-type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-length: ".strlen($inarray[4])."\r\n\r\n";
-		// Connect to the server.
-		$connection = fsockopen("ssl://".$inarray[0], $inarray[1], $errnum, $errdesc, 10);
-		$msg = "";
-		if (! $connection){
-		  $msg = $errdesc." (".$errnum.")";
-		}
-		else
-		{
-			socket_set_blocking($connection,false);
-			fputs($connection,$header.$inarray[4]);
-			while (! feof($connection))
-			{
-				$newline = fgets($connection,128);
-				switch ($newline)
-				{
-					// Skip http headers.
-					case (strstr($newline, 'Content-')): break;
-					case (strstr($newline, 'HTTP/1')): break;
-					case (strstr($newline, 'Date:')): break;
-					case (strstr($newline, 'Server:')): break;
-					case (strstr($newline, 'X-Powered-By:')): break;
-					case (strstr($newline, 'Connection:')): break;
-					case "": break;
-					case "\r\n": break;
-					default: $msg .= $newline;
-			   } //end switch
-			} //end while
-		  fclose($connection);
-		} //end else
-		return $msg;
-	} //end function auth_https_post
-
 }

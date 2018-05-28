@@ -19,6 +19,7 @@
  *
  * @package     phpservermon
  * @author      Michiel van der Wulp <michiel@vanderwulp.be>
+ * @author      Michiel van der Wulp <michiel@vanderwulp.be>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -28,27 +29,59 @@
 namespace psm\Txtmsg;
 
 class FreeVoipDeal extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
-
+	
+	/**
+	* Send sms using the FreeVoipDeal API
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @var string $recipient
+	* @var string $from
+	* @var string $result
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
 	public function sendSMS($message) {
-
-		$local_url = "https://www.freevoipdeal.com/myaccount/sendsms.php";
-		$local_data = rawurlencode( $message );
-
-		foreach( $this->recipients as $phone ){
-
-			$result = file_get_contents( $local_url . "?username=" . $this->username
-				. "&password=" . $this->password . "&from=" . $this->originator . "&to=" . $phone
-				. "&text=" . $local_data );
+		$error = "";
+		$success = 1;
+		
+		$message = rawurlencode($message);
+		
+		foreach($this->recipients as $recipient) {
+			
+			$curl = curl_init();
+			curl_setopt($curl,CURLOPT_URL, "https://www.freevoipdeal.com/myaccount/sendsms.php?" . http_build_query(
+					array(
+						"username" => $this->username,
+						"password" => $this->password,
+						"from" => substr($this->originator, 0, 11),
+						"to" => $recipient,
+						"text" => $message,
+					)
+				)
+			);
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			
+			$result = curl_exec($curl);
+			$err = curl_error($curl);
+			curl_close($curl);
+			
+			if($err) {
+				$success = 0;
+				$error = "cURL Error";
+			}
+			elseif(1 == 1) {
+				//FreeVoipDeal logic (I can't access their API or their documentation, nor was this ever used somewhere)
+			}
 		}
-
-		return $result;
+		
+		if($success) return 1;
+		return $error;
 	}
 }

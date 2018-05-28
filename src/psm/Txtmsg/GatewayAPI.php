@@ -33,21 +33,26 @@ class GatewayAPI extends Core {
 
 	/**
 	* Send sms using the GatewayAPI API
+	*
 	* @var string $message
-	* @var array $this->recipients
-	* @Var string $recipient
-	* @var array $this->originator
 	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	* @Var string $recipient
+	*
+	* @var resource $curl
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
+	
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 		
-		;
-			
+		if(empty($this->recipients)) return false;
+		
 		$json = [
 			'sender' => isset($this->originator) ? $this->originator : "PHPServerMon",
 			'message' => $message,
@@ -58,16 +63,16 @@ class GatewayAPI extends Core {
 			$json['recipients'][] = ['msisdn' => $recipient];
 		}
 		
-		$ch = curl_init();
-		curl_setopt($ch,CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
-		curl_setopt($ch,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-		curl_setopt($ch,CURLOPT_USERPWD, $this->password . ":");
-		curl_setopt($ch,CURLOPT_POSTFIELDS, json_encode($json));
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
+		curl_setopt($curl,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($curl,CURLOPT_USERPWD, $this->password . ":");
+		curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($json));
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 		
-		$result = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
+		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		curl_close($curl);
 		
 		$result = json_decode($result,true);
 		if($httpcode != 200) {
