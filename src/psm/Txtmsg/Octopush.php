@@ -17,69 +17,87 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Alexis Urien
- * @copyright   Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @package		phpservermon
+ * @author		Alexis Urien
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @copyright	Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
 
 class Octopush extends Core {
-    // =========================================================================
-    // [ Fields ]
-    // =========================================================================
-    public $gateway = 1;
-    public $resultcode = null;
-    public $resultmessage = null;
-    public $success = false;
-    public $successcount = 0;
-
-    public function sendSMS($message) {
-        // Octopush exemple url
-        // french documentation can be found here: http://www.octopush-dm.com/public/docs/envoyer-des-sms-avec-octopush.pdf (need to be logged in)
-        //'http://www.octopush-dm.com/api/sms/?user_login=*****%40******.com&api_key=****************&sms_text=un+exemple+de+texte&sms_recipients=0033601010101&sms_type=FR&sms_sender=UnSender'
-        if(count($this->recipients) == 0)
-            return false;
-
-       $testMode = false;
-       $highPriority = true;
-
-       if ($highPriority) {
-           $sms_type = 'FR';
-           $sms_sender = 'phpServerMon';
-           $sms_more = ' STOP au XXXXX';
-       }
-       else {
-           $sms_type = 'XXX';
-           $sms_more = '';
-       }
-
-
-        $recipients = urlencode(implode(',', $this->recipients));
-        $octopush_url = "https://www.octopush-dm.com/api/sms/";
-        $octopush_data = urlencode( $message . $sms_more );
-
-        $URL = $octopush_url. "?" .
-            "user_login=" . $this->username .
-            "&api_key=" . $this->password .
-            "&sms_recipients=" . $recipients .
-            "&sms_type=" . $sms_type .
-            ($testMode ? '&request_mode=simu' : '') .
-            (isset($sms_sender) ? '&sms_sender='.$sms_sender : '') .
-            "&sms_text=" . $octopush_data;
-
-        $result = file_get_contents( $URL );
-        $xmlResults = simplexml_load_string($result);
-        if ($xmlResults === false)
-            return false;
-
-        if ($xmlResults->error_code == '000')
-            return true;
-        return false;
-    }
-
+	
+	/**
+	* Send sms using the Octopush API
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @var SimpleXMLElement $xmlResults
+	* @var string $err
+	* @var string $recipient
+	* @var boolean $premium_sms
+	* @var string $sms_type
+	* @var string $result
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
+	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+		
+		if(empty($this->recipients)) return false;
+		$recipients = join(',', $this->recipients);
+		
+		$premium_sms = false;
+		//FR = premium, WWW = world, XXX = Low cost
+		
+		$message = urlencode($message);
+		
+		if($premium_sms) {
+			$sms_type = "FR";
+			$message.= PHP_EOL . "STOP au XXXXX";
+		}
+		else $sms_type = "XXX";
+		
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
+				array(
+					"user_login" => $this->username,
+					"api_key" => $this->password,
+					"sms_recipients" => $recipients,
+					"sms_type" => $sms_type,
+					"sms_sender" => substr($this->originator, 0, 11),
+					"sms_text" => $message,
+				)
+			)
+		);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		
+		if($err) {
+			$success = 0;
+			$error = "cURL Error";
+		}
+		else {
+			$xmlResults = simplexml_load_string($result);
+			if($xmlResults === false) $success = 0;
+			if($xmlResults->error_code != '000') $error = $xmlResults->error_code;
+		}
+		
+		if($success) return 1;
+		return $error;
+	}
 }

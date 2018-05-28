@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Michiel van der Wulp <michiel@vanderwulp.be>
+ * @author      Ward Pieters <ward@wardpieters.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -28,25 +28,50 @@
 namespace psm\Txtmsg;
 
 class FreeMobileSMS extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
-
-public function sendSMS($message) {
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?user=$this->username&pass=$this->password&msg=" . urlencode( $message ) );
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		$result = curl_exec($ch);
-		curl_close($ch);
-
-		return true;
+	
+	/**
+	* Send sms using the FreeMobileSMS API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var string $this->username
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
+	public function sendSMS($message) {
+		$success = 1;
+		$error = "";
+		
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl,CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?" . http_build_query(
+				array(
+					"user" => $this->username,
+					"pass" => $this->password,
+					"msg" => urlencode($message),
+				)
+			)
+		);
+		
+		$result = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		
+		if($err) {
+			$success = 0;
+			$error = "cURL Error";
+		}
+		elseif(1 ==1) {
+			//FreeMobileSMS logic (I can't access their API or their documentation, nor was this ever used somewhere)
+		}
+		
+		if($success) return 1;
+		return $error;
 	}
 }

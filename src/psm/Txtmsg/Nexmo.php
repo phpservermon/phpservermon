@@ -18,7 +18,6 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package		phpservermon
- * @author		Andreas Ek
  * @author		Ward Pieters <ward@wardpieters.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
