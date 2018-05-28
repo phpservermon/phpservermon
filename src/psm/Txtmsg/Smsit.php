@@ -32,15 +32,14 @@ namespace psm\Txtmsg;
 class Smsit extends Core {
 	
 	public function sendSMS($message) {
-		$success = 0;
+		$success = 1;
 		$error = "":
 		
 		// http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[SENDER]&mobile=[PHONENUMBER]&message=[MESSAGE]
-		// Use USERNAME as API KEY, password not needed
 		$API_URL = "https://www.smsit.dk/api/sendSms.php";
 		
 		foreach( $this->recipients as $phone ){
-			$URL = $API_URL."?apiKey=" . $this->username . "&mobile=" . $phone . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
+			$URL = $API_URL."?apiKey=" . $this->password . "&mobile=" . $phone . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
 			$result = file_get_contents($URL);
 			
 			/*
@@ -54,13 +53,10 @@ class Smsit extends Core {
 				7	API-key does not exist
 			*/
 			
-			if($result == "0") $success = 1;
-			else $error = $result;
-		
+			if($result != "0"){
+				$success = 0;
+				$error = $result;
+			}
 		}
-
-		if($success) return true;
-		else return $error;
 	}
-
 }
