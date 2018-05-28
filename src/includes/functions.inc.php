@@ -610,6 +610,9 @@ function psm_build_sms() {
 		case 'plivo':
 			$sms = new \psm\Txtmsg\Plivo();
 			break;
+		case 'solutionsinfini':
+			$sms = new \psm\Txtmsg\Plivo();
+			break;
 	}
 
 	// copy login information from the config file
