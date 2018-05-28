@@ -55,18 +55,19 @@ class Octopush extends Core {
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
+		$smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
 		
 		$recipients = join(',', $this->recipients);
 		
-		$message = urlencode($message);
-		
+		$message = ($smsType == "FR") ? urlencode($message . " STOP au XXXXX") : urlencode($message);
+
 		$curl = curl_init();
 		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
 				array(
 					"user_login" => $this->username,
 					"api_key" => $this->password,
 					"sms_recipients" => $recipients,
-					"sms_type" => "XXX", //FR = premium, WWW = world, XXX = Low cost
+					"sms_type" => $smsType,
 					"sms_sender" => substr($this->originator, 0, 11),
 					"sms_text" => $message,
 				)
