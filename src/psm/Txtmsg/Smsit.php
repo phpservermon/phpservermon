@@ -47,25 +47,14 @@ class Smsit extends Core {
 		$success = 1;
 		$error = "":
 		
-		// http://www.smsit.dk/api/sendSms.php?apiKey=[KEY]x&senderId=[SENDER]&mobile=[PHONENUMBER]&message=[MESSAGE]
-		$API_URL = "https://www.smsit.dk/api/sendSms.php";
+		$API_URL = "https://www.smsit.dk/api/v2";
 		
 		foreach( $this->recipients as $recipient ){
 			$URL = $API_URL."?apiKey=" . $this->password . "&mobile=" . $recipient . "&message=" . urlencode($message) . "&senderId=" . $urlencode(substr($this->originator,0,11));
 			$result = file_get_contents($URL);
 			
-			/*
-				0	Everything went as it should
-				1	Invalid API key
-				2	Invalid sender name
-				3	Invalid character set (charset)
-				4	Invalid mobile number
-				5	There is not filled out a message
-				6	The message is too long (That was she said)
-				7	API-key does not exist
-			*/
 			
-			if($result != "0"){
+			if (is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
 				$success = 0;
 				$error = $result;
 			}
