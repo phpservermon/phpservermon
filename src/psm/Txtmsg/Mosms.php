@@ -37,6 +37,7 @@ class Mosms extends Core {
 	* @var array $this->username
 	* @var string $this->password
 	* @var array $this->recipients
+	* @var string $recipient
 	* @var array $this->originator (Max 11 characters)
 	* @var int $success
 	* @var string $error
@@ -44,16 +45,16 @@ class Mosms extends Core {
 	*/
 	public function sendSMS($message) {
 		$error = "";
-		$success = 0;
+		$success = 1;
 		
 		$message = rawurlencode($message);
 		
-		foreach($this->recipients as $phone) {
+		foreach($this->recipients as $recipient) {
 			$data = http_build_query(array(
 				"username" => $this->username,
 				"password" => $this->password,
 				"customsender" => $this->originator,
-				"nr" => $phone,
+				"nr" => $recipient,
 				"type" => "text",
 				"data" => $message,
 			));
@@ -67,11 +68,13 @@ class Mosms extends Core {
 			$result = curl_exec($ch);
 			curl_close($ch);
 			
-			if($result != "0") $error = $result;
-			else $success = 1;
+			if($result != "0") {
+				$error = $result;
+				$success = 0;
+			}
 		}
 		
-		if($success) return true;
-		else return $error;
+		if($success) return 1;
+		return $error;
 	}
 }
