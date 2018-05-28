@@ -68,19 +68,17 @@ class Mosms extends Core {
 				)
 			);
 			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			
 			$result = curl_exec($curl);
 			$err = curl_error($curl);
+			
+			if($err = curl_errno($curl) || $httpcode != 200 || $result == 2 || $result == 5) {
+				$success = 0;
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+			}
 			curl_close($curl);
 			
-			if($err) {
-				$success = 0;
-				$error = "cURL Error";
-			}
-			elseif($result != "0") {
-				$error = $result;
-				$success = 0;
-			}
 		}
 		
 		if($success) return 1;
