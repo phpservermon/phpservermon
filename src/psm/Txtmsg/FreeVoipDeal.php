@@ -33,6 +33,7 @@ class FreeVoipDeal extends Core {
 	/**
 	* Send sms using the FreeVoipDeal API
 	* @var string $message
+	* @var array $this->username
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator
@@ -73,16 +74,14 @@ class FreeVoipDeal extends Core {
 			$err = curl_error($curl);
 			curl_close($curl);
 			
-			if($err) {
-				$success = 0;
-				$error = "cURL Error";
-			}
-			elseif(1 == 1) {
-				//FreeVoipDeal logic (I can't access their API or their documentation, nor was this ever used somewhere)
-			}
-		}
-		
-		if($success) return 1;
-		return $error;
+			if($err || is_numeric(strpos($result, "failure"))) {
+				$error = $result;
+                		$success = 0;
+           	 	}
+        	}
+        	if($success == 1){
+           		return 1;
+        	}
+        	return $error;
 	}
 }
