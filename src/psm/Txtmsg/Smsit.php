@@ -58,5 +58,7 @@ class Smsit extends Core {
 				$error = $result;
 			}
 		}
+		if($success) return 1;
+		return $error;
 	}
 }
