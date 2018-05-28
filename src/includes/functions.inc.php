@@ -611,7 +611,7 @@ function psm_build_sms() {
 			$sms = new \psm\Txtmsg\Plivo();
 			break;
 		case 'solutionsinfini':
-			$sms = new \psm\Txtmsg\Plivo();
+			$sms = new \psm\Txtmsg\SolutionsInfini();
 			break;
 	}
 
