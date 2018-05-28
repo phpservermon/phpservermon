@@ -76,11 +76,7 @@ class GatewayAPI extends Core {
 		$err = curl_error($curl);
 		curl_close($curl);
 		
-		if($err) {
-			$success = 0;
-			$error = "cURL Error";
-		}
-		elseif($httpcode != 200) {
+		if($err || $httpcode != 200) {
 			$success = 0;
 			$error = $result['code']." - ".$result['message'];
 		}
