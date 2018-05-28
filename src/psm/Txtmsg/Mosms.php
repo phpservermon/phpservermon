@@ -44,18 +44,20 @@ class Mosms extends Core {
 	*/
 	public function sendSMS($message) {
 		$error = "";
-		$success = 0;
+		$success = 1;
 		
 		$API_URL = "https://www.mosms.com/se/sms-send.php";
 		$message = rawurlencode($message);
 		
 		foreach($this->recipients as $phone) {
 			$result = file_get_contents($API_URL . "?username=" . $this->username . "&password=" . $this->password . "&customsender=" . $this->originator . "nr=" . $phone . "&type=text&data=" . $message);
-			if($result != "0") $error = $result;
-			else $success = 1;
+			if($result != "0"){
+				$success = 0;
+				$error = $result;
+			}
 		}
 		
-		if($success) return true;
-		else return $error;
+		if($success) return 1;
+		return $error;
 	}
 }
