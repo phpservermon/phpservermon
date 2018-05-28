@@ -18,12 +18,13 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package		phpservermon
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @author		Ward Pieters <ward@wardpieters.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
- * @since		phpservermon 3.2
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
@@ -77,19 +78,13 @@ class Plivo extends Core {
 			),
 		));
 		
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
+		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202')) {
+			$success = 0;
+    			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
+		}
 		curl_close($curl);
-		
-		if($err) {
-			$success = 0;
-			$error = "cURL Error";
-		}
-		elseif($httpcode != 200) {
-			$success = 0;
-			$error = $response;
-		}
 		
 		if($success) return 1;
 		return $error;
