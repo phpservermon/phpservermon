@@ -23,7 +23,7 @@
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
- * @since		phpservermon 3.2
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
@@ -51,8 +51,6 @@ class Callr extends Core {
 		$error = "";
 		$success = 1;
 		
-		if(empty($this->recipients)) return false;
-		
 		foreach($this->recipients as $recipient) {
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
@@ -76,21 +74,15 @@ class Callr extends Core {
 				),
 			));
 			
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
+			$result = json_decode(curl_exec($curl), true);
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+			if($err = curl_errno($curl) || $httpcode != 200 || $result['status'] == "error") {
+				$success = 0;
+    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['data']['code']." - ".$result['data']['message'];
+			}
 			curl_close($curl);
-			
-			if($err) {
-				$success = 0;
-				$error = "cURL Error";
-			}
-			elseif($httpcode != 200) {
-				$success = 0;
-				$error = $response;
-			}
 		}
-		
 		if($success) return 1;
 		return $error;
 	}
