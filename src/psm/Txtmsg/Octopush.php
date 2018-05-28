@@ -55,19 +55,9 @@ class Octopush extends Core {
 		$error = "";
 		$success = 1;
 		
-		if(empty($this->recipients)) return false;
 		$recipients = join(',', $this->recipients);
 		
-		$premium_sms = false;
-		//FR = premium, WWW = world, XXX = Low cost
-		
 		$message = urlencode($message);
-		
-		if($premium_sms) {
-			$sms_type = "FR";
-			$message.= PHP_EOL . "STOP au XXXXX";
-		}
-		else $sms_type = "XXX";
 		
 		$curl = curl_init();
 		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
@@ -75,7 +65,7 @@ class Octopush extends Core {
 					"user_login" => $this->username,
 					"api_key" => $this->password,
 					"sms_recipients" => $recipients,
-					"sms_type" => $sms_type,
+					"sms_type" => "XXX", //FR = premium, WWW = world, XXX = Low cost
 					"sms_sender" => substr($this->originator, 0, 11),
 					"sms_text" => $message,
 				)
@@ -84,18 +74,14 @@ class Octopush extends Core {
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 		
 		$result = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		
-		if($err) {
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$xmlResults = simplexml_load_string($result);
+
+		if($err = curl_errno($curl) || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
 			$success = 0;
-			$error = "cURL Error";
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->error_code.". Look at http://www.octopush-dm.com/en/errors for the error description.";
 		}
-		else {
-			$xmlResults = simplexml_load_string($result);
-			if($xmlResults === false) $success = 0;
-			if($xmlResults->error_code != '000') $error = $xmlResults->error_code;
-		}
+		curl_close($curl);
 		
 		if($success) return 1;
 		return $error;
