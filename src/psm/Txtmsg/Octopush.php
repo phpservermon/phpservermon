@@ -18,7 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package		phpservermon
- * @author		Alexis Urien
+ * @author		Alexis Urien <Alexis.urien@free.fr>
+ * @Author		Tim Zandbergen <Tim@Xervion.nl>
  * @author		Ward Pieters <ward@wardpieters.nl>
  * @copyright	Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
