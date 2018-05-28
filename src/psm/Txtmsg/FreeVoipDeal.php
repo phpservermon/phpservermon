@@ -73,12 +73,9 @@ class FreeVoipDeal extends Core {
 			$err = curl_error($curl);
 			curl_close($curl);
 			
-			if($err) {
+			if($err || is_numeric(strpos($result, "failure"))) {
 				$success = 0;
-				$error = "cURL Error";
-			}
-			elseif(1 == 1) {
-				//FreeVoipDeal logic (I can't access their API or their documentation, nor was this ever used somewhere)
+				$error = $result;
 			}
 		}
 		
