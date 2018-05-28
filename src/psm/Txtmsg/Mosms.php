@@ -36,10 +36,8 @@ class Mosms extends Core {
 	* @var string $message
 	* @var array $this->username
 	* @var string $this->password
-	
 	* @var array $this->recipients
 	* @var array $this->originator (Max 11 characters)
-	* @var array $recipients_chunk
 	* @var int $success
 	* @var string $error
 	* @return int or string
