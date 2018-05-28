@@ -29,14 +29,6 @@
 namespace psm\Txtmsg;
 
 class Smsglobal extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
 
 	/**
 	 * Send the SMS message
@@ -44,19 +36,15 @@ class Smsglobal extends Core {
 	 * @return boolean (true = message was sent successfully, false = there was a problem sending the message)
 	 */
 	public function sendSMS($message) {
+		$success = 0;
+		$error = "";
+		
+		if(count($recipients) == 0) return false;
 		$recipients = join(',', $this->recipients);
-
-		if(count($recipients) == 0) {
-			return false;
-		}
-		/**
-		 * Documentation is here: http://www.smsglobal.com/http-api/
-		 * Recipient numbers should be in the MSIDSN format (eg. 61400111222). The '+' sign should not be included before the country code.
-		 */
-
+		
 		$from = urlencode(substr($this->originator,0 , 11)); // Max 11 Char.
-
-		$url = 'http://www.smsglobal.com/http-api.php' .
+		
+		$url = 'https://www.smsglobal.com/http-api.php' .
 			'?action=sendsms' .
 			'&user=' . $this->username .
 			'&password=' . $this->password .
@@ -66,15 +54,10 @@ class Smsglobal extends Core {
 			'&text=' . substr(rawurlencode($message), 0, 153);
 
 		$returnedData = file_get_contents($url);
-		$isOk = strpos($returnedData, 'OK: 0') !== false;
-
-		$this->success = $isOk;
-		$this->resultmessage = $returnedData;
-
-		if(!$isOk) {
-			error_log($this->resultmessage, E_USER_NOTICE);
-		}
-
-		return $isOk;
+		if($returnedData == "OK: 0") $success = 1;
+		else $error = $returnedData;
+		
+		if($success) return true;
+		else return $error;
 	}
 }
