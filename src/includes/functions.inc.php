@@ -604,6 +604,12 @@ function psm_build_sms() {
 		case 'gatewayapi':
 			$sms = new \psm\Txtmsg\GatewayAPI();
 			break;
+		case 'callr':
+			$sms = new \psm\Txtmsg\Callr();
+			break;
+		case 'plivo':
+			$sms = new \psm\Txtmsg\Plivo();
+			break;
 	}
 
 	// copy login information from the config file
