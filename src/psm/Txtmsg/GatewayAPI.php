@@ -35,8 +35,7 @@ class GatewayAPI extends Core {
 	* Send sms using the GatewayAPI API
 	* @var string $message
 	* @var array $this->recipients
-	* @var array $this->originator (Max 11 characters)
-	* @var array $recipients_chunk
+	* @var array $this->originator
 	* @var string $this->password
 	* @var int $success
 	* @var string $error
@@ -44,20 +43,17 @@ class GatewayAPI extends Core {
 	*/
 	public function sendSMS($message) {
 		$error = "";
-		$success = 0;
+		$success = 1;
 		
-		if(!isset($destaddr) || is_null($destaddr)) $destaddr = 'MOBILE';
-		if(!isset($userref) ||is_null($userref)) $userref = '';
-		
+		;
+			
 		$json = [
-			'sender' => $this->originator,
+			'sender' => isset($this->originator) ? $this->originator : "PHPServerMon",
 			'message' => $message,
 			'recipients' => [],
-			'destaddr' => $destaddr,
-			'userref' => $userref,
 		];
 		
-		foreach($recipients as $msisdn) {
+		foreach($this->recipients as $recipient) {
 			$json['recipients'][] = ['msisdn' => $recipient];
 		}
 		
@@ -73,11 +69,12 @@ class GatewayAPI extends Core {
 		curl_close($ch);
 		
 		$result = json_decode($result,true);
+		if($httpcode != 200) {
+			$success = 0;
+			$error = $result['code']." - ".$result['message'];
+		}
 		
-		if($httpcode == 200) $success = 1;
-		else $error = $result['code'];
-		
-		if($success) return true;
-		else return $error;
+		if($success) return 1;
+		return $error;
 	}
 }
