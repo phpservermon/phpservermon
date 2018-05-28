@@ -52,8 +52,6 @@ class Smsglobal extends Core {
 		$error = "";
 		$success = 1;
 		
-		if(empty($this->recipients)) return false;
-		
 		$recipients = join(',', $this->recipients);
 		
 		$from = substr($this->originator,0 , 11); // Max 11 Characters
@@ -61,6 +59,7 @@ class Smsglobal extends Core {
 		
 		$curl = curl_init();
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl,CURLOPT_TIMEOUT, 30);
 		curl_setopt($curl,CURLOPT_URL, "https://www.smsglobal.com/http-api.php?" . http_build_query(
 			array(
 				"action" => "sendsms",
@@ -71,19 +70,20 @@ class Smsglobal extends Core {
 				"clientcharset" => "ISO-8859-1",
 				"text" => $message,
 			)
-		);
+		));
 		
 		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			
+		$result = curl_exec($curl);
+		$err = curl_error($curl);
+			
+		if($err = curl_errno($curl) || substr($result, 0, 5) != "OK: 0") {
+			$success = 0;
+			$result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+		}
 		curl_close($curl);
-		
-		if($err) {
-			$success = 0;
-			$error = "cURL Error";
-		}
-		elseif(substr($result, 0, 5) != "OK: 0") {
-			$success = 0;
-			$error = $result;
-		}
 		
 		if($success) return 1;
 		return $error;
