@@ -12,7 +12,7 @@ The following people have contributed to the development of PHP Server Monitor:
 
 * Pepijn Over - https://github.com/dopeh
 
-  * Creator and project maintainer
+  * Creator
 
 * Samuel Denis-D'Ortun - https://github.com/sadortun
 
@@ -20,7 +20,7 @@ The following people have contributed to the development of PHP Server Monitor:
  
 * Tim Zandbergen - https://github.com/TimZ99
 
-  * Project developer
+  * Project developer & maintainer
 
 * Jérôme Cabanis - https://github.com/Abawell
 
