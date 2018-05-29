@@ -29,6 +29,11 @@ The following people have contributed to the development of PHP Server Monitor:
   * Mobile compatibility
   * Various fixes and improvements
 
+* Ward Pieters - https://github.com/WardPieters
+
+  * GatewayAPI, Plivo, Callr and SolutionsInfini SMS Gateway
+  * Other SMS Gateways rewritten
+
 * Perri Vardy-Mason - https://github.com/VeoPVM
 
   * Textmarketer SMS gateway
