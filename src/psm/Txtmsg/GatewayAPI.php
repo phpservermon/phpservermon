@@ -19,27 +19,29 @@
  *
  * @package		phpservermon
  * @author		Ward Pieters <ward@wardpieters.nl>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 3.2
  **/
 
 namespace psm\Txtmsg;
 
-class Inetworx extends Core {
-	
+class GatewayAPI extends Core {
+
 	/**
-	* Send sms using the Inetworx API
+	* Send sms using the GatewayAPI API
 	*
 	* @var string $message
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator
+	* @Var string $recipient
 	*
 	* @var resource $curl
 	* @var string $err
-	* @Var string $recipient
 	* @var int $success
 	* @var string $error
 	*
@@ -50,40 +52,33 @@ class Inetworx extends Core {
 		$error = "";
 		$success = 1;
 		
+		if(empty($this->recipients)) return false;
+		
+		$json = [
+			'sender' => isset($this->originator) ? $this->originator : "PHPServerMon",
+			'message' => $message,
+			'recipients' => [],
+		];
+		
 		foreach($this->recipients as $recipient) {
-			$curl = curl_init();
-			
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://sms.inetworx.ch/smsapp/sendsms.php",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => http_build_query(
-					array(
-						"user" => $this->username,
-						"pass" => $this->password,
-						"sender" => $this->originator,
-						"rcpt" => $recipient,
-						"msgbody" => $message,
-					)
-				),
-				CURLOPT_HTTPHEADER => array(
-					"authorization: Basic " . base64_encode("inetworxag:conn2smsapp"),
-					"content-type: application/x-www-form-urlencoded"
-				),
-			));
-
-			$result = curl_exec($curl);
-
-			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			if($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200")  === false) {
-				$success = 0;
-    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
-			}
-			curl_close($curl);
+			$json['recipients'][] = ['msisdn' => $recipient];
+		}
+		
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
+		curl_setopt($curl,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($curl,CURLOPT_USERPWD, $this->password . ":");
+		curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($json));
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		
+		$result = json_decode(curl_exec($curl),true);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$err = curl_error($curl);
+		curl_close($curl);
+		
+		if($err || $httpcode != 200) {
+			$success = 0;
+			$error = $result['code']." - ".$result['message'];
 		}
 		
 		if($success) return 1;

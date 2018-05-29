@@ -17,69 +17,75 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Alexis Urien
- * @copyright   Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @package		phpservermon
+ * @author		Alexis Urien <Alexis.urien@free.fr>
+ * @Author		Tim Zandbergen <Tim@Xervion.nl>
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @copyright	Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
 
 class Octopush extends Core {
-    // =========================================================================
-    // [ Fields ]
-    // =========================================================================
-    public $gateway = 1;
-    public $resultcode = null;
-    public $resultmessage = null;
-    public $success = false;
-    public $successcount = 0;
+	
+	/**
+	* Send sms using the Octopush API
+	* @var string $message
+	* @var string $this->username
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	*
+	* @var resource $curl
+	* @var SimpleXMLElement $xmlResults
+	* @var string $err
+	* @var string $recipient
+	* @var string $smsType
+	* @var string $result
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
+	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+		$smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
+		
+		$recipients = join(',', $this->recipients);
+		
+		$message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
 
-    public function sendSMS($message) {
-        // Octopush exemple url
-        // french documentation can be found here: http://www.octopush-dm.com/public/docs/envoyer-des-sms-avec-octopush.pdf (need to be logged in)
-        //'http://www.octopush-dm.com/api/sms/?user_login=*****%40******.com&api_key=****************&sms_text=un+exemple+de+texte&sms_recipients=0033601010101&sms_type=FR&sms_sender=UnSender'
-        if(count($this->recipients) == 0)
-            return false;
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
+				array(
+					"user_login" => $this->username,
+					"api_key" => $this->password,
+					"sms_recipients" => $recipients,
+					"sms_type" => $smsType,
+					"sms_sender" => substr($this->originator, 0, 11),
+					"sms_text" => $message,
+				)
+			)
+		);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$xmlResults = simplexml_load_string($result);
 
-       $testMode = false;
-       $highPriority = true;
-
-       if ($highPriority) {
-           $sms_type = 'FR';
-           $sms_sender = 'phpServerMon';
-           $sms_more = ' STOP au XXXXX';
-       }
-       else {
-           $sms_type = 'XXX';
-           $sms_more = '';
-       }
-
-
-        $recipients = urlencode(implode(',', $this->recipients));
-        $octopush_url = "https://www.octopush-dm.com/api/sms/";
-        $octopush_data = urlencode( $message . $sms_more );
-
-        $URL = $octopush_url. "?" .
-            "user_login=" . $this->username .
-            "&api_key=" . $this->password .
-            "&sms_recipients=" . $recipients .
-            "&sms_type=" . $sms_type .
-            ($testMode ? '&request_mode=simu' : '') .
-            (isset($sms_sender) ? '&sms_sender='.$sms_sender : '') .
-            "&sms_text=" . $octopush_data;
-
-        $result = file_get_contents( $URL );
-        $xmlResults = simplexml_load_string($result);
-        if ($xmlResults === false)
-            return false;
-
-        if ($xmlResults->error_code == '000')
-            return true;
-        return false;
-    }
-
+		if($err = curl_errno($curl) || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
+			$success = 0;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->error_code.". Look at http://www.octopush-dm.com/en/errors for the error description.";
+		}
+		curl_close($curl);
+		
+		if($success) return 1;
+		return $error;
+	}
 }

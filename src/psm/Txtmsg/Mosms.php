@@ -17,40 +17,71 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Andreas Ek
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @package		phpservermon
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
 
 class Mosms extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
 
+	/**
+	* Send sms using the Mosms API
+	*
+	* @var string $message
+	* @var array $this->username
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var string $recipient
+	* @var array $this->originator (Max 11 characters)
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
 	public function sendSMS($message) {
-
-		$mosms_url = "https://www.mosms.com/se/sms-send.php";
-		$mosms_data = rawurlencode( $message );
-
-		foreach( $this->recipients as $phone ){
-
-			$result = file_get_contents( $mosms_url . "?username=" . $this->username
-				. "&password=" . $this->password . "&nr=" . $phone . "&type=text"
-				. "&data=" . $mosms_data );
-
+		$error = "";
+		$success = 1;
+		
+		$message = rawurlencode($message);
+		
+		foreach($this->recipients as $recipient) {
+			
+			$curl = curl_init();
+			curl_setopt($curl,CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?" . http_build_query(
+					array(
+						"username" => $this->username,
+						"password" => $this->password,
+						"customsender" => substr($this->originator, 0, 11),
+						"nr" => $recipient,
+						"type" => "text",
+						"data" => $message,
+					)
+				)
+			);
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			
+			$result = curl_exec($curl);
+			$err = curl_error($curl);
+			
+			if($err = curl_errno($curl) || $httpcode != 200 || $result == 2 || $result == 5) {
+				$success = 0;
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+			}
+			curl_close($curl);
+			
 		}
-
-		return $result;
+		
+		if($success) return 1;
+		return $error;
 	}
 }
