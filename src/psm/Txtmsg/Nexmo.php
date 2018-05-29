@@ -17,42 +17,72 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Andreas Ek
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.1.1
+ * @package		phpservermon
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 3.1.1
  **/
 
 namespace psm\Txtmsg;
 
 class Nexmo extends Core {
-        // =========================================================================
-        // [ Fields ]
-        // =========================================================================
-        public $gateway = 1;
-        public $resultcode = null;
-        public $resultmessage = null;
-        public $success = false;
-        public $successcount = 0;
-
-        public function sendSMS($message) {
-                $nexmo_url = "https://rest.nexmo.com/sms/json";
-                $nexmo_data = rawurlencode( $message );
-
-                foreach( $this->recipients as $phone ){
-                        $result = file_get_contents( $nexmo_url . 
-                                                      "?api_key=" . $this->username .
-                                                      "&api_secret=" . $this->password . 
-                                                      "&from=" . $this->originator  . 
-                                                      "&to=" . $phone . 
-                                                      "&type=text" .
-                                                      "&text=" . $nexmo_data 
-                        );
-                }
-
-                return $result;
-        }
+	
+	
+	/**
+	* Send sms using the GatewayAPI API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	* @Var string $recipient
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
+	public function sendSMS($message) {
+		$success = 1;
+		$error = "";
+		
+		$message = rawurlencode($message);
+		
+		foreach($this->recipients as $recipient) {
+			
+			$curl = curl_init();
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl,CURLOPT_URL, "https://rest.nexmo.com/sms/json?" . http_build_query(
+					array(
+						"api_key" => $this->username,
+						"api_secret" => $this->password,
+						"from" => $this->originator,
+						"to" => $recipient,
+						"text" => $message,
+					)
+				)
+			);
+			
+			$result = json_decode(curl_exec($curl),true);
+			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			
+			$err = curl_error($curl);
+			
+			if($err = curl_errno($curl) || $httpcode != 200 || $result['messages'][0]['status'] != "0") {
+				$success = 0;
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result['messages'][0]['error-text'];
+			}
+			curl_close($curl);
+			
+		}
+		
+		if($success) return 1;
+		return $error;
+	}
 }

@@ -19,73 +19,64 @@
  *
  * @package		phpservermon
  * @author		Ward Pieters <ward@wardpieters.nl>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
 
-class Inetworx extends Core {
-	
+class SolutionsInfini extends Core {
+
 	/**
-	* Send sms using the Inetworx API
+	* Send sms using the SolutionsInfini API
 	*
 	* @var string $message
 	* @var string $this->password
 	* @var array $this->recipients
-	* @var array $this->originator
+	* @var string $recipients
+	* @var array $this->originator (Max 11 characters)
 	*
 	* @var resource $curl
 	* @var string $err
-	* @Var string $recipient
 	* @var int $success
 	* @var string $error
 	*
 	* @return int or string
 	*/
-	
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 		
-		foreach($this->recipients as $recipient) {
-			$curl = curl_init();
-			
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://sms.inetworx.ch/smsapp/sendsms.php",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => http_build_query(
-					array(
-						"user" => $this->username,
-						"pass" => $this->password,
-						"sender" => $this->originator,
-						"rcpt" => $recipient,
-						"msgbody" => $message,
-					)
-				),
-				CURLOPT_HTTPHEADER => array(
-					"authorization: Basic " . base64_encode("inetworxag:conn2smsapp"),
-					"content-type: application/x-www-form-urlencoded"
-				),
-			));
-
-			$result = curl_exec($curl);
-
-			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			if($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200")  === false) {
-				$success = 0;
-    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
-			}
-			curl_close($curl);
-		}
+		$message = urlencode($message);
 		
+		$recipients = join(',', $this->recipients);
+		
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, "https://api-alerts.solutionsinfini.com/v4/?" . http_build_query(
+				array(
+					"api_key" => $this->password,
+					"method" => "sms",
+					"to" => $recipients,
+					"sender" => substr($this->originator, 0, 11),
+					"message" => $message,
+				)
+			)
+		);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		
+
+		$result = json_decode(curl_exec($curl), true);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if($err = curl_errno($curl) || $httpcode != 200 || $result['status'] != "OK") {
+			$success = 0;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['status']." - ".$result['message'].".";
+		}
+		curl_close($curl);
 		if($success) return 1;
 		return $error;
 	}
