@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Pepijn Over <pep@mailbox.org>
- * @author      Tim Zandbergen <Tim@Xervion.nl>
- * @copyright   Copyright (c) 2008-2018 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        https://www.phpservermonitor.org/
+ * @package		phpservermon
+ * @author		Pepijn Over <pep@mailbox.org>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
+ * @copyright	Copyright (c) 2008-2018 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		https://www.phpservermonitor.org/
  **/
 
 namespace psm\Txtmsg;
@@ -37,8 +37,10 @@ class Clickatell extends Core {
 	* @var string $recipient
 	* @var string $this->password
 	* @var string $this->originator
+	*
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
 	public function sendSMS($message) {

@@ -45,7 +45,8 @@ class Octopush extends Core {
 	* @var string $err
 	* @var string $recipient
 	* @var string $smsType
-	* @var string $result
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*

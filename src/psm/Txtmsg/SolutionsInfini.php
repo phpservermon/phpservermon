@@ -42,6 +42,7 @@ class SolutionsInfini extends Core {
 	*
 	* @var resource $curl
 	* @var string $err
+	*
 	* @var int $success
 	* @var string $error
 	*

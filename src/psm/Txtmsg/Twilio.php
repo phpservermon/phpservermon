@@ -38,8 +38,12 @@ class Twilio extends Core {
 	* @var string $this->username
 	* @var string $this->password
 	* @var string $this->originator
+	* @var mixed $result
+	* @var array $headers
+	*
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
 	public function sendSMS($message) {

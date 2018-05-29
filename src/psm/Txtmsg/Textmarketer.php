@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Perri Vardy-Mason
- * @author      Tim Zandbergen <Tim@Xervion.nl>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @package		phpservermon
+ * @author		Perri Vardy-Mason
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
@@ -38,8 +38,12 @@ class Textmarketer extends Core {
 	* @var string $recipient
 	* @var string $this->username
 	* @var string $this->password
+	* @var mixed $result
+	* @var array $headers
+	*
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
     public function sendSMS($message) {

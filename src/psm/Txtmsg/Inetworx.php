@@ -39,7 +39,9 @@ class Inetworx extends Core {
 	*
 	* @var resource $curl
 	* @var string $err
-	* @Var string $recipient
+	* @var string $recipient
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*

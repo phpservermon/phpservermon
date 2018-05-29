@@ -30,7 +30,7 @@
 namespace psm\Txtmsg;
 
 class Plivo extends Core {
-
+	
 	/**
 	* Send sms using the Plivo API
 	*
@@ -82,7 +82,7 @@ class Plivo extends Core {
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202')) {
 			$success = 0;
-    			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
 		}
 		curl_close($curl);
 		

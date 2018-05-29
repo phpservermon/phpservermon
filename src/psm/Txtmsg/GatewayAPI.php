@@ -38,7 +38,8 @@ class GatewayAPI extends Core {
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator
-	* @Var string $recipient
+	* @var string $recipient
+	* @var mixed $result
 	*
 	* @var resource $curl
 	* @var string $err
