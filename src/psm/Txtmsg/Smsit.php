@@ -41,7 +41,8 @@ class Smsit extends Core {
 	* @var resource $curl
 	* @var string $err
 	* @var String $recipient
-	* @var string $result
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*

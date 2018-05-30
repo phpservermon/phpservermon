@@ -38,8 +38,13 @@ class Messagebird extends Core {
 	* @var array $this->originator (Max 11 characters)
 	* @var array $recipients_chunk
 	* @var string $this->password
+	*
+	* @var mixed $result
+	* @var array $headers
+	*
 	* @var int $success
 	* @var string $error
+	*
 	* @return int or string
 	*/
     public function sendSMS($message) {
