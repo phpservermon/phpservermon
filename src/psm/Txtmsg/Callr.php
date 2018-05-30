@@ -40,8 +40,12 @@ class Callr extends Core {
 	* @var array $this->originator
 	* @var string $recipient
 	*
+	* @var mixed $result
+	* @var array $headers
+	*
 	* @var resource $curl
 	* @var string $err
+	*
 	* @var int $success
 	* @var string $error
 	*

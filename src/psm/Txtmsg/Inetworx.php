@@ -19,6 +19,7 @@
  *
  * @package		phpservermon
  * @author		Ward Pieters <ward@wardpieters.nl>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
@@ -28,7 +29,7 @@
 namespace psm\Txtmsg;
 
 class Inetworx extends Core {
-	
+
 	/**
 	* Send sms using the Inetworx API
 	*
@@ -39,20 +40,22 @@ class Inetworx extends Core {
 	*
 	* @var resource $curl
 	* @var string $err
-	* @Var string $recipient
+	* @var string $recipient
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*
 	* @return int or string
 	*/
-	
+
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
-		
+
 		foreach($this->recipients as $recipient) {
 			$curl = curl_init();
-			
+
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "https://sms.inetworx.ch/smsapp/sendsms.php",
 				CURLOPT_RETURNTRANSFER => true,
@@ -85,7 +88,7 @@ class Inetworx extends Core {
 			}
 			curl_close($curl);
 		}
-		
+
 		if($success) return 1;
 		return $error;
 	}

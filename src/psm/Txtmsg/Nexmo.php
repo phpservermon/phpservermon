@@ -38,10 +38,12 @@ class Nexmo extends Core {
 	* @var string $this->password
 	* @var array $this->recipients
 	* @var array $this->originator
-	* @Var string $recipient
+	* @var string $recipient
 	*
 	* @var resource $curl
 	* @var string $err
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*

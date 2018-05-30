@@ -41,7 +41,8 @@ class Smsglobal extends Core {
 	* @var string $err
 	* @var string $recipient
 	* @var string $from
-	* @var string $result
+	* @var mixed $result
+	*
 	* @var int $success
 	* @var string $error
 	*

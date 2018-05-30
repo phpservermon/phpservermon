@@ -29,50 +29,68 @@
 namespace psm\Txtmsg;
 
 class ClickSend extends Core {
-    // =========================================================================
-    // [ Fields ]
-    // =========================================================================
-    public $gateway         = 1;
-    public $resultcode      = null;
-    public $resultmessage   = null;
-    public $success         = false;
-    public $successcount    = 0;
-
-    public function sendSMS($message) {
-        // Documentation: http://docs.clicksend.apiary.io/#reference/sms/send-an-sms/send-an-sms
-        // https://rest.clicksend.com/v3/sms/send
-        // Use your API KEY as the password ($this->password)
-        $apiurl     = "https://rest.clicksend.com/v3/sms/send";
-        $from       = substr($this->originator,0,11); // Max 11 Char.
-
-        $request = array('messages' => array());
-        foreach($this->recipients as $phone) {
-            $request['messages'][] = array(
-                'source' => 'phpservermon',
-                'from' => $from,
-                'to' => $phone,
-                'body' => $message
-            );
-        }
-
-        $data_string = json_encode($request);
-        $ch = curl_init($apiurl);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($data_string))
-        );
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->username . ':' . $this->password);
-        $result = curl_exec($ch);
-
-        $response = json_decode($result);
-        $this->success = $response->data->response_code == 'SUCCESS';
-        $this->successcount = $response->data->total_count;
-
-        return $response;
-    }
-
+	
+	/**
+	* Send sms using the SMSgw.NET API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	* @var string $recipients
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var mixed $result
+	*
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
+	
+	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+		
+		if(empty($this->recipients)) return false;
+		
+		$data = array('messages' => array());
+		foreach($this->recipients as $recipient) {
+			$data['messages'][] = array(
+				'source' => 'phpservermon',
+				'from' => substr($this->originator,0,11),
+				'to' => $recipient,
+				'body' => $message,
+			);
+		}
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://rest.clicksend.com/v3/sms/send",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => json_encode($data),
+			CURLOPT_HTTPHEADER => array(
+				"authorization: Basic " . base64_encode($this->username . ":" . $this->password),
+				"content-type: application/json"
+			),
+		));
+		
+		$result = json_decode(curl_exec($curl),true);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		
+		if($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result['response_code'] != "SUCCESS")) {
+			$success = 0;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
+		}
+		curl_close($curl);
+		
+		if($success) return 1;
+		return $error;
+	}
 }

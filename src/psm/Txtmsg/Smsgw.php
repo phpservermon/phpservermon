@@ -19,6 +19,8 @@
  *
  * @package     phpservermon
  * @author      Daif Alotaibi <daif@daif.net>
+ * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
@@ -29,33 +31,56 @@ namespace psm\Txtmsg;
 
 class Smsgw extends Core {
 
-    /**
-     * Send a text message to one or more recipients
-     *
-     * @param string $message
-     * @return boolean
-     */
+	/**
+	* Send sms using the SMSgw.NET API
+	*
+	* @var string $message
+	* @var string $this->password
+	* @var array $this->recipients
+	* @var array $this->originator
+	* @var string $recipients
+	*
+	* @var resource $curl
+	* @var string $err
+	* @var int $success
+	* @var string $error
+	*
+	* @return int or string
+	*/
 
-    public function sendSMS($message) {
-        $url  = 'http://api.smsgw.net/SendBulkSMS';
-        $post = array(
-            'strUserName' => $this->username, 
-            'strPassword' => $this->password,
-            'strTagName'  => $this->originator,
-            'strRecepientNumbers'  => implode(';', $this->recipients),
-            'strMessage'  => $message,
-        );
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        $data = curl_exec($ch);
-        if($data == '1') {
-            $this->success = true;
-        }
-        return $this->success;
-    }
+	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
 
+		$recipients = join(';', $this->recipients);
+
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.smsgw.net/SendBulkSMS",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => array(
+				'strUserName' => $this->username,
+				'strPassword' => $this->password,
+				"strTagName" => $this->originator,
+				"strRecepientNumbers" => $recipients,
+				"strMessage" => urlencode($message),
+			),
+		));
+
+		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result != "1")) {
+			$success = 0;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
+		}
+		curl_close($curl);
+
+		if($success) return 1;
+		return $error;
+	}
 }

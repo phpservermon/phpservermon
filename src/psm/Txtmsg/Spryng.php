@@ -17,12 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Pepijn Over <pep@mailbox.org>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
+ * @package		phpservermon
+ * @author		Pepijn Over <pep@mailbox.org>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
  **/
 
 namespace psm\Txtmsg;
@@ -36,8 +36,16 @@ class Spryng extends Core {
 	* @var string $this->username
 	* @var string $this->password
 	* @var string $this->originator
+
+	* @var mixed $result
+	* @var array $headers
+	*
+	* @var int $success
+	* @var string $error
+	*
 	* @return int or string
 	*/
+    
     public function sendSMS($message) {
 		$recipients = implode(",", $this->recipients);
 

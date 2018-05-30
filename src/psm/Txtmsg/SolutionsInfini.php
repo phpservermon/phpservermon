@@ -42,19 +42,21 @@ class SolutionsInfini extends Core {
 	*
 	* @var resource $curl
 	* @var string $err
+	*
 	* @var int $success
 	* @var string $error
 	*
 	* @return int or string
 	*/
+	
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
-		
+
 		$message = urlencode($message);
-		
+
 		$recipients = join(',', $this->recipients);
-		
+
 		$curl = curl_init();
 		curl_setopt($curl,CURLOPT_URL, "https://api-alerts.solutionsinfini.com/v4/?" . http_build_query(
 				array(
@@ -68,7 +70,7 @@ class SolutionsInfini extends Core {
 		);
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		
+
 
 		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
