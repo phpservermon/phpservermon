@@ -51,7 +51,7 @@ class Smsit extends Core {
 	
 	public function sendSMS($message) {
 		$success = 1;
-		$error = "":
+		$error = "";
 		
 		foreach( $this->recipients as $recipient ){
 			
