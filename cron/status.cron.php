@@ -30,11 +30,20 @@ require_once __DIR__ . '/../src/bootstrap.php';
 
 if(!psm_is_cli()) {
 	// check if it's an allowed host
-	$allow = PSM_CRON_ALLOW;
-	if(!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
-		header('HTTP/1.0 404 Not Found');
-		die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL /cron/status.cron.php was not found on this server.</p></body></html>');
+	if(!isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+		$_SERVER["HTTP_X_FORWARDED_FOR"] = "";
 	}
+
+	// define won't accept array before php 7.0.0
+	// check if data is serialized (not needed when using php 7.0.0 and higher)
+	$data = @unserialize(PSM_CRON_ALLOW);
+	$allow = $data === false ? PSM_CRON_ALLOW : $data;
+
+	if(!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
+		header('HTTP/1.0 403 Forbidden');
+		die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>403 Forbidden</title></head><body><h1>Forbidden</h1><p>IP address not allowed. See the <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a> for more info.</p></body></html>');
+	}
+	echo "OK";
 }
 
 $cron_timeout = PSM_CRON_TIMEOUT;

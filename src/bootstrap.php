@@ -58,6 +58,12 @@ if(PSM_DEBUG) {
 	ini_set('display_errors', 0);
 }
 
+// check for a cron allowed ip array
+if(!defined('PSM_CRON_ALLOW')) {
+	//serialize for php version lower than 7.0.0
+	define('PSM_CRON_ALLOW', serialize(array()));
+}
+
 $vendor_autoload = PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 if(!file_exists($vendor_autoload)) {
 	die('No dependencies found in vendor dir. Did you install the dependencies? Please run "php composer.phar install".');
