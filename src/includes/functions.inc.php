@@ -425,7 +425,7 @@ function psm_timespan($time) {
 	if ($d >= 60*60) { return psm_get_lang('system', 'an_hour_ago'); }
 	if ($d >= 60*2) { return sprintf(psm_get_lang('system', 'minutes_ago'), intval($d / 60)); }
 	if ($d >= 60) { return psm_get_lang('system', 'a_minute_ago'); }
-	if ($d >= 2) { return sprintf(psm_get_lang('system', 'seconds_ago'), intval($d));intval($d); }
+	if ($d >= 2) { return sprintf(psm_get_lang('system', 'seconds_ago'), intval($d)); }
 
 	return psm_get_lang('system', 'a_second_ago');
 }
