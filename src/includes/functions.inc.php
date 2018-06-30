@@ -39,67 +39,55 @@
  */
 function psm_get_lang() {
 	$args = func_get_args();
-
-	if (empty($args)) return $GLOBALS['sm_lang'];
-
-	$result = null;
-	$resultDefault = null;
-	$node = null;
-	$nodeDefault = null;
-
-	if ($args) {
-		$node = '$GLOBALS[\'sm_lang\'][\'' . implode('\'][\'', $args) . '\']';
-		$nodeDefault = '$GLOBALS[\'sm_lang_default\'][\'' . implode('\'][\'', $args) . '\']';
+	
+	if (empty($args)) 
+		return isset($GLOBALS['sm_lang']) ? $GLOBALS['sm_lang'] : $GLOBALS['sm_lang_default'];
+	
+	if(isset($GLOBALS['sm_lang'])) {
+		$lang = $GLOBALS['sm_lang'];
+		$not_found = false;
+		foreach($args as $translation) {
+			// if translation does not exist, use default translation
+			if(!isset($lang[$translation])) {
+				$not_found = true;
+				break;
+			}
+			$lang = $lang[$translation];
+		}
+		if(!$not_found) return $lang;
 	}
 
-	eval('if (isset(' . $node . ')) $result = ' . $node . ';');
-	eval('if (isset(' . $nodeDefault . ')) $resultDefault = ' . $nodeDefault . ';');
-
-	if (empty($result)) {
-		return $resultDefault;
-	} else {
-		return $result;
+	$lang = $GLOBALS['sm_lang_default'];
+	foreach($args as $translation) {
+		$lang = $lang[$translation];
 	}
+	return $lang;
 }
 
 /**
- * Load language from the language file to the $GLOBALS['sm_lang'] variable
+ * Load default language from the English (en_US) language file to the $GLOBALS['sm_lang_default'] variable
+ * Load language from the language file to the $GLOBALS['sm_lang'] variable if language is different from default
  *
  * @param string $lang language
  * @see psm_get_lang()
  */
 function psm_load_lang($lang) {
-	// if not in the language translation must always be available starting translation - English
+	// load default language - English (en_US)
+	// this will also fill in every part that is not translated in other translation files
 	$default_lang_file = PSM_PATH_LANG . 'en_US.lang.php';
 
-	if (file_exists($default_lang_file)) {
-		require $default_lang_file;
+	file_exists($default_lang_file) ? require $default_lang_file : die('English translation needs to be intalled at all time!');
+	isset($sm_lang) ? $GLOBALS['sm_lang_default'] = $sm_lang : die('$sm_lang not found in English translation!');
+	unset($sm_lang);
 
-		if (isset($sm_lang)) {
-			$GLOBALS['sm_lang_default'] = $sm_lang;
-			unset($sm_lang);
-		}
+	// load translation is the selected language is not English (en_US)
+	if($lang != "en_US"){
+		$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
+		file_exists($lang_file) ? require $lang_file : trigger_error("Translation file could not be found! Default language will be used.", E_USER_WARNING);
+		
+		isset($sm_lang) ? $GLOBALS['sm_lang'] = $sm_lang : trigger_error("\$sm_lang not found in translation file! Default language will be used.", E_USER_WARNING);
+		isset($sm_lang['locale']) ? setlocale(LC_TIME, $sm_lang['locale']) : trigger_error("locale could not ben found in translation file.", E_USER_WARNING);
 	}
-
-	// translated language
-	$lang_file = PSM_PATH_LANG . $lang . '.lang.php';
-
-	if (!file_exists($lang_file)) {
-		// If the file has been removed, we use the english one
-		$en_file = PSM_PATH_LANG . 'en_US.lang.php';
-		if (!file_exists($en_file)) {
-			// OK, nothing we can do
-			die('unable to load language file: ' . $lang_file);
-		}
-		$lang_file = $en_file;
-	}
-
-	require $lang_file;
-	if (isset($sm_lang['locale'])) {
-		setlocale(LC_TIME, $sm_lang['locale']);
-	}
-
-	$GLOBALS['sm_lang'] = $sm_lang;
 }
 
 /**
