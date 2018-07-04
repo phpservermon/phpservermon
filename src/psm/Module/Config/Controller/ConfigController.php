@@ -206,7 +206,7 @@ class ConfigController extends AbstractController {
 
 			if($language_refresh) {
 				header('Location: ' . psm_build_url(array('mod' => 'config'), true, false));
-				die();
+				trigger_error("Redirect failed.", E_USER_ERROR);
 			}
 
 			if(isset($_POST['general_submit'])) {

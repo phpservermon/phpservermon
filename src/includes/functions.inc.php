@@ -76,8 +76,8 @@ function psm_load_lang($lang) {
 	// this will also fill in every part that is not translated in other translation files
 	$default_lang_file = PSM_PATH_LANG . 'en_US.lang.php';
 
-	file_exists($default_lang_file) ? require $default_lang_file : die('English translation needs to be intalled at all time!');
-	isset($sm_lang) ? $GLOBALS['sm_lang_default'] = $sm_lang : die('$sm_lang not found in English translation!');
+	file_exists($default_lang_file) ? require $default_lang_file : trigger_error("English translation needs to be intalled at all time!", E_USER_ERROR);
+	isset($sm_lang) ? $GLOBALS['sm_lang_default'] = $sm_lang : trigger_error("\$sm_lang not found in English translation!", E_USER_ERROR);
 	unset($sm_lang);
 
 	// load translation is the selected language is not English (en_US)

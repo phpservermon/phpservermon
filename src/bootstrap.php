@@ -50,13 +50,11 @@ if(file_exists($path_conf)) {
 if(!defined('PSM_DEBUG')) {
 	define('PSM_DEBUG', false);
 }
-if(PSM_DEBUG) {
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-} else {
-	error_reporting(0);
-	ini_set('display_errors', 0);
-}
+
+// Debug enabled: report everything
+// Debug disabled: report error only if created manually
+ini_set('display_errors', 1);
+PSM_DEBUG ? error_reporting(E_ALL) : error_reporting(E_USER_ERROR);
 
 // check for a cron allowed ip array
 if(!defined('PSM_CRON_ALLOW')) {
@@ -66,7 +64,7 @@ if(!defined('PSM_CRON_ALLOW')) {
 
 $vendor_autoload = PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 if(!file_exists($vendor_autoload)) {
-	die('No dependencies found in vendor dir. Did you install the dependencies? Please run "php composer.phar install".');
+	trigger_error("No dependencies found in vendor dir. Did you install the dependencies? Please run \"php composer.phar install\".", E_USER_ERROR);
 }
 require_once $vendor_autoload;
 
@@ -79,22 +77,22 @@ if(!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if($db->getDbHost() === null) {
 		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');
-		die();
+		trigger_error("Could not load config file. Redirect to install failed, <a href=\"install.php\">click here</a>.", E_USER_ERROR);
 	}
 	// config file has been loaded, check if we have a connection
 	if(!$db->status()) {
-		die('Unable to establish database connection...');
+		trigger_error("Unable to establish database connection...", E_USER_ERROR);
 	}
 	// attempt to load configuration from database
 	if(!psm_load_conf()) {
 		// unable to load from config table
 		header('Location: install.php');
-		die();
+		trigger_error("Could not load config table. Redirect to install failed, <a href=\"install.php\">click here</a>.", E_USER_ERROR);
 	}
 	// config load OK, make sure database version is up to date
 	$installer = new \psm\Util\Install\Installer($db);
 	if($installer->isUpgradeRequired()) {
-		die('Your database is for an older version and requires an upgrade, <a href="install.php">please click here</a> to update your database to the latest version.');
+		trigger_error("Your database is for an older version and requires an upgrade, <a href=\"install.php\">please click here</a> to update your database to the latest version.", E_USER_ERROR);
 	}
 }
 
