@@ -42,7 +42,7 @@ class FreeMobileSMS extends Core {
 	 * @var string $error
 	 * @var string $http_code
 	 *
-	 * @return int or string
+	 * @return bool|string
 	 */
 	
 	public function sendSMS($message) {

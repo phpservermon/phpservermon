@@ -35,7 +35,7 @@ class ServerController extends AbstractServerController {
 
 	/**
 	 * Current server id
-	 * @var int $server_id
+	 * @var int|\PDOStatement $server_id
 	 */
 	protected $server_id;
 

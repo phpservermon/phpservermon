@@ -45,8 +45,9 @@ class Mosms extends Core {
 	 * @var int $success
 	 * @var string $error
 	 *
-	 * @return int or string
+	 * @return bool|string
 	 */
+	
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;

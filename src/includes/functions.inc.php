@@ -317,7 +317,7 @@ function psm_log_uptime($server_id, $status, $latency) {
  * @return string parsed message
  */
 function psm_parse_msg($status, $type, $vars) {
-	$status = ($status == true) ? 'on' : 'off';
+	$status = ($status === true) ? 'on' : 'off';
 
 	$message = psm_get_lang('notifications', $status.'_'.$type);
 
@@ -339,7 +339,7 @@ function psm_parse_msg($status, $type, $vars) {
  * @param string $href
  * @param boolean $header return headers?
  * @param boolean $body return body?
- * @param int $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
+ * @param int|null $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
  * @param boolean $add_agent add user agent?
  * @param string|bool $website_username Username website
  * @param string|bool $website_password Password website
@@ -459,7 +459,7 @@ function psm_update_available() {
 		$latest = psm_get_conf('version_update_check');
 	}
 
-	if ($latest != false) {
+	if ($latest !== false) {
 		$current = psm_get_conf('version');
 		return version_compare($latest, $current, '>');
 	} else {
@@ -523,7 +523,7 @@ function psm_build_pushover() {
 
 /**
  *
- * @return \psm\Txtmsg\TxtmsgInterface
+ * @return \Telegram
  */
 function psm_build_telegram() {
 	$telegram = new \Telegram();
