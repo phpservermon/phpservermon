@@ -32,28 +32,30 @@ namespace psm\Txtmsg;
 class GatewayAPI extends Core {
 
 	/**
-	* Send sms using the GatewayAPI API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	* @var string $recipient
-	* @var mixed $result
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the GatewayAPI API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 * @var string $recipient
+	 * @var mixed $result
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 
-		if(empty($this->recipients)) return false;
+		if (empty($this->recipients)) {
+			return false;
+		}
 
 		$json = [
 			'sender' => isset($this->originator) ? $this->originator : "PHPServerMon",
@@ -61,28 +63,30 @@ class GatewayAPI extends Core {
 			'recipients' => [],
 		];
 
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			$json['recipients'][] = ['msisdn' => $recipient];
 		}
 
 		$curl = curl_init();
-		curl_setopt($curl,CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
-		curl_setopt($curl,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-		curl_setopt($curl,CURLOPT_USERPWD, $this->password . ":");
-		curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($json));
-		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($curl, CURLOPT_USERPWD, $this->password.":");
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-		$result = json_decode(curl_exec($curl),true);
+		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$err = curl_error($curl);
 		curl_close($curl);
 
-		if($err || $httpcode != 200) {
+		if ($err || $httpcode != 200) {
 			$success = 0;
 			$error = $result['code']." - ".$result['message'];
 		}
 
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

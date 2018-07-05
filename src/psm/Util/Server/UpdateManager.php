@@ -51,7 +51,7 @@ class UpdateManager implements ContainerAwareInterface {
 		// check if we need to restrict the servers to a certain user
 		$sql_join = '';
 
-		if(!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
+		if (!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
 			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 						`us`.`user_id`={$this->container->get('user')->getUserId()}
@@ -69,7 +69,7 @@ class UpdateManager implements ContainerAwareInterface {
 		$updater = new Updater\StatusUpdater($this->container->get('db'));
 		$notifier = new Updater\StatusNotifier($this->container->get('db'));
 
-		foreach($servers as $server) {
+		foreach ($servers as $server) {
 			$status_old = ($server['status'] == 'on') ? true : false;
 			$status_new = $updater->update($server['server_id']);
 			// notify the nerds if applicable

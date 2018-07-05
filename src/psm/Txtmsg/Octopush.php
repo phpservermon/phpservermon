@@ -33,25 +33,25 @@ namespace psm\Txtmsg;
 class Octopush extends Core {
 	
 	/**
-	* Send sms using the Octopush API
-	* @var string $message
-	* @var string $this->username
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	*
-	* @var resource $curl
-	* @var SimpleXMLElement $xmlResults
-	* @var string $err
-	* @var string $recipient
-	* @var string $smsType
-	* @var mixed $result
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Octopush API
+	 * @var string $message
+	 * @var string $this->username
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var SimpleXMLElement $xmlResults
+	 * @var string $err
+	 * @var string $recipient
+	 * @var string $smsType
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$error = "";
@@ -60,10 +60,10 @@ class Octopush extends Core {
 		
 		$recipients = join(',', $this->recipients);
 		
-		$message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
+		$message = ($smsType == "FR") ? urlencode($message." STOP au XXXX") : urlencode($message);
 
 		$curl = curl_init();
-		curl_setopt($curl,CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
+		curl_setopt($curl, CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?".http_build_query(
 				array(
 					"user_login" => $this->username,
 					"api_key" => $this->password,
@@ -74,19 +74,21 @@ class Octopush extends Core {
 				)
 			)
 		);
-		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		
 		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$xmlResults = simplexml_load_string($result);
 
-		if($err = curl_errno($curl) || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
+		if ($err = curl_errno($curl) || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->error_code.". Look at http://www.octopush-dm.com/en/errors for the error description.";
 		}
 		curl_close($curl);
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

@@ -32,27 +32,27 @@ namespace psm\Txtmsg;
 class Textmarketer extends Core {
 
 	/**
-	* Send sms using the Textmarketer API
-	* @var string $message
-	* @var array $this->recipients
-	* @var string $recipient
-	* @var string $this->username
-	* @var string $this->password
-	* @var mixed $result
-	* @var array $headers
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Textmarketer API
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var string $recipient
+	 * @var string $this->username
+	 * @var string $this->password
+	 * @var mixed $result
+	 * @var array $headers
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
     
-    public function sendSMS($message) {
-        $success = 1;
+	public function sendSMS($message) {
+		$success = 1;
 		$error = '';
-        foreach( $this->recipients as $recipient ){
+		foreach ($this->recipients as $recipient) {
 
-            $ch = curl_init();
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, "https://api.textmarketer.co.uk/gateway/?username=".$this->username."&password=".$this->password."&to=".$recipient."&message=".urlencode($message)."&orig=SERVERALERT");
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$headers = array();
@@ -61,15 +61,15 @@ class Textmarketer extends Core {
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-            // Check on error
-            if (is_numeric(strpos($result, "FAILED"))) {
-                $error = $result;
-                $success = 0;
-            }
-        }
-        if($success == 1){
-            return 1;
-        }
-        return $error;
-    }
+			// Check on error
+			if (is_numeric(strpos($result, "FAILED"))) {
+				$error = $result;
+				$success = 0;
+			}
+		}
+		if ($success == 1) {
+			return 1;
+		}
+		return $error;
+	}
 }

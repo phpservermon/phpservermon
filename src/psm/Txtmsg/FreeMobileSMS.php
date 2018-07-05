@@ -30,28 +30,28 @@ namespace psm\Txtmsg;
 class FreeMobileSMS extends Core {
 	
 	/**
-	* Send sms using the FreeMobileSMS API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var string $this->username
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var int $success
-	* @var string $error
-	* @var string $http_code
-	*
-	* @return int or string
-	*/
+	 * Send sms using the FreeMobileSMS API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var string $this->username
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var int $success
+	 * @var string $error
+	 * @var string $http_code
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = "";
 		
 		$curl = curl_init();
-		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl,CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?" . http_build_query(
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?".http_build_query(
 				array(
 					"user" => $this->username,
 					"pass" => $this->password,
@@ -63,13 +63,15 @@ class FreeMobileSMS extends Core {
 		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		
-		if($err = curl_errno($curl) || $httpcode != 200) {
+		if ($err = curl_errno($curl) || $httpcode != 200) {
 			$success = 0;
-    			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err);
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err);
 		}
 		curl_close($curl);
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

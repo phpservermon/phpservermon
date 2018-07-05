@@ -57,7 +57,7 @@ class LogsArchiver implements ArchiverInterface {
 	public function cleanup(\DateTime $retention_date, $server_id = null) {
 		$sql_where_server = ($server_id !== null)
 				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
-				? ' `server_id` = ' . intval($server_id) . ' AND '
+				? ' `server_id` = '.intval($server_id).' AND '
 				: '';
 
 		$this->db->execute(
@@ -72,8 +72,8 @@ class LogsArchiver implements ArchiverInterface {
 	 * Empty tables log and log_users
 	 */
 	public function cleanupall() {
-		$this->db->delete(PSM_DB_PREFIX . "log");
-		$this->db->delete(PSM_DB_PREFIX . "log_users");
+		$this->db->delete(PSM_DB_PREFIX."log");
+		$this->db->delete(PSM_DB_PREFIX."log_users");
 		return true;
 	}
 }

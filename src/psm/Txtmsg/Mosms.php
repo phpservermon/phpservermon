@@ -31,32 +31,32 @@ namespace psm\Txtmsg;
 class Mosms extends Core {
 
 	/**
-	* Send sms using the Mosms API
-	*
-	* @var string $message
-	* @var array $this->username
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var string $recipient
-	* @var array $this->originator (Max 11 characters)
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Mosms API
+	 *
+	 * @var string $message
+	 * @var array $this->username
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var string $recipient
+	 * @var array $this->originator (Max 11 characters)
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 		
 		$message = rawurlencode($message);
 		
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
-			curl_setopt($curl,CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?" . http_build_query(
+			curl_setopt($curl, CURLOPT_URL, "https://www.mosms.com/se/sms-send.php?".http_build_query(
 					array(
 						"username" => $this->username,
 						"password" => $this->password,
@@ -67,13 +67,13 @@ class Mosms extends Core {
 					)
 				)
 			);
-			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			
 			$result = curl_exec($curl);
 			$err = curl_error($curl);
 			
-			if($err = curl_errno($curl) || $httpcode != 200 || $result == 2 || $result == 5) {
+			if ($err = curl_errno($curl) || $httpcode != 200 || $result == 2 || $result == 5) {
 				$success = 0;
 				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 			}
@@ -81,7 +81,9 @@ class Mosms extends Core {
 			
 		}
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

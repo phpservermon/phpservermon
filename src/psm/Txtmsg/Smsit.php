@@ -31,53 +31,55 @@ namespace psm\Txtmsg;
 class Smsit extends Core {
 	
 	/**
-	* Send sms using the Smsit API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var String $recipient
-	* @var mixed $result
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Smsit API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var String $recipient
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = "";
 		
-		foreach( $this->recipients as $recipient ){
+		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
-			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl,CURLOPT_URL, "https://www.smsit.dk/api/v2?" . http_build_query(
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_URL, "https://www.smsit.dk/api/v2?".http_build_query(
 					array(
 						"apiKey" => $this->password,
 						"mobile" => $recipient,
 						"message" => urlencode($message),
-						"senderId" => substr($this->originator,0,11),
+						"senderId" => substr($this->originator, 0, 11),
 					)
 				)
 			);
 			
 			$result = curl_exec($curl);
-			$err =curl_error($curl);
+			$err = curl_error($curl);
 			curl_close($curl);
 			
-			if($err || is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
+			if ($err || is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
 				$success = 0;
 				$error = $result;
 			}
 		}
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

@@ -31,23 +31,23 @@ namespace psm\Txtmsg;
 class Smsglobal extends Core {
 
 	/**
-	* Send sms using the Smsglobal API
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var string $recipient
-	* @var string $from
-	* @var mixed $result
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Smsglobal API
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var string $recipient
+	 * @var string $from
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$error = "";
@@ -55,13 +55,13 @@ class Smsglobal extends Core {
 		
 		$recipients = join(',', $this->recipients);
 		
-		$from = substr($this->originator,0 , 11); // Max 11 Characters
+		$from = substr($this->originator, 0, 11); // Max 11 Characters
 		$message = substr(rawurlencode($message), 0, 153);
 		
 		$curl = curl_init();
-		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl,CURLOPT_TIMEOUT, 30);
-		curl_setopt($curl,CURLOPT_URL, "https://www.smsglobal.com/http-api.php?" . http_build_query(
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curl, CURLOPT_URL, "https://www.smsglobal.com/http-api.php?".http_build_query(
 			array(
 				"action" => "sendsms",
 				"user" => $this->username,
@@ -79,14 +79,16 @@ class Smsglobal extends Core {
 		$result = curl_exec($curl);
 		$err = curl_error($curl);
 			
-		if($err = curl_errno($curl) || substr($result, 0, 5) != "OK: 0") {
+		if ($err = curl_errno($curl) || substr($result, 0, 5) != "OK: 0") {
 			$success = 0;
 			$result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 		}
 		curl_close($curl);
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

@@ -39,7 +39,7 @@ class ErrorModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'error' => __NAMESPACE__ . '\Controller\ErrorController',
+			'error' => __NAMESPACE__.'\Controller\ErrorController',
 		);
 
 	}

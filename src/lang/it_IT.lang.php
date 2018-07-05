@@ -214,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Prima di poter usare Pushover, devi <a href="%1$s" target="_blank">registrare un\'App</a> nel loro sito web ed inserire la \'App API Token\' qui.',
 		'alert_type' => 'Seleziona quando vuoi essere notificato',
-        'alert_type_description' => '<b>Cambio di Stato:</b> '.
-		    'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
-		    '<br /><b>Fuori linea:</b> '.
-		    'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
-		    'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
-		    'Riceverai una sola notifica alle 2AM e nient\'altro.<br/>'.
-		    '<br><b>Sempre:</b> '.
-		    'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
+		'alert_type_description' => '<b>Cambio di Stato:</b> '.
+			'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
+			'<br /><b>Fuori linea:</b> '.
+			'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
+			'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
+			'Riceverai una sola notifica alle 2AM e nient\'altro.<br/>'.
+			'<br><b>Sempre:</b> '.
+			'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
 		'alert_type_status' => 'Cambio di Stato',
 		'alert_type_offline' => 'Fuori linea',
 		'alert_type_always' => 'Sempre',

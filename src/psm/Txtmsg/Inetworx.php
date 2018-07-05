@@ -31,29 +31,29 @@ namespace psm\Txtmsg;
 class Inetworx extends Core {
 
 	/**
-	* Send sms using the Inetworx API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var string $recipient
-	* @var mixed $result
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Inetworx API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var string $recipient
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			$curl = curl_init();
 
 			curl_setopt_array($curl, array(
@@ -74,7 +74,7 @@ class Inetworx extends Core {
 					)
 				),
 				CURLOPT_HTTPHEADER => array(
-					"authorization: Basic " . base64_encode("inetworxag:conn2smsapp"),
+					"authorization: Basic ".base64_encode("inetworxag:conn2smsapp"),
 					"content-type: application/x-www-form-urlencoded"
 				),
 			));
@@ -82,14 +82,16 @@ class Inetworx extends Core {
 			$result = curl_exec($curl);
 
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			if($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200")  === false) {
+			if ($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200") === false) {
 				$success = 0;
-    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+					$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 			}
 			curl_close($curl);
 		}
 
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

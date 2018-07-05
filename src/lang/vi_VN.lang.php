@@ -199,14 +199,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a href="%1$s" target="_blank">đăng ký một ứng dụng</a> tại trang web của họ và nhập Token App API ở đây.',
 		'alert_type' => 'Chọn khi bạn muốn được thông báo.',
-        'alert_type_description' => '<b>Thay đổi trạng thái:</b> '.
-		    'Bạn sẽ nhận được thông báo khi một máy chủ có một sự thay đổi trạng thái. Từ online -> offline hoặc offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Bạn sẽ nhận được thông báo khi một máy chủ offline  *MỘT LẦN DUY NHẤT*. Ví dụ, '.
-		    'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00  cho đến 6h00. '.
-		    'Bạn sẽ nhận được 1 thông báo lúc 01h00  và đó là nó.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'Bạn sẽ nhận được thông báo mỗi khi chạy đoạn script và một trang web tắt, ngay cả khi trang web đã được offline trong nhiều giờ.',
+		'alert_type_description' => '<b>Thay đổi trạng thái:</b> '.
+			'Bạn sẽ nhận được thông báo khi một máy chủ có một sự thay đổi trạng thái. Từ online -> offline hoặc offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Bạn sẽ nhận được thông báo khi một máy chủ offline  *MỘT LẦN DUY NHẤT*. Ví dụ, '.
+			'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00  cho đến 6h00. '.
+			'Bạn sẽ nhận được 1 thông báo lúc 01h00  và đó là nó.<br/>'.
+			'<br><b>Always:</b> '.
+			'Bạn sẽ nhận được thông báo mỗi khi chạy đoạn script và một trang web tắt, ngay cả khi trang web đã được offline trong nhiều giờ.',
 		'alert_type_status' => 'Thay đổi trạng thái',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',

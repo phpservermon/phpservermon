@@ -67,10 +67,10 @@
 
 {% if auto_refresh %}
 <script>
-setInterval(function(){
+setInterval(function() {
 	$.ajax({
 		url:"?",
-		success: function(html, status){
+		success: function(html, status) {
 			$("#page-container").html(html);
 		}
 	});

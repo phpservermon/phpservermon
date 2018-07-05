@@ -216,14 +216,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Token API de Pushover',
 		'pushover_api_token_description' => 'Antes de poder utilizar Pushover, necesita <a href="%1$s" target="_blank"> registrar </a> su aplicación en la página web e ingresar el token API.',
 		'alert_type' => '¿Cuándo desea recibir notificaciones ?',
-        'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
-		    'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br/>'.
-		    '<br /><b>Fuera de Línea:</b> '.
-		    'Recibirá una notificación cuando el servidor esté fuera de línea.'.
-		    'Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br/>'.
-		    '<br><b>Siempre:</b> '.
-		    'Se le enviará una notificación cada vez que se ejecuta el script '.
-		    'aunqué el servicio puede haber estado fuera de línea por varias horas.',
+		'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
+			'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br/>'.
+			'<br /><b>Fuera de Línea:</b> '.
+			'Recibirá una notificación cuando el servidor esté fuera de línea.'.
+			'Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br/>'.
+			'<br><b>Siempre:</b> '.
+			'Se le enviará una notificación cada vez que se ejecuta el script '.
+			'aunqué el servicio puede haber estado fuera de línea por varias horas.',
 		'alert_type_status' => 'Cambio de estado',
 		'alert_type_offline' => 'Fuera de Línea',
 		'alert_type_always' => 'Siempre',

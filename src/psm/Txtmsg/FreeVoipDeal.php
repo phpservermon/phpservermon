@@ -31,22 +31,22 @@ namespace psm\Txtmsg;
 class FreeVoipDeal extends Core {
 	
 	/**
-	* Send sms using the FreeVoipDeal API
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var string $recipient
-	* @var string $from
-	* @var mixed $result
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the FreeVoipDeal API
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var string $recipient
+	 * @var string $from
+	 * @var mixed $result
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$error = "";
@@ -54,10 +54,10 @@ class FreeVoipDeal extends Core {
 		
 		$message = rawurlencode($message);
 		
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
-			curl_setopt($curl,CURLOPT_URL, "https://www.freevoipdeal.com/myaccount/sendsms.php?" . http_build_query(
+			curl_setopt($curl, CURLOPT_URL, "https://www.freevoipdeal.com/myaccount/sendsms.php?".http_build_query(
 					array(
 						"username" => $this->username,
 						"password" => $this->password,
@@ -67,19 +67,21 @@ class FreeVoipDeal extends Core {
 					)
 				)
 			);
-			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			
 			$result = curl_exec($curl);
 			$err = curl_error($curl);
 			curl_close($curl);
 			
-			if($err || is_numeric(strpos($result, "failure"))) {
+			if ($err || is_numeric(strpos($result, "failure"))) {
 				$success = 0;
 				$error = $result;
 			}
 		}
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

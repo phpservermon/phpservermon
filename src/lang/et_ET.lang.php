@@ -201,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover Äppi API Žetoon',
 		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
 		'alert_type' => 'Vali, millal sa sooviksid olla teavitatud.',
-        'alert_type_description' => '<b>Staatuse muutus:</b> '.
-		    'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
-		    '<br /><b>Võrgust väljas:</b> '.
-		    'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
-		    'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
-		    'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
-		    '<br><b>Alati:</b> '.
-		    'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
+		'alert_type_description' => '<b>Staatuse muutus:</b> '.
+			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
+			'<br /><b>Võrgust väljas:</b> '.
+			'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
+			'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
+			'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
+			'<br><b>Alati:</b> '.
+			'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
 		'alert_type_status' => 'Staatuse muutus',
 		'alert_type_offline' => 'Võrgust väljas',
 		'alert_type_always' => 'Alati',

@@ -31,23 +31,23 @@ namespace psm\Txtmsg;
 class Clickatell extends Core {
 
 	/**
-	* Send sms using the Clickatell API
-	* @var string $message
-	* @var array $this->recipients
-	* @var string $recipient
-	* @var string $this->password
-	* @var string $this->originator
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Clickatell API
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var string $recipient
+	 * @var string $this->password
+	 * @var string $this->originator
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = '';
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, "https://platform.clickatell.com/messages/http/send?apiKey=".urlencode($this->password)."&to=".urlencode($recipient)."&content=".urlencode($message));
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -63,7 +63,7 @@ class Clickatell extends Core {
 				$success = 0;
 			}
 		}
-		if($success == 1){
+		if ($success) {
 			return 1;
 		}
 		return $error;

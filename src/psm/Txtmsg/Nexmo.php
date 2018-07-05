@@ -32,23 +32,23 @@ class Nexmo extends Core {
 	
 	
 	/**
-	* Send sms using the GatewayAPI API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	* @var string $recipient
-	*
-	* @var resource $curl
-	* @var string $err
-	* @var mixed $result
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the GatewayAPI API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 * @var string $recipient
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$success = 1;
@@ -56,11 +56,11 @@ class Nexmo extends Core {
 		
 		$message = rawurlencode($message);
 		
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
-			curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl,CURLOPT_URL, "https://rest.nexmo.com/sms/json?" . http_build_query(
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_URL, "https://rest.nexmo.com/sms/json?".http_build_query(
 					array(
 						"api_key" => $this->username,
 						"api_secret" => $this->password,
@@ -71,12 +71,12 @@ class Nexmo extends Core {
 				)
 			);
 			
-			$result = json_decode(curl_exec($curl),true);
+			$result = json_decode(curl_exec($curl), true);
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			
 			$err = curl_error($curl);
 			
-			if($err = curl_errno($curl) || $httpcode != 200 || $result['messages'][0]['status'] != "0") {
+			if ($err = curl_errno($curl) || $httpcode != 200 || $result['messages'][0]['status'] != "0") {
 				$success = 0;
 				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result['messages'][0]['error-text'];
 			}
@@ -84,7 +84,9 @@ class Nexmo extends Core {
 			
 		}
 		
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

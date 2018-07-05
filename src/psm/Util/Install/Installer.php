@@ -71,14 +71,14 @@ class Installer {
 	public function isUpgradeRequired() {
 		$version_db = psm_get_conf('version');
 
-		if(version_compare(PSM_VERSION, $version_db, '==')) {
+		if (version_compare(PSM_VERSION, $version_db, '==')) {
 			// version is up to date
 			return false;
 		}
 
 		// different DB version, check if the version requires any changes
 		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
-		if(version_compare($version_db, PSM_VERSION, '<')) {
+		if (version_compare($version_db, PSM_VERSION, '<')) {
 			return true;
 		} else {
 			// change database version to current version so this check won't be required next time
@@ -93,10 +93,10 @@ class Installer {
 	 * @return \psm\Util\Install\Installer
 	 */
 	protected function log($msg) {
-		if(is_callable($this->logger)) {
+		if (is_callable($this->logger)) {
 			$msg = (!is_array($msg)) ? array($msg) : $msg;
 
-			foreach($msg as $m) {
+			foreach ($msg as $m) {
 				call_user_func($this->logger, $m);
 			}
 		}
@@ -111,7 +111,7 @@ class Installer {
 	protected function execSQL($query) {
 		$query = (!is_array($query)) ? array($query) : $query;
 
-		foreach($query as $q) {
+		foreach ($query as $q) {
 			$this->queries[] = $q;
 			$this->db->exec($q);
 		}
@@ -126,9 +126,9 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (`ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'yes','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'yes', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."servers` (`ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'yes','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'yes', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUE
 					('language', 'en_US'),
 					('proxy', '0'),
 					('proxy_url', ''),
@@ -152,7 +152,7 @@ class Installer {
 					('pushover_api_token', ''),
 					('telegram_status', '0'),
 					('telegram_api_token', ''),
-					('password_encrypt_key', '" . sha1(microtime()) . "'),
+					('password_encrypt_key', '".sha1(microtime())."'),
 					('alert_type', 'status'),
 					('log_status', '1'),
 					('log_email', '1'),
@@ -160,8 +160,8 @@ class Installer {
 					('log_pushover', '1'),
 					('log_telegram', '1'),
 					('log_retention_period', '365'),
-					('version', '" . PSM_VERSION . "'),
-					('version_update_check', '" . PSM_VERSION . "'),
+					('version', '".PSM_VERSION."'),
+					('version_update_check', '".PSM_VERSION."'),
 					('auto_refresh_servers', '0'),
 					('show_update', '1'),
 					('last_update_check', '0'),
@@ -175,12 +175,12 @@ class Installer {
 	 */
 	protected function installTables() {
 		$tables = array(
-			PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
+			PSM_DB_PREFIX.'config' => "CREATE TABLE `".PSM_DB_PREFIX."config` (
 							`key` varchar(255) NOT NULL,
 							`value` varchar(255) NOT NULL,
 							PRIMARY KEY (`key`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
+			PSM_DB_PREFIX.'users' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."users` (
 							`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 							`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
 							`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
@@ -197,18 +197,18 @@ class Installer {
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
 						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+			PSM_DB_PREFIX.'users_preferences' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."users_preferences` (
 							`user_id` int(11) unsigned NOT NULL,
 							`key` varchar(255) NOT NULL,
 							`value` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`, `key`)
 						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
+			PSM_DB_PREFIX.'users_servers' => "CREATE TABLE `".PSM_DB_PREFIX."users_servers` (
 							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
 							PRIMARY KEY ( `user_id` , `server_id` )
 							) ENGINE = MYISAM ;",
-			PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
+			PSM_DB_PREFIX.'log' => "CREATE TABLE `".PSM_DB_PREFIX."log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
 						  `type` enum('status','email','sms','pushover','telegram') NOT NULL,
@@ -216,12 +216,12 @@ class Installer {
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  PRIMARY KEY  (`log_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+			PSM_DB_PREFIX.'log_users' => "CREATE TABLE `".PSM_DB_PREFIX."log_users` (
                                    `log_id`  int(11) UNSIGNED NOT NULL ,
                                    `user_id`  int(11) UNSIGNED NOT NULL ,
                                    PRIMARY KEY (`log_id`, `user_id`)
          						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
+			PSM_DB_PREFIX.'servers' => "CREATE TABLE `".PSM_DB_PREFIX."servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
@@ -250,7 +250,7 @@ class Installer {
 						  `website_password` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
+			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
 						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`server_id` int(11) unsigned NOT NULL,
 						`date` datetime NOT NULL,
@@ -259,7 +259,7 @@ class Installer {
 						PRIMARY KEY (`servers_uptime_id`),
 						KEY `server_id` (`server_id`)
 					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-			PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
+			PSM_DB_PREFIX.'servers_history' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_history` (
 						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
 						  `date` date NOT NULL,
@@ -273,14 +273,14 @@ class Installer {
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 		);
 
-		foreach($tables as $name => $sql) {
+		foreach ($tables as $name => $sql) {
 			$if_table_exists = $this->db->query("SHOW TABLES LIKE '{$name}'");
 
-			if(!empty($if_table_exists)) {
-				$this->log('Table ' . $name . ' already exists in your database!');
+			if (!empty($if_table_exists)) {
+				$this->log('Table '.$name.' already exists in your database!');
 			} else {
 				$this->execSQL($sql);
-				$this->log('Table ' . $name . ' added.');
+				$this->log('Table '.$name.' added.');
 			}
 		}
 	}
@@ -292,25 +292,25 @@ class Installer {
 	 * @see isUpgradeRequired()
 	 */
 	public function upgrade($version_from, $version_to) {
-		if(version_compare($version_from, '2.1.0', '<')) {
+		if (version_compare($version_from, '2.1.0', '<')) {
 			$this->upgrade210();
 		}
-		if(version_compare($version_from, '3.0.0', '<')) {
+		if (version_compare($version_from, '3.0.0', '<')) {
 			$this->upgrade300();
 		}
-		if(version_compare($version_from, '3.1.0', '<')) {
+		if (version_compare($version_from, '3.1.0', '<')) {
 			$this->upgrade310();
 		}
-		if(version_compare($version_from, '3.2.0', '<')) {
+		if (version_compare($version_from, '3.2.0', '<')) {
 			$this->upgrade320();
 		}
-		if(version_compare($version_from, '3.2.1', '<')) {
+		if (version_compare($version_from, '3.2.1', '<')) {
 			$this->upgrade321();
 		}
-		if(version_compare($version_from, '3.2.2', '<')) {
+		if (version_compare($version_from, '3.2.2', '<')) {
 			$this->upgrade322();
 		}
-		if(version_compare($version_from, '3.3.0', '<')) {
+		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
 		}
 		psm_update_conf('version', $version_to);
@@ -321,19 +321,19 @@ class Installer {
 	 */
 	protected function upgrade210() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP `config_id`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` ADD PRIMARY KEY ( `key` );";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "config` DROP INDEX `key`;";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running', '0');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('cron_running_time', '0');";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."config` DROP `config_id`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."config` ADD PRIMARY KEY ( `key` );";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."config` DROP INDEX `key`;";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('cron_running', '0');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('cron_running_time', '0');";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `error` `error` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_online` `last_online` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_check` `last_check` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `error` `error` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `rtime` `rtime` FLOAT( 9, 7 ) NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `last_online` `last_online` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `last_check` `last_check` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `pattern` VARCHAR( 255 ) NOT NULL AFTER  `type`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
 		$this->execSQL($queries);
 	}
@@ -344,32 +344,32 @@ class Installer {
 	protected function upgrade300() {
 		$queries = array();
 		// language is now stored as language code (ISO 639-1) + country code (ISO 3166-1)
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='bg_BG' WHERE `key`='language' AND `value`='bg';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='de_DE' WHERE `key`='language' AND `value`='de';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='en_US' WHERE `key`='language' AND `value`='en';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='fr_FR' WHERE `key`='language' AND `value`='fr';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='ko_KR' WHERE `key`='language' AND `value`='kr';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='nl_NL' WHERE `key`='language' AND `value`='nl';";
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` SET `value`='pt_BR' WHERE `key`='language' AND `value`='br';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='bg_BG' WHERE `key`='language' AND `value`='bg';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='de_DE' WHERE `key`='language' AND `value`='de';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='en_US' WHERE `key`='language' AND `value`='en';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='fr_FR' WHERE `key`='language' AND `value`='fr';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='ko_KR' WHERE `key`='language' AND `value`='kr';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='nl_NL' WHERE `key`='language' AND `value`='nl';";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."config` SET `value`='pt_BR' WHERE `key`='language' AND `value`='br';";
 
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('version_update_check', '" . PSM_VERSION . "');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp', '');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_host', '');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_port', '');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_username', '');";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUES ('email_smtp_password', '');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('version_update_check', '".PSM_VERSION."');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('email_smtp', '');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('email_smtp_host', '');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('email_smtp_port', '');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('email_smtp_username', '');";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('email_smtp_password', '');";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `log_id` `log_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL;";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '1';";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `warning_threshold_counter` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `server_id` `server_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `warning_threshold` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '1';";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `warning_threshold_counter` MEDIUMINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users` CHANGE `user_id` `user_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users`
 			ADD `user_name` varchar(64) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s name, unique' AFTER `user_id`,
 			ADD `password` varchar(255) COLLATE utf8_general_ci NOT NULL COMMENT 'user\'s password in salted and hashed format' AFTER `user_name`,
 			ADD `password_reset_hash` char(40) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s password reset code' AFTER `password`,
@@ -377,10 +377,10 @@ class Installer {
 			ADD `rememberme_token` varchar(64) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'user\'s remember-me cookie token' AFTER `password_reset_timestamp`,
 			ADD `level` TINYINT( 2 ) UNSIGNED NOT NULL DEFAULT '20' AFTER `rememberme_token`;";
 		// make sure all current users are admins (previously we didnt have non-admins):
-		$queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_name`=`email`, `level`=10;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD UNIQUE `unique_username` ( `user_name` );";
+		$queries[] = "UPDATE `".PSM_DB_PREFIX."users` SET `user_name`=`email`, `level`=10;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users` ADD UNIQUE `unique_username` ( `user_name` );";
 
-		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
+		$queries[] = "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
 						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`server_id` int(11) unsigned NOT NULL,
 						`date` datetime NOT NULL,
@@ -390,7 +390,7 @@ class Installer {
 						KEY `server_id` (`server_id`)
 					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
+		$queries[] = "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_history` (
 						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
 						  `date` date NOT NULL,
@@ -403,7 +403,7 @@ class Installer {
 						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-		$queries[] = "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
+		$queries[] = "CREATE TABLE `".PSM_DB_PREFIX."users_servers` (
 						`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 						`server_id` INT( 11 ) UNSIGNED NOT NULL ,
 						PRIMARY KEY ( `user_id` , `server_id` )
@@ -411,19 +411,19 @@ class Installer {
 		$this->execSQL($queries);
 
 		// from 3.0 all user-server relations are in a separate table
-		$users = $this->db->select(PSM_DB_PREFIX . 'users', null, array('user_id', 'server_id'));
-		foreach($users as $user) {
+		$users = $this->db->select(PSM_DB_PREFIX.'users', null, array('user_id', 'server_id'));
+		foreach ($users as $user) {
 			$idc = array();
-			if($user['server_id'] == '') {
+			if ($user['server_id'] == '') {
 				continue;
 			}
-			if(strpos($user['server_id'], ',') === false) {
+			if (strpos($user['server_id'], ',') === false) {
 				$idc[] = $user['server_id'];
 			} else {
 				$idc = explode(',', $user['server_id']);
 			}
-			foreach($idc as $id) {
-				$this->db->save(PSM_DB_PREFIX . 'users_servers', array(
+			foreach ($idc as $id) {
+				$this->db->save(PSM_DB_PREFIX.'users_servers', array(
 					'user_id' => $user['user_id'],
 					'server_id' => $id,
 				));
@@ -442,17 +442,17 @@ class Installer {
 		psm_update_conf('pushover_status', 0);
 		psm_update_conf('log_pushover', 1);
 		psm_update_conf('pushover_api_token', '');
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users` ADD  `pushover_key` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users` ADD  `pushover_device` VARCHAR( 255 ) NOT NULL AFTER `pushover_key`;";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `pushover` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `pushover` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
 
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline` DATETIME NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `timeout` smallint(1) unsigned NULL DEFAULT NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline` DATETIME NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
-		$queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+		$queries[] = "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."users_preferences` (
 						`user_id` int(11) unsigned NOT NULL,
 						`key` varchar(255) NOT NULL,
 						`value` varchar(255) NOT NULL,
@@ -469,9 +469,9 @@ class Installer {
 		$queries = array();
 
 		psm_update_conf('password_encrypt_key', sha1(microtime()));
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `ip` `ip` VARCHAR(500) NOT NULL;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `website_username` varchar(255) NULL, ADD `website_password` varchar(255) NULL AFTER `website_username`;";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUE
 					('proxy', '0'),
 					('proxy_url', ''),
 					('proxy_user', ''),
@@ -479,29 +479,29 @@ class Installer {
 
 		$this->execSQL($queries);
 
-    // Create log_users table
-        $this->execSQL("CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+	// Create log_users table
+		$this->execSQL("CREATE TABLE `".PSM_DB_PREFIX."log_users` (
                         `log_id`  int(11) UNSIGNED NOT NULL ,
                         `user_id`  int(11) UNSIGNED NOT NULL ,
                         PRIMARY KEY (`log_id`, `user_id`)
                       ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
-        // Migrate the data
-        $logs = $this->db->select(PSM_DB_PREFIX . 'log', null, array('log_id', 'user_id'));
-        foreach ($logs as $log) {
-            // Validation
-            if (empty($log['user_id']) || trim($log['user_id']) == '') {
-                continue;
-            }
+		// Migrate the data
+		$logs = $this->db->select(PSM_DB_PREFIX.'log', null, array('log_id', 'user_id'));
+		foreach ($logs as $log) {
+			// Validation
+			if (empty($log['user_id']) || trim($log['user_id']) == '') {
+				continue;
+			}
 
-            // Insert into new table
-            foreach (explode(',', $log['user_id']) as $user_id) {
-                psm_add_log_user($log['log_id'], $user_id);
-            }
-        }
+			// Insert into new table
+			foreach (explode(',', $log['user_id']) as $user_id) {
+				psm_add_log_user($log['log_id'], $user_id);
+			}
+		}
 
-        // Drop old user_id('s) column
-        $this->execSQL("ALTER TABLE `" . PSM_DB_PREFIX . "log` DROP COLUMN `user_id`;");
+		// Drop old user_id('s) column
+		$this->execSQL("ALTER TABLE `".PSM_DB_PREFIX."log` DROP COLUMN `user_id`;");
 	}
 
 	/**
@@ -509,7 +509,7 @@ class Installer {
 	 */
 	protected function upgrade321() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `header_name` VARCHAR(255) AFTER `pattern`, ADD COLUMN `header_value` VARCHAR(255) AFTER `header_name`";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `header_name` VARCHAR(255) AFTER `pattern`, ADD COLUMN `header_value` VARCHAR(255) AFTER `header_name`";
 		$this->execSQL($queries);
 	}
 
@@ -518,10 +518,10 @@ class Installer {
 	 */
 	protected function upgrade322() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD  `telegram_id` VARCHAR( 255 ) NOT NULL AFTER `pushover_device`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `telegram` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `pushover`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
-		$queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."users` ADD  `telegram_id` VARCHAR( 255 ) NOT NULL AFTER `pushover_device`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD  `telegram` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `pushover`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUE
 					('telegram_status', '0'),
 					('log_telegram', '1'),
 					('telegram_api_token', '');";
@@ -533,10 +533,10 @@ class Installer {
 	 */
 	protected function upgrade330() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `pattern_online` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `pattern`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`, ADD COLUMN `last_offline_duration` varchar(255) NULL AFTER `last_offline`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `pattern_online` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `pattern`;";
 		$this->execSQL($queries);
-		if(psm_get_conf('sms_gateway') == 'mollie'){
+		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
 		

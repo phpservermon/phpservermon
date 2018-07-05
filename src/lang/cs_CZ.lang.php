@@ -227,12 +227,12 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank">registrovat</a> a získat API Token.',
 		'alert_type' => 'Zvolte kdy si přejete být upozorněni.',
-        'alert_type_description' => '<b>Změna stavu:</b> '.
-		    'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br/>'.
-		    '<br><b>Vždy:</b> '.
-		    'Obdržíte upozornění při každém spuštění kontroly, tedy i pokud bude server offline několik hodin.',
+		'alert_type_description' => '<b>Změna stavu:</b> '.
+			'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br/>'.
+			'<br><b>Vždy:</b> '.
+			'Obdržíte upozornění při každém spuštění kontroly, tedy i pokud bude server offline několik hodin.',
 		'alert_type_status' => 'Změna stavu',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Vždy',

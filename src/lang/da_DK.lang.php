@@ -213,13 +213,13 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank">registrere en app</a> på deres website og indtaste en App API Token her.',
 		'alert_type' => 'Vælg hvornår du vil modtage beskeden',
 		'alert_type_description' => '<b>Status ændring:</b> '.
-		    'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
-		    'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
-		    ' vil du kun modtage en mail kl 01.<br/>'.
-		    '<br><b>Altid:</b> '.
-		    'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
+			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
+			'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
+			' vil du kun modtage en mail kl 01.<br/>'.
+			'<br><b>Altid:</b> '.
+			'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
 		'alert_type_status' => 'Status ændret',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altid',
