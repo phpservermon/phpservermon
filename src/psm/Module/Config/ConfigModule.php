@@ -39,7 +39,7 @@ class ConfigModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'config' => __NAMESPACE__ . '\Controller\ConfigController',
+			'config' => __NAMESPACE__.'\Controller\ConfigController',
 		);
 
 	}

@@ -26,11 +26,11 @@
  **/
 
 // include main configuration and functionality
-require_once __DIR__ . '/../src/bootstrap.php';
+require_once __DIR__.'/../src/bootstrap.php';
 
-if(!psm_is_cli()) {
+if (!psm_is_cli()) {
 	// check if it's an allowed host
-	if(!isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+	if (!isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
 		$_SERVER["HTTP_X_FORWARDED_FOR"] = "";
 	}
 
@@ -39,7 +39,7 @@ if(!psm_is_cli()) {
 	$data = @unserialize(PSM_CRON_ALLOW);
 	$allow = $data === false ? PSM_CRON_ALLOW : $data;
 
-	if(!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
+	if (!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
 		header('HTTP/1.0 403 Forbidden');
 		die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>403 Forbidden</title></head><body><h1>Forbidden</h1><p>IP address not allowed. See the <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a> for more info.</p></body></html>');
 	}
@@ -48,15 +48,15 @@ if(!psm_is_cli()) {
 
 $cron_timeout = PSM_CRON_TIMEOUT;
 // parse a couple of arguments
-if(!empty($_SERVER['argv'])) {
-    foreach ($_SERVER['argv'] as $argv) {
+if (!empty($_SERVER['argv'])) {
+	foreach ($_SERVER['argv'] as $argv) {
 		$argi = explode('=', ltrim($argv, '--'));
-		if(count($argi) !== 2) {
+		if (count($argi) !== 2) {
 			continue;
 		}
-		switch($argi[0]) {
+		switch ($argi[0]) {
 			case 'uri':
-				if(!defined('PSM_BASE_URL')){
+				if (!defined('PSM_BASE_URL')) {
 					define('PSM_BASE_URL', $argi[1]);
 				}
 				break;
@@ -72,14 +72,14 @@ if(!empty($_SERVER['argv'])) {
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 // or you can provide the --timeout=x argument
 $time = time();
-if(
+if (
 	psm_get_conf('cron_running') == 1
 	&& $cron_timeout > 0
 	&& ($time - psm_get_conf('cron_running_time') < $cron_timeout)
 ) {
    die('Cron is already running. Exiting.');
 }
-if(!defined('PSM_DEBUG') || !PSM_DEBUG) {
+if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
 	psm_update_conf('cron_running', 1);
 }
 psm_update_conf('cron_running_time', $time);

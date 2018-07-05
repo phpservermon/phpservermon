@@ -39,7 +39,7 @@ class InstallModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'install' => __NAMESPACE__ . '\Controller\InstallController',
+			'install' => __NAMESPACE__.'\Controller\InstallController',
 		);
 
 	}

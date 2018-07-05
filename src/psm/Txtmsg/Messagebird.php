@@ -32,23 +32,23 @@ namespace psm\Txtmsg;
 class Messagebird extends Core {
 
 	/**
-	* Send sms using the Messagebird API
-	* @var string $message
-	* @var array $this->recipients
-	* @var array $this->originator (Max 11 characters)
-	* @var array $recipients_chunk
-	* @var string $this->password
-	*
-	* @var mixed $result
-	* @var array $headers
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
-    public function sendSMS($message) {
-        $success = 1;
+	 * Send sms using the Messagebird API
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var array $this->originator (Max 11 characters)
+	 * @var array $recipients_chunk
+	 * @var string $this->password
+	 *
+	 * @var mixed $result
+	 * @var array $headers
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
+	public function sendSMS($message) {
+		$success = 1;
 		$error = '';
 
 		// Maximum of 50 users a time.
@@ -76,7 +76,7 @@ class Messagebird extends Core {
 				$success = 0;
 			}
 		}
-		if($success == 1){
+		if ($success) {
 			return 1;
 		}
 		return $error;

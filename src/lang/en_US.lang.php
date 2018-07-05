@@ -258,14 +258,14 @@ $sm_lang = array(
 		'telegram_api_token' => 'Telegram API Token',
 		'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for help.',
 		'alert_type' => 'Select when you\'d like to be notified.',
-        'alert_type_description' => '<b>Status change:</b> '.
-		    'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
-		    'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
-		    'You will get 1 notification at 1 am and thats it.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
+		'alert_type_description' => '<b>Status change:</b> '.
+			'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
+			'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
+			'You will get 1 notification at 1 am and thats it.<br/>'.
+			'<br><b>Always:</b> '.
+			'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',

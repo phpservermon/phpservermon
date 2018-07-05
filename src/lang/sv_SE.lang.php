@@ -214,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank">registrera en App</a> på deras webbsida och skriva in App API Token här.',
 		'alert_type' => 'Välj när du vill bli meddelad.',
-        'alert_type_description' => '<b>Statusförändring:</b> '.
-		    'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
-		    'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
-		    'Du kommer få 1 meddelande kl 1 och inga mer.<br/>'.
-		    '<br><b>Alltid:</b> '.
-		    'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
+		'alert_type_description' => '<b>Statusförändring:</b> '.
+			'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
+			'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
+			'Du kommer få 1 meddelande kl 1 och inga mer.<br/>'.
+			'<br><b>Alltid:</b> '.
+			'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
 		'alert_type_status' => 'Statusförändring',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Alltid',

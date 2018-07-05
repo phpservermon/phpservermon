@@ -214,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"> zarejestrować aplikację</a> na ich stronie internetowej i wpisać tutaj App API Token.',
 		'alert_type' => 'Wybierz kiedy chcesz być powiadomiony.',
-        'alert_type_description' => '<b>Zmiana statusu:</b> '.
-		    'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Otrzymasz powiadomienie gdy serwer zmieni status na offline po raz pierwszy. Na przykład, '.
-		    'Twój cronjob uruchamia się co 15 minut, a Twój serwer przestaje odpowiadać o 13 i nie działa do 18. '.
-		    'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br/>'.
-		    '<br><b>Zawsze:</b> '.
-		    'Otrzymasz powiadomienie za każdym razem gdy skrypt zostanie uruchomiony a strona będzie niedostępna.',
+		'alert_type_description' => '<b>Zmiana statusu:</b> '.
+			'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Otrzymasz powiadomienie gdy serwer zmieni status na offline po raz pierwszy. Na przykład, '.
+			'Twój cronjob uruchamia się co 15 minut, a Twój serwer przestaje odpowiadać o 13 i nie działa do 18. '.
+			'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br/>'.
+			'<br><b>Zawsze:</b> '.
+			'Otrzymasz powiadomienie za każdym razem gdy skrypt zostanie uruchomiony a strona będzie niedostępna.',
 		'alert_type_status' => 'Zmiana statusu',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Zawsze',

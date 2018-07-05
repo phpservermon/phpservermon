@@ -71,7 +71,7 @@ class StatusController extends AbstractServerController {
 		$layout_data['servers_online'] = array();
 
 		foreach ($servers as $server) {
-			if($server['active'] == 'no') {
+			if ($server['active'] == 'no') {
 				continue;
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
@@ -85,7 +85,7 @@ class StatusController extends AbstractServerController {
 
 			if ($server['status'] == "off") {
 				$layout_data['servers_offline'][] = $server;
-			} elseif($server['warning_threshold_counter'] > 0) {
+			} elseif ($server['warning_threshold_counter'] > 0) {
 				$server['class_warning'] = 'warning';
 				$layout_data['servers_offline'][] = $server;
 			} else {
@@ -94,12 +94,12 @@ class StatusController extends AbstractServerController {
 		}
 
 		$auto_refresh_seconds = psm_get_conf('auto_refresh_servers');
-		if(intval($auto_refresh_seconds) > 0) {
+		if (intval($auto_refresh_seconds) > 0) {
 			$this->twig->addGlobal('auto_refresh', true);
 			$this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
 		}
 
-		if($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
+		if ($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
 			$this->xhr = true;
 			//disable auto refresh in ajax return html
 			$layout_data["auto_refresh"] = 0;
@@ -109,7 +109,7 @@ class StatusController extends AbstractServerController {
 	}
 
 	protected function executeSaveLayout() {
-		if($this->isXHR()) {
+		if ($this->isXHR()) {
 			$layout = psm_POST('layout', 0);
 			$this->getUser()->setUserPref('status_layout', $layout);
 

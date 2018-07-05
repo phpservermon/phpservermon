@@ -230,14 +230,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover API Token',
 		'pushover_api_token_description' => '请先 <a href="%1$s" target="_blank">注册Pushover</a> 并获取 Api Token.',
 		'alert_type' => '如果想要收到提醒请选中此项.',
-        'alert_type_description' => '<b>状态变化:</b> '.
-		    '业务 online -> offline 或 offline -> online 的状态变化将会收到提醒.<br/>'.
-		    '<br /><b>离线状态:</b> '.
-		    '服务器首次发生离线状态将会收到提醒 ，如：'.
-		    'cronjob 设定为15分钟执行一次， 服务器从1:00-6:00一直处于当状态'.
-		    '那么你将于1:00首次发现脱机时收到一条提醒，之后不会重复提醒.<br/>'.
-		    '<br><b>总是提醒:</b> '.
-		    '每次脚本执行或站点离线(即使站点离线很久已提醒过)均发送提醒.',
+		'alert_type_description' => '<b>状态变化:</b> '.
+			'业务 online -> offline 或 offline -> online 的状态变化将会收到提醒.<br/>'.
+			'<br /><b>离线状态:</b> '.
+			'服务器首次发生离线状态将会收到提醒 ，如：'.
+			'cronjob 设定为15分钟执行一次， 服务器从1:00-6:00一直处于当状态'.
+			'那么你将于1:00首次发现脱机时收到一条提醒，之后不会重复提醒.<br/>'.
+			'<br><b>总是提醒:</b> '.
+			'每次脚本执行或站点离线(即使站点离线很久已提醒过)均发送提醒.',
 		'alert_type_status' => '状态变化',
 		'alert_type_offline' => '离线状态',
 		'alert_type_always' => '总是提醒',

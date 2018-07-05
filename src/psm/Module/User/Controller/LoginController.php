@@ -45,7 +45,7 @@ class LoginController extends AbstractController {
 	}
 
 	protected function executeLogin() {
-		if(isset($_POST['user_name']) && isset($_POST['user_password'])) {
+		if (isset($_POST['user_name']) && isset($_POST['user_password'])) {
 			$rememberme = (isset($_POST['user_rememberme'])) ? true : false;
 			$result = $this->getUser()->loginWithPostData(
 				$_POST['user_name'],
@@ -53,9 +53,9 @@ class LoginController extends AbstractController {
 				$rememberme
 			);
 
-			if($result) {
+			if ($result) {
 				// success login, redirect
-				header('Location: ' . psm_build_url($_SERVER['QUERY_STRING']));
+				header('Location: '.psm_build_url($_SERVER['QUERY_STRING']));
 				trigger_error("Redirect failed.", E_USER_ERROR);
 			} else {
 				$this->addMessage(psm_get_lang('login', 'error_login_incorrect'), 'error');
@@ -82,10 +82,10 @@ class LoginController extends AbstractController {
 	 * @return string
 	 */
 	protected function executeForgot() {
-		if(isset($_POST['user_name'])) {
+		if (isset($_POST['user_name'])) {
 			$user = $this->getUser()->getUserByUsername($_POST['user_name']);
 
-			if(!empty($user)) {
+			if (!empty($user)) {
 				$token = $this->getUser()->generatePasswordResetToken($user->user_id);
 				// we have a token, send it along
 				$this->sendPasswordForgotMail(
@@ -118,18 +118,18 @@ class LoginController extends AbstractController {
 		$user_id = (isset($_GET['user_id'])) ? intval($_GET['user_id']) : 0;
 		$token = (isset($_GET['token'])) ? $_GET['token'] : '';
 
-		if(!$service_user->verifyPasswordResetToken($user_id, $token)) {
+		if (!$service_user->verifyPasswordResetToken($user_id, $token)) {
 			$this->addMessage(psm_get_lang('login', 'error_reset_invalid_link'), 'error');
 			return $this->executeLogin();
 		}
 
-		if(!empty($_POST['user_password_new']) && !empty($_POST['user_password_repeat'])) {
-			if($_POST['user_password_new'] !== $_POST['user_password_repeat']) {
+		if (!empty($_POST['user_password_new']) && !empty($_POST['user_password_repeat'])) {
+			if ($_POST['user_password_new'] !== $_POST['user_password_repeat']) {
 				$this->addMessage(psm_get_lang('login', 'error_login_passwords_nomatch'), 'error');
 			} else {
 				$result = $service_user->changePassword($user_id, $_POST['user_password_new']);
 
-				if($result) {
+				if ($result) {
 					$this->addMessage(psm_get_lang('login', 'success_password_reset'), 'success');
 					return $this->executeLogin();
 				} else {
@@ -151,15 +151,15 @@ class LoginController extends AbstractController {
 		return $this->twig->render('module/user/login/reset.tpl.html', $tpl_data);
 	}
 
-    /**
-     * Sends the password-reset-email.
+	/**
+	 * Sends the password-reset-email.
 	 * @param int $user_id
 	 * @param string $user_email
 	 * @param string $user_password_reset_hash
-     */
-    protected function sendPasswordForgotMail($user_id, $user_email, $user_password_reset_hash) {
+	 */
+	protected function sendPasswordForgotMail($user_id, $user_email, $user_password_reset_hash) {
 		$mail = psm_build_mail();
-		$mail->Subject	= psm_get_lang('login' ,'password_reset_email_subject');
+		$mail->Subject = psm_get_lang('login', 'password_reset_email_subject');
 
 		$url = psm_build_url(array(
 			'action' => 'reset',
@@ -171,7 +171,7 @@ class LoginController extends AbstractController {
 		$mail->Body = $body;
 		$mail->AltBody = str_replace('<br/>', "\n", $body);
 
-    	$mail->AddAddress($user_email);
-    	$mail->Send();
-    }
+		$mail->AddAddress($user_email);
+		$mail->Send();
+	}
 }

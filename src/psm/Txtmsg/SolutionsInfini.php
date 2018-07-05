@@ -32,22 +32,22 @@ namespace psm\Txtmsg;
 class SolutionsInfini extends Core {
 
 	/**
-	* Send sms using the SolutionsInfini API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var string $recipients
-	* @var array $this->originator (Max 11 characters)
-	*
-	* @var resource $curl
-	* @var string $err
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the SolutionsInfini API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var string $recipients
+	 * @var array $this->originator (Max 11 characters)
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$error = "";
@@ -58,7 +58,7 @@ class SolutionsInfini extends Core {
 		$recipients = join(',', $this->recipients);
 
 		$curl = curl_init();
-		curl_setopt($curl,CURLOPT_URL, "https://api-alerts.solutionsinfini.com/v4/?" . http_build_query(
+		curl_setopt($curl, CURLOPT_URL, "https://api-alerts.solutionsinfini.com/v4/?".http_build_query(
 				array(
 					"api_key" => $this->password,
 					"method" => "sms",
@@ -68,18 +68,20 @@ class SolutionsInfini extends Core {
 				)
 			)
 		);
-		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 
 		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		if($err = curl_errno($curl) || $httpcode != 200 || $result['status'] != "OK") {
+		if ($err = curl_errno($curl) || $httpcode != 200 || $result['status'] != "OK") {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['status']." - ".$result['message'].".";
 		}
 		curl_close($curl);
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

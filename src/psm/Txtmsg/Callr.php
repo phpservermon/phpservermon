@@ -32,31 +32,31 @@ namespace psm\Txtmsg;
 class Callr extends Core {
 
 	/**
-	* Send sms using the Callr API
-	*
-	* @var string $message
-	* @var string $this->password
-	* @var array $this->recipients
-	* @var array $this->originator
-	* @var string $recipient
-	*
-	* @var mixed $result
-	* @var array $headers
-	*
-	* @var resource $curl
-	* @var string $err
-	*
-	* @var int $success
-	* @var string $error
-	*
-	* @return int or string
-	*/
+	 * Send sms using the Callr API
+	 *
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 * @var string $recipient
+	 *
+	 * @var mixed $result
+	 * @var array $headers
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return int or string
+	 */
 	
 	public function sendSMS($message) {
 		$error = "";
 		$success = 1;
 		
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "https://api.callr.com/rest/v1.1/sms",
@@ -74,7 +74,7 @@ class Callr extends Core {
 					)
 				),
 				CURLOPT_HTTPHEADER => array(
-					"authorization: Basic " . base64_encode($this->username . ":" . $this->password),
+					"authorization: Basic ".base64_encode($this->username.":".$this->password),
 					"content-type: application/json"
 				),
 			));
@@ -82,13 +82,15 @@ class Callr extends Core {
 			$result = json_decode(curl_exec($curl), true);
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-			if($err = curl_errno($curl) || $httpcode != 200 || $result['status'] == "error") {
+			if ($err = curl_errno($curl) || $httpcode != 200 || $result['status'] == "error") {
 				$success = 0;
-    				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['data']['code']." - ".$result['data']['message'];
+					$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['data']['code']." - ".$result['data']['message'];
 			}
 			curl_close($curl);
 		}
-		if($success) return 1;
+		if ($success) {
+			return 1;
+		}
 		return $error;
 	}
 }

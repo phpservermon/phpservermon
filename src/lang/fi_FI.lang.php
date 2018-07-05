@@ -201,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover API-avain',
 		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
 		'alert_type' => 'Valitse milloin haluat ilmoituksia.',
-        'alert_type_description' => '<b>Tilan muutos:</b> '.
-		    'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
-		    '<br /><b>Sammunut:</b> '.
-		    'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
-		    'jos tarkistus tehdään joka 15 minuutti, ja palvelin sammuu klo 1 ja pysyy sammuneena klo 6 asti. '.
-		    'Saat vain yhden ilmoituksen klo 1, ei muuta.<br/>'.
-		    '<br><b>Aina:</b> '.
-		    'Saat ilmoituksen joka kerta kun palvelin tarkistetaan, vaikka palvelin olisi ollut sammuneena tunteja.',
+		'alert_type_description' => '<b>Tilan muutos:</b> '.
+			'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
+			'<br /><b>Sammunut:</b> '.
+			'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
+			'jos tarkistus tehdään joka 15 minuutti, ja palvelin sammuu klo 1 ja pysyy sammuneena klo 6 asti. '.
+			'Saat vain yhden ilmoituksen klo 1, ei muuta.<br/>'.
+			'<br><b>Aina:</b> '.
+			'Saat ilmoituksen joka kerta kun palvelin tarkistetaan, vaikka palvelin olisi ollut sammuneena tunteja.',
 		'alert_type_status' => 'Tilan muutos',
 		'alert_type_offline' => 'Sammunut',
 		'alert_type_always' => 'Aina',
