@@ -189,8 +189,9 @@ class CMBulkSMS extends Core {
 	/**
 	 * Create and execute the curl request
 	 *
-	 * @return boolean True if message is sent
+	 * @return boolean|string boolean if message is sent, else string
 	 */
+
 	protected function executeCurlRequest() {
 		$cr = curl_init();
 		curl_setopt_array($cr, array(
@@ -209,7 +210,7 @@ class CMBulkSMS extends Core {
 		$cErrorCode = curl_errno($cr);
 		curl_close($cr);
 
-		$this->result = 1;
+		$this->result = true;
 		// set result and log error if needed
 		if ($cError) {
 			$this->error = 'Response: CM SMS API:'.$cResponse.' cURL Error Code: '.$cErrorCode.'"'.$cError.'"';

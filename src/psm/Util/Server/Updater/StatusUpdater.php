@@ -153,7 +153,6 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updatePing($max_runs, $run = 1) {
-		$errno = 0;
 		// save response time
 		$starttime = microtime(true);
 		// set ping payload

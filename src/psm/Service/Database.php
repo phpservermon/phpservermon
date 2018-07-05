@@ -61,7 +61,7 @@ class Database {
 
 	/**
 	 * PDOStatement of last query
-	 * @var \PDOStatement $last
+	 * @var int|bool|\PDOStatement $last
 	 */
 	protected $last;
 
@@ -140,7 +140,7 @@ class Database {
 	/**
 	 * Execute SQL statement and return number of affected rows
 	 * @param string $query
-	 * @return int
+	 * @return int|\PDOStatement
 	 */
 	public function exec($query) {
 		try {
@@ -155,9 +155,9 @@ class Database {
 	/**
 	 * Prepare and execute SQL statement with parameters
 	 * @param string $query SQL statement
-	 * @param Array $parameters An array of values with as many elements as there are bound parameters in the SQL statement
+	 * @param array $parameters An array of values with as many elements as there are bound parameters in the SQL statement
 	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
-	 * @return @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
+	 * @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
 	 */
 	public function execute($query, $parameters, $fetch = true) {
 		try {

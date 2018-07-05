@@ -47,7 +47,7 @@ class ArchiveManager {
 
 	/**
 	 * Retention period
-	 * @var \DateInterval $retention_period
+	 * @var \DateInterval|bool $retention_period false if cleanup is disabled
 	 * @see setRetentionPeriod()
 	 */
 	protected $retention_period;

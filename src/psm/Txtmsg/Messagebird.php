@@ -45,8 +45,9 @@ class Messagebird extends Core {
 	 * @var int $success
 	 * @var string $error
 	 *
-	 * @return int or string
+	 * @return bool|string
 	 */
+	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = '';
