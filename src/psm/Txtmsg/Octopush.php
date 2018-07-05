@@ -79,8 +79,9 @@ class Octopush extends Core {
 		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$xmlResults = simplexml_load_string($result);
+		$err = curl_errno($curl);
 
-		if ($err = curl_errno($curl) || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
+		if ($err != 0 || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->error_code.". Look at http://www.octopush-dm.com/en/errors for the error description.";
 		}

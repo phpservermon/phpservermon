@@ -80,11 +80,12 @@ class Inetworx extends Core {
 			));
 
 			$result = curl_exec($curl);
+			$err = curl_errno($curl);
 
 			$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			if ($err = curl_errno($curl) || $httpcode != 200 || strpos($result, "200") === false) {
+			if ($err != 0 || $httpcode != 200 || strpos($result, "200") === false) {
 				$success = 0;
-					$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
+				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 			}
 			curl_close($curl);
 		}

@@ -74,7 +74,9 @@ class Smsgw extends Core {
 
 		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		if ($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result != "1")) {
+		$err = curl_errno($curl);
+		
+		if ($err != 0 || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result != "1")) {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
 		}

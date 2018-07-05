@@ -85,8 +85,9 @@ class ClickSend extends Core {
 		
 		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$err = curl_errno($curl);
 		
-		if ($err = curl_errno($curl) || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result['response_code'] != "SUCCESS")) {
+		if ($err != 0 || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202' && $result['response_code'] != "SUCCESS")) {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
 		}
