@@ -68,10 +68,10 @@ class Smsit extends Core {
 			);
 			
 			$result = curl_exec($curl);
-			$err = curl_error($curl);
+			$err = curl_errno($curl);
 			curl_close($curl);
 			
-			if ($err || is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
+			if ($err != 0 || is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
 				$success = 0;
 				$error = $result;
 			}

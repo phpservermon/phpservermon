@@ -70,10 +70,10 @@ class FreeVoipDeal extends Core {
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			
 			$result = curl_exec($curl);
-			$err = curl_error($curl);
+			$err = curl_errno($curl);
 			curl_close($curl);
 			
-			if ($err || is_numeric(strpos($result, "failure"))) {
+			if ($err != 0 || is_numeric(strpos($result, "failure"))) {
 				$success = 0;
 				$error = $result;
 			}

@@ -77,9 +77,9 @@ class Smsglobal extends Core {
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			
 		$result = curl_exec($curl);
-		$err = curl_error($curl);
+		$err = curl_errno($curl);
 			
-		if ($err = curl_errno($curl) || substr($result, 0, 5) != "OK: 0") {
+		if ($err != 0 || substr($result, 0, 5) != "OK: 0") {
 			$success = 0;
 			$result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;

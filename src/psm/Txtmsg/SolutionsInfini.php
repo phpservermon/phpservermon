@@ -69,12 +69,13 @@ class SolutionsInfini extends Core {
 			)
 		);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 
 		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		if ($err = curl_errno($curl) || $httpcode != 200 || $result['status'] != "OK") {
+		$err = curl_errno($curl);
+
+		if ($err != 0 || $httpcode != 200 || $result['status'] != "OK") {
 			$success = 0;
 			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result['status']." - ".$result['message'].".";
 		}
