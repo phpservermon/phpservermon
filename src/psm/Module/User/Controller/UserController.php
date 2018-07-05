@@ -89,7 +89,7 @@ class UserController extends AbstractController {
 		$users = $this->db->select(
 			PSM_DB_PREFIX.'users',
 			null,
-			array('user_id', 'user_name', 'level', 'name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email'),
+			array('user_id', 'user_name', 'level', 'name', 'mobile', 'email'),
 			null,
 			array('name')
 		);
@@ -319,7 +319,7 @@ class UserController extends AbstractController {
 
 	protected function getLabels() {
 		return array(
-			'label_users' => psm_get_lang('menu', 'users'),
+			'label_users' => psm_get_lang('menu', 'user'),
 			'label_user' => psm_get_lang('users', 'user'),
 			'label_name' => psm_get_lang('users', 'name'),
 			'label_user_name' => psm_get_lang('users', 'user_name'),
@@ -335,8 +335,8 @@ class UserController extends AbstractController {
 			'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
 			'label_telegram' => psm_get_lang('users', 'telegram'),
 			'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
-			'label_telegram_id' => psm_get_lang('users', 'telegram_id'),
-			'label_telegram_id_description' => psm_get_lang('users', 'telegram_id_description'),
+			'label_telegram_id' => psm_get_lang('users', 'telegram_chat_id'),
+			'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_servers' => psm_get_lang('menu', 'server'),
 			'label_action' => psm_get_lang('system', 'action'),
