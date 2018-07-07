@@ -234,6 +234,7 @@ class Installer {
 						  `error` varchar(255) NULL,
 						  `rtime` FLOAT(9, 7) NULL,
 						  `last_online` datetime NULL,
+						  `last_offline` datetime NULL,
 						  `last_check` datetime NULL,
 						  `active` enum('yes','no') NOT NULL default 'yes',
 						  `email` enum('yes','no') NOT NULL default 'yes',
@@ -245,6 +246,8 @@ class Installer {
               `timeout` smallint(1) unsigned NULL DEFAULT NULL,
               `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
+						  `last_error_raw` varchar(255) DEFAULT NULL,
+						  `last_raw` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -524,10 +527,9 @@ class Installer {
 	 */
 	protected function upgrade330() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
-			ADD COLUMN VARCHAR(255) `last_offline` AFTER  `last_online`,
-			ADD COLUMN VARCHAR(255) `last_error_raw` AFTER  `website_password`,
-			ADD COLUMN VARCHAR(255) `last_raw` AFTER  `last_error_raw`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_offline` DATETIME NULL AFTER `last_online`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_raw` VARCHAR(255) NULL AFTER `website_password`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_raw` VARCHAR(255) NULL AFTER `last_error_raw`;";
 		$this->execSQL($queries);
 	}
 }
