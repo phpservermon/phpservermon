@@ -75,8 +75,7 @@ class Smsglobal extends Core {
 		
 		$result = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			
-		$result = curl_exec($curl);
+		
 		$err = curl_errno($curl);
 			
 		if ($err != 0 || substr($result, 0, 5) != "OK: 0") {

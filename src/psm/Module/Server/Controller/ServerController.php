@@ -239,8 +239,6 @@ class ServerController extends AbstractServerController {
 			return $this->executeIndex();
 		}
 
-		$encrypted_password = '';
-
 		if (!empty($_POST['website_password'])) {
 			$new_password = psm_POST('website_password');
 
@@ -251,7 +249,7 @@ class ServerController extends AbstractServerController {
 				if ($new_password == $hash) {
 					$encrypted_password = $edit_server['website_password'];
 				} else {
-				$encrypted_password = psm_password_encrypt($this->server_id.psm_get_conf('password_encrypt_key'), $new_password);
+				$encrypted_password = psm_password_encrypt(strval($this->server_id).psm_get_conf('password_encrypt_key'), $new_password);
 				}
 			} else {
 				// We need the server id to encrypt the password. Encryption will be done after the server is added
@@ -263,7 +261,7 @@ class ServerController extends AbstractServerController {
 			'label' => trim(strip_tags(psm_POST('label', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),
 			'timeout' => (isset($_POST['timeout']) && intval($_POST['timeout']) > 0) ? intval($_POST['timeout']) : null,
-			'website_username' => psm_POST('website_username', null),
+			'website_username' => psm_POST('website_username'),
 			'website_password' => $encrypted_password,
 			'port' => intval(psm_POST('port', 0)),
 			'type' => psm_POST('type', ''),
@@ -332,7 +330,7 @@ class ServerController extends AbstractServerController {
 			if (!empty($_POST['website_password'])) {
 				$cleanWebsitePassword = array(
 					'website_password' => psm_password_encrypt(
-						$this->server_id.psm_get_conf('password_encrypt_key'),
+						strval($this->server_id).psm_get_conf('password_encrypt_key'),
 						psm_POST('website_password')
 					),
 				);

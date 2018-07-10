@@ -374,7 +374,7 @@ class User {
 
 	/**
 	 * Change the password of a user
-	 * @param int $user_id
+	 * @param int|\PDOStatement $user_id
 	 * @param string $password
 	 * @return boolean TRUE on success, FALSE on failure
 	 */

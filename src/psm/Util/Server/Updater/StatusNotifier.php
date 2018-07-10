@@ -366,7 +366,7 @@ class StatusNotifier {
 	/**
 	 * Get all users for the provided server id
 	 * @param int $server_id
-	 * @return array
+	 * @return \PDOStatement array
 	 */
 	public function getUsers($server_id) {
 		// find all the users with this server listed

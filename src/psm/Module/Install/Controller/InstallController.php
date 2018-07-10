@@ -58,7 +58,7 @@ class InstallController extends AbstractController {
 			'index', 'config', 'install'
 		), 'index');
 
-		$this->twig->addGlobal('subtitle', psm_get_lang('system,', 'install'));
+		$this->twig->addGlobal('subtitle', psm_get_lang('system', 'install'));
 	}
 
 	/**

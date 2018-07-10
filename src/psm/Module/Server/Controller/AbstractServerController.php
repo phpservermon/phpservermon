@@ -38,7 +38,7 @@ abstract class AbstractServerController extends AbstractController {
 
 	/**
 	 * Get all servers for the current user
-	 * @param int $server_id if true only that server will be retrieved.
+	 * @param Countable|array|\PDOStatement $server_id (int) if true only that server will be retrieved.
 	 * @return array
 	 */
 	public function getServers($server_id = null) {

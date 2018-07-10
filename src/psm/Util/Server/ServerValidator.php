@@ -45,7 +45,7 @@ class ServerValidator {
 
 	/**
 	 * Check if the server id exists
-	 * @param int $server_id
+	 * @param int|\PDOStatement $server_id
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
