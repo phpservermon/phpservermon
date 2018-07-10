@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* Minimum PHP version is PHP 5.5.9 (not PHP 5.5.0).
 * Fixed ping error: Failed to parse address &quot;8.8.8.8&quot;
 * Added correct ping error messaging.
 * Added Twilio and Telegram to the notification list.
