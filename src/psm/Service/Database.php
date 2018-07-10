@@ -104,7 +104,7 @@ class Database {
 	 * If you dont want to fetch a result, use exec().
 	 * @param string $query SQL query
 	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
-	 * @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
+	 * @return \PDOStatement|int|bool|array object
 	 */
 	public function query($query, $fetch = true) {
 		// Execute query and process results
@@ -140,7 +140,7 @@ class Database {
 	/**
 	 * Execute SQL statement and return number of affected rows
 	 * @param string $query
-	 * @return int|\PDOStatement
+	 * @return int
 	 */
 	public function exec($query) {
 		try {
@@ -183,7 +183,7 @@ class Database {
 	 * @param string $limit limit. for example: 0,30
 	 * @param array $orderby fields for the orderby clause
 	 * @param string $direction ASC or DESC. Defaults to ASC
-	 * @return array multi dimensional array with results
+	 * @return \PDOStatement array multi dimensional array with results
 	 */
 	public function select($table, $where = null, $fields = null, $limit = '', $orderby = null, $direction = 'ASC') {
 		// build query
@@ -253,7 +253,8 @@ class Database {
 	 * Insert or update data to the database
 	 * @param string $table table name
 	 * @param array $data data to save or insert
-	 * @param mixed $where either string ('user_id=2' or just '2' (works only with primary field)) or array with where clause (only when updating)
+	 * @param string|array $where either string ('user_id=2' or just '2' (works only with primary field)) or array with where clause (only when updating)
+	 * @return int|array|\PDOStatement
 	 */
 	public function save($table, array $data, $where = null) {
 		if ($where === null) {
@@ -280,9 +281,8 @@ class Database {
 
 		if ($exec) {
 			return $this->exec($query);
-		} else {
-			return $this->query($query);
 		}
+		return $this->query($query);
 	}
 
 	/**
@@ -294,7 +294,7 @@ class Database {
 	 * that do not match the fields provided in the first record will be
 	 * skipped.
 	 *
-	 * @param type $table
+	 * @param string $table
 	 * @param array $data
 	 * @return \PDOStatement
 	 * @see insert()

@@ -56,7 +56,7 @@ abstract class Core implements TxtmsgInterface {
 	/**
 	 * Add new recipient to the list
 	 *
-	 * @param unknown_type $recipient
+	 * @param string|int $recipient
 	 */
 	public function addRecipients($recipient) {
 		array_push($this->recipients, $recipient);

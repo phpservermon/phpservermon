@@ -669,7 +669,7 @@ function psm_GET($key, $alt = null) {
 /**
  * Try existence of a POST var, if not return the alternative
  * @param string $key
- * @param string $alt
+ * @param string|array|bool $alt
  * @return mixed
  */
 function psm_POST($key, $alt = null) {

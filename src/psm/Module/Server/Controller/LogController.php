@@ -137,7 +137,7 @@ class LogController extends AbstractServerController {
 	 * Get all the log entries for a specific $type
 	 *
 	 * @param string $type status/email/sms
-	 * @return array
+	 * @return \PDOStatement array
 	 */
 	public function getEntries($type) {
 		$sql_join = '';
@@ -172,7 +172,7 @@ class LogController extends AbstractServerController {
 	 * Get all the user entries for a specific $log_id
 	 *
 	 * @param $log_id
-	 * @return array
+	 * @return \PDOStatement array
 	 */
 	protected function getLogUsers($log_id) {
 		return $this->db->query(

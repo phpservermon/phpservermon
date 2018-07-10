@@ -37,11 +37,11 @@ namespace psm\Txtmsg;
  * Requirements: cURL v7.18.1+ and OpenSSL 0.9.8j+
  */
 class CMBulkSMS extends Core {
-	/** @var bool|null True when cURL request succeeded */
-	public $result;
+	/** @var bool True when cURL request succeeded */
+	public $result = true;
 
-	/** @var string|null Contains error message if cURL request failed */
-	public $error;
+	/** @var string Contains error message if cURL request failed */
+	public $error = '';
 
 	/** @var bool Set to true for debug output/logging */
 	protected $debug = false;
@@ -75,7 +75,7 @@ class CMBulkSMS extends Core {
 	 *
 	 * @see https://docs.cmtelecom.com/bulk-sms/v1.0#/send_a_message%7Csample_requests
 	 * @param string $message Your text message
-	 * @return boolean True when cURL request was successful
+	 * @return bool|string true when cURL request was successful, otherwise string with error message
 	 */
 	public function sendSMS($message) {
 		// Check if recipient and text message are available
@@ -210,12 +210,11 @@ class CMBulkSMS extends Core {
 		$cErrorCode = curl_errno($cr);
 		curl_close($cr);
 
-		$this->result = true;
 		// set result and log error if needed
 		if ($cError) {
 			$this->error = 'Response: CM SMS API:'.$cResponse.' cURL Error Code: '.$cErrorCode.'"'.$cError.'"';
 			error_log($this->error, E_USER_ERROR);
-			$this->result = $this->error;
+			$this->result = false;
 		}
 
 		// Debug output
@@ -226,6 +225,6 @@ class CMBulkSMS extends Core {
 			echo $debug;
 		}
 
-		return $this->result;
+		return $this->result ? $this->result : $this->error;
 	}
 }
