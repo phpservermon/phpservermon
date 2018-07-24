@@ -324,7 +324,7 @@ function psm_parse_msg($status, $type, $vars) {
 	if (!$message) {
 		return $message;
 	}
-	$vars['date'] = date('Y-m-d H:i:s');
+	$vars['date'] = date('d.m.Y H:i:s');
 
 	foreach ($vars as $k => $v) {
 		$message = str_replace('%'.strtoupper($k).'%', $v, $message);
@@ -825,7 +825,7 @@ class telegram
 	}
 	public function send() {
 		if (!Empty($this->_token) && !Empty($this->_user) && !Empty($this->_message)) {
-			$this->_url = 'https://api.telegram.org/bot'.urlencode($this->_token).'/sendMessage?chat_id='.urlencode($this->_user).'&text='.urlencode($this->_message);
+			$this->_url = 'https://api.telegram.org/bot'.urlencode($this->_token).'/sendMessage?chat_id='.urlencode($this->_user).'&text='.urlencode($this->_message).'&parse_mode=Markdown';
 		}
 		return $this->sendurl();
 	}
