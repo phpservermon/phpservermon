@@ -153,6 +153,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Roman Beylin - https://github.com/roman-beylin
   * Yuriy Lyutov - https://github.com/delysh
+  * Alexell - https://github.com/Alexell
 
 * Spanish
 
