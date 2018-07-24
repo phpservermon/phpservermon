@@ -320,7 +320,7 @@ $sm_lang = array(
 		'telegram_error_noid' => 'Не удалось отправить тестовое уведомление: идентификатор чата не найден в вашем профиле.',
 		'log_retention_period' => 'Период хранения логов',
 		'log_retention_period_description' => 'Количество дней хранения логов уведомлений и архива аптайма серверов. Введите 0 для выключения очистки логов.',
-		'log_retention_days' => 'days',
+		'log_retention_days' => 'дней',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(
