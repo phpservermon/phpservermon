@@ -103,7 +103,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover - это сервис, который позволяет легко получать уведомления в режиме реального времени. Больше информации на <a href="https://pushover.net/">их веб-сайте</a>.',
 		'pushover_key' => 'Pushover ключ',
 		'pushover_device' => 'Pushover устройство',
-		'pushover_device_description' => 'Имя устройства, на которое будут отправляться уведомления. Оставьте пустым, что бы отправлять уведомления на все устройства.',		'telegram' => 'Telegram',		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> удобный мессенджер для получения уведомлений в реальном времени. Посетите <a href="http://docs.phpservermonitor.org/">страницу документации</a> для получения подробной информации.',
+		'pushover_device_description' => 'Имя устройства, на которое будут отправляться уведомления. Оставьте пустым, что бы отправлять уведомления на все устройства.',
 		'telegram' => 'Telegram',
 		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> удобный мессенджер для получения уведомлений в реальном времени. Посетите <a href="http://docs.phpservermonitor.org/">раздел документации</a> для получения доп. информации и инструкций по установке.',
 		'telegram_chat_id' => 'Telegram chat id',
