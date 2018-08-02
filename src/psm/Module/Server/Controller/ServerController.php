@@ -239,6 +239,9 @@ class ServerController extends AbstractServerController {
 			return $this->executeIndex();
 		}
 
+		// We need the server id to encrypt the password. Encryption will be done after the server is added
+		$encrypted_password = '';
+		
 		if (!empty($_POST['website_password'])) {
 			$new_password = psm_POST('website_password');
 
@@ -251,9 +254,6 @@ class ServerController extends AbstractServerController {
 				} else {
 				$encrypted_password = psm_password_encrypt(strval($this->server_id).psm_get_conf('password_encrypt_key'), $new_password);
 				}
-			} else {
-				// We need the server id to encrypt the password. Encryption will be done after the server is added
-				$encrypted_password = '';
 			}
 		}
 
