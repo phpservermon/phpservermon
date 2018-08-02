@@ -473,18 +473,18 @@ function psm_update_available() {
  * If the from name and email are left blank they will be prefilled from the config.
  * @param string $from_name
  * @param string $from_email
- * @return \PHPMailer
+ * @return \PHPMailer\PHPMailer\PHPMailer
  */
 function psm_build_mail($from_name = null, $from_email = null) {
-	$phpmailer = new \PHPMailer();
+	$phpmailer = new \PHPMailer\PHPMailer\PHPMailer();
 	$phpmailer->Encoding = "base64";
 	$phpmailer->CharSet = 'UTF-8';
-	$phpmailer->SMTPDebug = false;
+	$phpmailer->SMTPDebug = 0;
 
 	if (psm_get_conf('email_smtp') == '1') {
 		$phpmailer->IsSMTP();
 		$phpmailer->Host = psm_get_conf('email_smtp_host');
-		$phpmailer->Port = psm_get_conf('email_smtp_port');
+		$phpmailer->Port = (int) psm_get_conf('email_smtp_port');
 		$phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
 		$smtp_user = psm_get_conf('email_smtp_username');
