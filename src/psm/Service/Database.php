@@ -37,9 +37,9 @@ class Database {
 
 	/**
 	 * DB port
-	 * @var string $db_port
+	 * @var string|integer $db_port
 	 */
-	protected $db_port = 3306;
+	protected $db_port;
 
 	/**
 	 * DB name
@@ -86,11 +86,12 @@ class Database {
 	 * @param string $user
 	 * @param string $pass
 	 * @param string $db
+   * @param string|integer $port
 	 */
-	function __construct($host = null, $user = null, $pass = null, $db = null, $port = null) {
+	function __construct($host = null, $user = null, $pass = null, $db = null, $port = '') {
 		if ($host != null && $user != null && $pass !== null && $db != null) {
 			$this->db_host = $host;
-			$this->db_port = (!empty($port)) ? $port : 3306;
+			$this->db_port = $port;
 			$this->db_name = $db;
 			$this->db_user = $user;
 			$this->db_pass = $pass;
