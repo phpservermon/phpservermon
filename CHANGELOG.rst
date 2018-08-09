@@ -5,20 +5,67 @@ Changelog
 Not yet released
 ----------------
 
-* Minimum PHP version is PHP 5.5.9 (not PHP 5.5.0).
-* Fixed ping error: Failed to parse address &quot;8.8.8.8&quot;
-* Added correct ping error messaging.
-* Added Twilio and Telegram to the notification list.
-* Directed download url to the release page.
-* Changed all http links to https.
-* #571 Updated several dependencies and made few fixes.
-* #569 Implemented Twilio
-* Added Telegram and Pushover.net to in-code documentation.
+v3.3.1 (released August 10, 2018)
+--------------------------------
+
+* #403: Removed default mysql port settings from files and left empty values.
+* 5e61d89: Defined $encrypted_password.
+* ce8182e: Updated composer.lock.
+* 51ef755: Removed last_offline_duration = "" bug.
+* 6534749: Added last offline duration to all translations.
+* e4bade3: Updated PHPMailer namespace.
+* d2dda8a: Removed duplicate from Russian translation.
+* #613: Updated Russian translation.
+* f21f3db: Typo fix, removed unused code & updated documentation.
+* 476c59e: Update required PHP version to 5.5.9.
+* 1c984b3: Update documentation, added some small changes.
+* eac8ebc: Fixed sms error check.
+* e2c424e: Spacing, indentation and braces.
+* a05d36d: Fixed typos & removed unused code.
+* 3023c83: Changed die() to trigger_error().
+* a96e1e5: Removed eval(), redone get & load language functions.
+* b0ea7eb: Added forgotten translation.
+* 92e8312: Removed unused code.
+* fc84c06: Added cronjob over web to documentation. Changed HTMl error to 403.
+* 93b324f: Security update symfony/http-foundation.
+* dd56e29: Update composer.phar to new version.
+* b98a4af: Typo fix.
+
+v3.3.0 (released May 30, 2018)
+--------------------------------
+
+* 57f4c36: Added support voor the following SMS gateways: Plivo, SolutionsInfini, Callr and GAtewayAPI.
+* c3751e7: Moved Clickatell api key to password field.
+* #590: Rollback Twig version update to work with PHP5.
+* #589: Enlarge select pattern_online width.
+* 3c55a35: Allow ping by hostname.
+* #579: Added support for "site online when pattern not found".
+* #587: Added __MACOSX/ to .gitignore.
+* a496874, 62254a5 and 57f4c36: Rewritten global and gateway specific SMS gateway functions.
+* 8ca259d: Updated list of available SMS gateways.
+* d64f27f: Add CM Telecom bulk SMS gateway.
+* 0580e75: Added last offline and the duration of the last outage.
+* 3a005f2: Fixing #580 removed results block.
+* 79742fe: Fixed ping error: Failed to parse address &quot;8.8.8.8&quot;.
+* fc4ffd6: Added Twilio and Telegram to notification list and changed URL to download the latest release.
+* #571: Update several dependencies.
+* #569: Added support for Twilio SMS gateway.
+* a80452d: Added Telegram and Pushover to inline documentation.
+* 526c252: Added noopener to external link.
+* 64b4d60: Added activation process for Telegram notifications.
+* 67632ab: Added Telegram notifications to the documentation.
+* 7059ac6: Defined latency for new added servers.
+* 11a021e: Fixed indentation fail #515.
+* #550: Fix urlencode bug when sending SMS using FreeMobileSMS.
+* #541: Fix method declaration error in PHP7.2.
+* #515: Run archive and cleanup per server to reduce memory use.
+* #516: Fixed #500 ping latency.
+* 2471767: Fixed preinstalled server query.
 
 v3.2.2 (released March 27, 2018)
 --------------------------------
 
-* #554 Implemented Telegram notifications.
+* #554: Implemented Telegram notifications.
 * #505: Added button to clear the logs.
 * #436: Nexmo.class.php updates to Nexmo.php.
 * #350: Removed utf8_decode.
