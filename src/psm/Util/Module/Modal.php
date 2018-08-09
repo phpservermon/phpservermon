@@ -18,9 +18,9 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
  * @author      Jérôme Cabanis <jerome@lauraly.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -69,7 +69,7 @@ class Modal implements ModalInterface {
 	 */
 	protected $twig;
 
-	public function __construct(\Twig_Environment $twig, $modal_id = 'main', $type = self::MODAL_TYPE_OK ) {
+	public function __construct(\Twig_Environment $twig, $modal_id = 'main', $type = self::MODAL_TYPE_OK) {
 		$this->modal_id = $modal_id;
 		$this->twig = $twig;
 		$this->type = $type;
@@ -89,7 +89,7 @@ class Modal implements ModalInterface {
 	 * @return \psm\Util\Module\Modal
 	 */
 	public function setType($type) {
-		if(in_array($type, array(self::MODAL_TYPE_OK, self::MODAL_TYPE_OKCANCEL, self::MODAL_TYPE_DANGER))) {
+		if (in_array($type, array(self::MODAL_TYPE_OK, self::MODAL_TYPE_OKCANCEL, self::MODAL_TYPE_DANGER))) {
 			$this->type = $type;
 		}
 		return $this;
@@ -127,19 +127,19 @@ class Modal implements ModalInterface {
 		$message = !empty($this->message) ? $this->message : '';
 
 		$matches = array();
-		if(preg_match_all('/%(\d)/', $message, $matches, PREG_SET_ORDER)) {
-			foreach($matches as $match) {
-				$message = str_replace($match[0], '<span class="modalP' . $match[1] . '"></span>', $message);
+		if (preg_match_all('/%(\d)/', $message, $matches, PREG_SET_ORDER)) {
+			foreach ($matches as $match) {
+				$message = str_replace($match[0], '<span class="modalP'.$match[1].'"></span>', $message);
 			}
 		}
 
 		$tpl = $this->twig->loadTemplate('util/module/modal.tpl.html');
 		$html = $tpl->render(array(
-			'modal_id'          => $this->modal_id,
-			'modal_title'       => !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
-			'modal_body'        => $message,
-			'has_cancel'       => $has_cancel,
-			'label_cancel'      => psm_get_lang('system', 'cancel'),
+			'modal_id' => $this->modal_id,
+			'modal_title' => !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
+			'modal_body' => $message,
+			'has_cancel' => $has_cancel,
+			'label_cancel' => psm_get_lang('system', 'cancel'),
 			'modal_button_type' => $button_type,
 			'modal_button_label'=> $button_label,
 		));

@@ -15,7 +15,7 @@ Features
 ++++++++
 
 * Monitor services and websites (see below).
-* Email, SMS and Pushover notifications.
+* Email, SMS, Pushover and Telegram notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -44,19 +44,27 @@ There are two different ways to monitor a server:
 Notifications
 -------------
 Each server has its own settings regarding notification.
-You can choose for email, text message (SMS) and Pushover.net notifications.
+You can choose for email, text message (SMS), Pushover.net and Telegram notifications.
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
-* Inetworx - <http://www.inetworx.ch>
-* Mollie - <http://www.mollie.nl>
-* Mosms - <http://www.mosms.com>
-* Smsglobal - <http://smsglobal.com/>
-* SMSit - <http://www.smsit.dk/>
-* Spryng - <http://www.spryng.nl>
-* Textmarketer - <http://www.textmarketer.co.uk>
-* FreeVoipDeal - <http://www.freevoipdeal.com>
+* Inetworx - <https://www.inetworx.ch>
+* Messagebird - <https://www.messagebird.com>
+* Mosms - <https://www.mosms.com>
+* Smsglobal - <https://smsglobal.com/>
+* SMSit - <https://www.smsit.dk/>
+* Spryng - <https://www.spryng.nl>
+* Textmarketer - <https://www.textmarketer.co.uk>
+* FreeVoipDeal - <https://www.freevoipdeal.com>
 * Nexmo - <https://www.nexmo.com/>
+* OctoPush - <https://www.octopush.com/>
+* FreeMobile (FR) - <https://mobile.free.fr/>
+* Twilio - <https://twilio.com>
+* CM Telecom - <https://www.cm.com/>
+* GatewayAPI - <https://gatewayapi.com/>
+* SolutionsInfini - <https://solutionsinfini.com/>
+* Plivo - <https://www.plivo.com/>
+* Callr - <https://www.callr.com/>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

@@ -18,9 +18,9 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
  *              Jérôme Cabanis <http://lauraly.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -65,7 +65,7 @@ class UptimeArchiver implements ArchiverInterface {
 
 		// Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
 		try {
-			$this->db->pdo()->exec('LOCK TABLES ' . PSM_DB_PREFIX . 'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
+			$this->db->pdo()->exec('LOCK TABLES '.PSM_DB_PREFIX.'servers_uptime WRITE, '.PSM_DB_PREFIX.'servers_history WRITE');
 			$locked = true;
 		} catch (\PDOException $e) {
 			// user does not have lock rights, ignore
@@ -78,17 +78,17 @@ class UptimeArchiver implements ArchiverInterface {
 
 		$records = $this->db->execute(
 			"SELECT `server_id`,`date`,`status`,`latency`
-				FROM `" . PSM_DB_PREFIX."servers_uptime`
+				FROM `".PSM_DB_PREFIX."servers_uptime`
 				WHERE {$sql_where_server} `date` < :latest_date",
 			array('latest_date'	=> $latest_date_str));
 
-		if(!empty($records)) {
+		if (!empty($records)) {
 			// first group all records by day and server_id
 			$data_by_day = array();
-			foreach($records as $record) {
-				$server_id = (int)$record['server_id'];
+			foreach ($records as $record) {
+				$server_id = (int) $record['server_id'];
 				$day = date('Y-m-d', strtotime($record['date']));
-				if(!isset($data_by_day[$day][$server_id])) {
+				if (!isset($data_by_day[$day][$server_id])) {
 					$data_by_day[$day][$server_id] = array();
 				}
 				$data_by_day[$day][$server_id][] = $record;
@@ -96,7 +96,7 @@ class UptimeArchiver implements ArchiverInterface {
 
 			// now get history data day by day
 			$histories = array();
-			foreach($data_by_day as $day => $day_records) {
+			foreach ($data_by_day as $day => $day_records) {
 				foreach ($day_records as $server_id => $server_day_records) {
 					$histories[] = $this->getHistoryForDay($day, $server_id, $server_day_records);
 				}
@@ -113,7 +113,7 @@ class UptimeArchiver implements ArchiverInterface {
 			);
 		}
 
-		if($locked) {
+		if ($locked) {
 			$this->db->exec('UNLOCK TABLES');
 		}
 
@@ -141,10 +141,10 @@ class UptimeArchiver implements ArchiverInterface {
 		$latencies = array();
 		$checks_failed = 0;
 
-		foreach($day_records as $day_record) {
+		foreach ($day_records as $day_record) {
 			$latencies[] = $day_record['latency'];
 
-			if($day_record['status'] == 0) {
+			if ($day_record['status'] == 0) {
 				$checks_failed++;
 			}
 		}
@@ -165,7 +165,7 @@ class UptimeArchiver implements ArchiverInterface {
 	protected function createSQLWhereServer($server_id) {
 		$sql_where_server = ($server_id !== null)
 				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
-				? ' `server_id` = ' . intval($server_id) . ' AND '
+				? ' `server_id` = '.intval($server_id).' AND '
 				: '';
 
 		return $sql_where_server;

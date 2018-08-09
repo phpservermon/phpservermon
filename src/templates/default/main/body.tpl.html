@@ -6,7 +6,7 @@
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#424242">
 	<link rel="icon" type="image/x-icon" href="favicon.ico" />
 	<link rel="icon" type="image/png" href="favicon.png" />
@@ -20,7 +20,7 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-    <script type="text/javascript" src="static/plugin/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="static/plugin/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
     <script type="text/javascript" src="static/js/scripts.js"></script>
@@ -57,7 +57,7 @@
 					{% for msg in messages %}
 					<div class="alert alert-{{ msg.shortcode }}">
 						<p class="pull-left span1"><i class="icon-{{ msg.icon }}"></i></p>
-						<p>{{ msg.message }}</p>
+						<p>{{ msg.message|raw }}</p>
 					</div>
 					{% endfor %}
 				</div>
@@ -76,3 +76,4 @@
     <!-- /container -->
     </body>
 </html>
+

@@ -12,7 +12,15 @@ The following people have contributed to the development of PHP Server Monitor:
 
 * Pepijn Over - https://github.com/dopeh
 
-  * Creator and project maintainer
+  * Creator
+
+* Samuel Denis-D'Ortun - https://github.com/sadortun
+
+  * Project developer
+ 
+* Tim Zandbergen - https://github.com/TimZ99
+
+  * Project developer & maintainer
 
 * Jérôme Cabanis - https://github.com/Abawell
 
@@ -20,6 +28,11 @@ The following people have contributed to the development of PHP Server Monitor:
   * Date localization
   * Mobile compatibility
   * Various fixes and improvements
+
+* Ward Pieters - https://github.com/WardPieters
+
+  * GatewayAPI, Plivo, Callr and SolutionsInfini SMS Gateway
+  * Other SMS Gateways rewritten
 
 * Perri Vardy-Mason - https://github.com/VeoPVM
 
@@ -115,6 +128,11 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Marco Gargani
 
+* Japanese
+
+  * Vus520 - https://github.com/vus520
+  * Rht0910 - https://github.com/rht0910
+
 * Korean
 
   * Ik-Jun
@@ -135,6 +153,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Roman Beylin - https://github.com/roman-beylin
   * Yuriy Lyutov - https://github.com/delysh
+  * Alexell - https://github.com/Alexell
 
 * Spanish
 

@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Jean Pierre Kolb <http://www.jpkc.com/>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'vor über einer Minute',
 		'seconds_ago' => 'vor %d Sekunden',
 		'a_second_ago' => 'vor über einer Sekunde',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Einstellungen',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Profileinstellungen',
 		'profile_updated' => 'Ihr Profil wurde aktualisiert.',
 		'error_user_name_bad_length' => 'Benutzernamen müssen zwischen 2 und 64 Zeichen lang sein.',
-		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9) und Unterstriche (_) enthalten.',
+		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9), Punkte (.) und Unterstriche (_) enthalten.',
 		'error_user_name_exists' => 'Der gewählte Benutzername existiert bereits in der Datenbank.',
 		'error_user_email_bad_length' => 'E-Mail-Adressen müssen zwischen 5 und 255 Zeichen lang sein.',
 		'error_user_email_invalid' => 'Die E-Mail-Adresse ist ungültig.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Keine Logs vorhanden.',
+		'clear' => 'Protokoll Logs',
+		'delete_title' => 'Protokoll Logs',
+		'delete_message' => 'Bist du sicher, dass du <b>alle</b> logs löschen möchtest?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -130,6 +145,7 @@ $sm_lang = array(
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
 		'last_online' => 'Zuletzt online',
+		'last_offline' => 'Zuletzt offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Monitoring inaktiv',
 		'email' => 'E-Mail',
@@ -190,17 +206,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Feld leer lassen, bei fehlender Authentifizierung',
 		'sms_status' => 'SMS-Nachrichtenversand erlauben?',
 		'sms_gateway' => 'SMS Gateway',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-        'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS-Sendernummer',
@@ -252,7 +257,7 @@ $sm_lang = array(
 		'email_sent' => 'E-Mail gesendet.',
 		'email_error' => 'Beim Versand der E-Mail trat ein Fehler auf.',
 		'sms_sent' => 'SMS-Nachricht gesendet.',
-		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf.',
+		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf. %s',
 		'sms_error_nomobile' => 'Versand der SMS-Nachricht nicht möglich: Es wurde keine gültige Telefonnummer in Ihrem Profil hinterlegt.',
 		'pushover_sent' => 'Pushover-Benachrichtigung versendet',
 		'pushover_error' => 'Beim Versand der Pushover-Benachrichtigung trat ein Fehler auf: %s',
@@ -269,11 +274,11 @@ $sm_lang = array(
 		'off_email_body' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
 		'off_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist offline.',
 		'off_pushover_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
-		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
-		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
+		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 		'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
-		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
+		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
 	),
 	'login' => array(
 		'welcome_usermenu' => '%user_name%',

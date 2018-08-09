@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -55,7 +55,7 @@ class Router {
 
 		$mods = $this->container->getParameter('modules');
 
-		foreach($mods as $mod) {
+		foreach ($mods as $mod) {
 			$mod_loader = $this->container->get($mod);
 			$mod_loader->load($this->container);
 		}
@@ -73,7 +73,7 @@ class Router {
 	 * @throws \LogicException
 	 */
 	public function run($mod) {
-		if(strpos($mod, '_') !== false) {
+		if (strpos($mod, '_') !== false) {
 			list($mod, $controller) = explode('_', $mod);
 		} else {
 			$controller = $mod;
@@ -86,7 +86,7 @@ class Router {
 		try {
 			$this->validateRequest($controller);
 		} catch (\InvalidArgumentException $ex) {
-			switch($ex->getMessage()) {
+			switch ($ex->getMessage()) {
 				case 'login_required':
 					$controller = $this->getController('user', 'login');
 					break;
@@ -101,7 +101,7 @@ class Router {
 
 		$response = $controller->run($action);
 
-		if(!($response instanceof Response)) {
+		if (!($response instanceof Response)) {
 			throw new \LogicException('Controller did not return a Response object.');
 		}
 		$response->send();
@@ -115,22 +115,22 @@ class Router {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getController($module_id, $controller_id = null) {
-		if($controller_id === null) {
+		if ($controller_id === null) {
 			// by default, we use the controller with the same id as the module.
 			$controller_id = $module_id;
 		}
 
-		$module = $this->container->get('module.' . $module_id);
+		$module = $this->container->get('module.'.$module_id);
 		$controllers = $module->getControllers();
-		if(!isset($controllers[$controller_id]) || !class_exists($controllers[$controller_id])) {
-			throw new \InvalidArgumentException('Controller "' . $controller_id . '" is not registered or does not exist.');
+		if (!isset($controllers[$controller_id]) || !class_exists($controllers[$controller_id])) {
+			throw new \InvalidArgumentException('Controller "'.$controller_id.'" is not registered or does not exist.');
 		}
 		$controller = new $controllers[$controller_id](
 			$this->container->get('db'),
 			$this->container->get('twig')
 		);
 
-		if(!$controller instanceof \psm\Module\ControllerInterface) {
+		if (!$controller instanceof \psm\Module\ControllerInterface) {
 			throw new \Exception('Controller does not implement ControllerInterface');
 		}
 		$controller->setContainer($this->container);
@@ -156,18 +156,18 @@ class Router {
 	protected function validateRequest(\psm\Module\ControllerInterface $controller) {
 		$request = Request::createFromGlobals();
 
-		if($request->getMethod() == 'POST') {
+		if ($request->getMethod() == 'POST') {
 			// require CSRF token for all POST calls
 			$session = $this->container->get('user')->getSession();
 			$token_in = $request->request->get('csrf', '');
 			$csrf_key = $controller->getCSRFKey();
 
-			if(empty($csrf_key)) {
-				if(!hash_equals($session->get('csrf_token'), $token_in)) {
+			if (empty($csrf_key)) {
+				if (!hash_equals($session->get('csrf_token'), $token_in)) {
 					throw new \InvalidArgumentException('invalid_csrf_token');
 				}
 			} else {
-				if(!hash_equals(
+				if (!hash_equals(
 					hash_hmac('sha256', $csrf_key, $session->get('csrf_token2')),
 					$token_in
 				)) {
@@ -179,11 +179,11 @@ class Router {
 		// get min required level for this controller and make sure the user matches
 		$min_lvl = $controller->getMinUserLevelRequired();
 
-		if($min_lvl < PSM_USER_ANONYMOUS) {
+		if ($min_lvl < PSM_USER_ANONYMOUS) {
 			// if user is not logged in, load login module
-			if(!$this->container->get('user')->isUserLoggedIn()) {
+			if (!$this->container->get('user')->isUserLoggedIn()) {
 				throw new \InvalidArgumentException('login_required');
-			} elseif($this->container->get('user')->getUserLevel() > $min_lvl) {
+			} elseif ($this->container->get('user')->getUserLevel() > $min_lvl) {
 				throw new \InvalidArgumentException('invalid_user_level');
 			}
 		}
@@ -210,10 +210,10 @@ class Router {
 	protected function buildTwigEnvironment() {
 		$twig = $this->container->get('twig');
 		$session = $this->container->get('user')->getSession();
-		if(!$session->has('csrf_token')) {
+		if (!$session->has('csrf_token')) {
 			$session->set('csrf_token', bin2hex(random_bytes(32)));
 		}
-		if(!$session->has('csrf_token2')) {
+		if (!$session->has('csrf_token2')) {
 			$session->set('csrf_token2', random_bytes(32));
 		}
 
@@ -221,7 +221,7 @@ class Router {
 			new \Twig_SimpleFunction(
 				'csrf_token',
 				function($lock_to = null) use ($session) {
-					if(empty($lock_to)) {
+					if (empty($lock_to)) {
 						return $session->get('csrf_token');
 					}
 					return hash_hmac('sha256', $lock_to, $session->get('csrf_token2'));

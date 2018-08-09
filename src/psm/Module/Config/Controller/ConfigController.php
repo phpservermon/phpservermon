@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -36,14 +36,17 @@ class ConfigController extends AbstractController {
 	 * @var array $checkboxes
 	 */
 	protected $checkboxes = array(
+		'proxy',
 		'email_status',
 		'email_smtp',
 		'sms_status',
 		'pushover_status',
+		'telegram_status',
 		'log_status',
 		'log_email',
 		'log_sms',
 		'log_pushover',
+		'log_telegram',
 		'show_update',
 	);
 
@@ -52,6 +55,9 @@ class ConfigController extends AbstractController {
 	 * @var array $fields
 	 */
 	protected $fields = array(
+		'proxy_url',
+		'proxy_user',
+		'proxy_password',
 		'email_from_name',
 		'email_from_email',
 		'email_smtp_host',
@@ -62,6 +68,7 @@ class ConfigController extends AbstractController {
 		'sms_gateway_password',
 		'sms_from',
 		'pushover_api_token',
+		'telegram_api_token',
 	);
 
 	private $default_tab = 'general';
@@ -87,13 +94,13 @@ class ConfigController extends AbstractController {
 		$tpl_data = $this->getLabels();
 
 		$config_db = $this->db->select(
-			PSM_DB_PREFIX . 'config',
+			PSM_DB_PREFIX.'config',
 			null,
 			array('key', 'value')
 		);
 
 		$config = array();
-		foreach($config_db as $entry) {
+		foreach ($config_db as $entry) {
 			$config[$entry['key']] = $entry['value'];
 		}
 
@@ -103,40 +110,51 @@ class ConfigController extends AbstractController {
 				? $config['language']
 				: 'en_US';
 		$tpl_data['languages'] = array();
-		foreach($lang_keys as $key => $label) {
+		foreach ($lang_keys as $key => $label) {
 			$tpl_data['languages'][] = array(
 				'value' => $key,
 				'label' => $label,
 			);
 		}
 
+		// generate sms_gateway array
+		$sms_gateways = psm_get_sms_gateways();
+		$tpl_data['sms_gateway_current'] = (isset($config['sms_gateway']))
+				? $config['sms_gateway']
+				: current($sms_gateways);
+		$tpl_data['sms_gateways'] = array();
+		foreach ($sms_gateways as $sms_gateway => $label) {
+			$tpl_data['sms_gateways'][] = array(
+				'value' => $sms_gateway,
+				'label' => $label,
+			);
+		}
 		// @todo these selected values can easily be rewritten in the template using twig
-		$tpl_data['sms_selected_' . $config['sms_gateway']] = 'selected="selected"';
-		$tpl_data['alert_type_selected_' . $config['alert_type']] = 'selected="selected"';
+		$tpl_data['alert_type_selected_'.$config['alert_type']] = 'selected="selected"';
 		$smtp_sec = isset($config['email_smtp_security']) ? $config['email_smtp_security'] : '';
-		$tpl_data['email_smtp_security_selected_' . $smtp_sec] = 'selected="selected"';
+		$tpl_data['email_smtp_security_selected_'.$smtp_sec] = 'selected="selected"';
 		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
 		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
 		$tpl_data['password_encrypt_key'] = (isset($config['password_encrypt_key'])) ? $config['password_encrypt_key'] : sha1(microtime());
 
-		foreach($this->checkboxes as $input_key) {
-			$tpl_data[$input_key . '_checked'] =
+		foreach ($this->checkboxes as $input_key) {
+			$tpl_data[$input_key.'_checked'] =
 				(isset($config[$input_key]) && (int) $config[$input_key] == 1)
 				? 'checked="checked"'
 				: '';
 		}
-		foreach($this->fields as $input_key) {
+		foreach ($this->fields as $input_key) {
 			$tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
 		}
 
-		$tpl_data[$this->default_tab . '_active'] = 'active';
+		$tpl_data[$this->default_tab.'_active'] = 'active';
 
-		$testmodals = array('email', 'sms', 'pushover');
-		foreach($testmodals as $modal_id) {
-			$modal = new \psm\Util\Module\Modal($this->twig, 'test' . ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+		$testmodals = array('email', 'sms', 'pushover', 'telegram');
+		foreach ($testmodals as $modal_id) {
+			$modal = new \psm\Util\Module\Modal($this->twig, 'test'.ucfirst($modal_id), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 			$this->addModal($modal);
-			$modal->setTitle(psm_get_lang('servers', 'send_' . $modal_id));
-			$modal->setMessage(psm_get_lang('config', 'test_' . $modal_id));
+			$modal->setTitle(psm_get_lang('servers', 'send_'.$modal_id));
+			$modal->setMessage(psm_get_lang('config', 'test_'.$modal_id));
 			$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
 		}
 
@@ -148,7 +166,7 @@ class ConfigController extends AbstractController {
 	 * and save it to the database
 	 */
 	protected function executeSave() {
-		if(!empty($_POST)) {
+		if (!empty($_POST)) {
 			// save new config
 			$clean = array(
 				'language' => $_POST['language'],
@@ -162,41 +180,45 @@ class ConfigController extends AbstractController {
 				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
 				'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
 			);
-			foreach($this->checkboxes as $input_key) {
-				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
+			foreach ($this->checkboxes as $input_key) {
+				$clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
 			}
-			foreach($this->fields as $input_key) {
-				if(isset($_POST[$input_key])) {
+			foreach ($this->fields as $input_key) {
+				if (isset($_POST[$input_key])) {
 					$clean[$input_key] = $_POST[$input_key];
 				}
 			}
 			$language_refresh = ($clean['language'] != psm_get_conf('language'));
-			foreach($clean as $key => $value) {
+			foreach ($clean as $key => $value) {
 				psm_update_conf($key, $value);
 			}
 			$this->addMessage(psm_get_lang('config', 'updated'), 'success');
 
-			if(!empty($_POST['test_email'])) {
+			if (!empty($_POST['test_email'])) {
 				$this->testEmail();
-			} elseif(!empty($_POST['test_sms'])) {
+			} elseif (!empty($_POST['test_sms'])) {
 				$this->testSMS();
-			} elseif(!empty($_POST['test_pushover'])) {
+			} elseif (!empty($_POST['test_pushover'])) {
 				$this->testPushover();
+			} elseif (!empty($_POST['test_telegram'])) {
+				$this->testTelegram();
 			}
 
-			if($language_refresh) {
-				header('Location: ' . psm_build_url(array('mod' => 'config'), true, false));
-				die();
+			if ($language_refresh) {
+				header('Location: '.psm_build_url(array('mod' => 'config'), true, false));
+				trigger_error("Redirect failed.", E_USER_ERROR);
 			}
 
-			if(isset($_POST['general_submit'])) {
+			if (isset($_POST['general_submit'])) {
 				$this->default_tab = 'general';
-			} elseif(isset($_POST['email_submit']) || !empty($_POST['test_email'])) {
+			} elseif (isset($_POST['email_submit']) || !empty($_POST['test_email'])) {
 				$this->default_tab = 'email';
-			} elseif(isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
+			} elseif (isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
 				$this->default_tab = 'sms';
-			} elseif(isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
+			} elseif (isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
 				$this->default_tab = 'pushover';
+			} elseif (isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
+				$this->default_tab = 'telegram';
 			}
 		}
 		return $this->runAction('index');
@@ -211,15 +233,15 @@ class ConfigController extends AbstractController {
 		$mail = psm_build_mail();
 		$message = psm_get_lang('config', 'test_message');
 		$mail->Subject	= psm_get_lang('config', 'test_subject');
-		$mail->Priority	= 1;
-		$mail->Body		= $message;
+		$mail->Priority = 1;
+		$mail->Body = $message;
 		$mail->AltBody	= str_replace('<br/>', "\n", $message);
 		$user = $this->getUser()->getUser();
 		$mail->AddAddress($user->email, $user->name);
-		if($mail->Send()) {
+		if ($mail->Send()) {
 			$this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
 		} else {
-			$this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
+			$this->addMessage(psm_get_lang('config', 'email_error').': '.$mail->ErrorInfo, 'error');
 		}
 	}
 
@@ -230,16 +252,17 @@ class ConfigController extends AbstractController {
 	 */
 	protected function testSMS() {
 		$sms = psm_build_sms();
-		if($sms) {
+		if ($sms) {
 			$user = $this->getUser()->getUser();
-			if(empty($user->mobile)) {
+			if (empty($user->mobile)) {
 				$this->addMessage(psm_get_lang('config', 'sms_error_nomobile'), 'error');
 			} else {
 				$sms->addRecipients($user->mobile);
-				if($sms->sendSMS(psm_get_lang('config', 'test_message'))) {
+				$result = $sms->sendSMS(psm_get_lang('config', 'test_message'));
+				if ($result === 1) {
 					$this->addMessage(psm_get_lang('config', 'sms_sent'), 'success');
 				} else {
-					$this->addMessage(psm_get_lang('config', 'sms_error'), 'error');
+					$this->addMessage(sprintf(psm_get_lang('config', 'sms_error'), $result), 'error');
 				}
 			}
 		}
@@ -254,26 +277,26 @@ class ConfigController extends AbstractController {
 		$pushover = psm_build_pushover();
 		$pushover->setDebug(true);
 		$user = $this->getUser()->getUser();
-		$api_token = psm_get_conf('pushover_api_token');
+		$apiToken = psm_get_conf('pushover_api_token');
 
-		if(empty($api_token)) {
+		if (empty($apiToken)) {
 			$this->addMessage(psm_get_lang('config', 'pushover_error_noapp'), 'error');
-		} elseif(empty($user->pushover_key)) {
+		} elseif (empty($user->pushover_key)) {
 			$this->addMessage(psm_get_lang('config', 'pushover_error_nokey'), 'error');
 		} else {
 			$pushover->setPriority(0);
 			$pushover->setTitle(psm_get_lang('config', 'test_subject'));
 			$pushover->setMessage(psm_get_lang('config', 'test_message'));
 			$pushover->setUser($user->pushover_key);
-			if($user->pushover_device != '') {
+			if ($user->pushover_device != '') {
 				$pushover->setDevice($user->pushover_device);
 			}
 			$result = $pushover->send();
 
-			if(isset($result['output']->status) && $result['output']->status == 1) {
+			if (isset($result['output']->status) && $result['output']->status == 1) {
 				$this->addMessage(psm_get_lang('config', 'pushover_sent'), 'success');
 			} else {
-				if(isset($result['output']->errors->error)) {
+				if (isset($result['output']->errors->error)) {
 					$error = $result['output']->errors->error;
 				} else {
 					$error = 'Unknown';
@@ -283,21 +306,61 @@ class ConfigController extends AbstractController {
 		}
 	}
 
+	/**
+	 * Execute telegram test
+	 *
+	 * @todo move test to separate class
+	 */
+		protected function testTelegram() {
+			$telegram = psm_build_telegram();
+			$user = $this->getUser()->getUser();
+			$apiToken = psm_get_conf('telegram_api_token');
+
+			if (empty($apiToken)) {
+				$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
+			} elseif (empty($user->telegram_id)) {
+				$this->addMessage(psm_get_lang('config', 'telegram_error_noid'), 'error');
+			} else {
+				$telegram->setMessage(psm_get_lang('config', 'test_message'));
+				$telegram->setUser($user->telegram_id);
+
+				$result = $telegram->send();
+
+				if (isset($result['ok']) && $result['ok'] != false) {
+					$this->addMessage(psm_get_lang('config', 'telegram_sent'), 'success');
+				} else {
+					if (isset($result['description'])) {
+						$error = $result['description'];
+					} else {
+						$error = 'Unknown';
+					}
+					$this->addMessage(sprintf(psm_get_lang('config', 'telegram_error'), $error), 'error');
+				}
+			}
+		}
+
 	protected function getLabels() {
 		return array(
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+			'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
 			'label_settings_email' => psm_get_lang('config', 'settings_email'),
 			'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 			'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
+			'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
+			'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
 			'label_general' => psm_get_lang('config', 'general'),
 			'label_language' => psm_get_lang('config', 'language'),
 			'label_show_update' => psm_get_lang('config', 'show_update'),
 			'label_password_encrypt_key' => psm_get_lang('config', 'password_encrypt_key'),
 			'label_password_encrypt_key_note' => psm_get_lang('config', 'password_encrypt_key_note'),
+			'label_proxy' => psm_get_lang('config', 'proxy'),
+			'label_proxy_url' => psm_get_lang('config', 'proxy_url'),
+			'label_proxy_user' => psm_get_lang('config', 'proxy_user'),
+			'label_proxy_password' => psm_get_lang('config', 'proxy_password'),
 			'label_email_status' => psm_get_lang('config', 'email_status'),
 			'label_email_from_email' => psm_get_lang('config', 'email_from_email'),
 			'label_email_from_name' => psm_get_lang('config', 'email_from_name'),
@@ -311,20 +374,6 @@ class ConfigController extends AbstractController {
 			'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
 			'label_sms_status' => psm_get_lang('config', 'sms_status'),
 			'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
-			'label_sms_gateway_mosms' => psm_get_lang('config', 'sms_gateway_mosms'),
-			'label_sms_gateway_mollie' => psm_get_lang('config', 'sms_gateway_mollie'),
-			'label_sms_gateway_spryng' => psm_get_lang('config', 'sms_gateway_spryng'),
-			'label_sms_gateway_inetworx' => psm_get_lang('config', 'sms_gateway_inetworx'),
-			'label_sms_gateway_clickatell' => psm_get_lang('config', 'sms_gateway_clickatell'),
-			'label_sms_gateway_textmarketer' => psm_get_lang('config', 'sms_gateway_textmarketer'),
-			'label_sms_gateway_smsit' => psm_get_lang('config', 'sms_gateway_smsit'),
-			'label_sms_gateway_freevoipdeal' => psm_get_lang('config', 'sms_gateway_freevoipdeal'),
-			'label_sms_gateway_smsglobal' => psm_get_lang('config', 'sms_gateway_smsglobal'),
-			'label_sms_gateway_nexmo' => psm_get_lang('config', 'sms_gateway_nexmo'),
-			'label_sms_gateway_smsgw' => psm_get_lang('config', 'sms_gateway_smsgw'),
-			'label_sms_gateway_octopush' => psm_get_lang('config', 'sms_gateway_octopush'),
-			'label_sms_gateway_freemobilesms' => psm_get_lang('config', 'sms_gateway_freemobilesms'),
-			'label_sms_gateway_clicksend' => psm_get_lang('config', 'sms_gateway_clicksend'),
 			'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
 			'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
 			'label_sms_from' => psm_get_lang('config', 'sms_from'),
@@ -337,6 +386,10 @@ class ConfigController extends AbstractController {
 				psm_get_lang('config', 'pushover_api_token_description'),
 				PSM_PUSHOVER_CLONE_URL
 			),
+			'label_telegram_description' => psm_get_lang('config', 'telegram_description'),
+			'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
+			'label_telegram_api_token' => psm_get_lang('config', 'telegram_api_token'),
+			'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
@@ -347,6 +400,9 @@ class ConfigController extends AbstractController {
 			'label_log_email' => psm_get_lang('config', 'log_email'),
 			'label_log_sms' => psm_get_lang('config', 'log_sms'),
 			'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+			'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
+			'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
+			'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
 			'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
 			'label_seconds' => psm_get_lang('config', 'seconds'),

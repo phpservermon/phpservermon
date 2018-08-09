@@ -1,9 +1,16 @@
+{% if has_admin_actions %}
+<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" title="Delete" data-modal-id="delete" data-modal-param="{{ label }}">
+	<i class="icon-trash icon-white"></i>&nbsp;{{ label_clear_log }}
+</a>
+<br><br>
+{% endif %}
 <div class="tabbable">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#log_status_content" data-toggle="tab">{{ label_status }}</a></li>
 		<li><a href="#log_email_content" data-toggle="tab">{{ label_email }}</a></li>
 		<li><a href="#log_sms_content" data-toggle="tab">{{ label_sms }}</a></li>
 		<li><a href="#log_pushover_content" data-toggle="tab">{{ label_pushover }}</a></li>
+		<li><a href="#log_telegram_content" data-toggle="tab">{{ label_telegram }}</a></li>
 	</ul>
 	<div class="tab-content well">
 		{% for tab in tabs %}

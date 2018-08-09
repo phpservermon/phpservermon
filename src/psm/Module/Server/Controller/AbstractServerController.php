@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -38,23 +38,23 @@ abstract class AbstractServerController extends AbstractController {
 
 	/**
 	 * Get all servers for the current user
-	 * @param int $server_id if true only that server will be retrieved.
+	 * @param Countable|array|\PDOStatement $server_id (int) if true only that server will be retrieved.
 	 * @return array
 	 */
 	public function getServers($server_id = null) {
 		$sql_join = '';
 		$sql_where = '';
 
-		if($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+		if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
 			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 						`us`.`user_id`={$this->getUser()->getUserId()}
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
 		}
-		if($server_id !== null) {
+		if ($server_id !== null) {
 			$server_id = intval($server_id);
-			$sql_where ="WHERE `s`.`server_id`={$server_id} ";
+			$sql_where = "WHERE `s`.`server_id`={$server_id} ";
 		}
 
 		$sql = "SELECT
@@ -64,15 +64,21 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
+					`s`.`pattern_online`,
+					`s`.`header_name`,
+					`s`.`header_value`,
 					`s`.`status`,
 					`s`.`error`,
 					`s`.`rtime`,
 					`s`.`last_check`,
 					`s`.`last_online`,
+					`s`.`last_offline`,
+					`s`.`last_offline_duration`,
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
 					`s`.`pushover`,
+					`s`.`telegram`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
 					`s`.`timeout`,
@@ -84,7 +90,7 @@ abstract class AbstractServerController extends AbstractController {
 				ORDER BY `active` ASC, `status` DESC, `label` ASC";
 		$servers = $this->db->query($sql);
 
-		if($server_id !== null && count($servers) == 1) {
+		if ($server_id !== null && count($servers) == 1) {
 			$servers = $servers[0];
 		}
 
@@ -98,24 +104,29 @@ abstract class AbstractServerController extends AbstractController {
 	 */
 	protected function formatServer($server) {
 		$server['rtime'] = round((float) $server['rtime'], 4);
-		$server['last_online']  = psm_timespan($server['last_online']);
-		$server['last_check']  = psm_timespan($server['last_check']);
+		$server['last_online'] = psm_timespan($server['last_online']);
+		$server['last_offline'] = psm_timespan($server['last_offline']);
+		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
+			$server['last_offline_duration'] = "(".$server['last_offline_duration'].")";
+		}
+		$server['last_check'] = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
 		$server['pushover'] = psm_get_lang('system', $server['pushover']);
+		$server['telegram'] = psm_get_lang('system', $server['telegram']);
 
-		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+		if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';
 		}
 
 		$server['error'] = htmlentities($server['error']);
-		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+		$server['type'] = psm_get_lang('servers', 'type_'.$server['type']);
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
 		$url_actions = array('delete', 'edit', 'view');
-		foreach($url_actions as $action) {
-			$server['url_' . $action] = psm_build_url(array(
+		foreach ($url_actions as $action) {
+			$server['url_'.$action] = psm_build_url(array(
 				'mod' => 'server',
 				'action' => $action,
 				'id' => $server['server_id'],

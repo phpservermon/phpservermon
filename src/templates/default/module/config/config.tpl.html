@@ -5,6 +5,7 @@
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+      <li class="{{ telegram_active }}"><a href="#config-telegram" data-toggle="tab">{{ label_tab_telegram }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -67,6 +68,32 @@
                 <label class="control-label" for="log_retention_period">{{ label_log_retention_period }}</label>
                 <div class="controls">
 					<input type="text" class="input-mini" id="log_retention_period" name="log_retention_period" value="{{ log_retention_period }}" data-toggle="tooltip" title="{{ label_log_retention_period_description }}" />&nbsp;{{ label_log_retention_days }}
+                </div>
+            </div>
+            <legend>{{ label_settings_proxy }}</legend>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox" for="proxy"><input type="checkbox" id="proxy" name="proxy[]" {{ proxy_checked|raw }} />{{ label_proxy }}</label>
+                    <p class="help-block">{{ label_alert_proxy|raw }}</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_url">{{ label_proxy_url }}</label>
+                <div class="controls">
+                    <input type="text" id="proxy_url" name="proxy_url" value="{{ proxy_url }}" maxlength="100" placeholder="{{ label_proxy_url }}" />
+                    <p class="help-block">{{ label_alert_proxy_url|raw }}</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_user">{{ label_proxy_user }}</label>
+                <div class="controls">
+                    <input type="text" id="proxy_user" name="proxy_user" value="{{ proxy_user }}" maxlength="100" placeholder="{{ label_proxy_user }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="proxy_password">{{ label_proxy_password }}</label>
+                <div class="controls">
+                    <input type="password" id="proxy_password" name="proxy_password" value="{{ proxy_password }}" maxlength="100" placeholder="{{ label_proxy_password }}" />
                 </div>
             </div>
             <div class="form-actions">
@@ -161,19 +188,9 @@
                 <label class="control-label" for="sms_gateway">{{ label_sms_gateway }}</label>
                 <div class="controls">
                     <select id="sms_gateway" name="sms_gateway">
-                        <option value="mosms" {{ sms_selected_mosms|raw }}>{{ label_sms_gateway_mosms }}</option>
-                        <option value="mollie" {{ sms_selected_mollie|raw }}>{{ label_sms_gateway_mollie }}</option>
-                        <option value="spryng" {{ sms_selected_spryng|raw }}>{{ label_sms_gateway_spryng }}</option>
-                        <option value="inetworx" {{ sms_selected_inetworx|raw }}>{{ label_sms_gateway_inetworx }}</option>
-                        <option value="clickatell" {{ sms_selected_clickatell|raw }}>{{ label_sms_gateway_clickatell }}</option>
-                        <option value="textmarketer" {{ sms_selected_textmarketer|raw }}>{{ label_sms_gateway_textmarketer }}</option>
-						<option value="smsglobal" {{ sms_selected_smsglobal|raw }}>{{ label_sms_gateway_smsglobal }}</option>
-						<option value="smsit" {{ sms_selected_smsit|raw }}>{{ label_sms_gateway_smsit }}</option>
-						<option value="freevoipdeal" {{ sms_selected_freevoipdeal|raw }}>{{ label_sms_gateway_freevoipdeal }}</option>
-						<option value="octopush" {{ sms_selected_octopush|raw }}>{{ label_sms_gateway_octopush }}</option>
-						<option value="freemobilesms" {{ sms_selected_freemobilesms|raw }}>{{ label_sms_gateway_freemobilesms }}</option>
-						<option value="clicksend" {{ sms_selected_clicksend|raw }}>{{ label_sms_gateway_clicksend }}</option>
-						<option value="smsgw" {{ sms_selected_smsgw|raw }}>{{ label_sms_gateway_smsgw }}</option>
+                        {% for sms_gateway in sms_gateways %}
+                        <option value="{{ sms_gateway.value }}" {% if sms_gateway.value == sms_gateway_current %} selected="selected" {% endif %}>{{ sms_gateway.label }}</option>
+						{% endfor %}
                       </select>
                 </div>
             </div>
@@ -239,6 +256,38 @@
             </div>
 		</fieldset>
 		</div>
+    <div id="config-telegram" class="tab-pane {{ telegram_active }}">
+      <fieldset>
+        <legend>{{ label_settings_telegram }}</legend>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox" for="telegram_status"><input type="checkbox" id="telegram_status" name="telegram_status[]" {{ telegram_status_checked|raw }} /> {{ label_telegram_status }}</label>
+            <p class="help-block">{{ label_telegram_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <label class="checkbox"><input type="checkbox" id="log_telegram" name="log_telegram[]" {{ log_telegram_checked|raw }} /> {{ label_log_telegram }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="telegram_api_token">{{ label_telegram_api_token }}</label>
+          <div class="controls">
+            <input type="text" id="telegram_api_token" name="telegram_api_token" value="{{ telegram_api_token }}" maxlength="255" />
+            <p class="help-block">{{ label_telegram_api_token_description|raw }}</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button class="btn btn-primary show-modal" data-modal-id="testTelegram">{{ label_test }}</button>
+            <input type="hidden" name="test_telegram" value="0" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-success" type="submit" name="telegram_submit">{{ label_save }}</button>
+        </div>
+      </fieldset>
+    </div>
 	</div>
 	{{ macro.csrf_input() }}
 </form>

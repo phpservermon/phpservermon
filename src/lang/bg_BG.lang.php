@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Plamen Vasilev a.k.a Paco <p.vasileff@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'преди минута',
 		'seconds_ago' => 'преди %d секунди',
 		'a_second_ago' => 'преди секунда',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Настройки',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Профил',
 		'profile_updated' => 'Профилът е обновен успешно',
 		'error_user_name_bad_length' => 'Потребителското име трябва да съдържа между 2 и 64 символа',
-		'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z), цифри (0-9) и долна черта (_).',
+		'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z), цифри (0-9), точка (.) и долна черта (_).',
 		'error_user_name_exists' => 'Вече съществува акаунт с това потребителско име.',
 		'error_user_email_bad_length' => 'Имейл адреса трябва да съдържа между 5 и 255 символа.',
 		'error_user_email_invalid' => 'Въведения имейл адрес е грешен.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Няма налични логове',
+		'clear' => 'Изчистване на дневника',
+		'delete_title' => 'Изтриване на дневника',
+		'delete_message' => 'Наистина ли искате да изтриете <b>всички</b> дневници?',
 	),
 	'servers' => array(
 		'server' => 'Сървър',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Ако този текст не е намерен в интернет страницата (когато имате добавен сайт), той ще бъде маркиран като Офлайн. Регулярните изрази са разрешени.',
 		'last_check' => 'Последна проверка',
 		'last_online' => 'Последно на линия',
+		'last_offline' => 'Last offline',
 		'monitoring' => 'Мониторинг',
 		'no_monitoring' => 'Не се наблюдава',
 		'email' => 'Имейл',
@@ -189,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Оставете празно за "без аутентикация"',
 		'sms_status' => 'Да се изпращат ли SMS-и',
 		'sms_gateway' => 'Портал за изпращане на SMS-и',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-		'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Потребител',
 		'sms_gateway_password' => 'Парола',
 		'sms_from' => 'Номер на изпращача',
@@ -251,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Тестовия имейл е изпратен успешно.',
 		'email_error' => 'Възникна грешка при изпращането на тесовия имейл',
 		'sms_sent' => 'Тестовото SMS съобщение е изпратеното успешно.',
-		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS',
+		'sms_error' => 'Възникна грешка при изпращането на тестовия SMS. %s',
 		'sms_error_nomobile' => 'Неуспешно изпращане на тестов SMS: не е намерен валиден телефонен номер във вашия профил.',
 		'pushover_sent' => 'Pushover тестово известие',
 		'pushover_error' => 'Възникна грешка при изпращане на тестово Pushover известие: %s',
@@ -268,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
 		'off_pushover_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
 		'off_pushover_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
-		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
-		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 		'on_pushover_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
-		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Добре дошъл, %user_name%',

@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Ik-Jun
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'about a minute ago',
 		'seconds_ago' => '%d seconds ago',
 		'a_second_ago' => 'a second ago',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => '설정',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Profile',
 		'profile_updated' => 'Your profile has been updated.',
 		'error_user_name_bad_length' => 'Usernames must be between 2 and 64 characters.',
-		'error_user_name_invalid' => 'It may only contain alphabetic characters (a-z, A-Z), digits (0-9) and underscores (_).',
+		'error_user_name_invalid' => 'It may only contain alphabetic characters (a-z, A-Z), digits (0-9), dots (.) and underscores (_).',
 		'error_user_name_exists' => 'The given username already exists in the database.',
 		'error_user_email_bad_length' => 'Email addresses must be between 5 and 255 characters.',
 		'error_user_email_invalid' => 'The email address is invalid.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'sms',
 		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
+		'clear' => 'Clear log',
+		'delete_title' => 'Delete log',
+		'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
 	),
 	'servers' => array(
 		'server' => '서버',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => '최근체크',
 		'last_online' => '최근접속',
+		'last_offline' => 'Last offline',
 		'monitoring' => '확인중',
 		'no_monitoring' => 'No monitoring',
 		'email' => '메일 전송',
@@ -189,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Leave blank for no authentication',
 		'sms_status' => 'SMS전송 허용',
 		'sms_gateway' => '메세지 전송을 위한 게이트웨이 허용',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_nexmo' => 'Nexmo',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -213,7 +218,7 @@ $sm_lang = array(
 			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.
 			 '<br/><b>오프라인: </b><br/>'.
 			'서버가 첫번째로 오프라인이 되었을 때 알림을 받습니다. 예를들어, '.
-			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />' .
+			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />'.
 			'<br/><b>항상: </b><br/>'.
 			'사이트가 다운되었을 때 매시간 알림을 받습니다.',
 
@@ -251,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email sent',
 		'email_error' => 'Error in email sending',
 		'sms_sent' => 'Sms sent',
-		'sms_error' => 'Error in sms sending',
+		'sms_error' => 'Error in sms sending. %s',
 		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 		'pushover_sent' => 'Pushover notification sent',
 		'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
@@ -268,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'off_pushover_title' => '서버(\'%LABEL%\')가 다운되었습니다.',
 		'off_pushover_message' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%',
+		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => '중요: 서버(\'%LABEL%\')가 가동중입니다.',
-		'on_email_body' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => '서버(\'%LABEL%\')가 가동중입니다.',
-		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

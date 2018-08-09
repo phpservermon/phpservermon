@@ -2,13 +2,45 @@ Changelog
 =========
 
 
-not yet released
-----------------------------------
+Not yet released
+----------------
 
+* Minimum PHP version is PHP 5.5.9 (not PHP 5.5.0).
+* Fixed ping error: Failed to parse address &quot;8.8.8.8&quot;
+* Added correct ping error messaging.
+* Added Twilio and Telegram to the notification list.
+* Directed download url to the release page.
+* Changed all http links to https.
+* #571 Updated several dependencies and made few fixes.
+* #569 Implemented Twilio
+* Added Telegram and Pushover.net to in-code documentation.
 
+v3.2.2 (released March 27, 2018)
+--------------------------------
 
-v3.2.0 not yet released
-----------------------------------
+* #554 Implemented Telegram notifications.
+* #505: Added button to clear the logs.
+* #436: Nexmo.class.php updates to Nexmo.php.
+* #350: Removed utf8_decode.
+* Updated credits.
+* #535: Updated Japanese translation.
+* #502: Fixed database population bug during installation.
+* #512: Added username validation during installation and added the dot (.) to allowed characters.
+* #475: Added Japanese translation.
+
+v3.2.1 (released March 27, 2018)
+--------------------------------
+
+* #343: Added optinal header value check.
+* #433: Changed baseurl repoforgeextras.
+* #432: Changed baseurl repoforge.
+* #437: Octopush.class.php updates to Octopush.php.
+* #435: Added Nexmo SMS to list in config.tpl.html.
+* #464: Updated attributes pushover_key and pushover_device in update.tpl.html.
+* #454: Updated HistoryGraph.php timestamp to number_format.
+
+v3.2.0 (released April 15, 2017)
+--------------------------------
 
 * #170: Implement Nexmo SMS.
 * #161: Added Swedish translation.
@@ -20,10 +52,11 @@ v3.2.0 not yet released
 * #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
 * #181: Added blank index files to prevent directory listing.
 * #237: Adding CSRF protection.
-* #287: Default language - English
-* #286: Add popular ports drop dowwn
-* #269: Added Slovenian language 
-* #96:  Authentication for website checks
+* #287: Default language - English.
+* #286: Add popular ports drop down.
+* #269: Added Slovenian language.
+* #96:  Authentication for website checks.
+
 
 v3.1.1 (released November 6, 2014)
 ----------------------------------

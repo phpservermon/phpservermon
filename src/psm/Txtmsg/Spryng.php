@@ -17,60 +17,50 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
+ * @package		phpservermon
+ * @author		Pepijn Over <pep@mailbox.org>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
  **/
 
 namespace psm\Txtmsg;
 
 class Spryng extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
 
-	// =========================================================================
-	// [ Methods ]
-	// =========================================================================
-	public function setGateway($gateway) {
-		$this->gateway = $gateway;
-	}
-
+	/**
+	 * Send sms using the Spryngsms API
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var string $this->username
+	 * @var string $this->password
+	 * @var string $this->originator
+	 * @var mixed $result
+	 * @var array $headers
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return bool|string
+	 */
+    
 	public function sendSMS($message) {
-		$recipients = implode(',', $this->recipients);
-		$message = urlencode($message);
-
-		$result = $this->_auth_https_post('http://www.spryng.nl', '/SyncTextService',
-			'?OPERATION=send' .
-			'&USERNAME=' . $this->username .
-			'&PASSWORD=' . $this->password .
-			'&DESTINATION=' . $recipients .
-			'&SENDER=' . $this->originator .
-			'&BODY=' . $message .
-			'&SMSTYPE=' . 'BUSINESS'
-		);
-		return $result;
-	}
-
-	protected function _auth_https_post($host, $path, $data) {
+		$recipients = implode(",", $this->recipients);
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $host . $path . $data);
-		//curl_setopt($ch, CURLOPT_HEADER, 1);
-		//curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_URL, "https://api.spryngsms.com/api/send.php?OPERATION=send&USERNAME=".urlencode($this->username)."&PASSWORD=".urlencode($this->password)."&DESTINATION=".urlencode($recipients)."&SENDER=".urlencode($this->originator)."&BODY=".urlencode($message)."&SMSTYPE=BUSINESS");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-		$data = curl_exec($ch);
+		$headers = array();
+		$headers[] = "Content-Type: application/x-www-form-urlencoded";
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		$result = curl_exec($ch);
 		curl_close($ch);
-		return $data;
+
+		// Check on error
+		if ($result != 1) {
+			return "Error ".$result.": see http://www.spryng.nl/en/developers/http-api/ for the description.";
+		}
+		return 1;
 	}
 }

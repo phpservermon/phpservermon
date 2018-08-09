@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Marco Gargani <http://www.marcogargani.it>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'circa un minuto fa',
 		'seconds_ago' => '%d secondi fa',
 		'a_second_ago' => 'un secondo fa',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Configurazione',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Nessun log',
+		'clear' => 'Pulisci il registro',
+		'delete_title' => 'Elimina log',
+		'delete_message' => 'Sei sicuro di voler eliminare <b>tutti</b> i registri?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Se questo pattern non è trovato nel sito web, il server verrà contrassegnato come fuori linea. Le espressioni regolari sono consentite.',
 		'last_check' => 'Ultimo Controllo',
 		'last_online' => 'Ultima volta Online',
+		'last_offline' => 'Ultima volta offline',
 		'monitoring' => 'Monitoraggio',
 		'no_monitoring' => 'Non monitorato',
 		'email' => 'Email',
@@ -189,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Lasciare vuoto per nessuna autentificazione',
 		'sms_status' => 'Permetti invio SMS',
 		'sms_gateway' => 'Gateway da usare per inviare SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Nome Utente Gateway',
 		'sms_gateway_password' => 'Password Gateway',
 		'sms_from' => 'Numero di telefono del mittente',
@@ -209,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Prima di poter usare Pushover, devi <a href="%1$s" target="_blank">registrare un\'App</a> nel loro sito web ed inserire la \'App API Token\' qui.',
 		'alert_type' => 'Seleziona quando vuoi essere notificato',
-        'alert_type_description' => '<b>Cambio di Stato:</b> '.
-		    'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
-		    '<br /><b>Fuori linea:</b> '.
-		    'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
-		    'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
-		    'Riceverai una sola notifica alle 2AM e nient\'altro.<br/>'.
-		    '<br><b>Sempre:</b> '.
-		    'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
+		'alert_type_description' => '<b>Cambio di Stato:</b> '.
+			'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
+			'<br /><b>Fuori linea:</b> '.
+			'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
+			'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
+			'Riceverai una sola notifica alle 2AM e nient\'altro.<br/>'.
+			'<br><b>Sempre:</b> '.
+			'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
 		'alert_type_status' => 'Cambio di Stato',
 		'alert_type_offline' => 'Fuori linea',
 		'alert_type_always' => 'Sempre',
@@ -251,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email inviata',
 		'email_error' => 'Errore in invio Email',
 		'sms_sent' => 'SMS inviato',
-		'sms_error' => 'Errore in invio SMS',
+		'sms_error' => 'Errore in invio SMS. %s',
 		'sms_error_nomobile' => 'Impossibile inviare SMS: nessun numero di telefono valido inserito nel tuo profilo.',
 		'pushover_sent' => 'Notifica Pushover inviata',
 		'pushover_error' => 'Riscontrato un errore durante l\'invio della notifica Pushover: %s',
@@ -268,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "Impossibile connettersi al seguente server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Errore: %ERROR%<br/>Data: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' INATTIVO',
 		'off_pushover_message' => "Impossibile connettersi al seguente server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Errore: %ERROR%<br/>Data: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' ATTIVO: ip=%IP%, porta=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' ATTIVO: ip=%IP%, porta=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANTE: Server \'%LABEL%\' è ATTIVO',
-		'on_email_body' => "Server '%LABEL%' è di nuovo attivo:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_email_body' => "Server '%LABEL%' è di nuovo attivo, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' ATTIVO',
-		'on_pushover_message' => "Server '%LABEL%' è di nuovo attivo:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_pushover_message' => "Server '%LABEL%' è di nuovo attivo, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Benvenuto, %user_name%',

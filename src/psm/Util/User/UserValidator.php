@@ -18,8 +18,8 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@peplab.net>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -57,7 +57,7 @@ class UserValidator {
 	 */
 	public function userId($user_id) {
 		$user = $this->user->getUser($user_id);
-		if(empty($user)) {
+		if (empty($user)) {
 			throw new \InvalidArgumentException('user_no_match');
 		}
 		return true;
@@ -75,15 +75,15 @@ class UserValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function username($username, $user_id = 0) {
-		if(strlen($username) > 64 || strlen($username) < 2) {
-            throw new \InvalidArgumentException('user_name_bad_length');
-        }
-		if (!preg_match('/^[a-zA-Z\d_]{2,64}$/i', $username)) {
-            throw new \InvalidArgumentException('user_name_invalid');
+		if (strlen($username) > 64 || strlen($username) < 2) {
+			throw new \InvalidArgumentException('user_name_bad_length');
+		}
+		if (!preg_match('/^[a-zA-Z\d_\.]{2,64}$/i', $username)) {
+			throw new \InvalidArgumentException('user_name_invalid');
 		}
 		$user_exists = $this->user->getUserByUsername($username);
 
-		if(!empty($user_exists) && ($user_id == 0 || $user_id != $user_exists->user_id)) {
+		if (!empty($user_exists) && ($user_id == 0 || $user_id != $user_exists->user_id)) {
 			throw new \InvalidArgumentException('user_name_exists');
 		}
 		return true;
@@ -97,11 +97,30 @@ class UserValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function password($password, $password_repeat) {
-		if(empty($password) || empty($password_repeat)) {
+		if (empty($password) || empty($password_repeat)) {
 			throw new \InvalidArgumentException('user_password_invalid');
 		}
-		if($password !== $password_repeat) {
+		if ($password !== $password_repeat) {
 			throw new \InvalidArgumentException('user_password_no_match');
+		}
+		return true;
+	}
+
+	/**
+	 * Install only; Check username on:
+	 *
+	 * - Length (2-64 chars)
+	 * - Contents (alphabetic chars and digits only)
+	 * @param string $username
+	 * @return boolean
+	 * @throws \InvalidArgumentException
+	 */
+	public function username_new($username) {
+		if (strlen($username) > 64 || strlen($username) < 2) {
+			throw new \InvalidArgumentException('user_name_bad_length');
+		}
+		if (!preg_match('/^[a-zA-Z\d_\.]{2,64}$/i', $username)) {
+			throw new \InvalidArgumentException('user_name_invalid');
 		}
 		return true;
 	}
@@ -113,10 +132,10 @@ class UserValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function email($email) {
-		if(strlen($email) > 255 || strlen($email) < 5) {
+		if (strlen($email) > 255 || strlen($email) < 5) {
 			throw new \InvalidArgumentException('user_email_bad_length');
 		}
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			throw new \InvalidArgumentException('user_email_invalid');
 		}
 		return true;
@@ -129,7 +148,7 @@ class UserValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function level($level) {
-		if(!in_array($level, $this->user_levels)) {
+		if (!in_array($level, $this->user_levels)) {
 			throw new \InvalidArgumentException('user_level_invalid');
 		}
 		return true;

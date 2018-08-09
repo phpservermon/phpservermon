@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Sami Nieminen <nieminen.sami2@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiili',
 		'profile_updated' => 'Profiilisi on päivitetty.',
 		'error_user_name_bad_length' => 'Käyttäjänimi saa olla 2-64 merkkiä pitkä.',
-		'error_user_name_invalid' => 'Käyttäjänimessä saa olla vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_).',
+		'error_user_name_invalid' => 'Käyttäjänimessä saa olla vain kirjaimia (a-z, A-Z), numeroita (0-9), pisteitä (.) ja alaviivoja (_).',
 		'error_user_name_exists' => 'Annettu käyttäjänimi on jo tietokannassa.',
 		'error_user_email_bad_length' => 'Sähköpostiosoitteen täytyy olla 5-255 merkkiä pitkä.',
 		'error_user_email_invalid' => 'Annettu sähköposti ei kelpaa.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'Tekstiviesti',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Ei tapahtumia',
+		'clear' => 'Tyhjennä loki',
+		'delete_title' => 'Poista loki',
+		'delete_message' => 'Haluatko varmasti poistaa <b>kaikki</b> lokit?',
 	),
 	'servers' => array(
 		'server' => 'Palvelin',
@@ -189,15 +192,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Jätä tyhjäksi jos ei varmennusta',
 		'sms_status' => 'Salli tekstiviestien lähetys',
 		'sms_gateway' => 'Palvelu jonka kautta tekstiviestit lähetetään',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Palvelun käyttäjänimi',
 		'sms_gateway_password' => 'Palvelun salasana',
 		'sms_from' => 'Lähettäjän puhelinnumero',
@@ -207,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover API-avain',
 		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
 		'alert_type' => 'Valitse milloin haluat ilmoituksia.',
-        'alert_type_description' => '<b>Tilan muutos:</b> '.
-		    'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
-		    '<br /><b>Sammunut:</b> '.
-		    'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
-		    'jos tarkistus tehdään joka 15 minuutti, ja palvelin sammuu klo 1 ja pysyy sammuneena klo 6 asti. '.
-		    'Saat vain yhden ilmoituksen klo 1, ei muuta.<br/>'.
-		    '<br><b>Aina:</b> '.
-		    'Saat ilmoituksen joka kerta kun palvelin tarkistetaan, vaikka palvelin olisi ollut sammuneena tunteja.',
+		'alert_type_description' => '<b>Tilan muutos:</b> '.
+			'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
+			'<br /><b>Sammunut:</b> '.
+			'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
+			'jos tarkistus tehdään joka 15 minuutti, ja palvelin sammuu klo 1 ja pysyy sammuneena klo 6 asti. '.
+			'Saat vain yhden ilmoituksen klo 1, ei muuta.<br/>'.
+			'<br><b>Aina:</b> '.
+			'Saat ilmoituksen joka kerta kun palvelin tarkistetaan, vaikka palvelin olisi ollut sammuneena tunteja.',
 		'alert_type_status' => 'Tilan muutos',
 		'alert_type_offline' => 'Sammunut',
 		'alert_type_always' => 'Aina',
@@ -249,7 +243,7 @@ $sm_lang = array(
 		'email_sent' => 'Sähköposti lähetetty',
 		'email_error' => 'Virhe sähköpostin lähetyksessä',
 		'sms_sent' => 'Tekstiviesti lähetetty',
-		'sms_error' => 'Virhe tekstiviestin lähetyksessä',
+		'sms_error' => 'Virhe tekstiviestin lähetyksessä. %s',
 		'sms_error_nomobile' => 'Testitektiviestin lähetys epäonnistui: toimivaa numeroa ei löydetty profiilistasi.',
 		'pushover_sent' => 'Pushover ilmoitus lähetetty',
 		'pushover_error' => 'Virhe Pushover-ilmoitusta lähetettäessä: %s',
@@ -266,11 +260,11 @@ $sm_lang = array(
 		'off_email_body' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
 		'off_pushover_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "Server '%LABEL%' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
-		'on_pushover_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Tervetuloa, %user_name%',

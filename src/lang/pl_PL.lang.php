@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Arkadiusz Klenczar <a.klenczar@gmail.com>
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'minutę temu',
 		'seconds_ago' => '%d sekund temu',
 		'a_second_ago' => 'sekundę temu',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Konfiguracja',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Twój profil został zaktualizowany.',
 		'error_user_name_bad_length' => 'Login musi mieć od 2 do 64 znaków.',
-		'error_user_name_invalid' => 'Login może zawierać tylko litery (a-z, A-Z), cyfry (0-9) oraz znak podkreślenia (_).',
+		'error_user_name_invalid' => 'Login może zawierać tylko litery (a-z, A-Z), cyfry (0-9), kropki (.) oraz znak podkreślenia (_).',
 		'error_user_name_exists' => 'Wybrana nazwa użytkownika jest już używana.',
 		'error_user_email_bad_length' => 'Email powinien mieć od 5 do 255 znaków.',
 		'error_user_email_invalid' => 'Wprowadzony adres email jest nieprawidłowy.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Brak logów',
+		'clear' => 'Wyczyść log',
+		'delete_title' => 'Wyczyść log',
+		'delete_message' => 'Czy na pewno chcesz usunąć <b>wszystkie</b> dzienniki?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Jeśli wzorzec nie zostanie odnaleziony, status zostanie ustawiony na  offline. Wyrażenia regularne są dozwolone.',
 		'last_check' => 'Ostatnie sprawdzenie',
 		'last_online' => 'Ostatnio online',
+		'last_offline' => 'Ostatnio offline',
 		'monitoring' => 'Monitorowany',
 		'no_monitoring' => 'Brak monitoringu',
 		'email' => 'Email',
@@ -189,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Pozostaw puste dla braku autentykacji',
 		'sms_status' => 'Pozwól na wysyłkę SMS',
 		'sms_gateway' => 'Bramka SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Login do bramki',
 		'sms_gateway_password' => 'Hasło do bramki',
 		'sms_from' => 'Numer nadawcy',
@@ -209,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"> zarejestrować aplikację</a> na ich stronie internetowej i wpisać tutaj App API Token.',
 		'alert_type' => 'Wybierz kiedy chcesz być powiadomiony.',
-        'alert_type_description' => '<b>Zmiana statusu:</b> '.
-		    'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Otrzymasz powiadomienie gdy serwer zmieni status na offline po raz pierwszy. Na przykład, '.
-		    'Twój cronjob uruchamia się co 15 minut, a Twój serwer przestaje odpowiadać o 13 i nie działa do 18. '.
-		    'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br/>'.
-		    '<br><b>Zawsze:</b> '.
-		    'Otrzymasz powiadomienie za każdym razem gdy skrypt zostanie uruchomiony a strona będzie niedostępna.',
+		'alert_type_description' => '<b>Zmiana statusu:</b> '.
+			'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Otrzymasz powiadomienie gdy serwer zmieni status na offline po raz pierwszy. Na przykład, '.
+			'Twój cronjob uruchamia się co 15 minut, a Twój serwer przestaje odpowiadać o 13 i nie działa do 18. '.
+			'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br/>'.
+			'<br><b>Zawsze:</b> '.
+			'Otrzymasz powiadomienie za każdym razem gdy skrypt zostanie uruchomiony a strona będzie niedostępna.',
 		'alert_type_status' => 'Zmiana statusu',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Zawsze',
@@ -251,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email wysłany',
 		'email_error' => 'Błąd podczas wysyłania emaila',
 		'sms_sent' => 'Sms wysłany',
-		'sms_error' => 'Błąd podczas wysyłania sms',
+		'sms_error' => 'Błąd podczas wysyłania sms. %s',
 		'sms_error_nomobile' => 'Nie udało się wysłać testowego SMS: brak poprawnego telefonu w Twoim profilu.',
 		'pushover_sent' => 'Powiadomienie Pushover wysłane.',
 		'pushover_error' => 'Błąd podczas wysyłania powiadomienia Pushover: %s',
@@ -268,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
 		'off_pushover_title' => 'Serwer \'%LABEL%\' nie odpowiada',
 		'off_pushover_message' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
-		'on_sms' => 'Serwer \'%LABEL%\' działa poprawnie: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Serwer \'%LABEL%\' działa poprawnie: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Uwaga: Serwer \'%LABEL%\' działa poprawnie',
-		'on_email_body' => "Serwer '%LABEL%' znów odpowiada:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%",
+		'on_email_body' => "Serwer '%LABEL%' znów odpowiada, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%",
 		'on_pushover_title' => 'Serwer \'%LABEL%\' działa poprawnie',
-		'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%',
+		'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Witaj, %user_name%',

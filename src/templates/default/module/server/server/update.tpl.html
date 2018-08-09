@@ -65,6 +65,22 @@
 				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
 			</div>
 		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="pattern_online">{{ label_pattern_online }}</label>
+			<div class="controls">
+				<select id="pattern_online" name="pattern_online" data-toggle="tooltip" title="{{ label_pattern_online_description}}">
+					<option value="yes" {{ edit_pattern_selected_yes|raw }}>{{ label_online }}</option>
+					<option value="no" {{ edit_pattern_selected_no|raw }}>{{ label_offline }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
+			<label class="control-label" for="header_name">{{ label_header }}</label>
+			<div class="controls">
+				<input type="text" id="header_name" name="header_name" value="{{ edit_value_header_name }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_name_description }}" />
+				<input type="text" id="header_value" name="header_value" value="{{ edit_value_header_value }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_value_description }}" />
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
 			<div class="controls">
@@ -136,6 +152,17 @@
 				<select id="pushover" name="pushover">
 					<option value="yes" {{ edit_pushover_selected_yes|raw }}>{{ label_yes }}</option>
 					<option value="no" {{ edit_pushover_selected_no|raw }}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group {{ control_class_telegram }}">
+			<label class="control-label" for="telegram">{{ label_telegram }}
+			{% if warning_telegram %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_telegram }}"></i></p> {% endif %}
+			</label>
+			<div class="controls">
+				<select id="telegram" name="telegram">
+					<option value="yes" {{ edit_telegram_selected_yes|raw }}>{{ label_yes }}</option>
+					<option value="no" {{ edit_telegram_selected_no|raw }}>{{ label_no }}</option>
 				</select>
 			</div>
 		</div>

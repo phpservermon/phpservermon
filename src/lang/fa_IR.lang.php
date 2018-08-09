@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Javad Evazzadeh Kakroudi
- * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'پروفایل',
 		'profile_updated' => 'پروفایل شما بروزرسانی شد.',
 		'error_user_name_bad_length' => 'نام های کاربری باید بین 2 و 64 کاراکتر باشد.',
-		'error_user_name_invalid' => 'نام کاربری باید فقط شامل حروف (a-z, A-Z)، اعداد (0-9) و علامت (_) باشد.',
+		'error_user_name_invalid' => 'نام کاربری باید فقط شامل حروف (a-z, A-Z)، نقطه (.) اعداد (0-9) و علامت (_) باشد.',
 		'error_user_name_exists' => 'نام کاربری وارد شده در حال حاضر در پایگاه داده موجود است.',
 		'error_user_email_bad_length' => 'آدرس های ایمیل باید بین 5 و 255 کاراکتر باشد.',
 		'error_user_email_invalid' => 'آدرس ایمیل نامعتبر است.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'پیامک',
 		'pushover' => 'Pushover',
 		'no_logs' => 'لاگی وجود ندارد.',
+		'clear' => 'پاک کردن ورود',
+		'delete_title' => 'حذف ورود',
+		'delete_message' => 'آیا مطمئن هستید که میخواهید سیاهههای «همه» را حذف کنید؟',
 	),
 	'servers' => array(
 		'server' => 'سرور',
@@ -189,15 +192,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'برای عدم احراز هویت اینجا را خالی بگذارید.',
 		'sms_status' => 'اجازه ارسال پیام های متنی',
 		'sms_gateway' => 'گیت وی برای ارسال پیام ها',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'نام کاربری Gateway',
 		'sms_gateway_password' => 'کلمه عبور Gateway',
 		'sms_from' => 'شماره تلفن ارسال کننده',
@@ -207,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'رمز API برنامه پوش آور',
 		'pushover_api_token_description' => 'قبل از استفاده از پوش آور، شما باید در سایت آن ها <a href="%1$s" target="_blank">یک برنامه ثبت نام کنید</a> و رمز API برنامه پوش آور را اینجا وارد کنید.',
 		'alert_type' => 'زمان دلخواه خورد برای دریافت اطلاعیه ها را انتخاب کنید.',
-        'alert_type_description' => '<b>تغییر وضعیت:</b> '.
-		    'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.
-		    '<br /><b>آفلاین:</b> '.
-		    'زمانی که یک سرور *فقط برای اولین بار* آفلاین شد شما یک اطلاعیه دریافت خواهید کرد. به عنوان مثال،'.
-		    'cronjob شما هر 15 دقیقه است و سرور شما در ساعت 1 صبح دان می شود و تا ساعت 6 صبح دان می ماند.'.
-		    'شما 1 اطلاعیه در ساعت 1 صبح دریافت خواهید کرد. همین و بس!'.
-		    '<br><b>همیشه:</b> '.
-		    'هر بار که اسکریپت اجرا شود و یک سایت دان شود شما یک اطلاعیه دریافت خواهید کرد، حتی اگر سایت چند ساعت آفلاین باشد.',
+		'alert_type_description' => '<b>تغییر وضعیت:</b> '.
+			'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.
+			'<br /><b>آفلاین:</b> '.
+			'زمانی که یک سرور *فقط برای اولین بار* آفلاین شد شما یک اطلاعیه دریافت خواهید کرد. به عنوان مثال،'.
+			'cronjob شما هر 15 دقیقه است و سرور شما در ساعت 1 صبح دان می شود و تا ساعت 6 صبح دان می ماند.'.
+			'شما 1 اطلاعیه در ساعت 1 صبح دریافت خواهید کرد. همین و بس!'.
+			'<br><b>همیشه:</b> '.
+			'هر بار که اسکریپت اجرا شود و یک سایت دان شود شما یک اطلاعیه دریافت خواهید کرد، حتی اگر سایت چند ساعت آفلاین باشد.',
 		'alert_type_status' => 'تغییر وضعیت',
 		'alert_type_offline' => 'آفلاین',
 		'alert_type_always' => 'همیشه',
@@ -249,7 +243,7 @@ $sm_lang = array(
 		'email_sent' => 'ایمیل ارسال شد',
 		'email_error' => 'خطا در ارسال ایمیل',
 		'sms_sent' => 'پیامک ارسال شد',
-		'sms_error' => 'خطا در ارسال پیامک',
+		'sms_error' => '%s خطا در ارسال پیامک',
 		'sms_error_nomobile' => 'قادر به ارسال پیامک تستی نیستیم: شماره تلفن معتبر در پروفایل شما یافته نشد.',
 		'pushover_sent' => 'اطلاعیه پوش آور ارسال شد.',
 		'pushover_error' => 'یک خطا در هنگام ارسال اطلاعیه پوش آور رخ داده است: %s',
@@ -266,11 +260,11 @@ $sm_lang = array(
 		'off_email_body' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
 		'off_pushover_title' => 'سرور \'%LABEL%\' دان است',
 		'off_pushover_message' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
-		'on_sms' => 'سرور \'%LABEL%\' در حال اجراست: آی پی=%IP%, پورت=%PORT%',
+		'on_sms' => 'سرور \'%LABEL%\' در حال اجراست: آی پی=%IP%, پورت=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'مهم: سرور \'%LABEL%\' در حال اجراست',
-		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%",
+		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%",
 		'on_pushover_title' => 'سرور \'%LABEL%\' در حال اجراست',
-		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%',
+		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'خوش آمدید, %user_name%',
