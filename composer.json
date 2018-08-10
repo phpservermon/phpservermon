@@ -1,6 +1,7 @@
 {
 	"name": "phpservermon/phpservermon",
 	"description": "PHP Server Monitor",
+	"license": "GPL-3.0-or-later",
 	"homepage": "http://www.phpservermonitor.org",
 	"require": {
 		"php": ">=5.5.9",
