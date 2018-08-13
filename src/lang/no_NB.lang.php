@@ -19,7 +19,7 @@
  *
  * @package     phpservermon
  * @author      Daniel S. Billing <daniel@infihex.com>
- * @copyright   Copyright (c) 2008-2018 Daniel S. Billing <daniel@infihex.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
