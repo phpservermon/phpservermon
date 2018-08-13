@@ -105,7 +105,7 @@ $sm_lang = array(
 		'pushover_device_description' => 'Enhetsnavn for å sende meldingen til. La det være tomt for å sende det til alle enheter.',
 		'telegram' => 'Telegram',
 		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> er en chat-app som gjør det enkelt å få meldinger i sanntid. Gå til <a href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for mer informasjon og en installasjonsguide. ',
-		'telegram_chat_id' => 'Telegram chat id',
+		'telegram_chat_id' => 'Telegram chat-ID',
 		'telegram_chat_id_description' => 'Meldingen vil bli sendt til tilhørende chat.',
 		'telegram_get_chat_id' => 'Klikk her for å få chat-ID',
 		'activate_telegram' => 'Aktiver Telegram notifications',
