@@ -18,7 +18,7 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      manhere <https://github.com/manhere>
+ * @author      Jason Cheng <https://github.com/jasoncheng7115>
  * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: v3.1.1
