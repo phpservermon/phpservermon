@@ -28,7 +28,8 @@ echo done!
 # remove old files except config.php.keep
 echo Removing old files...
 find . -type f ! -iname "*.keep" -delete
-rm -rf cron/ docs/ puphpet/ src/ static/ vendor/
+rm -rf cron/ docs/ puphpet/ src/ static/
+
 echo OK
 
 # unzip update file
@@ -44,8 +45,12 @@ rm update.zip
 # restore original config.php back from config.php.keep
 mv config.php.keep config.php
 
-# run php composer.phar install
-php composer.phar install
+# run php composer.phar install or update
+if [ -d "vendor" ]; then
+    php composer.phar update
+else
+    php composer.phar install
+fi
 
 echo Update finished!
 echo Please finish the installation in your browser.
