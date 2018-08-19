@@ -130,6 +130,7 @@ class InstallController extends AbstractController {
 				'db_pass' => '',
 				'db_prefix' => 'psm_',
 				'base_url' => $this->getBaseUrl(),
+				'theme' => 'default',
 			);
 
 			$changed = false;
