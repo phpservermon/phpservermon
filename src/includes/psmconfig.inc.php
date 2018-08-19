@@ -120,9 +120,11 @@ define('PSM_TELEGRAM_GET_ID_URL', 'https://telegram.me/cid_bot');
 
 if (!defined('PSM_MODULE_DEFAULT')) {
 	/**
-	 * Default theme
+	 * Default theme if none is selected
 	 */
-	define('PSM_THEME', 'default');
+	if (!defined('PSM_THEME')) {
+		define('PSM_THEME', 'default');
+	}
 
 	/**
 	 * Default module (if none given or invalid one)
