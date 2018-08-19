@@ -72,6 +72,11 @@ $router = new psm\Router();
 // this may seem insignificant, but right now lots of functions depend on the following global var definition:
 $db = $router->getService('db');
 
+// check if we have a valid theme, error if we don't
+if (!file_exists(PSM_PATH_SRC.'templates/'.PSM_THEME)) {
+	trigger_error("Selected theme '".PSM_THEME."' does not exist in templates folder. Please check your config.php for your PSM_THEME, set back to 'default' if unsure.", E_USER_ERROR);
+}
+
 // sanity check!
 if (!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if ($db->getDbHost() === null) {
