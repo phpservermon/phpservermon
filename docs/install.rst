@@ -28,6 +28,7 @@ To change these values correctly, only update the second parameter of the functi
      define('PSM_DB_USER', 'db_user');
      define('PSM_DB_PASS', 'db_user_password');
      define('PSM_DB_PORT', 'most likely 3306, may also be empty');
+     define('PSM_THEME', 'default');
 
 For example: to change your username you should ONLY change the 'db\_user' part.
 Do NOT remove the quotes around your username as that will result in an error.
