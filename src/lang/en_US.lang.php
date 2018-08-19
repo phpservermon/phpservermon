@@ -217,6 +217,7 @@ $sm_lang = array(
 		'warning_notifications_disabled_telegram' => 'Telegram notifications are disabled.',
 		'error_server_no_match' => 'Server not found.',
 		'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
+		'error_server_description_bad_length' => 'The label must be between 1 and 500 characters.',
 		'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
 		'error_server_ip_bad_service' => 'The IP address is not valid.',
 		'error_server_ip_bad_website' => 'The website URL is not valid.',

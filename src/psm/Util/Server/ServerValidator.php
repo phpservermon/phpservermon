@@ -73,6 +73,20 @@ class ServerValidator {
 	}
 
 	/**
+	 * Check description
+	 * @param string $description
+	 * @return boolean
+	 * @throws \InvalidArgumentException
+	 */
+	public function description($description) {
+		$description = trim($description);
+		if (empty($description) || strlen($description) > 500) {
+			throw new \InvalidArgumentException('server_description_bad_length');
+		}
+		return true;
+	}
+
+	/**
 	 * Check server domain/ip
 	 * @param string $value
 	 * @param string $type if given, it can be checked for "website"/"ip"

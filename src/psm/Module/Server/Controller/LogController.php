@@ -151,6 +151,7 @@ class LogController extends AbstractServerController {
 		$entries = $this->db->query(
 			'SELECT '.
 				'`servers`.`label`, '.
+				'`servers`.`description`, '.
 				'`servers`.`ip`, '.
 				'`servers`.`port`, '.
 				'`servers`.`type` AS server_type, '.

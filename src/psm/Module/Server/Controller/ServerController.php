@@ -194,6 +194,7 @@ class ServerController extends AbstractServerController {
 
 			$tpl_data = array_merge($tpl_data, array(
 				'edit_value_label' => $edit_server['label'],
+				'edit_value_description' => $edit_server['description'],
 				'edit_value_ip' => $edit_server['ip'],
 				'edit_value_port' => $edit_server['port'],
 				'edit_value_timeout' => $edit_server['timeout'],
@@ -259,6 +260,7 @@ class ServerController extends AbstractServerController {
 
 		$clean = array(
 			'label' => trim(strip_tags(psm_POST('label', ''))),
+			'description' => trim(strip_tags(psm_POST('description', ''))),
 			'ip' => trim(strip_tags(psm_POST('ip', ''))),
 			'timeout' => (isset($_POST['timeout']) && intval($_POST['timeout']) > 0) ? intval($_POST['timeout']) : null,
 			'website_username' => psm_POST('website_username'),
@@ -304,6 +306,7 @@ class ServerController extends AbstractServerController {
 				$server_validator->serverId($this->server_id);
 			}
 			$server_validator->label($clean['label']);
+			$server_validator->description($clean['description']);
 			$server_validator->type($clean['type']);
 			$server_validator->ip($clean['ip'], $clean['type']);
 			$server_validator->warningThreshold($clean['warning_threshold']);
@@ -429,6 +432,7 @@ class ServerController extends AbstractServerController {
 				'class_active' => ($server_available['server_id'] == $this->server_id) ? 'active' : '',
 				'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server_available['server_id'])),
 				'label' => $server_available['label'],
+				'description' => $server_available['description'],
 			);
 		}
 
