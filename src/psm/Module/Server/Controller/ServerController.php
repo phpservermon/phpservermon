@@ -450,6 +450,7 @@ class ServerController extends AbstractServerController {
 	protected function getLabels() {
 		return array(
 			'label_label' => psm_get_lang('servers', 'label'),
+			'label_description' => psm_get_lang('servers', 'description'),
 			'label_status' => psm_get_lang('servers', 'status'),
 			'label_domain' => psm_get_lang('servers', 'domain'),
 			'label_timeout' => psm_get_lang('servers', 'timeout'),

@@ -147,6 +147,7 @@ $sm_lang = array(
 		'server' => 'Server',
 		'status' => 'Status',
 		'label' => 'Label',
+		'description' => 'Description',
 		'domain' => 'Domain/IP',
 		'timeout' => 'Timeout',
 		'timeout_description' => 'Number of seconds to wait for the server to respond.',

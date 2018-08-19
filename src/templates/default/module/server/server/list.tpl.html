@@ -3,6 +3,7 @@
 		<tr>
 			<th class="hidden-phone">&nbsp;</th>
 			<th class="hidden-phone">{{ label_label }}</th>
+			<th class="hidden-phone">{{ label_description }}</th>
 			<th class="hidden-phone">{{ label_domain }}</th>
 			<th class="visible-desktop">{{ label_port }}</th>
 			<th class="visible-desktop">{{ label_type }}</th>
@@ -18,6 +19,7 @@
 		<tr>
 			<td class="hidden-phone"><div class="table-cell-title"><span class="label label-status-{{ server.status }}"><a href="{{ server.url_view|raw }}" title="{{ server.error }}">{{ server.status }}</a></span></div></td>
 			<td class="hidden-phone"><div class="table-cell-title"><a href="{{ server.url_view|raw }}">{{ server.label }}</a></div></td>
+			<td class="hidden-phone"><div class="table-cell-title">{{ server.description }}</div></td>
 			<td class="nowrap visible-tablet"><div class="table-cell-title"><i class="{{ server.type_icon }}" title="{{ server.type }}"></i> {{ server.ip_short|raw }}</div></td>
 			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.ip|raw }}</div></td>
 			<td class="nowrap visible-desktop"><div class="table-cell-title">{{ server.port }}</div></td>
