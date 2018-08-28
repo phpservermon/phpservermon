@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'ungefär en minut sen',
 		'seconds_ago' => '%d sekunder sedan',
 		'a_second_ago' => 'en sekund sedan',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Inställningar',
@@ -132,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Om detta mönster inte hittas i svaret kommer servern att markeras offline. "Regular expressions" är tillåtna.',
 		'last_check' => 'Senaste kontroll',
 		'last_online' => 'Senast online',
+		'last_offline' => 'Senast offline',
 		'monitoring' => 'Övervakas',
 		'no_monitoring' => 'Övervakas inte',
 		'email' => 'Email',
@@ -192,16 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Lämna blank för att inte autentisera',
 		'sms_status' => 'Tillåt SMS',
 		'sms_gateway' => 'Gateway för SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway användarnamn',
 		'sms_gateway_password' => 'Gateway lösenord',
 		'sms_from' => 'Avsändarens telefonnummer',
@@ -211,14 +214,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank">registrera en App</a> på deras webbsida och skriva in App API Token här.',
 		'alert_type' => 'Välj när du vill bli meddelad.',
-        'alert_type_description' => '<b>Statusförändring:</b> '.
-		    'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
-		    'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
-		    'Du kommer få 1 meddelande kl 1 och inga mer.<br/>'.
-		    '<br><b>Alltid:</b> '.
-		    'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
+		'alert_type_description' => '<b>Statusförändring:</b> '.
+			'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
+			'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
+			'Du kommer få 1 meddelande kl 1 och inga mer.<br/>'.
+			'<br><b>Alltid:</b> '.
+			'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
 		'alert_type_status' => 'Statusförändring',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Alltid',
@@ -270,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "Kunde inte ansluta till följande server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fel: %ERROR%<br/>Tid: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' är NERE',
 		'off_pushover_message' => "Kunde inte ansluta till följande server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fel: %ERROR%<br/>Tid: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' är UPPE: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' är UPPE: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIKTIGT: Server \'%LABEL%\' är UPPE',
-		'on_email_body' => "Server '%LABEL%' är uppe igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%",
+		'on_email_body' => "Server '%LABEL%' är uppe igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' är UPPE',
-		'on_pushover_message' => 'Server \'%LABEL%\' är uppe igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' är uppe igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Välkommen, %user_name%',

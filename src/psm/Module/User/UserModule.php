@@ -40,9 +40,9 @@ class UserModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'user' => __NAMESPACE__ . '\Controller\UserController',
-			'login' => __NAMESPACE__ . '\Controller\LoginController',
-			'profile' => __NAMESPACE__ . '\Controller\ProfileController',
+			'user' => __NAMESPACE__.'\Controller\UserController',
+			'login' => __NAMESPACE__.'\Controller\LoginController',
+			'profile' => __NAMESPACE__.'\Controller\ProfileController',
 		);
 
 	}

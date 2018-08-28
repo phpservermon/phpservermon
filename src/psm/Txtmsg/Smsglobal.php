@@ -17,64 +17,77 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Victor Macko
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.1
+ * @package		phpservermon
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 3.1
  **/
 
 namespace psm\Txtmsg;
 
 class Smsglobal extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
 
 	/**
-	 * Send the SMS message
-	 * @param string $message
-	 * @return boolean (true = message was sent successfully, false = there was a problem sending the message)
+	 * Send sms using the Smsglobal API
+	 * @var string $message
+	 * @var string $this->password
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 *
+	 * @var resource $curl
+	 * @var string $err
+	 * @var string $recipient
+	 * @var string $from
+	 * @var mixed $result
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return bool|string
 	 */
+	
 	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+		
 		$recipients = join(',', $this->recipients);
-
-		if(count($recipients) == 0) {
-			return false;
+		
+		$from = substr($this->originator, 0, 11); // Max 11 Characters
+		$message = substr(rawurlencode($message), 0, 153);
+		
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curl, CURLOPT_URL, "https://www.smsglobal.com/http-api.php?".http_build_query(
+			array(
+				"action" => "sendsms",
+				"user" => $this->username,
+				"password" => $this->password,
+				"from" => $from,
+				"to" => $recipients,
+				"clientcharset" => "ISO-8859-1",
+				"text" => $message,
+			)
+		));
+		
+		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		
+		$err = curl_errno($curl);
+			
+		if ($err != 0 || substr($result, 0, 5) != "OK: 0") {
+			$success = 0;
+			$result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$result;
 		}
-		/**
-		 * Documentation is here: http://www.smsglobal.com/http-api/
-		 * Recipient numbers should be in the MSIDSN format (eg. 61400111222). The '+' sign should not be included before the country code.
-		 */
-
-		$from = urlencode(substr($this->originator,0 , 11)); // Max 11 Char.
-
-		$url = 'http://www.smsglobal.com/http-api.php' .
-			'?action=sendsms' .
-			'&user=' . $this->username .
-			'&password=' . $this->password .
-			'&from=' . $from .
-			'&to=' . rawurlencode($recipients) .
-			'&clientcharset=ISO-8859-1' .
-			'&text=' . substr(rawurlencode($message), 0, 153);
-
-		$returnedData = file_get_contents($url);
-		$isOk = strpos($returnedData, 'OK: 0') !== false;
-
-		$this->success = $isOk;
-		$this->resultmessage = $returnedData;
-
-		if(!$isOk) {
-			error_log($this->resultmessage, E_USER_NOTICE);
+		curl_close($curl);
+		
+		if ($success) {
+			return 1;
 		}
-
-		return $isOk;
+		return $error;
 	}
 }

@@ -18,57 +18,65 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Perri Vardy-Mason
+ * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since       phpservermon 2.1
  **/
 
 namespace psm\Txtmsg;
 
-class FreeMobileSMS extends Core {
-	
+class Messagebird extends Core {
+
 	/**
-	 * Send sms using the FreeMobileSMS API
-	 *
+	 * Send sms using the Messagebird API
 	 * @var string $message
+	 * @var array $this->recipients
+	 * @var array $this->originator (Max 11 characters)
+	 * @var array $recipients_chunk
 	 * @var string $this->password
-	 * @var string $this->username
 	 *
-	 * @var resource $curl
-	 * @var string $err
+	 * @var mixed $result
+	 * @var array $headers
+	 *
 	 * @var int $success
 	 * @var string $error
-	 * @var string $http_code
 	 *
 	 * @return bool|string
 	 */
 	
 	public function sendSMS($message) {
 		$success = 1;
-		$error = "";
-		
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?".http_build_query(
-				array(
-					"user" => $this->username,
-					"pass" => $this->password,
-					"msg" => urlencode($message),
-				)
-			)
-		);
+		$error = '';
 
-		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		$err = curl_errno($curl);
-		
-		if ($err != 0 || $httpcode != 200) {
-			$success = 0;
-				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err);
+		// Maximum of 50 users a time.
+		$recipients_chunk = array_chunk($this->recipients, ceil(count($this->recipients) / 50)); 
+
+		foreach ($recipients_chunk as $recipients) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://rest.messagebird.com/messages");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 
+			"originator=".urlencode($this->originator == '' ? 'PSM' : $this->originator).
+			"&body=".urlencode($message).
+			"&recipients=".implode(",", $recipients));
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$headers = array();
+			$headers[] = "Authorization: AccessKey ".$this->password;
+			$headers[] = "Content-Type: application/x-www-form-urlencoded";
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			// Check on error
+			if (is_numeric(strpos($result, "{\"errors\":"))) {
+				$error = $result;
+				$success = 0;
+			}
 		}
-		curl_close($curl);
-		
 		if ($success) {
 			return 1;
 		}

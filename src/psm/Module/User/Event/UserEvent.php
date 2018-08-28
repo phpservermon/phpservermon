@@ -36,16 +36,16 @@ class UserEvent extends Event {
 
 	protected $user_id_by;
 
-    public function __construct($user_id, $user_id_by = null) {
-        $this->user_id = $user_id;
-        $this->user_id_by = $user_id_by;
-    }
+	public function __construct($user_id, $user_id_by = null) {
+		$this->user_id = $user_id;
+		$this->user_id_by = $user_id_by;
+	}
 
-    public function getUserId() {
-        return $this->user_id;
-    }
+	public function getUserId() {
+		return $this->user_id;
+	}
 
-    public function getUserIdBy() {
-        return $this->user_id_by;
-    }
+	public function getUserIdBy() {
+		return $this->user_id_by;
+	}
 }

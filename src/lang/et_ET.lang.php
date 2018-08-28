@@ -192,15 +192,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Jäta tühjaks, et jätkata ilma autentimiseta',
 		'sms_status' => 'Luba sõnumite saatmine',
 		'sms_gateway' => 'Väravad sõnumite saatmiseks',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Värava kasutajanimi',
 		'sms_gateway_password' => 'Värava parool',
 		'sms_from' => 'Saatja telefoni number',
@@ -210,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover Äppi API Žetoon',
 		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
 		'alert_type' => 'Vali, millal sa sooviksid olla teavitatud.',
-        'alert_type_description' => '<b>Staatuse muutus:</b> '.
-		    'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
-		    '<br /><b>Võrgust väljas:</b> '.
-		    'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
-		    'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
-		    'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
-		    '<br><b>Alati:</b> '.
-		    'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
+		'alert_type_description' => '<b>Staatuse muutus:</b> '.
+			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
+			'<br /><b>Võrgust väljas:</b> '.
+			'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
+			'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
+			'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
+			'<br><b>Alati:</b> '.
+			'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
 		'alert_type_status' => 'Staatuse muutus',
 		'alert_type_offline' => 'Võrgust väljas',
 		'alert_type_always' => 'Alati',
@@ -269,11 +260,11 @@ $sm_lang = array(
 		'off_email_body' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' on MAAS',
 		'off_pushover_message' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' on KÄTTESAADAV: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' on KÄTTESAADAV: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'TÄHTIS: Server \'%LABEL%\' on kättesaadav',
-		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%",
+		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' on kättesaadav',
-		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Teretulemast, %user_name%',

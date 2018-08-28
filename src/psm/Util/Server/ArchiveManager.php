@@ -47,7 +47,7 @@ class ArchiveManager {
 
 	/**
 	 * Retention period
-	 * @var \DateInterval $retention_period
+	 * @var \DateInterval|bool $retention_period false if cleanup is disabled
 	 * @see setRetentionPeriod()
 	 */
 	protected $retention_period;
@@ -68,8 +68,8 @@ class ArchiveManager {
 	 */
 	public function archive($server_id = null) {
 		$result = true;
-		foreach($this->archivers as $archiver) {
-			if(!$archiver->archive($server_id)) {
+		foreach ($this->archivers as $archiver) {
+			if (!$archiver->archive($server_id)) {
 				$result = false;
 			}
 		}
@@ -83,15 +83,15 @@ class ArchiveManager {
 	 */
 	public function cleanup($server_id = null) {
 		$result = true;
-		if(!$this->retention_period) {
+		if (!$this->retention_period) {
 			// cleanup is disabled
 			return $result;
 		}
 		$retdate = new \DateTime();
 		$retdate->sub($this->retention_period);
 
-		foreach($this->archivers as $archiver) {
-			if(!$archiver->cleanup($retdate, $server_id)) {
+		foreach ($this->archivers as $archiver) {
+			if (!$archiver->cleanup($retdate, $server_id)) {
 				$result = false;
 			}
 		}
@@ -106,13 +106,13 @@ class ArchiveManager {
 	 * @return \psm\Util\Server\ArchiveManager
 	 */
 	public function setRetentionPeriod($period) {
-		if(is_object($period) && $period instanceof \DateInterval) {
+		if (is_object($period) && $period instanceof \DateInterval) {
 			$this->retention_period = $period;
-		} elseif(intval($period) == 0) {
+		} elseif (intval($period) == 0) {
 			// cleanup disabled
 			$this->retention_period = false;
 		} else {
-			$this->retention_period = new \DateInterval('P' . intval($period) . 'D');
+			$this->retention_period = new \DateInterval('P'.intval($period).'D');
 		}
 		return $this;
 	}

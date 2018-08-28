@@ -45,14 +45,14 @@ class ServerValidator {
 
 	/**
 	 * Check if the server id exists
-	 * @param int $server_id
+	 * @param int|\PDOStatement $server_id
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
 	public function serverId($server_id) {
-		$server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array('server_id' => $server_id), array('server_id'));
+		$server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array('server_id' => $server_id), array('server_id'));
 
-		if(empty($server)) {
+		if (empty($server)) {
 			throw new \InvalidArgumentException('server_no_match');
 		}
 		return true;
@@ -66,7 +66,7 @@ class ServerValidator {
 	 */
 	public function label($label) {
 		$label = trim($label);
-		if(empty($label) || strlen($label) > 255) {
+		if (empty($label) || strlen($label) > 255) {
 			throw new \InvalidArgumentException('server_label_bad_length');
 		}
 		return true;
@@ -82,29 +82,22 @@ class ServerValidator {
 	public function ip($value, $type = null) {
 		$value = trim($value);
 
-		if(empty($value) || strlen($value) > 255) {
+		if (empty($value) || strlen($value) > 255) {
 			throw new \InvalidArgumentException('server_ip_bad_length');
 		}
 
-		switch($type) {
+		switch ($type) {
 			case 'website':
-				if(!filter_var($value, FILTER_VALIDATE_URL)) {
+				if (!filter_var($value, FILTER_VALIDATE_URL)) {
 					throw new \InvalidArgumentException('server_ip_bad_website');
 				}
 				break;
 			case 'service':
-				if(
-					!filter_var($value, FILTER_VALIDATE_IP)
+			case 'ping':
+				if (!filter_var($value, FILTER_VALIDATE_IP)
 					// domain regex as per http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address :
 					&& !preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])/", $value)
-				) {
-					throw new \InvalidArgumentException('server_ip_bad_service');
-				}
-				break;
-			case 'ping':
-				if(!filter_var($value, FILTER_VALIDATE_IP)) {
-					throw new \InvalidArgumentException('server_ip_bad_service');
-				}
+				) {throw new \InvalidArgumentException('server_ip_bad_service'); }
 				break;
 		}
 
@@ -118,7 +111,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function type($type) {
-		if(!in_array($type, array('ping', 'service', 'website'))) {
+		if (!in_array($type, array('ping', 'service', 'website'))) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
 		return true;
@@ -131,7 +124,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function warningThreshold($value) {
-		if(!is_numeric($value) || intval($value) == 0) {
+		if (!is_numeric($value) || intval($value) == 0) {
 			throw new \InvalidArgumentException('server_warning_threshold_invalid');
 		}
 		return true;

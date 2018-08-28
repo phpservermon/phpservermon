@@ -37,9 +37,9 @@ class Database {
 
 	/**
 	 * DB port
-	 * @var string $db_port
+	 * @var string|integer $db_port
 	 */
-	protected $db_port = 3306;
+	protected $db_port;
 
 	/**
 	 * DB name
@@ -61,7 +61,7 @@ class Database {
 
 	/**
 	 * PDOStatement of last query
-	 * @var \PDOStatement $last
+	 * @var int|bool|\PDOStatement $last
 	 */
 	protected $last;
 
@@ -86,11 +86,12 @@ class Database {
 	 * @param string $user
 	 * @param string $pass
 	 * @param string $db
+   * @param string|integer $port
 	 */
-	function __construct($host = null, $user = null, $pass = null, $db = null, $port = null) {
-		if($host != null && $user != null && $pass !== null && $db != null) {
+	function __construct($host = null, $user = null, $pass = null, $db = null, $port = '') {
+		if ($host != null && $user != null && $pass !== null && $db != null) {
 			$this->db_host = $host;
-			$this->db_port = (!empty($port)) ? $port : 3306;
+			$this->db_port = $port;
 			$this->db_name = $db;
 			$this->db_user = $user;
 			$this->db_pass = $pass;
@@ -104,7 +105,7 @@ class Database {
 	 * If you dont want to fetch a result, use exec().
 	 * @param string $query SQL query
 	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
-	 * @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
+	 * @return \PDOStatement|int|bool|array object
 	 */
 	public function query($query, $fetch = true) {
 		// Execute query and process results
@@ -114,10 +115,10 @@ class Database {
 			$this->error($e);
 		}
 
-		if($fetch && $this->last != false) {
+		if ($fetch && $this->last != false) {
 			$cmd = strtolower(substr($query, 0, 6));
 
-			switch($cmd) {
+			switch ($cmd) {
 				case 'insert':
 					// insert query, return insert id
 					$result = $this->getLastInsertedId();
@@ -155,9 +156,9 @@ class Database {
 	/**
 	 * Prepare and execute SQL statement with parameters
 	 * @param string $query SQL statement
-	 * @param Array $parameters An array of values with as many elements as there are bound parameters in the SQL statement
+	 * @param array $parameters An array of values with as many elements as there are bound parameters in the SQL statement
 	 * @param boolean $fetch automatically fetch results, or return PDOStatement?
-	 * @return @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
+	 * @return array|\PDOStatement if $fetch = true, array, otherwise \PDOStatement
 	 */
 	public function execute($query, $parameters, $fetch = true) {
 		try {
@@ -167,7 +168,7 @@ class Database {
 			$this->error($e);
 		}
 
-		if($fetch && $this->last != false) {
+		if ($fetch && $this->last != false) {
 			$result = $this->last->fetchAll(\PDO::FETCH_ASSOC);
 		} else {
 			$result = $this->last;
@@ -183,9 +184,9 @@ class Database {
 	 * @param string $limit limit. for example: 0,30
 	 * @param array $orderby fields for the orderby clause
 	 * @param string $direction ASC or DESC. Defaults to ASC
-	 * @return array multi dimensional array with results
+	 * @return \PDOStatement array multi dimensional array with results
 	 */
-	public function select($table, $where = null, $fields = null, $limit = '', $orderby = null, $direction = 'ASC'){
+	public function select($table, $where = null, $fields = null, $limit = '', $orderby = null, $direction = 'ASC') {
 		// build query
 		$query_parts = array();
 		$query_parts[] = 'SELECT SQL_CALC_FOUND_ROWS';
@@ -204,13 +205,13 @@ class Database {
 		$query_parts[] = $this->buildSQLClauseWhere($table, $where);
 
 		// Order by
-		if($orderby) {
+		if ($orderby) {
 			$query_parts[] = $this->buildSQLClauseOrderBy($orderby, $direction);
 		}
 
 		// Limit
 		if ($limit != '') {
-			$query_parts[] = 'LIMIT ' . $limit;
+			$query_parts[] = 'LIMIT '.$limit;
 		}
 
 		$query = implode(' ', $query_parts);
@@ -230,7 +231,7 @@ class Database {
 	public function selectRow($table, $where = null, $fields = null, $orderby = null, $direction = 'ASC') {
 		$result = $this->select($table, $where, $fields, '1', $orderby, $direction);
 
-		if(isset($result[0])) {
+		if (isset($result[0])) {
 			$result = $result[0];
 		}
 
@@ -243,8 +244,8 @@ class Database {
 	 * @param mixed $where Where clause array or primary Id (string) or where clause (string)
 	 * @return int number of affected rows
 	 */
-	public function delete($table, $where = null){
-		$sql = 'DELETE FROM `'.$table.'` ' . $this->buildSQLClauseWhere($table, $where);
+	public function delete($table, $where = null) {
+		$sql = 'DELETE FROM `'.$table.'` '.$this->buildSQLClauseWhere($table, $where);
 
 		return $this->exec($sql);
 	}
@@ -253,7 +254,8 @@ class Database {
 	 * Insert or update data to the database
 	 * @param string $table table name
 	 * @param array $data data to save or insert
-	 * @param mixed $where either string ('user_id=2' or just '2' (works only with primary field)) or array with where clause (only when updating)
+	 * @param string|array $where either string ('user_id=2' or just '2' (works only with primary field)) or array with where clause (only when updating)
+	 * @return int|array|\PDOStatement
 	 */
 	public function save($table, array $data, $where = null) {
 		if ($where === null) {
@@ -267,8 +269,8 @@ class Database {
 
 		$query .= "`{$table}` SET ";
 
-		foreach($data as $field => $value) {
-			if(is_null($value)) {
+		foreach ($data as $field => $value) {
+			if (is_null($value)) {
 				$value = 'NULL';
 			} else {
 				$value = $this->quote($value);
@@ -276,13 +278,12 @@ class Database {
 			$query .= "`{$table}`.`{$field}`={$value}, ";
 		}
 
-		$query = substr($query, 0, -2) . ' ' . $this->buildSQLClauseWhere($table, $where);
+		$query = substr($query, 0, -2).' '.$this->buildSQLClauseWhere($table, $where);
 
-		if($exec) {
+		if ($exec) {
 			return $this->exec($query);
-		} else {
-			return $this->query($query);
 		}
+		return $this->query($query);
 	}
 
 	/**
@@ -294,13 +295,15 @@ class Database {
 	 * that do not match the fields provided in the first record will be
 	 * skipped.
 	 *
-	 * @param type $table
+	 * @param string $table
 	 * @param array $data
 	 * @return \PDOStatement
 	 * @see insert()
 	 */
 	public function insertMultiple($table, array $data) {
-		if(empty($data)) return false;
+		if (empty($data)) {
+			return false;
+		}
 
 		// prepare first part
 		$query = "INSERT INTO `{$table}` ";
@@ -317,14 +320,14 @@ class Database {
 		$pst = $this->pdo()->prepare($query);
 
 		$i = 1;
-		foreach($data as $row) {
+		foreach ($data as $row) {
 			// make sure the fields of this row are identical to first row
 			$diff_keys = array_diff_key($fields, array_keys($row));
 
-			if(!empty($diff_keys)) {
+			if (!empty($diff_keys)) {
 				continue;
 			}
-			foreach($fields as $field) {
+			foreach ($fields as $field) {
 				$pst->bindParam($i++, $row[$field]);
 			}
 		}
@@ -353,7 +356,7 @@ class Database {
 		";
 		$if_exists = $this->query($if_exists);
 
-		if(isset($if_exists[0]['cnt']) && $if_exists[0]['cnt'] == 1) {
+		if (isset($if_exists[0]['cnt']) && $if_exists[0]['cnt'] == 1) {
 			return true;
 		} else {
 			false;
@@ -408,7 +411,7 @@ class Database {
 			if (is_array($where)) {
 				$query .= " WHERE ";
 
-				foreach($where as $field => $value) {
+				foreach ($where as $field => $value) {
 					$query .= "`{$table}`.`{$field}`={$this->quote($value)} AND ";
 				}
 				$query = substr($query, 0, -5);
@@ -428,12 +431,12 @@ class Database {
 	}
 
 	/**
-	* Build ORDER BY clause for a query
-	* @param mixed $order_by can be string (with or without order by) or array
-	* @param string $direction
-	* @return string sql order by clause
+	 * Build ORDER BY clause for a query
+	 * @param mixed $order_by can be string (with or without order by) or array
+	 * @param string $direction
+	 * @return string sql order by clause
 	 * @see buildSQLClauseWhere()
-	*/
+	 */
 	public function buildSQLClauseOrderBy($order_by, $direction) {
 		$query = '';
 
@@ -441,7 +444,7 @@ class Database {
 			if (is_array($order_by)) {
 				$query .= " ORDER BY ";
 
-				foreach($order_by as $field) {
+				foreach ($order_by as $field) {
 					$query .= "`{$field}`, ";
 				}
 				// remove trailing ", "
@@ -454,9 +457,9 @@ class Database {
 				}
 			}
 		}
-		if(strlen($query) > 0) {
+		if (strlen($query) > 0) {
 			// check if "ASC" or "DESC" is already in the order by clause
-			if(strpos(strtolower(trim($query)), 'asc') === false && strpos(strtolower(trim($query)), 'desc') === false) {
+			if (strpos(strtolower(trim($query)), 'asc') === false && strpos(strtolower(trim($query)), 'desc') === false) {
 				$query .= ' '.$direction;
 			}
 		}
@@ -538,6 +541,6 @@ class Database {
 	 * @param \PDOException $e
 	 */
 	protected function error(\PDOException $e) {
-		trigger_error('SQL error: ' . $e->getMessage(), E_USER_WARNING);
+		trigger_error('SQL error: '.$e->getMessage(), E_USER_WARNING);
 	}
 }

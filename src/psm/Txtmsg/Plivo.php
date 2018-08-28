@@ -18,30 +18,30 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package		phpservermon
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
  * @author		Ward Pieters <ward@wardpieters.nl>
  * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
- * @since		phpservermon 3.1
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
 
-class FreeVoipDeal extends Core {
+class Plivo extends Core {
 	
 	/**
-	 * Send sms using the FreeVoipDeal API
+	 * Send sms using the Plivo API
+	 *
 	 * @var string $message
 	 * @var string $this->password
 	 * @var array $this->recipients
 	 * @var array $this->originator
+	 * @var string $recipients
 	 *
 	 * @var resource $curl
 	 * @var string $err
-	 * @var string $recipient
-	 * @var string $from
-	 * @var mixed $result
 	 * @var int $success
 	 * @var string $error
 	 *
@@ -52,32 +52,43 @@ class FreeVoipDeal extends Core {
 		$error = "";
 		$success = 1;
 		
-		$message = rawurlencode($message);
-		
-		foreach ($this->recipients as $recipient) {
-			
-			$curl = curl_init();
-			curl_setopt($curl, CURLOPT_URL, "https://www.freevoipdeal.com/myaccount/sendsms.php?".http_build_query(
-					array(
-						"username" => $this->username,
-						"password" => $this->password,
-						"from" => substr($this->originator, 0, 11),
-						"to" => $recipient,
-						"text" => $message,
-					)
-				)
-			);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			
-			$result = curl_exec($curl);
-			$err = curl_errno($curl);
-			curl_close($curl);
-			
-			if ($err != 0 || is_numeric(strpos($result, "failure"))) {
-				$success = 0;
-				$error = $result;
-			}
+		if (empty($this->recipients)) {
+			return false;
 		}
+		
+		$recipients = join('<', $this->recipients);
+		
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.plivo.com/v1/Account/".$this->username."/Message/",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => json_encode(
+				array(
+					"src" => $this->originator,
+					"dst" => $recipients,
+					"text" => urlencode($message)
+				)
+			),
+			CURLOPT_HTTPHEADER => array(
+				"authorization: Basic ".base64_encode($this->username.":".$this->password),
+				"content-type: application/json"
+			),
+		));
+		
+		$result = curl_exec($curl);
+		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$err = curl_errno($curl);
+		
+		if ($err != 0 || ($httpcode != '200' && $httpcode != '201' && $httpcode != '202')) {
+			$success = 0;
+			$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". Result: ".$result."";
+		}
+		curl_close($curl);
 		
 		if ($success) {
 			return 1;

@@ -29,7 +29,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.3.0');
+define('PSM_VERSION', '3.4.0');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
@@ -118,7 +118,7 @@ define('PSM_TELEGRAM_GET_ID_URL', 'https://telegram.me/cid_bot');
  */
 //define('PSM_BASE_URL', null);
 
-if(!defined('PSM_MODULE_DEFAULT')) {
+if (!defined('PSM_MODULE_DEFAULT')) {
 	/**
 	 * Default theme
 	 */

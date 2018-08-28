@@ -63,7 +63,7 @@ class LogController extends AbstractServerController {
 			'tabs' => array(),
 		);
 
-		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+		if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
 			$this->addModal($modal);
 			$modal->setTitle(psm_get_lang('log', 'delete_title'));
@@ -74,7 +74,7 @@ class LogController extends AbstractServerController {
 
 		$log_types = array('status', 'email', 'sms', 'pushover', 'telegram');
 
-		foreach($log_types as $key) {
+		foreach ($log_types as $key) {
 			$records = $this->getEntries($key);
 			$log_count = count($records);
 
@@ -91,21 +91,21 @@ class LogController extends AbstractServerController {
 				$record['users'] = '';
 				$record['server'] = $record['label'];
 				$record['type_icon'] = ($record['server_type'] == 'website') ? 'icon-globe' : 'icon-cog';
-				$record['type_title'] = psm_get_lang('servers', 'type_' . $record['server_type']);
-				$ip = '(' . $record['ip'];
-				if(!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
-					$ip .= ':' . $record['port'];
+				$record['type_title'] = psm_get_lang('servers', 'type_'.$record['server_type']);
+				$ip = '('.$record['ip'];
+				if (!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
+					$ip .= ':'.$record['port'];
 				}
 				$ip .= ')';
 				$record['ip'] = $ip;
 				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list
-                $users = $this->getLogUsers($record['log_id']);
-				if(!empty($users)) {
+				$users = $this->getLogUsers($record['log_id']);
+				if (!empty($users)) {
 					$names = array();
-					foreach($users as $user) {
-                        $names[] = $user['name'];
+					foreach ($users as $user) {
+						$names[] = $user['name'];
 					}
 					$record['users'] = implode('<br/>', $names);
 					$record['user_list'] = implode('&nbsp;&bull; ', $names);
@@ -126,7 +126,7 @@ class LogController extends AbstractServerController {
 		 * Empty table log and log_users.
 		 * Only when user is admin.
 		 */
-		if($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+		if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$archiver = new \psm\Util\Server\Archiver\LogsArchiver($this->db);
 			$archiver->cleanupall();
 		}
@@ -137,11 +137,11 @@ class LogController extends AbstractServerController {
 	 * Get all the log entries for a specific $type
 	 *
 	 * @param string $type status/email/sms
-	 * @return array
+	 * @return \PDOStatement array
 	 */
 	public function getEntries($type) {
 		$sql_join = '';
-		if($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+		if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
 			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
 						`us`.`user_id`={$this->getUser()->getUserId()}
@@ -160,7 +160,7 @@ class LogController extends AbstractServerController {
 				'`log`.`datetime` '.
 			'FROM `'.PSM_DB_PREFIX.'log` AS `log` '.
 			'JOIN `'.PSM_DB_PREFIX.'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) '.
-			$sql_join .
+			$sql_join.
 			'WHERE `log`.`type`=\''.$type.'\' '.
 			'ORDER BY `datetime` DESC '.
 			'LIMIT 0,20'
@@ -168,21 +168,21 @@ class LogController extends AbstractServerController {
 		return $entries;
 	}
 
-    /**
-     * Get all the user entries for a specific $log_id
-     *
-     * @param $log_id
-     * @return array
-     */
-    protected function getLogUsers($log_id) {
-        return $this->db->query(
-            "SELECT
+	/**
+	 * Get all the user entries for a specific $log_id
+	 *
+	 * @param $log_id
+	 * @return \PDOStatement array
+	 */
+	protected function getLogUsers($log_id) {
+		return $this->db->query(
+			"SELECT
                 u.`user_id`,
                 u.`name`
-            FROM `" . PSM_DB_PREFIX . "log_users` AS lu
-            LEFT JOIN `" . PSM_DB_PREFIX . "users` AS u ON lu.`user_id` = u.`user_id`
-            WHERE lu.`log_id` = " . (int)$log_id . "
+            FROM `".PSM_DB_PREFIX."log_users` AS lu
+            LEFT JOIN `".PSM_DB_PREFIX."users` AS u ON lu.`user_id` = u.`user_id`
+            WHERE lu.`log_id` = ".(int) $log_id."
             ORDER BY u.`name` ASC"
-        );
-    }
+		);
+	}
 }

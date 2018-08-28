@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'omkring et minut siden',
 		'seconds_ago' => '%d sekunder siden',
 		'a_second_ago' => 'et sekund siden',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Indstillinger',
@@ -130,6 +142,7 @@ $sm_lang = array(
 		'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret som værende offline. Regulære udtryk er tilladt.',
 		'last_check' => 'Sidst kontrolleret',
 		'last_online' => 'Sidst online',
+		'last_offline' => 'Sidst offline',
 		'monitoring' => 'Overvågning',
 		'no_monitoring' => 'Ingen overvågning',
 		'email' => 'E-mail',
@@ -190,16 +203,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Efterlad blank hvis det ikke er krævet',
 		'sms_status' => 'Tillad at sende SMS beskeder',
 		'sms_gateway' => 'SMS Gateway',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
 		'sms_from' => 'Afsenderens navn.',
@@ -210,13 +213,13 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank">registrere en app</a> på deres website og indtaste en App API Token her.',
 		'alert_type' => 'Vælg hvornår du vil modtage beskeden',
 		'alert_type_description' => '<b>Status ændring:</b> '.
-		    'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
-		    'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
-		    ' vil du kun modtage en mail kl 01.<br/>'.
-		    '<br><b>Altid:</b> '.
-		    'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
+			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
+			'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
+			' vil du kun modtage en mail kl 01.<br/>'.
+			'<br><b>Altid:</b> '.
+			'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
 		'alert_type_status' => 'Status ændret',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altid',
@@ -268,11 +271,11 @@ $sm_lang = array(
 		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
 		'off_pushover_title' => 'Serveren \'%LABEL%\' er NEDE',
 		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
-		'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIGTIGT: Serveren \'%LABEL%\' KØRER',
-		'on_email_body' => "Serveren '%LABEL%' kører igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_email_body' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
 		'on_pushover_title' => 'Serveren \'%LABEL%\' KØRER',
-		'on_pushover_message' => "Serveren '%LABEL%' kører igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_pushover_message' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Velkommen, %user_name%',

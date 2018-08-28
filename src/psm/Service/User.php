@@ -44,11 +44,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class User {
 
-    /**
+	/**
 	 * The database connection
-     * @var \PDO $db_connection
-     */
-    protected $db_connection = null;
+	 * @var \PDO $db_connection
+	 */
+	protected $db_connection = null;
 
 	/**
 	 * Local cache of user data
@@ -62,11 +62,11 @@ class User {
 	 */
 	protected $session;
 
-    /**
+	/**
 	 * Current user id
-     * @var int $user_id
-     */
-    protected $user_id;
+	 * @var int $user_id
+	 */
+	protected $user_id;
 
 	/**
 	 *Current user preferences
@@ -76,55 +76,55 @@ class User {
 
 	/**
 	 * The user's login status
-     * @var boolean $user_is_logged_in
-     */
-    protected $user_is_logged_in = false;
+	 * @var boolean $user_is_logged_in
+	 */
+	protected $user_is_logged_in = false;
 
-    /**
-     * Open a new user service
+	/**
+	 * Open a new user service
 	 *
 	 * @param \psm\Service\Database $db
 	 * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session if NULL, one will be created
-     */
-    public function __construct(Database $db, SessionInterface $session = null) {
+	 */
+	public function __construct(Database $db, SessionInterface $session = null) {
 		$this->db_connection = $db->pdo();
 
-		if(!psm_is_cli()) {
-			if($session == null) {
+		if (!psm_is_cli()) {
+			if ($session == null) {
 				$session = new Session();
 				$session->start();
 			}
 			$this->session = $session;
 
-			if((!defined('PSM_INSTALL') || !PSM_INSTALL)) {
+			if ((!defined('PSM_INSTALL') || !PSM_INSTALL)) {
 				// check the possible login actions:
 				// 1. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
 				// 2. login via cookie
 
 				// if user has an active session on the server
-				if(!$this->loginWithSessionData()) {
+				if (!$this->loginWithSessionData()) {
 					$this->loginWithCookieData();
 				}
 			}
 		}
-    }
+	}
 
-    /**
-     * Get user by id, or get current user.
+	/**
+	 * Get user by id, or get current user.
 	 * @param int $user_id if null it will attempt current user id
 	 * @param boolean $flush if TRUE it will query db regardless of whether we already have the data
-     * @return object|boolean FALSE if user not found, object otherwise
-     */
-    public function getUser($user_id = null, $flush = false) {
-		if($user_id == null) {
-			if(!$this->isUserLoggedIn()) {
+	 * @return object|boolean FALSE if user not found, object otherwise
+	 */
+	public function getUser($user_id = null, $flush = false) {
+		if ($user_id == null) {
+			if (!$this->isUserLoggedIn()) {
 				return false;
 			} else {
 				$user_id = $this->getUserId();
 			}
 		}
 
-		if(!isset($this->user_data[$user_id]) || $flush) {
+		if (!isset($this->user_data[$user_id]) || $flush) {
 			$query_user = $this->db_connection->prepare('SELECT * FROM '.PSM_DB_PREFIX.'users WHERE user_id = :user_id');
 			$query_user->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
 			$query_user->execute();
@@ -134,31 +134,31 @@ class User {
 		return $this->user_data[$user_id];
 	}
 
-    /**
-     * Search into database for the user data of user_name specified as parameter
-     * @return object|boolean user data as an object if existing user
-     */
-    public function getUserByUsername($user_name) {
+	/**
+	 * Search into database for the user data of user_name specified as parameter
+	 * @return object|boolean user data as an object if existing user
+	 */
+	public function getUserByUsername($user_name) {
 		// database query, getting all the info of the selected user
 		$query_user = $this->db_connection->prepare('SELECT * FROM '.PSM_DB_PREFIX.'users WHERE user_name = :user_name');
 		$query_user->bindValue(':user_name', $user_name, \PDO::PARAM_STR);
 		$query_user->execute();
 		// get result row (as an object)
 		return $query_user->fetchObject();
-    }
+	}
 
-    /**
-     * Logs in with SESSION data.
+	/**
+	 * Logs in with SESSION data.
 	 *
 	 * @return boolean
-     */
-    protected function loginWithSessionData() {
-		if(!$this->session->has('user_id')) {
+	 */
+	protected function loginWithSessionData() {
+		if (!$this->session->has('user_id')) {
 			return false;
 		}
 		$user = $this->getUser($this->session->get('user_id'));
 
-		if(!empty($user)) {
+		if (!empty($user)) {
 			$this->setUserLoggedIn($user->user_id);
 			return true;
 		} else {
@@ -167,64 +167,64 @@ class User {
 			$this->doLogout();
 			return false;
 		}
-    }
+	}
 
-    /**
-     * Logs in via the Cookie
-     * @return bool success state of cookie login
-     */
-    private function loginWithCookieData() {
-        if (isset($_COOKIE['rememberme'])) {
-            // extract data from the cookie
-            list ($user_id, $token, $hash) = explode(':', $_COOKIE['rememberme']);
-            // check cookie hash validity
-            if($hash == hash('sha256', $user_id . ':' . $token . PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
-                // cookie looks good, try to select corresponding user
+	/**
+	 * Logs in via the Cookie
+	 * @return bool success state of cookie login
+	 */
+	private function loginWithCookieData() {
+		if (isset($_COOKIE['rememberme'])) {
+			// extract data from the cookie
+			list ($user_id, $token, $hash) = explode(':', $_COOKIE['rememberme']);
+			// check cookie hash validity
+			if ($hash == hash('sha256', $user_id.':'.$token.PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
+				// cookie looks good, try to select corresponding user
 				// get real token from database (and all other data)
 				$user = $this->getUser($user_id);
 
-				if(!empty($user) && $token === $user->rememberme_token) {
+				if (!empty($user) && $token === $user->rememberme_token) {
 					$this->setUserLoggedIn($user->user_id, true);
 
 					// Cookie token usable only once
 					$this->newRememberMeCookie();
 					return true;
 				}
-            }
+			}
 			// call logout to remove invalid cookie
 			$this->doLogout();
-        }
-        return false;
-    }
+		}
+		return false;
+	}
 
-    /**
-     * Logs in with the data provided in $_POST, coming from the login form
-     * @param string $user_name
-     * @param string $user_password
-     * @param boolean $user_rememberme
+	/**
+	 * Logs in with the data provided in $_POST, coming from the login form
+	 * @param string $user_name
+	 * @param string $user_password
+	 * @param boolean $user_rememberme
 	 * @return boolean
-     */
-    public function loginWithPostData($user_name, $user_password, $user_rememberme = false) {
+	 */
+	public function loginWithPostData($user_name, $user_password, $user_rememberme = false) {
 		$user_name = trim($user_name);
 		$user_password = trim($user_password);
 
-		if(empty($user_name) && empty($user_password)) {
+		if (empty($user_name) && empty($user_password)) {
 			return false;
 		}
 		$user = $this->getUserByUsername($user_name);
 
 		// using PHP 5.5's password_verify() function to check if the provided passwords fits to the hash of that user's password
-		if(!isset($user->user_id)) {
+		if (!isset($user->user_id)) {
 			password_verify($user_password, 'dummy_call_against_timing');
 			return false;
-		} else if(!password_verify($user_password, $user->password)) {
+		} else if (!password_verify($user_password, $user->password)) {
 			return false;
 		}
 
 		$this->setUserLoggedIn($user->user_id, true);
 
 		// if user has check the "remember me" checkbox, then generate token and write cookie
-		if($user_rememberme) {
+		if ($user_rememberme) {
 			$this->newRememberMeCookie();
 		}
 
@@ -232,14 +232,14 @@ class User {
 		// DELETE this if-block if you like, it only exists to recalculate users's hashes when you provide a cost factor,
 		// by default the script will use a cost factor of 10 and never change it.
 		// check if the have defined a cost factor in config/hashing.php
-		if(defined('PSM_LOGIN_HASH_COST_FACTOR')) {
+		if (defined('PSM_LOGIN_HASH_COST_FACTOR')) {
 			// check if the hash needs to be rehashed
-			if(password_needs_rehash($user->password, PASSWORD_DEFAULT, array('cost' => PSM_LOGIN_HASH_COST_FACTOR))) {
+			if (password_needs_rehash($user->password, PASSWORD_DEFAULT, array('cost' => PSM_LOGIN_HASH_COST_FACTOR))) {
 				$this->changePassword($user->user_id, $user_password);
 			}
 		}
 		return true;
-    }
+	}
 
 	/**
 	 * Set the user logged in
@@ -247,7 +247,7 @@ class User {
 	 * @param boolean $regenerate regenerate session id against session fixation?
 	 */
 	protected function setUserLoggedIn($user_id, $regenerate = false) {
-		if($regenerate) {
+		if ($regenerate) {
 			$this->session->invalidate();
 		}
 		$this->session->set('user_id', $user_id);
@@ -258,72 +258,72 @@ class User {
 		$this->user_is_logged_in = true;
 	}
 
-    /**
-     * Create all data needed for remember me cookie connection on client and server side
-     */
-    protected function newRememberMeCookie() {
+	/**
+	 * Create all data needed for remember me cookie connection on client and server side
+	 */
+	protected function newRememberMeCookie() {
 		// generate 64 char random string and store it in current user data
 		$random_token_string = hash('sha256', mt_rand());
 		$sth = $this->db_connection->prepare('UPDATE '.PSM_DB_PREFIX.'users SET rememberme_token = :user_rememberme_token WHERE user_id = :user_id');
 		$sth->execute(array(':user_rememberme_token' => $random_token_string, ':user_id' => $this->getUserId()));
 
 		// generate cookie string that consists of userid, randomstring and combined hash of both
-		$cookie_string_first_part = $this->getUserId() . ':' . $random_token_string;
-		$cookie_string_hash = hash('sha256', $cookie_string_first_part . PSM_LOGIN_COOKIE_SECRET_KEY);
-		$cookie_string = $cookie_string_first_part . ':' . $cookie_string_hash;
+		$cookie_string_first_part = $this->getUserId().':'.$random_token_string;
+		$cookie_string_hash = hash('sha256', $cookie_string_first_part.PSM_LOGIN_COOKIE_SECRET_KEY);
+		$cookie_string = $cookie_string_first_part.':'.$cookie_string_hash;
 
 		// set cookie
 		setcookie('rememberme', $cookie_string, time() + PSM_LOGIN_COOKIE_RUNTIME, "/", PSM_LOGIN_COOKIE_DOMAIN);
-    }
+	}
 
-    /**
-     * Delete all data needed for remember me cookie connection on client and server side
-     */
-    protected function deleteRememberMeCookie() {
+	/**
+	 * Delete all data needed for remember me cookie connection on client and server side
+	 */
+	protected function deleteRememberMeCookie() {
 		// Reset rememberme token
-		if($this->session->has('user_id')) {
+		if ($this->session->has('user_id')) {
 			$sth = $this->db_connection->prepare('UPDATE '.PSM_DB_PREFIX.'users SET rememberme_token = NULL WHERE user_id = :user_id');
 			$sth->execute(array(':user_id' => $this->session->get('user_id')));
 		}
 
-        // set the rememberme-cookie to ten years ago (3600sec * 365 days * 10).
-        // that's obivously the best practice to kill a cookie via php
-        // @see http://stackoverflow.com/a/686166/1114320
-        setcookie('rememberme', false, time() - (3600 * 3650), '/', PSM_LOGIN_COOKIE_DOMAIN);
-    }
+		// set the rememberme-cookie to ten years ago (3600sec * 365 days * 10).
+		// that's obivously the best practice to kill a cookie via php
+		// @see http://stackoverflow.com/a/686166/1114320
+		setcookie('rememberme', false, time() - (3600 * 3650), '/', PSM_LOGIN_COOKIE_DOMAIN);
+	}
 
-    /**
-     * Perform the logout, resetting the session
-     */
-    public function doLogout() {
-        $this->deleteRememberMeCookie();
+	/**
+	 * Perform the logout, resetting the session
+	 */
+	public function doLogout() {
+		$this->deleteRememberMeCookie();
 
 		$this->session->clear();
 		$this->session->invalidate();
 
-        $this->user_is_logged_in = false;
-    }
+		$this->user_is_logged_in = false;
+	}
 
-    /**
-     * Simply return the current state of the user's login
-     * @return bool user's login status
-     */
-    public function isUserLoggedIn() {
-        return $this->user_is_logged_in;
-    }
+	/**
+	 * Simply return the current state of the user's login
+	 * @return bool user's login status
+	 */
+	public function isUserLoggedIn() {
+		return $this->user_is_logged_in;
+	}
 
-    /**
-     * Sets a random token into the database (that will verify the user when he/she comes back via the link
-     * in the email) and returns it
+	/**
+	 * Sets a random token into the database (that will verify the user when he/she comes back via the link
+	 * in the email) and returns it
 	 * @param int $user_id
 	 * @return string|boolean FALSE on error, string otherwise
-     */
-    public function generatePasswordResetToken($user_id) {
-        $user_id = intval($user_id);
+	 */
+	public function generatePasswordResetToken($user_id) {
+		$user_id = intval($user_id);
 
-        if($user_id == 0) {
-            return false;
-        }
+		if ($user_id == 0) {
+			return false;
+		}
 		// generate timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
 		$temporary_timestamp = time();
 		// generate random hash for email password reset verification (40 char string)
@@ -343,47 +343,47 @@ class User {
 		} else {
 			return false;
 		}
-    }
+	}
 
-    /**
-     * Checks if the verification string in the account verification mail is valid and matches to the user.
+	/**
+	 * Checks if the verification string in the account verification mail is valid and matches to the user.
 	 *
 	 * Please note it is valid for 1 hour.
 	 * @param int $user_id
 	 * @param string $token
 	 * @return boolean
-     */
-    public function verifyPasswordResetToken($user_id, $token) {
-        $user_id = intval($user_id);
+	 */
+	public function verifyPasswordResetToken($user_id, $token) {
+		$user_id = intval($user_id);
 
-        if(empty($user_id) || empty($token)) {
-            return false;
-        }
+		if (empty($user_id) || empty($token)) {
+			return false;
+		}
 		$user = $this->getUser($user_id);
 
-		if(isset($user->user_id) && $user->password_reset_hash == $token) {
+		if (isset($user->user_id) && $user->password_reset_hash == $token) {
 			$runtime = (defined('PSM_LOGIN_RESET_RUNTIME')) ? PSM_LOGIN_RESET_RUNTIME : 3600;
 			$timestamp_max_interval = time() - $runtime;
 
-			if($user->password_reset_timestamp > $timestamp_max_interval) {
+			if ($user->password_reset_timestamp > $timestamp_max_interval) {
 				return true;
 			}
 		}
 		return false;
-    }
+	}
 
-    /**
-     * Change the password of a user
-	 * @param int $user_id
+	/**
+	 * Change the password of a user
+	 * @param int|\PDOStatement $user_id
 	 * @param string $password
 	 * @return boolean TRUE on success, FALSE on failure
-     */
-    public function changePassword($user_id, $password) {
-        $user_id = intval($user_id);
+	 */
+	public function changePassword($user_id, $password) {
+		$user_id = intval($user_id);
 
-        if(empty($user_id) || empty($password)) {
-            return false;
-        }
+		if (empty($user_id) || empty($password)) {
+			return false;
+		}
 		// now it gets a little bit crazy: check if we have a constant PSM_LOGIN_HASH_COST_FACTOR defined (in src/includes/psmconfig.inc.php),
 		// if so: put the value into $hash_cost_factor, if not, make $hash_cost_factor = null
 		$hash_cost_factor = (defined('PSM_LOGIN_HASH_COST_FACTOR') ? PSM_LOGIN_HASH_COST_FACTOR : null);
@@ -408,7 +408,7 @@ class User {
 		} else {
 			return false;
 		}
-    }
+	}
 
 	/**
 	 * Gets the user id
@@ -418,14 +418,14 @@ class User {
 		return $this->user_id;
 	}
 
-    /**
-     * Gets the username
-     * @return string
-     */
-    public function getUsername() {
-        $user = $this->getUser();
+	/**
+	 * Gets the username
+	 * @return string
+	 */
+	public function getUsername() {
+		$user = $this->getUser();
 		return (isset($user->user_name) ? $user->user_name : null);
-    }
+	}
 
 	/**
 	 * Gets the user level
@@ -434,7 +434,7 @@ class User {
 	public function getUserLevel() {
 		$user = $this->getUser();
 
-		if(isset($user->level)) {
+		if (isset($user->level)) {
 			return $user->level;
 		} else {
 			return PSM_USER_ANONYMOUS;
@@ -446,13 +446,13 @@ class User {
 	 * @return boolean return false is user not connected
 	 */
 	protected function loadPreferences() {
-		if($this->user_preferences === null) {
-			if(!$this->getUser()) {
+		if ($this->user_preferences === null) {
+			if (!$this->getUser()) {
 				return false;
 			}
 
 			$this->user_preferences = array();
-			foreach($this->db_connection->query('SELECT `key`,`value` FROM `' . PSM_DB_PREFIX . 'users_preferences` WHERE `user_id` = ' . $this->user_id) as $row) {
+			foreach ($this->db_connection->query('SELECT `key`,`value` FROM `'.PSM_DB_PREFIX.'users_preferences` WHERE `user_id` = '.$this->user_id) as $row) {
 				$this->user_preferences[$row['key']] = $row['value'];
 			}
 		}
@@ -466,7 +466,7 @@ class User {
 	 * @return mixed
 	 */
 	public function getUserPref($key, $default = '') {
-		if(!$this->loadPreferences() || !isset($this->user_preferences[$key])) {
+		if (!$this->loadPreferences() || !isset($this->user_preferences[$key])) {
 			return $default;
 		}
 
@@ -481,14 +481,14 @@ class User {
 	 * @param mixed $value
 	 */
 	public function setUserPref($key, $value) {
-		if($this->loadPreferences()) {
-			if(isset($this->user_preferences[$key])) {
-				if($this->user_preferences[$key] == $value) {
-					return;		// no change
+		if ($this->loadPreferences()) {
+			if (isset($this->user_preferences[$key])) {
+				if ($this->user_preferences[$key] == $value) {
+					return; // no change
 				}
-				$sql = 'UPDATE `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ? WHERE `user_id` = ?';
-			} else{
-				$sql = 'INSERT INTO `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ?, `user_id` = ?';
+				$sql = 'UPDATE `'.PSM_DB_PREFIX.'users_preferences` SET `key` = ?, `value` = ? WHERE `user_id` = ?';
+			} else {
+				$sql = 'INSERT INTO `'.PSM_DB_PREFIX.'users_preferences` SET `key` = ?, `value` = ?, `user_id` = ?';
 			}
 			$sth = $this->db_connection->prepare($sql);
 			$sth->execute(array($key, $value, $this->user_id));

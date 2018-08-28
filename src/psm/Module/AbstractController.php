@@ -156,16 +156,16 @@ abstract class AbstractController implements ControllerInterface {
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function run($action = null) {
-		if($action === null) {
+		if ($action === null) {
 			$action = psm_GET('action', psm_POST('action', $this->action_default));
 		}
 		$this->xhr = (bool) psm_GET('xhr', psm_POST('xhr', false));
 
-		if(!in_array($action, $this->actions) || !($result = $this->runAction($action))) {
+		if (!in_array($action, $this->actions) || !($result = $this->runAction($action))) {
 			$result = $this->runAction($this->action_default);
 		}
 
-		if($result instanceof Response) {
+		if ($result instanceof Response) {
 			return $result;
 		}
 
@@ -181,14 +181,14 @@ abstract class AbstractController implements ControllerInterface {
 	 * @return mixed FALSE when action couldnt be initialized, response otherwise
 	 */
 	protected function runAction($action) {
-		if(isset($this->user_level_required_actions[$action])) {
-			if($this->getUser()->getUserLevel() > $this->user_level_required_actions[$action]) {
+		if (isset($this->user_level_required_actions[$action])) {
+			if ($this->getUser()->getUserLevel() > $this->user_level_required_actions[$action]) {
 				// user is not allowed to access this action..
 				return false;
 			}
 		}
-		$method = 'execute' . ucfirst($action);
-		if(method_exists($this, $method)) {
+		$method = 'execute'.ucfirst($action);
+		if (method_exists($this, $method)) {
 			$this->action = $action;
 			$result = $this->$method();
 			// if result from execute is null, no return value given so return true to indicate a successful execute
@@ -206,43 +206,43 @@ abstract class AbstractController implements ControllerInterface {
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	protected function createHTML($html = null) {
-		if(!$this->xhr) {
+		if (!$this->xhr) {
 			// in XHR mode, we will not add the main template
 			$tpl_data = array(
 				'title' => strtoupper(psm_get_lang('system', 'title')),
 				'label_back_to_top' => psm_get_lang('system', 'back_to_top'),
 				'add_footer' => $this->add_footer,
-				'version' => 'v' . PSM_VERSION,
+				'version' => 'v'.PSM_VERSION,
 				'messages' => $this->getMessages(),
 				'html_content' => $html,
 			);
 
 			// add menu to page?
-			if($this->add_menu) {
+			if ($this->add_menu) {
 				$tpl_data['html_menu'] = $this->createHTMLMenu();
 			}
 			// add header accessories to page ?
-			if($this->header_accessories) {
+			if ($this->header_accessories) {
 				$tpl_data['header_accessories'] = $this->header_accessories;
 			}
 			// add modal dialog to page ?
-			if(sizeof($this->modal)) {
+			if (sizeof($this->modal)) {
 				$html_modal = '';
-				foreach($this->modal as $modal) {
+				foreach ($this->modal as $modal) {
 					$html_modal .= $modal->createHTML();
 				}
 				$tpl_data['html_modal'] = $html_modal;
 			}
 			// add sidebar to page?
-			if($this->sidebar !== null) {
+			if ($this->sidebar !== null) {
 				$tpl_data['html_sidebar'] = $this->sidebar->createHTML();
 			}
 
-			if(psm_update_available()) {
+			if (psm_update_available()) {
 				$tpl_data['update_available'] = str_replace('{version}', 'v'.psm_get_conf('version_update_check'), psm_get_lang('system', 'update_available'));
 			}
 
-			if($this->black_background) {
+			if ($this->black_background) {
 				$tpl_data['body_class'] = 'black_background';
 			}
 			$html = $this->twig->render('main/body.tpl.html', $tpl_data);
@@ -268,7 +268,7 @@ abstract class AbstractController implements ControllerInterface {
 			'url_logout' => psm_build_url(array('logout' => 1)),
 		);
 
-		switch($ulvl) {
+		switch ($ulvl) {
 			case PSM_USER_ADMIN:
 				$items = array('server_status', 'server', 'server_log', 'user', 'config', 'server_update');
 				break;
@@ -280,7 +280,7 @@ abstract class AbstractController implements ControllerInterface {
 				break;
 		}
 		$tpl_data['menu'] = array();
-		foreach($items as $key) {
+		foreach ($items as $key) {
 			$tpl_data['menu'][] = array(
 				'active' => ($key == psm_GET('mod')) ? 'active' : '',
 				'url' => psm_build_url(array('mod' => $key)),
@@ -288,7 +288,7 @@ abstract class AbstractController implements ControllerInterface {
 			);
 		}
 
-		if($ulvl != PSM_USER_ANONYMOUS) {
+		if ($ulvl != PSM_USER_ANONYMOUS) {
 			$user = $this->getUser()->getUser();
 			$tpl_data['label_usermenu'] = str_replace(
 				'%user_name%',
@@ -324,15 +324,15 @@ abstract class AbstractController implements ControllerInterface {
 	 * @see getAction()
 	 */
 	protected function setActions($actions, $default = null, $append = true) {
-		if(!is_array($actions)) {
+		if (!is_array($actions)) {
 			$actions = array($actions);
 		}
-		if($append) {
+		if ($append) {
 			$this->actions = array_merge($actions);
 		} else {
 			$this->actions = $actions;
 		}
-		if($default !== null) {
+		if ($default !== null) {
 			$this->action_default = $default;
 		}
 		return $this;
@@ -355,10 +355,10 @@ abstract class AbstractController implements ControllerInterface {
 	 * @see getMessages()
 	 */
 	public function addMessage($msg, $shortcode = 'info') {
-		if(!is_array($msg)) {
+		if (!is_array($msg)) {
 			$msg = array($msg);
 		}
-		switch($shortcode) {
+		switch ($shortcode) {
 			case 'error':
 				$icon = 'exclamation-sign';
 				break;
@@ -373,7 +373,7 @@ abstract class AbstractController implements ControllerInterface {
 				break;
 		}
 
-		foreach($msg as $m) {
+		foreach ($msg as $m) {
 			$this->messages[] = array(
 				'message' => $m,
 				'shortcode' => $shortcode,
@@ -391,7 +391,7 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	public function getMessages($clear = true) {
 		$msgs = $this->messages;
-		if($clear) {
+		if ($clear) {
 			$this->messages = array();
 		}
 		return $msgs;
@@ -425,10 +425,10 @@ abstract class AbstractController implements ControllerInterface {
 	 * @see setMinUserLevelRequired()
 	 */
 	public function setMinUserLevelRequiredForAction($level, $actions) {
-		if(!is_array($actions)) {
+		if (!is_array($actions)) {
 			$actions = array($actions);
 		}
-		foreach($actions as $action) {
+		foreach ($actions as $action) {
 			$this->user_level_required_actions[$action] = intval($level);
 		}
 		return $this;

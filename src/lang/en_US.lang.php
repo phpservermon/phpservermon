@@ -62,6 +62,20 @@ $sm_lang = array(
 		'a_minute_ago' => 'about a minute ago',
 		'seconds_ago' => '%d seconds ago',
 		'a_second_ago' => 'a second ago',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
+		'online' => 'online',
+		'offline' => 'offline',
 	),
 	'menu' => array(
 		'config' => 'Config',
@@ -153,7 +167,9 @@ $sm_lang = array(
 		'type_service' => 'Service',
 		'type_ping' => 'Ping',
 		'pattern' => 'Search string/pattern',
-		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
+		'pattern_description' => 'If this pattern is not found on the website, the server will be marked online/offline. Regular expressions are allowed.',
+		'pattern_online' => 'Pattern indicates website is',
+		'pattern_online_description' => 'Online: If this pattern is not found on the website, the server will be marked online. Offline: If this pattern is not found on the website, the server will be marked offline.',
 		'header' => 'Header',
 		'header_name_description' => 'Header name (case-sensitive)',
 		'header_value_description' => 'Header value. Regular expressions are allowed.',
@@ -170,7 +186,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'Send SMS',
 		'pushover' => 'Pushover',
+		'send_pushover' => 'Send Pushover notification',
 		'telegram' => 'Telegram',
+		'send_telegram' => 'Send Telegram notification',
 		'users' => 'Users',
 		'delete_title' => 'Delete server',
 		'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -231,21 +249,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Leave blank for no authentication',
 		'sms_status' => 'Allow sending text messages',
 		'sms_gateway' => 'Gateway to use for sending messages',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
-		'sms_gateway_clicksend' => 'ClickSend',
-		'sms_gateway_nexmo' => 'Nexmo',
-		'sms_gateway_smsgw' => 'SMSgw',
-		'sms_gateway_twilio' => 'Twilio',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -259,14 +262,14 @@ $sm_lang = array(
 		'telegram_api_token' => 'Telegram API Token',
 		'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for help.',
 		'alert_type' => 'Select when you\'d like to be notified.',
-        'alert_type_description' => '<b>Status change:</b> '.
-		    'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
-		    'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
-		    'You will get 1 notification at 1 am and thats it.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
+		'alert_type_description' => '<b>Status change:</b> '.
+			'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
+			'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
+			'You will get 1 notification at 1 am and thats it.<br/>'.
+			'<br><b>Always:</b> '.
+			'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
@@ -307,7 +310,7 @@ $sm_lang = array(
 		'test_message' => 'Test message',
 		'email_sent' => 'Email sent',
 		'email_error' => 'Error in email sending',
-		'sms_sent' => 'Sms sent',
+		'sms_sent' => 'SMS sent',
 		'sms_error' => 'An error has occurred while sending the SMS: %s',
 		'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
 		'pushover_sent' => 'Pushover notification sent',
@@ -330,12 +333,12 @@ $sm_lang = array(
 		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
 		'off_pushover_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'off_telegram_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-		'on_email_body' => "Server '%LABEL%' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "Server '%LABEL%' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
-		'on_pushover_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
-		'on_telegram_message' => 'Server \'%LABEL%\' is running again:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

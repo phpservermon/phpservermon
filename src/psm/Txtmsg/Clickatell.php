@@ -17,50 +17,55 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Pepijn Over <pep@mailbox.org>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
+ * @package		phpservermon
+ * @author		Pepijn Over <pep@mailbox.org>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
+ * @copyright	Copyright (c) 2008-2018 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		https://www.phpservermonitor.org/
  **/
 
 namespace psm\Txtmsg;
 
 class Clickatell extends Core {
-	// =========================================================================
-	// [ Fields ]
-	// =========================================================================
-	public $gateway = 1;
-	public $resultcode = null;
-	public $resultmessage = null;
-	public $success = false;
-	public $successcount = 0;
 
-	// =========================================================================
-	// [ Methods ]
-	// =========================================================================
-	public function setGateway($gateway) {
-		$this->gateway = $gateway;
-	}
-
+	/**
+	 * Send sms using the Clickatell API
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var string $recipient
+	 * @var string $this->password
+	 * @var string $this->originator
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return bool|string
+	 */
+	
 	public function sendSMS($message) {
-		//$message MUST BE urlencode or it will send only part message (first word in most cases)
-		$recipients = implode(',', $this->recipients);
-		//example: https://api.clickatell.com/http/sendmsg?user=XXXXXX&password=PASSWORD&api_id=111111&to=11111111&text=Message
-		//YOU MUST MANUALLY CHANGE THE VALUE OF 'api_id' EX: '&api_id=' . '1234567'
-		$result = $this->_auth_https_post('api.clickatell.com', '/http/sendmsg',
-			'?user=' . $this->username .
-			'&password=' . $this->password .
-			'&to=' . $recipients .
-			'&api_id=' . 'XXXXXX' .
-			'&text=' . substr(urlencode($message), 0, 153)
-		);
-		return $result;
-	}
+		$success = 1;
+		$error = '';
+		foreach ($this->recipients as $recipient) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://platform.clickatell.com/messages/http/send?apiKey=".urlencode($this->password)."&to=".urlencode($recipient)."&content=".urlencode($message));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$headers = array();
+			$headers[] = "Content-Type: application/x-www-form-urlencoded";
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			$result = curl_exec($ch);
+			curl_close($ch);
 
-	protected function _auth_https_post($host, $path, $data) {
-		$url = $host . $path . $data;
-		return psm_curl_get($url);
+		 	// Check on error
+			if (strpos($result, ",\"errorCode\":null,\"error\":null,\"errorDescription\":null") === False) {
+				$error = $result;
+				$success = 0;
+			}
+		}
+		if ($success) {
+			return 1;
+		}
+		return $error;
 	}
 }

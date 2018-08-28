@@ -27,7 +27,7 @@ To change these values correctly, only update the second parameter of the functi
      define('PSM_DB_NAME', 'db_name');
      define('PSM_DB_USER', 'db_user');
      define('PSM_DB_PASS', 'db_user_password');
-     define('PSM_DB_PORT', '3306');
+     define('PSM_DB_PORT', 'most likely 3306, may also be empty');
 
 For example: to change your username you should ONLY change the 'db\_user' part.
 Do NOT remove the quotes around your username as that will result in an error.
@@ -122,7 +122,20 @@ If you're work with cPanel you can follow these steps:
 - Type `php /home2/<Type here your cPanel username>/public_html/phpservermon/cron/status.cron.php` in the command field
 
 4. Submit
-     
+
+Cronjob over web
+----------------
+To allow scheduled status updates over the web, the commandline check is extended with a check on allowed IP address(es). 
+
+In config.php add following line::
+
+     // PHP 7.0.0 and higher
+     define('PSM_CRON_ALLOW', array("xxx.xxx.xxx.xxx", "yyy.yyy.yyy.yyy", "zzz.zzz.zzz.zzz"));
+     // lower versions
+     define('PSM_CRON_ALLOW', serialize(array("xxx.xxx.xxx.xxx", "yyy.yyy.yyy.yyy", "zzz.zzz.zzz.zzz")));
+
+After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php over the web from your allowed IP.
+
 
 Troubleshooting
 +++++++++++++++
@@ -130,4 +143,4 @@ Troubleshooting
 If you have problems setting up or accessing your monitor and do not know why, enable debug mode to turn on error reporting.
 To enable debug mode, add the following line to your config.php file::
 
-    define('PSM_DEBUG', true);
+     define('PSM_DEBUG', true);

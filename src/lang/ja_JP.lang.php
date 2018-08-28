@@ -209,20 +209,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => '空白で認証なしになります',
 		'sms_status' => 'テキストメッセージの送信を許可する',
 		'sms_gateway' => 'このゲートウェイは、メッセージの送信に使用されます。',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
-		'sms_gateway_clicksend' => 'ClickSend',
-		'sms_gateway_nexmo' => 'Nexmo',
-		'sms_gateway_smsgw' => 'SMSgw',
 		'sms_gateway_username' => 'ゲートウェイのユーザー名',
 		'sms_gateway_password' => 'ゲートウェイのパスワード',
 		'sms_from' => '送信者の電話番号:',
@@ -232,14 +218,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'プッシュオーバーアプリケーションのAPIトークン',
 		'pushover_api_token_description' => 'プッシュオーバーを使用するには、事前にウェブサイトで<a href="%1$s" target="_blank">アプリを登録</a>してApp APIトークンを入力する必要があります。',
 		'alert_type' => '通知するタイミングを選択',
-        'alert_type_description' => '<b>状態の変化:</b> '.
-		    'サーバーのステータスが変更されたときに通知を受け取ります。 だからオンライン -> オフラインまたはオフライン -> オンライン。<br/>'.
-		    '<br /><b>オフライン:</b> '.
-		    'サーバーが*初めての間*オフラインになったときに通知を受け取ります。 例えば、'.
-		    'あなたのcronの仕事は15分ごとです。あなたのサーバーは午前1時にダウンし、午前6時まで停止します。 '.
-		    '午前1時に1つの通知が届きます。<br/>'.
-		    '<br><b>常に:</b> '.
-		    'サイトが数時間にわたってオフラインになっていても、スクリプトが実行され、サイトが停止するたびに通知を受け取ります。',
+		'alert_type_description' => '<b>状態の変化:</b> '.
+			'サーバーのステータスが変更されたときに通知を受け取ります。 だからオンライン -> オフラインまたはオフライン -> オンライン。<br/>'.
+			'<br /><b>オフライン:</b> '.
+			'サーバーが*初めての間*オフラインになったときに通知を受け取ります。 例えば、'.
+			'あなたのcronの仕事は15分ごとです。あなたのサーバーは午前1時にダウンし、午前6時まで停止します。 '.
+			'午前1時に1つの通知が届きます。<br/>'.
+			'<br><b>常に:</b> '.
+			'サイトが数時間にわたってオフラインになっていても、スクリプトが実行され、サイトが停止するたびに通知を受け取ります。',
 		'alert_type_status' => '状況の変化',
 		'alert_type_offline' => 'オフライン',
 		'alert_type_always' => '常に',
@@ -294,11 +280,11 @@ $sm_lang = array(
 		'off_email_body' => "サーバーへの接続に失敗しました:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>エラー: %ERROR%<br/>日時: %DATE%",
 		'off_pushover_title' => 'サーバー \'%LABEL%\' がダウンしています！',
 		'off_pushover_message' => "サーバーへの接続に失敗しました:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>エラー: %ERROR%<br/>日時: %DATE%",
-		'on_sms' => 'サーバー \'%LABEL%\' は動作しています: ip=%IP%, port=%PORT%',
+		'on_sms' => 'サーバー \'%LABEL%\' は動作しています: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => '重要: サーバー \'%LABEL%\' は動作しています',
-		'on_email_body' => "サーバー '%LABEL%' は動作中です:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
+		'on_email_body' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
 		'on_pushover_title' => 'サーバー \'%LABEL%\' は動作しています',
-		'on_pushover_message' => "サーバー '%LABEL%' は動作中です:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
+		'on_pushover_message' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'ようこそ、 %user_name%',

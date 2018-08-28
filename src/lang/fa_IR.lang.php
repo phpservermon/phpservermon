@@ -192,15 +192,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'برای عدم احراز هویت اینجا را خالی بگذارید.',
 		'sms_status' => 'اجازه ارسال پیام های متنی',
 		'sms_gateway' => 'گیت وی برای ارسال پیام ها',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'نام کاربری Gateway',
 		'sms_gateway_password' => 'کلمه عبور Gateway',
 		'sms_from' => 'شماره تلفن ارسال کننده',
@@ -210,14 +201,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'رمز API برنامه پوش آور',
 		'pushover_api_token_description' => 'قبل از استفاده از پوش آور، شما باید در سایت آن ها <a href="%1$s" target="_blank">یک برنامه ثبت نام کنید</a> و رمز API برنامه پوش آور را اینجا وارد کنید.',
 		'alert_type' => 'زمان دلخواه خورد برای دریافت اطلاعیه ها را انتخاب کنید.',
-        'alert_type_description' => '<b>تغییر وضعیت:</b> '.
-		    'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.
-		    '<br /><b>آفلاین:</b> '.
-		    'زمانی که یک سرور *فقط برای اولین بار* آفلاین شد شما یک اطلاعیه دریافت خواهید کرد. به عنوان مثال،'.
-		    'cronjob شما هر 15 دقیقه است و سرور شما در ساعت 1 صبح دان می شود و تا ساعت 6 صبح دان می ماند.'.
-		    'شما 1 اطلاعیه در ساعت 1 صبح دریافت خواهید کرد. همین و بس!'.
-		    '<br><b>همیشه:</b> '.
-		    'هر بار که اسکریپت اجرا شود و یک سایت دان شود شما یک اطلاعیه دریافت خواهید کرد، حتی اگر سایت چند ساعت آفلاین باشد.',
+		'alert_type_description' => '<b>تغییر وضعیت:</b> '.
+			'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.
+			'<br /><b>آفلاین:</b> '.
+			'زمانی که یک سرور *فقط برای اولین بار* آفلاین شد شما یک اطلاعیه دریافت خواهید کرد. به عنوان مثال،'.
+			'cronjob شما هر 15 دقیقه است و سرور شما در ساعت 1 صبح دان می شود و تا ساعت 6 صبح دان می ماند.'.
+			'شما 1 اطلاعیه در ساعت 1 صبح دریافت خواهید کرد. همین و بس!'.
+			'<br><b>همیشه:</b> '.
+			'هر بار که اسکریپت اجرا شود و یک سایت دان شود شما یک اطلاعیه دریافت خواهید کرد، حتی اگر سایت چند ساعت آفلاین باشد.',
 		'alert_type_status' => 'تغییر وضعیت',
 		'alert_type_offline' => 'آفلاین',
 		'alert_type_always' => 'همیشه',
@@ -269,11 +260,11 @@ $sm_lang = array(
 		'off_email_body' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
 		'off_pushover_title' => 'سرور \'%LABEL%\' دان است',
 		'off_pushover_message' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
-		'on_sms' => 'سرور \'%LABEL%\' در حال اجراست: آی پی=%IP%, پورت=%PORT%',
+		'on_sms' => 'سرور \'%LABEL%\' در حال اجراست: آی پی=%IP%, پورت=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'مهم: سرور \'%LABEL%\' در حال اجراست',
-		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%",
+		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%",
 		'on_pushover_title' => 'سرور \'%LABEL%\' در حال اجراست',
-		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%',
+		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'خوش آمدید, %user_name%',

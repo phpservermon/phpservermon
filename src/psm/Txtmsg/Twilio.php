@@ -30,29 +30,34 @@ namespace psm\Txtmsg;
 class Twilio extends Core {
 
 	/**
-	* Send sms using the Twilio API
-	* https://www.twilio.com/docs/sms/api#send-an-sms-with-the-sms-api
-	* @var string $message
-	* @var array $this->recipients
-	* @var string $recipient
-	* @var string $this->username
-	* @var string $this->password
-	* @var string $this->originator
-	* @var int $success
-	* @var string $error
-	* @return int or string
-	*/
+	 * Send sms using the Twilio API
+	 * https://www.twilio.com/docs/sms/api#send-an-sms-with-the-sms-api
+	 * @var string $message
+	 * @var array $this->recipients
+	 * @var string $recipient
+	 * @var string $this->username
+	 * @var string $this->password
+	 * @var string $this->originator
+	 * @var mixed $result
+	 * @var array $headers
+	 *
+	 * @var int $success
+	 * @var string $error
+	 *
+	 * @return bool|string
+	 */
+	
 	public function sendSMS($message) {
 		$success = 1;
 		$error = '';
 
-		foreach($this->recipients as $recipient) {
+		foreach ($this->recipients as $recipient) {
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, "https://api.twilio.com/2010-04-01/Accounts/".$this->username."/Messages.json");
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, "From=".urlencode($this->originator)."&Body=".urlencode($message)."&To=".urlencode($recipient));
 			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);
+			curl_setopt($ch, CURLOPT_USERPWD, $this->username.":".$this->password);
 
 			$headers = array();
 			$headers[] = "Content-Type: application/x-www-form-urlencoded";
@@ -67,11 +72,9 @@ class Twilio extends Core {
 				$success = 0;
 			}
 		}
-		if($success == 1){
+		if ($success) {
 			return 1;
 		}
-		else{
-			return $error;
-		}
+		return $error;
 	}
 }

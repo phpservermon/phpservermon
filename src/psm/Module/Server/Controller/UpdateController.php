@@ -43,10 +43,10 @@ class UpdateController extends AbstractController {
 		$autorun = $this->container->get('util.server.updatemanager');
 		$autorun->run();
 
-		header('Location: ' . psm_build_url(array(
+		header('Location: '.psm_build_url(array(
 			'mod' => 'server_status'
 		), true, false));
-		die();
+		trigger_error("Redirect failed.", E_USER_ERROR);
 	}
 
 }

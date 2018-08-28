@@ -17,58 +17,73 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     phpservermon
- * @author      Ward Pieters <ward@wardpieters.nl>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
- * @link        http://www.phpservermonitor.org/
+ * @package		phpservermon
+ * @author		Ward Pieters <ward@wardpieters.nl>
+ * @author		Tim Zandbergen <Tim@Xervion.nl>
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
+ * @link		http://www.phpservermonitor.org/
+ * @since		phpservermon 3.3.0
  **/
 
 namespace psm\Txtmsg;
 
-class FreeMobileSMS extends Core {
-	
+class GatewayAPI extends Core {
+
 	/**
-	 * Send sms using the FreeMobileSMS API
+	 * Send sms using the GatewayAPI API
 	 *
 	 * @var string $message
 	 * @var string $this->password
-	 * @var string $this->username
+	 * @var array $this->recipients
+	 * @var array $this->originator
+	 * @var string $recipient
+	 * @var mixed $result
 	 *
 	 * @var resource $curl
 	 * @var string $err
 	 * @var int $success
 	 * @var string $error
-	 * @var string $http_code
 	 *
 	 * @return bool|string
 	 */
-	
-	public function sendSMS($message) {
-		$success = 1;
-		$error = "";
-		
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?".http_build_query(
-				array(
-					"user" => $this->username,
-					"pass" => $this->password,
-					"msg" => urlencode($message),
-				)
-			)
-		);
 
+	public function sendSMS($message) {
+		$error = "";
+		$success = 1;
+
+		if (empty($this->recipients)) {
+			return false;
+		}
+
+		$json = [
+			'sender' => isset($this->originator) ? $this->originator : "PHPServerMon",
+			'message' => $message,
+			'recipients' => [],
+		];
+
+		foreach ($this->recipients as $recipient) {
+			$json['recipients'][] = ['msisdn' => $recipient];
+		}
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, "https://gatewayapi.com/rest/mtsms");
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($curl, CURLOPT_USERPWD, $this->password.":");
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+		$result = json_decode(curl_exec($curl), true);
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$err = curl_errno($curl);
-		
+		curl_close($curl);
+
 		if ($err != 0 || $httpcode != 200) {
 			$success = 0;
-				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err);
+			$error = $result['code']." - ".$result['message'];
 		}
-		curl_close($curl);
-		
+
 		if ($success) {
 			return 1;
 		}

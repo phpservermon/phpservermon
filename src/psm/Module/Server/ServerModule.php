@@ -39,10 +39,10 @@ class ServerModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'server' => __NAMESPACE__ . '\Controller\ServerController',
-			'log' => __NAMESPACE__ . '\Controller\LogController',
-			'status' => __NAMESPACE__ . '\Controller\StatusController',
-			'update' => __NAMESPACE__ . '\Controller\UpdateController',
+			'server' => __NAMESPACE__.'\Controller\ServerController',
+			'log' => __NAMESPACE__.'\Controller\LogController',
+			'status' => __NAMESPACE__.'\Controller\StatusController',
+			'update' => __NAMESPACE__.'\Controller\UpdateController',
 		);
 
 	}

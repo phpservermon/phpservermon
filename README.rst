@@ -4,8 +4,8 @@ PHP Server Monitor
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
-   
-Version 3.3.0 (under development)
+
+Version 3.3.0
 
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
@@ -45,7 +45,7 @@ The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
 * Inetworx - <https://www.inetworx.ch>
-* Mollie - <https://www.mollie.nl>
+* Messagebird - <https://www.messagebird.com>
 * Mosms - <https://www.mosms.com>
 * Smsglobal - <https://smsglobal.com/>
 * SMSit - <https://www.smsit.dk/>
@@ -56,6 +56,11 @@ The following SMS gateways are currently available:
 * OctoPush - <https://www.octopush.com/>
 * FreeMobile (FR) - <https://mobile.free.fr/>
 * Twilio - <https://twilio.com>
+* CM Telecom - <https://www.cm.com/>
+* GatewayAPI - <https://gatewayapi.com/>
+* SolutionsInfini - <https://solutionsinfini.com/>
+* Plivo - <https://www.plivo.com/>
+* Callr - <https://www.callr.com/>
 
 
 
@@ -73,7 +78,7 @@ Requirements
 
 * Web server
 * MySQL database
-* PHP 5.3.7+
+* PHP 5.5.9+
 * PHP cURL package
 * PHP PDO mysql driver
 * PHP-XML

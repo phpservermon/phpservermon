@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'about a minute ago',
 		'seconds_ago' => '%d seconds ago',
 		'a_second_ago' => 'a second ago',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => '설정',
@@ -132,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => '최근체크',
 		'last_online' => '최근접속',
+		'last_offline' => 'Last offline',
 		'monitoring' => '확인중',
 		'no_monitoring' => 'No monitoring',
 		'email' => '메일 전송',
@@ -192,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Leave blank for no authentication',
 		'sms_status' => 'SMS전송 허용',
 		'sms_gateway' => '메세지 전송을 위한 게이트웨이 허용',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_nexmo' => 'Nexmo',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -216,7 +218,7 @@ $sm_lang = array(
 			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.
 			 '<br/><b>오프라인: </b><br/>'.
 			'서버가 첫번째로 오프라인이 되었을 때 알림을 받습니다. 예를들어, '.
-			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />' .
+			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />'.
 			'<br/><b>항상: </b><br/>'.
 			'사이트가 다운되었을 때 매시간 알림을 받습니다.',
 
@@ -271,11 +273,11 @@ $sm_lang = array(
 		'off_email_body' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
 		'off_pushover_title' => '서버(\'%LABEL%\')가 다운되었습니다.',
 		'off_pushover_message' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%',
+		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => '중요: 서버(\'%LABEL%\')가 가동중입니다.',
-		'on_email_body' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => '서버(\'%LABEL%\')가 가동중입니다.',
-		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다.:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

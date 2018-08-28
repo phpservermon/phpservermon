@@ -61,6 +61,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'cca před minutou',
 		'seconds_ago' => 'před %d vteřinami',
 		'a_second_ago' => 'před chvílí',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Konfigurace',
@@ -143,6 +155,7 @@ $sm_lang = array(
 		'pattern_description' => 'Pokud vzorek nebude na webu nalezen, bude server označen jako offline. Regulární výrazy jsou povoleny.',
 		'last_check' => 'Poslední kontrola',
 		'last_online' => 'Naposledy online',
+		'last_offline' => 'Naposledy offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Žádné monitorované služby',
 		'email' => 'E-mail',
@@ -205,19 +218,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Ponechte prázdné pro použití SMTP bez hesla',
 		'sms_status' => 'Povolit odesílání textových zpráv',
 		'sms_gateway' => 'Brána použitá pro odesílání zpráv',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
-		'sms_gateway_clicksend' => 'ClickSend',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Uživatelské jméno brány',
 		'sms_gateway_password' => 'Heslo brány',
 		'sms_from' => 'Telefonní číslo odesilatele',
@@ -227,12 +227,12 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank">registrovat</a> a získat API Token.',
 		'alert_type' => 'Zvolte kdy si přejete být upozorněni.',
-        'alert_type_description' => '<b>Změna stavu:</b> '.
-		    'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br/>'.
-		    '<br><b>Vždy:</b> '.
-		    'Obdržíte upozornění při každém spuštění kontroly, tedy i pokud bude server offline několik hodin.',
+		'alert_type_description' => '<b>Změna stavu:</b> '.
+			'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br/>'.
+			'<br><b>Vždy:</b> '.
+			'Obdržíte upozornění při každém spuštění kontroly, tedy i pokud bude server offline několik hodin.',
 		'alert_type_status' => 'Změna stavu',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Vždy',
@@ -284,11 +284,11 @@ $sm_lang = array(
 		'off_email_body' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
 		'off_pushover_title' => 'Server \'%LABEL%\' je offline',
 		'off_pushover_message' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
-		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je online',
-		'on_email_body' => "Server '%LABEL%' je opět online<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%",
+		'on_email_body' => "Server '%LABEL%' je opět online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' je online',
-		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Vítejte, %user_name%',

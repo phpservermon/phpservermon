@@ -204,19 +204,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Nechajte prázdne pre použitie SMTP bez hesla',
 		'sms_status' => 'Povoliť odosielanie textových správ',
 		'sms_gateway' => 'Brána použitá pro odosielanie správ',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
-		'sms_gateway_clicksend' => 'ClickSend',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Užívateľské meno brány',
 		'sms_gateway_password' => 'Heslo brány',
 		'sms_from' => 'Telefónne číslo odosielateľa',
@@ -226,14 +213,14 @@ $sm_lang = array(
 		'pushover_api_token' => 'Pushover App API Token',
 		'pushover_api_token_description' => 'Pred použitím Pushoveru sa musíte <a href="%1$s" target="_blank">registrovať</a> a získať API Token.',
 		'alert_type' => 'Zvoľte kedy si prajete byť upozornení.',
-        'alert_type_description' => '<b>Zmena stavu:</b> '.
-		    'Obdržíte upozornenie pri zmene stavu, teda: online -> offline alebo offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Obdržíte upozornenie, keď server prejde *PO PRVÝ KRÁT* do offline stavu. Napríklad, '.
-                    'pokiaľ je cron nastavený na 15 minút a sledovaný server bude offline mezi 01:00 a 06:00, '.
-                    'tak obdržíte upozornenie iba o 01:00.<br/>'.
-		    '<br><b>Vždy:</b> '.
-		    'Obdržíte upozornenie pri každom spustení kontroly, teda aj pokiaľ bude server offline niekoľko hodín.',
+		'alert_type_description' => '<b>Zmena stavu:</b> '.
+			'Obdržíte upozornenie pri zmene stavu, teda: online -> offline alebo offline -> online.<br/>'.
+			'<br /><b>Offline:</b> '.
+			'Obdržíte upozornenie, keď server prejde *PO PRVÝ KRÁT* do offline stavu. Napríklad, '.
+					'pokiaľ je cron nastavený na 15 minút a sledovaný server bude offline mezi 01:00 a 06:00, '.
+					'tak obdržíte upozornenie iba o 01:00.<br/>'.
+			'<br><b>Vždy:</b> '.
+			'Obdržíte upozornenie pri každom spustení kontroly, teda aj pokiaľ bude server offline niekoľko hodín.',
 		'alert_type_status' => 'Zmena stavu',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Vždy',
@@ -285,11 +272,11 @@ $sm_lang = array(
 		'off_email_body' => 'Nebolo možné spojiť sa so serverom:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Dátum: %DATE%',
 		'off_pushover_title' => 'Server \'%LABEL%\' je offline',
 		'off_pushover_message' => 'Nebolo možné spojiť sa so serverom:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Dátum: %DATE%',
-		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%',
+		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'DÔLEŽITÉ: Server \'%LABEL%\' je online',
-		'on_email_body' => "Server '%LABEL%' je opäť online<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dátum: %DATE%",
+		'on_email_body' => "Server '%LABEL%' je opäť online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dátum: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' je online',
-		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dátum: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dátum: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Vitajte, %user_name%',
