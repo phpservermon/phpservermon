@@ -248,6 +248,7 @@ class Installer {
 			              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
+						  `last_error` varchar(255) DEFAULT NULL,
 						  `last_error_raw` varchar(255) DEFAULT NULL,
 						  `last_raw` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
