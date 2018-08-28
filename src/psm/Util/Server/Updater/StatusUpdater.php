@@ -107,6 +107,9 @@ class StatusUpdater {
 			'error' => $this->error,
 			'rtime' => $this->rtime,
 		);
+		if(!empty($this->error)){
+			$save['last_error'] = $this->error;
+		}
 
 		// log the uptime before checking the warning threshold,
 		// so that the warnings can still be reviewed in the server history.

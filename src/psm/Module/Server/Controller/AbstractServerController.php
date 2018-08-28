@@ -84,7 +84,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`timeout`,
 					`s`.`website_username`,
 					`s`.`website_password`,
-					`s`.`last_offline`,
+					`s`.`last_error`,
 					`s`.`last_error_raw`,
 					`s`.`last_raw`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
@@ -127,6 +127,7 @@ abstract class AbstractServerController extends AbstractController {
 		$server['type'] = psm_get_lang('servers', 'type_'.$server['type']);
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
+		$server['last_error'] = htmlentities($server['last_error']);
 		$server['last_error_raw'] = htmlentities($server['last_error_raw']);
 		$server['last_raw'] = htmlentities($server['last_raw']);
 
