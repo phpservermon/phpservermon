@@ -85,8 +85,8 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`website_username`,
 					`s`.`website_password`,
 					`s`.`last_error`,
-					`s`.`last_error_raw`,
-					`s`.`last_raw`
+					`s`.`last_error_output`,
+					`s`.`last_output`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -128,8 +128,8 @@ abstract class AbstractServerController extends AbstractController {
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
 		$server['last_error'] = htmlentities($server['last_error']);
-		$server['last_error_raw'] = htmlentities($server['last_error_raw']);
-		$server['last_raw'] = htmlentities($server['last_raw']);
+		$server['last_error_output'] = htmlentities($server['last_error_output']);
+		$server['last_output'] = htmlentities($server['last_output']);
 
 		$url_actions = array('delete', 'edit', 'view');
 		foreach ($url_actions as $action) {

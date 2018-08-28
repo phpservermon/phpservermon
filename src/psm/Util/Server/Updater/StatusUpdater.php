@@ -72,7 +72,7 @@ class StatusUpdater {
 	 * Please note: if the server is down but has not met the warning threshold, this will return true
 	 * to avoid any "we are down" events.
 	 * 
-	 * @todo Get last_raw when there is a HPPT 50x error.
+	 * @todo Get last_output when there is a HPPT 50x error.
 	 * 
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
@@ -125,7 +125,7 @@ class StatusUpdater {
 			// if the server is on, add the last_online value and reset the error threshold counter
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
-			$save['last_raw'] = $this->header;
+			$save['last_output'] = $this->header;
 			$save['warning_threshold_counter'] = 0;
 			if ($this->server['status'] == 'off') {
 				$online_date = new \DateTime($save['last_online']);
@@ -137,7 +137,7 @@ class StatusUpdater {
 			// server is offline, increase the error counter and set last offline
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
 			$save['last_offline'] = date('Y-m-d H:i:s');
-			$save['last_error_raw'] = empty($this->header) ? "Could not get headers. probably HTTP 50x error." : $this->header;
+			$save['last_error_output'] = empty($this->header) ? "Could not get headers. probably HTTP 50x error." : $this->header;
 
 			if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
 				// the server is offline but the error threshold has not been met yet.

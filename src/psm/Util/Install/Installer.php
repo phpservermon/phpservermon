@@ -249,8 +249,8 @@ class Installer {
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
 						  `last_error` varchar(255) DEFAULT NULL,
-						  `last_error_raw` varchar(255) DEFAULT NULL,
-						  `last_raw` varchar(255) DEFAULT NULL,
+						  `last_error_output` varchar(255) DEFAULT NULL,
+						  `last_output` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
@@ -553,8 +553,8 @@ class Installer {
 	protected function upgrade340() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_raw` VARCHAR(255) NULL AFTER `last_error`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_raw` VARCHAR(255) NULL AFTER `last_error_raw`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_output` VARCHAR(255) NULL AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_output` VARCHAR(255) NULL AFTER `last_error_output`;";
 		$this->execSQL($queries);
 	}
 }
