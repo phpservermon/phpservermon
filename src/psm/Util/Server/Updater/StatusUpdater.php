@@ -37,6 +37,8 @@ use psm\Service\Database;
 class StatusUpdater {
 	public $error = '';
 
+	public $header = '';
+
 	public $rtime = 0;
 
 	public $status_new = false;
@@ -76,6 +78,7 @@ class StatusUpdater {
 	public function update($server_id, $max_runs = 2) {
 		$this->server_id = $server_id;
 		$this->error = '';
+		$this->header = '';
 		$this->rtime = '';
 
 		// get server info from db
@@ -105,7 +108,7 @@ class StatusUpdater {
 		$save = array(
 			'last_check' => date('Y-m-d H:i:s'),
 			'error' => $this->error,
-			'rtime' => $this->rtime,
+			'rtime' => $this->rtime
 		);
 		if(!empty($this->error)){
 			$save['last_error'] = $this->error;
@@ -119,6 +122,7 @@ class StatusUpdater {
 			// if the server is on, add the last_online value and reset the error threshold counter
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
+			$save['last_raw'] = $this->header;
 			$save['warning_threshold_counter'] = 0;
 			if ($this->server['status'] == 'off') {
 				$online_date = new \DateTime($save['last_online']);
@@ -130,6 +134,7 @@ class StatusUpdater {
 			// server is offline, increase the error counter and set last offline
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
 			$save['last_offline'] = date('Y-m-d H:i:s');
+			$save['last_error_raw'] = empty($this->header) ? "Could not get headers. probably HTTP 50x error." : $this->header;
 
 			if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
 				// the server is offline but the error threshold has not been met yet.
@@ -233,13 +238,16 @@ class StatusUpdater {
 			$this->server['timeout'],
 			true,
 			$this->server['website_username'],
-			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password'])
+			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password']),
+			true
 		);
+		$curl_result = explode("%%%", $curl_result);
+		$this->header = $curl_result[1];
 
 		$this->rtime = (microtime(true) - $starttime);
 
 		// the first line would be the status code..
-		$status_code = strtok($curl_result, "\r\n");
+		$status_code = strtok($curl_result[0], "\r\n");
 		// keep it general
 		// $code[1][0] = status code
 		// $code[2][0] = name of status code
@@ -276,7 +284,7 @@ class StatusUpdater {
 				// Should we check a header ?
 				if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
 					$header_flag = false;
-					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n")); // Only get the header text if the result also includes the body
+					$header_text = substr($curl_result[0], 0, strpos($curl_result[0], "\r\n\r\n")); // Only get the header text if the result also includes the body
 					foreach (explode("\r\n", $header_text) as $i => $line) {
 						if ($i === 0 || strpos($line, ':') == false) {
 							continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
