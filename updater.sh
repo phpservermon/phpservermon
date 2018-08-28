@@ -10,11 +10,26 @@
 # used code:
 # cURL github API url: https://stackoverflow.com/questions/24987542/is-there-a-link-to-github-for-downloading-a-file-in-the-latest-release-of-a-repo
 
+echo .......... PHPSERVERMON UPDATER ..........
+
+# check if updater is executed from within the phpservermon directory
+if [ ! -f ./updater.sh ]; then 
+    echo STOPPED: don\'t execute the updater from another directory!
+    exit
+else
+    echo Start updating
+fi
+
+# get latest version
 version=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep browser_download_url | cut -d '/' -f 8)
 echo Downloading latest Version of PHPServerMonitor \($version\)
 
+# get download URL
 downloadfile=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep "zipball" | cut -d '"' -f 4)
+
+# download latest release
 wget -O update.zip.keep $downloadfile
+# Check if wget is installed
 if ! [ $? -eq 0 ]
 then
    echo "wget not installed"
