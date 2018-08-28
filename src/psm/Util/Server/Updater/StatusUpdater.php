@@ -71,6 +71,9 @@ class StatusUpdater {
 	 *
 	 * Please note: if the server is down but has not met the warning threshold, this will return true
 	 * to avoid any "we are down" events.
+	 * 
+	 * @todo Get last_raw when there is a HPPT 50x error.
+	 * 
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
 	 * @return boolean TRUE if server is up, FALSE otherwise
