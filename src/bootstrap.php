@@ -73,7 +73,7 @@ $router = new psm\Router();
 $db = $router->getService('db');
 
 // check if we have a valid theme, error if we don't
-if (!file_exists(PSM_PATH_SRC.'templates/'.PSM_THEME)) {
+if (!file_exists(PSM_PATH_SRC.'templates'.DIRECTORY_SEPARATOR.PSM_THEME)) {
 	trigger_error("Selected theme '".PSM_THEME."' does not exist in templates folder. Please check your config.php for your PSM_THEME, set back to 'default' if unsure.", E_USER_ERROR);
 }
 

@@ -143,6 +143,26 @@ function psm_get_sms_gateways() {
 }
 
 /**
+ * Retrieve a list with available templates
+ *
+ * @todo Add check to see if template is compatible.
+ * 
+ * @param bool $with_path
+ * 
+ * @return array
+ */
+function psm_get_templates($with_path = false) {
+	$template_list = glob(PSM_PATH_SRC.'templates/*', GLOB_ONLYDIR);
+	if($with_path){
+		return $template_list;
+	}
+	foreach ($template_list as $template) {
+		$templates[] = basename($template);
+	}
+	return $templates;
+}
+
+/**
  * Get a setting from the config.
  *
  * @param string $key

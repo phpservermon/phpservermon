@@ -54,11 +54,15 @@
 		  <input type="text" id="prefix" name="db_prefix" value="{{ db_prefix }}" />
 		</div>
 	  </div>
-	  <p>Please enter a visual theme:</p>
+	  <p>Please choose a theme:</p>
 	  <div class="control-group">
 		<label class="control-label" for="theme">Theme</label>
 		<div class="controls">
-		  <input type="text" id="theme" name="theme" value="{{ theme }}" placeholder="default" />
+				<select id="theme" name="theme">
+					{% for theme in themes %}
+						<option value="{{ theme }}">{{ theme }}</option>
+					{% endfor %}
+        </select>
 		</div>
 	  </div>
 	  <div class="control-group">
