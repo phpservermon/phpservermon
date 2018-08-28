@@ -56,6 +56,13 @@ if (!defined('PSM_DEBUG')) {
 ini_set('display_errors', 1);
 PSM_DEBUG ? error_reporting(E_ALL) : error_reporting(E_USER_ERROR);
 
+/**
+ * Default theme if none is selected
+ */
+if (!defined('PSM_THEME')) {
+	define('PSM_THEME', 'default');
+}
+
 // check for a cron allowed ip array
 if (!defined('PSM_CRON_ALLOW')) {
 	//serialize for php version lower than 7.0.0
