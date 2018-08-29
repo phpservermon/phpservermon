@@ -92,7 +92,6 @@ if (!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	// config load OK, make sure database version is up to date
 	$installer = new \psm\Util\Install\Installer($db);
 	if ($installer->isUpgradeRequired()) {
-		header('Location: install.php');
 		trigger_error("Your database is for an older version and requires an upgrade, <a href=\"install.php\">please click here</a> to update your database to the latest version.", E_USER_ERROR);
 	}
 }
