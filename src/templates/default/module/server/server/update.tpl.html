@@ -75,6 +75,15 @@
 			</div>
 		</div>
 		<div class="control-group types typeWebsite">
+			<label class="control-label" for="redirect_check">{{ label_redirect_check }}</label>
+			<div class="controls">
+				<select id="redirect_check" name="redirect_check" data-toggle="tooltip" title="{{ label_redirect_check_description}}">
+					<option value="ok" {{ edit_redirect_check_selected_ok|raw }}>{{ label_ok }}</option>
+					<option value="bad" {{ edit_redirect_check_selected_bad|raw }}>{{ label_bad }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group types typeWebsite">
 			<label class="control-label" for="header_name">{{ label_header }}</label>
 			<div class="controls">
 				<input type="text" id="header_name" name="header_name" value="{{ edit_value_header_name }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_name_description }}" />

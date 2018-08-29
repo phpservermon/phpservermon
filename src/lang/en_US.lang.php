@@ -47,6 +47,7 @@ $sm_lang = array(
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		'ok' => 'OK',
+		'bad' => 'bad',
 		'cancel' => 'Cancel',
 		'activate' => 'Activate',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
@@ -169,6 +170,8 @@ $sm_lang = array(
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked online/offline. Regular expressions are allowed.',
 		'pattern_online' => 'Pattern indicates website is',
 		'pattern_online_description' => 'Online: If this pattern is not found on the website, the server will be marked online. Offline: If this pattern is not found on the website, the server will be marked offline.',
+		'redirect_check' => 'Redirecting to another domain is',
+		'redirect_check_description' => 'Redirect to another domain is usually a bad sign.',
 		'header' => 'Header',
 		'header_name_description' => 'Header name (case-sensitive)',
 		'header_value_description' => 'Header value. Regular expressions are allowed.',

@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'pattern_online', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'pattern_online', 'redirect_check', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if (empty($this->server)) {
@@ -257,7 +257,7 @@ class StatusUpdater {
 			} else {
 				$result = true;
 
-				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
+				// Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if ($this->server['pattern'] != '') {
 					// Check to see if the body should not contain specified pattern
 					// Check to see if the pattern was [not] found.
@@ -267,6 +267,12 @@ class StatusUpdater {
 							' found.';
 						$result = false;
 					}
+				}
+
+				// Check if the website redirects to another domain
+				if ($this->server['redirect_check'] == 'bad'){
+					//$this->error = "The IP/URL redirects to another domain.";
+					//$result = false;
 				}
 
 				// Should we check a header ?

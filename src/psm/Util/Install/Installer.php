@@ -126,7 +126,7 @@ class Installer {
 
 		$this->log('Populating database...');
 		$queries = array();
-		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."servers` (`ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'yes','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'yes', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
+		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."servers` (`ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `redirect_check`, `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`) VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '', 'yes', 'bad', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'), ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '', 'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -229,6 +229,7 @@ class Installer {
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
+						  `redirect_check` enum('ok','bad') NOT NULL default 'bad',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -312,6 +313,9 @@ class Installer {
 		}
 		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
+		}
+		if (version_compare($version_from, '3.4.0', '<')) {
+			$this->upgrade340();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -539,6 +543,14 @@ class Installer {
 		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
-		
+	}
+
+	/**
+	 * Upgrade for v3.4.0 release
+	 */
+	protected function upgrade340() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'bad' AFTER `pattern_online`;";
+		$this->execSQL($queries);
 	}
 }

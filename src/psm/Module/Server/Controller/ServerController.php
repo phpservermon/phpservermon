@@ -200,6 +200,7 @@ class ServerController extends AbstractServerController {
 				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
 				'edit_pattern_selected_'.$edit_server['pattern_online'] => 'selected="selected"',
+				'edit_redirect_check_selected_'.$edit_server['redirect_check'] => 'selected="selected"',
 				'edit_value_header_name' => $edit_server['header_name'],
 				'edit_value_header_value' => $edit_server['header_value'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
@@ -267,6 +268,7 @@ class ServerController extends AbstractServerController {
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
 			'pattern_online' => in_array($_POST['pattern_online'], array('yes', 'no')) ? $_POST['pattern_online'] : 'yes',
+			'redirect_check' => in_array($_POST['redirect_check'], array('ok', 'bad')) ? $_POST['redirect_check'] : 'bad',
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
 			'rtime' => psm_POST('rtime', '0.0000000'),
@@ -473,6 +475,8 @@ class ServerController extends AbstractServerController {
 			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
 			'label_pattern_online' => psm_get_lang('servers', 'pattern_online'),
 			'label_pattern_online_description' => psm_get_lang('servers', 'pattern_online_description'),
+			'label_redirect_check' => psm_get_lang('servers', 'redirect_check'),
+			'label_redirect_check_description' => psm_get_lang('servers', 'redirect_check_description'),
 			'label_header' => psm_get_lang('servers', 'header'),
 			'label_header_name_description' => psm_get_lang('servers', 'header_name_description'),
 			'label_header_value_description' => psm_get_lang('servers', 'header_value_description'),
@@ -500,6 +504,8 @@ class ServerController extends AbstractServerController {
 			'label_add_new' => psm_get_lang('system', 'add_new'),
 			'label_online' => psm_get_lang('system', 'online'),
 			'label_offline' => psm_get_lang('system', 'offline'),
+			'label_ok' => psm_get_lang('system', 'ok'),
+			'label_bad' => psm_get_lang('system', 'bad'),
 		);
 	}
 
