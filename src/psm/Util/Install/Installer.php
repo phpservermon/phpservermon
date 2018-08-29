@@ -553,8 +553,8 @@ class Installer {
 	protected function upgrade340() {
 		$queries = array();
 		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_output` VARCHAR(255) NULL AFTER `last_error`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_output` VARCHAR(255) NULL AFTER `last_error_output`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$this->execSQL($queries);
 	}
 }
