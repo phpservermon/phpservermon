@@ -86,7 +86,7 @@ class Database {
 	 * @param string $user
 	 * @param string $pass
 	 * @param string $db
-   * @param string|integer $port
+   	 * @param string|integer $port
 	 */
 	function __construct($host = null, $user = null, $pass = null, $db = null, $port = '') {
 		if ($host != null && $user != null && $pass !== null && $db != null) {
