@@ -380,7 +380,6 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	}
 
 	$result = curl_exec($ch);
-
 	curl_close($ch);
 
 	return $result;
