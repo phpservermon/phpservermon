@@ -241,16 +241,14 @@ class StatusUpdater {
 			$this->server['timeout'],
 			true,
 			$this->server['website_username'],
-			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password']),
-			true
+			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password'])
 		);
-		$curl_result = explode("%%%", $curl_result);
-		$this->header = $curl_result[1];
+		$this->header = $curl_result;
 
 		$this->rtime = (microtime(true) - $starttime);
 
 		// the first line would be the status code..
-		$status_code = strtok($curl_result[0], "\r\n");
+		$status_code = strtok($curl_result, "\r\n");
 		// keep it general
 		// $code[1][0] = status code
 		// $code[2][0] = name of status code
@@ -287,7 +285,7 @@ class StatusUpdater {
 				// Should we check a header ?
 				if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
 					$header_flag = false;
-					$header_text = substr($curl_result[0], 0, strpos($curl_result[0], "\r\n\r\n")); // Only get the header text if the result also includes the body
+					$header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n")); // Only get the header text if the result also includes the body
 					foreach (explode("\r\n", $header_text) as $i => $line) {
 						if ($i === 0 || strpos($line, ':') == false) {
 							continue; // We skip the status code & other non-header lines. Needed for proxy or redirects

@@ -345,7 +345,7 @@ function psm_parse_msg($status, $type, $vars) {
  * @param string|bool $website_password Password website
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $get_headers = false) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
@@ -380,12 +380,6 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	}
 
 	$result = curl_exec($ch);
-
-	if($get_headers){
-		#https://beamtic.com/curl-response-headers
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$result = $result."%%%".substr($result, 0, $header_size);
-	}
 
 	curl_close($ch);
 
