@@ -92,6 +92,13 @@ The second part is the actual message. There are a few variables you can use in 
 Notifications
 +++++++++++++
 
+I'm not recieving a notification after my server went down.
+------------------------------------------------------------
+
+1. Check if you have setup the noticication method correctly on the config tab.
+2. Check if you have added the user to the server you want to monitor. This can be found under permissions while editting the server.
+3. Check if you have enabled the notification method for the server. This can be changed on the server edit page.
+
 How do I setup Telegram?
 ------------------------
 A few steps are required to get Telegram notifications working.
