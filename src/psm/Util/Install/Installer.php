@@ -550,7 +550,13 @@ class Installer {
 	 */
 	protected function upgrade340() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'bad' AFTER `pattern_online`;";
+		/** 
+		 * Redirect_check is first set to default ok.
+		 * If you have a lot of server that are redirecting, 
+		 * this will make sure you're servers stay online.
+		 */
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `redirect_check` `redirect_check` ENUM('ok','bad') NOT NULL DEFAULT 'bad';";
 		$this->execSQL($queries);
 	}
 }
