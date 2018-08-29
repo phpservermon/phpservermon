@@ -5,6 +5,12 @@ Changelog
 Not yet released
 ----------------
 
+#626: Added redirect check.
+b49659f: Added question to notification faq about not recieving notifications.
+ef28908: Indentation fix.
+#605: Added Norwegian language.
+f6173d4: Added license to composer.json file.
+
 v3.3.1 (released August 10, 2018)
 --------------------------------
 
