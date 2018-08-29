@@ -271,8 +271,14 @@ class StatusUpdater {
 
 				// Check if the website redirects to another domain
 				if ($this->server['redirect_check'] == 'bad'){
-					//$this->error = "The IP/URL redirects to another domain.";
-					//$result = false;
+					$location_matches = array();
+					preg_match('/(Location: )(https*:\/\/)([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/', $curl_result, $location_matches);
+					$ip_matches = array();
+					preg_match('/(https*:\/\/)([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/', $this->server['ip'], $ip_matches);
+					if($location_matches[3] !== $ip_matches[2]){
+						$this->error = "The IP/URL redirects to another domain.";
+						$result = false;
+					}
 				}
 
 				// Should we check a header ?
