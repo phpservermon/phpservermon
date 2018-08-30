@@ -5,11 +5,11 @@ Changelog
 Not yet released
 ----------------
 
-#629: Fix bug that made it impossible to check rdp:// and fixed port update.
-b49659f: Added question to notification faq about not recieving notifications.
-ef28908: Indentation fix.
-#605: Added Norwegian language.
-f6173d4: Added license to composer.json file.
+* #629: Fix bug that made it impossible to check rdp:// and fixed port update.
+* b49659f: Added question to notification faq about not recieving notifications.
+* ef28908: Indentation fix.
+* #605: Added Norwegian language.
+* f6173d4: Added license to composer.json file.
 
 v3.3.1 (released August 10, 2018)
 --------------------------------
