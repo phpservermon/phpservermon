@@ -48,6 +48,7 @@ $sm_lang = array(
 		'go_back' => 'Go back',
 		'ok' => 'OK',
 		'cancel' => 'Cancel',
+		'none' => 'None',
 		'activate' => 'Activate',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%B %e',
@@ -160,6 +161,9 @@ $sm_lang = array(
 		'port' => 'Port',
 		'custom_port' => 'Custom Port',
 		'popular_ports' => 'Popular Ports',
+		'request_method' => 'Request method',
+		'custom_request_method' => 'Custom request method',
+		'popular_request_methods' => 'Popular request methods',
 		'please_select' => 'Please select',
 		'type' => 'Type',
 		'type_website' => 'Website',

@@ -6,11 +6,11 @@ $().ready(function() {
 		}
 		var $modal_id = $this.attr('data-modal-id') || 'main';
 		var $modal = $('#' + $modal_id + 'Modal');
-		if($modal.length) {
+		if ($modal.length) {
 			$modal.find('.modalOKButton').data('modal-origin', $this);
 
 			var param = $this.attr('data-modal-param');
-			if(param) {
+			if (param) {
 				var ary = param.split(',');
 				for (var index = 0; index < ary.length && index < 9; ++index) {
 					var value = ary[index];
@@ -56,25 +56,42 @@ $().ready(function() {
 
     if (portInput != '') {
         var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
-        if(findPopularPorts.length) {
+        if (findPopularPorts.length) {
             $(findPopularPorts).attr("selected", "selected");
         } else {
             $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
             $('.portGroup').slideDown();
         }
-    }
+	}
 
 	$('#popularPorts').change(function () {
-		changePopularPorts($(this).val(), false, $('#type').val());
+		changePopular($(this).val(), $('#type').val());
 	});
 
+	// popularRequestMethods
+    // initial
+    $('.requestMethodGroup').hide();
+	var requestMethodInput = $('#requestMethod').val();
+	
+    if (requestMethodInput != '') {
+		var findPopularRequestMethods = $('#popularRequestMethods').find('option[value=' + requestMethodInput + ']');
+		if (findPopularRequestMethods.length) {
+            $(findPopularRequestMethods).attr("selected", "selected");
+        } else {
+            $('#popularRequestMethods').find('option[value=custom]').attr("selected", "selected");
+            $('.requestMethodGroup').slideDown();
+        }
+	}
+
+	$('#popularRequestMethods').change(function () {
+		changePopular($(this).val(), $('#type').val());
+	});
 	// server type
 	$('.types').hide();
 	changeTypeSwitch($('#type').val());
 
 	$('#type').change(function () {
 		changeTypeSwitch($('#type').val());
-		changePopularPorts($('#popularPorts').val(), true, $('#type').val());
 	});
 });
 
@@ -83,34 +100,34 @@ function changeTypeSwitch(typeInput) {
 		case 'service':
 			$('.types').slideUp();
 			$('.typeService').slideDown();
+			changePopular($('#popularPorts').val(), typeInput, true);
 			break;
 
 		case 'website':
 			$('.types').slideUp();
 			$('.typeWebsite').slideDown();
+			changePopular($('#popularRequestMethods').val(), typeInput, true);
 			break;
 
 		default:
-			$('.types').hide();
+			$('.types').slideUp();
 	}
 }
 
-function changePopularPorts(popularPorts, changeType, typeInput) {
-	if (changeType === true) {
-		if (typeInput == 'service') {
-			if (popularPorts == 'custom') {
-				$('.portGroup').slideDown();
-			} else {
-				$('.portGroup').hide();
-			}
-		}
+function changePopular(inputValue, typeInput, changedType = false) {
+	if (typeInput == 'website') {
+		htmlClass = '.requestMethodGroup';
+		htmlID = '#requestMethod';
+	} else if (typeInput == 'service') {
+		htmlClass = '.portGroup';
+		htmlID = '#port';
+	}
+	
+	if (inputValue == 'custom') {
+		$(htmlClass).slideDown();
 	} else {
-		if (popularPorts == 'custom') {
-			$('.portGroup').slideDown();
-		} else {
-			$('#port').val(popularPorts);
-			$('.portGroup').slideUp();
-		}
+		changedType ? $(htmlClass).hide() : $(htmlClass).slideUp();
+		$(htmlID).val(inputValue);
 	}
 }
 
@@ -173,14 +190,14 @@ function rtrim(str) {
 
 function psm_flash_message(message) {
 	var flashmessage = $('#flashmessage');
-	if(flashmessage.length){
-		if(typeof message != 'undefined') {
+	if (flashmessage.length) {
+		if (typeof message != 'undefined') {
 			flashmessage.html(message);
 		}
 		var t = flashmessage.html();
 		var c = trim(t);
 		var t = c.replace('&nbsp;', '');
-		if(t){
+		if (t) {
 			flashmessage.slideDown();
 		}
 	}

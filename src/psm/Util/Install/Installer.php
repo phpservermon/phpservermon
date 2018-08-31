@@ -225,6 +225,7 @@ class Installer {
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
+						  `request_method` varchar(50) unsigned NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
@@ -312,6 +313,9 @@ class Installer {
 		}
 		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
+		}
+		if (version_compare($version_from, '3.4.0', '<')) {
+			$this->upgrade340();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -539,6 +543,14 @@ class Installer {
 		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
-		
+	}
+
+	/**
+	 * Upgrade for v3.4.0 release
+	 */
+	protected function upgrade340() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
+		$this->execSQL($queries);
 	}
 }
