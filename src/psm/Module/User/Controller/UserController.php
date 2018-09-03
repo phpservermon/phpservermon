@@ -49,7 +49,7 @@ class UserController extends AbstractController {
 	}
 
 	public function run($action = NULL) {
-		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `active` ASC, `status` DESC, `label` ASC");
+		$servers = $this->db->select(PSM_DB_PREFIX.'servers', null, array('server_id', 'label'), '', "ORDER BY `label` ASC");
 		// change the indexes to reflect their server ids
 		foreach ($servers as $server) {
 			$this->servers[$server['server_id']] = $server;
@@ -110,6 +110,7 @@ class UserController extends AbstractController {
 					'label' => $servers_labels[$server_id]
 				);
 			}
+			sort($user['emp_servers']);
 
 			$user['url_delete'] = psm_build_url(array(
 				'mod' => 'user',
