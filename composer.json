@@ -6,8 +6,8 @@
 	"require": {
 		"php": ">=5.5.9",
 		"ext-curl": "*",
-        "ext-pdo": "*",
-        "ext-xml": "*",
+		"ext-pdo": "*",
+		"ext-xml": "*",
 		"phpmailer/phpmailer": "~6.0",
 		"symfony/config": "~3.4",
 		"symfony/dependency-injection": "~3.4",
