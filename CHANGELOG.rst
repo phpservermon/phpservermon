@@ -6,6 +6,11 @@ Not yet released
 ----------------
 
 * #639: Added combined notifications.
+* #626: Added redirect check.
+* #627: Latest server output, error and output during a failure will be saved and are shown on the server page.
+* #631: Added option to specify the request method.
+* #628: Added the option to mark specific HTTP status codes as online.
+* #640: Removed () after last offline value when the last offline duration is unknown.
 * #637: Added php extensions to composer required list, spelling fixes in changelog and composer update.
 * #635: Changed server order on ?&mod=user&action=edit&id=x.
 * #634: Changed ' to " in sql query, both were used.
