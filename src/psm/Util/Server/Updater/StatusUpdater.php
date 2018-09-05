@@ -37,6 +37,8 @@ use psm\Service\Database;
 class StatusUpdater {
 	public $error = '';
 
+	public $header = '';
+
 	public $rtime = 0;
 
 	public $status_new = false;
@@ -69,6 +71,9 @@ class StatusUpdater {
 	 *
 	 * Please note: if the server is down but has not met the warning threshold, this will return true
 	 * to avoid any "we are down" events.
+	 * 
+	 * @todo Get last_output when there is a HPPT 50x error.
+	 * 
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
 	 * @return boolean TRUE if server is up, FALSE otherwise
@@ -76,6 +81,7 @@ class StatusUpdater {
 	public function update($server_id, $max_runs = 2) {
 		$this->server_id = $server_id;
 		$this->error = '';
+		$this->header = '';
 		$this->rtime = '';
 
 		// get server info from db
@@ -105,8 +111,11 @@ class StatusUpdater {
 		$save = array(
 			'last_check' => date('Y-m-d H:i:s'),
 			'error' => $this->error,
-			'rtime' => $this->rtime,
+			'rtime' => $this->rtime
 		);
+		if(!empty($this->error)){
+			$save['last_error'] = $this->error;
+		}
 
 		// log the uptime before checking the warning threshold,
 		// so that the warnings can still be reviewed in the server history.
@@ -116,6 +125,7 @@ class StatusUpdater {
 			// if the server is on, add the last_online value and reset the error threshold counter
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
+			$save['last_output'] = $this->header;
 			$save['warning_threshold_counter'] = 0;
 			if ($this->server['status'] == 'off') {
 				$online_date = new \DateTime($save['last_online']);
@@ -124,8 +134,10 @@ class StatusUpdater {
 				$save['last_offline_duration'] = trim(psm_format_interval($difference));
 			}
 		} else {
-			// server is offline, increase the error counter
+			// server is offline, increase the error counter and set last offline
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
+			$save['last_offline'] = date('Y-m-d H:i:s');
+			$save['last_error_output'] = empty($this->header) ? "Could not get headers. probably HTTP 50x error." : $this->header;
 
 			if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
 				// the server is offline but the error threshold has not been met yet.
@@ -232,6 +244,7 @@ class StatusUpdater {
 			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password']),
 			$this->server['request_method']
 		);
+		$this->header = $curl_result;
 
 		$this->rtime = (microtime(true) - $starttime);
 

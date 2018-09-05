@@ -50,6 +50,7 @@ $sm_lang = array(
 		'cancel' => 'Cancel',
 		'none' => 'None',
 		'activate' => 'Activate',
+		'advanced' => 'Advanced',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
@@ -181,6 +182,9 @@ $sm_lang = array(
 		'last_check' => 'Last check',
 		'last_online' => 'Last online',
 		'last_offline' => 'Last offline',
+		'last_output' => 'Last positive output',
+		'last_error' => 'Last error',
+		'last_error_output' => 'Last error output',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',
