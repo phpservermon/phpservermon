@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #639: Added combined notifications.
 * #629: Fix bug that made it impossible to check rdp:// and fixed port update.
 * b49659f: Added question to notification faq about not recieving notifications.
 * ef28908: Indentation fix.
