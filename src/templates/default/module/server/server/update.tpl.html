@@ -101,6 +101,12 @@
 			</div>
 		</div>
 		<div class="control-group types typeWebsite">
+				<label class="control-label" for="allow_http_status">{{ label_allow_http_status }}</label>
+				<div class="controls">
+					<input type="text" id="allow_http_status" name="allow_http_status" value="{{ edit_value_allow_http_status }}" maxlength="255" data-toggle="tooltip" title="{{ label_allow_http_status_description }}" />
+				</div>
+			</div>
+		<div class="control-group types typeWebsite">
 			<label class="control-label" for="header_name">{{ label_header }}</label>
 			<div class="controls">
 				<input type="text" id="header_name" name="header_name" value="{{ edit_value_header_name }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_name_description }}" />

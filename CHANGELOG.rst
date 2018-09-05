@@ -5,8 +5,13 @@ Changelog
 Not yet released
 ----------------
 
+* #628: Added the option to mark specific HTTP status codes as online.
+* #640: Removed () after last offline value when the last offline duration is unknown.
+* #637: Added php extensions to composer required list, spelling fixes in changelog and composer update.
+* #635: Changed server order on ?&mod=user&action=edit&id=x.
+* #634: Changed ' to " in sql query, both were used.
 * #629: Fix bug that made it impossible to check rdp:// and fixed port update.
-* b49659f: Added question to notification faq about not recieving notifications.
+* b49659f: Added question to notification faq about not receiving notifications.
 * ef28908: Indentation fix.
 * #605: Added Norwegian language.
 * f6173d4: Added license to composer.json file.
@@ -40,7 +45,7 @@ v3.3.1 (released August 10, 2018)
 v3.3.0 (released May 30, 2018)
 --------------------------------
 
-* 57f4c36: Added support voor the following SMS gateways: Plivo, SolutionsInfini, Callr and GAtewayAPI.
+* 57f4c36: Added support for the following SMS gateways: Plivo, SolutionsInfini, Callr and GatewayAPI.
 * c3751e7: Moved Clickatell api key to password field.
 * #590: Rollback Twig version update to work with PHP5.
 * #589: Enlarge select pattern_online width.
@@ -66,7 +71,7 @@ v3.3.0 (released May 30, 2018)
 * #541: Fix method declaration error in PHP7.2.
 * #515: Run archive and cleanup per server to reduce memory use.
 * #516: Fixed #500 ping latency.
-* 2471767: Fixed preinstalled server query.
+* 2471767: Fixed pre installed server query.
 
 v3.2.2 (released March 27, 2018)
 --------------------------------
@@ -84,7 +89,7 @@ v3.2.2 (released March 27, 2018)
 v3.2.1 (released March 27, 2018)
 --------------------------------
 
-* #343: Added optinal header value check.
+* #343: Added optional header value check.
 * #433: Changed baseurl repoforgeextras.
 * #432: Changed baseurl repoforge.
 * #437: Octopush.class.php updates to Octopush.php.
