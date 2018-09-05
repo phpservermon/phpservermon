@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #627: Latest server output, error and output during a failure will be saved and are shown on the server page.
 * #631: Added option to specify the request method.
 * #628: Added the option to mark specific HTTP status codes as online.
 * #640: Removed () after last offline value when the last offline duration is unknown.

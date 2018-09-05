@@ -250,6 +250,9 @@ class Installer {
 			              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
+						  `last_error` varchar(255) DEFAULT NULL,
+						  `last_error_output` varchar(255) DEFAULT NULL,
+						  `last_output` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
@@ -551,6 +554,9 @@ class Installer {
 	 */
 	protected function upgrade340() {
 		$queries = array();
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$this->execSQL($queries);
