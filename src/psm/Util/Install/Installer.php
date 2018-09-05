@@ -227,8 +227,9 @@ class Installer {
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
-						  `pattern` varchar(255) NOT NULL,
+						  `pattern` varchar(255) NOT NULL default '',
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
+						  `allow_http_status` varchar(255) NOT NULL default '',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -312,6 +313,9 @@ class Installer {
 		}
 		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
+		}
+		if (version_compare($version_from, '3.4.0', '<')) {
+			$this->upgrade340();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -539,6 +543,15 @@ class Installer {
 		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
+	}
+
+	/**
+	 * Upgrade for v3.4.0 release
+	 */
+	protected function upgrade340() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER j`pattern_online`;";
+		$this->execSQL($queries);
 		
 	}
 }
