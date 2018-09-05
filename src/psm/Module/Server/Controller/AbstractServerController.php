@@ -61,6 +61,7 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`server_id`,
 					`s`.`ip`,
 					`s`.`port`,
+					`s`.`request_method`,
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
