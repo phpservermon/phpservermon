@@ -61,11 +61,13 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`server_id`,
 					`s`.`ip`,
 					`s`.`port`,
+					`s`.`request_method`,
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
 					`s`.`pattern_online`,
 					`s`.`redirect_check`,
+					`s`.`allow_http_status`,
 					`s`.`header_name`,
 					`s`.`header_value`,
 					`s`.`status`,
@@ -84,7 +86,10 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`warning_threshold_counter`,
 					`s`.`timeout`,
 					`s`.`website_username`,
-					`s`.`website_password`
+					`s`.`website_password`,
+					`s`.`last_error`,
+					`s`.`last_error_output`,
+					`s`.`last_output`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -108,7 +113,8 @@ abstract class AbstractServerController extends AbstractController {
 		$server['last_online'] = psm_timespan($server['last_online']);
 		$server['last_offline'] = psm_timespan($server['last_offline']);
 		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
-			$server['last_offline_duration'] = "(".$server['last_offline_duration'].")";
+			$server['last_offline_duration'] = is_null($server['last_offline_duration']) ?
+                null : "(".$server['last_offline_duration'].")";
 		}
 		$server['last_check'] = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);
@@ -124,6 +130,10 @@ abstract class AbstractServerController extends AbstractController {
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_'.$server['type']);
 		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+
+		$server['last_error'] = htmlentities($server['last_error']);
+		$server['last_error_output'] = htmlentities($server['last_error_output']);
+		$server['last_output'] = htmlentities($server['last_output']);
 
 		$url_actions = array('delete', 'edit', 'view');
 		foreach ($url_actions as $action) {

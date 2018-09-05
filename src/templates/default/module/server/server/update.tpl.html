@@ -59,6 +59,32 @@
 				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
 			</div>
 		</div>
+		<div class="control-group popularRequestMethodsGroup types typeWebsite">
+			<label class="control-label" for="popularRequestMethods">{{ label_request_method }}</label>
+			<div class="controls">
+				<select id="popularRequestMethods" name="popularRequestMethods">
+					<option value="">{{ label_none }}</option>
+                    <optgroup label="{{ label_popular_request_methods }}">
+						<option value="GET">GET</option>
+						<option value="HEAD">HEAD</option>
+						<option value="POST">POST</option>
+						<option value="PUT">PUT</option>
+						<option value="DELETE">DELETE</option>
+						<option value="CONNECT">CONNECT</option>
+						<option value="OPTIONS">OPTIONS</option>
+						<option value="TRACE">TRACE</option>
+						<option value="PATCH">PATCH</option>
+					</optgroup>
+					<option value="custom">{{ label_custom_request_method }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group requestMethodGroup types typeWebsite">
+			<label class="control-label" for="requestMethod">{{ label_custom_request_method }}</label>
+			<div class="controls">
+				<input class="input" type="text" id="requestMethod" name="request_method" value="{{ edit_value_request_method }}" maxlength="50" />
+			</div>
+		</div>
 		<div class="control-group types typeWebsite">
 			<label class="control-label" for="pattern">{{ label_pattern }}</label>
 			<div class="controls">
@@ -83,6 +109,12 @@
 				</select>
 			</div>
 		</div>
+    <div class="control-group types typeWebsite">
+				<label class="control-label" for="allow_http_status">{{ label_allow_http_status }}</label>
+				<div class="controls">
+					<input type="text" id="allow_http_status" name="allow_http_status" value="{{ edit_value_allow_http_status }}" maxlength="255" data-toggle="tooltip" title="{{ label_allow_http_status_description }}" />
+				</div>
+			</div>
 		<div class="control-group types typeWebsite">
 			<label class="control-label" for="header_name">{{ label_header }}</label>
 			<div class="controls">

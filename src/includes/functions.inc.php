@@ -343,9 +343,10 @@ function psm_parse_msg($status, $type, $vars) {
  * @param boolean $add_agent add user agent?
  * @param string|bool $website_username Username website
  * @param string|bool $website_password Password website
+ * @param string|bool $request_method Request method like GET, POST etc. 
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $request_method = null) {
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
@@ -358,6 +359,10 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
+	
+	if (!empty($request_method)) {
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
+	}
 
 	if ($website_username !== false && $website_password !== false && !empty($website_username) && !empty($website_password)) {
 		curl_setopt($ch, CURLOPT_USERPWD, $website_username.":".$website_password);

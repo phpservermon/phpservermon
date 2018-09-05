@@ -225,11 +225,13 @@ class Installer {
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
+						  `request_method` varchar(50) unsigned NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
-						  `pattern` varchar(255) NOT NULL,
+						  `pattern` varchar(255) NOT NULL default '',
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
 						  `redirect_check` enum('ok','bad') NOT NULL default 'bad',
+						  `allow_http_status` varchar(255) NOT NULL default '',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -249,6 +251,9 @@ class Installer {
 			              `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
+						  `last_error` varchar(255) DEFAULT NULL,
+						  `last_error_output` varchar(255) DEFAULT NULL,
+						  `last_output` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
@@ -555,8 +560,13 @@ class Installer {
 		 * If you have a lot of server that are redirecting, 
 		 * this will make sure you're servers stay online.
 		 */
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `pattern_online`;";
+    $queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `allow_http_status`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `redirect_check` `redirect_check` ENUM('ok','bad') NOT NULL DEFAULT 'bad';";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
 		$this->execSQL($queries);
 	}
 }
