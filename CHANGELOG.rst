@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #640: Removed () after last offline value when the last offline duration is unknown.
 * #637: Added php extensions to composer required list, spelling fixes in changelog and composer update.
 * #635: Changed server order on ?&mod=user&action=edit&id=x.
 * #634: Changed ' to " in sql query, both were used.
