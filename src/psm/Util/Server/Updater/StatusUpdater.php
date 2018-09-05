@@ -88,7 +88,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'request_method', 'label', 'type', 'pattern', 'pattern_online', 'allow_http_status', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'request_method', 'label', 'type', 'pattern', 'pattern_online', 'allow_http_status', 'redirect_check', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if (empty($this->server)) {
@@ -272,7 +272,7 @@ class StatusUpdater {
 			} else {
 				$result = true;
 
-				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
+				// Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if ($this->server['pattern'] != '') {
 					// Check to see if the body should not contain specified pattern
 					// Check to see if the pattern was [not] found.
@@ -280,6 +280,18 @@ class StatusUpdater {
 						$this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' ". 
 							($this->server['pattern_online'] == 'yes' ? 'not' : 'was'). 
 							' found.';
+						$result = false;
+					}
+				}
+
+				// Check if the website redirects to another domain
+				if ($this->server['redirect_check'] == 'bad'){
+					$location_matches = array();
+					preg_match('/(Location: )(https*:\/\/)([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/', $curl_result, $location_matches);
+					$ip_matches = array();
+					preg_match('/(https*:\/\/)([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/', $this->server['ip'], $ip_matches);
+					if($location_matches[3] !== $ip_matches[2]){
+						$this->error = "The IP/URL redirects to another domain.";
 						$result = false;
 					}
 				}
