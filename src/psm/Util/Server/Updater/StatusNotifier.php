@@ -73,6 +73,23 @@ class StatusNotifier {
 	protected $save_logs = false;
 
 	/**
+	 * Send multiple notifications as one?
+	 * @var boolean $combine
+	 */
+	public $combine = false;
+
+	/**
+	 * Notification list
+	 * @var array $combiNotification
+	 */
+	protected $combiNotification = array(
+		'count' => array(),
+		'users' => array(),
+		'notifications' => array(),
+		'userNotifications' => array()
+	);
+
+	/**
 	 * Server id
 	 * @var int $server_id
 	 */
@@ -104,18 +121,26 @@ class StatusNotifier {
 		$this->send_pushover = psm_get_conf('pushover_status');
 		$this->send_telegram = psm_get_conf('telegram_status');
 		$this->save_logs = psm_get_conf('log_status');
+		$this->combine = psm_get_conf('combine_notifications');
 	}
 
-	/**
-	 * This function initializes the sending (text msg & email) and logging
-	 *
-	 * @param int $server_id
-	 * @param boolean $status_old
-	 * @param boolean $status_new
-	 * @return boolean
-	 */
+    /**
+     * This function initializes the sending (text msg, email, Pushover and Telegram) and logging
+     *
+     * @param int $server_id
+     * @param boolean $status_old
+     * @param boolean $status_new
+     * @return boolean
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
 	public function notify($server_id, $status_old, $status_new) {
-		if (!$this->send_emails && !$this->send_sms && !$this->save_logs) {
+		if (
+			!$this->send_emails &&
+			!$this->send_sms &&
+			!$this->send_pushover &&
+			!$this->send_telegram &&
+			!$this->save_logs
+		) {
 			// seems like we have nothing to do. skip the rest
 			return false;
 		}
@@ -125,10 +150,12 @@ class StatusNotifier {
 		$this->status_new = $status_new;
 
 		// get server info from db
+		// only get info that will be put into the notification 
+		// or is needed to check if a notification need to be send
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'header_name', 'header_value', 'error', 'active', 'email', 'sms', 'pushover', 'telegram', 'last_online', 'last_offline', 'last_offline_duration',
+			'server_id', 'ip', 'port', 'label', 'error', 'email', 'sms', 'pushover', 'telegram', 'last_online', 'last_offline', 'last_offline_duration',
 		));
 		if (empty($this->server)) {
 			return false;
@@ -177,14 +204,19 @@ class StatusNotifier {
 			return $notify;
 		}
 
+		if($this->combine){
+		    $this->setCombi('init', $users);
+        }
+
 		// check if email is enabled for this server
 		if ($this->send_emails && $this->server['email'] == 'yes') {
 			// send email
-			$this->notifyByEmail($users);
+			$this->combine ? $this->setCombi('email') : $this->notifyByEmail($users);
 		}
 
 		// check if sms is enabled for this server
 		if ($this->send_sms && $this->server['sms'] == 'yes') {
+			// sms will not be send combined as some gateways don't support long sms / charge extra
 			// yay lets wake those nerds up!
 			$this->notifyByTxtMsg($users);
 		}
@@ -192,31 +224,143 @@ class StatusNotifier {
 		// check if pushover is enabled for this server
 		if ($this->send_pushover && $this->server['pushover'] == 'yes') {
 			// yay lets wake those nerds up!
-			$this->notifyByPushover($users);
+			$this->combine ? $this->setCombi('pushover') : $this->notifyByPushover($users);
 		}
 
 		// check if telegram is enabled for this server
 		if ($this->send_telegram && $this->server['telegram'] == 'yes') {
-			// yay lets wake those nerds up!
-			$this->notifyByTelegram($users);
+			$this->combine ? $this->setCombi('telegram') : $this->notifyByTelegram($users);
 		}
 
 		return $notify;
 	}
 
-	/**
-	 * This functions performs the email notifications
-	 *
-	 * @param array $users
-	 * @return boolean
-	 */
-	protected function notifyByEmail($users) {
+    /**
+     * This functions collects all of the notifications
+     *
+     * @param string $method notification method
+     * @param array $users Users
+     * @return void
+     */
+	public function setCombi($method, $users = array()) {
+		$status = $this->status_new ? 'on' : 'off';
+
+		if ($method == 'init' && !empty($users)){
+			foreach($users as $user) {
+                if(!isset($this->combiNotification['count'][$user['user_id']])){
+                    $this->combiNotification['count'][$user['user_id']] = array('on' => 0, 'off' => 0);
+                }
+                $this->combiNotification['userNotifications'][$user['user_id']][] = $this->server_id;
+                $this->combiNotification['users'][$user['user_id']] = $user;
+                $this->combiNotification['count'][$user['user_id']][$status] += 1;
+			}
+			return;
+		}
+		
+		$this->combiNotification['notifications'][$method][$status][$this->server_id] =
+            psm_parse_msg($this->status_new, $method.'_message', $this->server, true);
+		return;
+	}
+
+    /**
+     * This functions returns the subject for a combined notification
+     *
+     * @return void
+     */
+	public function notifyCombined() {
+		if(empty($this->combiNotification['userNotifications'])){
+			return;
+		}
+		// Get the servers the user will get notified of
+        $this->status_new = true;
+		foreach ($this->combiNotification['userNotifications'] as $user => $servers) {
+			$notifications = array();
+			// Combine all of the messages belonging to the server the user will get notification of
+			foreach ($servers as $server) {
+				foreach ($this->combiNotification['notifications'] as $method => $status){
+                    foreach ($status as $the_status => $value) {
+                        if(!key_exists($method, $notifications)){
+                            $notifications[$method] = array('on' => '', 'off' => '');
+						}
+						if(key_exists($server, $status[$the_status])){
+							$notifications[$method][$the_status] .= $status[$the_status][$server];
+						}
+						// Set $this->status_new to false if a server is down.
+                        // This is used by Pushover to determine the priority.
+						if(!empty($notifications[$method]['off'])){
+                            $this->status_new = false;
+                        }
+                    }
+				}
+			}
+			// Send combined notification per user
+            foreach ($notifications as $method => $notification){
+                $finalNotification['message'] = $this->createCombiMessage($method, $notification);
+                $subject = $this->createCombiSubject($method, $user);
+                if(!is_null($subject)){
+                    $finalNotification['subject'] = $subject;
+                }
+                $this->{'notifyBy' . ucwords($method)}
+                    (array($this->combiNotification['users'][$user]), $finalNotification);
+            }
+		}
+		unset($notifications);
+		return;
+	}
+
+    /**
+     * This functions returns the message for a combined notification
+     *
+     * @param string $method Notification method
+     * @param array $notification Notification
+     * @return string
+     */
+	protected function createCombiMessage($method, $notification){
+	    if(empty($notification['off'])){
+            $notification['off'] = "<ul><li>".psm_get_lang('system', 'none')."</li></ul>";
+        }
+        if(empty($notification['on'])){
+            $notification['on'] = "<ul><li>".psm_get_lang('system', 'none')."</li></ul>";
+        }
+	    $vars = array('DOWN_SERVERS' => $notification['off'], 'UP_SERVERS' => $notification['on']);
+        return psm_parse_msg(null, $method.'_message', $vars, true);
+    }
+
+    /**
+     * This functions returns the subject for a combined notification
+     *
+     * @param string $method Notification method
+     * @param integer $user_id User id
+     * @return string|null
+     */
+    protected function createCombiSubject($method, $user_id){
+        //die(var_dump($GLOBALS['sm_lang_default']['notifications']['combi_'.$method.'_subject']));
+        $vars = array('DOWN' => $this->combiNotification['count'][$user_id]['off'], 'UP' => $this->combiNotification['count'][$user_id]['on']);
+        $translation =  isset($GLOBALS['sm_lang_default']['notifications']['combi_'.$method.'_subject']) ?
+        psm_parse_msg(null, $method.'_subject', $vars, true) :
+        null;
+        return $translation;
+    }
+
+    /**
+     * This functions performs the email notifications
+     *
+     * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+     * @return void
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+	protected function notifyByEmail($users, $combi = array()) {
 		// build mail object with some default values
 		$mail = psm_build_mail();
-		$mail->Subject = psm_parse_msg($this->status_new, 'email_subject', $this->server);
+		$mail->Subject = key_exists('subject', $combi) ?
+			$combi['subject'] :
+			psm_parse_msg($this->status_new, 'email_subject', $this->server);
 		$mail->Priority = 1;
 
-		$body = psm_parse_msg($this->status_new, 'email_body', $this->server);
+		$body = key_exists('message', $combi) ?
+			$combi['message'] :
+			psm_parse_msg($this->status_new, 'email_body', $this->server);
 		$mail->Body = $body;
 		$mail->AltBody = str_replace('<br/>', "\n", $body);
 
@@ -230,20 +374,22 @@ class StatusNotifier {
 	   			psm_add_log_user($log_id, $user['user_id']);
 	   		}
 
-			// we sent a seperate email to every single user.
+			// we sent a separate email to every single user.
 			$mail->AddAddress($user['email'], $user['name']);
 			$mail->Send();
 			$mail->ClearAddresses();
 		}
+		return;
 	}
 
 	/**
 	 * This functions performs the pushover notifications
 	 *
-	 * @param array $users
-	 * @return boolean
+	 * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+	 * @return void
 	 */
-	protected function notifyByPushover($users) {
+	protected function notifyByPushover($users, $combi = array()) {
 		// Remove users that have no pushover_key
 		foreach ($users as $k => $user) {
 			if (trim($user['pushover_key']) == '') {
@@ -257,7 +403,10 @@ class StatusNotifier {
 		}
 
 		// Pushover
-		$message = psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+		$message = key_exists('message', $combi) ?
+			$combi['message'] :
+			psm_parse_msg($this->status_new, 'pushover_message', $this->server);
+
 		$pushover = psm_build_pushover();
 		if ($this->status_new === true) {
 			$pushover->setPriority(0);
@@ -266,7 +415,11 @@ class StatusNotifier {
 			$pushover->setRetry(300); //Used with Priority = 2; Pushover will resend the notification every 60 seconds until the user accepts.
 			$pushover->setExpire(3600); //Used with Priority = 2; Pushover will resend the notification every 60 seconds for 3600 seconds. After that point, it stops sending notifications.
 		}
-		$pushover->setTitle(psm_parse_msg($this->status_new, 'pushover_title', $this->server));
+		$title = key_exists('subject', $combi) ?
+			$combi['subject'] :
+			psm_parse_msg($this->status_new, 'pushover_title', $this->server);
+		$pushover->setHtml(1);
+		$pushover->setTitle($title);
 		$pushover->setMessage(str_replace('<br/>', "\n", $message));
 		$pushover->setUrl(psm_build_url());
 		$pushover->setUrlTitle(psm_get_lang('system', 'title'));
@@ -294,7 +447,7 @@ class StatusNotifier {
 	/**
 	 * This functions performs the text message notifications
 	 *
-	 * @param array $users
+	 * @param \PDOStatement $users
 	 * @return boolean
 	 */
 	protected function notifyByTxtMsg($users) {
@@ -329,39 +482,44 @@ class StatusNotifier {
 	/**
 	 * This functions performs the telegram notifications
 	 *
-	 * @param array $users
-	 * @return boolean
+	 * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+	 * @return void
 	 */
-	protected function notifyByTelegram($users) {
-	  // Remove users that have no telegram_id
-	  foreach ($users as $k => $user) {
-		if (trim($user['telegram_id']) == '') {
-		  unset($users[$k]);
-		}
-	  }
+	protected function notifyByTelegram($users, $combi = array()) {
+        // Remove users that have no telegram_id
+        foreach ($users as $k => $user) {
+            if (trim($user['telegram_id']) == '') {
+                unset($users[$k]);
+            }
+        }
 
-	  // Validation
-	  if (empty($users)) {
-		return;
-	  }
+        // Validation
+        if (empty($users)) {
+            return;
+        }
 
-	  // Telegram
-	  $message = psm_parse_msg($this->status_new, 'telegram_message', $this->server);
-	  $telegram = psm_build_telegram();
-	  $telegram->setMessage(str_replace('<br/>', "\n", $message));
-	  // Log
-	  if (psm_get_conf('log_telegram')) {
-		$log_id = psm_add_log($this->server_id, 'telegram', $message);
-	  }
-	  foreach ($users as $user) {
-		// Log
-		if (!empty($log_id)) {
-		  psm_add_log_user($log_id, $user['user_id']);
+        // Telegram
+        $message = key_exists('message', $combi) ?
+			$combi['message'] :
+			psm_parse_msg($this->status_new, 'telegram_message', $this->server);
+        $telegram = psm_build_telegram();
+		$telegram->setMessage($message);
+		
+        // Log
+        if (psm_get_conf('log_telegram')) {
+            $log_id = psm_add_log($this->server_id, 'telegram', $message);
 		}
-		$telegram->setUser($user['telegram_id']);
-		$telegram->send();
-	  }
-	}
+		
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+            $telegram->setUser($user['telegram_id']);
+            $telegram->send();
+        }
+    }
 
 	/**
 	 * Get all users for the provided server id
