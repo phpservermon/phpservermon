@@ -280,15 +280,15 @@ class ServerController extends AbstractServerController {
 			'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
 		);
 		// make sure websites start with http://
-		if ($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http') {
+		if ($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http' && substr($clean['ip'], 0, 3) != 'rdp') {
 			$clean['ip'] = 'http://'.$clean['ip'];
 		}
 
 		// validate the lot
 		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
 
-		// format port from http/s url
-		if ($clean['type'] == 'website' && empty($clean['port'])) {
+		// format port from http, https or rdp url
+		if ($clean['type'] == 'website') {
 			$tmp = parse_url($clean["ip"]);
 			if (isset($tmp["port"])) {
 				$clean["port"] = $tmp["port"];
