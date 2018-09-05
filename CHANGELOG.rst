@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #631: Added option to specify the request method.
 * #628: Added the option to mark specific HTTP status codes as online.
 * #640: Removed () after last offline value when the last offline duration is unknown.
 * #637: Added php extensions to composer required list, spelling fixes in changelog and composer update.

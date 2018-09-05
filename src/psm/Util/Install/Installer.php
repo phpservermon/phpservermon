@@ -225,6 +225,7 @@ class Installer {
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
+						  `request_method` varchar(50) unsigned NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL default '',
@@ -550,8 +551,8 @@ class Installer {
 	 */
 	protected function upgrade340() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER j`pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$this->execSQL($queries);
-		
 	}
 }
