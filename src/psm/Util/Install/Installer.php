@@ -313,6 +313,9 @@ class Installer {
 		if (version_compare($version_from, '3.3.0', '<')) {
 			$this->upgrade330();
 		}
+        if (version_compare($version_from, '3.4.0', '<')) {
+            $this->upgrade340();
+        }
 		psm_update_conf('version', $version_to);
 	}
 
@@ -539,6 +542,16 @@ class Installer {
 		if (psm_get_conf('sms_gateway') == 'mollie') {
 			psm_update_conf('sms_gateway', 'messagebird');
 		}
-		
 	}
+
+    /**
+     * Upgrade for v3.4.0 release
+     */
+    protected function upgrade340() {
+        $queries = array();
+        $queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('combine_notifications', '1');";
+        $this->execSQL($queries);
+        $this->log('Combined notifications enabled. Check out the config page for more info.');
+
+    }
 }
