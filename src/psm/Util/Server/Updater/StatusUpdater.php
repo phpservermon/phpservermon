@@ -88,7 +88,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'pattern_online', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'request_method', 'label', 'type', 'pattern', 'pattern_online', 'allow_http_status', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if (empty($this->server)) {
@@ -241,7 +241,8 @@ class StatusUpdater {
 			$this->server['timeout'],
 			true,
 			$this->server['website_username'],
-			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password'])
+			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password']),
+			$this->server['request_method']
 		);
 		$this->header = $curl_result;
 
@@ -263,8 +264,9 @@ class StatusUpdater {
 			$code = $code_matches[1][0];
 			$msg = $code_matches[2][0];
 
+			$allow_http_status = explode("|", $this->server['allow_http_status']);
 			// All status codes starting with a 4 or higher mean trouble!
-			if (substr($code, 0, 1) >= '4') {
+			if (substr($code, 0, 1) >= '4' && !in_array($code ,$allow_http_status)) {
 				$this->error = "HTTP STATUS ERROR: ".$code.' '.$msg;
 				$result = false;
 			} else {

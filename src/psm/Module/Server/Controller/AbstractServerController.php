@@ -61,10 +61,12 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`server_id`,
 					`s`.`ip`,
 					`s`.`port`,
+					`s`.`request_method`,
 					`s`.`type`,
 					`s`.`label`,
 					`s`.`pattern`,
 					`s`.`pattern_online`,
+					`s`.`allow_http_status`,
 					`s`.`header_name`,
 					`s`.`header_value`,
 					`s`.`status`,
@@ -110,7 +112,8 @@ abstract class AbstractServerController extends AbstractController {
 		$server['last_online'] = psm_timespan($server['last_online']);
 		$server['last_offline'] = psm_timespan($server['last_offline']);
 		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
-			$server['last_offline_duration'] = "(".$server['last_offline_duration'].")";
+			$server['last_offline_duration'] = is_null($server['last_offline_duration']) ?
+                null : "(".$server['last_offline_duration'].")";
 		}
 		$server['last_check'] = psm_timespan($server['last_check']);
 		$server['active'] = psm_get_lang('system', $server['active']);

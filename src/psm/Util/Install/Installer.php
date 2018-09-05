@@ -225,10 +225,12 @@ class Installer {
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
+						  `request_method` varchar(50) unsigned NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
-						  `pattern` varchar(255) NOT NULL,
+						  `pattern` varchar(255) NOT NULL default '',
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
+						  `allow_http_status` varchar(255) NOT NULL default '',
 						  `header_name` varchar(255) NOT NULL default '',
 						  `header_value` varchar(255) NOT NULL default '',
 						  `status` enum('on','off') NOT NULL default 'on',
@@ -552,9 +554,11 @@ class Installer {
 	 */
 	protected function upgrade340() {
 		$queries = array();
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
-		$queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$this->execSQL($queries);
 	}
 }
