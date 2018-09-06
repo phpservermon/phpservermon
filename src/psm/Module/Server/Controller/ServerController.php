@@ -196,6 +196,8 @@ class ServerController extends AbstractServerController {
 				'edit_value_label' => $edit_server['label'],
 				'edit_value_ip' => $edit_server['ip'],
 				'edit_value_port' => $edit_server['port'],
+				'edit_value_request_method' => $edit_server['request_method'],
+				'edit_value_post_field' => $edit_server['post_field'],
 				'edit_value_timeout' => $edit_server['timeout'],
 				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
@@ -264,6 +266,8 @@ class ServerController extends AbstractServerController {
 			'website_username' => psm_POST('website_username'),
 			'website_password' => $encrypted_password,
 			'port' => intval(psm_POST('port', 0)),
+			'request_method' => empty(psm_POST('request_method')) ? null : psm_POST('request_method'),
+			'post_field' => empty(psm_POST('post_field')) ? null : psm_POST('post_field'),
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
 			'pattern_online' => in_array($_POST['pattern_online'], array('yes', 'no')) ? $_POST['pattern_online'] : 'yes',
@@ -281,6 +285,10 @@ class ServerController extends AbstractServerController {
 		if ($clean['type'] == 'website' && substr($clean['ip'], 0, 4) != 'http' && substr($clean['ip'], 0, 3) != 'rdp') {
 			$clean['ip'] = 'http://'.$clean['ip'];
 		}
+
+        if($clean['request_method'] == null) {
+            $clean['post_field'] = null;
+        }
 
 		// validate the lot
 		$server_validator = new \psm\Util\Server\ServerValidator($this->db);
@@ -463,6 +471,13 @@ class ServerController extends AbstractServerController {
 			'label_fieldset_permissions' => psm_get_lang('servers', 'fieldset_permissions'),
 			'label_port' => psm_get_lang('servers', 'port'),
 			'label_custom_port' => psm_get_lang('servers', 'custom_port'),
+			'label_popular_ports' => psm_get_lang('servers', 'popular_ports'),
+			'label_request_method' => psm_get_lang('servers', 'request_method'),
+			'label_custom_request_method' => psm_get_lang('servers', 'custom_request_method'),
+			'label_popular_request_methods' => psm_get_lang('servers', 'popular_request_methods'),
+			'label_post_field' => psm_get_lang('servers', 'post_field'),
+			'label_post_field_description' => psm_get_lang('servers', 'post_field_description'),
+			'label_none' => psm_get_lang('system', 'none'),
 			'label_please_select' => psm_get_lang('servers', 'please_select'),
 			'label_popular_ports' => psm_get_lang('servers', 'popular_ports'),
 			'label_type' => psm_get_lang('servers', 'type'),

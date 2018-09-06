@@ -68,13 +68,32 @@ $().ready(function() {
 		changePopularPorts($(this).val(), false, $('#type').val());
 	});
 
+	// popularRequestMethods
+    // initial
+    $('.requestMethodGroup').hide();
+	var requestMethodInput = $('#requestMethod').val();
+	
+    if (requestMethodInput != '') {
+		var findPopularRequestMethods = $('#popularRequestMethods').find('option[value=' + requestMethodInput + ']');
+		if (findPopularRequestMethods.length) {
+            $(findPopularRequestMethods).attr("selected", "selected");
+        } else {
+            $('#popularRequestMethods').find('option[value=custom]').attr("selected", "selected");
+            $('.requestMethodGroup').slideDown();
+        }
+	}
+
+	$('#popularRequestMethods').change(function () {
+		changePopular($(this).val(), $('#type').val());
+	});
+
 	// server type
 	$('.types').hide();
 	changeTypeSwitch($('#type').val());
 
 	$('#type').change(function () {
 		changeTypeSwitch($('#type').val());
-		changePopularPorts($('#popularPorts').val(), true, $('#type').val());
+		changePopular($('#popularPorts').val(), true, $('#type').val());
 	});
 });
 
@@ -95,27 +114,35 @@ function changeTypeSwitch(typeInput) {
 	}
 }
 
-function changePopularPorts(popularPorts, changeType, typeInput) {
-	if (changeType === true) {
-		if (typeInput == 'service') {
-			if (popularPorts == 'custom') {
-				$('.portGroup').slideDown();
-			} else {
-				$('.portGroup').hide();
-			}
-		}
-	} else {
-		if (popularPorts == 'custom') {
-			$('.portGroup').slideDown();
-		} else {
-			$('#port').val(popularPorts);
-			$('.portGroup').slideUp();
-		}
+function changePopular(inputValue, typeInput, changedType = false) {
+    if (typeInput === 'website') {
+        htmlClass = '.requestMethodGroup';
+        htmlID = '#requestMethod';
+        postClass = '.postGroup';
+    } else if (typeInput === 'service') {
+        htmlClass = '.portGroup';
+        htmlID = '#port';
+    }
+
+    if (typeInput === 'website' && inputValue === '') {
+        changedType ? $(postClass).hide() : $(postClass).slideUp();
+    } else {
+        $(postClass).slideDown();
+    }
+
+	if (inputValue === 'custom') {
+        $(htmlClass).slideDown();
+        return;
 	}
+
+    changedType ? $(htmlClass).hide() : $(htmlClass).slideUp();
+    $(htmlID).val(inputValue);
+
+
 }
 
 function psm_xhr(mod, params, method, on_complete, options) {
-	method = (typeof method == 'undefined') ? 'GET' : method;
+	method = (typeof method === 'undefined') ? 'GET' : method;
 
 	var xhr_options = {
 		data: params,
@@ -174,7 +201,7 @@ function rtrim(str) {
 function psm_flash_message(message) {
 	var flashmessage = $('#flashmessage');
 	if(flashmessage.length){
-		if(typeof message != 'undefined') {
+		if(typeof message !== 'undefined') {
 			flashmessage.html(message);
 		}
 		var t = flashmessage.html();
