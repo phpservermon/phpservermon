@@ -368,15 +368,15 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	curl_setopt($ch, CURLOPT_ENCODING, '');
 	
 	if (!empty($request_method)) {
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
 	}
 
-  if (!empty($post_field)) {
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
-  }
+	if (!empty($post_field)) {
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
+	}
 
 	if ($website_username !== false && $website_password !== false && !empty($website_username) && !empty($website_password)) {
-    curl_setopt($ch, CURLOPT_USERPWD, $website_username.":".$website_password);
+		curl_setopt($ch, CURLOPT_USERPWD, $website_username.":".$website_password);
 	}
 
 	curl_setopt($ch, CURLOPT_URL, $href);
