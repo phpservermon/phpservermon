@@ -561,16 +561,16 @@ class Installer {
 		 * If you have a lot of server that are redirecting, 
 		 * this will make sure you're servers stay online.
 		 */
-    $queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `allow_http_status`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `redirect_check` `redirect_check` ENUM('ok','bad') NOT NULL DEFAULT 'bad';";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
-    $queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('combine_notifications', '1');";
-    $this->execSQL($queries);
-    $this->log('Combined notifications enabled. Check out the config page for more info.');
+		$this->execSQL($queries);
+		$this->log('Combined notifications enabled. Check out the config page for more info.');
 	}
 }
