@@ -202,6 +202,8 @@ class ServerController extends AbstractServerController {
 				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
 				'edit_pattern_selected_'.$edit_server['pattern_online'] => 'selected="selected"',
+				'edit_redirect_check_selected_'.$edit_server['redirect_check'] => 'selected="selected"',
+				'edit_value_allow_http_status' => $edit_server['allow_http_status'],
 				'edit_value_header_name' => $edit_server['header_name'],
 				'edit_value_header_value' => $edit_server['header_value'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
@@ -271,6 +273,8 @@ class ServerController extends AbstractServerController {
 			'type' => psm_POST('type', ''),
 			'pattern' => psm_POST('pattern', ''),
 			'pattern_online' => in_array($_POST['pattern_online'], array('yes', 'no')) ? $_POST['pattern_online'] : 'yes',
+			'redirect_check' => in_array($_POST['redirect_check'], array('ok', 'bad')) ? $_POST['redirect_check'] : 'bad',
+			'allow_http_status' => psm_POST('allow_http_status', ''),
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
 			'rtime' => psm_POST('rtime', '0.0000000'),
@@ -479,7 +483,6 @@ class ServerController extends AbstractServerController {
 			'label_post_field_description' => psm_get_lang('servers', 'post_field_description'),
 			'label_none' => psm_get_lang('system', 'none'),
 			'label_please_select' => psm_get_lang('servers', 'please_select'),
-			'label_popular_ports' => psm_get_lang('servers', 'popular_ports'),
 			'label_type' => psm_get_lang('servers', 'type'),
 			'label_website' => psm_get_lang('servers', 'type_website'),
 			'label_service' => psm_get_lang('servers', 'type_service'),
@@ -488,6 +491,10 @@ class ServerController extends AbstractServerController {
 			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
 			'label_pattern_online' => psm_get_lang('servers', 'pattern_online'),
 			'label_pattern_online_description' => psm_get_lang('servers', 'pattern_online_description'),
+			'label_redirect_check' => psm_get_lang('servers', 'redirect_check'),
+			'label_redirect_check_description' => psm_get_lang('servers', 'redirect_check_description'),
+			'label_allow_http_status' => psm_get_lang('servers', 'allow_http_status'),
+			'label_allow_http_status_description' => psm_get_lang('servers', 'allow_http_status_description'),
 			'label_header' => psm_get_lang('servers', 'header'),
 			'label_header_name_description' => psm_get_lang('servers', 'header_name_description'),
 			'label_header_value_description' => psm_get_lang('servers', 'header_value_description'),
@@ -495,6 +502,9 @@ class ServerController extends AbstractServerController {
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
 			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
+			'label_last_output' => psm_get_lang('servers', 'last_output'),
+			'label_last_error' => psm_get_lang('servers', 'last_error'),
+			'label_last_error_output' => psm_get_lang('servers', 'last_error_output'),
 			'label_monitoring' => psm_get_lang('servers', 'monitoring'),
 			'label_email' => psm_get_lang('servers', 'email'),
 			'label_send_email' => psm_get_lang('servers', 'send_email'),
@@ -513,8 +523,11 @@ class ServerController extends AbstractServerController {
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+			'label_advanced' => psm_get_lang('system', 'advanced'),
 			'label_online' => psm_get_lang('system', 'online'),
 			'label_offline' => psm_get_lang('system', 'offline'),
+			'label_ok' => psm_get_lang('system', 'ok'),
+			'label_bad' => psm_get_lang('system', 'bad'),
 		);
 	}
 
@@ -536,4 +549,3 @@ class ServerController extends AbstractServerController {
 		return $result;
 	}
 }
-

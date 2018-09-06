@@ -37,6 +37,8 @@ use psm\Service\Database;
 class StatusUpdater {
 	public $error = '';
 
+	public $header = '';
+
 	public $rtime = 0;
 
 	public $status_new = false;
@@ -79,6 +81,7 @@ class StatusUpdater {
 	public function update($server_id, $max_runs = 2) {
 		$this->server_id = $server_id;
 		$this->error = '';
+		$this->header = '';
 		$this->rtime = '';
 
 		// get server info from db
@@ -109,8 +112,11 @@ class StatusUpdater {
 		$save = array(
 			'last_check' => date('Y-m-d H:i:s'),
 			'error' => $this->error,
-			'rtime' => $this->rtime,
+			'rtime' => $this->rtime
 		);
+		if(!empty($this->error)){
+			$save['last_error'] = $this->error;
+		}
 
 		// log the uptime before checking the warning threshold,
 		// so that the warnings can still be reviewed in the server history.
@@ -120,6 +126,7 @@ class StatusUpdater {
 			// if the server is on, add the last_online value and reset the error threshold counter
 			$save['status'] = 'on';
 			$save['last_online'] = date('Y-m-d H:i:s');
+			$save['last_output'] = $this->header;
 			$save['warning_threshold_counter'] = 0;
 			if ($this->server['status'] == 'off') {
 				$online_date = new \DateTime($save['last_online']);
@@ -128,8 +135,10 @@ class StatusUpdater {
 				$save['last_offline_duration'] = trim(psm_format_interval($difference));
 			}
 		} else {
-			// server is offline, increase the error counter
+			// server is offline, increase the error counter and set last offline
 			$save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
+			$save['last_offline'] = date('Y-m-d H:i:s');
+			$save['last_error_output'] = empty($this->header) ? "Could not get headers. probably HTTP 50x error." : $this->header;
 
 			if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
 				// the server is offline but the error threshold has not been met yet.
@@ -237,6 +246,7 @@ class StatusUpdater {
 			$this->server['request_method'],
 			$this->server['post_field']
 		);
+		$this->header = $curl_result;
 
 		$this->rtime = (microtime(true) - $starttime);
 
@@ -256,14 +266,15 @@ class StatusUpdater {
 			$code = $code_matches[1][0];
 			$msg = $code_matches[2][0];
 
+			$allow_http_status = explode("|", $this->server['allow_http_status']);
 			// All status codes starting with a 4 or higher mean trouble!
-			if (substr($code, 0, 1) >= '4') {
+			if (substr($code, 0, 1) >= '4' && !in_array($code ,$allow_http_status)) {
 				$this->error = "HTTP STATUS ERROR: ".$code.' '.$msg;
 				$result = false;
 			} else {
 				$result = true;
 
-				//Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
+				// Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
 				if ($this->server['pattern'] != '') {
 					// Check to see if the body should not contain specified pattern
 					// Check to see if the pattern was [not] found.
@@ -273,6 +284,20 @@ class StatusUpdater {
 							' found.';
 						$result = false;
 					}
+				}
+
+				// Check if the website redirects to another domain
+				if ($this->server['redirect_check'] == 'bad'){
+					$location_matches = array();
+					preg_match('/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/', $curl_result, $location_matches);
+                    if(!empty($location_matches)) {
+                        $ip_matches = array();
+                        preg_match('/(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)?/', $this->server['ip'], $ip_matches);
+                        if (strtolower($location_matches[4]) !== strtolower($ip_matches[3])) {
+                            $this->error = "The IP/URL redirects to another domain.";
+                            $result = false;
+                        }
+                    }
 				}
 
 				// Should we check a header ?

@@ -6,11 +6,11 @@ $().ready(function() {
 		}
 		var $modal_id = $this.attr('data-modal-id') || 'main';
 		var $modal = $('#' + $modal_id + 'Modal');
-		if($modal.length) {
+		if ($modal.length) {
 			$modal.find('.modalOKButton').data('modal-origin', $this);
 
 			var param = $this.attr('data-modal-param');
-			if(param) {
+			if (param) {
 				var ary = param.split(',');
 				for (var index = 0; index < ary.length && index < 9; ++index) {
 					var value = ary[index];
@@ -56,16 +56,16 @@ $().ready(function() {
 
     if (portInput != '') {
         var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
-        if(findPopularPorts.length) {
+        if (findPopularPorts.length) {
             $(findPopularPorts).attr("selected", "selected");
         } else {
             $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
             $('.portGroup').slideDown();
         }
-    }
+	}
 
 	$('#popularPorts').change(function () {
-		changePopularPorts($(this).val(), false, $('#type').val());
+		changePopular($(this).val(), $('#type').val());
 	});
 
 	// popularRequestMethods
@@ -93,7 +93,6 @@ $().ready(function() {
 
 	$('#type').change(function () {
 		changeTypeSwitch($('#type').val());
-		changePopular($('#popularPorts').val(), true, $('#type').val());
 	});
 });
 
@@ -102,15 +101,17 @@ function changeTypeSwitch(typeInput) {
 		case 'service':
 			$('.types').slideUp();
 			$('.typeService').slideDown();
+			changePopular($('#popularPorts').val(), typeInput, true);
 			break;
 
 		case 'website':
 			$('.types').slideUp();
 			$('.typeWebsite').slideDown();
+			changePopular($('#popularRequestMethods').val(), typeInput, true);
 			break;
 
 		default:
-			$('.types').hide();
+			$('.types').slideUp();
 	}
 }
 
@@ -207,7 +208,7 @@ function psm_flash_message(message) {
 		var t = flashmessage.html();
 		var c = trim(t);
 		var t = c.replace('&nbsp;', '');
-		if(t){
+		if (t) {
 			flashmessage.slideDown();
 		}
 	}

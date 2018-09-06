@@ -47,9 +47,11 @@ $sm_lang = array(
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		'ok' => 'OK',
+		'bad' => 'bad',
 		'cancel' => 'Cancel',
 		'none' => 'None',
 		'activate' => 'Activate',
+		'advanced' => 'Advanced',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%B %e',
 		'long_day_format' => '%B %e, %Y',
@@ -164,8 +166,8 @@ $sm_lang = array(
 		'request_method' => 'Request method',
 		'custom_request_method' => 'Custom request method',
 		'popular_request_methods' => 'Popular request methods',
-		'post_field' => 'Post field',
-		'post_field_description' => 'The data that will be send using the request method above. Example: param1=val1&amp;param2=val2&...',
+    'post_field' => 'Post field',
+    'post_field_description' => 'The data that will be send using the request method above. Example: param1=val1&amp;param2=val2&...',
 		'please_select' => 'Please select',
 		'type' => 'Type',
 		'type_website' => 'Website',
@@ -175,12 +177,19 @@ $sm_lang = array(
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked online/offline. Regular expressions are allowed.',
 		'pattern_online' => 'Pattern indicates website is',
 		'pattern_online_description' => 'Online: If this pattern is not found on the website, the server will be marked online. Offline: If this pattern is not found on the website, the server will be marked offline.',
+		'redirect_check' => 'Redirecting to another domain is',
+		'redirect_check_description' => 'Redirect to another domain is usually a bad sign.',
+		'allow_http_status' => 'Allow HTTP status code',
+		'allow_http_status_description' => 'Mark website as online. HTTP Status codes lower then 400 are marked as online by default. Seperate with |. Example: 401|403.',
 		'header' => 'Header',
 		'header_name_description' => 'Header name (case-sensitive)',
 		'header_value_description' => 'Header value. Regular expressions are allowed.',
 		'last_check' => 'Last check',
 		'last_online' => 'Last online',
 		'last_offline' => 'Last offline',
+		'last_output' => 'Last positive output',
+		'last_error' => 'Last error',
+		'last_error_output' => 'Last error output',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'No monitoring',
 		'email' => 'Email',
@@ -265,16 +274,18 @@ $sm_lang = array(
 		'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for help.',
 		'alert_type' => 'Select when you\'d like to be notified.',
 		'alert_type_description' => '<b>Status change:</b> '.
-			'You will receive a notifcation when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
+			'You will receive a notification when a server has a change in status. So from online -> offline or offline -> online.<br/>'.
 			'<br /><b>Offline:</b> '.
 			'You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, '.
-			'your cronjob is every 15 mins and your server goes down at 1 am and stays down till 6 am. '.
-			'You will get 1 notification at 1 am and thats it.<br/>'.
+			'your cronjob is every 15 minutes and your server goes down at 1 am and stays down till 6 am. '.
+			'You will get 1 notification at 1 am and that\'s it.<br/>'.
 			'<br><b>Always:</b> '.
 			'You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
+        'combine_notifications' => 'Combine notifications',
+        'combine_notifications_description' => 'Reduces the amount of notification by combining the notifications into 1 single notification. (This does not affect SMS notifications.)',
 		'alert_proxy' => 'Even if enabled, proxy is never used for services',
 		'alert_proxy_url' => '<b>Format:</b> Host:Port',
 		'log_status' => 'Log status',
@@ -340,7 +351,18 @@ $sm_lang = array(
 		'on_email_body' => "Server '%LABEL%' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
 		'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
-		'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for :<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Downtime: %LAST_OFFLINE_DURATION%<br/>Date: %DATE%',
+        'combi_off_email_message' => "<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error: %ERROR%</li><li>Date: %DATE%</li></ul>",
+        'combi_off_pushover_message' => "<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error: %ERROR%</li><li>Date: %DATE%</li></ul>",
+        'combi_off_telegram_message' => "- Server: %LABEL%<br/>- IP: %IP%<br/>- Port: %PORT%<br/>- Error: %ERROR%<br/>- Date: %DATE%<br/><br/>",
+        'combi_on_email_message' => "<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>",
+        'combi_on_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
+        'combi_on_telegram_message' => '- Server: %LABEL%<br/>- IP: %IP%<br/>- Port: %PORT%<br/>- Downtime: %LAST_OFFLINE_DURATION%<br/>- Date: %DATE%<br/><br/>',
+        'combi_email_subject' => 'IMPORTANT: \'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
+		'combi_pushover_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
+        'combi_email_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%',
+		'combi_pushover_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%',
+		'combi_telegram_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',

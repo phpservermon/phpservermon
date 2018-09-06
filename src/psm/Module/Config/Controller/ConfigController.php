@@ -48,6 +48,7 @@ class ConfigController extends AbstractController {
 		'log_pushover',
 		'log_telegram',
 		'show_update',
+        'combine_notifications',
 	);
 
 	/**
@@ -395,6 +396,8 @@ class ConfigController extends AbstractController {
 			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
 			'label_alert_type_offline' => psm_get_lang('config', 'alert_type_offline'),
 			'label_alert_type_always' => psm_get_lang('config', 'alert_type_always'),
+			'label_combine_notifications' => psm_get_lang('config', 'combine_notifications'),
+            'label_combine_notifications_description' => psm_get_lang('config', 'combine_notifications_description'),
 			'label_log_status' => psm_get_lang('config', 'log_status'),
 			'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
 			'label_log_email' => psm_get_lang('config', 'log_email'),
