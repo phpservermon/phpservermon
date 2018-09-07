@@ -53,7 +53,7 @@ class Nexmo extends Core {
 	public function sendSMS($message) {
 		$success = 1;
 		$error = "";
-		
+
 		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
