@@ -54,8 +54,6 @@ class Nexmo extends Core {
 		$success = 1;
 		$error = "";
 		
-		$message = rawurlencode($message);
-		
 		foreach ($this->recipients as $recipient) {
 			
 			$curl = curl_init();
