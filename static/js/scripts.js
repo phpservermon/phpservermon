@@ -94,7 +94,30 @@ $().ready(function() {
 	$('#type').change(function () {
 		changeTypeSwitch($('#type').val());
 	});
+
+    // advanced information
+    $(".advanced").hide();
+    var advanced = 0;
+    $("#advanced").click(
+        function() {
+            advancedSwitch((advanced += 1) % 2);
+        });
 });
+
+function advancedSwitch(statusInput) {
+    switch (statusInput) {
+        case 0:
+            $(".advanced").slideUp();
+            break;
+
+        case 1:
+            $(".advanced").slideDown();
+            break;
+
+        default:
+            $(".advanced").hide();
+    }
+}
 
 function changeTypeSwitch(typeInput) {
 	switch (typeInput) {
