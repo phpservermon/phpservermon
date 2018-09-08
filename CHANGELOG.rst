@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #642: Added post field as addition to #631.
 * #639: Added combined notifications.
 * #626: Added redirect check.
 * #627: Latest server output, error and output during a failure will be saved and are shown on the server page.
