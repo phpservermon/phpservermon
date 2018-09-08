@@ -196,7 +196,7 @@ class Installer {
 							`email` varchar(255) NOT NULL,
 							PRIMARY KEY (`user_id`),
 							UNIQUE KEY `unique_username` (`user_name`)
-						  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+						  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'users_preferences' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."users_preferences` (
 							`user_id` int(11) unsigned NOT NULL,
 							`key` varchar(255) NOT NULL,
@@ -207,7 +207,7 @@ class Installer {
 							`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 							`server_id` INT( 11 ) UNSIGNED NOT NULL ,
 							PRIMARY KEY ( `user_id` , `server_id` )
-							) ENGINE = MYISAM ;",
+							) ENGINE = MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'log' => "CREATE TABLE `".PSM_DB_PREFIX."log` (
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
@@ -215,7 +215,7 @@ class Installer {
 						  `message` varchar(255) NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  PRIMARY KEY  (`log_id`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'log_users' => "CREATE TABLE `".PSM_DB_PREFIX."log_users` (
                                    `log_id`  int(11) UNSIGNED NOT NULL ,
                                    `user_id`  int(11) UNSIGNED NOT NULL ,
@@ -224,12 +224,13 @@ class Installer {
 			PSM_DB_PREFIX.'servers' => "CREATE TABLE `".PSM_DB_PREFIX."servers` (
 						  `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `ip` varchar(500) NOT NULL,
-						  `port` int(5) unsigned NOT NULL,
-						  `request_method` varchar(50) unsigned NULL,
+						  `port` int(5) NOT NULL,
+						  `request_method` varchar(50) NULL,
 						  `label` varchar(255) NOT NULL,
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL default '',
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
+						  `post_field` varchar(255) NOT NULL default '',
 						  `redirect_check` enum('ok','bad') NOT NULL default 'bad',
 						  `allow_http_status` varchar(255) NOT NULL default '',
 						  `header_name` varchar(255) NOT NULL default '',
@@ -255,7 +256,7 @@ class Installer {
 						  `last_error_output` varchar(255) DEFAULT NULL,
 						  `last_output` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
 						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`server_id` int(11) unsigned NOT NULL,
@@ -264,7 +265,7 @@ class Installer {
 						`latency` float(9,7) DEFAULT NULL,
 						PRIMARY KEY (`servers_uptime_id`),
 						KEY `server_id` (`server_id`)
-					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_history' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_history` (
 						  `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
@@ -560,15 +561,16 @@ class Installer {
 		 * If you have a lot of server that are redirecting, 
 		 * this will make sure you're servers stay online.
 		 */
-    	$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `allow_http_status` VARCHAR(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `allow_http_status`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `redirect_check` `redirect_check` ENUM('ok','bad') NOT NULL DEFAULT 'bad';";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('combine_notifications', '1');";
-    	$this->execSQL($queries);
-    	$this->log('Combined notifications enabled. Check out the config page for more info.');
+		$this->execSQL($queries);
+		$this->log('Combined notifications enabled. Check out the config page for more info.');
 	}
 }

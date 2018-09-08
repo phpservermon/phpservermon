@@ -72,8 +72,8 @@ class StatusUpdater {
 	 * Please note: if the server is down but has not met the warning threshold, this will return true
 	 * to avoid any "we are down" events.
 	 * 
-	 * @todo Get last_output when there is a HPPT 50x error.
-	 * 
+	 * @todo Get last_output when there is a HTTP 50x error.
+	 *
 	 * @param int $server_id
 	 * @param int $max_runs how many times should the script recheck the server if unavailable. default is 2
 	 * @return boolean TRUE if server is up, FALSE otherwise
@@ -88,7 +88,8 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'request_method', 'label', 'type', 'pattern', 'pattern_online', 'allow_http_status', 'redirect_check', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
+			'server_id', 'ip', 'port', 'request_method', 'label', 'type', 'pattern', 'pattern_online', 'post_field',
+			'allow_http_status', 'redirect_check', 'header_name', 'header_value', 'status', 'active', 'warning_threshold',
 			'warning_threshold_counter', 'timeout', 'website_username', 'website_password', 'last_offline'
 		));
 		if (empty($this->server)) {
@@ -242,7 +243,8 @@ class StatusUpdater {
 			true,
 			$this->server['website_username'],
 			psm_password_decrypt($this->server['server_id'].psm_get_conf('password_encrypt_key'), $this->server['website_password']),
-			$this->server['request_method']
+			$this->server['request_method'],
+			$this->server['post_field']
 		);
 		$this->header = $curl_result;
 

@@ -86,6 +86,7 @@ $().ready(function() {
 	$('#popularRequestMethods').change(function () {
 		changePopular($(this).val(), $('#type').val());
 	});
+
 	// server type
 	$('.types').hide();
 	changeTypeSwitch($('#type').val());
@@ -138,24 +139,34 @@ function changeTypeSwitch(typeInput) {
 }
 
 function changePopular(inputValue, typeInput, changedType = false) {
-	if (typeInput == 'website') {
-		htmlClass = '.requestMethodGroup';
-		htmlID = '#requestMethod';
-	} else if (typeInput == 'service') {
-		htmlClass = '.portGroup';
-		htmlID = '#port';
+    if (typeInput === 'website') {
+        htmlClass = '.requestMethodGroup';
+        htmlID = '#requestMethod';
+        postClass = '.postGroup';
+    } else if (typeInput === 'service') {
+        htmlClass = '.portGroup';
+        htmlID = '#port';
+    }
+
+    if (typeInput === 'website' && inputValue === '') {
+        changedType ? $(postClass).hide() : $(postClass).slideUp();
+    } else {
+        $(postClass).slideDown();
+    }
+
+	if (inputValue === 'custom') {
+        $(htmlClass).slideDown();
+        return;
 	}
-	
-	if (inputValue == 'custom') {
-		$(htmlClass).slideDown();
-	} else {
-		changedType ? $(htmlClass).hide() : $(htmlClass).slideUp();
-		$(htmlID).val(inputValue);
-	}
+
+    changedType ? $(htmlClass).hide() : $(htmlClass).slideUp();
+    $(htmlID).val(inputValue);
+
+
 }
 
 function psm_xhr(mod, params, method, on_complete, options) {
-	method = (typeof method == 'undefined') ? 'GET' : method;
+	method = (typeof method === 'undefined') ? 'GET' : method;
 
 	var xhr_options = {
 		data: params,
@@ -213,8 +224,8 @@ function rtrim(str) {
 
 function psm_flash_message(message) {
 	var flashmessage = $('#flashmessage');
-	if (flashmessage.length) {
-		if (typeof message != 'undefined') {
+	if(flashmessage.length){
+		if(typeof message !== 'undefined') {
 			flashmessage.html(message);
 		}
 		var t = flashmessage.html();

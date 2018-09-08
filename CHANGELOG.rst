@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #642: Added post field as addition to #631.
 * #644: Fixed urlencoding in Nexmo message
 * #639: Added combined notifications.
 * #626: Added redirect check.
