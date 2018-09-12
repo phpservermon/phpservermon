@@ -230,7 +230,7 @@ class Installer {
 						  `type` enum('ping','service','website') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL default '',
 						  `pattern_online` enum('yes','no') NOT NULL default 'yes',
-						  `post_field` varchar(255) NOT NULL default '',
+						  `post_field` varchar(255) NULL,
 						  `redirect_check` enum('ok','bad') NOT NULL default 'bad',
 						  `allow_http_status` varchar(255) NOT NULL default '',
 						  `header_name` varchar(255) NOT NULL default '',
@@ -568,7 +568,7 @@ class Installer {
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NOT NULL DEFAULT '' AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NULL AFTER `pattern_online`;";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('combine_notifications', '1');";
 		$this->execSQL($queries);
 		$this->log('Combined notifications enabled. Check out the config page for more info.');
