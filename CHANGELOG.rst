@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #653: Fixes wrong default type in upgrade/install query.
 * #642: Added post field as addition to #631.
 * #644: Fixed urlencoding in Nexmo message
 * #639: Added combined notifications.
