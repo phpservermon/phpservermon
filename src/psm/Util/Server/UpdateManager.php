@@ -79,5 +79,8 @@ class UpdateManager implements ContainerAwareInterface {
 			$archive->archive($server['server_id']);
 			$archive->cleanup($server['server_id']);
 		}
+		if($notifier->combine){
+			$notifier->notifyCombined();
+		}
 	}
 }
