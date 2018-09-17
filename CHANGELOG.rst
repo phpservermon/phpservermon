@@ -5,6 +5,8 @@ Changelog
 Not yet released
 ----------------
 
+* #620: Added updater.sh shell script.
+
 v3.3.1 (released August 10, 2018)
 --------------------------------
 
