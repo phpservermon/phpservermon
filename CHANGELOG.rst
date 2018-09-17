@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #620: Added updater.sh shell script.
 * #653: Fixes wrong default type in upgrade/install query.
 * #642: Added post field as addition to #631.
 * #644: Fixed urlencoding in Nexmo message
