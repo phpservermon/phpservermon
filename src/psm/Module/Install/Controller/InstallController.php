@@ -69,9 +69,9 @@ class InstallController extends AbstractController {
 		$errors = 0;
 
 		$phpv = phpversion();
-		if (version_compare($phpv, '5.5.9', '<')) {
+		if (version_compare($phpv, '5.5.9', '<') || (version_compare($phpv, '7.0.8', '<') && version_compare($phpv, '7.0.0', '>='))) {
 			$errors++;
-			$this->addMessage('PHP 5.5.9+ is required to run PHP Server Monitor. You\'re using '.$phpv.'.', 'error');
+			$this->addMessage('PHP 5.5.9+ or 7.0.8+ is required to run PHP Server Monitor. You\'re using '.$phpv.'.', 'error');
 		} else {
 			$this->addMessage('PHP version: '.$phpv, 'success');
 		}

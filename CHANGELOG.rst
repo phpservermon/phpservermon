@@ -5,6 +5,7 @@ Changelog
 Not yet released
 ----------------
 
+* #656: Downgraded symfony/filesystem to ~3.4 (PHP 5.5.9 compatible) and added 7.0.8 as minimal PHP7 version.
 * #620: Added updater.sh shell script.
 * #653: Fixes wrong default type in upgrade/install query.
 * #642: Added post field as addition to #631.
