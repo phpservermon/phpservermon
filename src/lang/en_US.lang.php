@@ -374,9 +374,9 @@ $sm_lang = array(
         'combi_on_telegram_message' => '- Server: %LABEL%<br/>- IP: %IP%<br/>- Port: %PORT%<br/>- Downtime: %LAST_OFFLINE_DURATION%<br/>- Date: %DATE%<br/><br/>',
         'combi_email_subject' => 'IMPORTANT: \'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
 		'combi_pushover_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
-        'combi_email_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/><br/>Source: %PSM_BASE_URL%',
-		'combi_pushover_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/><br/>Source: %PSM_BASE_URL%',
-		'combi_telegram_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/><br/>Source: %PSM_BASE_URL%',
+        'combi_email_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/>Source: %PSM_BASE_URL%',
+		'combi_pushover_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/>Source: %PSM_BASE_URL%',
+		'combi_telegram_message' => '<b>The following servers went down:</b><br/>%DOWN_SERVERS%<br/><b>The following servers are up again:</b><br/>%UP_SERVERS%<br/>Source: %PSM_BASE_URL%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',
