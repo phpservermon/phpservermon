@@ -337,8 +337,6 @@ function psm_parse_msg($status, $type, $vars, $combi = false) {
 	$constants = get_defined_constants(true);
 	$vars = array_merge($vars, $constants['user']);
 
-print_r($vars);
-
 	foreach ($vars as $k => $v) {
 		$message = str_replace('%'.strtoupper($k).'%', $v, $message);
 	}
