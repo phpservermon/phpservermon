@@ -93,6 +93,22 @@
 				{% endif %}
 			</td>
 		</tr>
+		<tr>
+			<td id="advanced">{{ label_advanced }}&nbsp;<i class="icon-expand-arrow"></i></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="advanced">
+			<td>{{ label_last_error }}:</td>
+			<td>{{ last_error }}</td>
+		</tr>
+		<tr class="advanced">
+				<td>{{ label_last_output }}:</td>
+				<td>{{ last_output }}</td>
+			</tr>
+		<tr class="advanced">
+			<td>{{ label_last_error_output }}:</td>
+			<td>{{ last_error_output }}</td>
+		</tr>
 		{% if has_admin_actions %}
 		<tr>
 			<td class="hidden-small">&nbsp;</td>

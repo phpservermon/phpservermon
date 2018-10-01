@@ -33,8 +33,9 @@
 
 /**
  * Retrieve language settings from the selected language file
+ * Return false if arg is not found
  *
- * @return string
+ * @return string|bool
  * @see psm_load_lang()
  */
 function psm_get_lang() {
@@ -62,7 +63,7 @@ function psm_get_lang() {
 
 	$lang = $GLOBALS['sm_lang_default'];
 	foreach ($args as $translation) {
-		$lang = $lang[$translation];
+        $lang = $lang[$translation];
 	}
 	return $lang;
 }
@@ -311,15 +312,20 @@ function psm_log_uptime($server_id, $status, $latency) {
 /**
  * Parses a string from the language file with the correct variables replaced in the message
  *
- * @param boolean $status
+ * @param boolean|null $status
  * @param string $type is either 'sms', 'email', 'pushover_title', 'pushover_message' or 'telegram_message'
- * @param array $server information about the server which may be placed in a message: %KEY% will be replaced by your value
+ * @param array $vars server information about the server which may be placed in a message: %KEY% will be replaced by your value
+ * @param boolean $combi parse other message if notifications need to be send combined
  * @return string parsed message
  */
-function psm_parse_msg($status, $type, $vars) {
-	$status = ($status === true) ? 'on' : 'off';
+function psm_parse_msg($status, $type, $vars, $combi = false) {
+    if(is_bool($status)) {
+        $status = ($status === true) ? 'on_' : 'off_';
+    }
 
-	$message = psm_get_lang('notifications', $status.'_'.$type);
+	$combi = ($combi === true) ? 'combi_' : '';
+
+	$message = psm_get_lang('notifications', $combi.$status.$type);
 
 	if (!$message) {
 		return $message;
@@ -343,9 +349,11 @@ function psm_parse_msg($status, $type, $vars) {
  * @param boolean $add_agent add user agent?
  * @param string|bool $website_username Username website
  * @param string|bool $website_password Password website
+ * @param string|null $request_method Request method like GET, POST etc.
+ * @param string|null $post_field POST data
  * @return string cURL result
  */
-function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false) {
+function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $request_method = null, $post_field = null) {
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
@@ -358,6 +366,14 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 	curl_setopt($ch, CURLOPT_ENCODING, '');
+	
+	if (!empty($request_method)) {
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
+	}
+
+	if (!empty($post_field)) {
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
+	}
 
 	if ($website_username !== false && $website_password !== false && !empty($website_username) && !empty($website_password)) {
 		curl_setopt($ch, CURLOPT_USERPWD, $website_username.":".$website_password);
@@ -812,6 +828,12 @@ class telegram
 		$this->_user = (string) $user;
 	}
 	public function setMessage($message) {
+        $message = str_replace("<ul>","",$message);
+        $message = str_replace("</ul>","\n",$message);
+        $message = str_replace("<li>","- ",$message);
+        $message = str_replace("</li>","\n",$message);
+        $message = str_replace("<br>","\n",$message);
+        $message = str_replace("<br/>","\n",$message);
 		$this->_message = (string) $message;
 	}
 	public function sendurl() {
@@ -825,7 +847,9 @@ class telegram
 	}
 	public function send() {
 		if (!Empty($this->_token) && !Empty($this->_user) && !Empty($this->_message)) {
-			$this->_url = 'https://api.telegram.org/bot'.urlencode($this->_token).'/sendMessage?chat_id='.urlencode($this->_user).'&text='.urlencode($this->_message);
+			$this->_url = 'https://api.telegram.org/bot'.urlencode($this->_token).
+                '/sendMessage?chat_id='.urlencode($this->_user).'&text='.
+                urlencode($this->_message).'&parse_mode=HTML';
 		}
 		return $this->sendurl();
 	}
