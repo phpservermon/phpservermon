@@ -59,7 +59,7 @@ class UpdateManager implements ContainerAwareInterface {
 						)";
 		}
 
-		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`desc`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,`s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
+		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`description`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,`s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				WHERE `active`='yes' ";
