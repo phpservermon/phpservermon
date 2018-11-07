@@ -65,6 +65,7 @@ The following SMS gateways are currently available:
 * SolutionsInfini - <https://solutionsinfini.com/>
 * Plivo - <https://www.plivo.com/>
 * Callr - <https://www.callr.com/>
+* SMSala - <https://smsala.com/>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
