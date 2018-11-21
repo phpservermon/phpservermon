@@ -1,3 +1,4 @@
+{% import 'main/macros.tpl.html' as macro %}
 <table class="table table-bordered">
 	<colgroup>
 		<col class="oce-first" />
@@ -100,7 +101,7 @@
 				<a class="btn btn-success" href="{{ url_edit|raw }}">
 					<i class="icon-edit icon-white"></i>&nbsp;{{ label_edit }}
 				</a>
-				<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" data-modal-id="delete" data-modal-param="{{ label }}">
+				<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}{{ macro.csrf_query() }}" data-modal-id="delete" data-modal-param="{{ label }}">
 					<i class="icon-remove icon-white"></i>&nbsp;{{ label_delete }}
 				</a>
 			</td>

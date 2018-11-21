@@ -1,3 +1,4 @@
+{% import 'main/macros.tpl.html' as macro %}
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
@@ -33,7 +34,7 @@
 						<a class="btn btn-small" href="{{ user.url_edit|raw }}" title="{{ user.label_edit }}">
 							<i class="icon-pencil"></i>
 						</a>
-						<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
+						<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}{{ macro.csrf_query() }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
 							<i class="icon-remove icon-white"></i>
 						</a>
 					</div>
@@ -56,7 +57,7 @@
 			<a class="btn btn-small" href="{{ user.url_edit|raw }}" title="{{ label_edit }}">
 				<i class="icon-pencil"></i>
 			</a>
-			<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
+			<a class="btn btn-small btn-danger show-modal" href="{{ user.url_delete|raw }}{{ macro.csrf_query() }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ user.user_name }}">
 				<i class="icon-remove icon-white"></i>
 			</a>
 		</td>

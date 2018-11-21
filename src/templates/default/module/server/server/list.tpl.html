@@ -1,3 +1,4 @@
+{% import 'main/macros.tpl.html' as macro %}
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
@@ -39,7 +40,7 @@
 					<a class="btn btn-small" href="{{ server.url_view|raw }}"><i class="icon-chart"></i></a>
 					{% if user_level == 10 %}
 						<a class="btn btn-small" href="{{ server.url_edit|raw }}" title="{{ label_edit }}"><i class="icon-pencil"></i></a>
-						<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
+						<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}{{ macro.csrf_query() }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
 					{% endif %}
 				</div>
 			</td>
@@ -53,7 +54,7 @@
 						&nbsp;<a class="btn btn-small" href="{{ server.url_view|raw }}"><i class="icon-chart"></i></a>
 						{% if user_level == 10 %}
 							<a class="btn btn-small" href="{{ server.url_edit|raw }}" title="{{ label_edit }}"><i class="icon-pencil"></i></a>
-							<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
+							<a class="btn btn-small btn-danger show-modal" href="{{ server.url_delete|raw }}{{ macro.csrf_query() }}" title="{{ label_delete }}" data-modal-id="delete" data-modal-param="{{ server.label }}"><i class="icon-remove icon-white"></i></a>
 						{% endif %}
 					</div>
 				</div>
