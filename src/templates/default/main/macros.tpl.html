@@ -1,3 +1,7 @@
 {% macro csrf_input() %}
 <input type="hidden" name="csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
 {% endmacro %}
+
+{% macro csrf_query() %}
+&csrf={{ csrf_token(csrf_key|default('')) }}
+{% endmacro %}

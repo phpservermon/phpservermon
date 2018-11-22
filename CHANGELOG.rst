@@ -5,6 +5,10 @@ Changelog
 Not yet released
 ----------------
 
+v3.3.2 (released November 22, 2018)
+--------------------------------
+* #679: Fixed CSRF vulnerability, added CSRF-token to delete-URLs.
+
 v3.3.1 (released August 10, 2018)
 --------------------------------
 

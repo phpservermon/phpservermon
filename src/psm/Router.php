@@ -175,6 +175,25 @@ class Router {
 				}
 			}
 		}
+		if ($request->getMethod() == 'GET' && $request->query->get('action', '') == "delete") {
+			// require CSRF token for all GET calls that delete something
+			$session = $this->container->get('user')->getSession();
+			$token_in = $request->query->get('csrf', '');
+			$csrf_key = $controller->getCSRFKey();
+
+			if (empty($csrf_key)) {
+				if (!hash_equals($session->get('csrf_token'), $token_in)) {
+					throw new \InvalidArgumentException('invalid_csrf_token');
+				}
+			} else {
+				if (!hash_equals(
+					hash_hmac('sha256', $csrf_key, $session->get('csrf_token2')),
+					$token_in
+				)) {
+					throw new \InvalidArgumentException('invalid_csrf_token');
+				}
+			}
+		}
 
 		// get min required level for this controller and make sure the user matches
 		$min_lvl = $controller->getMinUserLevelRequired();
