@@ -100,9 +100,7 @@ If you are familiar with Vagrant (https://www.vagrantup.com)::
 
      vagrant up
 
-.. and browse to http://localhost:8080.
-
-The database username and password are `username` and `password` and the table name is `phpservermon`.
+Browse to http://localhost:8080 and set the database username and password to `username` and `password` and the table name to `phpservermon`. Save the configuration from the browser and phpservermon should be up and running.
 
 Documentation
 -------------
