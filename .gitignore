@@ -6,7 +6,6 @@
 /vendor/
 .project
 /.vagrant/
-/puphpet/files/dot/ssh/
 *.bak
 __MACOSX/
 *.log
