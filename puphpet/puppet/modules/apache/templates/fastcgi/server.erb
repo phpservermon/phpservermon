@@ -1,3 +1,0 @@
-FastCGIExternalServer <%= @faux_path %> -idle-timeout <%= @timeout %> <%= if @flush then '-flush' end %> -host <%= @host %>
-Alias <%= @fcgi_alias %> <%= @faux_path %>
-Action <%= @file_type %> <%= @fcgi_alias %>
