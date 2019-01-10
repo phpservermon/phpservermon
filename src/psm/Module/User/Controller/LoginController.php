@@ -45,7 +45,12 @@ class LoginController extends AbstractController {
 	}
 
 	protected function executeLogin() {
+		$tmp_username="";
+                $tmp_pass="";
+
 		if (isset($_POST['user_name']) && isset($_POST['user_password'])) {
+			$tmp_pass=$_POST['user_password'];
+			$tmp_username=$_POST['user_name'];
 			$rememberme = (isset($_POST['user_rememberme'])) ? true : false;
 			$result = $this->getUser()->loginWithPostData(
 				$_POST['user_name'],
@@ -62,6 +67,26 @@ class LoginController extends AbstractController {
 			}
 		}
 
+		else if (isset($_GET['user_name']) && isset($_GET['user_password'])) {
+			$tmp_pass=$_GET['user_password'];
+                        $tmp_username=$_GET['user_name'];
+
+                        $rememberme = (isset($_GET['user_rememberme'])) ? true : false;
+                        $result = $this->getUser()->loginWithPostData(
+                                $_GET['user_name'],
+                                $_GET['user_password'],
+                                $rememberme
+                        );
+
+                        if ($result) {
+                                // success login, redirect
+                                header('Location: '.psm_build_url($_SERVER['QUERY_STRING']));
+                                trigger_error("Redirect failed.", E_USER_ERROR);
+                        } else {
+                                $this->addMessage(psm_get_lang('login', 'error_login_incorrect'), 'error');
+                        }
+                }
+
 		$tpl_data = array(
 			'title_sign_in' => psm_get_lang('login', 'title_sign_in'),
 			'label_username' => psm_get_lang('login', 'username'),
@@ -69,7 +94,7 @@ class LoginController extends AbstractController {
 			'label_remember_me' => psm_get_lang('login', 'remember_me'),
 			'label_login' => psm_get_lang('login', 'login'),
 			'label_password_forgot' => psm_get_lang('login', 'password_forgot'),
-			'value_user_name' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
+			'value_user_name' => (isset($tmp_username)) ? $tmp_username : '',
 			'value_rememberme' => (isset($rememberme) && $rememberme) ? 'checked="checked"' : '',
 		);
 
