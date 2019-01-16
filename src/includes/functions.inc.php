@@ -357,6 +357,9 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
+	if(defined('PSM_DEBUG') && PSM_DEBUG === true) {
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
+	}
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
