@@ -357,7 +357,7 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
-	if(defined('PSM_DEBUG') && PSM_DEBUG === true) {
+	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
 		curl_setopt($ch, CURLOPT_VERBOSE, true);
 	}
 	curl_setopt($ch, CURLOPT_HEADER, $header);
@@ -400,6 +400,12 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 
 	$result = curl_exec($ch);
 	curl_close($ch);
+	
+	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
+		echo PHP_EOL.'==============cURL Result for: '.$href.'==========================================='.PHP_EOL;
+		print_r($result);
+		echo PHP_EOL.'==============END cURL Resul for: '.$href.'==========================================='.PHP_EOL;
+	}
 
 	return $result;
 }
