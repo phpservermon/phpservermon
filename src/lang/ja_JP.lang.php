@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'いいえ',
 		'insert' => '挿入',
 		'add_new' => '新規に追加',
-		'update_available' => '新しいバージョン({version}) がリリースされています。ここから入手可能です： <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => '新しいバージョン({version}) がリリースされています。ここから入手可能です： <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'トップに戻る',
 		'go_back' => '戻る',
 		'ok' => 'OK',
@@ -216,7 +216,7 @@ $sm_lang = array(
 		'pushover_description' => 'プッシュオーバーは、リアルタイムの通知を簡単に取得できるサービスです。 詳細については、<a href="https://pushover.net/">ウェブサイト</a>をご覧ください。',
 		'pushover_clone_app' => 'クリックでプッシュオーバーアプリケーションを作成できます。',
 		'pushover_api_token' => 'プッシュオーバーアプリケーションのAPIトークン',
-		'pushover_api_token_description' => 'プッシュオーバーを使用するには、事前にウェブサイトで<a href="%1$s" target="_blank">アプリを登録</a>してApp APIトークンを入力する必要があります。',
+		'pushover_api_token_description' => 'プッシュオーバーを使用するには、事前にウェブサイトで<a href="%1$s" target="_blank" rel="noopener">アプリを登録</a>してApp APIトークンを入力する必要があります。',
 		'alert_type' => '通知するタイミングを選択',
 		'alert_type_description' => '<b>状態の変化:</b> '.
 			'サーバーのステータスが変更されたときに通知を受け取ります。 だからオンライン -> オフラインまたはオフライン -> オンライン。<br/>'.

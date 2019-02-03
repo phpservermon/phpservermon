@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Ei',
 		'insert' => 'Asetukset',
 		'add_new' => 'Lisää uusi',
-		'update_available' => 'Uusi versio ({version}) on ladattavissa osoitteessa <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uusi versio ({version}) on ladattavissa osoitteessa <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Takaisin ylös',
 		'go_back' => 'Takaisin',
 		'ok' => 'OK',
@@ -199,7 +199,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover on palvelu jolla on helppo lähettää reaaliaikaisia tilaviestejä. Katso <a href="https://pushover.net/">verkkosivuilta</a> lisäinfoa.',
 		'pushover_clone_app' => 'Paina tästä luodaksesi Pushover-sovelluksesi',
 		'pushover_api_token' => 'Pushover API-avain',
-		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
+		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank" rel="noopener">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
 		'alert_type' => 'Valitse milloin haluat ilmoituksia.',
 		'alert_type_description' => '<b>Tilan muutos:</b> '.
 			'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.

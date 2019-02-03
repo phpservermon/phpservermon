@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Не',
 		'insert' => 'Добавяне',
 		'add_new' => 'Добави нов',
-		'update_available' => 'Налична е нова версия: ({version}). Може да я свалите от <a href="http://www.phpservermonitor.org" target="_blank">тук</a>.',
+		'update_available' => 'Налична е нова версия: ({version}). Може да я свалите от <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">тук</a>.',
 		'back_to_top' => 'Нагоре',
 		'go_back' => 'Назад',
 		'ok' => 'Ок',
@@ -212,7 +212,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover е услуга, която улеснява получаването на известия в реално време. Посетете <a href="https://pushover.net/">техния сайт</a> за повече информация.',
 		'pushover_clone_app' => 'Кликнете тук за да създаване на вашият Pushover App',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
+		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank" rel="noopener">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
 		'alert_type' => 'Изберете кога желаете да получавате известия',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
 			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.

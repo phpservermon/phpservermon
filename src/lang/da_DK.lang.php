@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'Nej',
 		'insert' => 'Indsæt',
 		'add_new' => 'Tilføj ny',
-		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Til toppen',
 		'go_back' => 'Tilbage',
 		'ok' => 'OK',
@@ -210,7 +210,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a href="https://pushover.net/">deres website</a> for yderligere information.',
 		'pushover_clone_app' => 'Klik her for at oprette din Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank">registrere en app</a> på deres website og indtaste en App API Token her.',
+		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank" rel="noopener">registrere en app</a> på deres website og indtaste en App API Token her.',
 		'alert_type' => 'Vælg hvornår du vil modtage beskeden',
 		'alert_type_description' => '<b>Status ændring:</b> '.
 			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.

@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nein',
 		'insert' => 'Einfügen',
 		'add_new' => 'Neuen Eintrag erstellen',
-		'update_available' => 'Eine Aktualisierung ({version}) ist verfügbar unter <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Eine Aktualisierung ({version}) ist verfügbar unter <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'nach oben',
 		'go_back' => 'Zurück',
 		'ok' => 'OK',
@@ -213,10 +213,10 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a> für weitere Informationen.',
 		'pushover_clone_app' => 'Klicken Sie hier, um Ihre Pushover-Anwendung zu erstellen',
 		'pushover_api_token' => 'Pushover-Anwendungs-API-Token',
-		'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s" target="_blank">Anwendung hier registrieren</a> und Ihren Anwendungs-API-Token hier eingeben.',
+		'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s" target="_blank" rel="noopener">Anwendung hier registrieren</a> und Ihren Anwendungs-API-Token hier eingeben.',
 		'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
 		'alert_type_description' => '<b>Status geändert:</b> '.
-			'...  wenn sich der Status ändert<br/>'.
+			'... wenn sich der Status ändert<br/>'.
 			'z. B. online -> offline oder offline -> online.<br/>'.
 			 '<br/><b>Offline: </b>'.
 			'Sie bekommen eine Benachrichtigung, wenn ein Server offline ist.<br/>'.

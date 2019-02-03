@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Ei',
 		'insert' => 'Sisesta',
 		'add_new' => 'Lisa uus',
-		'update_available' => 'Uus versioon ({version}) on saadaval <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uus versioon ({version}) on saadaval <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Tagasi üles',
 		'go_back' => 'Mine tagasi',
 		'ok' => 'OK',
@@ -199,7 +199,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover on teenus, mis teeb reaalaja teavitused imelihtsaks. Vaata <a href="https://pushover.net/">nende kodulehte</a> rohkema info jaoks.',
 		'pushover_clone_app' => 'Kliki siia, et teha oma Pushover äpp',
 		'pushover_api_token' => 'Pushover Äppi API Žetoon',
-		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
+		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank" rel="noopener">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
 		'alert_type' => 'Vali, millal sa sooviksid olla teavitatud.',
 		'alert_type_description' => '<b>Staatuse muutus:</b> '.
 			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.

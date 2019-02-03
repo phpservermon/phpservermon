@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nej',
 		'insert' => 'Infoga',
 		'add_new' => 'Lägg till',
-		'update_available' => 'En ny version ({version}) finns tillgänglig från <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny version ({version}) finns tillgänglig från <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Gå upp',
 		'go_back' => 'Gå tillbaka',
 		'ok' => 'OK',
@@ -212,7 +212,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover är en tjänst som skickar meddelande i realtid. Se <a href="https://pushover.net/">deras webbsida</a> för mer info.',
 		'pushover_clone_app' => 'Klicka här för att skapa din Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank">registrera en App</a> på deras webbsida och skriva in App API Token här.',
+		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank" rel="noopener">registrera en App</a> på deras webbsida och skriva in App API Token här.',
 		'alert_type' => 'Välj när du vill bli meddelad.',
 		'alert_type_description' => '<b>Statusförändring:</b> '.
 			'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.

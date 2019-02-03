@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => '아니오',
 		'insert' => '삽입',
 		'add_new' => '새계정 추가',
-		'update_available' => '새로운 업데이트가 있습니다 ({version}). 다음사이트를 방문 해 주십시오. <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => '새로운 업데이트가 있습니다 ({version}). 다음사이트를 방문 해 주십시오. <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		'ok' => 'OK',
@@ -212,7 +212,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_clone_app' => 'Click here to create your Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
 		'alert_type' => '알림을 원하면 다음과 같이 변경하십시오.',
 		'alert_type_description' => '<b>상태 변경: </b><br/>'.
 			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.

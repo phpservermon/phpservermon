@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'No',
 		'insert' => 'Thêm mới',
 		'add_new' => 'Thêm mới',
-		'update_available' => 'Phiên bản mới ({version}) có săn trên <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Phiên bản mới ({version}) có săn trên <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Lên đầu trang',
 		'go_back' => 'Quay lại',
 		'ok' => 'OK',
@@ -197,14 +197,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian thực. Xem <a href="https://pushover.net/">website của họ</a> để biết thêm thông tin.',
 		'pushover_clone_app' => 'Nhấn vào đây để tạo ứng dụng Pushover của bạn',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a href="%1$s" target="_blank">đăng ký một ứng dụng</a> tại trang web của họ và nhập Token App API ở đây.',
+		'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a href="%1$s" target="_blank" rel="noopener">đăng ký một ứng dụng</a> tại trang web của họ và nhập Token App API ở đây.',
 		'alert_type' => 'Chọn khi bạn muốn được thông báo.',
 		'alert_type_description' => '<b>Thay đổi trạng thái:</b> '.
 			'Bạn sẽ nhận được thông báo khi một máy chủ có một sự thay đổi trạng thái. Từ online -> offline hoặc offline -> online.<br/>'.
 			'<br /><b>Offline:</b> '.
-			'Bạn sẽ nhận được thông báo khi một máy chủ offline  *MỘT LẦN DUY NHẤT*. Ví dụ, '.
-			'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00  cho đến 6h00. '.
-			'Bạn sẽ nhận được 1 thông báo lúc 01h00  và đó là nó.<br/>'.
+			'Bạn sẽ nhận được thông báo khi một máy chủ offline *MỘT LẦN DUY NHẤT*. Ví dụ, '.
+			'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00 cho đến 6h00. '.
+			'Bạn sẽ nhận được 1 thông báo lúc 01h00 và đó là nó.<br/>'.
 			'<br><b>Always:</b> '.
 			'Bạn sẽ nhận được thông báo mỗi khi chạy đoạn script và một trang web tắt, ngay cả khi trang web đã được offline trong nhiều giờ.',
 		'alert_type_status' => 'Thay đổi trạng thái',

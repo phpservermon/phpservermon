@@ -44,7 +44,7 @@ $sm_lang = array(
 		'no' => 'Ne',
 		'insert' => 'Vložit',
 		'add_new' => 'Přidat',
-		'update_available' => 'Nová verze - ({version}) je dostupná na <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Nová verze - ({version}) je dostupná na <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Zpět na začátek',
 		'go_back' => 'Zpět',
 		'ok' => 'OK',
@@ -225,7 +225,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover je služba umožňující jednoduše zasílat real-time upozornění. Více na <a href="https://pushover.net/">webu Pushover</a>',
 		'pushover_clone_app' => 'Klikněte pro vytvoření Pushover aplikace',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank">registrovat</a> a získat API Token.',
+		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank" rel="noopener">registrovat</a> a získat API Token.',
 		'alert_type' => 'Zvolte kdy si přejete být upozorněni.',
 		'alert_type_description' => '<b>Změna stavu:</b> '.
 			'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.

@@ -44,7 +44,7 @@ $sm_lang = array(
 		'no' => 'Non',
 		'insert' => 'Nouveau',
 		'add_new' => 'Nouveau',
-		'update_available' => 'Une nouvelle version ({version}) est disponible à l\'adresse <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Une nouvelle version ({version}) est disponible à l\'adresse <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Haut de page',
 		'go_back' => 'Retour',
 		'ok' => 'OK',
@@ -213,7 +213,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover est un service qui simplifie les notifications en temps réel. Voir <a href="https://pushover.net/">leur site web</a> pour plus d\'informations.',
 		'pushover_clone_app' => 'Cliquez ici pour créer votre application Pushover',
 		'pushover_api_token' => 'Jeton application Pushover',
-		'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s" target="_blank">créer une application</a> sur leur site web et entrer ici le jeton (Token) de l\'application.',
+		'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s" target="_blank" rel="noopener">créer une application</a> sur leur site web et entrer ici le jeton (Token) de l\'application.',
 		'alert_type' => 'Choisissez quand vous souhaitez être notifié',
 		'alert_type_description' => '<b>Changement d\'état : </b>'.
 			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br/>'.

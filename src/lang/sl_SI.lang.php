@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'ne',
 		'insert' => 'Vstavi',
 		'add_new' => 'Dodaj novega',
-		'update_available' => 'Na voljo je nova različica ({version}); prenesti jo je mogoče iz <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Na voljo je nova različica ({version}); prenesti jo je mogoče iz <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Nazaj na vrh',
 		'go_back' => 'Nazaj',
 		'ok' => 'OK',
@@ -197,7 +197,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover je storitev, ki omogoča enostavno prejemanje obvestil v realnem času. Več informacij je na voljo <a href="https://pushover.net/">na njihovi spletni strani</a>.',
 		'pushover_clone_app' => 'Kliknite za ustvarjanje vaše Pushover aplikacije',
 		'pushover_api_token' => 'Pushover API žeton',
-		'pushover_api_token_description' => 'Pred uporabo storitve Pushover, morate na njihovi spletni strani <a href="%1$s" target="_blank">registrirati aplikacijo</a>, tukaj pa vnesti API žeton.',
+		'pushover_api_token_description' => 'Pred uporabo storitve Pushover, morate na njihovi spletni strani <a href="%1$s" target="_blank" rel="noopener">registrirati aplikacijo</a>, tukaj pa vnesti API žeton.',
 		'alert_type' => 'Izberite kdaj naj se vam pošljejo obvestila.',
 		'alert_type_description' => '<b>Sprememba statusa:</b> '.
 			'Obvestilo boste dobili ob vsaki spremembi statusa, torej iz delujoč -> nedelujoč ter nedelujoč -> delujoč.<br/>'.

@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'خیر',
 		'insert' => 'افزودن',
 		'add_new' => 'افزودن',
-		'update_available' => 'نسخه جدیدتر ({version}) در <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a> موجود است.',
+		'update_available' => 'نسخه جدیدتر ({version}) در <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a> موجود است.',
 		'back_to_top' => 'برو به بالا',
 		'go_back' => 'برگرد',
 		'ok' => 'تایید',
@@ -199,7 +199,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover سرویسی است که دریافت اطلاعیه های بلادرنگ را ساده می کند. برای اطلاعات بیشتر <a href="https://pushover.net/">سایت آن ها</a> را ببینید.',
 		'pushover_clone_app' => 'برای ایجاد برنامه پوش آور خود اینجا را کلیک کنید.',
 		'pushover_api_token' => 'رمز API برنامه پوش آور',
-		'pushover_api_token_description' => 'قبل از استفاده از پوش آور، شما باید در سایت آن ها <a href="%1$s" target="_blank">یک برنامه ثبت نام کنید</a> و رمز API برنامه پوش آور را اینجا وارد کنید.',
+		'pushover_api_token_description' => 'قبل از استفاده از پوش آور، شما باید در سایت آن ها <a href="%1$s" target="_blank" rel="noopener">یک برنامه ثبت نام کنید</a> و رمز API برنامه پوش آور را اینجا وارد کنید.',
 		'alert_type' => 'زمان دلخواه خورد برای دریافت اطلاعیه ها را انتخاب کنید.',
 		'alert_type_description' => '<b>تغییر وضعیت:</b> '.
 			'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.

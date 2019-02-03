@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Não',
 		'insert' => 'Inserir',
 		'add_new' => 'Adicionar novo',
-		'update_available' => 'Uma atualização ({version}) disponível em <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uma atualização ({version}) disponível em <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Voltar ao topo',
 		'go_back' => 'Voltar',
 		'ok' => 'OK',
@@ -212,7 +212,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover é um serviço de notificações em tempo real. Veja <a href="https://pushover.net/">o website</a> para mais informações.',
 		'pushover_clone_app' => 'Clique aqui para criar sua app Pushover',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
 		'alert_type' => 'Selecione como você gostaria de ser notificado.',
 		'alert_type_description' => '<b>Mudança de Status:</b> '.
 			'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br/>'.

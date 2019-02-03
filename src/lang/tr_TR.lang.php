@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Hayır',
 		'insert' => 'Ekle',
 		'add_new' => 'Yeni ekle',
-		'update_available' => '({version}) sürümü şu anda <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a> adresindedir.',
+		'update_available' => '({version}) sürümü şu anda <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a> adresindedir.',
 		'back_to_top' => 'Başa Dön',
 		'go_back' => 'Geri Git',
 		'ok' => 'Tamam',
@@ -212,7 +212,7 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover gerçek zamanlı bildirim alabilmek için bir servistir. Daha fazla bilgi için <a href="https://pushover.net/">sitesine</a> bakabilirsiniz.',
 		'pushover_clone_app' => 'Pushover uygulaması oluşturmak için buraya tıklayınız.',
 		'pushover_api_token' => 'Pushover Uygulaması API Token Bilgisi',
-		'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank">Pushover sitesi üzerinden</a> bir uygulama oluşturmalısınız ve API Token bilgilerini buraya yazmalısınız.',
+		'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank" rel="noopener">Pushover sitesi üzerinden</a> bir uygulama oluşturmalısınız ve API Token bilgilerini buraya yazmalısınız.',
 		'alert_type' => 'Ne zaman uyarılmak istediğinizi seçin.',
 		'alert_type_description' => '<b>Durum değişikliği:</b> '.
 			'Sunucu durumu değişiklik durumunda bildirim alacaksınız. Sunucu çevrimiçi durumundan çevrimdışı durumuna veya çevrimdışı durumundan çevrim için durumuna geçtiğinde.<br/>'.

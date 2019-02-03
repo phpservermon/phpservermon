@@ -45,7 +45,7 @@ $sm_lang = array(
 		'no' => 'No',
 		'insert' => 'Insertar',
 		'add_new' => 'Agregar nuevo',
-		'update_available' => 'Hay una nueva versión ({version}) disponible en <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Hay una nueva versión ({version}) disponible en <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Volver arriba',
 		'go_back' => 'Volver',
 		'ok' => 'OK',
@@ -214,9 +214,9 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover es un servicio que hace que sea fácil de obtener notificaciones en tiempo real. Vea <a href="https://pushover.net/"> su página web </a> para más información.',
 		'pushover_clone_app' => 'Haga clic aquí para crear tu aplicación Pushover',
 		'pushover_api_token' => 'Token API de Pushover',
-		'pushover_api_token_description' => 'Antes de poder utilizar Pushover, necesita <a href="%1$s" target="_blank"> registrar </a> su aplicación en la página web e ingresar el token API.',
+		'pushover_api_token_description' => 'Antes de poder utilizar Pushover, necesita <a href="%1$s" target="_blank" rel="noopener"> registrar </a> su aplicación en la página web e ingresar el token API.',
 		'alert_type' => '¿Cuándo desea recibir notificaciones ?',
-		'alert_type_description' => '<b>...  Al cambiar el estado:</b> '.
+		'alert_type_description' => '<b>... Al cambiar el estado:</b> '.
 			'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br/>'.
 			'<br /><b>Fuera de Línea:</b> '.
 			'Recibirá una notificación cuando el servidor esté fuera de línea.'.
