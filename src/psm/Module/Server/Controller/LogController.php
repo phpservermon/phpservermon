@@ -100,15 +100,17 @@ class LogController extends AbstractServerController {
 			for ($x = 0; $x < $log_count; $x++) {
 				$record = &$records[$x];
 				$record['users'] = '';
-				$record['server'] = $record['label'];
-				$record['type_icon'] = ($record['server_type'] == 'website') ? 'globe-americas' : 'cogs';
-				$record['type_title'] = psm_get_lang('servers', 'type_'.$record['server_type']);
-				$ip = '('.$record['ip'];
-				if (!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
-					$ip .= ':'.$record['port'];
+				if($key == 'status'){
+					$record['server'] = $record['label'];
+					$record['type_icon'] = ($record['server_type'] == 'website') ? 'globe-americas' : 'cogs';
+					$record['type_title'] = psm_get_lang('servers', 'type_'.$record['server_type']);
+					$ip = '('.$record['ip'];
+					if (!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
+						$ip .= ':'.$record['port'];
+					}
+					$ip .= ')';
+					$record['ip'] = $ip;
 				}
-				$ip .= ')';
-				$record['ip'] = $ip;
 				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list

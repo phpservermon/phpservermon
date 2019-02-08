@@ -13,18 +13,24 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-					<th scope="col">{{ label_server }}</th>
-					<th scope="col">{{ label_message }}</th>
+					{% if tab.id|lower == 'status' %}<th scope="col">{{ label_server }}</th>{% endif %}
 					<th scope="col">{{ label_date }}</th>
+					<th scope="col">{{ label_message }}</th>
 					{% if tab.has_users %}<th scope="col">{{ label_users }}</th>{% endif %}
 					</tr>
 				</thead>
 				<tbody>
 					{% for entry in tab.entries %}
 					<tr>
+						{% if entry.server %}
 						<th scope="row"><i class="fas fa-{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> {{ entry.server }} {{ entry.ip }}</th>
+						{% endif %}
+						{% if entry.server %}
+							<td>{{ entry.datetime_format }}</td>
+						{% else %}
+							<th scope="row">{{ entry.datetime_format }}</th>
+						{% endif %}
 						<td>{{ entry.message|raw }}</td>
-						<td>{{ entry.datetime_format }}</td>
 						{% if tab.has_users %}<td>{{ entry.user_list|raw }}</td>{% endif %}
 					</tr>
 					{% endfor %}
