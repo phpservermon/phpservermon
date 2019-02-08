@@ -78,7 +78,7 @@ $sm_lang = array(
 		'level' => 'Nivo dostopa',
 		'level_10' => 'Administrator',
 		'level_20' => 'Uporabnik',
-		'level_description' => '<b>Administratorji</b> imajo poln dostop: lahko upravljajo strežnike, uporabnike in urejajo globalne nastavitve.<br/><b>Uporabniki</b> lahko samo vidijo status in poganjajo posodobitev statusa za strežnike, ki so jim bili dodeljeni.',
+		'level_description' => '<b>Administratorji</b> imajo poln dostop: lahko upravljajo strežnike, uporabnike in urejajo globalne nastavitve.<br><b>Uporabniki</b> lahko samo vidijo status in poganjajo posodobitev statusa za strežnike, ki so jim bili dodeljeni.',
 		'mobile' => 'Mobilni telefon',
 		'email' => 'E-pošta',
 		'pushover' => 'Pushover',
@@ -200,11 +200,11 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Pred uporabo storitve Pushover, morate na njihovi spletni strani <a href="%1$s" target="_blank" rel="noopener">registrirati aplikacijo</a>, tukaj pa vnesti API žeton.',
 		'alert_type' => 'Izberite kdaj naj se vam pošljejo obvestila.',
 		'alert_type_description' => '<b>Sprememba statusa:</b> '.
-			'Obvestilo boste dobili ob vsaki spremembi statusa, torej iz delujoč -> nedelujoč ter nedelujoč -> delujoč.<br/>'.
+			'Obvestilo boste dobili ob vsaki spremembi statusa, torej iz delujoč -> nedelujoč ter nedelujoč -> delujoč.<br>'.
 			'<br /><b>Nedelujoč:</b> '.
 			'Obvestilo boste dobili samo, ko se bo strežnik PRVIKRAT prenehal odzivati. Na primer:'.
 			'nastavljeno imate preverjanje strežnikov vsakih 15 minut. Strežnik preneha delovati ob 13h in ostane nedelujoč do 18h. '.
-			'Dobili boste obvestilo samo ob 13h.<br/>'.
+			'Dobili boste obvestilo samo ob 13h.<br>'.
 			'<br><b>Vedno:</b> '.
 			'Obvestilo boste dobili vedno, ko se izvede skripta za preverjanje in strežnik ne deluje, pa čeprav bo strežnik nedelujoč več ur.',
 		'alert_type_status' => 'Sprememba statusa',
@@ -226,7 +226,7 @@ $sm_lang = array(
 		'settings_log' => 'Hramba dnevniških zapisov',
 		'auto_refresh' => 'Samodejno posodabljanje',
 		'auto_refresh_servers' =>
-			'Samodejno posodabljanje pregleda statusa strežnikov.<br/>'.
+			'Samodejno posodabljanje pregleda statusa strežnikov.<br>'.
 			'<span class="small">'.
 			'Čas v sekundah. Če je vrednost 0 se stran ne bo samodejno posodabljala.'.
 			'</span>',
@@ -251,18 +251,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Število dni, ko naj se hranijo podatki o obvestilih in statusu strežnikov. Če želite podatke hraniti trajno, vnesite 0.',
 		'log_retention_days' => 'dni',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Streznik \'%LABEL%\' NE deluje: IP=%IP%, vrata=%PORT%. Napaka=%ERROR%',
 		'off_email_subject' => 'POMEMBNO: Strežnik \'%LABEL%\' NE deluje',
-		'off_email_body' => "Pri povezovanju na streznik je prislo do napake:<br/><br/>Streznik: %LABEL%<br/>IP: %IP%<br/>vrata: %PORT%<br/>Napaka: %ERROR%<br/>Datum: %DATE%",
+		'off_email_body' => "Pri povezovanju na streznik je prislo do napake:<br><br>Streznik: %LABEL%<br>IP: %IP%<br>vrata: %PORT%<br>Napaka: %ERROR%<br>Datum: %DATE%",
 		'off_pushover_title' => 'Streznik \'%LABEL%\' NE deluje',
-		'off_pushover_message' => "Ni se mogoče povezati na naslednji streznik:<br/><br/>Streznik: %LABEL%<br/>IP: %IP%<br/>Vrata: %PORT%<br/>Error: %ERROR%<br/>Datum: %DATE%",
+		'off_pushover_message' => "Ni se mogoče povezati na naslednji streznik:<br><br>Streznik: %LABEL%<br>IP: %IP%<br>Vrata: %PORT%<br>Error: %ERROR%<br>Datum: %DATE%",
 		'on_sms' => 'Streznik \'%LABEL%\' deluje: IP=%IP%, vrata=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'OBVESTILO: Streznik \'%LABEL%\' ponovno deluje',
-		'on_email_body' => "Streznik '%LABEL%' ponovno deluje, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Strežnik: %LABEL%<br/>IP: %IP%<br/>Vrata: %PORT%<br/>Datum: %DATE%",
+		'on_email_body' => "Streznik '%LABEL%' ponovno deluje, it was down for %LAST_OFFLINE_DURATION%:<br><br>Strežnik: %LABEL%<br>IP: %IP%<br>Vrata: %PORT%<br>Datum: %DATE%",
 		'on_pushover_title' => 'Streznik \'%LABEL%\' deluje',
-		'on_pushover_message' => 'Streznik \'%LABEL%\' ponovno deluje, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Vrata: %PORT%<br/>Datum: %DATE%',
+		'on_pushover_message' => 'Streznik \'%LABEL%\' ponovno deluje, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Vrata: %PORT%<br>Datum: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Pozdravljeni, %user_name%',
@@ -279,7 +279,7 @@ $sm_lang = array(
 		'password_forgot' => 'Pozabljeno geslo?',
 		'password_reset' => 'Ponastavitev gesla',
 		'password_reset_email_subject' => 'Ponastavite svoje geslo za PHP Server Monitor',
-		'password_reset_email_body' => 'Za ponastavitev gesla uporabite spodnjo povezavo. Pomembno: povezava poteče v 1 uri.<br/><br/>%link%',
+		'password_reset_email_body' => 'Za ponastavitev gesla uporabite spodnjo povezavo. Pomembno: povezava poteče v 1 uri.<br><br>%link%',
 		'error_user_incorrect' => 'Vpisanega uporabniškega imena ne najdem.',
 		'error_login_incorrect' => 'Podatki so napačni.',
 		'error_login_passwords_nomatch' => 'Vneseno geslo ni pravilno.',

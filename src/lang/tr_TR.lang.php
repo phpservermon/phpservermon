@@ -92,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Seviye',
 		'level_10' => 'Yönetici',
 		'level_20' => 'Kullanıcı',
-		'level_description' => '<b>Yöneticiler</b> tüm yetkilere sahiptir: Onlar sunucuları, kullanıcıları yönetebilir genel ayarlamaları düzenleyebilirler.<br/> <b>Kullanıcılar</b> sadece görüntüleyebilir ve onlara atanmış sunucu güncelleyicileri çalıştırabilirler.',
+		'level_description' => '<b>Yöneticiler</b> tüm yetkilere sahiptir: Onlar sunucuları, kullanıcıları yönetebilir genel ayarlamaları düzenleyebilirler.<br> <b>Kullanıcılar</b> sadece görüntüleyebilir ve onlara atanmış sunucu güncelleyicileri çalıştırabilirler.',
 		'mobile' => 'Mobil',
 		'email' => 'E-posta',
 		'pushover' => 'Pushover',
@@ -215,11 +215,11 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank" rel="noopener">Pushover sitesi üzerinden</a> bir uygulama oluşturmalısınız ve API Token bilgilerini buraya yazmalısınız.',
 		'alert_type' => 'Ne zaman uyarılmak istediğinizi seçin.',
 		'alert_type_description' => '<b>Durum değişikliği:</b> '.
-			'Sunucu durumu değişiklik durumunda bildirim alacaksınız. Sunucu çevrimiçi durumundan çevrimdışı durumuna veya çevrimdışı durumundan çevrim için durumuna geçtiğinde.<br/>'.
+			'Sunucu durumu değişiklik durumunda bildirim alacaksınız. Sunucu çevrimiçi durumundan çevrimdışı durumuna veya çevrimdışı durumundan çevrim için durumuna geçtiğinde.<br>'.
 			'<br /><b>Çevrimdışı:</b> '.
 			'Sunucu çevrim dışı duruma geçtiğinde bildirim alırsınız. *SADECE İLK GEÇTİĞİNDE*. Örneğin, '.
 			'Cronjob her 15 dakikada bir çalışıyorsa ve sunucu 1\'de gidip 6\'ya kadar kapalı kalırsa. '.
-			'Sadece size saat 1\'de bildirim gönderilecektir.<br/>'.
+			'Sadece size saat 1\'de bildirim gönderilecektir.<br>'.
 			'<br><b>Daima:</b> '.
 			'Site çevrimdışı olduğu her zaman size bildirim gönderilecektir, site saatler boyunca kapalı kalse bile.',
 		'alert_type_status' => 'Durum değişikliği',
@@ -241,7 +241,7 @@ $sm_lang = array(
 		'settings_log' => 'Log ayarları',
 		'auto_refresh' => 'Otomatik Yenileme',
 		'auto_refresh_servers' =>
-			'Otomatik yenileme sunucu sayfası<br/>'.
+			'Otomatik yenileme sunucu sayfası<br>'.
 			'<span class="small">'.
 			'Eğer sayfa yenilenmez ise.'.
 			'</span>',
@@ -266,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Bildirim loglarının ve sunucunun çalışma zamanlarının arşivinin saklanması için gün sayısı. Logların temizlenmesini kapatmak için 0 giriniz.',
 		'log_retention_days' => 'gün',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => '\'%LABEL%\' isimli sunucu KAPANDI: ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => 'ÖNEMLİ: \'%LABEL%\' isimli sunucu KAPANDI.',
-		'off_email_body' => "Aşağıdaki sunuculara erişim sağlanamıyor:<br/><br/>Sunucu: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Hata: %ERROR%<br/>Tarih: %DATE%",
+		'off_email_body' => "Aşağıdaki sunuculara erişim sağlanamıyor:<br><br>Sunucu: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Hata: %ERROR%<br>Tarih: %DATE%",
 		'off_pushover_title' => '\'%LABEL%\' isimli sunucu KAPANDI.',
-		'off_pushover_message' => "Aşağıdaki nuculara erişim sağlanamıyor:<br/><br/>Sunucu: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Hata: %ERROR%<br/>Tarih: %DATE%",
+		'off_pushover_message' => "Aşağıdaki nuculara erişim sağlanamıyor:<br><br>Sunucu: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Hata: %ERROR%<br>Tarih: %DATE%",
 		'on_sms' => '\'%LABEL%\' isimli sunucu YAYINDA: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'ÖNEMLİ:\'%LABEL%\' isimli sunucu YAYINDA.',
-		'on_email_body' => "'%LABEL%' isimli sunucu tekrar yayında, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Sunucu: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tarih: %DATE%",
+		'on_email_body' => "'%LABEL%' isimli sunucu tekrar yayında, it was down for %LAST_OFFLINE_DURATION%:<br><br>Sunucu: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Tarih: %DATE%",
 		'on_pushover_title' => '\'%LABEL%\' isimli sunucu YAYINDA',
-		'on_pushover_message' => '\'%LABEL%\' isimli sunucu tekrar yayında, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Sunucu: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tarih: %DATE%',
+		'on_pushover_message' => '\'%LABEL%\' isimli sunucu tekrar yayında, it was down for %LAST_OFFLINE_DURATION%:<br><br>Sunucu: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Tarih: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Hoşgeldin, %user_name%',
@@ -294,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Şifreni mi unuttun?',
 		'password_reset' => 'Şifreni yenile',
 		'password_reset_email_subject' => 'PHP Server Monitor için şifreni yenile',
-		'password_reset_email_body' => 'Aşağıdaki bağlantıyı kullanarak şifrenizi güncelleyiniz. Bağlantı 1 saat sonra geçerliliğini kaybedecektir.<br/><br/>%link%',
+		'password_reset_email_body' => 'Aşağıdaki bağlantıyı kullanarak şifrenizi güncelleyiniz. Bağlantı 1 saat sonra geçerliliğini kaybedecektir.<br><br>%link%',
 		'error_user_incorrect' => 'Kullanıcı adı bulunamadı.',
 		'error_login_incorrect' => 'Bilgi yanlış.',
 		'error_login_passwords_nomatch' => 'Şifreleriniz uyuşmuyor.',

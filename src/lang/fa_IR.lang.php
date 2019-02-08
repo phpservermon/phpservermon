@@ -80,7 +80,7 @@ $sm_lang = array(
 		'level' => 'سطح',
 		'level_10' => 'مدیر',
 		'level_20' => 'کاربر',
-		'level_description' => '<b>مدیر</b> دسترسی کامل: این گروه ها توانایی مدیریت سرورها، کاربران و ویرایش تنظیمات عمومی را داردند.<br/><b>کاربران</b> تنها توانایی دیدن و بروزرسانی سرورهای اختصاص داده شده به خودشان را داردند.',
+		'level_description' => '<b>مدیر</b> دسترسی کامل: این گروه ها توانایی مدیریت سرورها، کاربران و ویرایش تنظیمات عمومی را داردند.<br><b>کاربران</b> تنها توانایی دیدن و بروزرسانی سرورهای اختصاص داده شده به خودشان را داردند.',
 		'mobile' => 'موبایل',
 		'email' => 'ایمیل',
 		'pushover' => 'Pushover',
@@ -202,7 +202,7 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'قبل از استفاده از پوش آور، شما باید در سایت آن ها <a href="%1$s" target="_blank" rel="noopener">یک برنامه ثبت نام کنید</a> و رمز API برنامه پوش آور را اینجا وارد کنید.',
 		'alert_type' => 'زمان دلخواه خورد برای دریافت اطلاعیه ها را انتخاب کنید.',
 		'alert_type_description' => '<b>تغییر وضعیت:</b> '.
-			'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br/>'.
+			'زمانی که وضعیت سرور تغییر کرد شما یک اطلاعیته دریافت خواهید کرد. از آنلاین -> آفلاین یا آفلاین -> آنلاین.<br>'.
 			'<br /><b>آفلاین:</b> '.
 			'زمانی که یک سرور *فقط برای اولین بار* آفلاین شد شما یک اطلاعیه دریافت خواهید کرد. به عنوان مثال،'.
 			'cronjob شما هر 15 دقیقه است و سرور شما در ساعت 1 صبح دان می شود و تا ساعت 6 صبح دان می ماند.'.
@@ -228,7 +228,7 @@ $sm_lang = array(
 		'settings_log' => 'تنظیمات لاگ',
 		'auto_refresh' => 'رفرش خودکار',
 		'auto_refresh_servers' =>
-			'رفرش خودکار صفحه سرورها.<br/>'.
+			'رفرش خودکار صفحه سرورها.<br>'.
 			'<span class="small">'.
 			'زمان به ثنیه, اگر 0 باشد صفحه رفرش نخواهد شد.'.
 			'</span>',
@@ -253,18 +253,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'تعداد روزها برای نگهداری لاگ اطلاعیه ها و آرشیو های آپ تایم های سرور. برای غیرفعال کردن پاکسازی لاگ 0 وارد کنید.',
 		'log_retention_days' => 'روزها',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' دان است: آی پی=%IP%, پورت=%PORT%. خطا=%ERROR%',
 		'off_email_subject' => 'مهم: سرور \'%LABEL%\' دان است',
-		'off_email_body' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
+		'off_email_body' => "اتصال به سرور زیر با شکست مواجه شد:<br><br>سرور: %LABEL%<br>آی پی: %IP%<br>پورت: %PORT%<br>خطا: %ERROR%<br>تاریخ: %DATE%",
 		'off_pushover_title' => 'سرور \'%LABEL%\' دان است',
-		'off_pushover_message' => "اتصال به سرور زیر با شکست مواجه شد:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>خطا: %ERROR%<br/>تاریخ: %DATE%",
+		'off_pushover_message' => "اتصال به سرور زیر با شکست مواجه شد:<br><br>سرور: %LABEL%<br>آی پی: %IP%<br>پورت: %PORT%<br>خطا: %ERROR%<br>تاریخ: %DATE%",
 		'on_sms' => 'سرور \'%LABEL%\' در حال اجراست: آی پی=%IP%, پورت=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'مهم: سرور \'%LABEL%\' در حال اجراست',
-		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%",
+		'on_email_body' => "سرور '%LABEL%' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br><br>سرور: %LABEL%<br>آی پی: %IP%<br>پورت: %PORT%<br>تاریخ: %DATE%",
 		'on_pushover_title' => 'سرور \'%LABEL%\' در حال اجراست',
-		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>سرور: %LABEL%<br/>آی پی: %IP%<br/>پورت: %PORT%<br/>تاریخ: %DATE%',
+		'on_pushover_message' => 'سرور \'%LABEL%\' دوباره در حال اجراست, it was down for %LAST_OFFLINE_DURATION%:<br><br>سرور: %LABEL%<br>آی پی: %IP%<br>پورت: %PORT%<br>تاریخ: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'خوش آمدید, %user_name%',
@@ -281,7 +281,7 @@ $sm_lang = array(
 		'password_forgot' => 'کلمه عبور خود را فراموش کرده اید؟',
 		'password_reset' => 'بازنشانی کلمه عبور',
 		'password_reset_email_subject' => 'کلمه عبور خود را برای مانیتور سرور PHP بازنشانی کنید',
-		'password_reset_email_body' => 'لطفا برای بازنشانی کلمه عبور خود از این لینک استفاده کنید. لطفا توجه کنید تنها 1 ساعت وقت دارید.<br/><br/>%link%',
+		'password_reset_email_body' => 'لطفا برای بازنشانی کلمه عبور خود از این لینک استفاده کنید. لطفا توجه کنید تنها 1 ساعت وقت دارید.<br><br>%link%',
 		'error_user_incorrect' => 'نام کاربری ارائه شده یافته نشد.',
 		'error_login_incorrect' => 'اطلاعات نادرست است.',
 		'error_login_passwords_nomatch' => 'کلمه های عبور یکسان نیستند.',

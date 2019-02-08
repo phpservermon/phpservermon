@@ -94,7 +94,7 @@ $sm_lang = array(
 		'level' => 'Nivel',
 		'level_10' => 'Administrador',
 		'level_20' => 'Usuarios',
-		'level_description' => '<b>Administradores</b> tienen acceso completo: pueden administrar servidores, usuarios y editar la configuración global.<br/>Los <b>usuarios</b> sólo pueden ver y ejecutar el programa de actualización para los servidores que se han asignado a los mismos.',
+		'level_description' => '<b>Administradores</b> tienen acceso completo: pueden administrar servidores, usuarios y editar la configuración global.<br>Los <b>usuarios</b> sólo pueden ver y ejecutar el programa de actualización para los servidores que se han asignado a los mismos.',
 		'mobile' => 'Móvil',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -217,10 +217,10 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Antes de poder utilizar Pushover, necesita <a href="%1$s" target="_blank" rel="noopener"> registrar </a> su aplicación en la página web e ingresar el token API.',
 		'alert_type' => '¿Cuándo desea recibir notificaciones ?',
 		'alert_type_description' => '<b>... Al cambiar el estado:</b> '.
-			'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br/>'.
+			'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br>'.
 			'<br /><b>Fuera de Línea:</b> '.
 			'Recibirá una notificación cuando el servidor esté fuera de línea.'.
-			'Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br/>'.
+			'Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br>'.
 			'<br><b>Siempre:</b> '.
 			'Se le enviará una notificación cada vez que se ejecuta el script '.
 			'aunqué el servicio puede haber estado fuera de línea por varias horas.',
@@ -243,7 +243,7 @@ $sm_lang = array(
 		'settings_log' => 'Log',
 		'auto_refresh' => 'Refrescar automáticamente la página de servidores',
 		'auto_refresh_servers' =>
-			'Refrescar automáticamente la página de servidores.<br/>'.
+			'Refrescar automáticamente la página de servidores.<br>'.
 			'<span class="small">'.
 			'Tiempo en segundos, indicar "0" para no actualizar.'.
 			'</span>',
@@ -268,18 +268,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Número de días que se conservan registros de las notificaciones y los archivos de tiempo de actividad del servidor. Introduzca 0 para desactivar la limpieza de los registros.',
 		'log_retention_days' => 'días',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Servidor \'%LABEL%\' está fuera de línea: ip=%IP%, puerto=%PORT%. error=%ERROR%',
 		'off_email_subject' => 'Importante: Servidor \'%LABEL%\' está fuera de línea',
-		'off_email_body' => "No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
+		'off_email_body' => "No posible conectar al servidor:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Puerto: %PORT%<br>Error: %ERROR%<br>Fecha: %DATE%",
 		'off_pushover_title' => 'Servidor \'%LABEL%\' está fuera de línea',
-		'off_pushover_message' => "No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
+		'off_pushover_message' => "No posible conectar al servidor:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Puerto: %PORT%<br>Error: %ERROR%<br>Fecha: %DATE%",
 		'on_sms' => 'Servidor \'%LABEL%\' ya está de nuevo funcionando en línea: ip=%IP%, puerto=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Importante: Servidor \'%LABEL%\' ya está de nuevo en línea',
-		'on_email_body' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%",
+		'on_email_body' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, it was down for %LAST_OFFLINE_DURATION%:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Puerto: %PORT%<br>Fecha: %DATE%",
 		'on_pushover_title' => 'Servidor \'%LABEL%\' ya está de nuevo en línea',
-		'on_pushover_message' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%",
+		'on_pushover_message' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, it was down for %LAST_OFFLINE_DURATION%:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Puerto: %PORT%<br>Fecha: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Bienvenido, %user_name%',
@@ -296,7 +296,7 @@ $sm_lang = array(
 		'password_forgot' => '¿Has olvidado tu contraseña?',
 		'password_reset' => 'Perdí mi contraseña',
 		'password_reset_email_subject' => 'Restablecer la contraseña para PHP Server Monitor',
-		'password_reset_email_body' => 'Utilice el siguiente enlace para restablecer tu contraseña. Tenga en cuenta que expira de 1 hora.<br/><br/>%link%',
+		'password_reset_email_body' => 'Utilice el siguiente enlace para restablecer tu contraseña. Tenga en cuenta que expira de 1 hora.<br><br>%link%',
 		'error_user_incorrect' => 'El nombre de usuario proporcionado no se pudo encontrar.',
 		'error_login_incorrect' => 'La información es incorrecta.',
 		'error_login_passwords_nomatch' => 'Las contraseñas proporcionadas no coinciden.',

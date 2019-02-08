@@ -1,66 +1,89 @@
-<div class="tab-content">
+<div class="container">
 	<input type="hidden" name="saveLayout_csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
-	<div id="flow-layout" class="tab-pane {{ block_layout_active }}">
-		<div class="entity-container">
+	<div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
+		<div class="row">
 			{% for server in servers_offline %}
-			<div class="offline">
-				<div class="entity {{ server.class_warning }}" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<h2>{{ server.label }}</h2>
-					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
-					<p>{{ label_last_check }}: {{ server.last_checked_nice }}</p>
+			<div class="col-sm-4 col-md-3">
+				<div class="card text-white bg-danger mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></div>
+					<div class="card-body">
+						<p class="card-text">
+							{{ label_last_online }}: {{ server.last_online_nice }}<br>
+							{{ label_last_check }}: {{ server.last_checked_nice }}
+						</p>
+					</div>
 				</div>
 			</div>
 			{% endfor %}
 			{% for server in servers_online %}
-			<div class="online">
-				<div class="entity" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<h2>{{ server.label }}</h2>
-					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
-					<p>{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</p>
-					<p>{{ label_rtime }}: {{ server.rtime }}s</p>
+			<div class="col-sm-4 col-md-3">
+				<div class="card text-white bg-success mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></div>
+					<div class="card-body">
+						<p class="card-text">
+							{{ label_last_online }}: {{ server.last_online_nice }}<br>
+							{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}<br>
+							{{ label_rtime }}: {{ server.rtime }}
+						</p>
+					</div>
 				</div>
 			</div>
 			{% endfor %}
+			{% if not servers_offline and not servers_online %}
+				{{ label_none }}
+				<!-- TODO knop om nieuwe server toe te voegen -->
+			{% endif %}
 		</div>
 	</div>
-	<div id="list-layout" class="tab-pane {{ list_layout_active }}">
-		<div class="entity-container">
-			<table class="table table-bordered">
+	<div id="list-layout" class="{{ list_layout_active }}" aria-labelledby="block-layout">
+		<div class="row table-responsive">
+			{% if servers_offline or servers_online %}
+			<table class="table table-bordered table-hover">
+				{% if servers_offline %}
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">{{ label_last_online }}</th>
+						<th scope="col">{{ label_last_check }}</th>
+						<th scope="col">{{ label_rtime }}</th>
+					</tr>
+				</thead>
 				<tbody>
 					{% for server in servers_offline %}
-						<tr class="row-offline" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<td class="{{ server.class_warning }}"><div class="server-name">{{ server.label }}</div>
-								<div class="visible-phone">
-									<div class="table-body">
-										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
-										<div class="table-row"><div class="table-cell-details tight">{{ label_last_check }}: &nbsp;</div><div class="table-cell-details">{{ server.last_checked_nice }}</div></div>
-										<div class="table-row"><div class="table-cell-details tight">&nbsp;</div><div class="table-cell-details">&nbsp;</div></div>
-									</div>
-								</div>
-							</td>
-							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
-							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_check }}: {{ server.last_checked_nice }}</td>
-							<td class="{{ server.class_warning }} hidden-phone"></td>
-						</tr>
-					{% endfor %}
-					{% for server in servers_online %}
-						<tr class="row-online" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<td><div class="server-name">{{ server.label }}</div>
-								<div class="visible-phone">
-									<div class="table-body">
-										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
-										<div class="table-row"><div class="table-cell-details tight">{{ label_last_offline }}: &nbsp;</div><div class="table-cell-details">{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</div></div>
-										<div class="table-row"><div class="table-cell-details tight">{{ label_rtime }}: &nbsp;</div><div class="table-cell-details">{{ server.rtime }}</div></div>
-									</div>
-								</div>
-							</td>
-							<td class="hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
-							<td class="hidden-phone">{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
-							<td class="hidden-phone">{{ label_rtime }}: {{ server.rtime }}s</td>
+						<tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+							<th>{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></th>
+							<td>{{ server.last_online_nice }}</td>
+							<td>{{ server.last_checked_nice }}</td>
+							<td></td>
 						</tr>
 					{% endfor %}
 				</tbody>
+				{% endif %}
+				{% if servers_online %}
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">{{ label_last_online }}</th>
+						<th scope="col">{{ label_last_offline }}</th>
+						<th scope="col">{{ label_rtime }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for server in servers_online %}
+						<tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+							<th>{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></th>
+							<td>{{ server.last_online_nice }}</td>
+							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
+							<td>{{ server.rtime }}s</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				{% endif %}
 			</table>
+			{% else %}
+				{{ label_none }}
+				<!-- TODO knop om nieuwe server toe te voegen -->
+			{% endif %}
 		</div>
 	</div>
 </div>

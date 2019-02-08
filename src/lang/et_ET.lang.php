@@ -80,7 +80,7 @@ $sm_lang = array(
 		'level' => 'Tase',
 		'level_10' => 'Administraator',
 		'level_20' => 'Kasutaja',
-		'level_description' => '<b>Administraatoritel</b> on täielik ligipääs: nad saavad hallata servereid, kasutajaid ja muuta globaalset konfiguratsiooni.<br/><b>Kasutajad</b> saavad ainult näha ja uuendada neid servereid, mis on neile määratud.',
+		'level_description' => '<b>Administraatoritel</b> on täielik ligipääs: nad saavad hallata servereid, kasutajaid ja muuta globaalset konfiguratsiooni.<br><b>Kasutajad</b> saavad ainult näha ja uuendada neid servereid, mis on neile määratud.',
 		'mobile' => 'Mobiil',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -202,11 +202,11 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank" rel="noopener">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
 		'alert_type' => 'Vali, millal sa sooviksid olla teavitatud.',
 		'alert_type_description' => '<b>Staatuse muutus:</b> '.
-			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
+			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br>'.
 			'<br /><b>Võrgust väljas:</b> '.
 			'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
 			'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
-			'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
+			'Saate 1 teavituse kell 1 öösel ja see on kõik.<br>'.
 			'<br><b>Alati:</b> '.
 			'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
 		'alert_type_status' => 'Staatuse muutus',
@@ -228,7 +228,7 @@ $sm_lang = array(
 		'settings_log' => 'Logi seaded',
 		'auto_refresh' => 'Automaatne värskendamine',
 		'auto_refresh_servers' =>
-			'Värskenda lehte automaatselt.<br/>'.
+			'Värskenda lehte automaatselt.<br>'.
 			'<span class="small">'.
 			'Aeg sekundites, kui 0 siis lehte ei värskendata.'.
 			'</span>',
@@ -253,18 +253,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Arv päevi, mil hoida logid alles. Sisesta 0, et keelata logide puhastus.',
 		'log_retention_days' => 'päeva',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' on MAAS: ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => 'TÄHTIS: Server \'%LABEL%\' is MAAS',
-		'off_email_body' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
+		'off_email_body' => "Ühendus järgnevasse serverisse ebaõnnestus:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Kuupäev: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' on MAAS',
-		'off_pushover_message' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
+		'off_pushover_message' => "Ühendus järgnevasse serverisse ebaõnnestus:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Kuupäev: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' on KÄTTESAADAV: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'TÄHTIS: Server \'%LABEL%\' on kättesaadav',
-		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%",
+		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Kuupäev: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' on kättesaadav',
-		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Kuupäev: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Teretulemast, %user_name%',
@@ -281,7 +281,7 @@ $sm_lang = array(
 		'password_forgot' => 'Unustasid salasõna?',
 		'password_reset' => 'Lähtesta parool',
 		'password_reset_email_subject' => 'Lähtestage oma PHP Serveri Monitori parool',
-		'password_reset_email_body' => 'Palun kasutage järgnevat linki oma parooli lähtestamiseks. Palume tähendada, et see aegub 1 tunni jooksul.<br/><br/>%link%',
+		'password_reset_email_body' => 'Palun kasutage järgnevat linki oma parooli lähtestamiseks. Palume tähendada, et see aegub 1 tunni jooksul.<br><br>%link%',
 		'error_user_incorrect' => 'Antud kasutaja ei ole kehtiv.',
 		'error_login_incorrect' => 'Informatsioon ei ole õige.',
 		'error_login_passwords_nomatch' => 'Sisestatud paroolid ei kattu.',

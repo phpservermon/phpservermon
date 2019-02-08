@@ -1,4 +1,4 @@
-$().ready(function() {
+$().ready(function () {
 	$('.show-modal').click(function (e) {
 		var $this = $(this);
 		if ($this.is('a')) {
@@ -14,11 +14,10 @@ $().ready(function() {
 				var ary = param.split(',');
 				for (var index = 0; index < ary.length && index < 9; ++index) {
 					var value = ary[index];
-					$($modal).find('span.modalP' + (index+1)).text(value);
+					$($modal).find('span.modalP' + (index + 1)).text(value);
 				}
 			}
-			scroll(0, 0);
-			$modal.modal('show');
+			$modal.modal();
 		} else {
 			// Just in case we forgot the dialog box
 			var conf = confirm("Are you sure?");
@@ -29,141 +28,82 @@ $().ready(function() {
 		return false;
 	});
 
-	$('.modalOKButton').click(function(e) {
-		var $this = $(this);
-		var $origin = $this.data('modal-origin');
+	$('.modalOKButton').click(function (e) {
+		var $origin = $(this).data('modal-origin');
 		if ($origin.is('a')) {
 			window.location = $origin.attr('href');
-		} else {
+		}
+		else {
 			$origin.next('input[type=hidden]').attr('value', 1);
 			$origin.closest('form').submit();
 		}
 		return false;
 	});
-	$('select.multiselect').multiselect({
-		includeSelectAllOption: true,
-		maxHeight: 400,
-		enableCaseInsensitiveFiltering: true
-	});
 
-	psm_flash_message();
-	psm_tooltips();
-
-	// popularPorts
-    // initial
-    $('.portGroup').hide();
-    var portInput = $('#port').val();
-
-    if (portInput != '') {
-        var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
-        if (findPopularPorts.length) {
-            $(findPopularPorts).attr("selected", "selected");
-        } else {
-            $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
-            $('.portGroup').slideDown();
-        }
+	if ($('#list-layout').length > 0) {
+		$("#list-layout").hide();
+		$("#flow-layout").hide();
+		if ($("#list-layout").hasClass('active')) {
+			$("#list-layout").show();
+		}
+		if ($("#flow-layout").hasClass('active')) {
+			$("#flow-layout").show();
+		}
 	}
-
-	$('#popularPorts').change(function () {
-		changePopular($(this).val(), $('#type').val());
-	});
-
-	// popularRequestMethods
-    // initial
-    $('.requestMethodGroup').hide();
-	var requestMethodInput = $('#requestMethod').val();
-	
-    if (requestMethodInput != '') {
-		var findPopularRequestMethods = $('#popularRequestMethods').find('option[value=' + requestMethodInput + ']');
-		if (findPopularRequestMethods.length) {
-            $(findPopularRequestMethods).attr("selected", "selected");
-        } else {
-            $('#popularRequestMethods').find('option[value=custom]').attr("selected", "selected");
-            $('.requestMethodGroup').slideDown();
-        }
-	}
-
-	$('#popularRequestMethods').change(function () {
-		changePopular($(this).val(), $('#type').val());
-	});
-
-	// server type
-	$('.types').hide();
-	changeTypeSwitch($('#type').val());
-
-	$('#type').change(function () {
-		changeTypeSwitch($('#type').val());
-	});
-
-    // advanced information
-    $(".advanced").hide();
-    var advanced = 0;
-    $("#advanced").click(
-        function() {
-            advancedSwitch((advanced += 1) % 2);
-        });
+	$('#label').focus();
 });
-
-function advancedSwitch(statusInput) {
-    switch (statusInput) {
-        case 0:
-            $(".advanced").slideUp();
-            break;
-
-        case 1:
-            $(".advanced").slideDown();
-            break;
-
-        default:
-            $(".advanced").hide();
-    }
-}
-
-function changeTypeSwitch(typeInput) {
-	switch (typeInput) {
-		case 'service':
-			$('.types').slideUp();
-			$('.typeService').slideDown();
-			changePopular($('#popularPorts').val(), typeInput, true);
-			break;
-
-		case 'website':
-			$('.types').slideUp();
+$("#type").change(function () {
+	switch ($("select#type option:checked").val()) {
+		case "website":
+			$('.typeService').slideUp();
 			$('.typeWebsite').slideDown();
-			changePopular($('#popularRequestMethods').val(), typeInput, true);
+			$("select#popular_request_methods").change();
 			break;
-
+		case "service":
+			$('.typeWebsite').slideUp();
+			$('.typeService').slideDown();
+			$("select#popular_ports").change();
+			break;
 		default:
 			$('.types').slideUp();
 	}
-}
+}).change();
 
-function changePopular(inputValue, typeInput, changedType = false) {
-    if (typeInput === 'website') {
-        htmlClass = '.requestMethodGroup';
-        htmlID = '#requestMethod';
-        postClass = '.postGroup';
-    } else if (typeInput === 'service') {
-        htmlClass = '.portGroup';
-        htmlID = '#port';
-    }
-
-    if (typeInput === 'website' && inputValue === '') {
-        changedType ? $(postClass).hide() : $(postClass).slideUp();
-    } else {
-        $(postClass).slideDown();
-    }
-
-	if (inputValue === 'custom') {
-        $(htmlClass).slideDown();
-        return;
+$("select#popular_request_methods").change(function () {
+	if ($("select#type option:checked").val() != "website") return;
+	switch ($("select#popular_request_methods option:checked").val()) {
+		case "":
+			$('.requestMethod').slideUp();
+			$('#request_method').val($("select#popular_request_methods option:checked").val());
+			break;
+		case "custom":
+			$('.requestMethod').slideDown();
+			$('#request_method').focus();
+			break;
+		default:
+			$('#request_method').val($("select#popular_request_methods option:checked").val());
+			$('.requestMethod').slideUp();
 	}
+}).change();
 
-    changedType ? $(htmlClass).hide() : $(htmlClass).slideUp();
-    $(htmlID).val(inputValue);
+$("select#popular_ports").change(function () {
+	if ($("select#type option:checked").val() != "service") return;
+	switch ($("select#popular_ports option:checked").val()) {
+		case "0":
+		case "":
+			$('#port').val($("select#popular_ports option:checked").val());
+			$('.port').slideUp();
+			break;
+		case "custom":
+			$('.port').slideDown();
+			$('#port').focus();
+			break;
+		default:
+			$('#port').val($("select#popular_ports option:checked").val());
+			$('.port').slideUp();
+	}
+}).change();
 
-
-}
 
 function psm_xhr(mod, params, method, on_complete, options) {
 	method = (typeof method === 'undefined') ? 'GET' : method;
@@ -172,7 +112,7 @@ function psm_xhr(mod, params, method, on_complete, options) {
 		data: params,
 		type: method,
 		success: on_complete,
-		error: function(jqjqXHR, textStatus, errorThrown) {
+		error: function (jqjqXHR, textStatus, errorThrown) {
 			psm_flash_message(errorThrown);
 		}
 	};
@@ -184,6 +124,20 @@ function psm_xhr(mod, params, method, on_complete, options) {
 }
 
 function psm_saveLayout(layout) {
+	if (layout) {
+		$("#list-layout").show();
+		$("#flow-layout").hide();
+		$("#block-layout").removeClass('active');
+		$("#table-layout").addClass('active');
+	}
+	else {
+		$("#list-layout").hide();
+		$("#flow-layout").show();
+		$("#block-layout").addClass('active');
+		$("#table-layout").removeClass('active');
+	}
+
+
 	var params = {
 		action: 'saveLayout',
 		csrf: $("input[name=saveLayout_csrf]").val(),
@@ -192,47 +146,13 @@ function psm_saveLayout(layout) {
 	psm_xhr('server_status', params, 'POST');
 }
 
-function psm_tooltips() {
-	$('input[data-toggle="tooltip"]').tooltip({
-		'trigger':'hover',
-		'placement': 'right',
-		'container': 'body'
-	});
-	$('i[data-toggle="tooltip"]').tooltip({
-		'trigger':'hover',
-		'placement': 'bottom'
-	});
-}
-
-function psm_goTo(url) {
-	window.location = url;
-}
-
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g,"");
-}
-
-//left trim
-function ltrim(str) {
-	return str.replace(/^\s+/,"");
-}
-
-//right trim
-function rtrim(str) {
-	return str.replace(/\s+$/,"");
-}
-
-function psm_flash_message(message) {
-	var flashmessage = $('#flashmessage');
-	if(flashmessage.length){
-		if(typeof message !== 'undefined') {
-			flashmessage.html(message);
-		}
-		var t = flashmessage.html();
-		var c = trim(t);
-		var t = c.replace('&nbsp;', '');
-		if (t) {
-			flashmessage.slideDown();
-		}
-	}
+if ($(".search_input").length > 0) {
+	$.getScript("static/js/search.js");
+	$('<link>')
+  		.appendTo('head')
+		.attr({
+			type: 'text/css', 
+			rel: 'stylesheet',
+			href: 'static/css/search.min.css'
+		});
 }

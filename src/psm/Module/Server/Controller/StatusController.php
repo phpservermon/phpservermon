@@ -53,9 +53,12 @@ class StatusController extends AbstractServerController {
 		// add header accessories
 		$layout = $this->getUser()->getUserPref('status_layout', 0);
 		$layout_data = array(
+			'label_none' => psm_get_lang('system', 'none'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
 			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
+			'label_online' => psm_get_lang('servers', 'online'),
+			'label_offline' => psm_get_lang('servers', 'offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
 			'list_layout_active'	=> ($layout != 0) ? 'active' : '',

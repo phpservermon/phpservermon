@@ -266,6 +266,7 @@ abstract class AbstractController implements ControllerInterface {
 			'label_logout' => psm_get_lang('login', 'logout'),
 			'url_profile' => psm_build_url(array('mod' => 'user_profile')),
 			'url_logout' => psm_build_url(array('logout' => 1)),
+			'label_current' => psm_get_lang('system', 'current'),
 		);
 
 		switch ($ulvl) {
@@ -350,26 +351,30 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Add one or multiple message to the stack to be displayed to the user
 	 * @param string|array $msg
-	 * @param string $shortcode info/success/warning/error
+	 * @param string $shortcode primary/success/warning/danger
 	 * @return \psm\Module\ControllerInterface
 	 * @see getMessages()
 	 */
-	public function addMessage($msg, $shortcode = 'info') {
+	public function addMessage($msg, $shortcode = 'primary') {
 		if (!is_array($msg)) {
 			$msg = array($msg);
 		}
+		$class= $shortcode;
 		switch ($shortcode) {
 			case 'error':
-				$icon = 'exclamation-sign';
+				$icon = 'exclamation-circle';
+				$class= 'danger';
 				break;
 			case 'success':
-				$icon = 'ok-sign';
+				$icon = 'check-circle';
 				break;
 			case 'warning':
-				$icon = 'question-sign';
+				$icon = 'exclamation-triangle';
 				break;
+			case 'primary':
 			default:
-				$icon = 'info-sign';
+				$icon = 'info-circle';
+				$shortcode = 'info';
 				break;
 		}
 
@@ -377,6 +382,7 @@ abstract class AbstractController implements ControllerInterface {
 			$this->messages[] = array(
 				'message' => $m,
 				'shortcode' => $shortcode,
+				'class' => $class,
 				'icon' => $icon,
 			);
 		}

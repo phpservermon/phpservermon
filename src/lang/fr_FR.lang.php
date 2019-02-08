@@ -93,7 +93,7 @@ $sm_lang = array(
 		'level' => 'Niveau',
 		'level_10' => 'Administrateur',
 		'level_20' => 'Utilisateur',
-		'level_description' => 'Les <b>Administrateurs</b> ont un accès total. Ils peuvent gérer les serveurs, les utilisateurs et éditer la configuration globale.<br/>Les <b>Utilisateurs</b> ne peuvent que voir et mettre à jour les serveurs qui leur ont été assignés.',
+		'level_description' => 'Les <b>Administrateurs</b> ont un accès total. Ils peuvent gérer les serveurs, les utilisateurs et éditer la configuration globale.<br>Les <b>Utilisateurs</b> ne peuvent que voir et mettre à jour les serveurs qui leur ont été assignés.',
 		'mobile' => 'Téléphone',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -216,12 +216,12 @@ $sm_lang = array(
 		'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s" target="_blank" rel="noopener">créer une application</a> sur leur site web et entrer ici le jeton (Token) de l\'application.',
 		'alert_type' => 'Choisissez quand vous souhaitez être notifié',
 		'alert_type_description' => '<b>Changement d\'état : </b>'.
-			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br/>'.
-			 '<br/><b>Hors service : </b>'.
+			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br>'.
+			 '<br><b>Hors service : </b>'.
 			'Vous ne recevez une notification que quand le serveur passe de l\'état OK à HORS SERVICE. Par exemple, '.
 			'Votre tâche planifiée s\'exécute toutes les 15 minutes et votre serveur passe à l\'état HORS SERVICE à 1 heure du matin et le reste jusqu\'à 6 heures du matin.'.
-			'Vous ne recevez qu\'une seule notification à 1 heure du matin.<br/>'.
-			'<br/><b>Toujours : </b>'.
+			'Vous ne recevez qu\'une seule notification à 1 heure du matin.<br>'.
+			'<br><b>Toujours : </b>'.
 			'Vous recevez une notification à chaque exécution de la tâche planifiée si le serveur est à l\'état HORS SERVICE ',
 		'alert_type_status' => 'Changement d\'état',
 		'alert_type_offline' => 'Hors service',
@@ -242,7 +242,7 @@ $sm_lang = array(
 		'settings_log' => 'Configuration des événements',
 		'auto_refresh' => 'Auto-rachaîchissement',
 		'auto_refresh_servers' =>
-			'Auto-rachaîchissement de la page serveurs.<br/>'.
+			'Auto-rachaîchissement de la page serveurs.<br>'.
 			'<span class="small">'.
 			'Temps en secondes. Si 0, la page n\'est pas rafraîchie.'.
 			'</span>',
@@ -267,18 +267,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Nombre de jours de conservation des événements envoyés et des temps de réponse des serveurs. Entrez 0 pour les conserver indéfiniment.',
 		'log_retention_days' => 'jours',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Le Serveur \'%LABEL%\' est HORS SERVICE: IP=%IP%, Port=%PORT%. Erreur=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est HORS SERVICE',
-		'off_email_body' => "Impossible de se connecter au serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
+		'off_email_body' => "Impossible de se connecter au serveur suivant:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Erreur: %ERROR%<br>Date: %DATE%",
 		'off_pushover_title' => 'Le Serveur \'%LABEL%\' est HORS SERVICE',
-		'off_pushover_message' => "Impossible de se connecter au serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_message' => "Impossible de se connecter au serveur suivant:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Erreur: %ERROR%<br>Date: %DATE%",
 		'on_sms' => 'Le Serveur \'%LABEL%\' est OK: IP=%IP%, Port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est OK',
-		'on_email_body' => "Le Serveur '%LABEL%' est de nouveau OK, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "Le Serveur '%LABEL%' est de nouveau OK, it was down for %LAST_OFFLINE_DURATION%:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 		'on_pushover_title' => 'Le Serveur \'%LABEL%\' est OK',
-		'on_pushover_message' => "Le Serveur '%LABEL%' est de nouveau OK, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_message' => "Le Serveur '%LABEL%' est de nouveau OK, it was down for %LAST_OFFLINE_DURATION%:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Bonjour %user_name%',
@@ -295,7 +295,7 @@ $sm_lang = array(
 		'password_forgot' => 'Mot de passe oublié ?',
 		'password_reset' => 'Réinitialiser le mot de passe',
 		'password_reset_email_subject' => 'Réinitialisation du mot de passe pour PHP Server Monitor',
-		'password_reset_email_body' => 'Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe. Veuillez noter qu\'il expire dans une heure.<br/><br/>%link%',
+		'password_reset_email_body' => 'Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe. Veuillez noter qu\'il expire dans une heure.<br><br>%link%',
 		'error_user_incorrect' => 'Nom d\'utilisateur invalide.',
 		'error_login_incorrect' => 'Informations incorrectes.',
 		'error_login_passwords_nomatch' => 'Mot de passe invalide.',

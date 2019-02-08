@@ -118,11 +118,6 @@ abstract class AbstractServerController extends AbstractController {
                 null : "(".$server['last_offline_duration'].")";
 		}
 		$server['last_check'] = psm_timespan($server['last_check']);
-		$server['active'] = psm_get_lang('system', $server['active']);
-		$server['email'] = psm_get_lang('system', $server['email']);
-		$server['sms'] = psm_get_lang('system', $server['sms']);
-		$server['pushover'] = psm_get_lang('system', $server['pushover']);
-		$server['telegram'] = psm_get_lang('system', $server['telegram']);
 
 		if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';
