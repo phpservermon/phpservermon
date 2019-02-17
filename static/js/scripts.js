@@ -32,8 +32,7 @@ $().ready(function () {
 		var $origin = $(this).data('modal-origin');
 		if ($origin.is('a')) {
 			window.location = $origin.attr('href');
-		}
-		else {
+		} else {
 			$origin.next('input[type=hidden]').attr('value', 1);
 			$origin.closest('form').submit();
 		}
@@ -129,8 +128,7 @@ function psm_saveLayout(layout) {
 		$("#flow-layout").hide();
 		$("#block-layout").removeClass('active');
 		$("#table-layout").addClass('active');
-	}
-	else {
+	} else {
 		$("#list-layout").hide();
 		$("#flow-layout").show();
 		$("#block-layout").addClass('active');
@@ -149,9 +147,9 @@ function psm_saveLayout(layout) {
 if ($(".search_input").length > 0) {
 	$.getScript("static/js/search.js");
 	$('<link>')
-  		.appendTo('head')
+		.appendTo('head')
 		.attr({
-			type: 'text/css', 
+			type: 'text/css',
 			rel: 'stylesheet',
 			href: 'static/css/search.min.css'
 		});

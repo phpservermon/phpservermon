@@ -6,31 +6,27 @@ $(".search_input").keyup(function () {
         col2 = this.cells[1].innerText.toLowerCase().indexOf(searchTerm);
         if (col1 >= 0) {
             $(this).attr('visible', 'true');
-        }
-        else if (col2 >= 0) {
+        } else if (col2 >= 0) {
             $(this).attr('visible', 'true');
-        }
-        else {
+        } else {
             $(this).attr('visible', 'false');
         }
     });
 
     var jobCount = $('table tbody tr[visible="true"]').length;
-    if($(".search_input").is(":placeholder-shown")){
+    if ($(".search_input").is(":placeholder-shown")) {
         $('.search_icon i').show();
         $('.search_icon p').hide();
-    }
-    else{
+    } else {
         $('.search_icon i').hide();
         $('.search_icon p').show();
-        
+
     }
     $('.search_icon p').text(jobCount);
 
     if (jobCount == '0') {
         $('.no-result').show();
-    }
-    else {
+    } else {
         $('.no-result').hide();
     }
 });
