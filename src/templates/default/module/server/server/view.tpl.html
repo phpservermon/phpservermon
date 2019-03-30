@@ -4,12 +4,16 @@
 			<div class="card-body d-flex align-items-center justify-content-center">
 				{% if status|lower == 'on' %}
 				<i class="fas fa-check-circle fa-6x"></i>
+				<noscript><h1>&#10003</h1></noscript>
 				{% elseif status|lower == 'warning' %}
 				<i class="fas fa-exclamation-triangle fa-6x"></i>
+				<noscript><h1>&#9888</h1></noscript>
 				{% elseif status|lower == 'off' %}
 				<i class="fas fa-times-circle fa-6x"></i>
+				<noscript><h1>&#10005</h1></noscript>
 				{% else %}
 				<i class="fas fa-question-circle fa-6x"></i>
+				<noscript><h1>&#8263</h1></noscript>
 				{% endif %}
 			</div>
 		</div>
@@ -247,50 +251,65 @@
 					{{ label_monitoring }}:
 					{% if active|lower == 'yes' %}
 					<i class="fas fa-eye float-right"></i>
+					<noscript>&#10003</noscript>
 					{% elseif active|lower == 'no' %}
 					<i class="fas fa-eye-slash float-right"></i>
+					<noscript>&#10005</noscript>
 					{% else %}
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
 					{% endif %}
 				</li>
 				<li class="list-group-item">
 					{{ label_email }}:
 					{% if email|lower == 'yes' %}
 					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
 					{% elseif email|lower == 'no' %}
 					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
 					{% else %}
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
 					{% endif %}
 				</li>
 				<li class="list-group-item">
 					{{ label_sms }}:
 					{% if sms|lower == 'yes' %}
 					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
 					{% elseif sms|lower == 'no' %}
 					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
 					{% else %}
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
 					{% endif %}
 				</li>
 				<li class="list-group-item">
 					{{ label_pushover }}:
 					{% if pushover|lower == 'yes' %}
 					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
 					{% elseif pushover|lower == 'no' %}
 					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
 					{% else %}
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
 					{% endif %}
 				</li>
 				<li class="list-group-item">
 					{{ label_telegram }}:
 					{% if telegram|lower == 'yes' %}
 					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
 					{% elseif telegram|lower == 'no' %}
 					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
 					{% else %}
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
 					{% endif %}
 				</li>
 			</ul>

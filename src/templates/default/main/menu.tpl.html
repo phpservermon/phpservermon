@@ -5,8 +5,21 @@
 	</li>
 	{% endfor %}
 </ul>
+<noscript>
+	<ul class="navbar-nav mr-auto">
+		
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_profile|raw }}">{{ label_profile }}</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_logout|raw }}">{{ label_logout }}</a>
+		</li>
+		<span class="navbar-text">{{ label_usermenu }}</span>
+		</li>
+	</ul>
+</noscript>
+<noscript><div hidden></noscript>
 <ul class="navbar-nav">
-	
 	<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{{ label_usermenu }}
@@ -16,9 +29,10 @@
 			<a class="dropdown-item" href="{{ url_logout|raw }}">{{ label_logout }} </a>
 		</div>
 	</li>
-<!--
+	<!--
 	<li class="nav-item">
 		<i class="text-white fas fa-universal-access fa-lg nav-link"></i>
 	</li>
--->
+	-->
 </ul>
+<noscript></div></noscript>

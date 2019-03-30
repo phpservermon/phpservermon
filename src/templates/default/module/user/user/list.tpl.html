@@ -30,7 +30,10 @@
 				<td>{% for server in user.emp_servers %} {{ server.label }}<br /> {% endfor %}</td>
 				<td>
 					<div class="item-action dropdown">
-						<a data-toggle="dropdown" class="icon"><i class="fas fa-ellipsis-v"></i></a>
+						<a data-toggle="dropdown" class="icon">
+							<i class="fas fa-ellipsis-v"></i>
+						</a>
+						<noscript><div hidden></noscript>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="{{ user.url_edit|raw }}" title="{{ label_edit }}">
 								<i class="fas fa-edit"></i> {{ label_edit }}
@@ -40,6 +43,17 @@
 								<i class="fas fa-trash"></i> {{ label_delete }}
 							</a>
 						</div>
+					<noscript>
+					</div>
+						<a href="{{ user.url_edit|raw }}" title="{{ label_edit }}">
+							&#9998
+						</a>
+						<br>
+						<a href="{{ user.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete"
+							data-modal-param="{{ user.user_name }}">
+							&#10005
+						</a>
+					</noscript>
 					</div>
 				</td>
 			</tr>

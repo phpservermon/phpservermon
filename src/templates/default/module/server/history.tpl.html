@@ -5,13 +5,15 @@
 	<canvas id="{{ graph.id }}">Your browser does not support the canvas element.</canvas>
 </div>
 <div class="col-md-2">
+	<noscript><div hidden></noscript>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
-				{% for button in graph.buttons %}
-				<label class="btn btn-secondary {{ button.class_active }}">
-					<input type="radio" name="{{ graph.button_name }}" value="{{ button.time }}" id="{{ button.unit }}" autocomplete="off" {% if button.class_active %} checked {% endif  %}> {{ button.label }}
-				</label>
-				{% endfor %}
-			  </div>
+			{% for button in graph.buttons %}
+			<label class="btn btn-secondary {{ button.class_active }}">
+				<input type="radio" name="{{ graph.button_name }}" value="{{ button.time }}" id="{{ button.unit }}" autocomplete="off" {% if button.class_active %} checked {% endif  %}> {{ button.label }}
+			</label>
+			{% endfor %}
+		</div>
+	<noscript></div></noscript>
 </div>
 {% if graph.id == 'history_short' %}
 <script>

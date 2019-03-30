@@ -107,8 +107,10 @@
 {% endmacro button_save %}
 
 {% macro table_search(label) %}
+    <noscript><div hidden></noscript>
     <div class="searchbar mb-3">
         <input class="search_input" type="search" name="" maxlength="255" placeholder="{{ label }}..." aria-label="{{ label }}">
         <a href="#" class="search_icon"><i class="fas fa-search"></i><p>0</p></a>
     </div>
+    <noscript></div></noscript>
 {% endmacro table_search %}

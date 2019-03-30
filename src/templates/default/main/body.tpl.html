@@ -35,7 +35,7 @@
 	<main role="main" class="container">
 		<noscript>
 			<div class="alert alert-danger" role="alert">
-				<b>Javascript is disabled!</b> For PHP Server Monitor to work properly enabling javascript is required!
+				<b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
 			</div>
 		</noscript>
 		{% if not user_level %}<h1>{{ subtitle }}</h1>{% endif %}
@@ -56,7 +56,7 @@
 		<div class="container">
 			<span class="text-muted">
 				Powered by
-				<a href="http://www.phpservermonitor.org/" target="_blank" rel="noopener">
+				<a href="https://github.com/phpservermon/phpservermon/" target="_blank" rel="noopener">
 					PHP Server Monitor {{ version }}.
 				</a>
 				{{ update_available }} <a href="#" class="float-right">{{ label_back_to_top }}</a>
