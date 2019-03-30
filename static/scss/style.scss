@@ -114,3 +114,19 @@ table tr[visible='false'],
 table tr[visible='true'] {
     display: table-row;
 }
+
+td {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+th {
+    width: 25%;
+}
+
+.bootstrap-select>.dropdown-toggle.bs-placeholder,
+.bootstrap-select>.dropdown-toggle.bs-placeholder:active,
+.bootstrap-select>.dropdown-toggle.bs-placeholder:focus,
+.bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+    color: unset;
+}
