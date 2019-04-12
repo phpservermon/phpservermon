@@ -2,14 +2,14 @@ var dataCacheName = 'PSM-v1';
 var cacheName = 'PSM-PWA-final-1';
 var filesToCache = [
   '/',
-  '/index.php',
-  '/static/js/history.js',
-  '/static/js/script.js',
-  '/static/js/search.js',
-  '/static/css/bootstrap.min.css',
-  '/static/css/search.min.css',
-  '/static/css/style.min.css',
-  '/static/phpservermon.png'
+  'index.php',
+  'static/js/history.js',
+  'static/js/scripts.js',
+  'static/js/search.js',
+  'static/css/bootstrap.min.css',
+  'static/css/search.min.css',
+  'static/css/style.min.css',
+  'static/phpservermon.png'
 ];
 
 self.addEventListener('install', function(e) {

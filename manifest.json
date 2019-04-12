@@ -14,7 +14,7 @@
       "sizes": "32x32",
       "type": "image/x-icon"
     }],
-  "start_url": "/index.php",
+  "start_url": "index.php",
   "display": "standalone",
   "background_color": "#3E4EB8",
   "theme_color": "#ffffff"
