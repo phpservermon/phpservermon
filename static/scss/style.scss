@@ -115,13 +115,14 @@ table tr[visible='true'] {
     display: table-row;
 }
 
-td {
+td, th {
     word-break: break-word;
     overflow-wrap: break-word;
 }
 
 th {
     width: 25%;
+    text-align: left;
 }
 
 .bootstrap-select>.dropdown-toggle.bs-placeholder,
