@@ -1,5 +1,6 @@
+{% import 'main/macros.tpl.html' as macro %}
+{{ macro.input_csrf() }}
 <div class="container">
-	<input type="hidden" name="saveLayout_csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
 	<div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
 		<div class="row">
 			{% for server in servers_offline %}
