@@ -92,6 +92,8 @@
                 {{ macro.input_checkbox("email_smtp", "email_smtp[]", label_email_smtp, email_smtp_checked) }}
                 <!-- smtp host -->
                 {{ macro.input_field("text", "email_smtp_host", null, "email_smtp_host", label_email_smtp_host, email_smtp_host, label_email_smtp_host, "255") }}
+                <!-- smtp host -->
+                {{ macro.input_field("number", "email_smtp_port", null, "email_smtp_port", label_email_smtp_port, email_smtp_port, label_email_smtp_port, "5") }}
                 <!-- smtp security -->
                 {{ macro.input_select("email_smtp_security", "email_smtp_security", label_email_smtp_security, email_smtp_security, email_smtp_security_selected) }}
                 <!-- email user -->
