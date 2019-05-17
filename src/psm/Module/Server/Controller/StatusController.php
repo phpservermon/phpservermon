@@ -62,6 +62,8 @@ class StatusController extends AbstractServerController {
 			'label_rtime' => psm_get_lang('servers', 'latency'),
 			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
 			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+			'label_add_server' => psm_get_lang('system', 'add_new'),
+			'url_save' => psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 		);
 		$this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
 
