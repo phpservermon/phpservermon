@@ -43,7 +43,6 @@ class StatusController extends AbstractServerController {
 
 	/**
 	 * Prepare the template to show a list of all servers
-	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
 		// set background color to black
@@ -60,8 +59,8 @@ class StatusController extends AbstractServerController {
 			'label_online' => psm_get_lang('servers', 'online'),
 			'label_offline' => psm_get_lang('servers', 'offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
-			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
-			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+			'block_layout_active' => ($layout == 0) ? 'active' : '',
+			'list_layout_active' => ($layout != 0) ? 'active' : '',
 			'label_add_server' => psm_get_lang('system', 'add_new'),
 			'url_save' => psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 		);

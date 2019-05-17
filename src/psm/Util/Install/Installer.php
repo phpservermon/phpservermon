@@ -77,7 +77,6 @@ class Installer {
 		}
 
 		// different DB version, check if the version requires any changes
-		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
 		if (version_compare($version_db, PSM_VERSION, '<')) {
 			return true;
 		} else {
