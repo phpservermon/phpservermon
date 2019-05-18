@@ -13,8 +13,16 @@
 			</label>
 			{% endfor %}
 		</div>
-	<noscript></div></noscript>
+	<noscript></div></noscript><div class="w-100"></div>
+	<br>
+	{% if graph.id == 'history_short' %}
+	<div id="meter" data-value="{{ graph.uptime|round(3) }}" translation="{{ graph.info.1.label|lower }}">
+		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
+	</div><br>
+	{% endif %}
+		{{ graph.info.0.label }}: {{ graph.info.0.value }}s
 </div>
+
 {% if graph.id == 'history_short' %}
 <script>
 	var historyShort = new Chart(document.getElementById("{{ graph.id }}").getContext('2d'), {

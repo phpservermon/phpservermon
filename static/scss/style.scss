@@ -133,3 +133,53 @@ th {
 .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
     color: unset;
 }
+
+#meter {
+    border-radius: 200px 200px 0 0;
+    height: 100px;
+    margin: 50px auto 0;
+    overflow: hidden;
+    position: relative;
+    width: 200px;
+    &:before {
+        background: #fbfbfb;
+        border-radius: 200px 200px 0 0;
+        box-shadow: 3px 1px 8px rgba(0, 0, 0, 0.15) inset;
+        content: "";
+        height: 100px;
+        position: absolute;
+        width: 200px;
+    }
+    &:after {
+        background: #fff;
+        border-radius: 140px 140px 0 0;
+        bottom: 0;
+        -webkit-box-shadow: 3px 1px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 3px 1px 8px rgba(0, 0, 0, 0.15);
+        content: "\A" attr(data-value) "%\A"attr(translation);
+        font-size: 1.5em;
+        font-weight: 100;
+        height: 80px;
+        left: 20px;
+        line-height: 25px;
+        position: absolute;
+        text-align: center;
+        width: 160px;
+        z-index: 3;
+        white-space: pre;
+    }
+}
+
+#needle {
+    background: rgba(52, 52, 64, 0.7);
+    border-radius: 4px;
+    bottom: -4px;
+    box-shadow: 3px -1px 4px rgba(0, 0, 0, 0.4);
+    display: block;
+    height: 8px;
+    left: 5px;
+    position: absolute;
+    width: 95px;
+    transform-origin: 100% 4px;
+    transition: all 1s;
+}

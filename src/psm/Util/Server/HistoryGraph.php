@@ -187,13 +187,15 @@ class HistoryGraph {
 
 	/**
 	 * Generate data arrays for graphs
-	 * @param array $records all uptime records to parse, MUST BE SORTED BY DATE IN ASCENDING ORDER
-	 * @param array $lines array with keys as line ids to prepare (key must be available in uptime records)
-	 * @param callable $cb_if_up function to check if the server is up or down
+	 * @param array $records All uptime records to parse, MUST BE SORTED BY DATE IN ASCENDING ORDER
+	 * @param array $lines Array with keys as line ids to prepare (key must be available in uptime records)
 	 * @param string $latency_avg_key which key from uptime records to use for calculating averages
 	 * @param \DateTime $start_time Lowest DateTime of the graph
 	 * @param \DateTime $end_time Highest DateTime of the graph
-	 * @param boolean $add_uptime add uptime calculation?
+	 * @param boolean $add_uptime Add uptime calculation?
+	 * @param array $prev Previous result
+	 * @param int $downtime Total downtime
+	 * @param int $prev_downtime Timestamp from last offline record. 0 when last record is uptime
 	 * @return array
 	 */
 	protected function generateGraphLines($records, $lines, $latency_avg_key, $start_time, $end_time, $add_uptime = false) {
@@ -203,65 +205,60 @@ class HistoryGraph {
 		// PLEASE NOTE: all times are in microseconds! because of javascript.
 		$latency_avg = 0;
 
-		$downtime = array();
+		$prev = reset($records);
 
-		$prev_down = false;
+		$prev_downtime = 0;
+		$downtime = 0;
 
-		$prev_up = array();
-		$prev_up['status'] = false;
-		$prev_up['value'] = 0.0;
-
-		$line_type = 'unknown';
 		// Create the list of points and server down zones
 		foreach ($records as $record) {
 			$time = strtotime($record['date']);
 			// use the first line to calculate average latency
 			$latency_avg += (float) $record[$latency_avg_key];
 
-
 			foreach ($lines as $key => $value) {
 				// add the value for each of the different lines
 				if (isset($record[$key])) {
 					if (isset($record['status'])){
-						$line_type = 'short';
 						// down
 						if ($record['status'] == 0){
-							$lines['online'][] = $prev_up['status'] 
+							$lines['online'][] = $prev['status'] 
 								// Previous datapoint was online
-								? '{ x: '.($time*1000).', y: '.$prev_up['value'].'}'
+								? '{ x: '.($time*1000).', y: '.$prev['latency'].'}'
 								// Previous datapoint was offline
 								: '{ x: '.($time*1000).', y: null}';
+							// new outage start
 							$lines['offline'][] = '{ x: '.($time*1000).', y:0.1}';
-							$prev_up['status'] = false;
+
+							$prev_downtime != 0 ?: $prev_downtime = $time;
 						}
 						// up
 						else {
-							$lines['offline'][] = $prev_up['status']
+							// outage ends
+							$lines['offline'][] = $prev['status']
 								// Previous datapoint was online
 								? '{ x: '.($time*1000).', y:null}'
 								// Previous datapoint was offline
 								: '{ x: '.($time*1000).', y:0.1}';
 							$lines['online'][] = '{ x: '.($time*1000).', y: '.round((float) $record[$key], 4).'}';
-							$prev_up['status'] = true;
-							$prev_up['value'] = round((float) $record[$key], 4);
+
+							$prev_downtime == 0 ?: $downtime += ($time - $prev_downtime);
+							$prev_downtime = 0;
 						}
 					}
 					else {
 						$lines[$key][] = '{ x: \''.$record['date'].'\', y: '.$record[$key].'}';
 					}
+					$prev = $record;
 				}
 			}
-			
-			
-			
 		}
-		if (!$prev_up['status'] && $line_type == 'short') {
-			// Was down before.
-			// Record the first and last date as a string in the down array
-			$lines['offline'][] = '{ x: '.($now->getTimestamp()*1000).', y:0.1}';
-			// TODO
-			// add the number of microseconds of downtime to counter for %
-			//$time_down += ($time - $now->getTimestamp());
+		// Was down before.
+		// Record the first and last date as a string in the down array
+		$prev_downtime == 0 ?: $downtime += ($now->getTimestamp()-$prev_downtime);
+		if ($add_uptime) {
+			$prev['status'] ?: $lines['offline'][] = '{ x: '.($now->getTimestamp()*1000).', y:0.1}';
+			$data['uptime'] = 100 - ($downtime / ($end_time->getTimestamp() - $start_time->getTimestamp()));
 		}
 
 		$lines_merged = array();
@@ -274,17 +271,6 @@ class HistoryGraph {
 			$lines_merged[$line_key]['name'] = psm_get_lang('servers', $line_key);
 		}
 
-		// TODO
-		/*if (isset($last_date)) {
-			// if last_date is still set, the last check was "down" and we are still in down mode
-			$downtime[] = '{ x: '.($last_date*1000).', y:0.0}';
-
-			$time_down += ($end_time->getTimestamp() - $last_date);
-		}
-
-		if ($add_uptime) {
-			$data['uptime'] = 100 - (($time_down / ($end_time->getTimestamp() - $start_time->getTimestamp())) / 10);
-		}*/
 		$data['latency_avg'] = count($records) > 0 ? ($latency_avg / count($records)) : 0;
 		$data['lines'] = sizeof($lines_merged) ? $lines_merged : '';
 		$data['end_timestamp'] = number_format($end_time->getTimestamp(), 0, '', '')*1000;
