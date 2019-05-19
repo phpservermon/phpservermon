@@ -175,9 +175,13 @@ Vendors
 
 The following libraries are being used by PHP Server Monitor:
 
-* jqPlot - http://www.jqplot.com
+* Chart.js - http://chartjs.org/
 * Twitter Bootstrap - http://getbootstrap.com
-* Bootstrap Multiselect - https://github.com/davidstutz/bootstrap-multiselect
+* jQuery - https://jquery.com
+* Font Awesome - https://fontawesome.com
+* Twig - https://twig.symfony.com
+* Bootstrap-select - https://github.com/snapappointments/bootstrap-select
 * PHP Mailer - https://github.com/PHPMailer/PHPMailer
-* php-pushover - https://github.com/kryap/php-pushover
-* Twig - http://twig.sensiolabs.org
+* PHP-Pushover - https://github.com/kryap/php-pushover
+* Symfony - https://symfony.com
+* Random_compat - https://github.com/paragonie/random_compat

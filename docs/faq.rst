@@ -89,11 +89,16 @@ The second part is the actual message. There are a few variables you can use in 
 * %PORT% - The port of the server
 * %ERROR% - This one only works for the off_* messages and contains the error returned by the monitor
 
+After upgrading, my email stopped working.
+------------------------------------------
+
+Run 'php composer.phar update' and you should be good to go!
+
 Notifications
 +++++++++++++
 
 I'm not recieving a notification after my server went down.
-------------------------------------------------------------
+-----------------------------------------------------------
 
 1. Check if you have setup the noticication method correctly on the config tab.
 2. Check if you have added the user to the server you want to monitor. This can be found under permissions while editting the server.

@@ -1,12 +1,13 @@
 {% block results %}
 {% if messages %}
 	{% for msg in messages %}
-	<div>
-		<p class="pull-left"><span class="label label-{{ msg.shortcode }}">{{ msg.shortcode }}</span></p>
-		{% autoescape false %}
-		<p class="offset1">{{ msg.message }}</p>
-		{% endautoescape %}
-	</div>
+		<div class="row">
+			<div class="col-md-1"><span class="badge badge-{{ msg.class }}">{{ msg.shortcode }}</span></div>
+			{% autoescape false %}
+			<div class="col-md-11">{{ msg.message }}</div>
+			{% endautoescape %}
+		</div>
 	{% endfor %}
+	<div class="w-100 mb-4"></div>
 {% endif %}
 {% endblock %}

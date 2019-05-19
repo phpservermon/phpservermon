@@ -82,21 +82,14 @@ class HistoryGraph {
 					continue;
 				}
 				$graph['info'][] = array(
-					'label' => psm_get_lang('servers', $field),
+					'label' => psm_get_lang('servers', $field), 
 					'value' => sprintf($format, $graph[$field]),
 				);
 			}
 		}
-
 		$tpl_data = array(
 			'graphs' => $graphs,
-			'label_server' => psm_get_lang('servers', 'server'),
-			'day_format' => psm_get_lang('servers', 'chart_day_format'),
-			'long_date_format' => psm_get_lang('servers', 'chart_long_date_format'),
-			'short_date_format' => psm_get_lang('servers', 'chart_short_date_format'),
-			'short_time_format' => psm_get_lang('servers', 'chart_short_time_format'),
 		);
-
 		return $this->twig->render('module/server/history.tpl.html', $tpl_data);
 	}
 
@@ -108,24 +101,27 @@ class HistoryGraph {
 	 * @return array
 	 */
 	public function generateGraphUptime($server_id, $start_time, $end_time) {
+
 		$lines = array(
 			'latency' => array(),
 		);
-		$cb_if_up = function($uptime_record) {
-			return ($uptime_record['status'] == 1);
-		};
+
+		$hour = new \DateTime('-1 hour');
+		$day = new \DateTime('-1 day');
+		$week = new \DateTime('-1 week');
+		
 		$records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
 
-		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency', $start_time, $end_time, true);
+		$data = $this->generateGraphLines($records, $lines, 'latency', $hour, $end_time, true);
 
 		$data['title'] = psm_get_lang('servers', 'chart_last_week');
-		$data['plotmode'] = 'hour';
+		$data['id'] = 'history_short';
+		$data['unit'] = 'minute';
 		$data['buttons'] = array();
-		$data['buttons'][] = array('mode' => 'hour', 'label' => psm_get_lang('servers', 'hour'), 'class_active' => 'btn-info');
-		$data['buttons'][] = array('mode' => 'day', 'label' => psm_get_lang('servers', 'day'));
-		$data['buttons'][] = array('mode' => 'week', 'label' => psm_get_lang('servers', 'week'));
-		// make sure to add chart id after buttons so its added to those tmeplates as well
-		$data['chart_id'] = $server_id.'_uptime';
+		$data['button_name'] = 'timeframe_short';
+		$data['buttons'][] = array('unit' => 'minute', 'time' => $hour->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'hour'), 'class_active' => 'active');
+		$data['buttons'][] = array('unit' => 'hour', 'time' => $day->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'day'));
+		$data['buttons'][] = array('unit' => 'day', 'time' => $week->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'week'));
 
 		return $data;
 	}
@@ -139,28 +135,27 @@ class HistoryGraph {
 	 */
 	public function generateGraphHistory($server_id, $start_time, $end_time) {
 		$lines = array(
+			'latency_min' => array(),
 			'latency_avg' => array(),
 			'latency_max' => array(),
-			'latency_min' => array(),
 		);
-		$server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array('server_id' => $server_id), array('warning_threshold'));
 
-		$cb_if_up = function($uptime_record) use($server) {
-			return ($uptime_record['checks_failed'] < $server['warning_threshold']);
-		};
-		$records = $this->getRecords('history', $server_id, $start_time, $end_time);
+		$week = new \DateTime('-2 week 0:0:0');
+		$month = new \DateTime('-1 month -1 week 0:0:0');
+		$year = new \DateTime('-1 year -1 week 0:0:0');
+
+		$records = $this->getRecords('history', $server_id, $month, $end_time);
 
 		// dont add uptime for now because we have no way to calculate accurate uptimes for archived records
-		$data = $this->generateGraphLines($records, $lines, $cb_if_up, 'latency_avg', $start_time, $end_time, false);
-
+		$data = $this->generateGraphLines($records, $lines, 'latency_avg', $start_time, $end_time, false);
 		$data['title'] = psm_get_lang('servers', 'chart_history');
-		$data['plotmode'] = 'month';
+		$data['id'] = 'history_long';
+		$data['unit'] = 'week';
 		$data['buttons'] = array();
-		$data['buttons'][] = array('mode' => 'week2', 'label' => psm_get_lang('servers', 'week'));
-		$data['buttons'][] = array('mode' => 'month', 'label' => psm_get_lang('servers', 'month'), 'class_active' => 'btn-info');
-		$data['buttons'][] = array('mode' => 'year', 'label' => psm_get_lang('servers', 'year'));
-		// make sure to add chart id after buttons so its added to those tmeplates as well
-		$data['chart_id'] = $server_id.'_history';
+		$data['button_name'] = 'timeframe_long';
+		$data['buttons'][] = array('unit' => 'day', 'time' => $week->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'week'));
+		$data['buttons'][] = array('unit' => 'week', 'time' => $month->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'month'), 'class_active' => 'active');
+		$data['buttons'][] = array('unit' => 'month', 'time' => $year->getTimestamp()*1000, 'label' => psm_get_lang('servers', 'year'));
 
 		return $data;
 	}
@@ -192,82 +187,94 @@ class HistoryGraph {
 
 	/**
 	 * Generate data arrays for graphs
-	 * @param array $records all uptime records to parse, MUST BE SORTED BY DATE IN ASCENDING ORDER
-	 * @param array $lines array with keys as line ids to prepare (key must be available in uptime records)
-	 * @param callable $cb_if_up function to check if the server is up or down
+	 * @param array $records All uptime records to parse, MUST BE SORTED BY DATE IN ASCENDING ORDER
+	 * @param array $lines Array with keys as line ids to prepare (key must be available in uptime records)
 	 * @param string $latency_avg_key which key from uptime records to use for calculating averages
 	 * @param \DateTime $start_time Lowest DateTime of the graph
 	 * @param \DateTime $end_time Highest DateTime of the graph
-	 * @param boolean $add_uptime add uptime calculation?
+	 * @param boolean $add_uptime Add uptime calculation?
+	 * @param array $prev Previous result
+	 * @param int $downtime Total downtime
+	 * @param int $prev_downtime Timestamp from last offline record. 0 when last record is uptime
 	 * @return array
 	 */
-	protected function generateGraphLines($records, $lines, $cb_if_up, $latency_avg_key, $start_time, $end_time, $add_uptime = false) {
+	protected function generateGraphLines($records, $lines, $latency_avg_key, $start_time, $end_time, $add_uptime = false) {
+		$now = new \DateTime();
 		$data = array();
 
 		// PLEASE NOTE: all times are in microseconds! because of javascript.
-		$last_date = 0;
 		$latency_avg = 0;
-		$series = array();
-		// number of microseconds of downtime
-		$time_down = 0;
 
-		$down = array();
+		$prev = reset($records);
+
+		$prev_downtime = 0;
+		$downtime = 0;
 
 		// Create the list of points and server down zones
-		foreach ($records as $uptime) {
-			$time = strtotime($uptime['date']) * 1000;
-
+		foreach ($records as $record) {
+			$time = strtotime($record['date']);
 			// use the first line to calculate average latency
-			$latency_avg += (float) $uptime[$latency_avg_key];
+			$latency_avg += (float) $record[$latency_avg_key];
 
-			if ($cb_if_up($uptime)) {
-				// The server is up
-				foreach ($lines as $key => $value) {
-					// add the value for each of the different lines
-					if (isset($uptime[$key])) {
-						$lines[$key][] = '['.number_format($time, 0, '', '').','.round((float) $uptime[$key], 4).']';
+			foreach ($lines as $key => $value) {
+				// add the value for each of the different lines
+				if (isset($record[$key])) {
+					if (isset($record['status'])){
+						// down
+						if ($record['status'] == 0){
+							$lines['online'][] = $prev['status'] 
+								// Previous datapoint was online
+								? '{ x: '.($time*1000).', y: '.$prev['latency'].'}'
+								// Previous datapoint was offline
+								: '{ x: '.($time*1000).', y: null}';
+							// new outage start
+							$lines['offline'][] = '{ x: '.($time*1000).', y:0.1}';
+
+							$prev_downtime != 0 ?: $prev_downtime = $time;
+						}
+						// up
+						else {
+							// outage ends
+							$lines['offline'][] = $prev['status']
+								// Previous datapoint was online
+								? '{ x: '.($time*1000).', y:null}'
+								// Previous datapoint was offline
+								: '{ x: '.($time*1000).', y:0.1}';
+							$lines['online'][] = '{ x: '.($time*1000).', y: '.round((float) $record[$key], 4).'}';
+
+							$prev_downtime == 0 ?: $downtime += ($time - $prev_downtime);
+							$prev_downtime = 0;
+						}
 					}
-				}
-				if ($last_date) {
-					// Was down before.
-					// Record the first and last date as a string in the down array
-					$down[] = '['.number_format($last_date, 0, '', '').','.number_format($time, 0, '', '').']';
-					// add the number of microseconds of downtime to counter for %
-					$time_down += ($time - $last_date);
-					$last_date = 0;
-				}
-			} else {
-				// The server is down
-				if (!$last_date) {
-					$last_date = $time;
+					else {
+						$lines[$key][] = '{ x: \''.$record['date'].'\', y: '.$record[$key].'}';
+					}
+					$prev = $record;
 				}
 			}
 		}
-		$lines_merged = array();
+		// Was down before.
+		// Record the first and last date as a string in the down array
+		$prev_downtime == 0 ?: $downtime += ($now->getTimestamp()-$prev_downtime);
+		if ($add_uptime) {
+			$prev['status'] ?: $lines['offline'][] = '{ x: '.($now->getTimestamp()*1000).', y:0.1}';
+			$data['uptime'] = 100 - ($downtime / ($end_time->getTimestamp() - $start_time->getTimestamp()));
+		}
 
+		$lines_merged = array();
 		foreach ($lines as $line_key => $line_value) {
+			
 			if (empty($line_value)) {
 				continue;
 			}
-			$lines_merged[] = '['.implode(',', $line_value).']';
-			$series[] = "{label: '".psm_get_lang('servers', $line_key)."'}";
-		}
-		if ($last_date) {
-			// if last_date is still set, the last check was "down" and we are still in down mode
-			$down[] = '['.number_format($last_date, 0, '', '').',0]';
-			$time_down += (($end_time->getTimestamp() * 1000) - $last_date);
-		}
-
-		if ($add_uptime) {
-			$data['uptime'] = 100 - (($time_down / ($end_time->getTimestamp() - $start_time->getTimestamp())) / 10);
+			$lines_merged[$line_key]['value'] = implode(', ', $line_value);
+			$lines_merged[$line_key]['name'] = psm_get_lang('servers', $line_key);
 		}
 
 		$data['latency_avg'] = count($records) > 0 ? ($latency_avg / count($records)) : 0;
-		$data['server_lines'] = sizeof($lines_merged) ? '['.implode(',', $lines_merged).']' : '';
-		$data['server_down'] = sizeof($down) ? '['.implode(',', $down).']' : '';
-		$data['series'] = sizeof($series) ? '['.implode(',', $series).']' : '';
-		$data['end_timestamp'] = number_format($end_time->getTimestamp() * 1000, 0, '', '');
-
+		$data['lines'] = sizeof($lines_merged) ? $lines_merged : '';
+		$data['end_timestamp'] = number_format($end_time->getTimestamp(), 0, '', '')*1000;
+		$data['start_timestamp'] = number_format($start_time->getTimestamp(), 0, '', '')*1000;
 		return $data;
 	}
 }

@@ -1,92 +1,42 @@
 {% import 'main/macros.tpl.html' as macro %}
-<form class="form-horizontal well" action="{{ form_action|raw }}" method="post">
-	{{ macro.csrf_input() }}
+<form name="edit_profile" class="col-md-6 pl-0 pr-0" action="{{ form_action|raw }}" id="edit_profile" method="post">
+	{{ macro.input_csrf() }}
+	<!-- General settings -->
 	<fieldset>
-	<div class="row-fluid">
-		<div class="span6">
-			<div class="control-group">
-				<label class="control-label" for="user_name">{{ label_user_name }}</label>
-				<div class="controls">
-					<input type="text" id="user_name" name="user_name" value="{{ user_name }}" maxlength="64" required autofocus=>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="name">{{ label_name }}</label>
-				<div class="controls">
-					<input type="text" id="name" name="name" value="{{ name }}" maxlength="255" required>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="level">{{ label_level }}</label>
-				<div class="controls"><input type="text" value="{{ level }}" disabled="disabled" /></div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="password">{{ label_password }}</label>
-				<div class="controls">
-					<input type="password" id="password" name="password" maxlength="255" placeholder="{{ placeholder_password }}" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="password_repeat">{{ label_password_repeat }}</label>
-				<div class="controls">
-					<input type="password" id="password_repeat" name="password_repeat" maxlength="255" placeholder="{{ placeholder_password }}" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="email">{{ label_email }}</label>
-				<div class="controls">
-					<input type="text" id="email" name="email" value="{{ email }}" maxlength="255" required>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="email">{{ label_mobile }}</label>
-				<div class="controls">
-					<input type="text" id="mobile" name="mobile" value="{{ mobile }}" maxlength="15" />
-				</div>
-			</div>
+		<legend>{{ label_general }}</legend>
+		<!-- Username -->
+		{{ macro.input_field("text", "user_name", null, "user_name", label_user_name, user_name, label_user_name, "64", null, null, null, null, true, true, "username") }}
+		<!-- Name -->
+		{{ macro.input_field("text", "name", null, "name", label_name, name, label_name, "255", null, null, null, null, true, null, "name") }}
+		<!-- Level -->
+		{{ macro.input_field("text", "level", null, "level", label_level, level, label_level, null, null, null, null, null, null, null, null, true) }}
+		<!-- Password -->
+		{{ macro.input_field("password", "password", null, "password", label_password, null, placeholder_password, "255", null, null, null, null, null, null, "new-password") }}
+		<!-- Password repeat -->
+		{{ macro.input_field("password", "password_repeat", null, "password_repeat", label_password_repeat, null, placeholder_password, "255", null, null, null, null, null, null, "new-password") }}
+		<!-- Email -->
+		{{ macro.input_field("email", "email", null, "email", label_email, email, label_email, "255", null, null, null, null, true, null, "email") }}
+		<!-- Mobile -->
+		{{ macro.input_field("tel", "mobile", null, "mobile", label_mobile, mobile, label_mobile, "15", null, null, null, null, null, null, "tel") }}
+	</fieldset>
+	<!-- Pushover settings -->
+	<fieldset>
+		<legend>{{ label_pushover }}</legend>
+		<!-- pushover key -->
+		{{ macro.input_field("text", "pushover_key", null, "pushover_key", label_pushover_key, pushover_key, label_pushover_key, "255", "pushover_key_help", pushover_key_description) }}
+		<!-- pushover device -->
+		{{ macro.input_field("text", "pushover_device", null, "pushover_device", label_pushover_device, pushover_device, label_pushover_device, "255", "pushover_device_help", pushover_device_description) }}
+	</fieldset>
+	<!-- Telegram settings -->
+	<fieldset>
+		<legend>{{ label_telegram }}</legend>
+		<!-- telegram id -->
+		<div class="form-group">
+			<a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
 		</div>
-		<div class="span6">
-			<div class="control-group">
-				<label class="control-label">{{ label_pushover }}</label>
-				<div class="controls">{{ label_pushover_description|raw }}	</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="mobile">{{ label_pushover_key }}</label>
-				<div class="controls">
-					<input type="text" id="pushover_key" name="pushover_key" value="{{ pushover_key }}" maxlength="255" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="mobile">{{ label_pushover_device }}</label>
-				<div class="controls">
-					<input type="text" id="pushover_device" name="pushover_device" value="{{ pushover_device }}" maxlength="255" data-toggle="tooltip" title="{{ label_pushover_device_description }}" />
-				</div>
-			</div>
-			<div class="control-group">
-			</div>
-			<div class="control-group">
-			  <label class="control-label">{{ label_telegram }}</label>
-			  <div class="controls">{{ label_telegram_description|raw }}	<br><p><button class="btn btn-primary" onclick="window.open('{{ telegram_get_chat_id_url }}');return false;">{{ label_telegram_get_chat_id }}</button></p></div>
-			</div>
-			<div class="control-group">
-			  <label class="control-label" for="mobile">{{ label_telegram_chat_id }}</label>
-				 <div class="controls">
-			    <input type="text" id="telegram_id" name="telegram_id" value="{{ telegram_id }}" maxlength="255" data-toggle="tooltip" title="{{ label_telegram_chat_id_description }}" />
-			  </div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<button class="btn btn-primary show-modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
-					<input type="hidden" name="activate_telegram" value="0" />
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="form-actions">
-			<button class="btn btn-success" type="submit">{{ label_save }}</button>
-		</div>
-	</div>
-	 </fieldset>
+		{{ macro.input_field("text", "telegram_id", null, "telegram_id", label_telegram_chat_id, telegram_id, label_telegram_chat_id, "255", "telegram_id_help", telegram_id_description) }}
+		<button class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
+		{{ macro.input_hidden("activate_telegram", "0") }}
+		{{ macro.button_save(null, label_save) }}
+	</fieldset>
 </form>
-

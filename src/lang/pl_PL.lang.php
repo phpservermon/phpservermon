@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nie',
 		'insert' => 'Wstaw',
 		'add_new' => 'Dodaj',
-		'update_available' => 'Nowa wersja ({version}) jest dostępna do pobrania z <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Nowa wersja ({version}) jest dostępna do pobrania z <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Do góry',
 		'go_back' => 'Wstecz',
 		'ok' => 'OK',
@@ -92,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Poziom',
 		'level_10' => 'Administrator',
 		'level_20' => 'Użytkownik',
-		'level_description' => '<b>Administratorzy</b> posiadają pełny dostęp: mogą zarządzać serwerami, użytkownikami oraz edytować konfigurację globalną.<br/><b>Użytkownicy</b> mogą podejrzeć serwer oraz uruchomić aktualizację statusu dla serwerów do nich przypisanych.',
+		'level_description' => '<b>Administratorzy</b> posiadają pełny dostęp: mogą zarządzać serwerami, użytkownikami oraz edytować konfigurację globalną.<br><b>Użytkownicy</b> mogą podejrzeć serwer oraz uruchomić aktualizację statusu dla serwerów do nich przypisanych.',
 		'mobile' => 'Telefon',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -212,14 +212,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover jest usługą ułatwiającą otrzymywanie powiadomień w czasie rzeczywistym. Sprawdź <a href="https://pushover.net/">ich stronę</a> aby uzyskać więcej informacji.',
 		'pushover_clone_app' => 'Kliknij tutaj aby stworzyć aplikację korzystającą z Pushover',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"> zarejestrować aplikację</a> na ich stronie internetowej i wpisać tutaj App API Token.',
+		'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank" rel="noopener"> zarejestrować aplikację</a> na ich stronie internetowej i wpisać tutaj App API Token.',
 		'alert_type' => 'Wybierz kiedy chcesz być powiadomiony.',
 		'alert_type_description' => '<b>Zmiana statusu:</b> '.
-			'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br/>'.
+			'Otrzymasz powiadomienie gdy serwer zmieni status. Z online -> offline lub offline -> online.<br>'.
 			'<br /><b>Offline:</b> '.
 			'Otrzymasz powiadomienie gdy serwer zmieni status na offline po raz pierwszy. Na przykład, '.
 			'Twój cronjob uruchamia się co 15 minut, a Twój serwer przestaje odpowiadać o 13 i nie działa do 18. '.
-			'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br/>'.
+			'Otrzymasz *TYLKO* jedno powiadomienie o 13.<br>'.
 			'<br><b>Zawsze:</b> '.
 			'Otrzymasz powiadomienie za każdym razem gdy skrypt zostanie uruchomiony a strona będzie niedostępna.',
 		'alert_type_status' => 'Zmiana statusu',
@@ -241,7 +241,7 @@ $sm_lang = array(
 		'settings_log' => 'Ustawienia Logowania',
 		'auto_refresh' => 'Auto-odświeżanie',
 		'auto_refresh_servers' =>
-			'Auto-odświeżanie strony serwera.<br/>'.
+			'Auto-odświeżanie strony serwera.<br>'.
 			'<span class="small">'.
 			'Czas w sekundach, dla czasu 0 strona nie będzie odświeżana.'.
 			'</span>',
@@ -266,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Liczba dni przez którą należy przetrzymywać logi powiadomień i archiwizować uptime serwera. Wpisz 0 aby wyłączyć czyszczenie logów.',
 		'log_retention_days' => 'dni',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Serwer \'%LABEL%\' przestał odpowiadać: ip=%IP%, port=%PORT%. Błąd=%ERROR%',
 		'off_email_subject' => 'Uwaga: Serwer \'%LABEL%\' nie odpowiada',
-		'off_email_body' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
+		'off_email_body' => "Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Błąd: %ERROR%<br>Data: %DATE%",
 		'off_pushover_title' => 'Serwer \'%LABEL%\' nie odpowiada',
-		'off_pushover_message' => "Błąd połączenia do serwera:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Błąd: %ERROR%<br/>Data: %DATE%",
+		'off_pushover_message' => "Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Błąd: %ERROR%<br>Data: %DATE%",
 		'on_sms' => 'Serwer \'%LABEL%\' działa poprawnie: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Uwaga: Serwer \'%LABEL%\' działa poprawnie',
-		'on_email_body' => "Serwer '%LABEL%' znów odpowiada, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%",
+		'on_email_body' => "Serwer '%LABEL%' znów odpowiada, it was down for %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data: %DATE%",
 		'on_pushover_title' => 'Serwer \'%LABEL%\' działa poprawnie',
-		'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Serwer: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Data: %DATE%',
+		'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie, it was down for %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Witaj, %user_name%',
@@ -294,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Zapomniałeś hasła?',
 		'password_reset' => 'Zresetuj hasło',
 		'password_reset_email_subject' => 'Zresetuj hasło do monitoringu',
-		'password_reset_email_body' => 'Aby zresetować hasło użyj tego linku. Ważność linku to jedna godzina.<br/><br/>%link%',
+		'password_reset_email_body' => 'Aby zresetować hasło użyj tego linku. Ważność linku to jedna godzina.<br><br>%link%',
 		'error_user_incorrect' => 'Brak użytkownika o takim loginie.',
 		'error_login_incorrect' => 'Login lub hasło jest błędne.',
 		'error_login_passwords_nomatch' => 'Podane hasła nie pasują do siebie.',

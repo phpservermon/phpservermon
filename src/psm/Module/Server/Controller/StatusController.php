@@ -43,7 +43,6 @@ class StatusController extends AbstractServerController {
 
 	/**
 	 * Prepare the template to show a list of all servers
-	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
 		// set background color to black
@@ -53,12 +52,17 @@ class StatusController extends AbstractServerController {
 		// add header accessories
 		$layout = $this->getUser()->getUserPref('status_layout', 0);
 		$layout_data = array(
+			'label_none' => psm_get_lang('system', 'none'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
 			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
+			'label_online' => psm_get_lang('servers', 'online'),
+			'label_offline' => psm_get_lang('servers', 'offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
-			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
-			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+			'block_layout_active' => ($layout == 0) ? 'active' : '',
+			'list_layout_active' => ($layout != 0) ? 'active' : '',
+			'label_add_server' => psm_get_lang('system', 'add_new'),
+			'url_save' => psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 		);
 		$this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
 

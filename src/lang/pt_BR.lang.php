@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Não',
 		'insert' => 'Inserir',
 		'add_new' => 'Adicionar novo',
-		'update_available' => 'Uma atualização ({version}) disponível em <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uma atualização ({version}) disponível em <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Voltar ao topo',
 		'go_back' => 'Voltar',
 		'ok' => 'OK',
@@ -92,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Nível',
 		'level_10' => 'Administrador',
 		'level_20' => 'Usuário',
-		'level_description' => '<b>Administradores</b> Tem total acesso: podem gerenciar servidores, usuários e configurações globais.<br/><b>Usuários</b> só podem executar atualizações para servidores que lhe foram atribuídos.',
+		'level_description' => '<b>Administradores</b> Tem total acesso: podem gerenciar servidores, usuários e configurações globais.<br><b>Usuários</b> só podem executar atualizações para servidores que lhe foram atribuídos.',
 		'mobile' => 'Celular',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -212,14 +212,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover é um serviço de notificações em tempo real. Veja <a href="https://pushover.net/">o website</a> para mais informações.',
 		'pushover_clone_app' => 'Clique aqui para criar sua app Pushover',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
 		'alert_type' => 'Selecione como você gostaria de ser notificado.',
 		'alert_type_description' => '<b>Mudança de Status:</b> '.
-			'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br/>'.
+			'Você receberá uma notificação quando o seridor tive uma mudança de status. De online -> offline ou offline -> online.<br>'.
 			'<br /><b>Offline:</b> '.
 			'Você receberá uma notificação quando o servidor fica OFFLINE (Pela primeira vez). Por exemplo, '.
 			'A cronjob é a cada 15 minutos e seu servidor caiu em 1:00 e permanece offline até 6 am. '.
-			'Você receberá uma notificação a 1:00 apenas<br/>'.
+			'Você receberá uma notificação a 1:00 apenas<br>'.
 			'<br><b>Sempre:</b> '.
 			'Você receberá uma notificação toda vez que o script é executado e um site esta offline, mesmo se o site tenha ficado offline por horas.',
 		'alert_type_status' => 'Mudança de Status',
@@ -241,7 +241,7 @@ $sm_lang = array(
 		'settings_log' => 'Configuração de Logs',
 		'auto_refresh' => 'Atualizar automaticamente',
 		'auto_refresh_servers' =>
-			'Atualizar automaticamente a página de servidores.<br/>'.
+			'Atualizar automaticamente a página de servidores.<br>'.
 			'<span class="small">'.
 			'Tempo em segundos, Se 0 a página não será atualizada.'.
 			'</span>',
@@ -266,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Número de dias para manter os registros de notificações e arquivos de tempo de atividade do servidor. Digite 0 para desativar a limpeza de registro.',
 		'log_retention_days' => 'dias',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Servidor \'%LABEL%\' está OFFLINE: ip=%IP%, porta=%PORT%. Erro=%ERROR%',
 		'off_email_subject' => 'IMPORTANTE: Servidor \'%LABEL%\' está OFFLINE',
-		'off_email_body' => "Falha ao conectar ao servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Erro: %ERROR%<br/>Data: %DATE%",
+		'off_email_body' => "Falha ao conectar ao servidor:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Erro: %ERROR%<br>Data: %DATE%",
 		'off_pushover_title' => 'Servidor \'%LABEL%\' está OFFLINE',
-		'off_pushover_message' => "Falha ao conectar ao servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Erro: %ERROR%<br/>Data: %DATE%",
+		'off_pushover_message' => "Falha ao conectar ao servidor:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Erro: %ERROR%<br>Data: %DATE%",
 		'on_sms' => 'Servidor \'%LABEL%\' esta ONLINE: ip=%IP%, porta=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANTE: Servidor \'%LABEL%\' esta ONLINE',
-		'on_email_body' => "Servidor '%LABEL%' esta ONLINE novamente, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_email_body' => "Servidor '%LABEL%' esta ONLINE novamente, it was down for %LAST_OFFLINE_DURATION%:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Data: %DATE%",
 		'on_pushover_title' => 'Servidor \'%LABEL%\' esta ONLINE',
-		'on_pushover_message' => "Servidor '%LABEL%' esta ONLINE novamente, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_pushover_message' => "Servidor '%LABEL%' esta ONLINE novamente, it was down for %LAST_OFFLINE_DURATION%:<br><br>Servidor: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Data: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Bem vindo, %user_name%',
@@ -294,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Perdeu a senha?',
 		'password_reset' => 'Redefinir senha',
 		'password_reset_email_subject' => 'Redefinir sua senha para PHP Server Monitor',
-		'password_reset_email_body' => 'Por favor use o link para redefinir sua senha. Este link irá expirar em 1 hora.<br/><br/>%link%',
+		'password_reset_email_body' => 'Por favor use o link para redefinir sua senha. Este link irá expirar em 1 hora.<br><br>%link%',
 		'error_user_incorrect' => 'O username não pode ser encontrado.',
 		'error_login_incorrect' => 'As informações são incorretas.',
 		'error_login_passwords_nomatch' => 'A senha informada não é válida.',

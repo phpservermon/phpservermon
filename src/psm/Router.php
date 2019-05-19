@@ -230,6 +230,7 @@ class Router {
 		);
 		$twig->addGlobal('direction_current', psm_get_lang('locale_dir'));
 		$twig->addGlobal('language_current', psm_get_lang('locale_tag'));
+		$twig->addGlobal('language', psm_get_lang('locale')[1]);
 
 		return $twig;
 	}

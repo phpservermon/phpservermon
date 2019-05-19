@@ -1,4 +1,16 @@
-<div class="btn-group" data-toggle="buttons-radio">
-	<button class="btn {{ block_layout_active }}" data-toggle="tab" data-target="#flow-layout" onclick="psm_saveLayout(0)"><i class="icon-th-large"></i></button>
-	<button class="btn {{ list_layout_active }}" data-toggle="tab" data-target="#list-layout" onclick="psm_saveLayout(1)"><i class="icon-th-list"></i></button>
+<div class="row">
+	<noscript><div hidden></noscript>
+	<div class="float-right btn-group btn-group-sm mb-3" role="group">
+		<button type="button" class="btn btn-secondary {% if block_layout_active %} active {% endif %}" 
+			id="block-layout" aria-label="Block layout" 
+			onclick="psm_saveLayout(0)">
+			<i class="fas fa-th"></i>
+		</button>
+		<button type="button" class="btn btn-secondary {% if list_layout_active %} active {% endif %}" 
+			id="table-layout" aria-label="List layout"
+			onclick="psm_saveLayout(1)">
+			<i class="fas fa-bars"></i>
+		</button>
+	</div>
+	<noscript></div></noscript>
 </div>

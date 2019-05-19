@@ -35,7 +35,7 @@ class ProfileController extends AbstractController {
 	 * Editable fields for the profile
 	 * @var array $profile_fields
 	 */
-	protected $profile_fields = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
+	protected $profile_fields = array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id');
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -54,13 +54,14 @@ class ProfileController extends AbstractController {
 		$this->twig->addGlobal('subtitle', psm_get_lang('users', 'profile'));
 		$user = $this->getUser()->getUser(null, true);
 
-		$modal = new \psm\Util\Module\Modal($this->twig, 'activate'.ucfirst('telegram'), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
+		$modal = new \psm\Util\Module\Modal($this->twig, 'activate' . ucfirst('telegram'), \psm\Util\Module\Modal::MODAL_TYPE_OKCANCEL);
 		$this->addModal($modal);
 		$modal->setTitle(psm_get_lang('users', 'activate_telegram'));
 		$modal->setMessage(psm_get_lang('users', 'activate_telegram_description'));
 		$modal->setOKButtonLabel(psm_get_lang('system', 'activate'));
 
 		$tpl_data = array(
+			'label_general' => psm_get_lang('config', 'general'),
 			'label_name' => psm_get_lang('users', 'name'),
 			'label_user_name' => psm_get_lang('users', 'user_name'),
 			'label_password' => psm_get_lang('users', 'password'),
@@ -85,7 +86,7 @@ class ProfileController extends AbstractController {
 				'mod' => 'user_profile',
 				'action' => 'save',
 			)),
-			'level' => psm_get_lang('users', 'level_'.$user->level),
+			'level' => psm_get_lang('users', 'level_' . $user->level),
 			'placeholder_password' => psm_get_lang('users', 'password_leave_blank'),
 		);
 		foreach ($this->profile_fields as $field) {
@@ -127,7 +128,7 @@ class ProfileController extends AbstractController {
 				$validator->password($clean['password'], $clean['password_repeat']);
 			}
 		} catch (\InvalidArgumentException $e) {
-			$this->addMessage(psm_get_lang('users', 'error_'.$e->getMessage()), 'error');
+			$this->addMessage(psm_get_lang('users', 'error_' . $e->getMessage()), 'error');
 			return $this->executeIndex();
 		}
 		if (!empty($clean['password'])) {
@@ -136,7 +137,7 @@ class ProfileController extends AbstractController {
 		unset($clean['password']);
 		unset($clean['password_repeat']);
 
-		$this->db->save(PSM_DB_PREFIX.'users', $clean, array('user_id' => $this->getUser()->getUserId()));
+		$this->db->save(PSM_DB_PREFIX . 'users', $clean, array('user_id' => $this->getUser()->getUserId()));
 		$this->container->get('event')->dispatch(
 			\psm\Module\User\UserEvents::USER_EDIT,
 			new \psm\Module\User\Event\UserEvent($this->getUser()->getUserId())
@@ -161,22 +162,24 @@ class ProfileController extends AbstractController {
 
 		if (empty($apiToken)) {
 			$this->addMessage(psm_get_lang('config', 'telegram_error_notoken'), 'error');
-		} else {
-			$result = $telegram->getBotUsername();
-
-			if (isset($result['ok']) && $result['ok'] != false) {
-				$url = "https://t.me/".$result["result"]["username"];
-				$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_username_found'), $url), 'success');
-			} else {
-				if (isset($result['error_code']) && $result['error_code'] == 401) {
-					$error = psm_get_lang('users', 'telegram_bot_username_error_token');
-				} elseif (isset($result['description'])) {
-					$error = $result['description'];
-				} else {
-					$error = 'Unknown';
-				}
-				$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_error'), $error), 'error');
-			}
+			return;
 		}
+
+		$result = $telegram->getBotUsername();
+
+		if (isset($result['ok']) && $result['ok'] != false) {
+			$url = "https://t.me/" . $result["result"]["username"];
+			$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_username_found'), $url), 'success');
+			return;
+		}
+
+		if (isset($result['error_code']) && $result['error_code'] == 401) {
+			$error = psm_get_lang('users', 'telegram_bot_username_error_token');
+		} elseif (isset($result['description'])) {
+			$error = $result['description'];
+		} else {
+			$error = 'Unknown';
+		}
+		$this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_error'), $error), 'error');
 	}
 }

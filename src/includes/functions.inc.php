@@ -357,6 +357,9 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
+	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
+	}
 	curl_setopt($ch, CURLOPT_HEADER, $header);
 	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -392,11 +395,17 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	}
 
 	if ($add_agent) {
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +https://github.com/phpservermon/phpservermon)');
 	}
 
 	$result = curl_exec($ch);
 	curl_close($ch);
+	
+	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
+		echo PHP_EOL.'==============cURL Result for: '.$href.'==========================================='.PHP_EOL;
+		print_r($result);
+		echo PHP_EOL.'==============END cURL Resul for: '.$href.'==========================================='.PHP_EOL;
+	}
 
 	return $result;
 }
@@ -744,6 +753,7 @@ function psm_no_cache() {
  * @return string
  * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  */
+// TODO change to working function
 function psm_password_encrypt($key, $password)
 {
 	if (empty($password)) {
@@ -754,6 +764,7 @@ function psm_password_encrypt($key, $password)
 		throw new \InvalidArgumentException('invalid_encryption_key');
 	}
 
+	// TODO rewrite
 	$iv = mcrypt_create_iv(
 		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
 		MCRYPT_DEV_URANDOM
