@@ -1,5 +1,6 @@
-#phpservermonitor updater
+# phpservermonitor updater
 # Developed by petrk94 - https://github.com/petrk94
+# Worked on by fr32k - https://github.com/fr32k
 #
 # requirements 
 # PHP
@@ -12,10 +13,29 @@
 
 echo .......... PHPSERVERMON UPDATER ..........
 
+# Check requirements
+# unzip
+if ! type -p unzip; then
+    echo "unzip not installed. exit"
+    exit 1
+fi
+
+# grep
+if ! type -p grep; then
+    echo "grep not installed. exit"
+    exit 1
+fi
+
+# cURL
+if ! type -p curl; then
+    echo "cURL not installed. exit"
+    exit 1
+fi
+
 # check if updater is executed from within the phpservermon directory
 if [ ! -f ./updater.sh ]; then 
     echo STOPPED: don\'t execute the updater from another directory!
-    exit
+    exit 1
 else
     echo Start updating
 fi
@@ -28,13 +48,7 @@ echo Downloading latest Version of PHPServerMonitor \($version\)
 downloadfile=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep "zipball" | cut -d '"' -f 4)
 
 # download latest release
-wget -O update.zip.keep $downloadfile
-# Check if wget is installed
-if ! [ $? -eq 0 ]
-then
-   echo "wget not installed"
-   exit
-fi
+curl -so update.zip.keep $downloadfile
 
 echo Save config.php 
 mv config.php config.php.keep
