@@ -2,10 +2,11 @@ tag = $(shell git describe)
 VERSION = ${subst v,,$(tag)}
 RELEASE_DIR = ./build
 RELEASE_FILE = phpservermon-$(VERSION)
+os = l
 
 help:
 	@echo ' PHP Server Monitor - $(tag)'
-	@echo ' - make export [tag=...]  - create a new release from tag '
+	@echo ' - make export [os=...] [tag=...]  - create a new release from tag. OS: Use m for macOS.'
 	@echo ' - make install           - install all dependencies '
 
 install:
@@ -18,8 +19,15 @@ export:
 	mkdir -p $(RELEASE_DIR) $(RELEASE_DIR)/$(RELEASE_FILE)
 	rm -rf $(RELEASE_DIR)/$(RELEASE_FILE)/*
 	git archive $(tag) | tar -xf - -C $(RELEASE_DIR)/$(RELEASE_FILE)/
-	#find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \; # for osx
+ifeq (${os}, m)
+	find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" -exec sed -i "" "s/@package_version@/$(tag)/" {} \; # for osx
+else 
+ifeq (${os}, l)
 	find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" -exec sed -i "s/@package_version@/$(tag)/" {} \; # for linux
+else
+	$(error OS invalid, use m for macOS and l for Linux)
+endif
+endif
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
 	find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" | xargs -I file php -l file
 	@echo 'Downloading dependencies'

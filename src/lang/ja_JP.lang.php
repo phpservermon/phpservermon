@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'いいえ',
 		'insert' => '挿入',
 		'add_new' => '新規に追加',
-		'update_available' => '新しいバージョン({version}) がリリースされています。ここから入手可能です： <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => '新しいバージョン({version}) がリリースされています。ここから入手可能です： <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'トップに戻る',
 		'go_back' => '戻る',
 		'ok' => 'OK',
@@ -80,7 +80,7 @@ $sm_lang = array(
 		'level' => 'レベル',
 		'level_10' => '管理者(Administrator)',
 		'level_20' => 'ユーザー(User)',
-		'level_description' => '<b>管理者(Administrator)</b> はフルアクセス権があります：サーバーの管理、 ユーザーとグローバル設定を変更できます。<br/><b>ユーザー(Users)</b>は、割り当てられたサーバーのアップデータのみを表示して実行できます。',
+		'level_description' => '<b>管理者(Administrator)</b> はフルアクセス権があります：サーバーの管理、 ユーザーとグローバル設定を変更できます。<br><b>ユーザー(Users)</b>は、割り当てられたサーバーのアップデータのみを表示して実行できます。',
 		'mobile' => 'モバイル',
 		'email' => 'メールアドレス',
 		'pushover' => 'プッシュオーバー',
@@ -124,7 +124,8 @@ $sm_lang = array(
 		'domain' => 'ドメイン/IP',
 		'timeout' => 'タイムアウト',
 		'timeout_description' => '指定した秒数、サーバーのレスポンスを待ちます。',
-		'authentication_settings' => '認証設定(オプション)',
+		'authentication_settings' => '認証設定',
+		'optional' => 'オプション',
 		'website_username' => 'ユーザー名',
 		'website_username_description' => 'ユーザー名でウェブサイトにアクセスします。 (サポートはApache認証のみです。)',
 		'website_password' => 'パスワード',
@@ -216,21 +217,21 @@ $sm_lang = array(
 		'pushover_description' => 'プッシュオーバーは、リアルタイムの通知を簡単に取得できるサービスです。 詳細については、<a href="https://pushover.net/">ウェブサイト</a>をご覧ください。',
 		'pushover_clone_app' => 'クリックでプッシュオーバーアプリケーションを作成できます。',
 		'pushover_api_token' => 'プッシュオーバーアプリケーションのAPIトークン',
-		'pushover_api_token_description' => 'プッシュオーバーを使用するには、事前にウェブサイトで<a href="%1$s" target="_blank">アプリを登録</a>してApp APIトークンを入力する必要があります。',
+		'pushover_api_token_description' => 'プッシュオーバーを使用するには、事前にウェブサイトで<a href="%1$s" target="_blank" rel="noopener">アプリを登録</a>してApp APIトークンを入力する必要があります。',
 		'alert_type' => '通知するタイミングを選択',
 		'alert_type_description' => '<b>状態の変化:</b> '.
-			'サーバーのステータスが変更されたときに通知を受け取ります。 だからオンライン -> オフラインまたはオフライン -> オンライン。<br/>'.
+			'サーバーのステータスが変更されたときに通知を受け取ります。 だからオンライン -> オフラインまたはオフライン -> オンライン。<br>'.
 			'<br /><b>オフライン:</b> '.
 			'サーバーが*初めての間*オフラインになったときに通知を受け取ります。 例えば、'.
 			'あなたのcronの仕事は15分ごとです。あなたのサーバーは午前1時にダウンし、午前6時まで停止します。 '.
-			'午前1時に1つの通知が届きます。<br/>'.
+			'午前1時に1つの通知が届きます。<br>'.
 			'<br><b>常に:</b> '.
 			'サイトが数時間にわたってオフラインになっていても、スクリプトが実行され、サイトが停止するたびに通知を受け取ります。',
 		'alert_type_status' => '状況の変化',
 		'alert_type_offline' => 'オフライン',
 		'alert_type_always' => '常に',
 		'alert_proxy' => '有効にしても、プロキシはサービスに使用されません',
-		'alert_proxy_url' => '<b>フォーマット:</b> ホスト:ポート',
+		'alert_proxy_url' => 'フォーマット: ホスト:ポート',
 		'log_status' => 'ログステータス',
 		'log_status_description' => 'ログステータスがTRUEに設定されている場合、モニターは通知設定が渡されるたびにイベントを記録します。',
 		'log_email' => 'スクリプトによって送信された電子メールを記録する',
@@ -248,7 +249,7 @@ $sm_lang = array(
 		'settings_proxy' => 'プロキシ設定',
 		'auto_refresh' => '自動更新',
 		'auto_refresh_servers' =>
-			'サーバーページを自動更新します。<br/>'.
+			'サーバーページを自動更新します。<br>'.
 			'<span class="small">'.
 			'時間を秒で指定し、0に設定すると更新しません。'.
 			'</span>',
@@ -273,18 +274,18 @@ $sm_lang = array(
 		'log_retention_period_description' => '通知のログおよびサーバー稼働時間のアーカイブを保持する日数。 ログのクリーンアップを無効にするには、0を入力します。',
 		'log_retention_days' => '日',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'サーバー \'%LABEL%\' はダウンしています: ip=%IP%, ポート=%PORT%. エラー=%ERROR%',
 		'off_email_subject' => '重要: サーバー \'%LABEL%\' がダウンしています！',
-		'off_email_body' => "サーバーへの接続に失敗しました:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>エラー: %ERROR%<br/>日時: %DATE%",
+		'off_email_body' => "サーバーへの接続に失敗しました:<br><br>Server: %LABEL%<br>IP: %IP%<br>ポート: %PORT%<br>エラー: %ERROR%<br>日時: %DATE%",
 		'off_pushover_title' => 'サーバー \'%LABEL%\' がダウンしています！',
-		'off_pushover_message' => "サーバーへの接続に失敗しました:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>エラー: %ERROR%<br/>日時: %DATE%",
+		'off_pushover_message' => "サーバーへの接続に失敗しました:<br><br>Server: %LABEL%<br>IP: %IP%<br>ポート: %PORT%<br>エラー: %ERROR%<br>日時: %DATE%",
 		'on_sms' => 'サーバー \'%LABEL%\' は動作しています: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => '重要: サーバー \'%LABEL%\' は動作しています',
-		'on_email_body' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
+		'on_email_body' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br><br>サーバー: %LABEL%<br>IP: %IP%<br>ポート: %PORT%<br>日時: %DATE%",
 		'on_pushover_title' => 'サーバー \'%LABEL%\' は動作しています',
-		'on_pushover_message' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>サーバー: %LABEL%<br/>IP: %IP%<br/>ポート: %PORT%<br/>日時: %DATE%",
+		'on_pushover_message' => "サーバー '%LABEL%' は動作中です, it was down for %LAST_OFFLINE_DURATION%:<br><br>サーバー: %LABEL%<br>IP: %IP%<br>ポート: %PORT%<br>日時: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'ようこそ、 %user_name%',

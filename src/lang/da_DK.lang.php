@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'Nej',
 		'insert' => 'Indsæt',
 		'add_new' => 'Tilføj ny',
-		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Til toppen',
 		'go_back' => 'Tilbage',
 		'ok' => 'OK',
@@ -90,7 +90,7 @@ $sm_lang = array(
 		'level' => 'Niveau',
 		'level_10' => 'Administrator',
 		'level_20' => 'Bruger',
-		'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og indstillinger.<br/><b>Brugere</b> kan kun se og opdatere servere som er de har adgang til.',
+		'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og indstillinger.<br><b>Brugere</b> kan kun se og opdatere servere som er de har adgang til.',
 		'mobile' => 'Mobil',
 		'email' => 'E-mail',
 		'pushover' => 'Pushover',
@@ -210,14 +210,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a href="https://pushover.net/">deres website</a> for yderligere information.',
 		'pushover_clone_app' => 'Klik her for at oprette din Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank">registrere en app</a> på deres website og indtaste en App API Token her.',
+		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank" rel="noopener">registrere en app</a> på deres website og indtaste en App API Token her.',
 		'alert_type' => 'Vælg hvornår du vil modtage beskeden',
 		'alert_type_description' => '<b>Status ændring:</b> '.
-			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
+			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br>'.
 			'<br /><b>Offline:</b> '.
 			'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
 			'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
-			' vil du kun modtage en mail kl 01.<br/>'.
+			' vil du kun modtage en mail kl 01.<br>'.
 			'<br><b>Altid:</b> '.
 			'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
 		'alert_type_status' => 'Status ændret',
@@ -239,7 +239,7 @@ $sm_lang = array(
 		'settings_log' => 'Log indstillinger',
 		'auto_refresh' => 'Genopfrisk automatisk',
 		'auto_refresh_servers' =>
-			'Genopfrisk automatisk serversider.<br/>'.
+			'Genopfrisk automatisk serversider.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder. Hvis 0 vil siden ikke genopfriske automatisk'.
 			'</span>',
@@ -264,18 +264,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Antal dage over hvor længe logs med notifikationer og arkiverede serveres oppetid skal gemmes. Indtast 0 for at deaktivere logoprydning.',
 		'log_retention_days' => 'dage',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Serveren \'%LABEL%\' er NEDE: ip=%IP%, port=%PORT%. Fejl=%ERROR%',
 		'off_email_subject' => 'VIGTIGT: Server \'%LABEL%\' er NEDE',
-		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
+		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
 		'off_pushover_title' => 'Serveren \'%LABEL%\' er NEDE',
-		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
+		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
 		'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIGTIGT: Serveren \'%LABEL%\' KØRER',
-		'on_email_body' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_email_body' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
 		'on_pushover_title' => 'Serveren \'%LABEL%\' KØRER',
-		'on_pushover_message' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_pushover_message' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Velkommen, %user_name%',
@@ -292,7 +292,7 @@ $sm_lang = array(
 		'password_forgot' => 'Glemt adgangskode?',
 		'password_reset' => 'Nulstil adgangskode',
 		'password_reset_email_subject' => 'Nulstil din adgangskode for PHP Server Monitor',
-		'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at linkets gyldighed udløber efter en time.<br/><br/>%link%',
+		'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at linkets gyldighed udløber efter en time.<br><br>%link%',
 		'error_user_incorrect' => 'Det angivet brugernavn kunne ikke findes.',
 		'error_login_incorrect' => 'Oplysningerne stemmer ikke overens.',
 		'error_login_passwords_nomatch' => 'De angivne adgangskoder er ikke ens.',

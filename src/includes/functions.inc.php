@@ -392,7 +392,7 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	}
 
 	if ($add_agent) {
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +https://github.com/phpservermon/phpservermon)');
 	}
 
 	$result = curl_exec($ch);
@@ -744,6 +744,7 @@ function psm_no_cache() {
  * @return string
  * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  */
+// TODO change to working function
 function psm_password_encrypt($key, $password)
 {
 	if (empty($password)) {
@@ -754,6 +755,7 @@ function psm_password_encrypt($key, $password)
 		throw new \InvalidArgumentException('invalid_encryption_key');
 	}
 
+	// TODO rewrite
 	$iv = mcrypt_create_iv(
 		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
 		MCRYPT_DEV_URANDOM

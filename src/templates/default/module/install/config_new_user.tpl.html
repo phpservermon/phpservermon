@@ -7,40 +7,35 @@
 <p>Next, please set up a new account to access your monitor:</p>
 {{ block('results') }}
 <p>&nbsp;</p>
-<div class="row-fluid">
-   <div class="span6">
-	<form id="psm_config" class="form-horizontal" action="install.php?action=install" method="post">
-	  {{ macro.csrf_input() }}
-	  <div class="control-group">
-		<label class="control-label" for="username">Username</label>
-		<div class="controls">
-		  <input type="text" id="username" name="username" value="{{ username }}">
-		</div>
-	  </div>
-	  <div class="control-group">
-		<label class="control-label" for="password">Password</label>
-		<div class="controls">
-		  <input type="password" id="password" name="password" value="">
-		</div>
-	  </div>
-	  <div class="control-group">
-		<label class="control-label" for="password_repeat">Password repeat</label>
-		<div class="controls">
-		  <input type="password" id="password_repeat" name="password_repeat" value="">
-		</div>
-	  </div>
-	  <div class="control-group">
-		<label class="control-label" for="email">Email</label>
-		<div class="controls">
-		  <input type="text" id="email" name="email" value="{{ email }}" />
-		</div>
-	  </div>
-	  <div class="control-group">
-		<div class="controls">
-		  <button type="submit" class="btn btn-primary btn-large">Install</button>
-		</div>
-	  </div>
-	</form>
-   </div>
-</div>
+<form name="psm_config" class="col-md-6 pl-0 pr-0" action="install.php?action=install" id="psm_config" method="post">
+	{{ macro.input_csrf() }}
+	<fieldset>
+		<legend>Administrator</legend>
+		<div class="col">
+			<!-- Username -->
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input type="text" class="form-control" autocomplete="nickname" name="username" id="username" maxlength="255"
+				 required autofocus>
+			</div>
+			<!-- Password -->
+			<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" name="password" id="password" maxlength="255"
+					 required>
+				</div>
+				<!-- Password repeat -->
+			<div class="form-group">
+					<label for="password_repeat">Password repeat</label>
+					<input type="password" class="form-control" name="password_repeat" id="password_repeat" maxlength="255"
+					 required>
+				</div>
+				<!-- Email -->
+			<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" autocomplete="email" name="email" id="email" maxlength="255"
+					 required>
+				</div>
+				<button class="btn btn-success btn-lg" type="submit">Install</button>
+	</fieldset>
 {% endblock %}

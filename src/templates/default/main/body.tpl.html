@@ -1,79 +1,95 @@
-{% block header %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ language_current }}" dir="{{ direction_current }}" class="{{ direction_current }}">
-	<head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
-    <meta name="description" content="">
-    <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#424242">
+
+<head>
+	<meta charset="utf-8">
+	<title>{{ title }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="PHP Server Monitor - {{ subtitle }}">
+	<meta name="robots" content="noindex" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="manifest" href="manifest.json">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="PSM">
+	<link rel="apple-touch-icon" href="static/phpservermon.png">
+	<meta name="msapplication-TileImage" content="static/phpservermon.png">
+	<meta name="msapplication-TileColor" content="#424242">
+	<!-- TODO add base url -->
+  	<!-- <link rel="canonical" href=""> -->
+	<meta name="theme-color" content="#424242">
 	<link rel="icon" type="image/x-icon" href="favicon.ico" />
 	<link rel="icon" type="image/png" href="favicon.png" />
 	<link rel="apple-touch-icon" href="favicon.png" />
-    <!-- Le styles -->
-    <link href="static/plugin/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/plugin/twitter-bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet">
-    <link href="static/css/style.css" rel="stylesheet">
-	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<link href="static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="static/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="static/css/style.min.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+    	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-    <script type="text/javascript" src="static/plugin/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="static/plugin/twitter-bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/plugin/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
-    <script type="text/javascript" src="static/js/scripts.js"></script>
-  </head>
-{% endblock %}
-  <body data-spy="scroll" data-target=".subnav" data-offset="50" class="{{ body_class }}">
-    <!-- navbar -->
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="index.php">{{ title }}</a>
-{{ html_menu|raw }}
-        </div>
-      </div>
-    </div>
-    <!-- /navbar -->
+</head>
 
+<body>
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="index.php">{{ title }}</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+		 aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbar">
+			{{ html_menu|raw }}
+		</div>
+	</nav>
 	{{ html_modal|raw }}
-    <!-- container -->
-    <div id="main-container">
-		<div class="page-header">
-			<div class="header-label"><h1>{{ subtitle }}</h1></div>
-			<div class="header-accessories">{{ header_accessories|raw }}</div>
-		</div>
-		<div id="main-content">
-			{{ html_sidebar|raw }}
-			<div id="page-container">
-				<div id="flashmessage" class="hide">
-					{% for msg in messages %}
-					<div class="alert alert-{{ msg.shortcode }}">
-						<p class="pull-left span1"><i class="icon-{{ msg.icon }}"></i></p>
-						<p>{{ msg.message|raw }}</p>
-					</div>
-					{% endfor %}
-				</div>
-				{{ html_content|raw }}
+	<main role="main" class="container">
+		<noscript>
+			<div class="alert alert-danger" role="alert">
+				<b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
 			</div>
+		</noscript>
+		{% if not user_level %}<h1>{{ subtitle }}</h1>{% endif %}
+		<div class="container">{{ header_accessories|raw }}</div>
+		{% for msg in messages %}
+		<div class="alert alert-{{ msg.class }}" role="alert">
+			<i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}
 		</div>
-		{% if add_footer %}
-			{% block footer %}
-			<footer class="footer">
-			  <p class="pull-right"><a href="#">{{ label_back_to_top }}</a></p>
-			  <p class="powered"><small>Powered by <a href="http://www.phpservermonitor.org/" target="_blank">PHP Server Monitor {{ version }}</a>.<br/>{{ update_available }}</small></p>
-			</footer>
-			{% endblock %}
-		{% endif %}
-	</div>
-    <!-- /container -->
-    </body>
-</html>
+		{% endfor %}
+		<div class="container">
+			<div class="row">{{ html_sidebar|raw }}</div>
+			<div class="row">{{ html_content|raw }}</div>
+		</div>
+	</main>
+	{% if add_footer %}
+	{% block footer %}
+	<footer class="footer" role="contentinfo">
+		<div class="container">
+			<span class="text-muted">
+				Powered by
+				<a href="https://github.com/phpservermon/phpservermon/" target="_blank" rel="noopener">
+					PHP Server Monitor {{ version }}.
+				</a>
+				{{ update_available }} <a href="#" class="float-right">{{ label_back_to_top }}</a>
+			</span>
+		</div>
+	</footer>
+	{% endblock %}
+	{% endif %}
+	<script src="static/plugin/jquery/jquery-3.3.1.min.js"></script>
+	<script src="static/plugin/popper.js/popper.min.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/index.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/util.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/tab.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/dropdown.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/collapse.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/button.js"></script>
+	<script src="static/plugin/bootstrap/js/dist/alert.js"></script>
+	{% if html_modal|raw %}<script src="static/plugin/bootstrap/js/dist/modal.js"></script>{% endif %}
+	<script type="text/javascript" src="static/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrap-select/dist/js/i18n/defaults-{{ language }}.min.js"></script>
+	<script defer src="static/plugin/font-awesome/js/solid.min.js"></script>
+	<script defer src="static/plugin/font-awesome/js/fontawesome.min.js" data-auto-replace-svg="nest"></script>
+	<script type="text/javascript" src="static/js/scripts.js"></script>
+</body>
 
+</html>

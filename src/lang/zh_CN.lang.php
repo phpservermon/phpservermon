@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => '否',
 		'insert' => '新增',
 		'add_new' => '添加',
-		'update_available' => '发现新版本({version}) <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => '发现新版本({version}) <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => '返回顶部',
 		'go_back' => '后退',
 		'ok' => '确认',
@@ -92,11 +92,11 @@ $sm_lang = array(
 		'level' => '等级',
 		'level_10' => '超级管理员',
 		'level_20' => '普通用户',
-		'level_description' => '<b>超级管理员</b> 拥有所有权限: 管理服务器, 用户 以及修改设置.<br/><b>普通用户</b> 只能查看及更新自己名下所属的服务器.',
+		'level_description' => '<b>超级管理员</b> 拥有所有权限: 管理服务器, 用户 以及修改设置.<br><b>普通用户</b> 只能查看及更新自己名下所属的服务器.',
 		'mobile' => '手机',
 		'email' => '邮件',
 		'pushover' => 'Pushover',
-		'pushover_description' => 'Pushover 是第三方用于实时通知的服务(收费). 详情见 <a href="https://pushover.net/" target="_blank">Pushover 官网</a>.',
+		'pushover_description' => 'Pushover 是第三方用于实时通知的服务(收费). 详情见 <a href="https://pushover.net/" target="_blank" rel="noopener">Pushover 官网</a>.',
 		'pushover_key' => 'Pushover Key',
 		'pushover_device' => 'Pushover Device',
 		'pushover_device_description' => '要发送信息的设备名. 留空则发送到所有设备.',
@@ -136,7 +136,8 @@ $sm_lang = array(
 		'domain' => 'URL/IP',
 		'timeout' => '超时时间',
 		'timeout_description' => '等待服务器响应的时间.',
-		'authentication_settings' => '访问权限设置 (可选)',
+		'authentication_settings' => '访问权限设置',
+		'optional' => '可选',
 		'website_username' => '用户名',
 		'website_username_description' => '网站分配的用户名.',
 		'website_password' => '密码',
@@ -225,24 +226,24 @@ $sm_lang = array(
 		'sms_gateway_password' => 'SMS网关密码',
 		'sms_from' => '发信人电话号',
 		'pushover_status' => '允许 Pushover 通知',
-		'pushover_description' => 'Pushover 是第三方用于实时通知的服务(收费). 详情见 <a href="https://pushover.net/" target="_blank">Pushover 官网</a>.',
+		'pushover_description' => 'Pushover 是第三方用于实时通知的服务(收费). 详情见 <a href="https://pushover.net/" target="_blank" rel="noopener">Pushover 官网</a>.',
 		'pushover_clone_app' => '点此创建 Pushover App',
 		'pushover_api_token' => 'Pushover API Token',
-		'pushover_api_token_description' => '请先 <a href="%1$s" target="_blank">注册Pushover</a> 并获取 Api Token.',
+		'pushover_api_token_description' => '请先 <a href="%1$s" target="_blank" rel="noopener">注册Pushover</a> 并获取 Api Token.',
 		'alert_type' => '如果想要收到提醒请选中此项.',
 		'alert_type_description' => '<b>状态变化:</b> '.
-			'业务 online -> offline 或 offline -> online 的状态变化将会收到提醒.<br/>'.
+			'业务 online -> offline 或 offline -> online 的状态变化将会收到提醒.<br>'.
 			'<br /><b>离线状态:</b> '.
 			'服务器首次发生离线状态将会收到提醒 ，如：'.
 			'cronjob 设定为15分钟执行一次， 服务器从1:00-6:00一直处于当状态'.
-			'那么你将于1:00首次发现脱机时收到一条提醒，之后不会重复提醒.<br/>'.
+			'那么你将于1:00首次发现脱机时收到一条提醒，之后不会重复提醒.<br>'.
 			'<br><b>总是提醒:</b> '.
 			'每次脚本执行或站点离线(即使站点离线很久已提醒过)均发送提醒.',
 		'alert_type_status' => '状态变化',
 		'alert_type_offline' => '离线状态',
 		'alert_type_always' => '总是提醒',
 		'alert_proxy' => '代理只用于 URL 监控，如没有用户名密码，请留空',
-		'alert_proxy_url' => '<b>格式:</b> Host:Port',
+		'alert_proxy_url' => '格式: Host:Port',
 		'log_status' => '状态记录',
 		'log_status_description' => '如果状态记录设置为开, 提醒发送时均会保存记录.',
 		'log_email' => '记录脚本所发邮件?',
@@ -260,7 +261,7 @@ $sm_lang = array(
 		'settings_proxy' => '代理设置',
 		'auto_refresh' => '自动刷新',
 		'auto_refresh_servers' =>
-			'自动刷新服务器页.<br/>'.
+			'自动刷新服务器页.<br>'.
 			'<span class="small">'.
 			'单位为秒, 设置为 0 则不自动刷新.'.
 			'</span>',
@@ -285,18 +286,18 @@ $sm_lang = array(
 		'log_retention_period_description' => '日志存档保留时间，0为禁用日志清理',
 		'log_retention_days' => '天',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => '监控项 \'%LABEL%:%PORT%\' 异常. %ERROR% %IP%',
 		'off_email_subject' => 'IMPORTANT: 服务器 \'%LABEL%\' 宕机',
-		'off_email_body' => "无法连接到以下服务器:<br/><br/>服务器: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>错误: %ERROR%<br/>日期: %DATE%",
+		'off_email_body' => "无法连接到以下服务器:<br><br>服务器: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>错误: %ERROR%<br>日期: %DATE%",
 		'off_pushover_title' => '服务器 \'%LABEL%\' 宕机',
-		'off_pushover_message' => "无法连接到以下服务器:<br/><br/>服务器: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>错误: %ERROR%<br/>日期: %DATE%",
+		'off_pushover_message' => "无法连接到以下服务器:<br><br>服务器: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>错误: %ERROR%<br>日期: %DATE%",
 		'on_sms' => '服务器 \'%LABEL%\' 运行中: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: 服务器 \'%LABEL%\' 运行中',
-		'on_email_body' => "服务器 '%LABEL%' 恢复运行, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>服务器: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>日期: %DATE%",
+		'on_email_body' => "服务器 '%LABEL%' 恢复运行, it was down for %LAST_OFFLINE_DURATION%:<br><br>服务器: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>日期: %DATE%",
 		'on_pushover_title' => '服务器 \'%LABEL%\' 运行中',
-		'on_pushover_message' => "服务器 '%LABEL%' 恢复运行, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>服务器: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>日期: %DATE%",
+		'on_pushover_message' => "服务器 '%LABEL%' 恢复运行, it was down for %LAST_OFFLINE_DURATION%:<br><br>服务器: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>日期: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => '欢迎, %user_name%',
@@ -313,7 +314,7 @@ $sm_lang = array(
 		'password_forgot' => '忘记密码?',
 		'password_reset' => '重设密码',
 		'password_reset_email_subject' => '重设你的密码',
-		'password_reset_email_body' => '点击以下链接重设密码. 链接1小时内有效.<br/><br/>%link%',
+		'password_reset_email_body' => '点击以下链接重设密码. 链接1小时内有效.<br><br>%link%',
 		'error_user_incorrect' => '该用户不存在.',
 		'error_login_incorrect' => '登录信息不正确.',
 		'error_login_passwords_nomatch' => '密码不符.',

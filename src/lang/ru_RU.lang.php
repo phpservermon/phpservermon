@@ -44,7 +44,7 @@ $sm_lang = array(
 		'no' => 'Нет',
 		'insert' => 'Добавить',
 		'add_new' => 'Добавить новый',
-		'update_available' => 'Новая версия ({version}) доступна по адресу <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Новая версия ({version}) доступна по адресу <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Наверх',
 		'go_back' => 'Вернуться',
 		'ok' => 'OK',
@@ -74,8 +74,6 @@ $sm_lang = array(
 		'minutes' => 'минут',
 		'second' => 'секунда',
 		'seconds' => 'секунд',
-		'online' => 'онлайн',
-		'offline' => 'оффлайн',
 	),
 	'menu' => array(
 		'config' => 'Параметры',
@@ -96,7 +94,7 @@ $sm_lang = array(
 		'level' => 'Уровень',
 		'level_10' => 'Администратор',
 		'level_20' => 'Пользователь',
-		'level_description' => '<b>Администраторы</b> имеют полный доступ: они могут управлять серверами, пользователями и изменять общую конфигурацию.<br/><b>Пользователи</b> могут только просматривать и запускать проверку для серверов, которые были к ним прикреплены.',
+		'level_description' => '<b>Администраторы</b> имеют полный доступ: они могут управлять серверами, пользователями и изменять общую конфигурацию.<br><b>Пользователи</b> могут только просматривать и запускать проверку для серверов, которые были к ним прикреплены.',
 		'mobile' => 'Телефон',
 		'email' => 'E-mail',
 		'pushover' => 'Pushover',
@@ -111,7 +109,7 @@ $sm_lang = array(
 		'telegram_get_chat_id' => 'Нажмите здесь чтобы получить ваш chat id',
 		'activate_telegram' => 'Активировать уведомления в Telegram',
 		'activate_telegram_description' => 'Разрешить отправку уведомлений на указанный идентификатор чата. Без этого разрешения Telegram не позволит нам отправлять вам уведомления.',
-		'telegram_bot_username_found' => 'Бот обнаружен!<br><a href="%s" target="_blank"><button class="btn btn-primary">Следующий шаг</button></a> <br>Откроется чат с ботом. Здесь вам нужно нажать кнопку Start или отправить команду /start.',
+		'telegram_bot_username_found' => 'Бот обнаружен!<br><a href="%s" target="_blank" rel="noopener"><button class="btn btn-primary">Следующий шаг</button></a> <br>Откроется чат с ботом. Здесь вам нужно нажать кнопку Start или отправить команду /start.',
 		'telegram_bot_username_error_token' => '401 - Unauthorized. Пожалуйста укажите действительный API токен..',
 		'telegram_bot_error' => 'Произошла ошибка при активации уведомления Telegram: %s',
 		'delete_title' => 'Удалить пользователя',
@@ -151,7 +149,8 @@ $sm_lang = array(
 		'domain' => 'Домен/IP',
 		'timeout' => 'Тайм-аут',
 		'timeout_description' => 'Количество секунд ожидания ответа сервера.',
-		'authentication_settings' => 'Настройки аутентификации (необязательно)',
+		'authentication_settings' => 'Настройки аутентификации',
+		'optional' => 'необязательно',
 		'website_username' => 'Имя пользователя',
 		'website_username_description' => 'Имя пользователя для доступа к сайту. (Поддерживается только Apache authentication.)',
 		'website_password' => 'Пароль',
@@ -170,9 +169,10 @@ $sm_lang = array(
 		'pattern_description' => 'Если текст по шаблону не найден на сайте, сервер будет помечен как Оффлайн. Регулярные выражения допустимы.',
 		'pattern_online' => 'Шаблон указывает что вебсайт:',
 		'pattern_online_description' => 'Online: Если этот шаблон не найден на веб-сайте, сервер будет отмечен Онлайн. Offline: Если этот шаблон не найден на веб-сайте, сервер будет отмечен как Оффлайн.',
-		'header' => 'Заголовок',
-		'header_name_description' => 'Название заголовка (с учетом регистра)',
-		'header_value_description' => 'Значение заголовка. Разрешены регулярные выражения.',
+		'header_name' => 'Название заголовка',
+		'header_value' => 'Значение заголовка',
+		'header_name_description' => 'с учетом регистра.',
+		'header_value_description' => 'Разрешены регулярные выражения.',
 		'last_check' => 'Последняя проверка',
 		'last_online' => 'Был онлайн',
 		'last_offline' => 'Был оффлайн',
@@ -196,6 +196,8 @@ $sm_lang = array(
 		'latency_max' => 'Задержка (максимальная)',
 		'latency_min' => 'Задержка (минимальная)',
 		'latency_avg' => 'Задержка (средняя)',
+		'online' => 'онлайн',
+		'offline' => 'оффлайн',
 		'uptime' => 'Аптайм',
 		'year' => 'Год',
 		'month' => 'Месяц',
@@ -253,25 +255,25 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover - это сервис, который позволяет легко получать уведомления в режиме реального времени. Больше информации на <a href="https://pushover.net/">их веб-сайте</a>.',
 		'pushover_clone_app' => 'Нажмите здесь чтобы создать ваш Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Прежде чем вы сможете начать пользоваться Pushover, вам необходимо зарегистрировать <a href="%1$s" target="_blank">"App"</a> на их веб-сайте и ввести "App API Token" сюда.',
+		'pushover_api_token_description' => 'Прежде чем вы сможете начать пользоваться Pushover, вам необходимо зарегистрировать <a href="%1$s" target="_blank" rel="noopener">"App"</a> на их веб-сайте и ввести "App API Token" сюда.',
 		'telegram_status' => 'Разрешить отправку уведомлений в Telegram',
 		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> удобный мессенджер для получения уведомлений в реальном времени. Посетите <a href="http://docs.phpservermonitor.org/">раздел документации</a> для получения доп. информации и инструкций по установке.',
 		'telegram_api_token' => 'Telegram API Token',
 		'telegram_api_token_description' => 'Прежде чем вы сможете начать пользоваться Telegram, вам необходимо получить API Token. Посетите <a href="http://docs.phpservermonitor.org/">раздел документации</a> для получения помощи.',
 		'alert_type' => 'Тип уведомлений',
 		'alert_type_description' => '<b>Изменение статуса:</b> '.
-			'Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br/>'.
+			'Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br>'.
 			'<br /><b>Оффлайн:</b> '.
 			'Вы получите уведомление только когда сервер перейдет в статус оффлайн. Например, '.
 			'задание Cron выставлено на каждые 15 минут. Сервер перейдет в статус оффлайн в 1:00 и не измениться до 6:00. '.
-			'Вы получите 1 уведомление только в 1:00<br/>'.
+			'Вы получите 1 уведомление только в 1:00<br>'.
 			'<br><b>Всегда:</b> '.
 			'Вы будете получать уведомление при каждом запуске скрипта проверки, как только сервер перейдет в статус оффлайн, даже если сервер находится в этом статусе несколько часов.',
 		'alert_type_status' => 'Изменение статуса',
 		'alert_type_offline' => 'Оффлайн',
 		'alert_type_always' => 'Всегда',
 		'alert_proxy' => 'Даже если включено, прокси никогда не используется для сервисов',
-		'alert_proxy_url' => '<b>Формат:</b> адрес:порт',
+		'alert_proxy_url' => 'Формат: адрес:порт',
 		'log_status' => 'Лог статусов',
 		'log_status_description' => 'Если лог статусов включен, монитор будет логировать все события выбранные в типе уведомлений.',
 		'log_email' => 'Логировать уведомления отправленые по E-mail',
@@ -292,7 +294,7 @@ $sm_lang = array(
 		'settings_proxy' => 'Настройка прокси',
 		'auto_refresh' => 'Авто-обновление',
 		'auto_refresh_servers' =>
-			'Авто-обновление страницы статуса серверов.<br/>'.
+			'Авто-обновление страницы статуса серверов.<br>'.
 			'<span class="small">'.
 			'Время в секундах. Если указано 0, то страница не будет обновляться.'.
 			'</span>',
@@ -322,20 +324,20 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Количество дней хранения логов уведомлений и архива аптайма серверов. Введите 0 для выключения очистки логов.',
 		'log_retention_days' => 'дней',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН: IP=%IP%, Порт=%PORT%. Ошибка=%ERROR%',
 		'off_email_subject' => 'ВАЖНО: сервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
-		'off_email_body' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
+		'off_email_body' => "Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%",
 		'off_pushover_title' => 'Cервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
-		'off_pushover_message' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
-		'off_telegram_message' => "Невозможно подключиться к следующему серверу:<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Ошибка: %ERROR%<br/>Дата: %DATE%",
+		'off_pushover_message' => "Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%",
+		'off_telegram_message' => "Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%",
 		'on_sms' => 'Сервер \'%LABEL%\' снова ДОСТУПЕН: IP=%IP%, Порт=%PORT%. Был недоступен: %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'ВАЖНО: Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
-		'on_email_body' => "Сервер '%LABEL%' снова доступен.<br/>Был недоступен: %LAST_OFFLINE_DURATION%<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%",
+		'on_email_body' => "Сервер '%LABEL%' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%",
 		'on_pushover_title' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
-		'on_pushover_message' => 'Сервер \'%LABEL%\' снова доступен.<br/>Был недоступен: %LAST_OFFLINE_DURATION%<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%',
-		'on_telegram_message' => 'Сервер \'%LABEL%\' снова доступен.<br/>Был недоступен: %LAST_OFFLINE_DURATION%<br/><br/>Сервер: %LABEL%<br/>IP: %IP%<br/>Порт: %PORT%<br/>Дата: %DATE%',
+		'on_pushover_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+		'on_telegram_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Здравствуйте, %user_name%',
@@ -352,7 +354,7 @@ $sm_lang = array(
 		'password_forgot' => 'Забыли пароль?',
 		'password_reset' => 'Сбросить пароль',
 		'password_reset_email_subject' => 'Сброс пароля для PHP Server Monitor',
-		'password_reset_email_body' => 'Пожалуйста, используйте следующую ссылку для сброса пароля. Ссылка действительна 1 час.<br/><br/>%link%',
+		'password_reset_email_body' => 'Пожалуйста, используйте следующую ссылку для сброса пароля. Ссылка действительна 1 час.<br><br>%link%',
 		'error_user_incorrect' => 'Пользователь с указаными данными не найден.',
 		'error_login_incorrect' => 'Информация указана неверно.',
 		'error_login_passwords_nomatch' => 'Пароль указан неверно.',

@@ -1,22 +1,38 @@
-<div class="nav-collapse">
-  <ul class="nav">
-	  {% for item in menu %}
-	  <li class="{{ item.active }}"><a href="{{ item.url|raw }}">{{ item.label }}</a></li>
-	  {% endfor %}
-	  <li id="nav_option_help">
-		  <a href="http://www.phpservermonitor.org/support" target="_blank" rel="noopener">{{ label_help }}</a>
-	  </li>
-  </ul>
-  <ul class="nav pull-right">
-	<li class="dropdown visible-desktop">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ label_usermenu }} <b class="caret"></b></a>
-	  <ul class="dropdown-menu">
-		<li><a href="{{ url_profile|raw }}"><i class="icon-cog"></i>&nbsp;{{ label_profile }}</a></li>
-		<li><a href="{{ url_logout|raw }}"><i class="icon-off"></i>&nbsp;{{ label_logout }}</a></li>
-	  </ul>
+<ul class="navbar-nav mr-auto">
+	{% for item in menu %}
+	<li class="nav-item {{ item.active }}">
+		<a class="nav-link" href="{{ item.url|raw }}">{{ item.label }}{% if item.active %}<span class="sr-only"> ({{ label_current }})</span>{% endif %}</a>
 	</li>
-	<li class="hidden-desktop divider"></li>
-	<li class="hidden-desktop"><a href="{{ url_profile|raw }}">{{ label_profile }}</a></li>
-	<li class="hidden-desktop"><a href="{{ url_logout|raw }}">{{ label_logout }}</a></li>
-  </ul>
-</div>
+	{% endfor %}
+</ul>
+<noscript>
+	<ul class="navbar-nav mr-auto">
+		
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_profile|raw }}">{{ label_profile }}</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url_logout|raw }}">{{ label_logout }}</a>
+		</li>
+		<span class="navbar-text">{{ label_usermenu }}</span>
+		</li>
+	</ul>
+</noscript>
+<noscript><div hidden></noscript>
+<ul class="navbar-nav">
+	<li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{{ label_usermenu }}
+		</a>
+		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			<a class="dropdown-item" href="{{ url_profile|raw }}">{{ label_profile }} </a>
+			<a class="dropdown-item" href="{{ url_logout|raw }}">{{ label_logout }} </a>
+		</div>
+	</li>
+	<!--
+	<li class="nav-item">
+		<i class="text-white fas fa-universal-access fa-lg nav-link"></i>
+	</li>
+	-->
+</ul>
+<noscript></div></noscript>

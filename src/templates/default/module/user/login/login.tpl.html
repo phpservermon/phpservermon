@@ -1,15 +1,16 @@
 {% import 'main/macros.tpl.html' as macro %}
-<div class="container">
-  <form class="form-signin" method="post">
-	{{ macro.csrf_input() }}
-    <h3 class="form-signin-heading">{{ title_sign_in }}</h3>
-    <input type="text" name="user_name" class="input-block-level" placeholder="{{ label_username }}" value="{{ value_user_name }}" required>
-    <input type="password" name="user_password" class="input-block-level" placeholder="{{ label_password }}" required>
-	<input type="hidden" name="action" value="login">
-    <label class="checkbox">
-  	  <input type="checkbox" name="user_rememberme" value="1" {{ value_rememberme }}> {{ label_remember_me }}
-    </label>
-    <button class="btn btn-primary" type="submit">{{ label_login }}</button>
-    <a class="btn" href="?action=forgot">{{ label_password_forgot }}</a>
-  </form>
-</div>
+<form class="form-signin text-center" method="POST">
+  {{ macro.input_csrf() }}
+  <h1 class="h3 mb-3 font-weight-normal">{{ title_sign_in }}</h1>
+  <label for="input-username" class="sr-only">{{ label_username }}</label>
+  <input type="text" name="user_name" id="input-username" class="form-control" value="{{ value_user_name }}" placeholder="{{ label_username }}" required autofocus>
+  <label for="input-password" class="sr-only">{{ label_password }}</label>
+  <input type="password" id="input-password" name="user_password" class="form-control" placeholder="{{ label_password }}" required>
+  <input type="hidden" name="action" value="login">
+  <div class="custom-control custom-checkbox my-1 mr-sm-2">
+    <input type="checkbox" name="user_rememberme" value="1" class="custom-control-input" id="input-rememberme" {{ value_rememberme }}>
+    <label class="custom-control-label" for="input-rememberme">{{ label_remember_me }}</label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">{{ label_login }}</button>
+  <a class="btn" href="?action=forgot">{{ label_password_forgot }}</a>
+</form>

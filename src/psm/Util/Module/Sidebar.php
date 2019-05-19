@@ -111,20 +111,19 @@ class Sidebar implements SidebarInterface {
 	 * @param boolean $url_is_onclick if you want onclick rather than url, change this to true
 	 * @return \psm\Util\Module\Sidebar
 	 */
-	public function addButton($id, $label, $url, $icon = null, $btn_class = null, $url_is_onclick = false) {
+	public function addButton($id, $label, $url, $icon = null, $btn_class = 'link', $title = '', $modal_id = null) {
 		if (!isset($this->items['button'])) {
 			$this->items['button'] = array();
-		}
-		if (!$url_is_onclick) {
-			$url = "psm_goTo('".$url."');";
 		}
 
 		$this->items['button'][$id] = array(
 			'id' => $id,
 			'label' => $label,
-			'onclick' => str_replace('"', '\"', $url),
+			'url' => str_replace('"', '\"', $url),
 			'icon' => $icon,
 			'btn_class'=> $btn_class,
+			'title'=> $title,
+			'modal_id'=> $modal_id
 		);
 		return $this;
 	}

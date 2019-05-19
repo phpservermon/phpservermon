@@ -120,23 +120,42 @@ class ConfigController extends AbstractController {
 
 		// generate sms_gateway array
 		$sms_gateways = psm_get_sms_gateways();
-		$tpl_data['sms_gateway_current'] = (isset($config['sms_gateway']))
-				? $config['sms_gateway']
-				: current($sms_gateways);
-		$tpl_data['sms_gateways'] = array();
+		$tpl_data['sms_gateway'] = array();
 		foreach ($sms_gateways as $sms_gateway => $label) {
-			$tpl_data['sms_gateways'][] = array(
+			$tpl_data['sms_gateway'][] = array(
 				'value' => $sms_gateway,
 				'label' => $label,
 			);
 		}
-		// @todo these selected values can easily be rewritten in the template using twig
-		$tpl_data['alert_type_selected_'.$config['alert_type']] = 'selected="selected"';
-		$smtp_sec = isset($config['email_smtp_security']) ? $config['email_smtp_security'] : '';
-		$tpl_data['email_smtp_security_selected_'.$smtp_sec] = 'selected="selected"';
-		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
-		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
-		$tpl_data['password_encrypt_key'] = (isset($config['password_encrypt_key'])) ? $config['password_encrypt_key'] : sha1(microtime());
+
+		foreach (array("status", "offline", "always") as $alert_type) {
+			$tpl_data['alert_type'][] = array(
+				'value' => $alert_type,
+				'label' => psm_get_lang('config', 'alert_type_'.$alert_type),
+			);
+		}
+
+		$tpl_data['email_smtp_security'] = array(
+			array(
+				'value' => '',
+				'label' => psm_get_lang('config', 'email_smtp_security_none')
+			),
+			array(
+				'value' => 'ssl',
+				'label' => 'SSL'
+			),
+			array(
+				'value' => 'tls',
+				'label' => 'TLS'
+			)
+		);
+
+		$tpl_data['sms_gateway_selected'] = isset($config['sms_gateway']) ? $config['sms_gateway'] : current($sms_gateways);
+		$tpl_data['alert_type_selected'] = isset($config['alert_type']) ? $config['alert_type'] : '';
+		$tpl_data['email_smtp_security_selected'] =  isset($config['email_smtp_security']) ? $config['email_smtp_security'] : '';
+		$tpl_data['auto_refresh_servers'] = isset($config['auto_refresh_servers']) ? $config['auto_refresh_servers'] : '0';
+		$tpl_data['log_retention_period'] = isset($config['log_retention_period']) ? $config['log_retention_period'] : '365';
+		$tpl_data['password_encrypt_key'] = isset($config['password_encrypt_key']) ? $config['password_encrypt_key'] : sha1(microtime());
 
 		foreach ($this->checkboxes as $input_key) {
 			$tpl_data[$input_key.'_checked'] =
@@ -369,7 +388,6 @@ class ConfigController extends AbstractController {
 			'label_email_smtp_host' => psm_get_lang('config', 'email_smtp_host'),
 			'label_email_smtp_port' => psm_get_lang('config', 'email_smtp_port'),
 			'label_email_smtp_security' => psm_get_lang('config', 'email_smtp_security'),
-			'label_email_smtp_security_none' => psm_get_lang('config', 'email_smtp_security_none'),
 			'label_email_smtp_username' => psm_get_lang('config', 'email_smtp_username'),
 			'label_email_smtp_password' => psm_get_lang('config', 'email_smtp_password'),
 			'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
@@ -393,9 +411,6 @@ class ConfigController extends AbstractController {
 			'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
 			'label_alert_type' => psm_get_lang('config', 'alert_type'),
 			'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
-			'label_alert_type_status' => psm_get_lang('config', 'alert_type_status'),
-			'label_alert_type_offline' => psm_get_lang('config', 'alert_type_offline'),
-			'label_alert_type_always' => psm_get_lang('config', 'alert_type_always'),
 			'label_combine_notifications' => psm_get_lang('config', 'combine_notifications'),
             'label_combine_notifications_description' => psm_get_lang('config', 'combine_notifications_description'),
 			'label_log_status' => psm_get_lang('config', 'log_status'),
@@ -414,6 +429,8 @@ class ConfigController extends AbstractController {
 			'label_log_retention_period' => psm_get_lang('config', 'log_retention_period'),
 			'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
 			'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
+			'label_days' => psm_get_lang('config', 'log_retention_days'),
+
 		);
 	}
 }

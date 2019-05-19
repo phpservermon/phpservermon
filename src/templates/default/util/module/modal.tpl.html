@@ -1,14 +1,18 @@
-<div id="{{ modal_id  }}Modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="{{ modal_id }}ModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<h3 id="{{ modal_id }}ModalLabel">{{ modal_title }}</h3>
-	</div>
-	<div class="modal-body">
-		<p>{{ modal_body|raw }}</p>
-	</div>
-	<div class="modal-footer">
-		{% if has_cancel %}
-		<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ label_cancel }}</button>
-		{% endif %}
-		<button class="btn btn-{{ modal_button_type }} modalOKButton" >{{ modal_button_label }}</button>
+<div class="modal fade" id="{{ modal_id  }}Modal" tabindex="-1" role="dialog" aria-labelledby="{{ modal_id }}ModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="{{ modal_id }}ModalLabel">{{ modal_title }}</h5>
+			</div>
+			<div class="modal-body">
+				{{ modal_body|raw }}
+			</div>
+			<div class="modal-footer">
+				{% if has_cancel %}
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ label_cancel }}</button>
+				{% endif %}
+				<button type="button" class="btn btn-{{ modal_button_type }} modalOKButton">{{ modal_button_label }}</button>
+			</div>
+		</div>
 	</div>
 </div>
