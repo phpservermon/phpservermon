@@ -5,11 +5,9 @@
 		<thead>
 			<tr>
 				<th scope="col">{{ label_user }}</th>
-				<th scope="col" class="d-none d-lg-table-cell">{{ label_name }}</th>
-				<th scope="col" class="d-none d-lg-table-cell">{{ label_level }}</th>
 				<th scope="col">{{ label_email }}</th>
 				<th scope="col">{{ label_mobile }}</th>
-				<th scope="col">{{ label_servers }}</th>
+				<th scope="col" class="d-none d-lg-table-cell full">{{ label_servers }}</th>
 				<th scope="col">&#32</th>
 			</tr>
 		</thead>
@@ -18,16 +16,18 @@
 			<tr>
 				<th scope="row">
 					{% if user.level == '10' %}
-					<i class="fas fa-user-astronaut d-lg-none" title="{{ user.level_text }}"></i>&nbsp;
+					<i class="fas fa-user-astronaut " title="{{ user.level_text }}"></i>&nbsp;
 					{% elseif user.level == '20' %}
-					<i class="fas fa-user d-lg-none" title="{{ user.level_text }}"></i>&nbsp;
+					<i class="fas fa-user " title="{{ user.level_text }}"></i>&nbsp;
 					{% endif %}
-					{{ user.user_name }} <span class="d-lg-none">({{ user.name }})</span></th>
-				<td class="d-none d-lg-table-cell">{{ user.name }}</td>
-				<td class="d-none d-lg-table-cell">{{ user.level_text }}</td>
+					{{ user.user_name }} <span class="">({{ user.name }})</span></th>
 				<td>{{ user.email }}</td>
 				<td>{{ user.mobile }}</td>
-				<td>{% for server in user.emp_servers %} {{ server.label }}<br /> {% endfor %}</td>
+				<td class="d-lg-table-cell full">
+					{% for server in user.emp_servers %} 
+					<a href="{{ server.url|raw }}">{{ server.label }}</a><br />
+					{% endfor %}
+				</td>
 				<td>
 					<div class="item-action dropdown">
 						<a data-toggle="dropdown" class="icon">

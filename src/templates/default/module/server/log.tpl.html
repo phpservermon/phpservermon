@@ -23,20 +23,20 @@
 					{% for entry in tab.entries %}
 					<tr>
 						{% if entry.server %}
-						<th scope="row"><i class="fas fa-{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> {{ entry.server }} {{ entry.ip }}</th>
+						<th scope="row"><i class="fas fa-{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> {{ entry.server }}<!-- {{ entry.ip }}--></th>
 						{% endif %}
 						{% if entry.server %}
 							<td><time>{{ entry.datetime_format }}</time></td>
 						{% else %}
 							<th scope="row"><time>{{ entry.datetime_format }}</time></th>
 						{% endif %}
-						<td>{{ entry.message|raw }}</td>
+						<td class="full">{{ entry.message|raw }}</td>
 						{% if tab.has_users %}<td>{{ entry.user_list|raw }}</td>{% endif %}
 					</tr>
 					{% endfor %}
 					{% if tab.no_logs %}
 					<tr>
-						<td colspan="4" class="cell-center">{{ label_no_logs }}</td>
+						<td colspan="4" class="cell-center full">{{ label_no_logs }}</td>
 					</tr>
 					{% endif %}
 				</tbody>

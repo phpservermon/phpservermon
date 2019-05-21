@@ -109,7 +109,8 @@ class UserController extends AbstractController {
 					continue;
 				}
 				$user['emp_servers'][] = array(
-					'label' => $servers_labels[$server_id]
+					'label' => $servers_labels[$server_id],
+					'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server_id, 'back_to' => 'user'))
 				);
 			}
 			sort($user['emp_servers']);
@@ -180,6 +181,7 @@ class UserController extends AbstractController {
 				}
 			}
 		}
+		die(var_dump($this->servers));
 		$tpl_data = array(
 			'titlemode' => $title,
 			'placeholder_password' => $placeholder_password,

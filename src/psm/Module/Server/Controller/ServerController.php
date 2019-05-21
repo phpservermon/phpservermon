@@ -412,7 +412,7 @@ class ServerController extends AbstractServerController {
 		$this->setSidebar($sidebar);
 
 		// check which module the user came from, and add a link accordingly
-		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'server_status' ? $_GET['back_to'] : 'server';
+		$back_to = isset($_GET['back_to']) && ($_GET['back_to'] == 'server_status' || $_GET['back_to'] == 'user') ? $_GET['back_to'] : 'server';
 		$sidebar->addButton(
 			'go_back',
 			psm_get_lang('system', 'go_back'),
