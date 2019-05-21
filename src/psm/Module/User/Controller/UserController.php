@@ -181,7 +181,7 @@ class UserController extends AbstractController {
 				}
 			}
 		}
-		die(var_dump($this->servers));
+
 		$tpl_data = array(
 			'titlemode' => $title,
 			'placeholder_password' => $placeholder_password,
