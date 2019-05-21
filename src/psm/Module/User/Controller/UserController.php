@@ -173,6 +173,7 @@ class UserController extends AbstractController {
 			$user_servers = $this->getUserServers($user_id);
 
 			foreach ($this->servers as &$server) {
+				$this->servers[$server['server_id']]['id'] = $server['server_id'];
 				if (in_array($server['server_id'], $user_servers)) {
 					$server['edit_selected'] = 'selected="selected"';
 					$server['class'] = 'active';
