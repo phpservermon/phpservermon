@@ -235,9 +235,10 @@
 						<dt class="col-md-3">{{ label_last_output }}:</dt>
 						<dd class="col-md-9">{{ last_output_truncated }}</dd>
 						{% if last_output_truncated != last_output %}
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_last_output">
-							See complete...
-						</button>
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<a style="float: right;" data-toggle="modal" data-target="#modal_last_output">See complete...</a>
+						</dd>
 						{% endif %}
 					</dl>
 				</li>
@@ -246,9 +247,10 @@
 						<dt class="col-md-3">{{ label_last_error_output }}:</dt>
 						<dd class="col-md-9">{{ last_error_output_truncated }}</dd>
 						{% if last_error_output_truncated != last_error_output %}
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_last_error">
-							See complete...
-						</button>
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<a style="float: right;" data-toggle="modal" data-target="#modal_last_error">See complete...</a>
+						</dd>
 						{% endif %}
 
 					</dl>
