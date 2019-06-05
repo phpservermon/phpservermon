@@ -335,7 +335,7 @@
 	</div>
 
 	<div class="modal fade" id="modal_last_output" tabindex="-1" role="dialog" aria-labelledby="modal_last_output_label" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="modal_last_output_label">{{ label_last_output }}</h5>
@@ -343,8 +343,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" style="word-wrap: break-word;">
-					{{ last_output }}
+				<div class="modal-body" style="word-wrap: break-word;font-family: Mono">
+					{{ last_output|nl2br }}
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -354,7 +354,7 @@
 	</div>
     
 	<div class="modal fade" id="modal_last_error" tabindex="-1" role="dialog" aria-labelledby="modal_last_error_label" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="modal_last_error_label">{{ label_last_error_output }}</h5>
@@ -362,8 +362,8 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" style="word-wrap: break-word;">
-					{{ last_error_output }}
+				<div class="modal-body" style="word-wrap: break-word;font-family: Mono">
+					{{ last_error_output|nl2br }}
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
