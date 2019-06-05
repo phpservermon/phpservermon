@@ -40,7 +40,7 @@ $sm_lang = array(
 		'save' => 'Guardar',
 		'edit' => 'Modificar',
 		'delete' => 'Eliminar',
-		'view' => 'Visto',
+		'view' => 'Ver',
 		'date' => 'Fecha',
 		'message' => 'Mensaje',
 		'yes' => 'Si',
@@ -191,12 +191,12 @@ $sm_lang = array(
 		'header_value' => 'Valor del encabezado',
 		'header_name_description' => 'Respetar mayúsculas y minúsculas.',
 		'header_value_description' => 'Se permiten expresiones regulares.',
-		'last_check' => 'último control',
+		'last_check' => 'Último control',
 		'last_online' => 'Última vez en línea',
 		'last_offline' => 'Última vez fuera de línea',
 		'last_output' => 'Última salida',
 		'last_error' => 'Último error',
-		'last_error_output' => 'Última salida de error',
+		'last_error_output' => 'Último error',
 		'output' => 'Salida',
 		'monitoring' => 'Monitoreando',
 		'no_monitoring' => 'No monitoreando',
@@ -318,9 +318,9 @@ $sm_lang = array(
 		'settings_proxy' => 'Configuración del proxy',
 		'auto_refresh' => 'Auto-actualizar',
 		'auto_refresh_servers' =>
-				'Auto-refresh servers page.<br>'.
+				'Auto-actualizar la página de servidores.<br>'.
 				'<span class="small">'.
-				'Time in seconds, if 0 the page won\'t refresh.'.
+				'Tiempo en segundos, si se utiliza 0 la página no se actualizará.'.
 				'</span>',
 		'seconds' => 'segundos',
 		'test' => 'Prueba',
