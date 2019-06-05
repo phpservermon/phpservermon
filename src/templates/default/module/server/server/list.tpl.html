@@ -5,7 +5,7 @@
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
-				<th scope="col" class="full">{{ label_label }}</th>
+				<th scope="col" class="">{{ label_label }}</th>
 				<th scope="col">{{ label_domain }}</th>
 				<th scope="col">{{ label_port }}</th>
 				<th scope="col">{{ label_type }}</th>
@@ -24,7 +24,7 @@
 		<tbody>
 			{% for server in servers %}
 			<tr>
-				<th scope="row" class="full">
+				<th scope="row" class="">
 					{% if server.status|lower == 'on' %}
 					<i class="fas fa-check-circle" title="{{ server.status }}"></i>&nbsp;
 					{% elseif server.status|lower == 'warning' %}
