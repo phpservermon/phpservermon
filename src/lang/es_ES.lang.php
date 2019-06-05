@@ -56,8 +56,8 @@ $sm_lang = array(
 		'none' => 'None',
 		'activate' => 'Activar',
 		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
-		'short_day_format' => '%B %e',
-		'long_day_format' => '%B %e, %Y',
+		'short_day_format' => '%e de %B',
+		'long_day_format' => '%e de %B de %Y',
 		'yesterday_format' => 'Ayer a las %k:%M',
 		'other_day_format' => '%A a las %k:%M',
 		'never' => 'Nunca',
