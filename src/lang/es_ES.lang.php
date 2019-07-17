@@ -17,20 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package	 phpservermon
- * @author	  Klemens Häckel <http://clickdimension.wordpress.com/>
- * @author	  Luis Rodriguez <luis@techreanimate.com>
+ * @package		phpservermon
+ * @author	 	Klemens Häckel <http://clickdimension.wordpress.com/>
+ * @author	 	Luis Rodriguez <luis@techreanimate.com>
  * @author 		Mauro Vietri <mauro.vietri@outlook.com>
  * @author 		Federico Vera <fede@riddler.com.ar>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
- * @license	 http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version	 Release: @package_version@
+ * @copyright	Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU GPL v3
+ * @version		Release: @package_version@
  * @link		http://www.phpservermonitor.org/
  **/
-
 $sm_lang = array(
 	'name' => 'Español - Spanish',
-	'locale' => array('es_ES.UTF-8', 'es_ES', 'spanish', 'esp'),
+	'locale' => array(
+		'0' => 'es_ES.UTF-8',
+		'1' => 'es_ES',
+		'2' => 'spanish',
+		'3' => 'esp',
+	),
 	'locale_tag' => 'es',
 	'locale_dir' => 'ltr',
 	'system' => array(
@@ -55,7 +59,6 @@ $sm_lang = array(
 		'cancel' => 'Cancelar',
 		'none' => 'None',
 		'activate' => 'Activar',
-		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%e de %B',
 		'long_day_format' => '%e de %B de %Y',
 		'yesterday_format' => 'Ayer a las %k:%M',
@@ -81,7 +84,7 @@ $sm_lang = array(
 		'seconds' => 'segundos',
 		'current' => 'actual',
 		'settings' => 'Configuración',
-		'search' => 'Buscar'
+		'search' => 'Buscar',
 	),
 	'menu' => array(
 		'config' => 'Configurar',
@@ -230,7 +233,6 @@ $sm_lang = array(
 		'warning_threshold_description' => 'Número de controles fallidos necesarios antes de que se marque como fuera de línea.',
 		'chart_last_week' => 'Última semana',
 		'chart_history' => 'Historial',
-		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
 		'chart_day_format' => '%Y-%m-%d',
 		'chart_long_date_format' => '%Y-%m-%d %H:%M:%S',
 		'chart_short_date_format' => '%m/%d %H:%M',
@@ -283,14 +285,7 @@ $sm_lang = array(
 		'telegram_api_token' => 'Token API de Telegram',
 		'telegram_api_token_description' => 'Antes de utilizar Telegram, necesita un Token de API. Visite la <a href="http://docs.phpservermonitor.org/">documentación</a> para más información.',
 		'alert_type' => '¿Cuándo desea recibir notificaciones?',
-		'alert_type_description' => '<b>Al cambiar el estado:</b> '.
-				'p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br>'.
-				'<br /><b>Fuera de Línea:</b> '.
-				'Recibirá una notificación cuando el servidor esté fuera de línea.'.
-				'Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br>'.
-				'<br><b>Siempre:</b> '.
-				'Se le enviará una notificación cada vez que se ejecuta el script '.
-				'aunqué el servicio puede haber estado fuera de línea por varias horas.',
+		'alert_type_description' => '<b>Al cambiar el estado:</b> p.ej. en línea -> fuera de línea o fuera de línea -> en línea.<br><br /><b>Fuera de Línea:</b> Recibirá una notificación cuando el servidor esté fuera de línea.Se envia un sólo mensaje cuando se detecte la caída por primera vez.<br><br><b>Siempre:</b> Se le enviará una notificación cada vez que se ejecuta el script aunqué el servicio puede haber estado fuera de línea por varias horas.',
 		'alert_type_status' => 'Cambio de estado',
 		'alert_type_offline' => 'Fuera de Línea',
 		'alert_type_always' => 'Siempre',
@@ -317,11 +312,7 @@ $sm_lang = array(
 		'settings_log' => 'Configuración de registros',
 		'settings_proxy' => 'Configuración del proxy',
 		'auto_refresh' => 'Auto-actualizar',
-		'auto_refresh_servers' =>
-				'Auto-actualizar la página de servidores.<br>'.
-				'<span class="small">'.
-				'Tiempo en segundos, si se utiliza 0 la página no se actualizará.'.
-				'</span>',
+		'auto_refresh_servers' => 'Auto-actualizar la página de servidores.<br><span class="small">Tiempo en segundos, si se utiliza 0 la página no se actualizará.</span>',
 		'seconds' => 'segundos',
 		'test' => 'Prueba',
 		'test_email' => 'Un correo electrónico será enviado a la dirección especificada en su perfil de usuario.',
@@ -348,28 +339,27 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Número de días que se conservan registros de las notificaciones y los archivos de tiempo de actividad del servidor. Introduzca 0 para desactivar la limpieza de los registros.',
 		'log_retention_days' => 'días',
 	),
-	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Servidor \'%LABEL%\' está fuera de línea: ip=%IP%, puerto=%PORT%. error=%ERROR%',
 		'off_email_subject' => 'Importante: Servidor \'%LABEL%\' está fuera de línea',
-		'off_email_body' => "Imposible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
+		'off_email_body' => 'Imposible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%',
 		'off_pushover_title' => 'Servidor \'%LABEL%\' está fuera de línea',
-		'off_pushover_message' => "No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
-		'off_telegram_message' => "No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%",
+		'off_pushover_message' => 'No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%',
+		'off_telegram_message' => 'No posible conectar al servidor:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Error: %ERROR%<br/>Fecha: %DATE%',
 		'on_sms' => 'Servidor \'%LABEL%\' ya está de nuevo funcionando en línea: ip=%IP%, puerto=%PORT%, la duración de la caída fue de %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Importante: Servidor \'%LABEL%\' ya está de nuevo en línea',
-		'on_email_body' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%",
+		'on_email_body' => 'Servidor \'%LABEL%\' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%',
 		'on_pushover_title' => 'Servidor \'%LABEL%\' ya está de nuevo en línea',
-		'on_pushover_message' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%",
-		'on_telegram_message' => "Servidor '%LABEL%' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%",
-		'combi_off_email_message' => "<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Error: %ERROR%</li><li>Fecha: %DATE%</li></ul>",
-		'combi_off_pushover_message' => "<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Error: %ERROR%</li><li>Fecha: %DATE%</li></ul>",
-		'combi_off_telegram_message' => "- Servidor: %LABEL%<br>- IP: %IP%<br>- Puerto: %PORT%<br>- Error: %ERROR%<br>- Fecha: %DATE%<br><br>",
-		'combi_on_email_message' => "<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Duración de la caída: %LAST_OFFLINE_DURATION%</li><li>Fecha: %DATE%</li></ul>",
+		'on_pushover_message' => 'Servidor \'%LABEL%\' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%',
+		'on_telegram_message' => 'Servidor \'%LABEL%\' ya está funcionando en línea de nuevo, la duración de la caída fue de %LAST_OFFLINE_DURATION%:<br/><br/>Servidor: %LABEL%<br/>IP: %IP%<br/>Puerto: %PORT%<br/>Fecha: %DATE%',
+		'combi_off_email_message' => '<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Error: %ERROR%</li><li>Fecha: %DATE%</li></ul>',
+		'combi_off_pushover_message' => '<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Error: %ERROR%</li><li>Fecha: %DATE%</li></ul>',
+		'combi_off_telegram_message' => '- Servidor: %LABEL%<br>- IP: %IP%<br>- Puerto: %PORT%<br>- Error: %ERROR%<br>- Fecha: %DATE%<br><br>',
+		'combi_on_email_message' => '<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Duración de la caída: %LAST_OFFLINE_DURATION%</li><li>Fecha: %DATE%</li></ul>',
 		'combi_on_pushover_message' => '<ul><li>Servidor: %LABEL%</li><li>IP: %IP%</li><li>Puerto: %PORT%</li><li>Duración de la caída: %LAST_OFFLINE_DURATION%</li><li>Fecha: %DATE%</li></ul>',
 		'combi_on_telegram_message' => '- Servidor: %LABEL%<br>- IP: %IP%<br>- Puerto: %PORT%<br>- Duración de la caída: %LAST_OFFLINE_DURATION%<br>- Fecha: %DATE%<br><br>',
-		'combi_email_subject' => 'IMPORTANTE: \'%UP%\' servidores están en línea, \'%DOWN%\' servidores están ahora fuera de línea',
-		'combi_pushover_subject' => '\'%UP%\' servidores están en línea, \'%DOWN%\' servidores están ahora fuera de línea',
+		'combi_email_subject' => 'IMPORTANTE: \'%UP%' servidores están en línea, '%DOWN%\' servidores están ahora fuera de línea',
+		'combi_pushover_subject' => '\'%UP%' servidores están en línea, '%DOWN%\' servidores están ahora fuera de línea',
 		'combi_email_message' => '<b>Los siguentes servidores están fuera de línea:</b><br>%DOWN_SERVERS%<br><b>Los siguientes servidores están en línea:</b><br>%UP_SERVERS%',
 		'combi_pushover_message' => '<b>Los siguentes servidores están fuera de línea:</b><br>%DOWN_SERVERS%<br><b>Los siguientes servidores están en línea:</b><br>%UP_SERVERS%',
 		'combi_telegram_message' => '<b>Los siguentes servidores están fuera de línea:</b><br>%DOWN_SERVERS%<br><b>Los siguientes servidores están en línea:</b><br>%UP_SERVERS%',
@@ -402,4 +392,3 @@ $sm_lang = array(
 		'401_unauthorized_description' => 'Usted no tiene los privilegios para ver esta página.',
 	),
 );
-
