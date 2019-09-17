@@ -233,13 +233,30 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_output }}:</dt>
-						<dd class="col-md-9">{{ last_output }}</dd>
+						<dd class="col-md-9">{{ last_output_truncated }}</dd>
+						{% if last_output_truncated != last_output %}
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_output">
+								Show more...
+							</button>
+						</dd>
+						{% endif %}
 					</dl>
 				</li>
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_error_output }}:</dt>
-						<dd class="col-md-9">{{ last_error_output }}</dd>
+						<dd class="col-md-9">{{ last_error_output_truncated }}</dd>
+						{% if last_error_output_truncated != last_error_output %}
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_error">
+								Show more...
+							</button>
+						</dd>
+						{% endif %}
+
 					</dl>
 				</li>
 			</ul>
@@ -319,5 +336,43 @@
 	</div>
 	<div class="row">
 		{{ html_history|raw }}
+	</div>
+
+	<div class="modal fade" id="modal_last_output" tabindex="-1" role="dialog" aria-labelledby="modal_last_output_label" aria-hidden="true">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal_last_output_label">{{ label_last_output }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="word-wrap: break-word;">
+					{{ last_output|nl2br }}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+	<div class="modal fade" id="modal_last_error" tabindex="-1" role="dialog" aria-labelledby="modal_last_error_label" aria-hidden="true">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal_last_error_label">{{ label_last_error_output }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="word-wrap: break-word;">
+					{{ last_error_output|nl2br }}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
