@@ -21,7 +21,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: v3.4.1
  * @link        http://www.phpservermonitor.org/
  **/
 
