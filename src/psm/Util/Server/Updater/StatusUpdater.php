@@ -152,7 +152,15 @@ class StatusUpdater {
 				}
 			}
 		}
-
+		// PATCH Arkhee: fix/last-online-stuck-on-never-if-webpage-too-large
+		// Updating table "servers" does not work
+		// Symptom: "Last online" stays stuck on "never"
+		// Reason: last_output contains the full webpage, too long for the query
+		// This may depend on mysql configuration on the server_, explaining why some have the problem or not
+		// Field is 255 Chars, and request does not work anyway is loaded web page is too large in last_output
+		// Solution: updated column to text and truncate to 5000 characters or less before the query
+		$save["last_output"] = substr($save["last_output"],0,5000);
+		// End PATCH
 		$this->db->save(PSM_DB_PREFIX.'servers', $save, array('server_id' => $this->server_id));
 
 		return $this->status_new;
