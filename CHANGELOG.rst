@@ -5,12 +5,18 @@ Changelog
 Not yet released
 ----------------
 
+v3.4.1 (released September 17, 2019)
+--------------------------------
+
+* #773: Added catalan ca_ES.lang.php.
+* 6c1763e: Updated table style
+* #770: Changed last_output column to TEXT and restricted to 5000 characters.
 
 v3.4.0 (released September 17, 2019)
 --------------------------------
 
 * #741: Truncate server output.
-* 9c16883: Fixed typo in es_ES.lang.php.
+* accd556: Fixed typo in es_ES.lang.php.
 * #747: Added XML to requirements.
 * #740: Update es_ES.lang.php.
 * #752: Update fr_FR.lang.php.
