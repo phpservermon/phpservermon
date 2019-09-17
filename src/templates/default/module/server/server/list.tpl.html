@@ -5,7 +5,7 @@
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
-				<th scope="col" class="full">{{ label_label }}</th>
+				<th scope="col">{{ label_label }}</th>
 				<th scope="col">{{ label_domain }}</th>
 				<th scope="col">{{ label_port }}</th>
 				<th scope="col">{{ label_type }}</th>
@@ -18,30 +18,32 @@
 				{% endif %}
 			</tr>
 			<tr class="warning no-result">
-					<td colspan="4"><i class="fas fa-exclamation-triangle"></i> No result</td>
+					<td colspan="9"><i class="fas fa-exclamation-triangle"></i> No result</td>
 				  </tr>
 		</thead>
 		<tbody>
 			{% for server in servers %}
 			<tr>
-				<th scope="row" class="full">
-					{% if server.status|lower == 'on' %}
-					<i class="fas fa-check-circle" title="{{ server.status }}"></i>&nbsp;
-					{% elseif server.status|lower == 'warning' %}
-					<i class="fas fa-exclamation-triangle" title="{{ server.status }}"></i>&nbsp;
-					{% elseif server.status|lower == 'off' %}
-					<i class="fas fa-times-circle" title="{{ server.status }}"></i>&nbsp;
-					{% endif %}
-					<a href="{{ server.url_view|raw }}" title="{{ label_view }}">
-						{{ server.label }}
-					</a>
+				<th scope="row">
+					<div class="content">
+						{% if server.status|lower == 'on' %}
+						<i class="fas fa-check-circle" title="{{ server.status }}"></i>&nbsp;
+						{% elseif server.status|lower == 'warning' %}
+						<i class="fas fa-exclamation-triangle" title="{{ server.status }}"></i>&nbsp;
+						{% elseif server.status|lower == 'off' %}
+						<i class="fas fa-times-circle" title="{{ server.status }}"></i>&nbsp;
+						{% endif %}
+						<a href="{{ server.url_view|raw }}" title="{{ label_view }}">
+							{{ server.label }}
+						</a>
+					</div>
 				</th>
-				<td>{{ server.ip|raw }}</td>
+				<td><div class="content">{{ server.ip|raw }}</div></td>
 				<td>{{ server.port }}</td>
 				<td>{{ server.type }}</td>
 				<td>{{ server.rtime }}</td>
-				<td>{{ server.last_online }}</td>
-				<td>{{ server.last_offline }}</td>
+				<td><div class="content">{{ server.last_online }}</div></td>
+				<td><div class="content">{{ server.last_offline }}</div></td>
 				<td>
 					{% if server.active|lower == 'yes'%} 
 						<i class="fas fa-eye" title="{{ server.active_title }}"></i>
@@ -66,7 +68,6 @@
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">T</span>
 						</span>
 					{% endif %}
-					
 				</td>
 				{% if user_level == 10 %}
 				<td>

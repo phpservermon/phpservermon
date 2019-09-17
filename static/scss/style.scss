@@ -106,6 +106,18 @@ form.form-reset {
     margin: auto;
 }
 
+table {
+    table-layout: fixed;
+}
+
+th, td {
+    max-width:1px;
+}
+.content {
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+}
+
 table tr[visible='false'],
 .no-result {
     display: none;
@@ -113,28 +125,6 @@ table tr[visible='false'],
 
 table tr[visible='true'] {
     display: table-row;
-}
-
-td, tbody th > a {
-    -ms-word-break: break-all;
-    word-break: break-all;
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
-
-td, th {
-    text-align: left;
-    width: 1%;
-    white-space: nowrap;
-}
-
-td.full, th.full {
-    width: 100%;
-    white-space: normal;
-    -ms-word-break: break-all;
-    word-break: break-all;
-    word-break: break-word;
-    overflow-wrap: break-word;
 }
 
 .bootstrap-select>.dropdown-toggle.bs-placeholder,
@@ -182,6 +172,16 @@ td.full, th.full {
 
 #needle {
     background: rgba(52, 52, 64, 0.7);
+    border-radius: 4px;
+    bottom: -4px;
+    box-shadow: 3px -1px 4px rgba(0, 0, 0, 0.4);
+    display: block;
+    height: 8px;
+    left: 5px;
+    position: absolute;
+    width: 95px;
+    transform-origin: 100% 4px;
+    transition: all 1s;
     border-radius: 4px;
     bottom: -4px;
     box-shadow: 3px -1px 4px rgba(0, 0, 0, 0.4);
