@@ -158,8 +158,8 @@ class StatusUpdater {
 		// Reason: last_output contains the full webpage, too long for the query
 		// This may depend on mysql configuration on the server_, explaining why some have the problem or not
 		// Field is 255 Chars, and request does not work anyway is loaded web page is too large in last_output
-		// So force truncate to 250 or less before query
-		$save["last_output"]=substr($save["last_output"],0,250);
+		// Solution: updated column to text and truncate to 5000 characters or less before the query
+		$save["last_output"] = substr($save["last_output"],0,5000);
 		// End PATCH
 		$this->db->save(PSM_DB_PREFIX.'servers', $save, array('server_id' => $this->server_id));
 
