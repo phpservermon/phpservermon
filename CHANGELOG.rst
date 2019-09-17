@@ -5,6 +5,40 @@ Changelog
 Not yet released
 ----------------
 
+
+v3.4.0 (released September 17, 2019)
+--------------------------------
+
+* #741: Truncate server output.
+* 9c16883: Fixed typo in es_ES.lang.php.
+* #747: Added XML to requirements.
+* #740: Update es_ES.lang.php.
+* #752: Update fr_FR.lang.php.
+* 86c0a58: Added server_id as id (fixes #738).
+* be9e3f7: Composer update.
+* 8cc8a0d: Updated wget to curl.
+* #662: Updated Japanese Translations.
+* #697: Adding verbosity for cURL.
+* #695: Allow HTTP/2 status responses.
+* #703: Update es_ES.lang.php.
+* 5b0fba6: Add button when there are no servers.
+* 5511cd5: Added faq for #719.
+* fcd12d9: Updated bootstrap to 4.3.1.
+* 6ca3615: Added missing field to email config.
+* 3e1b912: Updated Bootstrap-select to v1.13.10.
+* cba09ed: Manifest, Sw.js - Fixed path to files.
+* f70dacb: Added sw.js and manifest.
+* 59be9f2: Added beter support for use without Javascript.
+* 9915a11: Improved accessibility.
+* 0025af2: Updated Bootstrap-select to v1.13.9.
+* fea3289: Added missing offline duration.
+* 560dc8a: Makefile - Adding an input to choose macOS as the current OS.
+* 5e5281d: Fixing #665.
+* 9cdafc9: Updated useragent to Github URL.
+* cf2f6b0: Changed database column to TEXT.
+* 6c14709: Updated default template (fixing #685).
+* 5424976: Fixed PHPMailer 6.0.5 Vulnerability (resolving #680).
+* 2c6ef08: Added noopener and updated download link to Github releases.
 * #656: Downgraded symfony/filesystem to ~3.4 (PHP 5.5.9 compatible) and added 7.0.8 as minimal PHP7 version.
 * #620: Added updater.sh shell script.
 * #653: Fixes wrong default type in upgrade/install query.
