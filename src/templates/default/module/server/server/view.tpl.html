@@ -238,7 +238,7 @@
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
 							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_output">
-								See complete...
+								Show more...
 							</button>
 						</dd>
 						{% endif %}
@@ -252,7 +252,7 @@
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
 							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_error">
-								See complete...
+								Show more...
 							</button>
 						</dd>
 						{% endif %}
@@ -347,7 +347,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" style="word-wrap: break-word;font-family: Mono">
+				<div class="modal-body" style="word-wrap: break-word;">
 					{{ last_output|nl2br }}
 				</div>
 				<div class="modal-footer">
@@ -366,7 +366,7 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" style="word-wrap: break-word;font-family: Mono">
+				<div class="modal-body" style="word-wrap: break-word;">
 					{{ last_error_output|nl2br }}
 				</div>
 				<div class="modal-footer">
