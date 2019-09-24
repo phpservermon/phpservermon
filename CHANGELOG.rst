@@ -8,7 +8,7 @@ Not yet released
 v3.4.2 (released September 24, 2019)
 --------------------------------
 
-* : Fixed wrong upgrade query and added forgotten version_compare.
+* 1b0d86b: Fixed wrong upgrade query and added forgotten version_compare.
 
 
 v3.4.1 (released September 17, 2019)
