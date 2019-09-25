@@ -7,6 +7,11 @@ Not yet released
 
 * #777: Fix pushover_status checkbox population from config.
 
+v3.4.2 (released September 24, 2019)
+--------------------------------
+
+* 1b0d86b: Fixed wrong upgrade query and added forgotten version_compare.
+
 v3.4.1 (released September 17, 2019)
 --------------------------------
 

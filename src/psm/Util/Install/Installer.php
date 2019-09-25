@@ -322,6 +322,9 @@ class Installer {
 		if (version_compare($version_from, '3.4.0', '<')) {
 			$this->upgrade340();
 		}
+		if (version_compare($version_from, '3.4.2', '<')) {
+			$this->upgrade342();
+		}
 		psm_update_conf('version', $version_to);
 	}
 
@@ -573,17 +576,15 @@ class Installer {
 		$this->execSQL($queries);
 		$this->log('Combined notifications enabled. Check out the config page for more info.');
 	}
+	
 	/**
-	 * Patch for v3.4.1 release
+	 * Patch for v3.4.2 release
+	 * Version_compare was forgotten in v3.4.1 and query failed.
+	 * Fixed in v3.4.2, 3.4.1 has been removed.
 	 */
-	protected function upgrade341() {
+	protected function upgrade342() {
 		$queries = array();
-		/** 
-		 * Redirect_check is first set to default ok.
-		 * If you have a lot of server that are redirecting, 
-		 * this will make sure you're servers stay online.
-		 */
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ALTER COLUMN `last_output` text;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `last_output` `last_output` TEXT;";
 		$this->execSQL($queries);
 	}
 }
