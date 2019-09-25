@@ -5,6 +5,8 @@ Changelog
 Not yet released
 ----------------
 
+* #777: Fix pushover_status checkbox population from config
+
 v3.4.1 (released September 17, 2019)
 --------------------------------
 
