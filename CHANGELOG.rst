@@ -4,23 +4,31 @@ Changelog
 
 Not yet released
 ----------------
+\-
 
+v3.4.3 (released September 26, 2019)
+------------------------------------
+
+* b399327c: Fixed week/month/year graph.
+* 4ebe934b: Added timeout to services.
+* 8342a979: Changed auto-refresh_help to uniform name.
+* 5d668b78: Fixed auto-refresh.
 * #777: Fix pushover_status checkbox population from config.
 
 v3.4.2 (released September 24, 2019)
---------------------------------
+------------------------------------
 
 * 1b0d86b: Fixed wrong upgrade query and added forgotten version_compare.
 
 v3.4.1 (released September 17, 2019)
---------------------------------
+------------------------------------
 
 * #733: Added catalan ca_ES.lang.php.
 * 6c1763e: Updated table style.
 * #770: Changed last_output column to TEXT and restricted to 5000 characters.
 
 v3.4.0 (released September 17, 2019)
---------------------------------
+------------------------------------
 
 * #741: Truncate server output.
 * accd556: Fixed typo in es_ES.lang.php.
@@ -73,7 +81,7 @@ v3.4.0 (released September 17, 2019)
 * f6173d4: Added license to composer.json file.
 
 v3.3.1 (released August 10, 2018)
---------------------------------
+---------------------------------
 
 * #403: Removed default mysql port settings from files and left empty values.
 * 5e61d89: Defined $encrypted_password.
@@ -99,7 +107,7 @@ v3.3.1 (released August 10, 2018)
 * b98a4af: Typo fix.
 
 v3.3.0 (released May 30, 2018)
---------------------------------
+------------------------------
 
 * 57f4c36: Added support for the following SMS gateways: Plivo, SolutionsInfini, Callr and GatewayAPI.
 * c3751e7: Moved Clickatell api key to password field.
