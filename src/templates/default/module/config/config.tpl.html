@@ -39,7 +39,7 @@
                 <!-- Language -->
                 {{ macro.input_select("language", "language", label_language, languages, language_current) }}
                 <!-- Auto refresh -->
-                {{ macro.input_field("text", "auto_refresh", null, "auto_refresh", label_auto_refresh, auto_refresh, "0", "10", "auto_refresh_help", null, label_seconds) }}
+                {{ macro.input_field("number", "auto_refresh_servers", null, "auto_refresh_servers", label_auto_refresh, auto_refresh_servers, "0", "10", "auto_refresh_help", null, label_seconds) }}
                 <!-- Password encryption key -->
                 <!-- TODO how does the encryption function works currently? -->
                 {{ macro.input_field("text", "password_encrypt_key", null, "password_encrypt_key", label_password_encrypt_key, password_encrypt_key, "cab03a766...", "40", "password_encrypt_key_help", label_password_encrypt_key_note) }}

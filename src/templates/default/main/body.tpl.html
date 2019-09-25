@@ -57,7 +57,7 @@
 		{% endfor %}
 		<div class="container">
 			<div class="row">{{ html_sidebar|raw }}</div>
-			<div class="row">{{ html_content|raw }}</div>
+			<div class="row" id="content">{{ html_content|raw }}</div>
 		</div>
 	</main>
 	{% if add_footer %}

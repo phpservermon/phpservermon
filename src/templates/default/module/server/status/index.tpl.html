@@ -101,7 +101,7 @@ setInterval(function() {
 	$.ajax({
 		url:"?",
 		success: function(html, status) {
-			$("#page-container").html(html);
+			$("#content").html(html);
 		}
 	});
 }, {{ auto_refresh_seconds }} * 1000);
