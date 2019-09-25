@@ -260,7 +260,7 @@ $sm_lang = array(
 		'settings_log' => '日志设置',
 		'settings_proxy' => '代理设置',
 		'auto_refresh' => '自动刷新',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'自动刷新服务器页.<br>'.
 			'<span class="small">'.
 			'单位为秒, 设置为 0 则不自动刷新.'.

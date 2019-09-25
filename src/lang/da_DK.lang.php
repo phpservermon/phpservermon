@@ -238,7 +238,7 @@ $sm_lang = array(
 		'settings_notification' => 'Meddelelse indstillinger',
 		'settings_log' => 'Log indstillinger',
 		'auto_refresh' => 'Genopfrisk automatisk',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Genopfrisk automatisk serversider.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder. Hvis 0 vil siden ikke genopfriske automatisk'.

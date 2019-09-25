@@ -241,7 +241,7 @@ $sm_lang = array(
 		'settings_notification' => 'Benachrichtigungseinstellungen',
 		'settings_log' => 'Protokollierungseinstellungen',
 		'auto_refresh' => 'Automatische Aktualisierung',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Automatische Aktualisierung der Server-Übersichtsseite<br>'.
 			'<span class="small">'.
 			'Zeit in Sekunden - die Ziffer \'0\' deaktiviert die automatische Aktualisierung.'.

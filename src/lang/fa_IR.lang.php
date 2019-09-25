@@ -227,7 +227,7 @@ $sm_lang = array(
 		'settings_notification' => 'تنظیمات اطلاعیه ها',
 		'settings_log' => 'تنظیمات لاگ',
 		'auto_refresh' => 'رفرش خودکار',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'رفرش خودکار صفحه سرورها.<br>'.
 			'<span class="small">'.
 			'زمان به ثنیه, اگر 0 باشد صفحه رفرش نخواهد شد.'.

@@ -281,7 +281,7 @@ $sm_lang = array(
 		'settings_log' => 'Log instellingen',
 		'settings_proxy' => 'Proxy instellingen',
 		'auto_refresh' => 'Herlaad automatisch',
-		'auto_refresh_servers' => 'Auto-herladen servers pagina.<br><span class="small">Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.</span>',
+		'auto_refresh_description' => 'Auto-herladen servers pagina.<br><span class="small">Tijd in seconden, als de tijd 0 is wordt de pagina niet ververst.</span>',
 		'seconds' => 'seconden',
 		'test' => 'Test',
 		'test_email' => 'Er zal een email verstuurd worden naar het email adres in je profiel.',

@@ -293,7 +293,7 @@ $sm_lang = array(
 		'settings_log' => 'Настройка логирования',
 		'settings_proxy' => 'Настройка прокси',
 		'auto_refresh' => 'Авто-обновление',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Авто-обновление страницы статуса серверов.<br>'.
 			'<span class="small">'.
 			'Время в секундах. Если указано 0, то страница не будет обновляться.'.

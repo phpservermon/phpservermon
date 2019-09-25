@@ -309,7 +309,7 @@ $sm_lang = array(
 		'settings_log' => 'ログ設定',
 		'settings_proxy' => 'プロキシ設定',
 		'auto_refresh' => '自動更新',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'サーバーページを自動更新します。<br>'.
 			'<span class="small">'.
 			'時間を秒で指定し、0に設定すると更新しません。'.

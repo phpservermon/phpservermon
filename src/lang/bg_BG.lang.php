@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Автоматично опресняване на страницата.<br>'.
 			'<span class="small">'.
 			'Времето е в секунди, ако е 0 страницата няма да се обновява.'.

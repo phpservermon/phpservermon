@@ -312,7 +312,7 @@ $sm_lang = array(
 		'settings_log' => 'Configuración de registros',
 		'settings_proxy' => 'Configuración del proxy',
 		'auto_refresh' => 'Auto-actualizar',
-		'auto_refresh_servers' => 'Auto-actualizar la página de servidores.<br><span class="small">Tiempo en segundos, si se utiliza 0 la página no se actualizará.</span>',
+		'auto_refresh_description' => 'Auto-actualizar la página de servidores.<br><span class="small">Tiempo en segundos, si se utiliza 0 la página no se actualizará.</span>',
 		'seconds' => 'segundos',
 		'test' => 'Prueba',
 		'test_email' => 'Un correo electrónico será enviado a la dirección especificada en su perfil de usuario.',

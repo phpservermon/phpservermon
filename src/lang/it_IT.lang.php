@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => 'Impostazioni Notifiche',
 		'settings_log' => 'Impostazioni Log',
 		'auto_refresh' => 'Auto-Aggiornamento',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-Aggiornamento pagina servers.<br>'.
 			'<span class="small">'.
 			'Tempo in secondi, se impostato a 0 la pagina non si aggiornerà.'.

@@ -422,7 +422,7 @@ class ConfigController extends AbstractController {
 			'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
 			'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
 			'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
-			'label_auto_refresh_servers' => psm_get_lang('config', 'auto_refresh_servers'),
+			'label_auto_refresh_description' => psm_get_lang('config', 'auto_refresh_description'),
 			'label_seconds' => psm_get_lang('config', 'seconds'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'label_test' => psm_get_lang('config', 'test'),
