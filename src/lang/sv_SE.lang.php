@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => 'Meddelande-inställningar',
 		'settings_log' => 'Logg-inställningar',
 		'auto_refresh' => 'Auto-uppdatera',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-uppdatera status-sidan.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder, om "0" så uppdateras sidan inte automatiskt.'.

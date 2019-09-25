@@ -225,7 +225,7 @@ $sm_lang = array(
 		'settings_notification' => 'Thiết lặp thông báo',
 		'settings_log' => 'Thiết lặp Log',
 		'auto_refresh' => 'Tự động làm mới',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Tự động làm mới servers page.<br>'.
 			'<span class="small">'.
 			'Trong vài giây, nếu 0 trang sẽ không làm mới.'.

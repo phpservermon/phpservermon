@@ -227,7 +227,7 @@ $sm_lang = array(
 		'settings_notification' => 'Teavituste seaded',
 		'settings_log' => 'Logi seaded',
 		'auto_refresh' => 'Automaatne värskendamine',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Värskenda lehte automaatselt.<br>'.
 			'<span class="small">'.
 			'Aeg sekundites, kui 0 siis lehte ei värskendata.'.

@@ -303,7 +303,7 @@ $sm_lang = array(
 		'settings_log' => 'Preferències de LOG',
 		'settings_proxy' => 'Preferències de Proxy',
 		'auto_refresh' => 'Auto-recàrrega',
-		'auto_refresh_servers' => 'Recarregar automàticament la plana Servidors.<br/><span class="small">Temps en segons, si poseu ZERO la plana no s\'auto-recarregarà.</span>',
+		'auto_refresh_description' => 'Recarregar automàticament la plana Servidors.<br/><span class="small">Temps en segons, si poseu ZERO la plana no s\'auto-recarregarà.</span>',
 		'seconds' => 'segons',
 		'test' => 'Provar',
 		'test_email' => 'S\'enviarà un correu a l\'adreça que teniu al vostre perfil d\'usuari.',

@@ -252,7 +252,7 @@ $sm_lang = array(
 		'settings_notification' => 'Nastavení upozornění',
 		'settings_log' => 'Nastavení logu',
 		'auto_refresh' => 'Automaticky obnovit',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Automaticky obnovit stránku Servery.<br>'.
 			'<span class="small">'.
 			'Čas v sekundách, 0 pro vypnutí automatického obnovení.'.

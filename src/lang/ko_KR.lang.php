@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => '알림 설정',
 		'settings_log' => '로그 설정',
 		'auto_refresh' => 'Auto-refresh',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'서버페이지를 자동으로 새로고침.<br>'.
 			'<span class="small">'.
 			'시간은 초(sec)로 설정을 하고, 0은 새로고침을 하지 않습니다.'.

@@ -241,7 +241,7 @@ $sm_lang = array(
 		'settings_notification' => 'Configuration des notifications',
 		'settings_log' => 'Configuration des événements',
 		'auto_refresh' => 'Auto-rachaîchissement',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-rachaîchissement de la page serveurs.<br>'.
 			'<span class="small">'.
 			'Temps en secondes. Si 0, la page n\'est pas rafraîchie.'.

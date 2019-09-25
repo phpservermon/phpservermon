@@ -292,7 +292,7 @@ $sm_lang = array(
 		'settings_log' => 'Logg innstillinger',
 		'settings_proxy' => 'Proxy innstillinger',
 		'auto_refresh' => 'Auto-refresh',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-refresh server side.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder, hvis 0 siden ikke blir oppdatert.'.

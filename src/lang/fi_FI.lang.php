@@ -227,7 +227,7 @@ $sm_lang = array(
 		'settings_notification' => 'Ilmoitusasetukset',
 		'settings_log' => 'Tapahtumamerkintöjen asetukset',
 		'auto_refresh' => 'Automaattipäivitys',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Päivittää automaattisesti palvelimet-sivun.<br>'.
 			'<span class="small">'.
 			'Aika sekunteina, jos 0, sivu ei päivity automaattisesti.'.

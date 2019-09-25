@@ -314,7 +314,7 @@ $sm_lang = array(
 		'settings_log' => 'Log settings',
 		'settings_proxy' => 'Proxy settings',
 		'auto_refresh' => 'Auto-refresh',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-refresh servers page.<br>'.
 			'<span class="small">'.
 			'Time in seconds, if 0 the page won\'t refresh.'.

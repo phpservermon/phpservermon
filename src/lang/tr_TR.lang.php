@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => 'Bildirim ayarları',
 		'settings_log' => 'Log ayarları',
 		'auto_refresh' => 'Otomatik Yenileme',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Otomatik yenileme sunucu sayfası<br>'.
 			'<span class="small">'.
 			'Eğer sayfa yenilenmez ise.'.

@@ -225,7 +225,7 @@ $sm_lang = array(
 		'settings_notification' => 'Nastavitve obvestil',
 		'settings_log' => 'Hramba dnevniških zapisov',
 		'auto_refresh' => 'Samodejno posodabljanje',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Samodejno posodabljanje pregleda statusa strežnikov.<br>'.
 			'<span class="small">'.
 			'Čas v sekundah. Če je vrednost 0 se stran ne bo samodejno posodabljala.'.

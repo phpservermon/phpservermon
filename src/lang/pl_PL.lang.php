@@ -240,7 +240,7 @@ $sm_lang = array(
 		'settings_notification' => 'Ustawienia powiadomień',
 		'settings_log' => 'Ustawienia Logowania',
 		'auto_refresh' => 'Auto-odświeżanie',
-		'auto_refresh_servers' =>
+		'auto_refresh_description' =>
 			'Auto-odświeżanie strony serwera.<br>'.
 			'<span class="small">'.
 			'Czas w sekundach, dla czasu 0 strona nie będzie odświeżana.'.
