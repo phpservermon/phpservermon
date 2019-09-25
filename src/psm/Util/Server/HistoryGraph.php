@@ -144,7 +144,7 @@ class HistoryGraph {
 		$month = new \DateTime('-1 month -1 week 0:0:0');
 		$year = new \DateTime('-1 year -1 week 0:0:0');
 
-		$records = $this->getRecords('history', $server_id, $month, $end_time);
+		$records = $this->getRecords('history', $server_id, $year, $end_time);
 
 		// dont add uptime for now because we have no way to calculate accurate uptimes for archived records
 		$data = $this->generateGraphLines($records, $lines, 'latency_avg', $start_time, $end_time, false);
