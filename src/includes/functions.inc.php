@@ -476,17 +476,19 @@ function psm_update_available() {
 		// update last check date
 		psm_update_conf('last_update_check', time());
 		$latest = psm_curl_get(PSM_UPDATE_URL);
+		// extract latest version from Github.
+		preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
 		// add latest version to database
-		if ($latest !== false && strlen($latest) < 15) {
-			psm_update_conf('version_update_check', $latest);
+		if ($latest[2] !== false && strlen($latest[2]) < 15) {
+			psm_update_conf('version_update_check', $latest[2]);
 		}
 	} else {
 		$latest = psm_get_conf('version_update_check');
 	}
 
-	if ($latest !== false) {
+	if ($latest[2] !== false) {
 		$current = psm_get_conf('version');
-		return version_compare($latest, $current, '>');
+		return version_compare($latest[2], $current, '>');
 	} else {
 		return false;
 	}

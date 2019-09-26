@@ -68,8 +68,7 @@
 				Powered by
 				<a href="https://github.com/phpservermon/phpservermon/" target="_blank" rel="noopener">
 					PHP Server Monitor {{ version }}.
-				</a>
-				{{ update_available }} <a href="#" class="float-right">{{ label_back_to_top }}</a>
+				</a><span style="color:red;">{{ update_available|raw }}</span><a href="#" class="float-right">{{ label_back_to_top }}</a>
 			</span>
 		</div>
 	</footer>
