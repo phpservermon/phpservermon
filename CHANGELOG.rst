@@ -6,6 +6,14 @@ Not yet released
 ----------------
 \-
 
+v3.4.4 (released September 26, 2019)
+------------------------------------
+
+* 932c695f: Fixed selected view in graph.
+* 6aca2e10: Fixed auto refresh with wrong layout.
+* 9f3e140b: Changed static file path to new path.
+* 29adce26: Removed old static directory.
+
 v3.4.3 (released September 26, 2019)
 ------------------------------------
 
