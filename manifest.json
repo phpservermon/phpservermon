@@ -2,7 +2,7 @@
   "name": "PHP Server Monitor",
   "short_name": "PSM",
   "icons": [{
-    "src": "static/phpservermon.png",
+    "src": "phpservermon.png",
       "sizes": "128x128",
       "type": "image/png"
     }, {

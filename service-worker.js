@@ -3,13 +3,13 @@ var cacheName = 'PSM-PWA-final-1';
 var filesToCache = [
   '/',
   'index.php',
-  'static/js/history.js',
-  'static/js/scripts.js',
-  'static/js/search.js',
-  'static/css/bootstrap.min.css',
-  'static/css/search.min.css',
-  'static/css/style.min.css',
-  'static/phpservermon.png'
+  'src/templates/default/static/js/history.js',
+  'src/templates/default/static/js/scripts.js',
+  'src/templates/default/static/js/search.js',
+  'src/templates/default/static/css/bootstrap.min.css',
+  'src/templates/default/static/css/search.min.css',
+  'src/templates/default/static/css/style.min.css',
+  'phpservermon.png'
 ];
 
 self.addEventListener('install', function(e) {
