@@ -4,18 +4,18 @@ html {
 }
 
 html[dir='rtl'] {
-
-    #auto_refresh_servers,
-    #log_retention_period {
-        border-left-width: 0px
-    }
-
-    #auto_refresh_servers_input,
-    #log_retention_period_input {
+    #auto_refresh_description,
+    #log_retention_period_help {
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+    }
+}
+
+html[dir='ltr'] {
+    #auto_refresh_description,
+    #log_retention_period_help {
+        border-top-right-radius: .25rem;
+        border-bottom-right-radius: .25rem;
     }
 }
 
@@ -63,19 +63,6 @@ a.icon {
     text-decoration: none;
     cursor: pointer;
     padding-left: 10px;
-}
-
-#auto_refresh_servers,
-#log_retention_period {
-    border-right-width: 0px
-}
-
-#auto_refresh_servers_input,
-#log_retention_period_input {
-    border-top-right-radius: .25rem;
-    border-bottom-right-radius: .25rem;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
 }
 
 form.form-signin input[type="text"],
