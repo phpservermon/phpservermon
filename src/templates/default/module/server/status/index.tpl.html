@@ -102,6 +102,7 @@ setInterval(function() {
 		url:"?",
 		success: function(html, status) {
 			$("#content").html(html);
+			psm_setLayout({{ layout }});
 		}
 	});
 }, {{ auto_refresh_seconds }} * 1000);

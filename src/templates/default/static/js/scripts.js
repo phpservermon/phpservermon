@@ -122,7 +122,7 @@ function psm_xhr(mod, params, method, on_complete, options) {
 	return result;
 }
 
-function psm_saveLayout(layout) {
+function psm_setLayout(layout) {
 	if (layout) {
 		$("#list-layout").show();
 		$("#flow-layout").hide();
@@ -134,11 +134,14 @@ function psm_saveLayout(layout) {
 		$("#block-layout").addClass('active');
 		$("#table-layout").removeClass('active');
 	}
+}
 
+function psm_saveLayout(layout) {
+	psm_setLayout(layout)
 
 	var params = {
 		action: 'saveLayout',
-		csrf: $("input[name=saveLayout_csrf]").val(),
+		csrf: $("input[name=csrf]").val(),
 		layout: layout
 	};
 	psm_xhr('server_status', params, 'POST');
