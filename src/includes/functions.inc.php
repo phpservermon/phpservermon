@@ -483,7 +483,7 @@ function psm_update_available() {
 			psm_update_conf('version_update_check', $latest[2]);
 		}
 	} else {
-		$latest = psm_get_conf('version_update_check');
+		$latest[2] = psm_get_conf('version_update_check');
 	}
 
 	if ($latest[2] !== false) {
