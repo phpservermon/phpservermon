@@ -1,5 +1,5 @@
-<script type="text/javascript" src="static/plugin/momentjs/moment.js"></script>
-<script type="text/javascript" src="static/plugin/chartjs/chart-2.7.3.min.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/momentjs/moment.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/chartjs/chart-2.7.3.min.js"></script>
 {% for graph in graphs %}
 <div class="chart-container col-10" style="position: relative;  width:60vw">
 	<canvas id="{{ graph.id }}">Your browser does not support the canvas element.</canvas>
@@ -146,7 +146,7 @@
 <script>
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
-    $.getScript("static/js/history.js");
+    $.getScript("src/templates/default/static/js/history.js");
   }
 }
 </script>

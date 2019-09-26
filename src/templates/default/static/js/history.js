@@ -8,6 +8,7 @@ function updateScale(chart, min, unit) {
 $('input[name=timeframe_short]').change(function () {
 	updateScale(historyShort, parseInt($('input[name=timeframe_short]:checked').val()), $('input[name=timeframe_short]:checked')[0].id);
 });
+updateScale(historyLong, parseInt($('input[name=timeframe_long]:checked').val()), $('input[name=timeframe_long]:checked')[0].id);
 $('input[name=timeframe_long]').change(function () {
 	updateScale(historyLong, parseInt($('input[name=timeframe_long]:checked').val()), $('input[name=timeframe_long]:checked')[0].id);
 });
