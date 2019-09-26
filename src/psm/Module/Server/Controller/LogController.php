@@ -59,9 +59,11 @@ class LogController extends AbstractServerController {
 			'label_date' => psm_get_lang('system', 'date'),
 			'label_users' => ucfirst(psm_get_lang('menu', 'user')),
 			'label_no_logs' => psm_get_lang('log', 'no_logs'),
-			'label_clear_log' => psm_get_lang('log', 'clear'),
 			'tabs' => array(),
 		);
+
+		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
+		$this->setSidebar($sidebar);
 
 		if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
@@ -69,7 +71,16 @@ class LogController extends AbstractServerController {
 			$modal->setTitle(psm_get_lang('log', 'delete_title'));
 			$modal->setMessage(psm_get_lang('log', 'delete_message'));
 			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
-			$tpl_data['has_admin_actions'] = true;
+			
+			$sidebar->addButton(
+				'clear_logn',
+				psm_get_lang('log', 'clear'),
+				psm_build_url(array('mod' => 'server_log', 'action' => 'delete')),
+				'trash', 
+				'danger show-modal',
+				psm_get_lang('log', 'delete_title'),
+				'delete'
+			);
 		}
 
 		$log_types = array('status', 'email', 'sms', 'pushover', 'telegram');
@@ -80,6 +91,7 @@ class LogController extends AbstractServerController {
 
 			$tab_data = array(
 				'id' => $key,
+				'label' => psm_get_lang('log', $key),
 				'has_users' => ($key == 'status') ? false : true,
 				'no_logs' => ($log_count == 0) ? true : false,
 				'tab_active' => ($key == 'status') ? 'active' : '',
@@ -87,17 +99,18 @@ class LogController extends AbstractServerController {
 
 			for ($x = 0; $x < $log_count; $x++) {
 				$record = &$records[$x];
-				$record['class'] = ($x & 1) ? 'odd' : 'even';
 				$record['users'] = '';
-				$record['server'] = $record['label'];
-				$record['type_icon'] = ($record['server_type'] == 'website') ? 'icon-globe' : 'icon-cog';
-				$record['type_title'] = psm_get_lang('servers', 'type_'.$record['server_type']);
-				$ip = '('.$record['ip'];
-				if (!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
-					$ip .= ':'.$record['port'];
+				if($key == 'status'){
+					$record['server'] = $record['label'];
+					$record['type_icon'] = ($record['server_type'] == 'website') ? 'globe-americas' : 'cogs';
+					$record['type_title'] = psm_get_lang('servers', 'type_'.$record['server_type']);
+					$ip = '('.$record['ip'];
+					if (!empty($record['port']) && (($record['server_type'] != 'website') || ($record['port'] != 80))) {
+						$ip .= ':'.$record['port'];
+					}
+					$ip .= ')';
+					$record['ip'] = $ip;
 				}
-				$ip .= ')';
-				$record['ip'] = $ip;
 				$record['datetime_format'] = psm_date($record['datetime']);
 
 				// fix up user list
@@ -113,10 +126,6 @@ class LogController extends AbstractServerController {
 			}
 			$tab_data['entries'] = $records;
 			$tpl_data['tabs'][] = $tab_data;
-			$tpl_data['url_delete'] = psm_build_url(array(
-				'mod' => 'server_log',
-				'action' => 'delete',
-			));
 		}
 		return $this->twig->render('module/server/log.tpl.html', $tpl_data);
 	}

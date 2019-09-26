@@ -334,7 +334,6 @@ class StatusNotifier {
      * @return string|null
      */
     protected function createCombiSubject($method, $user_id){
-        //die(var_dump($GLOBALS['sm_lang_default']['notifications']['combi_'.$method.'_subject']));
         $vars = array('DOWN' => $this->combiNotification['count'][$user_id]['off'], 'UP' => $this->combiNotification['count'][$user_id]['on']);
         $translation =  isset($GLOBALS['sm_lang_default']['notifications']['combi_'.$method.'_subject']) ?
         psm_parse_msg(null, $method.'_subject', $vars, true) :

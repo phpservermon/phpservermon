@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Ei',
 		'insert' => 'Asetukset',
 		'add_new' => 'Lisää uusi',
-		'update_available' => 'Uusi versio ({version}) on ladattavissa osoitteessa <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uusi versio ({version}) on ladattavissa osoitteessa <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Takaisin ylös',
 		'go_back' => 'Takaisin',
 		'ok' => 'OK',
@@ -80,7 +80,7 @@ $sm_lang = array(
 		'level' => 'Taso',
 		'level_10' => 'Järjestelmänvalvoja',
 		'level_20' => 'Käyttäjä',
-		'level_description' => '<b>Järjestelmänvalvojilla</b> on täydet oikeudet: he voivat hallita palvelimia, käyttäjiä ja muokata ohjelmiston asetuksia.<br/><b>Käyttäjät</b> voivat vain nähdä ja päivittää palvelimia jotka on asetettu heille.',
+		'level_description' => '<b>Järjestelmänvalvojilla</b> on täydet oikeudet: he voivat hallita palvelimia, käyttäjiä ja muokata ohjelmiston asetuksia.<br><b>Käyttäjät</b> voivat vain nähdä ja päivittää palvelimia jotka on asetettu heille.',
 		'mobile' => 'Puhelin',
 		'email' => 'Sähköposti',
 		'pushover' => 'Pushover',
@@ -199,14 +199,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover on palvelu jolla on helppo lähettää reaaliaikaisia tilaviestejä. Katso <a href="https://pushover.net/">verkkosivuilta</a> lisäinfoa.',
 		'pushover_clone_app' => 'Paina tästä luodaksesi Pushover-sovelluksesi',
 		'pushover_api_token' => 'Pushover API-avain',
-		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
+		'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s" target="_blank" rel="noopener">rekisteröidä sovellus</a> heidän nettisivuillaan, ja kopioida API-avain tänne.',
 		'alert_type' => 'Valitse milloin haluat ilmoituksia.',
 		'alert_type_description' => '<b>Tilan muutos:</b> '.
-			'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br/>'.
+			'Saat ilmoituksen kun palvelimen tila vaihtuu. Eli tilasta päällä -> sammunut tai sammunut -> päällä.<br>'.
 			'<br /><b>Sammunut:</b> '.
 			'Saat yhden ilmoituksen kun palvelimen tila vaihtuu sammuneeksi, mutta *VAIN ENSIMMÄISEN KERRAN*. Esimerkiksi, '.
 			'jos tarkistus tehdään joka 15 minuutti, ja palvelin sammuu klo 1 ja pysyy sammuneena klo 6 asti. '.
-			'Saat vain yhden ilmoituksen klo 1, ei muuta.<br/>'.
+			'Saat vain yhden ilmoituksen klo 1, ei muuta.<br>'.
 			'<br><b>Aina:</b> '.
 			'Saat ilmoituksen joka kerta kun palvelin tarkistetaan, vaikka palvelin olisi ollut sammuneena tunteja.',
 		'alert_type_status' => 'Tilan muutos',
@@ -227,8 +227,8 @@ $sm_lang = array(
 		'settings_notification' => 'Ilmoitusasetukset',
 		'settings_log' => 'Tapahtumamerkintöjen asetukset',
 		'auto_refresh' => 'Automaattipäivitys',
-		'auto_refresh_servers' =>
-			'Päivittää automaattisesti palvelimet-sivun.<br/>'.
+		'auto_refresh_description' =>
+			'Päivittää automaattisesti palvelimet-sivun.<br>'.
 			'<span class="small">'.
 			'Aika sekunteina, jos 0, sivu ei päivity automaattisesti.'.
 			'</span>',
@@ -253,18 +253,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Kuinka monta päivää pitää palvelinten päälläoloaikoja ja muita tapahtumia. Aseta arvoksi 0 jos haluat pitää ne loputtomasti.',
 		'log_retention_days' => 'päivää',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
-		'off_email_body' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_email_body' => "Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
-		'off_pushover_message' => "Failed to connect to the following server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_message' => "Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-		'on_email_body' => "Server '%LABEL%' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "Server '%LABEL%' is running again, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
-		'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Tervetuloa, %user_name%',
@@ -281,7 +281,7 @@ $sm_lang = array(
 		'password_forgot' => 'Unohtuiko salasanasi?',
 		'password_reset' => 'Resetoi salasanasi',
 		'password_reset_email_subject' => 'Resetoi salasanasi PHP Server Monitoriin',
-		'password_reset_email_body' => 'Ole hyvä ja käytä seuraavaa linkkiä restoidaksesi salasanasi. Huomaa että linkki vanhentuu tunnin sisällä.<br/><br/>%link%',
+		'password_reset_email_body' => 'Ole hyvä ja käytä seuraavaa linkkiä restoidaksesi salasanasi. Huomaa että linkki vanhentuu tunnin sisällä.<br><br>%link%',
 		'error_user_incorrect' => 'Annettua käyttäjänimeä ei löydetty.',
 		'error_login_incorrect' => 'Antamasi tiedot eivät ole oikein.',
 		'error_login_passwords_nomatch' => 'Annetut salasanat eivät täsmää.',

@@ -1,3 +1,116 @@
-{% macro csrf_input() %}
-<input type="hidden" name="csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
+{% macro input_csrf() %}
+    <input type="hidden" name="csrf" value="{{ csrf_token(csrf_key|default('')) }}" />
+{% endmacro input_csrf %}
+
+{% macro input_checkbox(id, name, label, checked, help, help_label) %}
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="{{ id }}" name="{{ name }}"
+                {% if help %}aria-describedby="{{ help }}"{% endif %} {{ checked }}>
+            <label class="custom-control-label" for="{{ id }}">{{ label }}</label>
+            {% if help %}
+                <small id="{{ help }}" class="form-text text-muted">{{
+                help_label|striptags('<a>,<b>,<br>')|raw }}</small>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro input_checkbox %}
+
+{% macro input_select(id, name, label, options, current, help, help_label) %}
+    <div class="form-group">
+        <label for="{{ id }}">{{ label }}</label>
+        <select id="{{ id }}" name="{{ name }}" class="custom-select" {% if help %}aria-describedby="{{ help }}"{% endif %}>
+            {% for option in options %}
+            <option value="{{ option.value }}" {% if option.value == current %} selected="selected" {% endif %}>
+                {{ option.label }}
+            </option>
+            {% endfor %}
+        </select>
+        {% if help %}
+            <small id="{{ help }}" class="form-text text-muted">{{
+            help_label|striptags('<a>,<b>,<br>')|raw }}</small>
+        {% endif %}
+    </div>
+{% endmacro input_select %}
+
+{% macro input_select_multiple(id, name, label, placeholder, options, select_message) %}
+    <div class="form-group">
+        <label for="{{ id }}">{{ label }}</label>
+        <select class="selectpicker" id="{{ id }}" name="{{ name }}" data-select-on-tab="true" data-live-search="true"
+            data-live-search-placeholder="{{ placeholder }}" data-selected-text-format="count > 3" data-actions-box="true"
+            data-none-selected-text="{{ select_message }}" multiple>
+            {% for option in options %}
+            <option value="{{ option.id }}" {{ option.edit_selected|raw }}> {{ option.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro input_select_multiple %}
+
+{% macro input_select_monitoring(id, name, label, current, label_yes, label_no, warning, warning_label) %}
+    <div class="form-group form-row">
+        {% if warning %}
+        <div class="alert alert-warning col-md-12" role="alert">
+            <i class="fas fa-exclamation-triangle" title="Warning"></i> {{ warning_label }}
+        </div>
+        {% endif %}
+        <label for="{{ id }}" class="col-form-label col-md-3">{{ label }}</label>
+        <div class="col-md-9 p-0">
+            <select id="{{ id }}" name="{{ name }}" class="custom-select">
+                <option value="yes" {% if current == "yes" %} selected="selected" {% endif %}>{{ label_yes }}</option>
+                <option value="no" {% if current == "no" %} selected="selected" {% endif %}>{{ label_no }}</option>
+            </select>
+        </div>
+    </div>
 {% endmacro %}
+
+{% macro input_field(type, id, class, name, label, value, placeholder, max, help, help_label, side_label, readonly, required, autofocus, autocomplete, disabled) %}
+    <div class="form-group {% if class %}{{ class }}{% endif %}">
+        <label for="{{ id }}">{{ label }}</label>
+        {% if side_label and help %}
+        <div class="input-group">
+        {% endif %}
+        <input type="{{ type }}" class="form-control" id="{{ id }}"
+            {% if name %}name="{{ name }}"{% endif %}
+            {% if placeholder != null %}placeholder="{{ placeholder }}"{% endif %}
+            {% if value != null %}value="{{ value }}"{% endif %} 
+            {% if max != null %}maxlength="{{ max }}"{% endif %} 
+            {% if help %}aria-describedby="{{ help }}"{% endif %}
+            {% if readonly %}readonly onfocus="this.removeAttribute('readonly');"{% endif %}
+            {% if required %}required{% endif %}
+            {% if disabled %}disabled{% endif %}
+            {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+            {% if autofocus %}autofocus{% endif %}>
+            {% if help %}
+                {% if help_label %}
+                    <small id="{{ help }}" class="form-text text-muted">{{ help_label|striptags('<a>,<b>,<br>')|raw }}</small>
+                {% endif %}
+                {% if side_label %}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="{{ help }}">{{ side_label }}</span>
+                    </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+    </div>
+{% endmacro input_field %}
+
+{% macro input_hidden(name, value) %}
+    <input type="hidden" name="{{ name }}" value="{{ value }}">
+{% endmacro input_hidden %}
+
+{% macro button_test(data_modal_id, label) %}
+    <button class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="{{ data_modal_id }}">{{ label }}</button>
+{% endmacro button_test %}
+
+{% macro button_save(name, label) %}
+    <button class="btn btn-success" type="submit" {% if name %}name="{{ name }}"{% endif %}>{{ label }}</button>
+{% endmacro button_save %}
+
+{% macro table_search(label) %}
+    <noscript><div hidden></noscript>
+    <div class="searchbar mb-3">
+        <input class="search_input" type="search" name="" maxlength="255" placeholder="{{ label }}..." aria-label="{{ label }}">
+        <a href="#" class="search_icon"><i class="fas fa-search"></i><p>0</p></a>
+    </div>
+    <noscript></div></noscript>
+{% endmacro table_search %}

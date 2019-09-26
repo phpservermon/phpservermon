@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nei',
 		'insert' => 'Sett inn',
 		'add_new' => 'Legg til ny',
-		'update_available' => 'En ny versjon ({versjon}) er tilgjengelig på <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny versjon ({versjon}) er tilgjengelig på <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Tilbake til toppen',
 		'go_back' => 'Gå tilbake',
 		'ok' => 'OK',
@@ -73,8 +73,6 @@ $sm_lang = array(
 		'minutes' => 'minutter',
 		'second' => 'sekund',
 		'seconds' => 'sekunder',
-		'online' => 'online',
-		'offline' => 'offline',
 	),
 	'menu' => array(
 		'config' => 'Konfig',
@@ -95,7 +93,7 @@ $sm_lang = array(
 		'level' => 'Level',
 		'level_10' => 'Administrator',
 		'level_20' => 'Bruker',
-		'level_description' => '<b>Administratorer</b> har full tilgang: de kan administrere servere, brukere og redigere den globale konfigurasjonen.<br/><b>Brukere</b> kan bare vise og kjøre oppdatering for serverne som er tildelt dem.',
+		'level_description' => '<b>Administratorer</b> har full tilgang: de kan administrere servere, brukere og redigere den globale konfigurasjonen.<br><b>Brukere</b> kan bare vise og kjøre oppdatering for serverne som er tildelt dem.',
 		'mobile' => 'Mobil',
 		'email' => 'E-post',
 		'pushover' => 'Pushover',
@@ -110,7 +108,7 @@ $sm_lang = array(
 		'telegram_get_chat_id' => 'Klikk her for å få chat-ID',
 		'activate_telegram' => 'Aktiver Telegram notifications',
 		'activate_telegram_description' => 'Tillat Telegram varsler som skal sendes til det angitte chat-IDet. Uten denne tillatelsen tillater Telegram oss ikke å sende varsler til deg.',
-		'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank"><button class="btn btn-primary">Neste steg</button></a> <br>Dette åpner en chat med bot. Her må du trykke på start ved å skrive: /start.',
+		'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank" rel="noopener"><button class="btn btn-primary">Neste steg</button></a> <br>Dette åpner en chat med bot. Her må du trykke på start ved å skrive: /start.',
 		'telegram_bot_username_error_token' => '401 - Unauthorized. Pass på at API-token er gyldig.',
 		'telegram_bot_error' => 'Det har oppstått en feil under aktivering av Telegram varsling: %s',
 		'delete_title' => 'Slett bruker',
@@ -150,7 +148,8 @@ $sm_lang = array(
 		'domain' => 'Domene/IP',
 		'timeout' => 'Timeout',
 		'timeout_description' => 'Antall sekunder å vente på at serveren skal svare.',
-		'authentication_settings' => 'Autentiseringsinnstillinger (ValgfrittF)',
+		'authentication_settings' => 'Autentiseringsinnstillinger',
+		'optional' => 'ValgfrittF',
 		'website_username' => 'Brukernavn',
 		'website_username_description' => 'Brukernavn for å få tilgang til nettstedet. (Kun Apache-godkjenning støttes.)',
 		'website_password' => 'Password',
@@ -169,9 +168,10 @@ $sm_lang = array(
 		'pattern_description' => 'Hvis dette mønsteret ikke er funnet på nettstedet, blir serveren merket online/offline. Vanlige uttrykk er tillatt.',
 		'pattern_online' => 'Mønster indikerer at nettstedet er',
 		'pattern_online_description' => 'Online: Hvis dette mønsteret ikke er funnet på nettstedet, blir serveren merket online. Offline: Hvis dette mønsteret ikke er funnet på nettstedet, blir serveren merket offline.',
-		'header' => 'Overskrift',
-		'header_name_description' => 'Overskriftnavn (versalsensitivt)',
-		'header_value_description' => 'Overskriftsverdi. Vanlige uttrykk er tillatt.',
+		'header_name' => 'Overskriftnavn',
+		'header_value' => 'Overskriftsverdi',
+		'header_name_description' => 'Versalsensitivt.',
+		'header_value_description' => 'Vanlige uttrykk er tillatt.',
 		'last_check' => 'Siste sjekk',
 		'last_online' => 'Sist online',
 		'last_offline' => 'Sist offline',
@@ -195,6 +195,8 @@ $sm_lang = array(
 		'latency_max' => 'Ventetid (maximum)',
 		'latency_min' => 'Ventetid (minimum)',
 		'latency_avg' => 'Ventetid (gjennomsnitt)',
+		'online' => 'online',
+		'offline' => 'offline',
 		'uptime' => 'Oppetid',
 		'year' => 'År',
 		'month' => 'Måned',
@@ -252,25 +254,25 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover er en tjeneste som gjør det enkelt å få meldinger i sanntid. Se <a href="https://pushover.net/">deres nettside</a> for mer info.',
 		'pushover_clone_app' => 'Klikk her for å lage din Pushover-app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Før du kan bruke Pushover, må du <a href="%1$s" target="_blank"> registrere en app </a> på deres nettside og angi App API Token her.',
+		'pushover_api_token_description' => 'Før du kan bruke Pushover, må du <a href="%1$s" target="_blank" rel="noopener"> registrere en app </a> på deres nettside og angi App API Token her.',
 		'telegram_status' => 'Tillat sending av Telegram-meldinger',
 		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> er en chat-app som gjør det enkelt å få meldinger i sanntid. Gå til <a href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for mer informasjon og en installasjonsveiledning.',
 		'telegram_api_token' => 'Telegram API Token',
 		'telegram_api_token_description' => 'Før du kan bruke Telegram, må du få en API-token. Gå til <a href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for å få hjelp.',
 		'alert_type' => 'Velg når du vil bli varslet.',
 		'alert_type_description' => '<b>Statusendring:</b> '.
-			'Du vil motta et varsel når en server har endret status. Så fra online -> offline eller offline -> online.<br/>'.
+			'Du vil motta et varsel når en server har endret status. Så fra online -> offline eller offline -> online.<br>'.
 			'<br /><b>Offline:</b> '.
 			'Du vil motta et varsel når en server går offline for *FØRSTE GANG BARE*. For eksempel,'.
 			'din cronjob er hver 15 minutter og serveren din går ned klokken 01:00 og holder seg ned til 06:00. '.
-			'Du får 1 melding klokken 01:00 og det er det.<br/>'.
+			'Du får 1 melding klokken 01:00 og det er det.<br>'.
 			'<br><b>Alltid:</b> '.
 			'Du vil motta et varsel hver gang scriptet kjører, og et nettsted er nede, selv om nettstedet har vært offline i flere timer.',
 		'alert_type_status' => 'Statusendring',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Alltid',
 		'alert_proxy' => 'Selv om aktivert, blir proxy aldri brukt for tjenester',
-		'alert_proxy_url' => '<b>Format:</b> Vert:Port',
+		'alert_proxy_url' => 'Format: Vert:Port',
 		'log_status' => 'Logg status',
 		'log_status_description' => 'Hvis loggstatus er satt til SANT, logger monitoren på hendelsen når meldingsinnstillingene er bestått.',
 		'log_email' => 'Logg e-post sendt av skriptet',
@@ -290,8 +292,8 @@ $sm_lang = array(
 		'settings_log' => 'Logg innstillinger',
 		'settings_proxy' => 'Proxy innstillinger',
 		'auto_refresh' => 'Auto-refresh',
-		'auto_refresh_servers' =>
-			'Auto-refresh server side.<br/>'.
+		'auto_refresh_description' =>
+			'Auto-refresh server side.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder, hvis 0 siden ikke blir oppdatert.'.
 			'</span>',
@@ -321,20 +323,20 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Antall dager for å holde logger over varsler og arkiver av serveroppetid. Skriv 0 for å deaktivere loggopprydding.',
 		'log_retention_days' => 'dager',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Serveren \'%LABEL%\' er NEDE: ip=%IP%, port=%PORT%. Feil=%ERROR%',
 		'off_email_subject' => 'VIKTIG: Serveren \'%LABEL%\' er NEDE',
-		'off_email_body' => "Kunne ikke koble til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Feil: %ERROR%<br/>Dato: %DATE%",
+		'off_email_body' => "Kunne ikke koble til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Feil: %ERROR%<br>Dato: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' er NEDE',
-		'off_pushover_message' => "Kunne ikke koble til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Feil: %ERROR%<br/>Dato: %DATE%",
-		'off_telegram_message' => "Kunne ikke koble til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Feil: %ERROR%<br/>Dato: %DATE%",
+		'off_pushover_message' => "Kunne ikke koble til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Feil: %ERROR%<br>Dato: %DATE%",
+		'off_telegram_message' => "Kunne ikke koble til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Feil: %ERROR%<br>Dato: %DATE%",
 		'on_sms' => 'Server \'%LABEL%\' er OPPE igjen: ip=%IP%, port=%PORT%, det var nede i %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIKTIG: Server \'%LABEL%\' er OPPE',
-		'on_email_body' => "Server '%LABEL%' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_email_body' => "Server '%LABEL%' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' er OPPE',
-		'on_pushover_message' => 'Server \'%LABEL%\' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%',
-		'on_telegram_message' => 'Server \'%LABEL%\' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%',
+		'on_telegram_message' => 'Server \'%LABEL%\' er oppe igjen, det var nede i %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Velkommen, %user_name%',
@@ -351,7 +353,7 @@ $sm_lang = array(
 		'password_forgot' => 'Glemt passordet?',
 		'password_reset' => 'Tilbakestille passord',
 		'password_reset_email_subject' => 'Tilbakestill passordet ditt for PHP Server Monitor',
-		'password_reset_email_body' => 'Vennligst bruk følgende link for å tilbakestille passordet ditt. Vær oppmerksom på at det utløper om 1 time.<br/><br/>%link%',
+		'password_reset_email_body' => 'Vennligst bruk følgende link for å tilbakestille passordet ditt. Vær oppmerksom på at det utløper om 1 time.<br><br>%link%',
 		'error_user_incorrect' => 'Det oppgitte brukernavnet ble ikke funnet.',
 		'error_login_incorrect' => 'Informasjonen er feil.',
 		'error_login_passwords_nomatch' => 'De oppgitte passordene stemmer ikke overens.',

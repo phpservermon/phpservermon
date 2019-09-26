@@ -1,127 +1,378 @@
-<table class="table table-bordered">
-	<colgroup>
-		<col class="oce-first" />
-		<col />
-	</colgroup>
-	<thead>
-		<tr class="head">
-			<th colspan="2">
-				<div class="btn-group">
-				  <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-					<i class="icon-th icon-white"></i>&nbsp;{{ label }}
-					<span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-					{% for option in options %}
-					<li class="{{ option.class_active }}"><a href="{{ option.url|raw }}">{{ option.label }}</a>
-					{% endfor %}
-				  </ul>
-				</div>
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>{{ label_status }}:</td>
-			<td>
-				<span class="label label-status-{{ status }}">
-					<a href="#" title="{{ error }}">{{ status }}</a>
-				</span>&nbsp;{{ error }}
-			</td>
-		</tr>
-		<tr>
-			<td>{{ label_type }}:</td>
-			<td>{{ type }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_domain }}:</td>
-			<td>{{ ip|raw }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_port }}:</td>
-			<td>{{ port }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_last_check }}:</td>
-			<td>{{ last_check }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_last_online }}:</td>
-			<td>{{ last_online }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_last_offline }}:</td>
-			<td>{{ last_offline }} {{ last_offline_duration }}</td>
-		</tr>		
-		<tr>
-			<td>{{ label_rtime }}:</td>
-			<td>{{ rtime }} s</td>
-		</tr>
-		<tr>
-			<td>{{ label_monitoring }}:</td>
-			<td>{{ active }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_email }}:</td>
-			<td>{{ email }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_sms }}:</td>
-			<td>{{ sms }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_pushover }}:</td>
-			<td>{{ pushover }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_telegram }}:</td>
-			<td>{{ telegram }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_timeout }}:</td>
-			<td>{{ timeout }} s</td>
-		</tr>
-		<tr>
-			<td>{{ label_website_username }}:</td>
-			<td>{{ website_username }}</td>
-		</tr>
-		<tr>
-			<td>{{ label_website_password }}:</td>
-			<td>
-                {% if (website_password is not empty) %}
-				******
+{% import 'main/macros.tpl.html' as macro %}
+{{ macro.input_csrf() }}
+<div class="container">
+	<div class="row">
+		<div class="card text-white text-center col-md-2 pl-0 pr-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
+			<div class="card-body d-flex align-items-center justify-content-center">
+				{% if status|lower == 'on' %}
+				<i class="fas fa-check-circle fa-6x"></i>
+				<noscript><h1>&#10003</h1></noscript>
+				{% elseif status|lower == 'warning' %}
+				<i class="fas fa-exclamation-triangle fa-6x"></i>
+				<noscript><h1>&#9888</h1></noscript>
+				{% elseif status|lower == 'off' %}
+				<i class="fas fa-times-circle fa-6x"></i>
+				<noscript><h1>&#10005</h1></noscript>
+				{% else %}
+				<i class="fas fa-question-circle fa-6x"></i>
+				<noscript><h1>&#8263</h1></noscript>
 				{% endif %}
-			</td>
-		</tr>
-		<tr>
-			<td id="advanced">{{ label_advanced }}&nbsp;<i class="icon-expand-arrow"></i></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr class="advanced">
-			<td>{{ label_last_error }}:</td>
-			<td>{{ last_error }}</td>
-		</tr>
-		<tr class="advanced">
-				<td>{{ label_last_output }}:</td>
-				<td>{{ last_output }}</td>
-			</tr>
-		<tr class="advanced">
-			<td>{{ label_last_error_output }}:</td>
-			<td>{{ last_error_output }}</td>
-		</tr>
-		{% if has_admin_actions %}
-		<tr>
-			<td class="hidden-small">&nbsp;</td>
-			<td class="action-small" colspan="2">
-				<a class="btn btn-success" href="{{ url_edit|raw }}">
-					<i class="icon-edit icon-white"></i>&nbsp;{{ label_edit }}
-				</a>
-				<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" data-modal-id="delete" data-modal-param="{{ label }}">
-					<i class="icon-remove icon-white"></i>&nbsp;{{ label_delete }}
-				</a>
-			</td>
-		</tr>
-		{% endif %}
-	</tbody>
-</table>
-{{ html_history|raw }}
+			</div>
+		</div>
+		<div class="card col-md-5 ml-auto pl-0 pr-0 mb-4">
+			<div class="card-header">
+				{{ label }}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-4">{{ label_domain }}:</dt>
+						<dd class="col-md-8">{{ ip|raw }}</dd>
+					</dl>
+				</li>
+				{% if type|lower == 'service' %}
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-4">{{ label_port }}:</dt>
+						<dd class="col-md-8">{{ port }}</dd>
+					</dl>
+				</li>
+				{% endif %}
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-4">{{ label_status }}:</dt>
+						<dd class="col-md-8">{{ status }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-4">{{ label_rtime }}:</dt>
+						<dd class="col-md-8">{{ rtime }} {{ label_seconds }}</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<div class="card col-md-4 ml-auto pl-0 pr-0 mb-4">
+			<div class="card-header">
+				{{ label_settings }}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_type }}:</dt>
+						<dd class="col-md-6">{{ type }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_warning_threshold }}:</dt>
+						<dd class="col-md-6">{{ warning_threshold }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_timeout }}:</dt>
+						<dd class="col-md-6">{{ timeout }} {{ label_seconds }}</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<!--
+	{% if type|lower == 'website' %}
+	<div class="card col-md-3 pl-0 pr-0 mb-4">
+		<div class="card-header">
+			{{ label_authentication_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_website_username }}:</dt>
+					<dd class="col-md-6">{% if website_username is not empty %}{{ website_username }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_website_password }}:</dt>
+					<dd class="col-md-6">{% if website_password is not empty %}******{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div><div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+		<div class="card-header">
+			{{ label_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_header_name }}:</dt>
+					<dd class="col-md-6">{% if header_name is not empty %}{{ header_name }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_header_value }}:</dt>
+					<dd class="col-md-6">{% if header_value is not empty %}{{ header_value }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+		<div class="card-header">
+			{{ label_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_request_method }}:</dt>
+					<dd class="col-md-6">{% if request_method is not empty %}{{ request_method }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_post_field }}:</dt>
+					<dd class="col-md-6">{% if post_field is not empty %}{{ post_field }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<div class="card col-md-4 pl-0 pr-0 mb-4">
+		<div class="card-header">
+			{{ label_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_pattern_online }}:</dt>
+					<dd class="col-md-6">{% if pattern_online == 'yes' %}{{ label_online }}{% else %}{{ label_offline }}{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_pattern }}:</dt>
+					<dd class="col-md-6">{% if pattern is not empty %}{{ pattern }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<div class="card col-md-3 pl-0 pr-0 mb-4 ml-auto">
+		<div class="card-header">
+			{{ label_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_request_method }}:</dt>
+					<dd class="col-md-6">{% if request_method is not empty %}{{ request_method }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_post_field }}:</dt>
+					<dd class="col-md-6">{% if post_field is not empty %}{{ post_field }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+		<div class="card-header">
+			{{ label_settings }}
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_redirect_check }}:</dt>
+					<dd class="col-md-6">{% if redirect_check is not empty %}{{ redirect_check }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+			<li class="list-group-item">
+				<dl class="row">
+					<dt class="col-md-6">{{ label_allow_http_status }}:</dt>
+					<dd class="col-md-6">{% if allow_http_status is not empty %}{{ allow_http_status }}{% else %}-{% endif %}</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	{% endif %}
+-->
+		<div class="card col-md-3 pl-0 pr-0 mb-4">
+			<div class="card-header">
+				{{ label_status }}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_last_online }}:</dt>
+						<dd class="col-md-6">{{ last_online }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_last_offline }}:</dt>
+						<dd class="col-md-6">{{ last_offline }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_last_check }}:</dt>
+						<dd class="col-md-6">{{ last_check }}</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<div class="card col-md-6 ml-auto pl-0 pr-0 mb-4">
+			<div class="card-header">
+				{{ label_output }}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-3">{{ label_last_error }}:</dt>
+						<dd class="col-md-9">{{ last_error }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-3">{{ label_last_output }}:</dt>
+						<dd class="col-md-9">{{ last_output_truncated }}</dd>
+						{% if last_output_truncated != last_output %}
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_output">
+								Show more...
+							</button>
+						</dd>
+						{% endif %}
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-3">{{ label_last_error_output }}:</dt>
+						<dd class="col-md-9">{{ last_error_output_truncated }}</dd>
+						{% if last_error_output_truncated != last_error_output %}
+						<dt class="col-md-3"></dt>
+						<dd class="col-md-9">
+							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_error">
+								Show more...
+							</button>
+						</dd>
+						{% endif %}
+
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<div class="card col-md-2  ml-auto pl-0 pr-0 mb-4">
+			<div class="card-header">
+				{{ label_fieldset_monitoring }}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					{{ label_monitoring }}:
+					{% if active|lower == 'yes' %}
+					<i class="fas fa-eye float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif active|lower == 'no' %}
+					<i class="fas fa-eye-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+				<li class="list-group-item">
+					{{ label_email }}:
+					{% if email|lower == 'yes' %}
+					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif email|lower == 'no' %}
+					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+				<li class="list-group-item">
+					{{ label_sms }}:
+					{% if sms|lower == 'yes' %}
+					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif sms|lower == 'no' %}
+					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+				<li class="list-group-item">
+					{{ label_pushover }}:
+					{% if pushover|lower == 'yes' %}
+					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif pushover|lower == 'no' %}
+					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+				<li class="list-group-item">
+					{{ label_telegram }}:
+					{% if telegram|lower == 'yes' %}
+					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif telegram|lower == 'no' %}
+					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		{{ html_history|raw }}
+	</div>
+
+	<div class="modal fade" id="modal_last_output" tabindex="-1" role="dialog" aria-labelledby="modal_last_output_label" aria-hidden="true">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal_last_output_label">{{ label_last_output }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="word-wrap: break-word;">
+					{{ last_output|nl2br }}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+	<div class="modal fade" id="modal_last_error" tabindex="-1" role="dialog" aria-labelledby="modal_last_error_label" aria-hidden="true">
+		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal_last_error_label">{{ label_last_error_output }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="word-wrap: break-word;">
+					{{ last_error_output|nl2br }}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,235 +1,153 @@
 {% import 'main/macros.tpl.html' as macro %}
-<form class="form-horizontal well" action="{{ url_save|raw }}" method="post" autocomplete="off">
-	{{ macro.csrf_input() }}
+<form name="edit_server" action="{{ url_save|raw }}" class="col-md-6 pl-0 pr-0" id="edit_server" method="post"
+ autocomplete="off">
 	<fieldset>
 		<legend>{{ titlemode }}</legend>
-		<div class="control-group">
-			<label class="control-label" for="label">{{ label_label }}</label>
-			<div class="controls">
-				<input type="text" id="label" name="label" value="{{ edit_value_label }}" maxlength="255" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="ip">{{ label_domain }}</label>
-			<div class="controls">
-				<input type="text" id="ip" name="ip" value="{{ edit_value_ip }}" maxlength="500" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="type">{{ label_type }}</label>
-			<div class="controls">
-				<select id="type" name="type">
+		<div class="col">
+			<!-- Label -->
+			{{ macro.input_field("text", "label", null, "label", label_label, edit_value_label, null, "255", null, null, null, null, true, true) }}
+			<!-- IP -->
+			{{ macro.input_field("text", "ip", null, "ip", label_domain, edit_value_ip, null, "255", null, null, null, null, true) }}
+			<!-- Type -->
+			<div class="form-group">
+				<label for="type">{{ label_type }}</label>
+				<select id="type" name="type" class="custom-select" required>
 					<option value="">{{ label_please_select }}</option>
 					<option value="ping" {{ edit_type_selected_ping|raw }}>{{ label_ping }}</option>
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
-				 </select>
-			</div>
-		</div>
-		<div class="control-group popularPortsGroup types typeService">
-			<label class="control-label" for="popularPorts">{{ label_port }}</label>
-			<div class="controls">
-				<select id="popularPorts" name="popularPorts">
-                    <option value="">{{ label_please_select }}</option>
-                    <option value="custom">{{ label_custom_port }}</option>
-                    <optgroup label="{{ label_popular_ports }}">
-                        <option value="80">HTTP (80)</option>
-                        <option value="443">HTTPS (443)</option>
-                        <option value="21">FTP (21)</option>
-                        <option value="25">SMTP (25)</option>
-                        <option value="465">SMTP Secure (465)</option>
-                        <option value="110">POP3 (110)</option>
-                        <option value="995">POP3 Secure (995)</option>
-                        <option value="143">IMAP (143)</option>
-                        <option value="993">IMAP over SSL (993)</option>
-                        <option value="22">SSH (22)</option>
-                        <option value="389">LDAP (389)</option>
-                        <option value="3306">MySQL (3306)</option>
-                        <option value="115">SFTP (115)</option>
-                        <option value="43">WHOIS (43)</option>
-                        <option value="53">BIND (53)</option>
-                        <option value="3389">RDP (3389)</option>
-                    </optgroup>
 				</select>
 			</div>
-		</div>
-		<div class="control-group portGroup types typeService">
-			<label class="control-label" for="port">{{ label_custom_port }}</label>
-			<div class="controls">
-				<input class="input-mini" type="text" id="port" name="port" value="{{ edit_value_port }}" maxlength="5" />
-			</div>
-		</div>
-		<div class="control-group popularRequestMethodsGroup types typeWebsite">
-			<label class="control-label" for="popularRequestMethods">{{ label_request_method }}</label>
-			<div class="controls">
-				<select id="popularRequestMethods" name="popularRequestMethods">
-					<option value="">{{ label_none }}</option>
-                    <optgroup label="{{ label_popular_request_methods }}">
-						<option value="GET">GET</option>
-						<option value="HEAD">HEAD</option>
-						<option value="POST">POST</option>
-						<option value="PUT">PUT</option>
-						<option value="DELETE">DELETE</option>
-						<option value="CONNECT">CONNECT</option>
-						<option value="OPTIONS">OPTIONS</option>
-						<option value="TRACE">TRACE</option>
-						<option value="PATCH">PATCH</option>
+			<!-- Port -->
+			<div class="form-group types typeService">
+				<label for="popular_ports">{{ label_port }}</label>
+				<select id="popular_ports" name="popular_ports" class="custom-select">
+					<option {% if not edit_value_port %}selected {% endif %} disabled>{{ label_please_select }}</option>
+					<option {% if edit_value_port not in [0, 80, 443, 21, 25, 465, 110, 995, 143, 993, 22, 389, 3306, 115, 43, 53,
+					 3389] %} selected {% endif %} value="custom">{{ label_custom_port }}</option>
+					<optgroup label="{{ label_popular_ports }}">
+						<option {% if edit_value_port==80 %}selected {% endif %}value="80">HTTP (80)</option>
+						<option {% if edit_value_port==443 %}selected {% endif %}value="443">HTTPS (443)</option>
+						<option {% if edit_value_port==21 %}selected {% endif %}value="21">FTP (21)</option>
+						<option {% if edit_value_port==25 %}selected {% endif %}value="25">SMTP (25)</option>
+						<option {% if edit_value_port==465 %}selected {% endif %}value="465">SMTP Secure (465)</option>
+						<option {% if edit_value_port==110 %}selected {% endif %}value="110">POP3 (110)</option>
+						<option {% if edit_value_port==995 %}selected {% endif %}value="995">POP3 Secure (995)</option>
+						<option {% if edit_value_port==143 %}selected {% endif %}value="143">IMAP (143)</option>
+						<option {% if edit_value_port==993 %}selected {% endif %}value="993">IMAP over SSL (993)</option>
+						<option {% if edit_value_port==22 %}selected {% endif %}value="22">SSH (22)</option>
+						<option {% if edit_value_port==389 %}selected {% endif %}value="389">LDAP (389)</option>
+						<option {% if edit_value_port==3306 %}selected {% endif %}value="3306">MySQL (3306)</option>
+						<option {% if edit_value_port==115 %}selected {% endif %}value="115">SFTP (115)</option>
+						<option {% if edit_value_port==43 %}selected {% endif %}value="43">WHOIS (43)</option>
+						<option {% if edit_value_port==53 %}selected {% endif %}value="53">BIND (53)</option>
+						<option {% if edit_value_port==3389 %}selected {% endif %}value="3389">RDP (3389)</option>
 					</optgroup>
-					<option value="custom">{{ label_custom_request_method }}</option>
 				</select>
 			</div>
-		</div>
-		<div class="control-group requestMethodGroup types typeWebsite">
-			<label class="control-label" for="requestMethod">{{ label_custom_request_method }}</label>
-			<div class="controls">
-				<input class="input" type="text" id="requestMethod" name="request_method" value="{{ edit_value_request_method }}" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group postGroup types typeWebsite">
-			<label class="control-label" for="postField">{{ label_post_field }}</label>
-			<div class="controls">
-				<input class="input" type="text" id="postField" name="post_field" value="{{ edit_value_post_field }}" maxlength="255"  data-toggle="tooltip" title="{{ label_post_field_description}}"/>
-			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="pattern">{{ label_pattern }}</label>
-			<div class="controls">
-				<input type="text" id="pattern" name="pattern" value="{{ edit_value_pattern }}" maxlength="255" data-toggle="tooltip" title="{{ label_pattern_description }}" />
-			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="pattern_online">{{ label_pattern_online }}</label>
-			<div class="controls">
-				<select id="pattern_online" name="pattern_online" data-toggle="tooltip" title="{{ label_pattern_online_description}}">
-					<option value="yes" {{ edit_pattern_selected_yes|raw }}>{{ label_online }}</option>
-					<option value="no" {{ edit_pattern_selected_no|raw }}>{{ label_offline }}</option>
+			<!-- Custom port -->
+			{{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
+			<!-- Request method -->
+			<div class="form-group types typeWebsite">
+				<label for="popular_request_methods">{{ label_request_method }}</label>
+				<select id="popular_request_methods" name="popular_request_methods" class="custom-select">
+					<option value="">{{ label_none }}</option>
+					<optgroup label="{{ label_popular_request_methods }}">
+						<option {% if edit_value_request_method|upper=='GET' %}selected {% endif %}value="GET">GET</option>
+						<option {% if edit_value_request_method|upper=='HEAD' %}selected {% endif %}value="HEAD">HEAD</option>
+						<option {% if edit_value_request_method|upper=='POST' %}selected {% endif %}value="POST">POST</option>
+						<option {% if edit_value_request_method|upper=='PUT' %}selected {% endif %}value="PUT">PUT</option>
+						<option {% if edit_value_request_method|upper=='DELETE' %}selected {% endif %}value="DELETE">DELETE</option>
+						<option {% if edit_value_request_method|upper=='CONNECT' %}selected {% endif %}value="CONNECT">CONNECT</option>
+						<option {% if edit_value_request_method|upper=='OPTIONS' %}selected {% endif %}value="OPTIONS">OPTIONS</option>
+						<option {% if edit_value_request_method|upper=='TRACE' %}selected {% endif %}value="TRACE">TRACE</option>
+						<option {% if edit_value_request_method|upper=='PATCH' %}selected {% endif %}value="PATCH">PATCH</option>
+					</optgroup>
+					<option {% if edit_value_request_method|upper not in ['', 'GET' , 'HEAD' , 'POST' , 'PUT' , 'DELETE' , 'CONNECT' ,
+					 'OPTIONS' , 'TRACE' , 'PATCH' ] %} selected {% endif %} value="custom">{{ label_custom_request_method }}</option>
 				</select>
 			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="redirect_check">{{ label_redirect_check }}</label>
-			<div class="controls">
-				<select id="redirect_check" name="redirect_check" data-toggle="tooltip" title="{{ label_redirect_check_description}}">
-					<option value="ok" {{ edit_redirect_check_selected_ok|raw }}>{{ label_ok }}</option>
-					<option value="bad" {{ edit_redirect_check_selected_bad|raw }}>{{ label_bad }}</option>
-				</select>
+			<!-- Custom request method -->
+			{{ macro.input_field("text", "request_method", "requestMethod types typeWebsite", "request_method", label_custom_request_method, edit_value_request_method, null, "50") }}
+			<!-- Post field -->
+			{{ macro.input_field("text", "post_field", "types typeWebsite typeGroup", "post_field", label_post_field, edit_value_post_field, "param1=val1&param2=val2&...", "50", 'post_field_help', label_post_field_description) }}
+			<!-- Pattern -->
+			{{ macro.input_field("text", "pattern", "types typeWebsite", "pattern", label_pattern, edit_value_pattern, null, "255", 'pattern_help', label_pattern_description) }}
+			<!-- Pattern online/offline (Didn't use the macro because of the custom col.) -->
+			<div class="form-group form-row types typeWebsite">
+				<label for="pattern_online" class="col-form-label col-md-6">{{ label_pattern_online }}</label>
+				<div class="col-md-6 p-0">
+					<select id="pattern_online" name="pattern_online" class="custom-select" aria-describedby="pattern_online">
+						<option value="yes" {{ edit_pattern_selected_yes|raw }}>{{ label_online }}</option>
+						<option value="no" {{ edit_pattern_selected_no|raw }}>{{ label_offline }}</option>
+					</select>
+				</div>
+				<small id="pattern_online_help" class="form-text text-muted p-1">{{ label_pattern_online_description }}</small>
 			</div>
-		</div>
-    <div class="control-group types typeWebsite">
-				<label class="control-label" for="allow_http_status">{{ label_allow_http_status }}</label>
-				<div class="controls">
-					<input type="text" id="allow_http_status" name="allow_http_status" value="{{ edit_value_allow_http_status }}" maxlength="255" data-toggle="tooltip" title="{{ label_allow_http_status_description }}" />
+			<!-- Redirect check (Didn't use the macro because of the custom col.) -->
+			<div class="form-group form-row types typeWebsite">
+				<label for="redirect_check" class="col-form-label col-md-7">{{ label_redirect_check }}</label>
+				<div class="col-md-5 p-0">
+					<select id="redirect_check" name="redirect_check" class="custom-select" aria-describedby="redirect_check_help">
+						<option value="ok" {{ edit_redirect_check_selected_ok|raw }}>{{ label_ok }}</option>
+						<option value="bad" {{ edit_redirect_check_selected_bad|raw }}>{{ label_bad }}</option>
+					</select>
+				</div>
+				<small id="redirect_check_help" class="form-text text-muted p-1">{{ label_redirect_check_description }}</small>
+			</div>
+			<!-- Allow HTTP codes -->
+			{{ macro.input_field("text", "allow_http_status", "types typeWebsite", "allow_http_status", label_allow_http_status, edit_value_allow_http_status, "401|403", "255", 'allow_http_status_help', label_allow_http_status_description) }}
+			<!-- Header (Didn't use the macro because of the custom col.) -->
+			<div class="form-group form-row types typeWebsite">
+				<div class="col-md-6">
+					<label for="header_name">{{ label_header_name }}</label>
+					<input type="text" class="form-control" name="header_name" id="header_name" value="{{ edit_value_header_name }}"
+					 maxlength="255" aria-describedby="header_name_help">
+					<small id="header_name_help" class="form-text text-muted">{{ label_header_name_description }}</small>
+				</div>
+				<div class="col-md-6">
+					<label for="header_value">{{ label_header_value }}</label>
+					<input type="text" class="form-control" name="header_value" id="header_value" value="{{ edit_value_header_value }}"
+					 maxlength="255" aria-describedby="header_value_help">
+					<small id="header_value_help" class="form-text text-muted">{{ label_header_value_description }}</small>
 				</div>
 			</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="header_name">{{ label_header }}</label>
-			<div class="controls">
-				<input type="text" id="header_name" name="header_name" value="{{ edit_value_header_name }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_name_description }}" />
-				<input type="text" id="header_value" name="header_value" value="{{ edit_value_header_value }}" maxlength="255" data-toggle="tooltip" title="{{ label_header_value_description }}" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="warning_threshold">{{ label_warning_threshold }}</label>
-			<div class="controls">
-				<input class="input-mini" type="text" id="warning_threshold" name="warning_threshold" value="{{ edit_value_warning_threshold }}" maxlength="5" data-toggle="tooltip" title="{{ label_warning_threshold_description }}" />
-			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="timeout">{{ label_timeout }}</label>
-			<div class="controls">
-				<input class="input-mini" type="text" id="timeout" name="timeout" value="{{ edit_value_timeout }}" placeholder="{{ default_value_timeout }}" maxlength="10" data-toggle="tooltip" title="{{ label_timeout_description }}" /> s
-			</div>
+			<!-- Warning threshold -->
+			{{ macro.input_field("number", "warning_threshold", null, "warning_threshold", label_warning_threshold, edit_value_warning_threshold, "0", "5", 'warning_threshold_help', label_warning_threshold_description) }}
+			<!-- Timeout -->
+			{{ macro.input_field("number", "timeout", null, "timeout", label_timeout, edit_value_timeout, null, "10", 'timeout_help', label_timeout_description) }}
 		</div>
 	</fieldset>
-
-	<fieldset>
-		<legend class="types typeWebsite">{{ label_authentication_settings}}</legend>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="website_username">{{ label_website_username }}</label>
-			<div class="controls">
-				<input type="text" id="website_username" name="website_username" value="{{ edit_website_username }}" data-toggle="tooltip" title="{{ label_website_username_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
-			</div>
-		</div>
-		<div class="control-group types typeWebsite">
-			<label class="control-label" for="website_password">{{ label_website_password }}</label>
-			<div class="controls">
-				<input type="password" id="website_password" name="website_password" value="{{ edit_website_password }}" data-toggle="tooltip" title="{{ label_website_password_description }}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"/>
-			</div>
+	<fieldset class="types typeWebsite">
+		<legend>{{ label_authentication_settings }} ({{ label_optional }})</legend>
+		<div class="col">
+			<!-- Website username -->
+			{{ macro.input_field("text", "website_username", null, "website_username", label_website_username, edit_value_website_username, null, "255", 'website_username_help', label_website_username_description, null, true, null, null, true) }}
+			<!-- website password -->
+			{{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "10", 'website_password_help', label_website_password_description, null, true, null, null, true) }}
 		</div>
 	</fieldset>
-
 	<fieldset>
 		<legend>{{ label_fieldset_monitoring }}</legend>
-		<div class="control-group">
-			<label class="control-label" for="active">{{ label_monitoring }}</label>
-			<div class="controls">
-				<select id="active" name="active">
-					<option value="yes" {{ edit_active_selected_yes|raw }}>{{ label_yes }}</option>
-					<option value="no" {{ edit_active_selected_no|raw }}>{{ label_no }}</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group {{ control_class_email }}">
-			<label class="control-label" for="email">{{ label_send_email }}
-			{% if warning_email %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_email }}"></i></p> {% endif %}
-			</label>
-			<div class="controls">
-				<select id="email" name="email">
-					<option value="yes" {{ edit_email_selected_yes|raw }}>{{ label_yes }}</option>
-					<option value="no" {{ edit_email_selected_no|raw }}>{{ label_no }}</option>
-				 </select>
-			</div>
-		</div>
-		<div class="control-group {{ control_class_sms }}">
-			<label class="control-label" for="sms">{{ label_send_sms }}
-			{% if warning_sms %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_sms }}"></i></p> {% endif %}
-			</label>
-			<div class="controls">
-				<select id="sms" name="sms">
-					<option value="yes" {{ edit_sms_selected_yes|raw }}>{{ label_yes }}</option>
-					<option value="no" {{ edit_sms_selected_no|raw }}>{{ label_no }}</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group {{ control_class_pushover }}">
-			<label class="control-label" for="pushover">{{ label_pushover }}
-			{% if warning_pushover %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_pushover }}"></i></p> {% endif %}
-			</label>
-			<div class="controls">
-				<select id="pushover" name="pushover">
-					<option value="yes" {{ edit_pushover_selected_yes|raw }}>{{ label_yes }}</option>
-					<option value="no" {{ edit_pushover_selected_no|raw }}>{{ label_no }}</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group {{ control_class_telegram }}">
-			<label class="control-label" for="telegram">{{ label_telegram }}
-			{% if warning_telegram %} <p class="help-inline"><i class="icon-warning-sign" data-toggle="tooltip" title="{{ label_warning_telegram }}"></i></p> {% endif %}
-			</label>
-			<div class="controls">
-				<select id="telegram" name="telegram">
-					<option value="yes" {{ edit_telegram_selected_yes|raw }}>{{ label_yes }}</option>
-					<option value="no" {{ edit_telegram_selected_no|raw }}>{{ label_no }}</option>
-				</select>
-			</div>
+		<div class="col">
+			<!-- Monitor -->
+			{{ macro.input_select_monitoring("active", "active", label_monitoring, edit_active_selected, label_yes, label_no) }}
+			<!-- Email -->
+			{{ macro.input_select_monitoring("email", "email", label_send_email, edit_email_selected, label_yes, label_no, warning_email, label_warning_email) }}
+			<!-- SMS -->
+			{{ macro.input_select_monitoring("sms", "sms", label_send_sms, edit_sms_selected, label_yes, label_no, warning_sms, label_warning_sms) }}
+			<!-- Pushover -->
+			{{ macro.input_select_monitoring("pushover", "pushover", label_send_pushover, edit_pushover_selected, label_yes, label_no, warning_pushover, label_warning_pushover) }}
+			<!-- Telegram -->
+			{{ macro.input_select_monitoring("telegram", "telegram", label_send_telegram, edit_telegram_selected, label_yes, label_no, warning_telegram, label_warning_telegram) }}
 		</div>
 	</fieldset>
-
 	<fieldset>
 		<legend>{{ label_fieldset_permissions }}</legend>
-		<div class="control-group">
-			<label class="control-label" for="user_id">{{ label_users }}</label>
-			<div class="controls">
-				<select class="multiselect" multiple="multiple" id="user_id" name="user_id[]">
-					{% for user in users %}
-					<option value="{{ user.user_id }}" {{ user.edit_selected|raw }}> {{ user.name }}</option>
-					{% endfor %}
-				</select>
-			</div>
-		</div>
-		<div class="form-actions">
-			<button class="btn btn-success" type="submit">{{ label_save }}</button>
-			<a class="btn" href="{{ url_go_back|raw }}" >{{ label_go_back }}</a>
-		</div>
+		<!-- Permissions -->
+		{{ macro.input_select_multiple("user_id", "user_id[]", label_permissions, label_search, users, label_please_select) }}
+		{{ macro.button_save(null, label_save) }}
+		<a class="btn" href="{{ url_go_back|raw }}">{{ label_go_back }}</a>
 	</fieldset>
+	{{ macro.input_csrf() }}
 </form>

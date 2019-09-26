@@ -152,7 +152,15 @@ class StatusUpdater {
 				}
 			}
 		}
-
+		// PATCH Arkhee: fix/last-online-stuck-on-never-if-webpage-too-large
+		// Updating table "servers" does not work
+		// Symptom: "Last online" stays stuck on "never"
+		// Reason: last_output contains the full webpage, too long for the query
+		// This may depend on mysql configuration on the server_, explaining why some have the problem or not
+		// Field is 255 Chars, and request does not work anyway is loaded web page is too large in last_output
+		// Solution: updated column to text and truncate to 5000 characters or less before the query
+		$save["last_output"] = substr($save["last_output"],0,5000);
+		// End PATCH
 		$this->db->save(PSM_DB_PREFIX.'servers', $save, array('server_id' => $this->server_id));
 
 		return $this->status_new;
@@ -207,7 +215,7 @@ class StatusUpdater {
 		// save response time
 		$starttime = microtime(true);
 
-		$fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		$fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, $this->server['timeout']);
 
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);
@@ -253,18 +261,18 @@ class StatusUpdater {
 		// the first line would be the status code..
 		$status_code = strtok($curl_result, "\r\n");
 		// keep it general
-		// $code[1][0] = status code
-		// $code[2][0] = name of status code
+		// $code[2][0] = status code
+		// $code[3][0] = name of status code
 		$code_matches = array();
-		preg_match_all("/[A-Z]{2,5}\/\d\.\d\s(\d{3})\s(.*)/", $status_code, $code_matches);
+		preg_match_all("/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/", $status_code, $code_matches);
 
-		if (empty($code_matches[0])) {
+		if(empty($code_matches[0])) {
 			// somehow we dont have a proper response.
 			$this->error = 'TIMEOUT ERROR: no response from server';
 			$result = false;
 		} else {
-			$code = $code_matches[1][0];
-			$msg = $code_matches[2][0];
+			$code = $code_matches[2][0];
+			$msg = $code_matches[3][0];
 
 			$allow_http_status = explode("|", $this->server['allow_http_status']);
 			// All status codes starting with a 4 or higher mean trouble!

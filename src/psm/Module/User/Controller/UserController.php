@@ -34,7 +34,7 @@ use psm\Service\Database;
  * servers to users.
  */
 class UserController extends AbstractController {
-	public $servers;
+	public $servers = array();
 
 	function __construct(Database $db, \Twig_Environment $twig) {
 		parent::__construct($db, $twig);
@@ -71,7 +71,9 @@ class UserController extends AbstractController {
 			'add_new',
 			psm_get_lang('system', 'add_new'),
 			psm_build_url(array('mod' => 'user', 'action' => 'edit')),
-			'plus icon-white', 'success'
+			'plus icon-white', 
+			'success',
+			psm_get_lang('system', 'add_new')
 		);
 
 		$modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
@@ -107,7 +109,8 @@ class UserController extends AbstractController {
 					continue;
 				}
 				$user['emp_servers'][] = array(
-					'label' => $servers_labels[$server_id]
+					'label' => $servers_labels[$server_id],
+					'url' => psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server_id, 'back_to' => 'user'))
 				);
 			}
 			sort($user['emp_servers']);
@@ -171,12 +174,14 @@ class UserController extends AbstractController {
 			$user_servers = $this->getUserServers($user_id);
 
 			foreach ($this->servers as &$server) {
+				$this->servers[$server['server_id']]['id'] = $server['server_id'];
 				if (in_array($server['server_id'], $user_servers)) {
 					$server['edit_selected'] = 'selected="selected"';
 					$server['class'] = 'active';
 				}
 			}
 		}
+
 		$tpl_data = array(
 			'titlemode' => $title,
 			'placeholder_password' => $placeholder_password,
@@ -342,12 +347,12 @@ class UserController extends AbstractController {
 			'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
 			'label_email' => psm_get_lang('users', 'email'),
 			'label_servers' => psm_get_lang('menu', 'server'),
-			'label_action' => psm_get_lang('system', 'action'),
 			'label_save' => psm_get_lang('system', 'save'),
 			'label_go_back' => psm_get_lang('system', 'go_back'),
 			'label_edit' => psm_get_lang('system', 'edit'),
 			'label_delete' => psm_get_lang('system', 'delete'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+			'label_search' => psm_get_lang('system', 'search'),
 		);
 	}
 

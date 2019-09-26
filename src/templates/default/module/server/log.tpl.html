@@ -1,67 +1,47 @@
-{% if has_admin_actions %}
-<a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" title="Delete" data-modal-id="delete" data-modal-param="{{ label }}">
-	<i class="icon-trash icon-white"></i>&nbsp;{{ label_clear_log }}
-</a>
-<br><br>
-{% endif %}
-<div class="tabbable">
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#log_status_content" data-toggle="tab">{{ label_status }}</a></li>
-		<li><a href="#log_email_content" data-toggle="tab">{{ label_email }}</a></li>
-		<li><a href="#log_sms_content" data-toggle="tab">{{ label_sms }}</a></li>
-		<li><a href="#log_pushover_content" data-toggle="tab">{{ label_pushover }}</a></li>
-		<li><a href="#log_telegram_content" data-toggle="tab">{{ label_telegram }}</a></li>
-	</ul>
-	<div class="tab-content well">
-		{% for tab in tabs %}
-		<div class="tab-pane {{ tab.tab_active }}" id="log_{{ tab.id }}_content">
-			<table class="table table-bordered table-striped">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" style="width:100%" id="log_tab" role="tablist">
+	{% for tab in tabs %}
+	<li class="nav-item">
+		<a class="nav-link {{ tab.tab_active }}" id="log-{{ tab.id }}-tab" data-toggle="tab" href="#log-{{ tab.id }}" role="tab" aria-controls="log-{{ tab.id }}" aria-selected="{% if tab.tab_active %}true{% else %}false{% endif %}">{{ tab.label }}</a>
+	</li>
+	{% endfor %}
+</ul>
+<div class="tab-content">
+	{% for tab in tabs %}
+	<div class="tab-pane {{ tab.tab_active }}" id="log-{{ tab.id }}" role="tabpanel" aria-labelledby="log-{{ tab.id }}-tab">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th class="hidden-phone">{{ label_server }}</th>
-						<th class="hidden-phone">{{ label_message }}</th>
-						<th class="hidden-phone">{{ label_date }}</th>
-						{% if tab.has_users %} <th class="hidden-phone">{{ label_users }}</th> {% endif %}
+					{% if tab.id|lower == 'status' %}<th scope="col">{{ label_server }}</th>{% endif %}
+					<th scope="col">{{ label_date }}</th>
+					<th scope="col">{{ label_message }}</th>
+					{% if tab.has_users %}<th scope="col">{{ label_users }}</th>{% endif %}
 					</tr>
 				</thead>
 				<tbody>
 					{% for entry in tab.entries %}
-					<tr class="{{ entry.class }}">
-						<td>
-							<div class="table-body">
-								<div class="table-cell">
-									<div class="visible-phone pull-right">
-										&nbsp;{{ entry.datetime_format }}
-									</div>
-									<i class="{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> <span class="title">{{ entry.server }}</span> {{ entry.ip }}
-								</div>
-							</div>
-							<div class="visible-phone">
-								<div class="table-separator"/></div>
-								<div class="table-body">
-									<div class="table-cell-details">{{ entry.message|raw }}</div>
-								</div>
-							</div>
-							{% if tab.has_users %}<div class="visible-phone">
-								<div class="table-separator"/></div>
-								<div class="table-body">
-									<div class="table-cell-details">{{ label_users }}: {{ entry.user_list|raw }}</div>
-								</div>
-							</div>{% endif %}
-						</td>
-						<td class="hidden-phone">{{ entry.message|raw }}</td>
-						<td class="hidden-phone tight">{{ entry.datetime_format }}</td>
-						{% if tab.has_users %}<td class="hidden-phone tight">{{ entry.users|raw }}</td>{% endif %}
+					<tr>
+						{% if entry.server %}
+						<th scope="row"><i class="fas fa-{{ entry.type_icon }}" title="{{ entry.type_title }}"></i> {{ entry.server }}<!-- {{ entry.ip }}--></th>
+						{% endif %}
+						{% if entry.server %}
+							<td><time>{{ entry.datetime_format }}</time></td>
+						{% else %}
+							<th scope="row"><time>{{ entry.datetime_format }}</time></th>
+						{% endif %}
+						<td class="full">{{ entry.message|raw }}</td>
+						{% if tab.has_users %}<td>{{ entry.user_list|raw }}</td>{% endif %}
 					</tr>
 					{% endfor %}
 					{% if tab.no_logs %}
-					<tr class="{{ class }}">
-						<td colspan="4" class="cell-center">{{ label_no_logs }}</td>
+					<tr>
+						<td colspan="4" class="cell-center full">{{ label_no_logs }}</td>
 					</tr>
 					{% endif %}
 				</tbody>
 			</table>
 		</div>
-		{% endfor %}
 	</div>
+	{% endfor %}
 </div>

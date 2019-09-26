@@ -77,7 +77,9 @@ class ServerController extends AbstractServerController {
 				'add_new',
 				psm_get_lang('system', 'add_new'),
 				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
-				'plus icon-white', 'success'
+				'plus', 
+				'success',
+				psm_get_lang('system', 'add_new')
 			);
 		}
 
@@ -85,7 +87,9 @@ class ServerController extends AbstractServerController {
 			'update',
 			psm_get_lang('menu', 'server_update'),
 			psm_build_url(array('mod' => 'server_update')),
-			'refresh'
+			'sync-alt',
+			'primary',
+			psm_get_lang('menu', 'server_update')
 		);
 
 		$icons = array(
@@ -99,32 +103,14 @@ class ServerController extends AbstractServerController {
 		$server_count = count($servers);
 
 		for ($x = 0; $x < $server_count; $x++) {
-			$servers[$x]['class'] = ($x & 1) ? 'odd' : 'even';
-
 			if ($servers[$x]['type'] == 'website') {
-				$servers[$x]['type_icon'] = 'icon-globe';
 				// add link to label
 				$ip = $servers[$x]['ip'];
-				if (!empty($servers[$x]['port']) && ($servers[$x]['port'] != 80)) {
-					$ip .= ' : '.$servers[$x]['port'];
-				}
-				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank">'.$ip.'</a>';
-				$servers[$x]['ip_short'] = $ip;
-			} else {
-				$servers[$x]['type_icon'] = 'icon-cog';
-				$servers[$x]['ip_short'] = $servers[$x]['ip'].' : '.$servers[$x]['port'];
+				$servers[$x]['ip'] = '<a href="'.$servers[$x]['ip'].'" target="_blank" rel="noopener">'.$ip.'</a>';
 			}
 			if (($servers[$x]['active'] == 'yes')) {
-				$servers[$x]['active_icon'] = 'icon-eye-open';
 				$servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
-
-				foreach ($icons as $i_id => $i_icon) {
-					if (psm_get_conf($i_id.'_status') && $servers[$x][$i_id] == 'yes') {
-						$servers[$x][$i_id.'_icon'] = $i_icon;
-					}
-				}
 			} else {
-				$servers[$x]['active_icon'] = 'icon-eye-close';
 				$servers[$x]['active_title'] = psm_get_lang('servers', 'no_monitoring');
 			}
 
@@ -178,7 +164,11 @@ class ServerController extends AbstractServerController {
 
 				$user_idc_selected = $this->getServerUsers($this->server_id);
 				foreach ($tpl_data['users'] as &$user) {
-					if (in_array($user['user_id'], $user_idc_selected)) {
+					$user['id'] = $user['user_id'];
+					unset($user['user_id']);
+					$user['label'] = $user['name'];
+					unset($user['name']);
+					if (in_array($user['id'], $user_idc_selected)) {
 						$user['edit_selected'] = 'selected="selected"';
 					}
 				}
@@ -199,7 +189,6 @@ class ServerController extends AbstractServerController {
 				'edit_value_request_method' => $edit_server['request_method'],
 				'edit_value_post_field' => $edit_server['post_field'],
 				'edit_value_timeout' => $edit_server['timeout'],
-				'default_value_timeout' => PSM_CURL_TIMEOUT,
 				'edit_value_pattern' => $edit_server['pattern'],
 				'edit_pattern_selected_'.$edit_server['pattern_online'] => 'selected="selected"',
 				'edit_redirect_check_selected_'.$edit_server['redirect_check'] => 'selected="selected"',
@@ -210,11 +199,11 @@ class ServerController extends AbstractServerController {
 				'edit_website_username' => $edit_server['website_username'],
 				'edit_website_password' => empty($edit_server['website_password']) ? '' : sha1($edit_server['website_password']),
 				'edit_type_selected_'.$edit_server['type'] => 'selected="selected"',
-				'edit_active_selected_'.$edit_server['active'] => 'selected="selected"',
-				'edit_email_selected_'.$edit_server['email'] => 'selected="selected"',
-				'edit_sms_selected_'.$edit_server['sms'] => 'selected="selected"',
-				'edit_pushover_selected_'.$edit_server['pushover'] => 'selected="selected"',
-				'edit_telegram_selected_'.$edit_server['telegram'] => 'selected="selected"',
+				'edit_active_selected' => $edit_server['active'],
+				'edit_email_selected' => $edit_server['email'],
+				'edit_sms_selected' => $edit_server['sms'],
+				'edit_pushover_selected' => $edit_server['pushover'],
+				'edit_telegram_selected' => $edit_server['telegram'],
 			));
 		}
 
@@ -222,7 +211,6 @@ class ServerController extends AbstractServerController {
 		foreach ($notifications as $notification) {
 			if (psm_get_conf($notification.'_status') == 0) {
 				$tpl_data['warning_'.$notification] = true;
-				$tpl_data['control_class_'.$notification] = 'warning';
 				$tpl_data['label_warning_'.$notification] = psm_get_lang(
 					'servers', 'warning_notifications_disabled_'.$notification
 				);
@@ -277,7 +265,6 @@ class ServerController extends AbstractServerController {
 			'allow_http_status' => psm_POST('allow_http_status', ''),
 			'header_name' => psm_POST('header_name', ''),
 			'header_value' => psm_POST('header_value', ''),
-			'rtime' => psm_POST('rtime', '0.0000000'),
 			'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
 			'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
@@ -421,6 +408,20 @@ class ServerController extends AbstractServerController {
 		$history = new \psm\Util\Server\HistoryGraph($this->db, $this->twig);
 		$tpl_data['html_history'] = $history->createHTML($this->server_id);
 
+		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
+		$this->setSidebar($sidebar);
+
+		// check which module the user came from, and add a link accordingly
+		$back_to = isset($_GET['back_to']) && ($_GET['back_to'] == 'server_status' || $_GET['back_to'] == 'user') ? $_GET['back_to'] : 'server';
+		$sidebar->addButton(
+			'go_back',
+			psm_get_lang('system', 'go_back'),
+			psm_build_url(array('mod' => $back_to)),
+			'angle-left',
+			'link',
+			psm_get_lang('system', 'go_back')
+		);
+
 		// add edit/delete buttons for admins
 		if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
 			$tpl_data['has_admin_actions'] = true;
@@ -431,6 +432,15 @@ class ServerController extends AbstractServerController {
 			$modal->setTitle(psm_get_lang('servers', 'delete_title'));
 			$modal->setMessage(psm_get_lang('servers', 'delete_message'));
 			$modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
+			$sidebar->addButton(
+				'edit',
+				psm_get_lang('system', 'edit'),
+				psm_build_url(array('mod' => 'server', 'action' => 'edit', 'id' => $this->server_id, 'back_to' => 'view')),
+				'edit',
+				'primary',
+				psm_get_lang('system', 'edit')
+			);
 		}
 
 		// add all available servers to the menu
@@ -443,19 +453,18 @@ class ServerController extends AbstractServerController {
 				'label' => $server_available['label'],
 			);
 		}
-
-		$sidebar = new \psm\Util\Module\Sidebar($this->twig);
-		$this->setSidebar($sidebar);
-
-		// check which module the user came from, and add a link accordingly
-		$back_to = isset($_GET['back_to']) && $_GET['back_to'] == 'server_status' ? $_GET['back_to'] : 'server';
-		$sidebar->addButton(
-			'go_back',
-			psm_get_lang('system', 'go_back'),
-			psm_build_url(array('mod' => $back_to)),
-			'th-list'
-		);
-
+                
+		$tpl_data['last_output_truncated'] = $tpl_data['last_output'];
+		$tpl_data['last_error_output_truncated'] = $tpl_data['last_error_output'];
+                
+		if (strlen($tpl_data['last_output']) > 255) {
+			$tpl_data['last_output_truncated'] = substr($tpl_data['last_output'], 0, 255) . '...';
+		}
+                
+		if (strlen($tpl_data['last_error_output']) > 255) {
+			$tpl_data['last_error_output_truncated'] = substr($tpl_data['last_error_output'], 0, 255) . '...';
+		}
+                
 		return $this->twig->render('module/server/server/view.tpl.html', $tpl_data);
 	}
 
@@ -467,12 +476,14 @@ class ServerController extends AbstractServerController {
 			'label_timeout' => psm_get_lang('servers', 'timeout'),
 			'label_timeout_description' => psm_get_lang('servers', 'timeout_description'),
 			'label_authentication_settings' => psm_get_lang('servers', 'authentication_settings'),
+			'label_optional' => psm_get_lang('servers', 'optional'),
 			'label_website_username' => psm_get_lang('servers', 'website_username'),
 			'label_website_username_description' => psm_get_lang('servers', 'website_username_description'),
 			'label_website_password' => psm_get_lang('servers', 'website_password'),
 			'label_website_password_description' => psm_get_lang('servers', 'website_password_description'),
 			'label_fieldset_monitoring' => psm_get_lang('servers', 'fieldset_monitoring'),
 			'label_fieldset_permissions' => psm_get_lang('servers', 'fieldset_permissions'),
+			'label_permissions' => psm_get_lang('servers', 'permissions'),
 			'label_port' => psm_get_lang('servers', 'port'),
 			'label_custom_port' => psm_get_lang('servers', 'custom_port'),
 			'label_popular_ports' => psm_get_lang('servers', 'popular_ports'),
@@ -495,7 +506,8 @@ class ServerController extends AbstractServerController {
 			'label_redirect_check_description' => psm_get_lang('servers', 'redirect_check_description'),
 			'label_allow_http_status' => psm_get_lang('servers', 'allow_http_status'),
 			'label_allow_http_status_description' => psm_get_lang('servers', 'allow_http_status_description'),
-			'label_header' => psm_get_lang('servers', 'header'),
+			'label_header_name' => psm_get_lang('servers', 'header_name'),
+			'label_header_value' => psm_get_lang('servers', 'header_value'),
 			'label_header_name_description' => psm_get_lang('servers', 'header_name_description'),
 			'label_header_value_description' => psm_get_lang('servers', 'header_value_description'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
@@ -510,8 +522,10 @@ class ServerController extends AbstractServerController {
 			'label_send_email' => psm_get_lang('servers', 'send_email'),
 			'label_sms' => psm_get_lang('servers', 'sms'),
 			'label_send_sms' => psm_get_lang('servers', 'send_sms'),
-			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
 			'label_telegram' => psm_get_lang('servers', 'telegram'),
+			'label_pushover' => psm_get_lang('servers', 'pushover'),
+			'label_send_telegram' => psm_get_lang('servers', 'send_telegram'),
 			'label_users' => psm_get_lang('servers', 'users'),
 			'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
 			'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
@@ -520,14 +534,19 @@ class ServerController extends AbstractServerController {
 			'label_go_back' => psm_get_lang('system', 'go_back'),
 			'label_edit' => psm_get_lang('system', 'edit'),
 			'label_delete' => psm_get_lang('system', 'delete'),
+			'label_view' => psm_get_lang('system', 'view'),
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
-			'label_advanced' => psm_get_lang('system', 'advanced'),
-			'label_online' => psm_get_lang('system', 'online'),
-			'label_offline' => psm_get_lang('system', 'offline'),
+			'label_seconds' => psm_get_lang('config', 'seconds'),
+			'label_online' => psm_get_lang('servers', 'online'),
+			'label_offline' => psm_get_lang('servers', 'offline'),
 			'label_ok' => psm_get_lang('system', 'ok'),
 			'label_bad' => psm_get_lang('system', 'bad'),
+			'default_value_timeout' => PSM_CURL_TIMEOUT,
+			'label_settings' => psm_get_lang('system', 'settings'),
+			'label_output' => psm_get_lang('servers', 'output'),
+			'label_search' => psm_get_lang('system', 'search'),
 		);
 	}
 

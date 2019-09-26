@@ -77,7 +77,6 @@ class Installer {
 		}
 
 		// different DB version, check if the version requires any changes
-		// @todo this is currently a manual check for each version, similar to upgrade().. not a clean way
 		if (version_compare($version_db, PSM_VERSION, '<')) {
 			return true;
 		} else {
@@ -322,6 +321,9 @@ class Installer {
 		}
 		if (version_compare($version_from, '3.4.0', '<')) {
 			$this->upgrade340();
+		}
+		if (version_compare($version_from, '3.4.2', '<')) {
+			$this->upgrade342();
 		}
 		psm_update_conf('version', $version_to);
 	}
@@ -569,8 +571,20 @@ class Installer {
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NULL AFTER `pattern_online`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `message` `message` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
 		$queries[] = "INSERT INTO `".PSM_DB_PREFIX."config` (`key`, `value`) VALUES ('combine_notifications', '1');";
 		$this->execSQL($queries);
 		$this->log('Combined notifications enabled. Check out the config page for more info.');
+	}
+	
+	/**
+	 * Patch for v3.4.2 release
+	 * Version_compare was forgotten in v3.4.1 and query failed.
+	 * Fixed in v3.4.2, 3.4.1 has been removed.
+	 */
+	protected function upgrade342() {
+		$queries = array();
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `last_output` `last_output` TEXT;";
+		$this->execSQL($queries);
 	}
 }

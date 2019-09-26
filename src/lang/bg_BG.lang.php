@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Не',
 		'insert' => 'Добавяне',
 		'add_new' => 'Добави нов',
-		'update_available' => 'Налична е нова версия: ({version}). Може да я свалите от <a href="http://www.phpservermonitor.org" target="_blank">тук</a>.',
+		'update_available' => 'Налична е нова версия: ({version}). Може да я свалите от <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">тук</a>.',
 		'back_to_top' => 'Нагоре',
 		'go_back' => 'Назад',
 		'ok' => 'Ок',
@@ -92,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Ниво на достъп',
 		'level_10' => 'Администратор',
 		'level_20' => 'Потребител',
-		'level_description' => '<b>Администраторите</b> имат пълен достъп: могат да управляват сървърите, потребителите и да редактират глобалните настройки.<br/><b>Потребителите</b> могат само да виждат статуса на сървърите и да обнояват информацията за даден сървър, за който им е разрешен достъп.',
+		'level_description' => '<b>Администраторите</b> имат пълен достъп: могат да управляват сървърите, потребителите и да редактират глобалните настройки.<br><b>Потребителите</b> могат само да виждат статуса на сървърите и да обнояват информацията за даден сървър, за който им е разрешен достъп.',
 		'mobile' => 'Мобилен телефон',
 		'email' => 'Имейл',
 		'pushover' => 'Pushover',
@@ -212,14 +212,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover е услуга, която улеснява получаването на известия в реално време. Посетете <a href="https://pushover.net/">техния сайт</a> за повече информация.',
 		'pushover_clone_app' => 'Кликнете тук за да създаване на вашият Pushover App',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
+		'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a href="%1$s" target="_blank" rel="noopener">регистрирате свой App</a> в техния сайт и въведете вашия App API Token тук.',
 		'alert_type' => 'Изберете кога желаете да получавате известия',
 		'alert_type_description' => '<b>Промяна на сатуса:</b><br>'.
-			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br/>'.
-			'<br/><b>Офлайн</b><br>'.
+			'Ще получавате известие когато има промяна със връзката на даден някой от описаните сървър или сайт. От Онлайн -> Офлайн и от Офлайн -> Онлайн.<br>'.
+			'<br><b>Офлайн</b><br>'.
 			'Ще получите известие когато връзката до сървъра е изгубена за *ПЪРВИ ПЪТ*. Например, '.
 			'вашия cron скрипт проверява всеки 15 минути и връзката до сървъра е изгубена в 1 часа през нощта и не работи до 6 часа сутринта '.
-			'Вие ще получите едно известие в 1 часа за това<br/>'.
+			'Вие ще получите едно известие в 1 часа за това<br>'.
 			'<br><b>Винаги:</b><br> '.
 			'Ще получавате известие при всяка проверка на Вашия крон скрипт дори когато връзката до даден сървър или сайт е била прекъсната в продължение на часове.',
 		'alert_type_status' => 'Промяна на статуса',
@@ -240,8 +240,8 @@ $sm_lang = array(
 		'settings_notification' => 'Настройки на известията',
 		'settings_log' => 'Настройки на логовете',
 		'auto_refresh' => 'Автоматично опресняване',
-		'auto_refresh_servers' =>
-			'Автоматично опресняване на страницата.<br/>'.
+		'auto_refresh_description' =>
+			'Автоматично опресняване на страницата.<br>'.
 			'<span class="small">'.
 			'Времето е в секунди, ако е 0 страницата няма да се обновява.'.
 			'</span>',
@@ -266,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Какъв брой дни да се пазят логовете от известията и архиви за ъптайм на сървърите. Въведете 0 ако желаете логовете да не се трият.',
 		'log_retention_days' => 'дни',
 	),
-	// За нов ред в имейл съобщението, моля използвайте тага <br/>
+	// За нов ред в имейл съобщението, моля използвайте тага <br>
 	'notifications' => array(
 		'off_sms' => 'Сървър \'%LABEL%\' е Офлайн: ip=%IP%, port=%PORT%. Greshka=%ERROR%',
 		'off_email_subject' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
-		'off_email_body' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
+		'off_email_body' => "Неуспешно свързване:<br><br>Сървър: %LABEL%<br>IP адрес: %IP%<br>Порт: %PORT%<br>Грешка: %ERROR%<br>Днес: %DATE%",
 		'off_pushover_title' => 'Връзката до \'%LABEL%\' е ИЗГУБЕНА',
-		'off_pushover_message' => "Неуспешно свързване:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Грешка: %ERROR%<br/>Днес: %DATE%",
+		'off_pushover_message' => "Неуспешно свързване:<br><br>Сървър: %LABEL%<br>IP адрес: %IP%<br>Порт: %PORT%<br>Грешка: %ERROR%<br>Днес: %DATE%",
 		'on_sms' => 'Сървър \'%LABEL%\' е Онлайн: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
-		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_email_body' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br><br>Сървър: %LABEL%<br>IP адрес: %IP%<br>Порт: %PORT%<br>Днес: %DATE%",
 		'on_pushover_title' => 'Връзката до \'%LABEL%\' е ВЪЗСТАНОВЕНА',
-		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Сървър: %LABEL%<br/>IP адрес: %IP%<br/>Порт: %PORT%<br/>Днес: %DATE%",
+		'on_pushover_message' => "Връзката до '%LABEL%' беше ВЪЗСТАНОВЕНА, it was down for %LAST_OFFLINE_DURATION%:<br><br>Сървър: %LABEL%<br>IP адрес: %IP%<br>Порт: %PORT%<br>Днес: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Добре дошъл, %user_name%',
@@ -294,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Забравили сте паролата си?',
 		'password_reset' => 'Възстановяване на паролата',
 		'password_reset_email_subject' => 'Възстановяване на парола за PHP Сървър Мониторинг',
-		'password_reset_email_body' => 'За да възстановите паролата си е нужно да кликнете на линка по-долу. Валидността на линка е един час.<br/><br/>%link%',
+		'password_reset_email_body' => 'За да възстановите паролата си е нужно да кликнете на линка по-долу. Валидността на линка е един час.<br><br>%link%',
 		'error_user_incorrect' => 'Потребителят не може да бъде намерен.',
 		'error_login_incorrect' => 'Информацията е грешна.',
 		'error_login_passwords_nomatch' => 'Паролите не съвпадат.',

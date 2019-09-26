@@ -1,55 +1,152 @@
-<link href="static/plugin/jqplot/jquery.jqplot.min.css" rel="stylesheet" >
-<!--[if lt IE 9]><script type="text/javascript" src="static/plugin/excanvas.js"></script><![endif]-->
-<script type="text/javascript" src="static/plugin/jqplot/jquery.jqplot.min.js"></script>
-<script type="text/javascript" src="static/plugin/jqplot/jqplot.canvasOverlay.min.js"></script>
-<script type="text/javascript" src="static/plugin/jqplot/jqplot.cursor.min.js"></script>
-<script type="text/javascript" src="static/plugin/jqplot/jqplot.dateAxisRenderer.min.js"></script>
-<script type="text/javascript" src="static/plugin/jqplot/jqplot.highlighter.min.js"></script>
-
-<link href="static/css/history.css" rel="stylesheet" >
-<script type="text/javascript">
-	var day_format = '{{ day_format }}';
-	var long_date_format = '{{ long_date_format }}';
-	var short_date_format = '{{ short_date_format }}';
-	var short_time_format = '{{ short_time_format }}';
-</script>
-<script type="text/javascript" src="static/js/history.js"></script>
-
-<div id="history-panel">
+<script type="text/javascript" src="src/templates/default/static/plugin/momentjs/moment.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/chartjs/chart-2.7.3.min.js"></script>
 {% for graph in graphs %}
-<div class="chart-row">
-	<div class="chart-container">
-		<div class="chart-content">
-			<div id="chart{{ graph.chart_id }}" class="chart" data-title="{{ graph.title }}" data-plotMode="{{ graph.plotmode }}" data-endTime="{{ graph.end_timestamp }}" data-series="{{ graph.series|raw }}" data-lines="{{ graph.server_lines }}" data-down="{{ graph.server_down }}"></div>
-		</div>
-	</div>
-	<div class="info-container">
-		<div class="info-content">
-			<div class="info-dropdown btn-group">
-				<button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-info-sign"></i></button>
-				<ul class="dropdown-menu">
-				{% for record in graph.info %}
-				<li><span>{{ record.label }}: {{ record.value }}</span></li>
-				{% endfor %}
-				</ul>
-			</div>
-			<div class="server-info">
-				<ul>
-				{% for record in graph.info %}
-				<li><span>{{ record.label }}: {{ record.value }}</span></li>
-				{% endfor %}
-				</ul>
-			</div>
-		</div>
-		<div class="chart-selector">
-			<div class="btn-group">
-				{% for button in graph.buttons %}
-				<button class="btn {{ button.class_active }}" data-chartId="{{ graph.chart_id }}" data-chartMode="{{ button.mode }}" >{{ button.label }}</button>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+<div class="chart-container col-10" style="position: relative;  width:60vw">
+	<canvas id="{{ graph.id }}">Your browser does not support the canvas element.</canvas>
 </div>
-<div style="clear: both;">&nbsp;</div>
+<div class="col-md-2">
+	<noscript><div hidden></noscript>
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+			{% for button in graph.buttons %}
+			<label class="btn btn-secondary {{ button.class_active }}">
+				<input type="radio" name="{{ graph.button_name }}" value="{{ button.time }}" id="{{ button.unit }}" autocomplete="off" {% if button.class_active %} checked {% endif  %}> {{ button.label }}
+			</label>
+			{% endfor %}
+		</div>
+	<noscript></div></noscript><div class="w-100"></div>
+	<br>
+	{% if graph.id == 'history_short' %}
+	<div id="meter" data-value="{{ graph.uptime|round(3) }}" translation="{{ graph.info.1.label|lower }}">
+		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
+	</div><br>
+	{% endif %}
+		{{ graph.info.0.label }}: {{ graph.info.0.value }}s
+</div>
+
+{% if graph.id == 'history_short' %}
+<script>
+	var historyShort = new Chart(document.getElementById("{{ graph.id }}").getContext('2d'), {
+		type: 'line',
+		data: {
+			datasets: [
+			{
+				data: [{{ graph.lines.offline.value }}],
+				label: '{{ graph.lines.offline.name }}',
+				backgroundColor: '#dc3545',
+				borderColor: '#dc3545',
+				borderWidth: 2,
+				radius: 0,
+				pointStyle: 'crossRot',
+				fill: true,
+				spanGaps: false,
+			},
+			{
+				data: [{{ graph.lines.online.value }}],
+				label: '{{graph.lines.online.name }}',
+				fill: false,
+				spanGaps: false,
+				backgroundColor: '#28a745',
+				borderColor: '#28a745',
+				lineTension: 0,
+				steppedLine: true
+			},
+			]
+		},
+		options: {	
+			scales: {
+				yAxes: [{
+					ticks: {
+						min: 0.0
+					}
+				}],
+				xAxes: [{
+					type: 'time',
+					time: {
+						unit: '{{ graph.unit }}',
+						minUnit: 'hour',
+						min: {{ graph.start_timestamp }},
+						max: {{ graph.end_timestamp }},
+					},
+					distribution: 'linear',
+					ticks: {
+						source: 'auto',
+					}
+				}]
+			}
+		}
+	});
+</script>
+{% elseif graph.id == 'history_long' %}
+<script>
+	var colors = {
+		/*
+			ChartJS example colors
+			red: 'rgb(255, 99, 132)',
+			orange: 'rgb(255, 159, 64)',
+			yellow: 'rgb(255, 205, 86)',
+			green: 'rgb(75, 192, 192)',
+			blue: 'rgb(54, 162, 235)',
+			purple: 'rgb(153, 102, 255)',
+			grey: 'rgb(201, 203, 207)'
+		*/
+		latency_min: 'rgb(255, 99, 132)',
+		latency_avg: 'rgb(54, 162, 235)',
+		latency_max: 'rgb(255, 205, 86)'
+	}
+	var historyLong = new Chart(document.getElementById("{{ graph.id }}").getContext('2d'), {
+		type: 'line',
+		data: {
+			datasets: [
+			{% for key,line in graph.lines %}
+			{
+				data: [{{ line.value|raw }}],
+				label: '{{ line.name }}',
+				backgroundColor: colors['{{key}}'],
+				borderColor: colors['{{key}}'],
+			},
+			{% endfor %}
+			]
+		},
+		options: {
+			animation: {
+				easing: 'easeInOutExpo',
+			},
+			tooltips: {
+				mode: 'index'
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						min: 0.0
+					}
+				}],
+				xAxes: [{
+					type: 'time',
+					time: {
+						unit: '{{ graph.unit }}',
+						minUnit: 'day',
+						min: {{ graph.start_timestamp }},
+						max: {{ graph.end_timestamp }},
+					},
+					distribution: 'linear',
+					ticks: {
+						source: 'auto',
+					}
+				}]
+			}
+		}
+	});
+</script>
+{% else %}
+<script>
+	alert('Graph is missing the \'javascript part\'.');
+</script>
+{% endif %}
 {% endfor %}
-</div>
+<script>
+document.onreadystatechange = function () {
+  if (document.readyState === 'interactive') {
+    $.getScript("src/templates/default/static/js/history.js");
+  }
+}
+</script>

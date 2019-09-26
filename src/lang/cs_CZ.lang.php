@@ -44,7 +44,7 @@ $sm_lang = array(
 		'no' => 'Ne',
 		'insert' => 'Vložit',
 		'add_new' => 'Přidat',
-		'update_available' => 'Nová verze - ({version}) je dostupná na <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Nová verze - ({version}) je dostupná na <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Zpět na začátek',
 		'go_back' => 'Zpět',
 		'ok' => 'OK',
@@ -93,7 +93,7 @@ $sm_lang = array(
 		'level' => 'Oprávnění',
 		'level_10' => 'Administrátor',
 		'level_20' => 'Uživatel',
-		'level_description' => '<b>Administrátor</b> má plný přístup: může spravovat servery, uživatele a upravit globální konfiguraci.<br/><b>Uživatel</b> má práva pouze na čtení a spustit aktualizaci serverů, které má přiřazeny.',
+		'level_description' => '<b>Administrátor</b> má plný přístup: může spravovat servery, uživatele a upravit globální konfiguraci.<br><b>Uživatel</b> má práva pouze na čtení a spustit aktualizaci serverů, které má přiřazeny.',
 		'mobile' => 'Mobil',
 		'email' => 'E-mail',
 		'pushover' => 'Pushover',
@@ -137,7 +137,8 @@ $sm_lang = array(
 		'domain' => 'Doména/IP',
 		'timeout' => 'Časový limit',
 		'timeout_description' => 'Počet vteřin čekání na odpověď serveru.',
-		'authentication_settings' => 'Nastavení autentizace (volitelný)',
+		'authentication_settings' => 'Nastavení autentizace',
+		'optional' => 'volitelný',
 		'website_username' => 'Uživatelské jméno',
 		'website_username_description' => 'Uživatelské jméno pro přístup na stránku. (Pouze Apache autorizace je podporovaná.)',
 		'website_password' => 'Heslo',
@@ -225,12 +226,12 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover je služba umožňující jednoduše zasílat real-time upozornění. Více na <a href="https://pushover.net/">webu Pushover</a>',
 		'pushover_clone_app' => 'Klikněte pro vytvoření Pushover aplikace',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank">registrovat</a> a získat API Token.',
+		'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank" rel="noopener">registrovat</a> a získat API Token.',
 		'alert_type' => 'Zvolte kdy si přejete být upozorněni.',
 		'alert_type_description' => '<b>Změna stavu:</b> '.
-			'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br/>'.
+			'Obdržíte upozornění při změně stavu, tedy:online -> offline nebo offline -> online.<br>'.
 			'<br /><b>Offline:</b> '.
-			'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br/>'.
+			'Obdržíte upozornění, kdy server přejde poprvé do offline stavu. Například, pokud je cron nastaven na 15 minut a sledovaný server bude offline mezi 01:00 a 06:00. Obdržíte upozornění pouze v 01:00. <br>'.
 			'<br><b>Vždy:</b> '.
 			'Obdržíte upozornění při každém spuštění kontroly, tedy i pokud bude server offline několik hodin.',
 		'alert_type_status' => 'Změna stavu',
@@ -251,8 +252,8 @@ $sm_lang = array(
 		'settings_notification' => 'Nastavení upozornění',
 		'settings_log' => 'Nastavení logu',
 		'auto_refresh' => 'Automaticky obnovit',
-		'auto_refresh_servers' =>
-			'Automaticky obnovit stránku Servery.<br/>'.
+		'auto_refresh_description' =>
+			'Automaticky obnovit stránku Servery.<br>'.
 			'<span class="small">'.
 			'Čas v sekundách, 0 pro vypnutí automatického obnovení.'.
 			'</span>',
@@ -277,18 +278,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Počet dnů po které budou zachovány logy upozornění. Vložte 0 pro vypnutí autorotace.',
 		'log_retention_days' => 'dnů',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' je offline: ip=%IP%, port=%PORT%. Chyba=%ERROR%',
 		'off_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je offline',
-		'off_email_body' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
+		'off_email_body' => 'Nebylo možné spojit se se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
 		'off_pushover_title' => 'Server \'%LABEL%\' je offline',
-		'off_pushover_message' => 'Nebylo možné spojit se se serverem:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Chyba: %ERROR%<br/>Datum: %DATE%',
+		'off_pushover_message' => 'Nebylo možné spojit se se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
 		'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je online',
-		'on_email_body' => "Server '%LABEL%' je opět online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%",
+		'on_email_body' => "Server '%LABEL%' je opět online, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' je online',
-		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online, it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' je znovu online, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Vítejte, %user_name%',
@@ -305,7 +306,7 @@ $sm_lang = array(
 		'password_forgot' => 'Zapomenuté heslo?',
 		'password_reset' => 'Obnovit heslo',
 		'password_reset_email_subject' => 'Obnovit heslo pro PHP Server Monitor',
-		'password_reset_email_body' => 'Použijte následující odkaz pro obnovení hesla. Odkaz je platný jednu hodinu.<br/><br/>%link%',
+		'password_reset_email_body' => 'Použijte následující odkaz pro obnovení hesla. Odkaz je platný jednu hodinu.<br><br>%link%',
 		'error_user_incorrect' => 'Zadané uživatelské jméno nebylo nalezeno.',
 		'error_login_incorrect' => 'Přihlášení nebylo úspěšné.',
 		'error_login_passwords_nomatch' => 'Zadaná hesla neodpovídají.',

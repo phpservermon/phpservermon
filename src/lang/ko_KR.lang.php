@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => '아니오',
 		'insert' => '삽입',
 		'add_new' => '새계정 추가',
-		'update_available' => '새로운 업데이트가 있습니다 ({version}). 다음사이트를 방문 해 주십시오. <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => '새로운 업데이트가 있습니다 ({version}). 다음사이트를 방문 해 주십시오. <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Back to top',
 		'go_back' => 'Go back',
 		'ok' => 'OK',
@@ -92,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Level',
 		'level_10' => 'Administrator',
 		'level_20' => 'User',
-		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br/><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
+		'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
 		'mobile' => '휴대폰',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -212,14 +212,14 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/">their website</a> for more info.',
 		'pushover_clone_app' => 'Click here to create your Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank">register an App</a> at their website and enter the App API Token here.',
+		'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
 		'alert_type' => '알림을 원하면 다음과 같이 변경하십시오.',
-		'alert_type_description' => '<b>상태 변경: </b><br/>'.
-			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br/>'.
-			 '<br/><b>오프라인: </b><br/>'.
+		'alert_type_description' => '<b>상태 변경: </b><br>'.
+			'서버 상태가 변경이되면 알림을 받습니다. online -> offline -> online.<br>'.
+			 '<br><b>오프라인: </b><br>'.
 			'서버가 첫번째로 오프라인이 되었을 때 알림을 받습니다. 예를들어, '.
 			'cron이 매 15분이고 오전1시 부터 오전6시까지 다운되었을때 오전1시에 한번 알림을 받습니다.<br />'.
-			'<br/><b>항상: </b><br/>'.
+			'<br><b>항상: </b><br>'.
 			'사이트가 다운되었을 때 매시간 알림을 받습니다.',
 
 		'alert_type_status' => '상태 변경',
@@ -240,8 +240,8 @@ $sm_lang = array(
 		'settings_notification' => '알림 설정',
 		'settings_log' => '로그 설정',
 		'auto_refresh' => 'Auto-refresh',
-		'auto_refresh_servers' =>
-			'서버페이지를 자동으로 새로고침.<br/>'.
+		'auto_refresh_description' =>
+			'서버페이지를 자동으로 새로고침.<br>'.
 			'<span class="small">'.
 			'시간은 초(sec)로 설정을 하고, 0은 새로고침을 하지 않습니다.'.
 			'</span>',
@@ -266,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
 		'log_retention_days' => 'days',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => '서버(\'%LABEL%\')가 다운되었습니다. : ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => '중요: 서버(\'%LABEL%\')가 다운되었습니다.',
-		'off_email_body' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_email_body' => "서버 접속을 실패하였습니다.<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%",
 		'off_pushover_title' => '서버(\'%LABEL%\')가 다운되었습니다.',
-		'off_pushover_message' => "서버 접속을 실패하였습니다.<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Date: %DATE%",
+		'off_pushover_message' => "서버 접속을 실패하였습니다.<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%",
 		'on_sms' => '서버(\'%LABEL%\') 가동중: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => '중요: 서버(\'%LABEL%\')가 가동중입니다.',
-		'on_email_body' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 		'on_pushover_title' => '서버(\'%LABEL%\')가 가동중입니다.',
-		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_message' => "서버('%LABEL%')가 재가동됩니다., it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Welcome, %user_name%',
@@ -294,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Forgot password?',
 		'password_reset' => 'Reset password',
 		'password_reset_email_subject' => 'Reset your password for PHP Server Monitor',
-		'password_reset_email_body' => 'Please use the following link to reset your password. Please note it expires in 1 hour.<br/><br/>%link%',
+		'password_reset_email_body' => 'Please use the following link to reset your password. Please note it expires in 1 hour.<br><br>%link%',
 		'error_user_incorrect' => 'The provided username could not be found.',
 		'error_login_incorrect' => 'The information is incorrect.',
 		'error_login_passwords_nomatch' => 'The provided passwords do not match.',

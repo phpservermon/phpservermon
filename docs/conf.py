@@ -51,7 +51,7 @@ copyright = u'2008-2017, Pepijn Over'
 # built documents.
 #
 # The short X.Y version.
-version = '3.2.0'
+version = '3.4.4'
 # The full version, including alpha/beta/rc tags.
 release = version
 
