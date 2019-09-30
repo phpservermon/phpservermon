@@ -6,6 +6,11 @@ Not yet released
 ----------------
 \-
 
+v3.4.5 (released September 30, 2019)
+------------------------------------
+
+* a8eaedc8: Fixed undefined index last_output.
+
 v3.4.4 (released September 26, 2019)
 ------------------------------------
 

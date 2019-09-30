@@ -29,19 +29,19 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.4.4');
+define('PSM_VERSION', '3.4.5');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
  * @see psm_update_available()
  */
-define('PSM_UPDATE_URL', 'http://www.phpservermonitor.org/version.php');
+define('PSM_UPDATE_URL', 'https://api.github.com/repos/phpservermon/phpservermon/releases/latest');
 
 /**
- * Default update interval (1 week). Only applicable when updates are enabled.
+ * Default update interval (1 day). Only applicable when updates are enabled.
  * @see psm_update_available()
  */
-define('PSM_UPDATE_INTERVAL', 7 * 24 * 60 * 60);
+define('PSM_UPDATE_INTERVAL', 1 * 24 * 60 * 60);
 
 /**
  * Configuration for: Hashing strength

@@ -26,7 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Estonian - Eesti keel',
+	'name' => 'Eesti keel - Estonian',
 	'locale' => array('et_ET.UTF-8', 'et_ET', 'estonian'),
 	'locale_tag' => 'et',
 	'locale_dir' => 'ltr',

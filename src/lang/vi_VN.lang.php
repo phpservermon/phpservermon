@@ -26,7 +26,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Tiếng Việt',
+	'name' => 'Tiếng Việt - Vietnamese',
 	'locale' => array('vi_VN.UTF-8', 'vi_VN', 'Việt Nam'),
 	'system' => array(
 		'title' => 'Server Monitor',

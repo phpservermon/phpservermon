@@ -27,7 +27,7 @@
  **/
 
 $sm_lang = array(
-	'name' => 'Russian - Русский',
+	'name' => 'Русский - Russian',
 	'locale' => array('ru_RU.UTF-8', 'ru_RU', 'russian', 'russian'),
 	'locale_tag' => 'ru',
 	'locale_dir' => 'ltr',
