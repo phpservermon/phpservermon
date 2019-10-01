@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -32,8 +31,7 @@ namespace psm\Util\Server;
 /**
  * The ServerValidator helps you to check input data for servers.
  */
-class ServerValidator
-{
+class ServerValidator {
 
 	/**
 	 * Database service
@@ -41,8 +39,7 @@ class ServerValidator
 	 */
 	protected $db;
 
-	public function __construct(\psm\Service\Database $db)
-	{
+	public function __construct(\psm\Service\Database $db) {
 		$this->db = $db;
 	}
 
@@ -52,8 +49,7 @@ class ServerValidator
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function serverId($server_id)
-	{
+	public function serverId($server_id) {
 		$server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array('server_id' => $server_id), array('server_id'));
 
 		if (empty($server)) {
@@ -68,8 +64,7 @@ class ServerValidator
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function label($label)
-	{
+	public function label($label) {
 		$label = trim($label);
 		if (empty($label) || strlen($label) > 255) {
 			throw new \InvalidArgumentException('server_label_bad_length');
@@ -84,8 +79,7 @@ class ServerValidator
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function ip($value, $type = null)
-	{
+	public function ip($value, $type = null) {
 		$value = trim($value);
 
 		if (empty($value) || strlen($value) > 255) {
@@ -101,13 +95,10 @@ class ServerValidator
 				break;
 			case 'service':
 			case 'ping':
-				if (
-					!filter_var($value, FILTER_VALIDATE_IP)
+				if (!filter_var($value, FILTER_VALIDATE_IP)
 					// domain regex as per http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address :
 					&& !preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/", $value)
-				) {
-					throw new \InvalidArgumentException('server_ip_bad_service');
-				}
+				) {throw new \InvalidArgumentException('server_ip_bad_service');}
 				break;
 		}
 
@@ -120,8 +111,7 @@ class ServerValidator
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function type($type)
-	{
+	public function type($type) {
 		if (!in_array($type, array('ping', 'service', 'website'))) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
@@ -134,8 +124,7 @@ class ServerValidator
 	 * @return boolean
 	 * @throws \InvalidArgumentException
 	 */
-	public function warningThreshold($value)
-	{
+	public function warningThreshold($value) {
 		if (!is_numeric($value) || intval($value) == 0) {
 			throw new \InvalidArgumentException('server_warning_threshold_invalid');
 		}
