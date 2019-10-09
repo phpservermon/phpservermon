@@ -130,6 +130,7 @@ $sm_lang = array(
 		'error_user_no_match' => 'De gebruiker kon niet worden toegevoegd aan de database.',
 		'error_user_password_invalid' => 'Het ingevulde wachtwoord is ongeldig.',
 		'error_user_password_no_match' => 'De ingevulde wachtwoorden komen niet overeen.',
+		'error_user_admin_cant_be_deleted' => 'Je kan de laatste administrator niet verwijderen.',
 	),
 	'log' => array(
 		'title' => 'Log entries',

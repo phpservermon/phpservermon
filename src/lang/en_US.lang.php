@@ -133,6 +133,7 @@ $sm_lang = array(
 		'error_user_no_match' => 'The user could not be found in the database.',
 		'error_user_password_invalid' => 'The entered password is invalid.',
 		'error_user_password_no_match' => 'The entered passwords do not match.',
+		'error_user_admin_cant_be_deleted' => 'You can\'t remove the last administrator.',
 	),
 	'log' => array(
 		'title' => 'Log entries',

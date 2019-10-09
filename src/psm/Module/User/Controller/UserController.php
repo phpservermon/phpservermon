@@ -239,6 +239,11 @@ class UserController extends AbstractController {
 			$user_validator->username($clean['user_name'], $user_id);
 			$user_validator->email($clean['email']);
 			$user_validator->level($clean['level']);
+			if(count($this->db->select(PSM_DB_PREFIX.'users', array('level' => PSM_USER_ADMIN))) == 1 && 
+					$this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+				$this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
+				$clean['level'] = PSM_USER_ADMIN;
+			}
 
 			// always validate password for new users,
 			// but only validate it for existing users when they change it.
@@ -309,15 +314,19 @@ class UserController extends AbstractController {
 		try {
 			$this->container->get('util.user.validator')->userId($id);
 
-			$this->db->delete(PSM_DB_PREFIX.'users', array('user_id' => $id,));
-			$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
+			if(count($this->db->select(PSM_DB_PREFIX.'users', array('level' => PSM_USER_ADMIN))) == 1) {
+				$this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'error');
+			} else {
+				$this->db->delete(PSM_DB_PREFIX.'users', array('user_id' => $id,));
+				$this->db->delete(PSM_DB_PREFIX.'users_servers', array('user_id' => $id));
 
-			$this->container->get('event')->dispatch(
-				\psm\Module\User\UserEvents::USER_DELETE,
-				new \psm\Module\User\Event\UserEvent($id, $this->getUser()->getUserId())
-			);
+				$this->container->get('event')->dispatch(
+					\psm\Module\User\UserEvents::USER_DELETE,
+					new \psm\Module\User\Event\UserEvent($id, $this->getUser()->getUserId())
+				);
 
-			$this->addMessage(psm_get_lang('users', 'deleted'), 'success');
+				$this->addMessage(psm_get_lang('users', 'deleted'), 'success');
+			}
 		} catch (\InvalidArgumentException $e) {
 			$this->addMessage(psm_get_lang('users', 'error_'.$e->getMessage()), 'error');
 		}
