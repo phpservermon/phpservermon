@@ -50,7 +50,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function serverId($server_id) {
-		$server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array('server_id' => $server_id), array('server_id'));
+		$server = $this->db->selectRow(PSM_DB_PREFIX.'servers', array('server_id' => $server_id), array('server_id'));
 
 		if (empty($server)) {
 			throw new \InvalidArgumentException('server_no_match');
@@ -98,7 +98,7 @@ class ServerValidator {
 				if (!filter_var($value, FILTER_VALIDATE_IP)
 					// domain regex as per http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address :
 					&& !preg_match("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/", $value)
-				) {throw new \InvalidArgumentException('server_ip_bad_service');}
+				) {throw new \InvalidArgumentException('server_ip_bad_service'); }
 				break;
 		}
 
