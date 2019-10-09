@@ -202,11 +202,12 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updateService($max_runs, $run = 1) {
+		$timeout = ($this->server['timeout'] === null || $this->server['timeout'] > 0) ? PSM_CURL_TIMEOUT : intval($this->server['timeout']);
 		$errno = 0;
 		// save response time
 		$starttime = microtime(true);
 
-		$fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, $this->server['timeout']);
+		$fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, $timeout);
 
 		$status = ($fp === false) ? false : true;
 		$this->rtime = (microtime(true) - $starttime);

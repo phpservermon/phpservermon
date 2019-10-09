@@ -354,7 +354,7 @@ function psm_parse_msg($status, $type, $vars, $combi = false) {
  * @return string cURL result
  */
 function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $request_method = null, $post_field = null) {
-	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+	($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
 	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
