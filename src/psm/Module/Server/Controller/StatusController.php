@@ -73,6 +73,7 @@ class StatusController extends AbstractServerController {
 		$servers = $this->getServers();
 
 		$layout_data['servers_offline'] = array();
+		$layout_data['servers_warning'] = array();
 		$layout_data['servers_online'] = array();
 
 		foreach ($servers as $server) {
@@ -91,8 +92,7 @@ class StatusController extends AbstractServerController {
 			if ($server['status'] == "off") {
 				$layout_data['servers_offline'][] = $server;
 			} elseif ($server['warning_threshold_counter'] > 0) {
-				$server['class_warning'] = 'warning';
-				$layout_data['servers_offline'][] = $server;
+				$layout_data['servers_warning'][] = $server;
 			} else {
 				$layout_data['servers_online'][] = $server;
 			}
