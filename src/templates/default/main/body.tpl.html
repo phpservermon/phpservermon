@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>{{ title }}</title>
+	<title>{{ title }}{% if subtitle %} - {{ subtitle }}{% endif %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="PHP Server Monitor - {{ subtitle }}">
 	<meta name="robots" content="noindex" />
@@ -48,7 +48,7 @@
 				<b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
 			</div>
 		</noscript>
-		{% if not user_level %}<h1>{{ subtitle }}</h1>{% endif %}
+		{% if not user_level and subtitle %}<h1>{{ subtitle }}</h1>{% endif %}
 		<div class="container">{{ header_accessories|raw }}</div>
 		{% for msg in messages %}
 		<div class="alert alert-{{ msg.class }}" role="alert">
