@@ -382,6 +382,8 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 		curl_setopt($ch, CURLOPT_USERPWD, $website_username.":".$website_password);
 	}
 
+	$href = preg_replace('/(.*)(%cachebuster%)/', '$0'.time(), $href);
+
 	curl_setopt($ch, CURLOPT_URL, $href);
 
 	$proxy_url = psm_get_conf('proxy_url', '');

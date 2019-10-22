@@ -66,6 +66,13 @@ Archiving means that per day only one record is stored with averages. This still
 
 The retention period tells the monitor how long to keep records in the archive table.
 
+How to disable caching?
+------------------------
+
+Caching can be stopt by using a unique url. Place `%cachebuster%` in the url,
+this will be replaced with the value of time().
+Example: https://example.com?%cachebuster% will run as https://example.com?571768757.
+
 Configuration
 +++++++++++++
 
