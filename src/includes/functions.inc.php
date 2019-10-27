@@ -768,21 +768,19 @@ function psm_password_encrypt($key, $password)
 		throw new \InvalidArgumentException('invalid_encryption_key');
 	}
 
-	// TODO rewrite
-	$iv = mcrypt_create_iv(
-		mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC),
-		MCRYPT_DEV_URANDOM
-	);
-
+	// using open ssl
+	$cipher="AES-256-CBC";
+	$ivlen = openssl_cipher_iv_length($cipher);
+	$iv = openssl_random_pseudo_bytes( $ivlen );
 	$encrypted = base64_encode(
-		$iv.
-		mcrypt_encrypt(
-			MCRYPT_RIJNDAEL_128,
-			hash('sha256', $key, true),
-			$password,
-			MCRYPT_MODE_CBC,
-			$iv
-		)
+		$iv .
+		openssl_encrypt(
+	  		$password, 
+	  		$cipher, 
+	  		hash('sha256', $key, true), 
+	  		OPENSSL_RAW_DATA,   // OPENSSL_ZERO_PADDING  OPENSSL_RAW_DATA
+	  		$iv
+		)        
 	);
 
 	return $encrypted;
@@ -806,20 +804,21 @@ function psm_password_decrypt($key, $encryptedString)
 		 throw new \InvalidArgumentException('invalid_encryption_key');
 	}
 
+	// using open ssl
 	$data = base64_decode($encryptedString);
-	$iv = substr($data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
-
-	$decrypted = rtrim(
-		mcrypt_decrypt(
-			MCRYPT_RIJNDAEL_128,
-			hash('sha256', $key, true),
-			substr($data, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)),
-			MCRYPT_MODE_CBC,
-			$iv
-		),
+	$cipher="AES-256-CBC";
+	$ivlen = openssl_cipher_iv_length($cipher);
+	$iv = substr($data, 0, $ivlen);
+	$decrypted = rtrim( 
+		openssl_decrypt(
+			base64_encode(substr($data, $ivlen)), 
+			$cipher, 
+			hash('sha256', $key, true), 
+			OPENSSL_ZERO_PADDING,
+			$iv),
 		"\0"
 	);
-
+	
 	return $decrypted;
 }
 
