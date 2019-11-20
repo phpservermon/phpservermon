@@ -253,7 +253,7 @@ class Installer {
 						  `website_password` varchar(255) DEFAULT NULL,
 						  `last_error` varchar(255) DEFAULT NULL,
 						  `last_error_output` varchar(255) DEFAULT NULL,
-						  `last_output` varchar(255) DEFAULT NULL,
+						  `last_output` TEXT NULL DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
