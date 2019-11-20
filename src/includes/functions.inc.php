@@ -351,7 +351,7 @@ function psm_parse_msg($status, $type, $vars, $combi = false) {
  * @param string|bool $website_password Password website
  * @param string|null $request_method Request method like GET, POST etc.
  * @param string|null $post_field POST data
- * @return string cURL result
+ * @return array ["result" => cURL result, "info" => cURL info array]
  */
 function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $request_method = null, $post_field = null) {
 	($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
@@ -401,6 +401,8 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 	}
 
 	$result = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        
 	curl_close($ch);
 	
 	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
@@ -409,7 +411,7 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
 		echo PHP_EOL.'==============END cURL Resul for: '.$href.'==========================================='.PHP_EOL;
 	}
 
-	return $result;
+	return ["result" => $result, "info" => $info];
 }
 
 /**
@@ -477,7 +479,7 @@ function psm_update_available() {
 		// been more than a week since update, lets go
 		// update last check date
 		psm_update_conf('last_update_check', time());
-		$latest = psm_curl_get(PSM_UPDATE_URL);
+		$latest = psm_curl_get(PSM_UPDATE_URL)["result"];
 		// extract latest version from Github.
 		preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
 		// add latest version to database
