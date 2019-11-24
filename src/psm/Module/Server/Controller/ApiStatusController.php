@@ -70,7 +70,6 @@ class ApiStatusController extends AbstractServerController {
          * Prepare the view template
          */
         protected function executeDetail() {
-                var_dump($this->server_id);
                 if(empty($this->server_id)){
                         return new JsonResponse("Not found", Response::HTTP_NOT_FOUND);
                 }
