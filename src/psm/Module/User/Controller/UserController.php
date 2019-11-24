@@ -139,7 +139,7 @@ class UserController extends AbstractController {
 	 */
 	protected function executeEdit() {
 		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
+		$fields_prefill = array('name', 'user_name', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email', 'api_hash');
 
 		if ($user_id == 0) {
 			// insert mode
@@ -223,7 +223,7 @@ class UserController extends AbstractController {
 		}
 		$user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
-		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email');
+		$fields = array('name', 'user_name', 'password', 'password_repeat', 'level', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'email', 'api_hash');
 		$clean = array();
 		foreach ($fields as $field) {
 			if (isset($_POST[$field])) {
@@ -342,6 +342,7 @@ class UserController extends AbstractController {
 			'label_user_name' => psm_get_lang('users', 'user_name'),
 			'label_password' => psm_get_lang('users', 'password'),
 			'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
+			'label_api_hash' => psm_get_lang('users', 'api_hash'),
 			'label_level' => psm_get_lang('users', 'level'),
 			'label_level_description' => psm_get_lang('users', 'level_description'),
 			'label_mobile' => psm_get_lang('users', 'mobile'),
