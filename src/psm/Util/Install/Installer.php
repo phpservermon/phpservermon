@@ -186,6 +186,7 @@ class Installer {
 							`password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
 							`password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
 							`rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
+                                                        `api_hash` varchar(255) DEFAULT NULL COMMENT 'user''s hash key to validate API requests',
 							`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
 							`name` varchar(255) NOT NULL,
 							`mobile` varchar(15) NOT NULL,

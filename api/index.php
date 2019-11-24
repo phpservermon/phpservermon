@@ -23,28 +23,21 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
  **/
 
-namespace psm\Module\Server;
+require __DIR__.'/../src/bootstrap.php';
+ 
+$router->setIsApi(true);
 
-use psm\Module\ModuleInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+psm_no_cache();
 
-class ServerModule implements ModuleInterface {
+$mod = psm_GET('mod');
 
-	public function load(ContainerBuilder $container) {
-
-	}
-
-	public function getControllers() {
-		return array(
-			'server' => __NAMESPACE__.'\Controller\ServerController',
-			'log' => __NAMESPACE__.'\Controller\LogController',
-			'status' => __NAMESPACE__.'\Controller\StatusController',
-			'update' => __NAMESPACE__.'\Controller\UpdateController',
-			'api.status' => __NAMESPACE__.'\Controller\ApiStatusController',
-		);
-
-	}
+try {
+	$router->run($mod);
+} catch (\InvalidArgumentException $e) {
+	// invalid module, try the default one
+	// it that somehow also doesnt exist, we have a bit of an issue
+	// and we really have no reason catch it
+	$router->run(PSM_MODULE_DEFAULT);
 }

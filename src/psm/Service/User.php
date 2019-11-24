@@ -148,6 +148,23 @@ class User {
 	}
 
 	/**
+	 * Search into database for the user data of api key specified as parameter
+	 * @return object|boolean user data as an object if existing user
+	 */
+	public function getUserByApiKey($key) {
+                if(empty($key)){
+                        return null;
+                }
+                
+		// database query, getting all the info of the selected user
+		$query_user = $this->db_connection->prepare('SELECT * FROM '.PSM_DB_PREFIX.'users WHERE api_hash = :api_hash');
+		$query_user->bindValue(':api_hash', $key, \PDO::PARAM_STR);
+		$query_user->execute();
+		// get result row (as an object)
+		return $query_user->fetchObject();
+	}
+
+	/**
 	 * Logs in with SESSION data.
 	 *
 	 * @return boolean
@@ -169,6 +186,27 @@ class User {
 		}
 	}
 
+        /**
+	 * Logs in via the api key
+	 * @return bool success state of cookie login
+	 */
+	public function loginWithApiKey($key) {
+		$apiKey = trim($key);
+
+		if (empty($apiKey)) {
+			return false;
+		}
+		$user = $this->getUserByApiKey($apiKey);
+                
+                if (empty($user)) {
+                        return false;
+                }
+
+                $this->setUserLoggedIn($user->user_id, true);
+                
+		return true;
+	}
+        
 	/**
 	 * Logs in via the Cookie
 	 * @return bool success state of cookie login
