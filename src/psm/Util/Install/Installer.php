@@ -212,7 +212,7 @@ class Installer {
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
 						  `type` enum('status','email','sms','pushover','telegram') NOT NULL,
-						  `message` varchar(255) NOT NULL,
+						  `message` TEXT NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  PRIMARY KEY  (`log_id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
@@ -253,7 +253,7 @@ class Installer {
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
 						  `last_error` varchar(255) DEFAULT NULL,
-						  `last_error_output` varchar(255) DEFAULT NULL,
+						  `last_error_output` TEXT NULL DEFAULT NULL,
 						  `last_output` TEXT NULL DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
