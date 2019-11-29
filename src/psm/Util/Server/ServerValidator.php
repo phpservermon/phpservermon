@@ -88,7 +88,8 @@ class ServerValidator {
 
 		switch ($type) {
 			case 'website':
-				if (!filter_var($value, FILTER_VALIDATE_URL)) {
+				// url regex as per https://stackoverflow.com/a/3809435
+				if (!preg_match("/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,12}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g", $value)) {
 					throw new \InvalidArgumentException('server_ip_bad_website');
 				}
 				break;
