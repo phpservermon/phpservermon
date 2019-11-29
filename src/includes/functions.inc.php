@@ -757,7 +757,6 @@ function psm_no_cache() {
  * @return string
  * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
  */
-// TODO change to working function
 function psm_password_encrypt($key, $password)
 {
 	if (empty($password)) {
