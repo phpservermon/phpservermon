@@ -77,7 +77,7 @@ if (!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if ($db->getDbHost() === null) {
 		// no config file has been loaded, redirect the user to the install
 		header('Location: install.php');
-		trigger_error("Could not load config file. Redirect to install failed, <a href=\"install.php\">click here</a>.", E_USER_ERROR);
+		die();
 	}
 	// config file has been loaded, check if we have a connection
 	if (!$db->status()) {
@@ -87,7 +87,7 @@ if (!defined('PSM_INSTALL') || !PSM_INSTALL) {
 	if (!psm_load_conf()) {
 		// unable to load from config table
 		header('Location: install.php');
-		trigger_error("Could not load config table. Redirect to install failed, <a href=\"install.php\">click here</a>.", E_USER_ERROR);
+		die();
 	}
 	// config load OK, make sure database version is up to date
 	$installer = new \psm\Util\Install\Installer($db);

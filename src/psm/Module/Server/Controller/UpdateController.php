@@ -46,7 +46,7 @@ class UpdateController extends AbstractController {
 		header('Location: '.psm_build_url(array(
 			'mod' => 'server_status'
 		), true, false));
-		trigger_error("Redirect failed.", E_USER_ERROR);
+		die();
 	}
 
 }
