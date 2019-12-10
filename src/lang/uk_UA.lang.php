@@ -27,7 +27,11 @@
 
 $sm_lang = array(
 	'name' => 'Українська — Ukrainian',
-	'locale' => array('uk_UA.UTF-8', 'uk_UA', 'ukrainian'),
+	'locale' => array(
+		'0' => 'uk_UA.UTF-8',
+		'1' => 'uk_UA',
+		'2' => 'ukrainian',
+	),
 	'locale_tag' => 'uk',
 	'locale_dir' => 'ltr',
 	'system' => array(
@@ -52,7 +56,6 @@ $sm_lang = array(
 		'cancel' => 'Скасувати',
 		'none' => 'Жоден',
 		'activate' => 'Активувати',
-		// date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
 		'short_day_format' => '%e %b',
 		'long_day_format' => '%e %b %Y',
 		'yesterday_format' => 'Учора о %k:%M',
@@ -78,7 +81,7 @@ $sm_lang = array(
 		'seconds' => 'секунд',
 		'current' => 'поточний',
 		'settings' => 'Налаштування',
-		'search' => 'Пошук'
+		'search' => 'Пошук',
 	),
 	'menu' => array(
 		'config' => 'Конфіг',
@@ -133,6 +136,7 @@ $sm_lang = array(
 		'error_user_no_match' => 'Користувача у базі даних не знайдено.',
 		'error_user_password_invalid' => 'Введено неправильний пароль.',
 		'error_user_password_no_match' => 'Введені паролі не збігаються.',
+		'error_user_admin_cant_be_deleted' => '### MISSING ###',
 	),
 	'log' => array(
 		'title' => 'Записи у журналі',
@@ -227,7 +231,6 @@ $sm_lang = array(
 		'warning_threshold_description' => 'Кількість невдалих перевірок перед виставленням статусу офлайн.',
 		'chart_last_week' => 'Останній тиждень',
 		'chart_history' => 'Історія',
-		// Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
 		'chart_day_format' => '%d/%m/%Y',
 		'chart_long_date_format' => '%d/%m/%Y %H:%M:%S',
 		'chart_short_date_format' => '%d/%m %H:%M',
@@ -280,19 +283,12 @@ $sm_lang = array(
 		'telegram_api_token' => 'Токен Telegram API',
 		'telegram_api_token_description' => 'Перед використанням Telegram ви маєте отримати токен API. За довідкою зверніться до <a href="http://docs.phpservermonitor.org/">документації</a>.',
 		'alert_type' => 'Виберіть, коли б вам хотілося отримувати сповіщення.',
-		'alert_type_description' => '<b>Зміна статусу:</b> '.
-			'Ви отримуватимете сповіщення, коли змінюється статус сервера. Тобто при переходах онлайн -> офлайн і офлайн -> онлайн.<br>'.
-			'<br><b>Офлайн:</b> '.
-			'Ви отримаєте сповіщення, коли сервер переходить у офлайн *ТІЛЬКИ ПЕРШИЙ РАЗ*. Наприклад, '.
-			'ваше крон-завдання виконується кожні 15 хвилин і ваш сервер лягає о 1-й годині ночі й лежить до 6-ї години ранку. '.
-			'Ви отримаєте тільки одне сповіщення — о 1-й годині ночі.<br>'.
-			'<br><b>Завжди:</b> '.
-			'Ви отримуватимете сповіщення при кожному запуску сценарію, коли сайт лежить, навіть якщо він лежить годинами.',
+		'alert_type_description' => '<b>Зміна статусу:</b> Ви отримуватимете сповіщення, коли змінюється статус сервера. Тобто при переходах онлайн -> офлайн і офлайн -> онлайн.<br><br><b>Офлайн:</b> Ви отримаєте сповіщення, коли сервер переходить у офлайн *ТІЛЬКИ ПЕРШИЙ РАЗ*. Наприклад, ваше крон-завдання виконується кожні 15 хвилин і ваш сервер лягає о 1-й годині ночі й лежить до 6-ї години ранку. Ви отримаєте тільки одне сповіщення — о 1-й годині ночі.<br><br><b>Завжди:</b> Ви отримуватимете сповіщення при кожному запуску сценарію, коли сайт лежить, навіть якщо він лежить годинами.',
 		'alert_type_status' => 'Зміна статусу',
 		'alert_type_offline' => 'Офлайн',
 		'alert_type_always' => 'Завжди',
-        'combine_notifications' => 'Об’єднувати сповіщення',
-        'combine_notifications_description' => 'Зменшує кількість сповіщень, об’єднуючи їх в 1 єдине сповіщення. (Це не стосується SMS-сповіщень.)',
+		'combine_notifications' => 'Об’єднувати сповіщення',
+		'combine_notifications_description' => 'Зменшує кількість сповіщень, об’єднуючи їх в 1 єдине сповіщення. (Це не стосується SMS-сповіщень.)',
 		'alert_proxy' => 'Навіть якщо увімкнений, проксі-сервер ніколи не використовується для сервісів',
 		'alert_proxy_url' => 'Формат: хост:порт',
 		'log_status' => 'Статус журналу',
@@ -314,11 +310,7 @@ $sm_lang = array(
 		'settings_log' => 'Налаштування логів',
 		'settings_proxy' => 'Налаштування проксі',
 		'auto_refresh' => 'Автооновлення',
-		'auto_refresh_description' =>
-			'Сторінка автооновлення серверів.<br>'.
-			'<span class="small">'.
-			'Час у секундах; якщо 0, сторінка не оновлюватиметься.'.
-			'</span>',
+		'auto_refresh_description' => 'Сторінка автооновлення серверів.<br><span class="small">Час у секундах; якщо 0, сторінка не оновлюватиметься.</span>',
 		'seconds' => 'секунд',
 		'test' => 'Тест',
 		'test_email' => 'Електронний лист буде надісланий на адресу, вказану у вашому профілі користувача.',
@@ -345,29 +337,28 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Кількість днів зберігання журналів сповіщень і архівів часу роботи серверів. Введіть 0, щоб вимкнути очищення журналів.',
 		'log_retention_days' => 'днів',
 	),
-	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Сервер \'%LABEL%\' ЛЕЖИТЬ: ip=%IP%, порт=%PORT%. Помилка=%ERROR%',
 		'off_email_subject' => 'ВАЖЛИВО: Сервер \'%LABEL%\' ЛЕЖИТЬ',
-		'off_email_body' => "Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%",
+		'off_email_body' => 'Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%',
 		'off_pushover_title' => 'Сервер \'%LABEL%\' ЛЕЖИТЬ',
-		'off_pushover_message' => "Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%",
-		'off_telegram_message' => "Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%",
+		'off_pushover_message' => 'Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%',
+		'off_telegram_message' => 'Не вдалося під’єднатися до такого сервера:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Помилка: %ERROR%<br>Дата: %DATE%',
 		'on_sms' => 'Сервер \'%LABEL%\' ПРАЦЮЄ: ip=%IP%, порт=%PORT%, він лежав протягом %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'ВАЖЛИВО: Сервер \'%LABEL%\' ПРАЦЮЄ',
-		'on_email_body' => "Сервер '%LABEL%' знову працює, він лежав протягом %LAST_OFFLINE_DURATION%:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%",
+		'on_email_body' => 'Сервер \'%LABEL%\' знову працює, він лежав протягом %LAST_OFFLINE_DURATION%:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
 		'on_pushover_title' => 'Сервер \'%LABEL%\' ПРАЦЮЄ',
 		'on_pushover_message' => 'Сервер \'%LABEL%\' знову працює, він лежав протягом %LAST_OFFLINE_DURATION%:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
 		'on_telegram_message' => 'Сервер \'%LABEL%\' знову працює, він лежав протягом: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
-        'combi_off_email_message' => "<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Помилка: %ERROR%</li><li>Дата: %DATE%</li></ul>",
-        'combi_off_pushover_message' => "<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Помилка: %ERROR%</li><li>Дата: %DATE%</li></ul>",
-        'combi_off_telegram_message' => "- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Помилка: %ERROR%<br>- Дата: %DATE%<br><br>",
-        'combi_on_email_message' => "<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Час простою: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>",
-        'combi_on_pushover_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Час простою: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
-        'combi_on_telegram_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Час простою: %LAST_OFFLINE_DURATION%<br>- Дата: %DATE%<br><br>',
-        'combi_email_subject' => 'ВАЖЛИВО: \'%UP%\' серверів знову ПРАЦЮЮТЬ, \'%DOWN%\' серверів ЛЕЖАТЬ',
+		'combi_off_email_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Помилка: %ERROR%</li><li>Дата: %DATE%</li></ul>',
+		'combi_off_pushover_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Помилка: %ERROR%</li><li>Дата: %DATE%</li></ul>',
+		'combi_off_telegram_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Помилка: %ERROR%<br>- Дата: %DATE%<br><br>',
+		'combi_on_email_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Час простою: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
+		'combi_on_pushover_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Час простою: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
+		'combi_on_telegram_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Час простою: %LAST_OFFLINE_DURATION%<br>- Дата: %DATE%<br><br>',
+		'combi_email_subject' => 'ВАЖЛИВО: \'%UP%\' серверів знову ПРАЦЮЮТЬ, \'%DOWN%\' серверів ЛЕЖАТЬ',
 		'combi_pushover_subject' => '\'%UP%\' серверів знову ПРАЦЮЮТЬ, \'%DOWN%\' серверів ЛЕЖАТЬ',
-        'combi_email_message' => '<b>Такі сервери лягли:</b><br>%DOWN_SERVERS%<br><b>Такі сервери знову працюють:</b><br>%UP_SERVERS%',
+		'combi_email_message' => '<b>Такі сервери лягли:</b><br>%DOWN_SERVERS%<br><b>Такі сервери знову працюють:</b><br>%UP_SERVERS%',
 		'combi_pushover_message' => '<b>Такі сервери лягли:</b><br>%DOWN_SERVERS%<br><b>Такі сервери знову працюють:</b><br>%UP_SERVERS%',
 		'combi_telegram_message' => '<b>Такі сервери лягли:</b><br>%DOWN_SERVERS%<br><b>Такі сервери знову працюють:</b><br>%UP_SERVERS%',
 	),
@@ -398,4 +389,4 @@ $sm_lang = array(
 		'401_unauthorized' => 'Несанкціоновано',
 		'401_unauthorized_description' => 'Ви не маєте дозволу переглядати цю сторінку.',
 	),
-);
+);A few cosmetic updates and added new translation
