@@ -55,7 +55,11 @@ class LoginController extends AbstractController {
 
 			if ($result) {
 				// success login, redirect
-				header('Location: '.psm_build_url($_SERVER['QUERY_STRING']));
+				header('Location: '.
+					psm_build_url(
+						empty($_SERVER["QUERY_STRING"]) ? null : $_SERVER["QUERY_STRING"]
+					)
+				);
 				die();
 			} else {
 				$this->addMessage(psm_get_lang('login', 'error_login_incorrect'), 'error');
