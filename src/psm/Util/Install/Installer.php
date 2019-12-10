@@ -211,7 +211,7 @@ class Installer {
 						  `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `server_id` int(11) unsigned NOT NULL,
 						  `type` enum('status','email','sms','pushover','telegram') NOT NULL,
-						  `message` varchar(255) NOT NULL,
+						  `message` TEXT NOT NULL,
 						  `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
 						  PRIMARY KEY  (`log_id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
@@ -252,8 +252,8 @@ class Installer {
 			              `website_username` varchar(255) DEFAULT NULL,
 						  `website_password` varchar(255) DEFAULT NULL,
 						  `last_error` varchar(255) DEFAULT NULL,
-						  `last_error_output` varchar(255) DEFAULT NULL,
-						  `last_output` varchar(255) DEFAULT NULL,
+						  `last_error_output` TEXT,
+						  `last_output` TEXT,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX.'servers_uptime' => "CREATE TABLE IF NOT EXISTS `".PSM_DB_PREFIX."servers_uptime` (
@@ -567,8 +567,8 @@ class Installer {
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD `redirect_check` ENUM( 'ok','bad' ) NOT NULL DEFAULT 'ok' AFTER `allow_http_status`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` CHANGE `redirect_check` `redirect_check` ENUM('ok','bad') NOT NULL DEFAULT 'bad';";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error` VARCHAR(255) NULL AFTER `website_password`;";
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT NULL AFTER `last_error`;";
-		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT NULL AFTER `last_error_output`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_error_output` TEXT AFTER `last_error`;";
+		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `last_output` TEXT AFTER `last_error_output`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `request_method` varchar(50) NULL AFTER `port`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."servers` ADD COLUMN `post_field` varchar(255) NULL AFTER `pattern_online`;";
 		$queries[] = "ALTER TABLE `".PSM_DB_PREFIX."log` CHANGE `message` `message` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
