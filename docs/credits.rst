@@ -94,6 +94,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Plamen Vasilev - https://github.com/PVasileff
 
+* Catalan
+
+  * caos30 - https://github.com/caos30
+
 * Chinese
 
   * manhere - https://github.com/manhere
@@ -168,11 +172,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Turkish
 
   * Haydar Kulekci - https://github.com/hkulekci
-  
-* Catalan
- 
-  * caos30 - https://github.com/caos30
 
+* Ukrainian
+
+  * Oleksa Vyshnivsky - https://github.com/oleksavyshnivsky
 
 Vendors
 +++++++
