@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -40,134 +41,142 @@
 namespace psm\Util\Server\Archiver;
 use psm\Service\Database;
 
-class UptimeArchiver implements ArchiverInterface {
+class UptimeArchiver implements ArchiverInterface
+{
 
-	/**
-	 * Database service
-	 * @var \psm\Service\Database $db
-	 */
-	protected $db;
+    /**
+     * Database service
+     * @var \psm\Service\Database $db
+     */
+    protected $db;
 
-	function __construct(Database $db) {
-		$this->db = $db;
-	}
+    public function __construct(Database $db)
+    {
+        $this->db = $db;
+    }
 
-	/**
-	 * Archive all server status records older than 1 week.
-	 *
-	 * Archiving means calculating averages per day, and storing 1 single
-	 * history row for each day for each server.
-	 *
-	 * @param int $server_id
-	 */
-	public function archive($server_id = null) {
-		$latest_date = new \DateTime('-1 week 0:0:0');
+    /**
+     * Archive all server status records older than 1 week.
+     *
+     * Archiving means calculating averages per day, and storing 1 single
+     * history row for each day for each server.
+     *
+     * @param int $server_id
+     */
+    public function archive($server_id = null)
+    {
+        $latest_date = new \DateTime('-1 week 0:0:0');
 
-		// Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
-		try {
-			$this->db->pdo()->exec('LOCK TABLES '.PSM_DB_PREFIX.'servers_uptime WRITE, '.PSM_DB_PREFIX.'servers_history WRITE');
-			$locked = true;
-		} catch (\PDOException $e) {
-			// user does not have lock rights, ignore
-			$locked = false;
-		}
+        // Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
+        try {
+            $this->db->pdo()->exec('LOCK TABLES ' . PSM_DB_PREFIX .
+                'servers_uptime WRITE, ' . PSM_DB_PREFIX . 'servers_history WRITE');
+            $locked = true;
+        } catch (\PDOException $e) {
+            // user does not have lock rights, ignore
+            $locked = false;
+        }
 
-		$latest_date_str = $latest_date->format('Y-m-d 00:00:00');
+        $latest_date_str = $latest_date->format('Y-m-d 00:00:00');
 
-		$sql_where_server = $this->createSQLWhereServer($server_id);
+        $sql_where_server = $this->createSQLWhereServer($server_id);
 
-		$records = $this->db->execute(
-			"SELECT `server_id`,`date`,`status`,`latency`
-				FROM `".PSM_DB_PREFIX."servers_uptime`
+        $records = $this->db->execute(
+            "SELECT `server_id`,`date`,`status`,`latency`
+				FROM `" . PSM_DB_PREFIX . "servers_uptime`
 				WHERE {$sql_where_server} `date` < :latest_date",
-			array('latest_date'	=> $latest_date_str));
+            array('latest_date' => $latest_date_str)
+        );
 
-		if (!empty($records)) {
-			// first group all records by day and server_id
-			$data_by_day = array();
-			foreach ($records as $record) {
-				$server_id = (int) $record['server_id'];
-				$day = date('Y-m-d', strtotime($record['date']));
-				if (!isset($data_by_day[$day][$server_id])) {
-					$data_by_day[$day][$server_id] = array();
-				}
-				$data_by_day[$day][$server_id][] = $record;
-			}
+        if (!empty($records)) {
+            // first group all records by day and server_id
+            $data_by_day = array();
+            foreach ($records as $record) {
+                $server_id = (int) $record['server_id'];
+                $day = date('Y-m-d', strtotime($record['date']));
+                if (!isset($data_by_day[$day][$server_id])) {
+                    $data_by_day[$day][$server_id] = array();
+                }
+                $data_by_day[$day][$server_id][] = $record;
+            }
 
-			// now get history data day by day
-			$histories = array();
-			foreach ($data_by_day as $day => $day_records) {
-				foreach ($day_records as $server_id => $server_day_records) {
-					$histories[] = $this->getHistoryForDay($day, $server_id, $server_day_records);
-				}
-			}
+            // now get history data day by day
+            $histories = array();
+            foreach ($data_by_day as $day => $day_records) {
+                foreach ($day_records as $server_id => $server_day_records) {
+                    $histories[] = $this->getHistoryForDay($day, $server_id, $server_day_records);
+                }
+            }
 
-			// Save all
-			$this->db->insertMultiple(PSM_DB_PREFIX.'servers_history', $histories);
+            // Save all
+            $this->db->insertMultiple(PSM_DB_PREFIX . 'servers_history', $histories);
 
-			// now remove all records from the uptime table
-			$this->db->execute(
-				"DELETE FROM `".PSM_DB_PREFIX."servers_uptime` WHERE {$sql_where_server} `date` < :latest_date",
-				array('latest_date' => $latest_date_str),
-				false
-			);
-		}
+            // now remove all records from the uptime table
+            $this->db->execute(
+                "DELETE FROM `" . PSM_DB_PREFIX . "servers_uptime` WHERE {$sql_where_server} `date` < :latest_date",
+                array('latest_date' => $latest_date_str),
+                false
+            );
+        }
 
-		if ($locked) {
-			$this->db->exec('UNLOCK TABLES');
-		}
+        if ($locked) {
+            $this->db->exec('UNLOCK TABLES');
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public function cleanup(\DateTime $retention_date, $server_id = null) {
-		$sql_where_server = $this->createSQLWhereServer($server_id);
-		$this->db->execute(
-			"DELETE FROM `".PSM_DB_PREFIX."servers_history` WHERE {$sql_where_server} `date` < :latest_date",
-			array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
-			false
-		);
-		return true;
-	}
+    public function cleanup(\DateTime $retention_date, $server_id = null)
+    {
+        $sql_where_server = $this->createSQLWhereServer($server_id);
+        $this->db->execute(
+            "DELETE FROM `" . PSM_DB_PREFIX . "servers_history` WHERE {$sql_where_server} `date` < :latest_date",
+            array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
+            false
+        );
+        return true;
+    }
 
-	/**
-	 * Build a history array for a day records
-	 * @param string $day
-	 * @param int $server_id
-	 * @param array $day_records
-	 * @return array
-	 */
-	protected function getHistoryForDay($day, $server_id, $day_records) {
-		$latencies = array();
-		$checks_failed = 0;
+    /**
+     * Build a history array for a day records
+     * @param string $day
+     * @param int $server_id
+     * @param array $day_records
+     * @return array
+     */
+    protected function getHistoryForDay($day, $server_id, $day_records)
+    {
+        $latencies = array();
+        $checks_failed = 0;
 
-		foreach ($day_records as $day_record) {
-			$latencies[] = $day_record['latency'];
+        foreach ($day_records as $day_record) {
+            $latencies[] = $day_record['latency'];
 
-			if ($day_record['status'] == 0) {
-				$checks_failed++;
-			}
-		}
-		sort($latencies, SORT_NUMERIC);
+            if ($day_record['status'] == 0) {
+                $checks_failed++;
+            }
+        }
+        sort($latencies, SORT_NUMERIC);
 
-		$history = array(
-			'date' => $day,
-			'server_id' => $server_id,
-			'latency_min' => min($latencies),
-			'latency_avg' => array_sum($latencies) / count($latencies),
-			'latency_max' => max($latencies),
-			'checks_total' => count($day_records),
-			'checks_failed' => $checks_failed,
-		);
-		return $history;
-	}
+        $history = array(
+            'date' => $day,
+            'server_id' => $server_id,
+            'latency_min' => min($latencies),
+            'latency_avg' => array_sum($latencies) / count($latencies),
+            'latency_max' => max($latencies),
+            'checks_total' => count($day_records),
+            'checks_failed' => $checks_failed,
+        );
+        return $history;
+    }
 
-	protected function createSQLWhereServer($server_id) {
-		$sql_where_server = ($server_id !== null)
-				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
-				? ' `server_id` = '.intval($server_id).' AND '
-				: '';
+    protected function createSQLWhereServer($server_id)
+    {
+        $sql_where_server = ($server_id !== null)
+                // this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
+                ? ' `server_id` = ' . intval($server_id) . ' AND '
+                : '';
 
-		return $sql_where_server;
-	}
+        return $sql_where_server;
+    }
 }

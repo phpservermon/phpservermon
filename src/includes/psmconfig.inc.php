@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -119,13 +120,13 @@ define('PSM_TELEGRAM_GET_ID_URL', 'https://telegram.me/cid_bot');
 //define('PSM_BASE_URL', null);
 
 if (!defined('PSM_MODULE_DEFAULT')) {
-	/**
-	 * Default theme
-	 */
-	define('PSM_THEME', 'default');
+    /**
+     * Default theme
+     */
+    define('PSM_THEME', 'default');
 
-	/**
-	 * Default module (if none given or invalid one)
-	 */
-	define('PSM_MODULE_DEFAULT', 'server_status');
+    /**
+     * Default module (if none given or invalid one)
+     */
+    define('PSM_MODULE_DEFAULT', 'server_status');
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -28,21 +29,21 @@
 
 namespace psm\Module\User;
 
-final class UserEvents {
+final class UserEvents
+{
 
-	/**
-	 * @var string
-	 */
-	const USER_ADD = 'user.add';
+    /**
+     * @var string
+     */
+    public const USER_ADD = 'user.add';
 
-	/**
-	 * @var string
-	 */
-	const USER_EDIT = 'user.edit';
+    /**
+     * @var string
+     */
+    public const USER_EDIT = 'user.edit';
 
-	/**
-	 * @var string
-	 */
-	const USER_DELETE = 'user.delete';
-
+    /**
+     * @var string
+     */
+    public const USER_DELETE = 'user.delete';
 }

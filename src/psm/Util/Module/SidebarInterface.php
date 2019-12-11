@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,10 +28,10 @@
 
 namespace psm\Util\Module;
 
-interface SidebarInterface {
+interface SidebarInterface
+{
 
-	public function __construct(\Twig_Environment $twig);
+    public function __construct(\Twig_Environment $twig);
 
-	public function createHTML();
-
+    public function createHTML();
 }

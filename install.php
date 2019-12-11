@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -25,8 +26,10 @@
  * @link        http://www.phpservermonitor.org/
  **/
 
-define('PSM_INSTALL', true);
+namespace {
+    define('PSM_INSTALL', true);
 
-require __DIR__.'/src/bootstrap.php';
+    require __DIR__ . '/src/bootstrap.php';
 
-$router->run('install');
+    $router->run('install');
+}

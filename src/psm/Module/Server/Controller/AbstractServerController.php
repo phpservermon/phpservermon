@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -23,41 +24,45 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0.0
+ * @since       phpservermon 3.0.0
  **/
 
 namespace psm\Module\Server\Controller;
+
 use psm\Module\AbstractController;
 use psm\Service\Database;
 
-abstract class AbstractServerController extends AbstractController {
+abstract class AbstractServerController extends AbstractController
+{
 
-	function __construct(Database $db, \Twig_Environment $twig) {
-		parent::__construct($db, $twig);
-	}
+    public function __construct(Database $db, \Twig_Environment $twig)
+    {
+        parent::__construct($db, $twig);
+    }
 
-	/**
-	 * Get all servers for the current user
-	 * @param Countable|array|\PDOStatement $server_id (int) if true only that server will be retrieved.
-	 * @return array
-	 */
-	public function getServers($server_id = null) {
-		$sql_join = '';
-		$sql_where = '';
+    /**
+     * Get all servers for the current user
+     * @param Countable|array|\PDOStatement $server_id (int) if true only that server will be retrieved.
+     * @return array
+     */
+    public function getServers($server_id = null)
+    {
+        $sql_join = '';
+        $sql_where = '';
 
-		if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
-			// restrict by user_id
-			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
+        if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+            // restrict by user_id
+            $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
 						`us`.`user_id`={$this->getUser()->getUserId()}
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
-		}
-		if ($server_id !== null) {
-			$server_id = intval($server_id);
-			$sql_where = "WHERE `s`.`server_id`={$server_id} ";
-		}
+        }
+        if ($server_id !== null) {
+            $server_id = intval($server_id);
+            $sql_where = "WHERE `s`.`server_id`={$server_id} ";
+        }
 
-		$sql = "SELECT
+        $sql = "SELECT
 					`s`.`server_id`,
 					`s`.`ip`,
 					`s`.`port`,
@@ -91,55 +96,56 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`last_error`,
 					`s`.`last_error_output`,
 					`s`.`last_output`
-				FROM `".PSM_DB_PREFIX."servers` AS `s`
+				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				{$sql_where}
 				ORDER BY `active` ASC, `status` DESC, `label` ASC";
-		$servers = $this->db->query($sql);
+        $servers = $this->db->query($sql);
 
-		if ($server_id !== null && count($servers) == 1) {
-			$servers = $servers[0];
-		}
+        if ($server_id !== null && count($servers) == 1) {
+            $servers = $servers[0];
+        }
 
-		return $servers;
-	}
+        return $servers;
+    }
 
-	/**
-	 * Format server data for display
-	 * @param array $server
-	 * @return array
-	 */
-	protected function formatServer($server) {
-		$server['rtime'] = round((float) $server['rtime'], 4);
-		$server['last_online'] = psm_timespan($server['last_online']);
-		$server['last_offline'] = psm_timespan($server['last_offline']);
-		if ($server['last_offline'] != psm_get_lang('system', 'never')) {
-			$server['last_offline_duration'] = is_null($server['last_offline_duration']) ?
-                null : "(".$server['last_offline_duration'].")";
-		}
-		$server['last_check'] = psm_timespan($server['last_check']);
+    /**
+     * Format server data for display
+     * @param array $server
+     * @return array
+     */
+    protected function formatServer($server)
+    {
+        $server['rtime'] = round((float) $server['rtime'], 4);
+        $server['last_online'] = psm_timespan($server['last_online']);
+        $server['last_offline'] = psm_timespan($server['last_offline']);
+        if ($server['last_offline'] != psm_get_lang('system', 'never')) {
+            $server['last_offline_duration'] = is_null($server['last_offline_duration']) ?
+                null : "(" . $server['last_offline_duration'] . ")";
+        }
+        $server['last_check'] = psm_timespan($server['last_check']);
 
-		if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
-			$server['status'] = 'warning';
-		}
+        if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+            $server['status'] = 'warning';
+        }
 
-		$server['error'] = htmlentities($server['error']);
-		$server['type'] = psm_get_lang('servers', 'type_'.$server['type']);
-		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+        $server['error'] = htmlentities($server['error']);
+        $server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+        $server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
-		$server['last_error'] = htmlentities($server['last_error']);
-		$server['last_error_output'] = htmlentities($server['last_error_output']);
-		$server['last_output'] = htmlentities($server['last_output']);
+        $server['last_error'] = htmlentities($server['last_error']);
+        $server['last_error_output'] = htmlentities($server['last_error_output']);
+        $server['last_output'] = htmlentities($server['last_output']);
 
-		$url_actions = array('delete', 'edit', 'view');
-		foreach ($url_actions as $action) {
-			$server['url_'.$action] = psm_build_url(array(
-				'mod' => 'server',
-				'action' => $action,
-				'id' => $server['server_id'],
-			));
-		}
+        $url_actions = array('delete', 'edit', 'view');
+        foreach ($url_actions as $action) {
+            $server['url_' . $action] = psm_build_url(array(
+                'mod' => 'server',
+                'action' => $action,
+                'id' => $server['server_id'],
+            ));
+        }
 
-		return $server;
-	}
+        return $server;
+    }
 }

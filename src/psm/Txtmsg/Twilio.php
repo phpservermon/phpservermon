@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,54 +28,66 @@
 
 namespace psm\Txtmsg;
 
-class Twilio extends Core {
+class Twilio extends Core
+{
 
-	/**
-	 * Send sms using the Twilio API
-	 * https://www.twilio.com/docs/sms/api#send-an-sms-with-the-sms-api
-	 * @var string $message
-	 * @var array $this->recipients
-	 * @var string $recipient
-	 * @var string $this->username
-	 * @var string $this->password
-	 * @var string $this->originator
-	 * @var mixed $result
-	 * @var array $headers
-	 *
-	 * @var int $success
-	 * @var string $error
-	 *
-	 * @return bool|string
-	 */
-	
-	public function sendSMS($message) {
-		$success = 1;
-		$error = '';
+    /**
+     * Send sms using the Twilio API
+     * https://www.twilio.com/docs/sms/api#send-an-sms-with-the-sms-api
+     * @var string $message
+     * @var array $this->recipients
+     * @var string $recipient
+     * @var string $this->username
+     * @var string $this->password
+     * @var string $this->originator
+     * @var mixed $result
+     * @var array $headers
+     *
+     * @var int $success
+     * @var string $error
+     *
+     * @return bool|string
+     */
+    
+    public function sendSMS($message)
+    {
+        $success = 1;
+        $error = '';
 
-		foreach ($this->recipients as $recipient) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, "https://api.twilio.com/2010-04-01/Accounts/".$this->username."/Messages.json");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "From=".urlencode($this->originator)."&Body=".urlencode($message)."&To=".urlencode($recipient));
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_USERPWD, $this->username.":".$this->password);
+        foreach ($this->recipients as $recipient) {
+            $ch = curl_init();
+            curl_setopt(
+                $ch,
+                CURLOPT_URL,
+                "https://api.twilio.com/2010-04-01/Accounts/" . $this->username . "/Messages.json"
+            );
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                "From=" . urlencode($this->originator) .
+                "&Body=" . urlencode($message) .
+                "&To=" . urlencode($recipient)
+            );
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->password);
 
-			$headers = array();
-			$headers[] = "Content-Type: application/x-www-form-urlencoded";
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $headers = array();
+            $headers[] = "Content-Type: application/x-www-form-urlencoded";
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-			$result = curl_exec($ch);
-			curl_close($ch);
+            $result = curl_exec($ch);
+            curl_close($ch);
 
-		 	// When the result string starts with {"code": there is a problem
-			if (strpos($result, "{\"code\":") === 0) {
-				$error = $result;
-				$success = 0;
-			}
-		}
-		if ($success) {
-			return 1;
-		}
-		return $error;
-	}
+            // When the result string starts with {"code": there is a problem
+            if (strpos($result, "{\"code\":") === 0) {
+                $error = $result;
+                $success = 0;
+            }
+        }
+        if ($success) {
+            return 1;
+        }
+        return $error;
+    }
 }
