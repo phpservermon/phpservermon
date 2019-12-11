@@ -136,7 +136,7 @@ $sm_lang = array(
 		'error_user_no_match' => 'Користувача у базі даних не знайдено.',
 		'error_user_password_invalid' => 'Введено неправильний пароль.',
 		'error_user_password_no_match' => 'Введені паролі не збігаються.',
-		'error_user_admin_cant_be_deleted' => '### MISSING ###',
+		'error_user_admin_cant_be_deleted' => 'Останнього адміністратора видалити не можна.',
 	),
 	'log' => array(
 		'title' => 'Записи у журналі',
@@ -187,7 +187,7 @@ $sm_lang = array(
 		'redirect_check' => 'Переспрямування на інший домен —',
 		'redirect_check_description' => 'Переспрямування на інший домен зазвичай є поганим знаком.',
 		'allow_http_status' => 'Дозволити код статусу HTTP',
-		'allow_http_status_description' => 'Позначити вебсайт як онлайн. Коди статусів HTTP нижче ніж 400 позначаються як онлайн за замовчуванням. Роздільняти коди символом |.',
+		'allow_http_status_description' => 'Позначити вебсайт як онлайн. Коди статусів HTTP нижче ніж 400 позначаються як онлайн за замовчуванням. Розділяти коди символом |.',
 		'header_name' => 'Ім’я у заголовку',
 		'header_value' => 'Значення у заголовку',
 		'header_name_description' => 'З урахуванням регістру.',
@@ -279,7 +279,7 @@ $sm_lang = array(
 		'pushover_api_token' => 'Токен API Pushover-додатку',
 		'pushover_api_token_description' => 'Перед використанням Pushover ви маєте <a href="%1$s" target="_blank" rel="noopener">зареєструвати Додаток</a> на їхньому вебсайті та ввести токен API Додатку тут.',
 		'telegram_status' => 'Дозволити надсилання Telegram-повідомлень',
-		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> — чат-застосунок, що дозволяє легко отримувати сповіщення у реальному часі. Детальніша інфромація та інструкція зі встановлення доступні у <a href="http://docs.phpservermonitor.org/">документації</a>.',
+		'telegram_description' => '<a href="https://telegram.org/">Telegram</a> — чат-застосунок, що дозволяє легко отримувати сповіщення у реальному часі. Детальніша інформація та інструкція зі встановлення доступні у <a href="http://docs.phpservermonitor.org/">документації</a>.',
 		'telegram_api_token' => 'Токен Telegram API',
 		'telegram_api_token_description' => 'Перед використанням Telegram ви маєте отримати токен API. За довідкою зверніться до <a href="http://docs.phpservermonitor.org/">документації</a>.',
 		'alert_type' => 'Виберіть, коли б вам хотілося отримувати сповіщення.',
@@ -389,4 +389,4 @@ $sm_lang = array(
 		'401_unauthorized' => 'Несанкціоновано',
 		'401_unauthorized_description' => 'Ви не маєте дозволу переглядати цю сторінку.',
 	),
-);A few cosmetic updates and added new translation
+);
