@@ -28,7 +28,12 @@
 
 $sm_lang = array(
     'name' => 'Dansk - Danish',
-    'locale' => array('da_DK.UTF-8', 'da_DK', 'danish', 'danish-dk'),
+    'locale' => array(
+        '0' => 'da_DK.UTF-8',
+        '1' => 'da_DK',
+        '2' => 'danish',
+        '3' => 'danish-dk',
+    ),
     'system' => array(
         'title' => 'Server Monitor',
         'install' => 'Installér',
@@ -42,12 +47,13 @@ $sm_lang = array(
         'no' => 'Nej',
         'insert' => 'Indsæt',
         'add_new' => 'Tilføj ny',
-        'update_available' => 'En ny version ({version}) er tilgængelig på <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
+        'update_available' => 'En ny version ({version}) er tilgængelig på <a
+ href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank"
+ rel="noopener">http://www.phpservermonitor.org</a>.',
         'back_to_top' => 'Til toppen',
         'go_back' => 'Tilbage',
         'ok' => 'OK',
         'cancel' => 'Annullér',
-        // date/time format according the strftime php function format parameter http://php.net/manual/function.strftime.php
         'short_day_format' => '%B %e',
         'long_day_format' => '%B %e, %Y',
         'yesterday_format' => 'Igår %k:%M',
@@ -91,14 +97,18 @@ $sm_lang = array(
         'level' => 'Niveau',
         'level_10' => 'Administrator',
         'level_20' => 'Bruger',
-        'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og indstillinger.<br><b>Brugere</b> kan kun se og opdatere servere som er de har adgang til.',
+        'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og
+ indstillinger.<br><b>Brugere</b> kan kun se og opdatere servere som er de har adgang
+ til.',
         'mobile' => 'Mobil',
         'email' => 'E-mail',
         'pushover' => 'Pushover',
-        'pushover_description' => 'Pushover er en service der gør det let at modtage real-time notifikationer. Se <a href="https://pushover.net/">deres website</a> for mere information.',
+        'pushover_description' => 'Pushover er en service der gør det let at modtage real-time notifikationer. Se <a
+ href="https://pushover.net/">deres website</a> for mere information.',
         'pushover_key' => 'Pushover nøgle',
         'pushover_device' => 'Pushover enhed',
-        'pushover_device_description' => 'Navnet på enheden som beskeden skal sendes til. Lad denne være tom hvis alle skal modtage beskeden.',
+        'pushover_device_description' => 'Navnet på enheden som beskeden skal sendes til. Lad denne være tom hvis
+ alle skal modtage beskeden.',
         'delete_title' => 'Slet bruger',
         'delete_message' => 'Er du sikker på du vil slette bruger \'%1\'?',
         'deleted' => 'Bruger slettet.',
@@ -107,7 +117,8 @@ $sm_lang = array(
         'profile' => 'Profil',
         'profile_updated' => 'Din profil er opdateret.',
         'error_user_name_bad_length' => 'Brugernavn skal være mellem 2 til 64 tegn.',
-        'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9), prikker (.) og (_).',
+        'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9), prikker (.)
+ og (_).',
         'error_user_name_exists' => 'Det valgte brugernavn findes allerede.',
         'error_user_email_bad_length' => 'E-mail addresser skal være mellem 5 til 255 tegn.',
         'error_user_email_invalid' => 'Den valgte e-mail er ugyldig.',
@@ -140,7 +151,8 @@ $sm_lang = array(
         'type_website' => 'Hjemmeside',
         'type_service' => 'Tjeneste',
         'pattern' => 'Søgestreng/mønster',
-        'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret som værende offline. Regulære udtryk er tilladt.',
+        'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret som
+ værende offline. Regulære udtryk er tilladt.',
         'last_check' => 'Sidst kontrolleret',
         'last_online' => 'Sidst online',
         'last_offline' => 'Sidst offline',
@@ -171,7 +183,6 @@ $sm_lang = array(
         'warning_threshold_description' => 'Antallet af fejl, før status skifter til offline.',
         'chart_last_week' => 'Sidste uge',
         'chart_history' => 'Historie',
-        // Charts date format according jqPlot date format  http://www.jqplot.com/docs/files/plugins/jqplot-dateAxisRenderer-js.html
         'chart_day_format' => '%d-%m-%Y',
         'chart_long_date_format' => '%d-%m-%Y %H:%M:%S',
         'chart_short_date_format' => '%d/%m %H:%M',
@@ -208,24 +219,27 @@ $sm_lang = array(
         'sms_gateway_password' => 'Gateway adgangskode',
         'sms_from' => 'Afsenderens navn.',
         'pushover_status' => 'Tillad at sende Pushover beskeder',
-        'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a href="https://pushover.net/">deres website</a> for yderligere information.',
+        'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a
+ href="https://pushover.net/">deres website</a> for yderligere information.',
         'pushover_clone_app' => 'Klik her for at oprette din Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
-        'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank" rel="noopener">registrere en app</a> på deres website og indtaste en App API Token her.',
+        'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank"
+ rel="noopener">registrere en app</a> på deres website og indtaste en App
+ API Token her.',
         'alert_type' => 'Vælg hvornår du vil modtage beskeden',
-        'alert_type_description' => '<b>Status ændring:</b> ' .
-            'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br>' .
-            '<br /><b>Offline:</b> ' .
-            'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis ' .
-            'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, ' .
-            ' vil du kun modtage en mail kl 01.<br>' .
-            '<br><b>Altid:</b> ' .
-            'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
+        'alert_type_description' => '<b>Status ændring:</b> Du vil modtage en notifkation når en server har en
+ ændring i status. Fra online -> offline eller offline -> online.<br><br
+ /><b>Offline:</b> Du vil modtage en meddelelse, når en server går offline for
+ første gang. Eksempelvis hvis dit cronjob kører hvert kvarter, og din server
+ går ned kl 01 og kommer først op kl 06,  vil du kun modtage en mail kl
+ 01.<br><br><b>Altid:</b> Du vil modtage en besked, hver gang scriptet kører og
+ et websted er nede, selvom site har været offline i flere timer.',
         'alert_type_status' => 'Status ændret',
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Altid',
         'log_status' => 'Log status',
-        'log_status_description' => 'Hvis log status er sat til TRUE, vil monitoren logge hændelsen hver gang status ændre sig.',
+        'log_status_description' => 'Hvis log status er sat til TRUE, vil monitoren logge hændelsen hver gang status
+ ændre sig.',
         'log_email' => 'Log e-mails sendt af systemet',
         'log_sms' => 'Log SMS sendt af systemet',
         'log_pushover' => 'Log pushover messages sent by the script',
@@ -239,16 +253,14 @@ $sm_lang = array(
         'settings_notification' => 'Meddelelse indstillinger',
         'settings_log' => 'Log indstillinger',
         'auto_refresh' => 'Genopfrisk automatisk',
-        'auto_refresh_description' =>
-            'Genopfrisk automatisk serversider.<br>' .
-            '<span class="small">' .
-            'Tid i sekunder. Hvis 0 vil siden ikke genopfriske automatisk' .
-            '</span>',
+        'auto_refresh_description' => 'Genopfrisk automatisk serversider.<br><span class="small">Tid i sekunder. Hvis
+ 0 vil siden ikke genopfriske automatisk</span>',
         'seconds' => 'sekunder',
         'test' => 'Test',
         'test_email' => 'En e-mail vil blive sendt til den adresse, der er angivet i din brugerprofil.',
         'test_sms' => 'En SMS vil blive sendt til det nummer, der er angivet i din brugerprofil.',
-        'test_pushover' => 'En Pushover notifikation vil blive sendt til brugerens enhed, specificeret i brugerprofilen.',
+        'test_pushover' => 'En Pushover notifikation vil blive sendt til brugerens enhed, specificeret i
+ brugerprofilen.',
         'send' => 'Send',
         'test_subject' => 'Test',
         'test_message' => 'Test besked',
@@ -259,24 +271,30 @@ $sm_lang = array(
         'sms_error_nomobile' => 'Ikke muligt at sende SMS: Intet gyldigt telefonnummer blev fundet i din profil.',
         'pushover_sent' => 'Pushover notifikation blev sendt',
         'pushover_error' => 'En fejl opstod under afsendelse af Pushover notifikation: %s',
-        'pushover_error_noapp' => 'Ikke muligt at sende test notifikation: Intet Pushover App API token fundet i den globale konfiguration.',
+        'pushover_error_noapp' => 'Ikke muligt at sende test notifikation: Intet Pushover App API token fundet i den
+ globale konfiguration.',
         'pushover_error_nokey' => 'Ikke muligt at sende test notifikation: Ingen Pushover key fundet i din profil.',
         'log_retention_period' => 'Logs gemmes',
-        'log_retention_period_description' => 'Antal dage over hvor længe logs med notifikationer og arkiverede serveres oppetid skal gemmes. Indtast 0 for at deaktivere logoprydning.',
+        'log_retention_period_description' => 'Antal dage over hvor længe logs med notifikationer og arkiverede
+ serveres oppetid skal gemmes. Indtast 0 for at deaktivere logoprydning.',
         'log_retention_days' => 'dage',
     ),
-    // for newlines in the email messages use <br>
     'notifications' => array(
         'off_sms' => 'Serveren \'%LABEL%\' er NEDE: ip=%IP%, port=%PORT%. Fejl=%ERROR%',
         'off_email_subject' => 'VIGTIGT: Server \'%LABEL%\' er NEDE',
-        'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
+        'off_email_body' => 'Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server:
+ %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%',
         'off_pushover_title' => 'Serveren \'%LABEL%\' er NEDE',
-        'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
+        'off_pushover_message' => 'Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server:
+ %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%',
         'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'VIGTIGT: Serveren \'%LABEL%\' KØRER',
-        'on_email_body' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
+        'on_email_body' => 'Serveren \'%LABEL%\' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server:
+ %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%',
         'on_pushover_title' => 'Serveren \'%LABEL%\' KØRER',
-        'on_pushover_message' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
+        'on_pushover_message' => 'Serveren \'%LABEL%\' kører igen, it was down for
+ %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato:
+ %DATE%',
     ),
     'login' => array(
         'welcome_usermenu' => 'Velkommen, %user_name%',
@@ -293,12 +311,14 @@ $sm_lang = array(
         'password_forgot' => 'Glemt adgangskode?',
         'password_reset' => 'Nulstil adgangskode',
         'password_reset_email_subject' => 'Nulstil din adgangskode for PHP Server Monitor',
-        'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at linkets gyldighed udløber efter en time.<br><br>%link%',
+        'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at
+ linkets gyldighed udløber efter en time.<br><br>%link%',
         'error_user_incorrect' => 'Det angivet brugernavn kunne ikke findes.',
         'error_login_incorrect' => 'Oplysningerne stemmer ikke overens.',
         'error_login_passwords_nomatch' => 'De angivne adgangskoder er ikke ens.',
         'error_reset_invalid_link' => 'Følgende link er ugyldigt.',
-        'success_password_forgot' => 'En e-mail er blevet sendt til dig med oplysninger om, hvordan du nulstiller din adgangskode.',
+        'success_password_forgot' => 'En e-mail er blevet sendt til dig med oplysninger om, hvordan du nulstiller din
+ adgangskode.',
         'success_password_reset' => 'Din adgangskode er blevet nulstillet. Log venligst ind igen.',
     ),
     'error' => array(
