@@ -35,11 +35,6 @@ use psm\Service\Database;
 abstract class AbstractServerController extends AbstractController
 {
 
-    public function __construct(Database $db, \Twig_Environment $twig)
-    {
-        parent::__construct($db, $twig);
-    }
-
     /**
      * Get all servers for the current user
      * @param Countable|array|\PDOStatement $server_id (int) if true only that server will be retrieved.
