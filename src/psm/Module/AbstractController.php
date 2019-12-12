@@ -124,7 +124,7 @@ abstract class AbstractController implements ControllerInterface
      * @var int $user_level_required
      * @see setMinUserLevelRequired()
      */
-    protected $user_level_required = PSM_USER_USER;
+    protected $user_level_required = (PSM_PUBLIC && PSM_PUBLIC_PAGE) ? PSM_USER_ANONYMOUS : PSM_USER_USER;
 
     /**
      * Required user level for certain actions

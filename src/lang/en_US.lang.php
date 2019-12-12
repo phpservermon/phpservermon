@@ -106,6 +106,7 @@ $sm_lang = array(
         'level' => 'Level',
         'level_10' => 'Administrator',
         'level_20' => 'User',
+        'level_30' => 'Anonymous',
         'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the
  global configuration.<br><b>Users</b> can only view and run the updater for the
  servers that have been assigned to them.',
