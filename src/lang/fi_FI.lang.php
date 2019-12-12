@@ -268,24 +268,6 @@ $sm_lang = array(
  tapahtumia. Aseta arvoksi 0 jos haluat pitää ne loputtomasti.',
         'log_retention_days' => 'päivää',
     ),
-    'notifications' => array(
-        'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
-        'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
-        'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
- %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
-        'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
-        'off_pushover_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
- %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
-        'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
-        'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-        'on_email_body' => 'Server \'%LABEL%\' is running again, it was down for
- %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
- %DATE%',
-        'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
-        'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for
- %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
- %DATE%',
-    ),
     'login' => array(
         'welcome_usermenu' => 'Tervetuloa, %user_name%',
         'title_sign_in' => 'Ole hyvä ja kirjaudu sisään',
