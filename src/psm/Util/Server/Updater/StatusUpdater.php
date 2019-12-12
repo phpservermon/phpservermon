@@ -144,7 +144,6 @@ class StatusUpdater
         } else {
             // server is offline, increase the error counter and set last offline
             $save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
-            $save['last_offline'] = date('Y-m-d H:i:s');
             $save['last_error_output'] = empty($this->header) ?
                 "Could not get headers. probably HTTP 50x error." : $this->header;
 
