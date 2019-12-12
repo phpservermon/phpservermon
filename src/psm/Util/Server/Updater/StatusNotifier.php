@@ -275,7 +275,6 @@ class StatusNotifier
         
         $this->combiNotification['notifications'][$method][$status][$this->server_id] =
             psm_parse_msg($this->status_new, $method . '_message', $this->server, true);
-        return;
     }
 
     /**
@@ -324,7 +323,6 @@ class StatusNotifier
             }
         }
         unset($notifications);
-        return;
     }
 
     /**
@@ -403,7 +401,6 @@ class StatusNotifier
             $mail->Send();
             $mail->ClearAddresses();
         }
-        return;
     }
 
     /**

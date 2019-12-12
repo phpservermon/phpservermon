@@ -165,7 +165,9 @@ abstract class AbstractController implements ControllerInterface
         }
         $this->xhr = (bool) psm_GET('xhr', psm_POST('xhr', false));
 
-        if (!in_array($action, $this->actions) || !($result = $this->runAction($action))) {
+        $result = $this->runAction($action);
+
+        if (!in_array($action, $this->actions) || !$result) {
             $result = $this->runAction($this->action_default);
         }
 
