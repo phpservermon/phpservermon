@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,6 +28,7 @@
  **/
 
 namespace psm\Util\Server;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,53 +36,56 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Run an update on all servers.
  */
-class UpdateManager implements ContainerAwareInterface {
+class UpdateManager implements ContainerAwareInterface
+{
+    use ContainerAwareTrait;
 
-	use ContainerAwareTrait;
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
-	function __construct(ContainerInterface $container) {
-		$this->container = $container;
-	}
+    /**
+     * Go :-)
+     *
+     * @param boolean $skip_perms if TRUE, no user permissions will be taken in account and all servers will be updated
+     */
+    public function run($skip_perms = false)
+    {
+        // check if we need to restrict the servers to a certain user
+        $sql_join = '';
 
-	/**
-	 * Go :-)
-	 *
-	 * @param boolean $skip_perms if TRUE, no user permissions will be taken in account and all servers will be updated
-	 */
-	public function run($skip_perms = false) {
-		// check if we need to restrict the servers to a certain user
-		$sql_join = '';
-
-		if (!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
-			// restrict by user_id
-			$sql_join = "JOIN `".PSM_DB_PREFIX."users_servers` AS `us` ON (
+        if (!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
+            // restrict by user_id
+            $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
 						`us`.`user_id`={$this->container->get('user')->getUserId()}
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
-		}
+        }
 
-		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,`s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
-				FROM `".PSM_DB_PREFIX."servers` AS `s`
+        $sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,
+            `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
+				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				WHERE `active`='yes' ";
 
-		$servers = $this->container->get('db')->query($sql);
+        $servers = $this->container->get('db')->query($sql);
 
-		$updater = new Updater\StatusUpdater($this->container->get('db'));
-		$notifier = new Updater\StatusNotifier($this->container->get('db'));
+        $updater = new Updater\StatusUpdater($this->container->get('db'));
+        $notifier = new Updater\StatusNotifier($this->container->get('db'));
 
-		foreach ($servers as $server) {
-			$status_old = ($server['status'] == 'on') ? true : false;
-			$status_new = $updater->update($server['server_id']);
-			// notify the nerds if applicable
-			$notifier->notify($server['server_id'], $status_old, $status_new);
-			// clean-up time!! archive all records
-			$archive = new ArchiveManager($this->container->get('db'));
-			$archive->archive($server['server_id']);
-			$archive->cleanup($server['server_id']);
-		}
-		if($notifier->combine){
-			$notifier->notifyCombined();
-		}
-	}
+        foreach ($servers as $server) {
+            $status_old = ($server['status'] == 'on') ? true : false;
+            $status_new = $updater->update($server['server_id']);
+            // notify the nerds if applicable
+            $notifier->notify($server['server_id'], $status_old, $status_new);
+            // clean-up time!! archive all records
+            $archive = new ArchiveManager($this->container->get('db'));
+            $archive->archive($server['server_id']);
+            $archive->cleanup($server['server_id']);
+        }
+        if ($notifier->combine) {
+            $notifier->notifyCombined();
+        }
+    }
 }

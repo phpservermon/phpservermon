@@ -119,14 +119,16 @@ You need to be an administrator for this part.
 1. Go to @botfather (https://t.me/BotFather) and type /start .
 2. Type /newbot and give your bot an unique name.
 3. Save the API token.
+4. Login to PhpServerMonitor dashboard > config > Telegram > put your api token into Telegram API Token's column.
 
 How do I sent Telegram notifications to a person?
 -------------------------------------------------
  
 1. Go to @cid_bot (https://t.me/cid_bot) and start.
 2. Save your chat id.
-3. Press the activation button.
-4. Go to your chat with the bot and press start of type /start.
+3. Login to PhpServerMonitor dashboard then open user profile page, then put your chat id into Telegram chat id's column.
+4. Press save then activate Telegram notifications button.
+5. Go to your chat with the bot and press start of type /start.
 
 How do I sent Telegram notifications to a group?
 ------------------------------------------------  

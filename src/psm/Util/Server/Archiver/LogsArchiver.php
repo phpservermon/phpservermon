@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -32,48 +33,53 @@
 namespace psm\Util\Server\Archiver;
 use psm\Service\Database;
 
-class LogsArchiver implements ArchiverInterface {
+class LogsArchiver implements ArchiverInterface
+{
 
-	/**
-	 * Database service
-	 * @var \psm\Service\Database $db
-	 */
-	protected $db;
+    /**
+     * Database service
+     * @var \psm\Service\Database $db
+     */
+    protected $db;
 
-	function __construct(Database $db) {
-		$this->db = $db;
-	}
+    public function __construct(Database $db)
+    {
+        $this->db = $db;
+    }
 
-	/**
-	 * Currently there is not really a log archive.
-	 *
-	 * It stays in the log table until cleaned up.
-	 * @param int $server_id
-	 */
-	public function archive($server_id = null) {
-		return true;
-	}
+    /**
+     * Currently there is not really a log archive.
+     *
+     * It stays in the log table until cleaned up.
+     * @param int $server_id
+     */
+    public function archive($server_id = null)
+    {
+        return true;
+    }
 
-	public function cleanup(\DateTime $retention_date, $server_id = null) {
-		$sql_where_server = ($server_id !== null)
-				// this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
-				? ' `server_id` = '.intval($server_id).' AND '
-				: '';
+    public function cleanup(\DateTime $retention_date, $server_id = null)
+    {
+        $sql_where_server = ($server_id !== null)
+                // this is obviously not the cleanest way to implement this when using paramter binding.. sorry.
+                ? ' `server_id` = ' . intval($server_id) . ' AND '
+                : '';
 
-		$this->db->execute(
-			"DELETE FROM `".PSM_DB_PREFIX."log` WHERE {$sql_where_server} `datetime` < :latest_date",
-			array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
-			false
-		);
-		return true;
-	}
+        $this->db->execute(
+            "DELETE FROM `" . PSM_DB_PREFIX . "log` WHERE {$sql_where_server} `datetime` < :latest_date",
+            array('latest_date' => $retention_date->format('Y-m-d 00:00:00')),
+            false
+        );
+        return true;
+    }
 
-	/**
-	 * Empty tables log and log_users
-	 */
-	public function cleanupall() {
-		$this->db->delete(PSM_DB_PREFIX."log");
-		$this->db->delete(PSM_DB_PREFIX."log_users");
-		return true;
-	}
+    /**
+     * Empty tables log and log_users
+     */
+    public function cleanupall()
+    {
+        $this->db->delete(PSM_DB_PREFIX . "log");
+        $this->db->delete(PSM_DB_PREFIX . "log_users");
+        return true;
+    }
 }

@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # phpservermonitor updater
 # Developed by petrk94 - https://github.com/petrk94
 # Worked on by fr32k - https://github.com/fr32k

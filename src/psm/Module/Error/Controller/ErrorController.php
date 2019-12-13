@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,30 +28,34 @@
  **/
 
 namespace psm\Module\Error\Controller;
+
 use psm\Module\AbstractController;
 use psm\Service\Database;
 
-class ErrorController extends AbstractController {
+class ErrorController extends AbstractController
+{
 
-	function __construct(Database $db, \Twig_Environment $twig) {
-		parent::__construct($db, $twig);
+    public function __construct(Database $db, \Twig_Environment $twig)
+    {
+        parent::__construct($db, $twig);
 
-		$this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
+        $this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
 
-		$this->setActions(array(
-			'401',
-		), '401');
-	}
+        $this->setActions(array(
+            '401',
+        ), '401');
+    }
 
-	/**
-	 * 401 error page
-	 *
-	 * @return string
-	 */
-	protected function execute401() {
-		return $this->twig->render('module/error/401.tpl.html', array(
-			'label_title' => psm_get_lang('error', '401_unauthorized'),
-			'label_description' => psm_get_lang('error', '401_unauthorized_description'),
-		));
-	}
+    /**
+     * 401 error page
+     *
+     * @return string
+     */
+    protected function execute401()
+    {
+        return $this->twig->render('module/error/401.tpl.html', array(
+            'label_title' => psm_get_lang('error', '401_unauthorized'),
+            'label_description' => psm_get_lang('error', '401_unauthorized_description'),
+        ));
+    }
 }

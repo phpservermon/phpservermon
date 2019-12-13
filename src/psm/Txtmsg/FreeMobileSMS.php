@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,52 +28,53 @@
 
 namespace psm\Txtmsg;
 
-class FreeMobileSMS extends Core {
-	
-	/**
-	 * Send sms using the FreeMobileSMS API
-	 *
-	 * @var string $message
-	 * @var string $this->password
-	 * @var string $this->username
-	 *
-	 * @var resource $curl
-	 * @var string $err
-	 * @var int $success
-	 * @var string $error
-	 * @var string $http_code
-	 *
-	 * @return bool|string
-	 */
-	
-	public function sendSMS($message) {
-		$success = 1;
-		$error = "";
-		
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?".http_build_query(
-				array(
-					"user" => $this->username,
-					"pass" => $this->password,
-					"msg" => urlencode($message),
-				)
-			)
-		);
+class FreeMobileSMS extends Core
+{
+    
+    /**
+     * Send sms using the FreeMobileSMS API
+     *
+     * @var string $message
+     * @var string $this->password
+     * @var string $this->username
+     *
+     * @var resource $curl
+     * @var string $err
+     * @var int $success
+     * @var string $error
+     * @var string $http_code
+     *
+     * @return bool|string
+     */
+    
+    public function sendSMS($message)
+    {
+        $success = 1;
+        $error = "";
+        
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?" . http_build_query(
+            array(
+                    "user" => $this->username,
+                    "pass" => $this->password,
+                    "msg" => urlencode($message),
+                )
+        ));
 
-		$result = curl_exec($curl);
-		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		$err = curl_errno($curl);
-		
-		if ($err != 0 || $httpcode != 200) {
-			$success = 0;
-				$error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err);
-		}
-		curl_close($curl);
-		
-		if ($success) {
-			return 1;
-		}
-		return $error;
-	}
+        $result = curl_exec($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $err = curl_errno($curl);
+        
+        if ($err != 0 || $httpcode != 200) {
+            $success = 0;
+                $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err);
+        }
+        curl_close($curl);
+        
+        if ($success) {
+            return 1;
+        }
+        return $error;
+    }
 }

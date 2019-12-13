@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -28,10 +29,11 @@
 
 namespace psm\Util\Module;
 
-interface ModalInterface {
+interface ModalInterface
+{
 
-	public function __construct(\Twig_Environment $twig);
+    public function __construct(\Twig_Environment $twig);
 
-	public function getModalID();
-	public function createHTML();
+    public function getModalID();
+    public function createHTML();
 }

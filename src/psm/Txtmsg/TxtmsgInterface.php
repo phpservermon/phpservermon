@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,11 +28,11 @@
 
 namespace psm\Txtmsg;
 
-interface TxtmsgInterface {
+interface TxtmsgInterface
+{
 
-	public function setLogin($username, $password);
-	public function setOriginator($originator);
-	public function addRecipients($recipient);
-	public function sendSMS($message);
-
+    public function setLogin($username, $password);
+    public function setOriginator($originator);
+    public function addRecipients($recipient);
+    public function sendSMS($message);
 }
