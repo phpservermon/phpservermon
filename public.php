@@ -31,5 +31,5 @@ namespace {
 
     require __DIR__ . '/src/bootstrap.php';
 
-    $router->run('server');
+    $router->run('server_status');
 }
