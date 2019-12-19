@@ -49,8 +49,6 @@ $sm_lang = array(
         'no' => '否',
         'insert' => '插入',
         'add_new' => '增加',
-        'update_available' => '找到新版本({version}) <a href="http://www.phpservermonitor.org"
- target="_blank">http://www.phpservermonitor.org</a>.',
         'back_to_top' => '回到最上層',
         'go_back' => '返回',
         'ok' => '確定',
@@ -262,16 +260,14 @@ $sm_lang = array(
         'pushover_description' => 'Pushover是線上服務，讓您可以方便的收到即時通知，請參考 <a
  href="https://pushover.net/"> 網站</a> 可以得到更詳細的資訊。</a> ',
         'pushover_clone_app' => '點選這裡可快速建立Pushover App',
-        'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => '在您使用 Pushover 通知之前，需要先到這裡-><a href="%1$s"
- target="_blank">註冊Pushover App帳號</a>
+ target="_blank"  rel="noopener">註冊Pushover App帳號</a>
  接著在這個網頁輸入你的的Pushover App API Token號碼。',
         'telegram_status' => '允許發送 Telegram 訊息',
         'telegram_description' => '<a href="https://telegram.org/">Telegram</a>
  是一種聊天應用程式，它提供很容易使用的即時通知服務。請參考
  <a href="http://docs.phpservermonitor.org/">文件庫</a>
  可以取得更多資訊與安裝說明。',
-        'telegram_api_token' => 'Telegram API Token',
         'telegram_api_token_description' => '使用 Telegram 通知之前，您必需先取得 API Token。請到 <a
  href="http://docs.phpservermonitor.org/">文件庫</a> 取得說明。',
         'alert_type' => '需要提醒的類別',
