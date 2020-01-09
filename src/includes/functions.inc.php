@@ -390,7 +390,7 @@ namespace {
  * @param string|bool $website_password Password website
  * @param string|null $request_method Request method like GET, POST etc.
  * @param string|null $post_field POST data
- * @return string cURL result
+ * @return array cURL result
  */
     function psm_curl_get(
         $href,
@@ -418,6 +418,7 @@ namespace {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_ENCODING, '');
+        curl_setopt($ch, CURLOPT_CERTINFO, 1);
     
         if (!empty($request_method)) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
@@ -455,7 +456,9 @@ namespace {
             PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)');
         }
 
-        $result = curl_exec($ch);
+        $result['exec'] = curl_exec($ch);
+        $result['info'] = curl_getinfo($ch);
+
         curl_close($ch);
     
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
