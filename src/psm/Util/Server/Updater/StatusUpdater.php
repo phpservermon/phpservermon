@@ -165,40 +165,44 @@ class StatusUpdater
     }
 
     /**
-     * Check the current servers ping status - Code from http://stackoverflow.com/a/20467492
+     * Check the current servers ping status
      * @param int $max_runs
      * @param int $run
      * @return boolean
      */
     protected function updatePing($max_runs, $run = 1)
     {
-        // save response time
-        $starttime = microtime(true);
-        // set ping payload
-        $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+        if ($max_runs == null || $max_runs > 1) {
+            $max_runs = 1;
+        }
+        $txt = exec("ping -c " . $max_runs . " " . $this->server['ip']);
+        // Non-greedy match on filler
+        $re1 = '.*?';
+        // Uninteresting: float
+        $re2 = '[+-]?\\d*\\.\\d+(?![-+0-9\\.])';
+        // Non-greedy match on filler
+        $re3 = '.*?';
+        // Float 1
+        $re4 = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
 
-        $socket = socket_create(AF_INET, SOCK_RAW, 1);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
-        socket_connect($socket, $this->server['ip'], null);
+        if ($c = preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
+            $result = $matches[1][0];
+        } else {
+            $result = null;
+        }
 
-        socket_send($socket, $package, strLen($package), 0);
-        if (socket_read($socket, 255)) {
+        if (!is_null($result)) {
             $status = true;
         } else {
             $status = false;
-
-            // set error  message
-            $errorcode = socket_last_error();
-            $this->error = "Couldn't create socket [" . $errorcode . "]: " . socket_strerror($errorcode);
         }
-        $this->rtime = microtime(true) - $starttime;
-        socket_close($socket);
+        //Divide by a thousand to convert to milliseconds
+        $this->rtime =  $result / 1000;
 
         // check if server is available and rerun if asked.
         if (!$status && $run < $max_runs) {
             return $this->updatePing($max_runs, $run + 1);
         }
-
         return $status;
     }
 
