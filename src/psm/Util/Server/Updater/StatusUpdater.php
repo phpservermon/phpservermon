@@ -175,7 +175,9 @@ class StatusUpdater
         if ($max_runs == null || $max_runs > 1) {
             $max_runs = 1;
         }
-        $txt = exec("ping -c " . $max_runs . " " . $this->server['ip']);
+        $result = null;
+        // Execute ping
+        $txt = exec("ping -c " . $max_runs . " " . $this->server['ip'] . " 2>&1", $output);
         // Non-greedy match on filler
         $re1 = '.*?';
         // Uninteresting: float
@@ -184,16 +186,16 @@ class StatusUpdater
         $re3 = '.*?';
         // Float 1
         $re4 = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
-
-        if ($c = preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
+        if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
             $result = $matches[1][0];
-        } else {
-            $result = null;
         }
 
         if (!is_null($result)) {
+            $this->header = $output[0];
             $status = true;
         } else {
+            $this->header = "-";
+            $this->error = $output[0];
             $status = false;
         }
         //Divide by a thousand to convert to milliseconds
