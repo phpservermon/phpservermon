@@ -239,6 +239,7 @@ class Installer
 				`server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`ip` varchar(500) NOT NULL,
 				`port` int(5) NOT NULL,
+                `protocol` enum('tcp','udp') NOT NULL default 'tcp',
 				`request_method` varchar(50) NULL,
 				`label` varchar(255) NOT NULL,
 				`type` enum('ping','service','website') NOT NULL default 'service',
