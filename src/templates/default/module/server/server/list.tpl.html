@@ -8,6 +8,7 @@
 				<th scope="col">{{ label_label }}</th>
 				<th scope="col">{{ label_domain }}</th>
 				<th scope="col">{{ label_port }}</th>
+				<th scope="col">{{ label_protocol }}</th>
 				<th scope="col">{{ label_type }}</th>
 				<th scope="col">{{ label_rtime }}</th>
 				<th scope="col">{{ label_last_online }}</th>
@@ -40,6 +41,7 @@
 				</th>
 				<td><div class="content">{{ server.ip|raw }}</div></td>
 				<td>{{ server.port }}</td>
+				<td>{{ server.protocol }}</td>
 				<td>{{ server.type }}</td>
 				<td>{{ server.rtime }}</td>
 				<td><div class="content">{{ server.last_online }}</div></td>
