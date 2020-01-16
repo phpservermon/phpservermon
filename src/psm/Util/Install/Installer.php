@@ -342,6 +342,9 @@ class Installer
         if (version_compare($version_from, '3.4.2', '<')) {
             $this->upgrade342();
         }
+        if (version_compare($version_from, '3.5.0', '<')) {
+            $this->upgrade350();
+        }
         psm_update_conf('version', $version_to);
     }
 
@@ -654,6 +657,22 @@ class Installer
     {
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_output` `last_output` TEXT;";
+        $this->execSQL($queries);
+    }
+
+    /**
+     * Upgrade for v3.5.0 release
+     */
+    protected function upgrade350()
+    {
+        /**
+         * Adds a protocol column which defaults to TCP
+         * This sets the field to TCP on older installations
+         * ensuring they do not break
+         */
+        $queries = array();
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD COLUMN `protocol` ENUM( 'tcp','udp' )
+            NOT NULL DEFAULT 'tcp' AFTER `port`;";
         $this->execSQL($queries);
     }
 }

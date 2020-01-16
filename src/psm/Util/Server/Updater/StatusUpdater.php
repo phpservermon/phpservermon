@@ -222,7 +222,13 @@ class StatusUpdater
         // save response time
         $starttime = microtime(true);
 
-        $fp = @fsockopen($this->server['protocol'] . '://' . $this->server['ip'], $this->server['port'], $errno, $this->error, $timeout);
+        $fp = @fsockopen(
+            $this->server['protocol'] . '://' . $this->server['ip'],
+            $this->server['port'],
+            $errno,
+            $this->error,
+            $timeout
+        );
 
         $status = ($fp === false) ? false : true;
         $this->rtime = (microtime(true) - $starttime);
