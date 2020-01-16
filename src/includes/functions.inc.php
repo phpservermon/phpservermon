@@ -390,7 +390,7 @@ namespace {
  * @param string|bool $website_password Password website
  * @param string|null $request_method Request method like GET, POST etc.
  * @param string|null $post_field POST data
- * @return string cURL result
+ * @return array ["result" => cURL result, "info" => cURL info array]
  */
     function psm_curl_get(
         $href,
@@ -456,6 +456,8 @@ namespace {
         }
 
         $result = curl_exec($ch);
+        $info = curl_getinfo($ch);
+
         curl_close($ch);
     
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
@@ -466,7 +468,7 @@ namespace {
             '==============END cURL Resul for: ' . $href . '===========================================' . PHP_EOL;
         }
 
-        return $result;
+        return ["result" => $result, "info" => $info];
     }
 
 /**
@@ -551,7 +553,7 @@ namespace {
             // been more than a week since update, lets go
             // update last check date
             psm_update_conf('last_update_check', time());
-            $latest = psm_curl_get(PSM_UPDATE_URL);
+            $latest = psm_curl_get(PSM_UPDATE_URL)["result"];
             // extract latest version from Github.
             preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
             // add latest version to database

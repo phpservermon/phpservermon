@@ -84,6 +84,7 @@ $sm_lang = array(
         'user_name' => 'Uživatelské jméno',
         'password' => 'Heslo',
         'password_repeat' => 'Stejné heslo (pro kontrolu)',
+        'api_hash' => 'API hash',
         'password_leave_blank' => 'Ponechte prázdné pro ponechání beze změn.',
         'level' => 'Oprávnění',
         'level_10' => 'Administrátor',

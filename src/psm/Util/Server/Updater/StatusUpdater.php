@@ -263,30 +263,22 @@ class StatusUpdater
             $this->server['request_method'],
             $this->server['post_field']
         );
-        $this->header = $curl_result;
+
+        $this->header = $curl_result["result"];
+        $code = $curl_result["info"]["http_code"];
+        $redirectUrl = $curl_result["info"]["redirect_url"];
 
         $this->rtime = (microtime(true) - $starttime);
-
-        // the first line would be the status code..
-        $status_code = strtok($curl_result, "\r\n");
-        // keep it general
-        // $code[2][0] = status code
-        // $code[3][0] = name of status code
-        $code_matches = array();
-        preg_match_all("/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/", $status_code, $code_matches);
-
-        if (empty($code_matches[0])) {
+        
+        if (empty($code)) {
             // somehow we dont have a proper response.
             $this->error = 'TIMEOUT ERROR: no response from server';
             $result = false;
         } else {
-            $code = $code_matches[2][0];
-            $msg = $code_matches[3][0];
-
             $allow_http_status = explode("|", $this->server['allow_http_status']);
             // All status codes starting with a 4 or higher mean trouble!
             if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
-                $this->error = "HTTP STATUS ERROR: " . $code . ' ' . $msg;
+                $this->error = "HTTP STATUS ERROR: " . $code;
                 $result = false;
             } else {
                 $result = true;
@@ -299,7 +291,7 @@ class StatusUpdater
                         ($this->server['pattern_online'] == 'yes') ==
                         !preg_match(
                             "/{$this->server['pattern']}/i",
-                            $curl_result
+                            $this->header
                         )
                     ) {
                         $this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " .
@@ -311,20 +303,11 @@ class StatusUpdater
 
                 // Check if the website redirects to another domain
                 if ($this->server['redirect_check'] == 'bad') {
-                    $location_matches = array();
-                    preg_match(
-                        '/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/',
-                        $curl_result,
-                        $location_matches
-                    );
-                    if (!empty($location_matches)) {
-                        $ip_matches = array();
-                        preg_match(
-                            '/(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)?/',
-                            $this->server['ip'],
-                            $ip_matches
-                        );
-                        if (strtolower($location_matches[4]) !== strtolower($ip_matches[3])) {
+                    if (!empty($redirectUrl)) {
+                        $redirectPieces = parse_url($redirectUrl);
+                        $ipPieces = parse_url($this->server['ip']);
+
+                        if (strtolower($redirectPieces['host']) !== strtolower($ipPieces['host'])) {
                             $this->error = "The IP/URL redirects to another domain.";
                             $result = false;
                         }
@@ -335,7 +318,7 @@ class StatusUpdater
                 if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
                     $header_flag = false;
                     // Only get the header text if the result also includes the body
-                    $header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n"));
+                    $header_text = substr($this->header, 0, strpos($this->header, "\r\n\r\n"));
                     foreach (explode("\r\n", $header_text) as $i => $line) {
                         if ($i === 0 || strpos($line, ':') == false) {
                             continue; // We skip the status code & other non-header lines. Needed for proxy or redirects

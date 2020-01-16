@@ -102,6 +102,7 @@ $sm_lang = array(
         'user_name' => 'Username',
         'password' => 'Password',
         'password_repeat' => 'Password repeat',
+        'api_hash' => 'API hash',
         'password_leave_blank' => 'Leave blank to keep unchanged',
         'level' => 'Level',
         'level_10' => 'Administrator',

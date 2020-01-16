@@ -53,6 +53,12 @@ class Router
      */
     protected $container;
 
+    /**
+    * Indication whether this request comes from API
+    * @var boolean
+    */
+    private $isApi = false;
+
     public function __construct()
     {
         $this->container = $this->buildServiceContainer();
@@ -85,13 +91,19 @@ class Router
         }
         $this->buildTwigEnvironment();
 
-        $controller = $this->getController($mod, $controller);
+        $controller = $this->isApi ?
+            $this->getController($mod, $controller, true) :
+            $this->getController($mod, $controller);
         $action = null;
 
         try {
             $this->validateRequest($controller);
         } catch (\InvalidArgumentException $ex) {
             switch ($ex->getMessage()) {
+                case 'invalid_api_key':
+                    $controller = $this->getController('error');
+                    $action = '403';
+                    break;
                 case 'login_required':
                     $controller = $this->getController('user', 'login');
                     break;
@@ -116,14 +128,20 @@ class Router
      * Get an instance of the requested controller.
      * @param string $module_id
      * @param string $controller_id if NULL, default controller will be used
+     * @param boolean $isApi
      * @return \psm\Module\ControllerInterface
      * @throws \InvalidArgumentException
      */
-    public function getController($module_id, $controller_id = null)
+    public function getController($module_id, $controller_id = null, $isApi = false)
     {
         if ($controller_id === null) {
             // by default, we use the controller with the same id as the module.
             $controller_id = $module_id;
+        }
+
+        if ($isApi) {
+            // if this is an api request, serve api.controller
+            $controller_id = "api." . $controller_id;
         }
 
         $module = $this->container->get('module.' . $module_id);
@@ -165,6 +183,10 @@ class Router
     {
         $request = Request::createFromGlobals();
 
+        if ($this->isApi) {
+            return $this->validateApiRequest($controller, $request);
+        }
+
         if ($request->getMethod() == 'POST') {
             // require CSRF token for all POST calls
             $session = $this->container->get('user')->getSession();
@@ -200,6 +222,30 @@ class Router
         }
     }
 
+    /**
+     * Validate Api requets before heading to a controller
+     * @param \psm\Module\ControllerInterface $controller
+     * @param Request $request
+     * @throws \InvalidArgumentException
+     */
+    private function validateApiRequest(\psm\Module\ControllerInterface $controller, Request $request)
+    {
+        $result = $controller->getUser()->loginWithApiKey($request->query->get("key"));
+
+        if (!$result) {
+            throw new \InvalidArgumentException('invalid_api_key');
+        }
+
+        // get min required level for this controller and make sure the user matches
+        $min_lvl = $controller->getMinUserLevelRequired();
+
+        if ($min_lvl < PSM_USER_ANONYMOUS) {
+            // if user is not logged in, load login module
+            if ($this->container->get('user')->getUserLevel() > $min_lvl) {
+                throw new \InvalidArgumentException('invalid_user_level');
+            }
+        }
+    }
 
     /**
      * Build a new service container
@@ -246,5 +292,16 @@ class Router
         $twig->addGlobal('language', psm_get_lang('locale')[1]);
 
         return $twig;
+    }
+
+    public function getIsApi()
+    {
+        return $this->isApi;
+    }
+
+    public function setIsApi($isApi)
+    {
+        $this->isApi = $isApi;
+        return $this;
     }
 }
