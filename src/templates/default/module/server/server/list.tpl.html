@@ -5,18 +5,18 @@
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
-				<th scope="col">{{ label_label }}</th>
-				<th scope="col">{{ label_domain }}</th>
-				<th scope="col">{{ label_port }}</th>
-				<th scope="col">{{ label_protocol }}</th>
-				<th scope="col">{{ label_type }}</th>
-				<th scope="col">{{ label_rtime }}</th>
-				<th scope="col">{{ label_last_online }}</th>
-				<th scope="col">{{ label_last_offline }}</th>
-				<th scope="col">{{ label_monitoring }}</th>
-				{% if user_level == 10 %}
-				<th scope="col">&#32</th>
-				{% endif %}
+                <th scope="col">{{ label_label }}</th>
+                <th scope="col">{{ label_domain }}</th>
+				<th scope="col" style="width: 5%;">{{ label_port }}</th>
+				<th scope="col" style="width: 5%;">{{ label_protocol }}</th>
+                <th scope="col" style="width: 8%;">{{ label_type }}</th>
+                <th scope="col" style="width: 8%;">{{ label_rtime }}</th>
+                <th scope="col" style="width: 10%;">{{ label_last_online }}</th>
+                <th scope="col" style="width: 10%;">{{ label_last_offline }}</th>
+                <th scope="col" style="width: 10%;">{{ label_monitoring }}</th>
+                {% if user_level == 10 %}
+                <th scope="col" style="width: 5%;">&#32</th>
+                {% endif %}
 			</tr>
 			<tr class="warning no-result">
 					<td colspan="9"><i class="fas fa-exclamation-triangle"></i> No result</td>
