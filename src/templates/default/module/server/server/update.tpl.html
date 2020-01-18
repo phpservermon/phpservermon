@@ -45,6 +45,15 @@
 					</optgroup>
 				</select>
 			</div>
+			<!-- Protocol -->
+			<div class="form-group types typeService">
+				<label for="protocol">{{ label_protocol }}</label>
+				<select id="protocol" name="protocol" class="custom-select">
+					<!-- Lets assume TCP by default, no need for js to autoselect as some ports can be UDP or TCP -->
+					<option {% if not edit_value_protocol %}selected {% elseif edit_value_protocol|lower=='tcp' %}selected {% endif %}value="tcp">TCP</option>
+					<option {% if edit_value_protocol|lower=='udp' %}selected {% endif %}value="udp">UDP</option>
+				</select>
+			</div>
 			<!-- Custom port -->
 			{{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
 			<!-- Request method -->

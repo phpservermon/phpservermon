@@ -182,6 +182,7 @@ $sm_lang = array(
         'fieldset_permissions' => 'Permissions',
         'permissions' => 'Server will be visible for the following users',
         'port' => 'Port',
+        'protocol' => 'Protocol',
         'custom_port' => 'Custom Port',
         'popular_ports' => 'Popular Ports',
         'request_method' => 'Request method',

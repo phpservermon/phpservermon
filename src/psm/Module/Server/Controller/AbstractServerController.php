@@ -61,6 +61,7 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`server_id`,
 					`s`.`ip`,
 					`s`.`port`,
+					`s`.`protocol`,
 					`s`.`request_method`,
 					`s`.`post_field`,
 					`s`.`type`,
@@ -111,6 +112,7 @@ abstract class AbstractServerController extends AbstractController
      */
     protected function formatServer($server)
     {
+        $server['protocol'] = strtoupper($server['protocol']);
         $server['rtime'] = round((float) $server['rtime'], 4);
         $server['last_online'] = psm_timespan($server['last_online']);
         $server['last_offline'] = psm_timespan($server['last_offline']);
