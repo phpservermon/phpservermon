@@ -269,18 +269,11 @@ class UserController extends AbstractController
         }
 
         $user_validator = $this->container->get('util.user.validator');
-
+        
         try {
             $user_validator->username($clean['user_name'], $user_id);
             $user_validator->email($clean['email']);
             $user_validator->level($clean['level']);
-            if (
-                count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1 &&
-                    $this->getUser()->getUserLevel() == PSM_USER_ADMIN
-            ) {
-                $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
-                $clean['level'] = PSM_USER_ADMIN;
-            }
 
             // always validate password for new users,
             // but only validate it for existing users when they change it.
