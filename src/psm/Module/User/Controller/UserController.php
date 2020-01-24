@@ -269,7 +269,7 @@ class UserController extends AbstractController
         }
 
         $user_validator = $this->container->get('util.user.validator');
-        
+
         try {
             $user_validator->username($clean['user_name'], $user_id);
             $user_validator->email($clean['email']);
