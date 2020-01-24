@@ -295,6 +295,13 @@ class UserController extends AbstractController
         if ($user_id > 0) {
             // edit user
             unset($clean['password']); // password update is executed separately
+            if (
+                count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1 &&
+                    $this->getUser()->getUserLevel() == PSM_USER_ADMIN
+            ) {
+                $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
+                $clean['level'] = PSM_USER_ADMIN;
+            }
             $this->db->save(PSM_DB_PREFIX . 'users', $clean, array('user_id' => $user_id));
             $this->addMessage(psm_get_lang('users', 'updated'), 'success');
 
