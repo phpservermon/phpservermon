@@ -28,7 +28,10 @@
 
 namespace {
 // include main configuration and functionality
-    require_once __DIR__ . '/../src/bootstrap.php';
+	use psm\Router;
+	use psm\Util\Server\UpdateManager;
+
+	require_once __DIR__ . '/../src/bootstrap.php';
 
     if (!psm_is_cli()) {
         // check if it's an allowed host
@@ -82,7 +85,7 @@ namespace {
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 // or you can provide the --timeout=x argument
 
-	$status = 'on';
+	$status = null;
 	if (PHP_SAPI === 'cli') {
 		$shortOptions = 's:'; // status
 
@@ -108,10 +111,10 @@ namespace {
 		}
 	}
 
-	if ($status === 'on') {
-		$confPrefix = 'cron_';
-	} else {
+	if ($status === 'off') {
 		$confPrefix = 'cron_off_';
+	} else {
+		$confPrefix = 'cron_';
 	}
 
     $time = time();
@@ -127,19 +130,21 @@ namespace {
     }
     psm_update_conf($confPrefix . 'running_time', $time);
 
+    /** @var Router $router */
+    /** @var UpdateManager $autorun */
     $autorun = $router->getService('util.server.updatemanager');
 
-    if ($status === 'on') {
-	    $autorun->run(true, false);
+    if ($status !== 'off') {
+	    $autorun->run(true, $status);
     } else {
-    	set_time_limit(60);
+	    set_time_limit(60);
     	if (false === defined('CRON_DOWN_INTERVAL')) {
     		define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
 	    }
 	    $start = time();
     	$i = 0;
 	    while ($i < 59) {
-		    $autorun->run(true, true);
+		    $autorun->run(true, $status);
 		    if ($i < (59 - CRON_DOWN_INTERVAL)) {
 			    time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
 		    }
