@@ -81,21 +81,71 @@ namespace {
 // however if the cron has been running for X mins, we'll assume it died and run anyway
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 // or you can provide the --timeout=x argument
+
+	$status = 'on';
+	if (PHP_SAPI === 'cli') {
+		$shortOptions = 's:'; // status
+
+		$longOptions = [
+			'status:'
+		];
+
+		$options = getopt($shortOptions, $longOptions);
+
+		$possibleValues = [
+			'on' => 'on',
+			'1' => 'on',
+			'up' => 'on',
+			'off' => 'off',
+			'0' => 'off',
+			'down' => 'off'
+		];
+
+		if (true === array_key_exists('status', $options) && true === array_key_exists(strtolower($options['status']), $possibleValues)) {
+			$status = $possibleValues[$options['status']];
+		} else if (true === array_key_exists('s', $options) && true === array_key_exists(strtolower($options['s']), $possibleValues)) {
+			$status = $possibleValues[$options['s']];
+		}
+	}
+
+	if ($status === 'on') {
+		$confPrefix = 'cron_';
+	} else {
+		$confPrefix = 'cron_off_';
+	}
+
     $time = time();
     if (
-        psm_get_conf('cron_running') == 1
+        psm_get_conf($confPrefix . 'running') == 1
         && $cron_timeout > 0
-        && ($time - psm_get_conf('cron_running_time') < $cron_timeout)
+        && ($time - psm_get_conf($confPrefix . 'running_time') < $cron_timeout)
     ) {
         die('Cron is already running. Exiting.');
     }
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
-        psm_update_conf('cron_running', 1);
+        psm_update_conf($confPrefix . 'running', 1);
     }
-    psm_update_conf('cron_running_time', $time);
+    psm_update_conf($confPrefix . 'running_time', $time);
 
     $autorun = $router->getService('util.server.updatemanager');
-    $autorun->run(true);
 
-    psm_update_conf('cron_running', 0);
+    if ($status === 'on') {
+	    $autorun->run(true, false);
+    } else {
+    	set_time_limit(60);
+    	if (false === defined('CRON_DOWN_INTERVAL')) {
+    		define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
+	    }
+	    $start = time();
+    	$i = 0;
+	    while ($i < 59) {
+		    $autorun->run(true, true);
+		    if ($i < (59 - CRON_DOWN_INTERVAL)) {
+			    time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
+		    }
+		    $i += CRON_DOWN_INTERVAL;
+	    }
+    }
+
+    psm_update_conf($confPrefix . 'running', 0);
 }
