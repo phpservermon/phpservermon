@@ -28,10 +28,10 @@
 
 namespace {
 // include main configuration and functionality
-	use psm\Router;
-	use psm\Util\Server\UpdateManager;
+    use psm\Router;
+    use psm\Util\Server\UpdateManager;
 
-	require_once __DIR__ . '/../src/bootstrap.php';
+    require_once __DIR__ . '/../src/bootstrap.php';
 
     if (!psm_is_cli()) {
         // check if it's an allowed host
@@ -85,37 +85,43 @@ namespace {
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 // or you can provide the --timeout=x argument
 
-	$status = null;
-	if (PHP_SAPI === 'cli') {
-		$shortOptions = 's:'; // status
+    $status = null;
+    if (PHP_SAPI === 'cli') {
+        $shortOptions = 's:'; // status
 
-		$longOptions = [
-			'status:'
-		];
+        $longOptions = [
+            'status:'
+        ];
 
-		$options = getopt($shortOptions, $longOptions);
+        $options = getopt($shortOptions, $longOptions);
 
-		$possibleValues = [
-			'on' => 'on',
-			'1' => 'on',
-			'up' => 'on',
-			'off' => 'off',
-			'0' => 'off',
-			'down' => 'off'
-		];
+        $possibleValues = [
+            'on' => 'on',
+            '1' => 'on',
+            'up' => 'on',
+            'off' => 'off',
+            '0' => 'off',
+            'down' => 'off'
+        ];
 
-		if (true === array_key_exists('status', $options) && true === array_key_exists(strtolower($options['status']), $possibleValues)) {
-			$status = $possibleValues[$options['status']];
-		} else if (true === array_key_exists('s', $options) && true === array_key_exists(strtolower($options['s']), $possibleValues)) {
-			$status = $possibleValues[$options['s']];
-		}
-	}
+        if (
+            true === array_key_exists('status', $options) &&
+            true === array_key_exists(strtolower($options['status']), $possibleValues)
+        ) {
+            $status = $possibleValues[$options['status']];
+        } elseif (
+            true === array_key_exists('s', $options) &&
+            true === array_key_exists(strtolower($options['s']), $possibleValues)
+        ) {
+            $status = $possibleValues[$options['s']];
+        }
+    }
 
-	if ($status === 'off') {
-		$confPrefix = 'cron_off_';
-	} else {
-		$confPrefix = 'cron_';
-	}
+    if ($status === 'off') {
+        $confPrefix = 'cron_off_';
+    } else {
+        $confPrefix = 'cron_';
+    }
 
     $time = time();
     if (
@@ -135,21 +141,21 @@ namespace {
     $autorun = $router->getService('util.server.updatemanager');
 
     if ($status !== 'off') {
-	    $autorun->run(true, $status);
+        $autorun->run(true, $status);
     } else {
-	    set_time_limit(60);
-    	if (false === defined('CRON_DOWN_INTERVAL')) {
-    		define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
-	    }
-	    $start = time();
-    	$i = 0;
-	    while ($i < 59) {
-		    $autorun->run(true, $status);
-		    if ($i < (59 - CRON_DOWN_INTERVAL)) {
-			    time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
-		    }
-		    $i += CRON_DOWN_INTERVAL;
-	    }
+        set_time_limit(60);
+        if (false === defined('CRON_DOWN_INTERVAL')) {
+            define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
+        }
+        $start = time();
+        $i = 0;
+        while ($i < 59) {
+            $autorun->run(true, $status);
+            if ($i < (59 - CRON_DOWN_INTERVAL)) {
+                time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
+            }
+            $i += CRON_DOWN_INTERVAL;
+        }
     }
 
     psm_update_conf($confPrefix . 'running', 0);
