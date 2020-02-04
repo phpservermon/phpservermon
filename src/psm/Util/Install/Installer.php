@@ -178,7 +178,9 @@ class Installer
 					('show_update', '1'),
 					('last_update_check', '0'),
 					('cron_running', '0'),
-					('cron_running_time', '0');";
+					('cron_running_time', '0'), 
+					('cron_off_running', '0'),
+					('cron_off_running_time', '0');";
         $this->execSQL($queries);
     }
 

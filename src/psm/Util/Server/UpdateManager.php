@@ -49,9 +49,14 @@ class UpdateManager implements ContainerAwareInterface
      * Go :-)
      *
      * @param boolean $skip_perms if TRUE, no user permissions will be taken in account and all servers will be updated
+     * @param string|null $status If all servers (null), or just `on` or `off` should be checked.
      */
-    public function run($skip_perms = false)
+    public function run($skip_perms = false, $status = null)
     {
+    	if (false === in_array($status, ['on', 'off'], true)) {
+    		$status = null;
+	    }
+
         // check if we need to restrict the servers to a certain user
         $sql_join = '';
 
@@ -67,7 +72,7 @@ class UpdateManager implements ContainerAwareInterface
             `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
 				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
-				WHERE `active`='yes' ";
+				WHERE `active`='yes' " . ($status !== null ? ' AND `status` = \'' . $status . '\'' : '');
 
         $servers = $this->container->get('db')->query($sql);
 
