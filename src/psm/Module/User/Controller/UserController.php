@@ -295,9 +295,11 @@ class UserController extends AbstractController
         if ($user_id > 0) {
             // edit user
             unset($clean['password']); // password update is executed separately
+            $admins = $this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN));
             if (
-                count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1 &&
-                    $this->getUser()->getUserLevel() == PSM_USER_ADMIN
+                (int) count($admins) === (int) 1 &&
+                (int) $admins[0]['user_id'] === (int) $user_id &&
+                (int) $clean['level'] === (int) PSM_USER_USER
             ) {
                 $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
                 $clean['level'] = PSM_USER_ADMIN;
@@ -352,7 +354,11 @@ class UserController extends AbstractController
         try {
             $this->container->get('util.user.validator')->userId($id);
 
-            if (count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1) {
+            $admins = $this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN));
+            if (
+                (int) count($admins) === (int) 1 &&
+                (int) $admins[0]['user_id'] === (int) $id
+            ) {
                 $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'error');
             } else {
                 $this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
