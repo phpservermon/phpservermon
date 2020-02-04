@@ -398,6 +398,10 @@ class StatusUpdater
      */
     private function checkSsl($server, &$error, &$result)
     {
+        if (version_compare(PHP_RELEASE_VERSION, '7.1', '<')) {
+            $error = "The server you're running PSM on must use PHP 7.1 or higher to test the SSL expiration.";
+            return;
+        }
         if (
             !empty($this->curl_info['certinfo']) &&
             $server['ssl_cert_expiry_days'] > 0
