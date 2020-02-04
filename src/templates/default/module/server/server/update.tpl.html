@@ -46,7 +46,9 @@
 				</select>
 			</div>
 			<!-- Custom port -->
-			{{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
+            {{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
+            <!-- SSL Cert check -->
+            {{ macro.input_field("number", "ssl_cert_expiry_days", "types typeWebsite", "ssl_cert_expiry_days", label_ssl_cert_expiry_days, edit_value_ssl_cert_expiry_days, 0, "5", 'ssl_cert_help', label_ssl_cert_expiry_days_description) }}
 			<!-- Request method -->
 			<div class="form-group types typeWebsite">
 				<label for="popular_request_methods">{{ label_request_method }}</label>

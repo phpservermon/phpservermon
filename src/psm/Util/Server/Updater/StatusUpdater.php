@@ -41,6 +41,8 @@ class StatusUpdater
 
     public $header = '';
 
+    public $curl_info = '';
+
     public $rtime = 0;
 
     public $status_new = false;
@@ -86,6 +88,7 @@ class StatusUpdater
         $this->server_id = $server_id;
         $this->error = '';
         $this->header = '';
+        $this->curl_info = '';
         $this->rtime = '';
 
         // get server info from db
@@ -96,7 +99,7 @@ class StatusUpdater
             'type', 'pattern', 'pattern_online', 'post_field',
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
-            'warning_threshold_counter', 'timeout', 'website_username',
+            'warning_threshold_counter', 'ssl_cert_expiry_days', 'ssl_cert_expired_time', 'timeout', 'website_username',
             'website_password', 'last_offline'
         ));
         if (empty($this->server)) {
@@ -263,12 +266,13 @@ class StatusUpdater
             $this->server['request_method'],
             $this->server['post_field']
         );
-        $this->header = $curl_result;
+        $this->header = $curl_result['exec'];
+        $this->curl_info = $curl_result['info'];
 
         $this->rtime = (microtime(true) - $starttime);
 
         // the first line would be the status code..
-        $status_code = strtok($curl_result, "\r\n");
+        $status_code = strtok($curl_result['exec'], "\r\n");
         // keep it general
         // $code[2][0] = status code
         // $code[3][0] = name of status code
@@ -299,7 +303,7 @@ class StatusUpdater
                         ($this->server['pattern_online'] == 'yes') ==
                         !preg_match(
                             "/{$this->server['pattern']}/i",
-                            $curl_result
+                            $curl_result['exec']
                         )
                     ) {
                         $this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " .
@@ -314,7 +318,7 @@ class StatusUpdater
                     $location_matches = array();
                     preg_match(
                         '/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/',
-                        $curl_result,
+                        $curl_result['exec'],
                         $location_matches
                     );
                     if (!empty($location_matches)) {
@@ -335,7 +339,7 @@ class StatusUpdater
                 if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
                     $header_flag = false;
                     // Only get the header text if the result also includes the body
-                    $header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n"));
+                    $header_text = substr($curl_result['exec'], 0, strpos($curl_result['exec'], "\r\n\r\n"));
                     foreach (explode("\r\n", $header_text) as $i => $line) {
                         if ($i === 0 || strpos($line, ':') == false) {
                             continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
@@ -361,6 +365,9 @@ class StatusUpdater
                 }
             }
         }
+
+        // Check ssl cert
+        $this->checkSsl($this->server, $this->error, $result);
 
         // check if server is available and rerun if asked.
         if (!$result && $run < $max_runs) {
@@ -388,5 +395,38 @@ class StatusUpdater
     public function getRtime()
     {
         return $this->rtime;
+    }
+
+    /**
+     *  Check if a server speaks SSL and if the certificate is not expired.
+     * @param string $error
+     * @param bool $result
+     */
+    private function checkSsl($server, &$error, &$result)
+    {
+        if (version_compare(PHP_RELEASE_VERSION, '7.1', '<')) {
+            $error = "The server you're running PSM on must use PHP 7.1 or higher to test the SSL expiration.";
+            return;
+        }
+        if (
+            !empty($this->curl_info['certinfo']) &&
+            $server['ssl_cert_expiry_days'] > 0
+        ) {
+            $cert_expiration_date = strtotime($this->curl_info['certinfo'][0]['Expire date']);
+            $expiration_time = round((int)($cert_expiration_date - time()) / 86400);
+            $latest_time = time() + (86400 * $server['ssl_cert_expiry_days']);
+            if ($expiration_time >= 0) {
+                $this->header = psm_get_lang('servers', 'ssl_cert_expiring') . " " .
+                    psm_date($this->curl_info['certinfo'][0]['Expire date']) .
+                    "\n\n" . $this->header;
+                $save['ssl_cert_expired_time'] = null;
+            } else {
+                $error = psm_get_lang('servers', 'ssl_cert_expired') . " " .
+                    psm_timespan($cert_expiration_date) . ".\n\n" .
+                    $error;
+                $save['ssl_cert_expired_time'] = $expiration_time;
+            }
+            $this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
+        }
     }
 }

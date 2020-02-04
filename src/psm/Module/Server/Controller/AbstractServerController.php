@@ -85,6 +85,8 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`telegram`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
+                    `s`.`ssl_cert_expiry_days`,
+                    `s`.`ssl_cert_expired_time`,
 					`s`.`timeout`,
 					`s`.`website_username`,
 					`s`.`website_password`,
@@ -120,7 +122,16 @@ abstract class AbstractServerController extends AbstractController
         }
         $server['last_check'] = psm_timespan($server['last_check']);
 
-        if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+        if (
+            (
+                $server['status'] == 'on' &&
+                $server['warning_threshold_counter'] > 0
+            ) || (
+                $server['status'] == 'on' &&
+                $server['ssl_cert_expired_time'] !== null &&
+                $server['ssl_cert_expiry_days'] > 0
+            )
+        ) {
             $server['status'] = 'warning';
         }
 
