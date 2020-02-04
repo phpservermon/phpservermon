@@ -893,15 +893,12 @@ namespace {
         $cipher = "AES-256-CBC";
         $ivlen = openssl_cipher_iv_length($cipher);
         $iv = substr($data, 0, $ivlen);
-        $decrypted = rtrim(
-            openssl_decrypt(
-                base64_encode(substr($data, $ivlen)),
-                $cipher,
-                hash('sha256', $key, true),
-                OPENSSL_ZERO_PADDING,
-                $iv
-            ),
-            "\0"
+        $decrypted = openssl_decrypt(
+            substr($data, $ivlen),
+            $cipher,
+            hash('sha256', $key, true),
+            OPENSSL_RAW_DATA,
+            $iv
         );
     
         return $decrypted;
