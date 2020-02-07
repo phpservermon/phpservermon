@@ -139,5 +139,6 @@ if (defined('PSM_JABBER_AUTH_TYPE') === false) {
 	define('PSM_JABBER_AUTH_TYPE', 'PLAIN'); // default just plain because of google for example :(
 }
 if (defined('PSM_JABBER_DEBUG_LEVEL') === false) {
+	// possible values: ERROR, WARNING, NOTICE, INFO, DEBUG
 	define('PSM_JABBER_DEBUG_LEVEL', JAXLLogger::WARNING);
 }
