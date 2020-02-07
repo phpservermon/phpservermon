@@ -660,7 +660,7 @@ namespace {
 		    'domain' => $domain, // gmail.com or null
 		    'host' => $host, // talk.google.com
 		    'port' => $port, // talk.google.com needs to have 5223 ... 5222 - CN problem - gmail.com vs talk.google.com
-		    'log_path' => __DIR__ . '/logs/jaxl.log', // own log
+		    'log_path' => __DIR__ . '/../../logs/jaxl.log', // own log
 
 		    // force tls
 		    'force_tls' => PSM_JABBER_FORCE_TLS,
