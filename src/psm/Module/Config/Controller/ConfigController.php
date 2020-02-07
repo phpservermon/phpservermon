@@ -67,13 +67,20 @@ class ConfigController extends AbstractController
         'email_smtp_host',
         'email_smtp_port',
         'email_smtp_username',
-        //'email_smtp_password', // not typical input - and saved encrypted
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
         'pushover_api_token',
         'telegram_api_token',
     );
+
+	/**
+	 * Fields for saving encrypted.
+	 * @var array
+	 */
+    protected $encryptedFields = [
+    	'email_smtp_password'
+    ];
 
     private $default_tab = 'general';
 
@@ -177,6 +184,14 @@ class ConfigController extends AbstractController
         foreach ($this->fields as $input_key) {
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
+        // encrypted fields
+	    foreach ($this->encryptedFields as $encryptedField) {
+		    if (true === isset($config[$encryptedField]) && trim($config[$encryptedField])) {
+		    	$tpl_data[$encryptedField] = psm_password_decrypt($config['password_encrypt_key'], $config[$encryptedField]);
+		    } else {
+			    $tpl_data[$encryptedField] = '';
+		    }
+        }
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
@@ -204,9 +219,7 @@ class ConfigController extends AbstractController
     {
         if (!empty($_POST)) {
             // save new config
-	        $emailSmtpPassword = filter_input(INPUT_POST, 'email_smtp_password');
-
-            $clean = array(
+	        $clean = array(
                 'language' => $_POST['language'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
@@ -218,16 +231,21 @@ class ConfigController extends AbstractController
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
                 'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
             );
-	        if ($emailSmtpPassword !== null && $emailSmtpPassword !== '') {
-		        $clean['email_smtp_password'] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $emailSmtpPassword);
-	        }
-            foreach ($this->checkboxes as $input_key) {
+	        foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
             }
             foreach ($this->fields as $input_key) {
                 if (isset($_POST[$input_key])) {
                     $clean[$input_key] = $_POST[$input_key];
                 }
+            }
+            foreach ($this->encryptedFields as $encryptedField) {
+            	$value = filter_input(INPUT_POST, $encryptedField);
+	            if ($value !== null && $value !== '') {
+		            $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
+	            } else {
+		            $clean[$encryptedField] = '';
+	            }
             }
             $language_refresh = ($clean['language'] != psm_get_conf('language'));
             foreach ($clean as $key => $value) {
