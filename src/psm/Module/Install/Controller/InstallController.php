@@ -257,6 +257,7 @@ class InstallController extends AbstractController
             'pushover_key' => '',
             'pushover_device' => '',
             'telegram_id' => '',
+	        'jabber' => ''
         );
 
         $validator = $this->container->get('util.user.validator');

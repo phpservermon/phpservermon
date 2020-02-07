@@ -69,7 +69,8 @@ class UpdateManager implements ContainerAwareInterface
         }
 
         $sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,
-            `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`
+            `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`, 
+            `s`.`jabber`
 				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				WHERE `active`='yes' " . ($status !== null ? ' AND `status` = \'' . $status . '\'' : '');
@@ -81,7 +82,8 @@ class UpdateManager implements ContainerAwareInterface
 
         foreach ($servers as $server) {
             $status_old = ($server['status'] == 'on') ? true : false;
-            $status_new = $updater->update($server['server_id']);
+            $status_new = $updater->
+            update($server['server_id']);
             // notify the nerds if applicable
             $notifier->notify($server['server_id'], $status_old, $status_new);
             // clean-up time!! archive all records

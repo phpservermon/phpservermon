@@ -16,7 +16,8 @@
 		"symfony/filesystem": "~3.4",
 		"php-pushover/php-pushover": "dev-master",
 		"paragonie/random_compat": "^2.0",
-		"twig/twig": "~1.35"
+		"twig/twig": "~1.35",
+		"jaxl/jaxl": "^3.1"
 	},
 	"autoload": {
 		"files": [

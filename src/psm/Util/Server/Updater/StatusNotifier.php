@@ -33,6 +33,7 @@
  * @see \psm\Util\Server\Updater\Autorun
  */
 namespace psm\Util\Server\Updater;
+use Norgul\Xmpp\Options;
 use psm\Service\Database;
 
 class StatusNotifier
@@ -67,6 +68,12 @@ class StatusNotifier
      * @var boolean $send_telegram
      */
     protected $send_telegram = false;
+
+	/**
+	 * Send Jabber?
+	 * @var bool
+	 */
+    protected $send_jabber = false;
 
     /**
      * Save log records?
@@ -119,12 +126,13 @@ class StatusNotifier
     {
         $this->db = $db;
 
-        $this->send_emails = psm_get_conf('email_status');
-        $this->send_sms = psm_get_conf('sms_status');
-        $this->send_pushover = psm_get_conf('pushover_status');
-        $this->send_telegram = psm_get_conf('telegram_status');
-        $this->save_logs = psm_get_conf('log_status');
-        $this->combine = psm_get_conf('combine_notifications');
+        $this->send_emails = (bool)psm_get_conf('email_status');
+        $this->send_sms = (bool)psm_get_conf('sms_status');
+        $this->send_pushover = (bool)psm_get_conf('pushover_status');
+        $this->send_telegram = (bool)psm_get_conf('telegram_status');
+        $this->send_jabber = (bool)psm_get_conf('jabber_status');
+        $this->save_logs = (bool)psm_get_conf('log_status');
+        $this->combine = (bool)psm_get_conf('combine_notifications');
     }
 
     /**
@@ -143,6 +151,7 @@ class StatusNotifier
             !$this->send_sms &&
             !$this->send_pushover &&
             !$this->send_telegram &&
+            !$this->send_jabber &&
             !$this->save_logs
         ) {
             // seems like we have nothing to do. skip the rest
@@ -168,6 +177,7 @@ class StatusNotifier
             'sms',
             'pushover',
             'telegram',
+            'jabber',
             'last_online',
             'last_offline',
             'last_offline_duration',
@@ -245,6 +255,10 @@ class StatusNotifier
         // check if telegram is enabled for this server
         if ($this->send_telegram && $this->server['telegram'] == 'yes') {
             $this->combine ? $this->setCombi('telegram') : $this->notifyByTelegram($users);
+        }
+
+        if ($this->send_jabber && $this->server['jaber'] == 'yes') {
+	        $this->combine ? $this->setCombi('jabber') : $this->notifyByJabber($users);
         }
 
         return $notify;
@@ -548,6 +562,53 @@ class StatusNotifier
         }
     }
 
+	/**
+	 * @param array $users
+	 * @param array $combi
+	 */
+    protected function notifyByJabber($users, $combi = [])
+    {
+	    // Remove users that have no jabber
+	    foreach ($users as $k => $user) {
+		    if (trim($user['jabber']) === '') {
+			    unset($users[$k]);
+		    }
+	    }
+
+	    // Validation
+	    if (empty($users)) {
+		    return;
+	    }
+
+	    // Message
+	    $message = key_exists('message', $combi) ?
+		    $combi['message'] :
+		    psm_parse_msg($this->status_new, 'jabber_message', $this->server);
+
+	    // Log
+	    if (psm_get_conf('log_jabber')) {
+		    $log_id = psm_add_log($this->server_id, 'jabber', $message);
+	    }
+
+	    foreach ($users as $user) {
+		    // Log
+		    if (!empty($log_id)) {
+			    psm_add_log_user($log_id, $user['user_id']);
+		    }
+
+		    // Jabber
+		    psm_jabber_send_message(
+			    psm_get_conf('jabber_host'),
+			    psm_get_conf('jabber_username'),
+			    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+			    $user['jabber'],
+			    $message,
+			    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+			    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+		    );
+	    }
+    }
+
     /**
      * Get all users for the provided server id
      * @param int $server_id
@@ -556,11 +617,12 @@ class StatusNotifier
     public function getUsers($server_id)
     {
         // find all the users with this server listed
-        $users = $this->db->query("
+        $users = $this->db->query('
             SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`,
-                `u`.`pushover_device`, `u`.`telegram_id`
-			FROM `" . PSM_DB_PREFIX . "users` AS `u`
-			JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+                `u`.`pushover_device`, `u`.`telegram_id`, 
+                `u`.`jabber`
+			FROM `' . PSM_DB_PREFIX . 'users` AS `u`
+			JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (
 				`us`.`user_id`=`u`.`user_id`
 				AND `us`.`server_id` = {$server_id}
 			)

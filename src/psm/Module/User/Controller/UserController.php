@@ -161,6 +161,7 @@ class UserController extends AbstractController
             'pushover_key',
             'pushover_device',
             'telegram_id',
+            'jabber',
             'email'
         );
 
@@ -257,6 +258,7 @@ class UserController extends AbstractController
             'pushover_key',
             'pushover_device',
             'telegram_id',
+            'jabber',
             'email'
         );
         $clean = array();
@@ -399,6 +401,8 @@ class UserController extends AbstractController
             'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
             'label_telegram_id' => psm_get_lang('users', 'telegram_chat_id'),
             'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
+	        'label_jabber' => psm_get_lang('users', 'jabber'),
+	        'label_jabber_description' => psm_get_lang('users', 'jabber_description'),
             'label_email' => psm_get_lang('users', 'email'),
             'label_servers' => psm_get_lang('menu', 'server'),
             'label_save' => psm_get_lang('system', 'save'),

@@ -134,11 +134,11 @@ class Installer
         $queries = array();
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (
             `ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `redirect_check`,
-            `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`)
+            `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`, `jabber`)
             VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '',
-                'yes', 'bad', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes'),
+                'yes', 'bad', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes'),
                 ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '',
-                'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes')";
+                'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('language', 'en_US'),
@@ -164,6 +164,12 @@ class Installer
 					('pushover_api_token', ''),
 					('telegram_status', '0'),
 					('telegram_api_token', ''),
+					('jabber_status', '1'),
+					('jabber_host', ''),
+					('jabber_port', ''),
+					('jabber_username', ''),
+					('jabber_domain', ''),
+					('jabber_password', ''),
 					('password_encrypt_key', '" . sha1(microtime()) . "'),
 					('alert_type', 'status'),
 					('log_status', '1'),
@@ -171,6 +177,7 @@ class Installer
 					('log_sms', '1'),
 					('log_pushover', '1'),
 					('log_telegram', '1'),
+					('log_jabber', '1'),
 					('log_retention_period', '365'),
 					('version', '" . PSM_VERSION . "'),
 					('version_update_check', '" . PSM_VERSION . "'),
@@ -208,6 +215,7 @@ class Installer
 				`pushover_key` varchar(255) NOT NULL,
 				`pushover_device` varchar(255) NOT NULL,
 				`telegram_id` varchar(255) NOT NULL,
+				`jabber` varchar(255) NOT NULL,
 				`email` varchar(255) NOT NULL,
                 PRIMARY KEY (`user_id`),
                 UNIQUE KEY `unique_username` (`user_name`)
@@ -227,7 +235,7 @@ class Installer
             PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 				`log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`server_id` int(11) unsigned NOT NULL,
-				`type` enum('status','email','sms','pushover','telegram') NOT NULL,
+				`type` enum('status','email','sms','pushover','telegram', 'jabber') NOT NULL,
 				`message` TEXT NOT NULL,
 				`datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
                 PRIMARY KEY  (`log_id`)
@@ -263,6 +271,7 @@ class Installer
 				`sms` enum('yes','no') NOT NULL default 'no',
 				`pushover` enum('yes','no') NOT NULL default 'yes',
 				`telegram` enum('yes','no') NOT NULL default 'yes',
+				`jabber` enum('yes','no') NOT NULL default 'yes',
 			    `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
 			    `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                 `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
@@ -347,6 +356,9 @@ class Installer
         }
         if (version_compare($version_from, '3.4.6-beta.1', '<')) {
             $this->upgrade346();
+        }
+        if (version_compare($version_from, '3.4.7', '<')) {
+        	$this->upgrade347();
         }
         psm_update_conf('version', $version_to);
     }
@@ -674,5 +686,29 @@ class Installer
             $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
         $this->execSQL($queries);
+    }
+
+	/**
+	 * Upgrade for v3.4.7
+	 */
+    protected function upgrade347()
+    {
+		$queries = [];
+	    $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
+            NOT NULL AFTER `telegram_id`;';
+	    $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `jabber` ENUM( 'yes','no' ) 
+            NOT NULL DEFAULT 'yes' AFTER  `telegram`;";
+	    $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX .
+		    "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram', 'jabber' )
+            CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+	    $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+					('jabber_status', '0'),
+					('log_jabber', '1'),
+					('jabber_host', ''),
+					('jabber_port', ''),
+					('jabber_username', ''),
+					('jabber_domain', ''),
+					('jabber_password', '');";
+	    $this->execSQL($queries);
     }
 }

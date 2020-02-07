@@ -30,7 +30,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.4.6-beta.1');
+define('PSM_VERSION', '3.4.7');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
@@ -129,4 +129,15 @@ if (!defined('PSM_MODULE_DEFAULT')) {
      * Default module (if none given or invalid one)
      */
     define('PSM_MODULE_DEFAULT', 'server_status');
+}
+
+if (defined('PSM_JABBER_FORCE_TLS') === false) {
+	define('PSM_JABBER_FORCE_TLS', true);
+}
+if (defined('PSM_JABBER_AUTH_TYPE') === false) {
+	// possible values: PLAIN, X-OAUTH2, DIGEST-MD5, CRAM-MD5, SCRAM-SHA-1, ANONYMOUS, EXTERNAL
+	define('PSM_JABBER_AUTH_TYPE', 'PLAIN'); // default just plain because of google for example :(
+}
+if (defined('PSM_JABBER_DEBUG_LEVEL') === false) {
+	define('PSM_JABBER_DEBUG_LEVEL', JAXLLogger::WARNING);
 }

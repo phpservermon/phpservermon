@@ -45,11 +45,13 @@ class ConfigController extends AbstractController
         'sms_status',
         'pushover_status',
         'telegram_status',
+        'jabber_status',
         'log_status',
         'log_email',
         'log_sms',
         'log_pushover',
         'log_telegram',
+        'log_jabber',
         'show_update',
         'combine_notifications',
     );
@@ -73,6 +75,11 @@ class ConfigController extends AbstractController
         'sms_from',
         'pushover_api_token',
         'telegram_api_token',
+	    'jabber_host',
+	    'jabber_port',
+	    'jabber_username',
+	    'jabber_domain',
+	    //'jabber_password' // not typical input - and saved encrypted
     );
 
     private $default_tab = 'general';
@@ -180,7 +187,7 @@ class ConfigController extends AbstractController
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
-        $testmodals = array('email', 'sms', 'pushover', 'telegram');
+        $testmodals = array('email', 'sms', 'pushover', 'telegram', 'jabber');
         foreach ($testmodals as $modal_id) {
             $modal = new \psm\Util\Module\Modal(
                 $this->twig,
@@ -203,6 +210,8 @@ class ConfigController extends AbstractController
     protected function executeSave()
     {
         if (!empty($_POST)) {
+        	$jabberPassword = filter_input(INPUT_POST, 'jabber_password');
+
             // save new config
             $clean = array(
                 'language' => $_POST['language'],
@@ -214,8 +223,11 @@ class ConfigController extends AbstractController
                     : '',
                 'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
-                'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
+                'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime()))
             );
+	        if ($jabberPassword !== null && $jabberPassword !== '') {
+		        $clean['jabber_password'] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $jabberPassword);
+	        }
             foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
             }
@@ -238,6 +250,8 @@ class ConfigController extends AbstractController
                 $this->testPushover();
             } elseif (!empty($_POST['test_telegram'])) {
                 $this->testTelegram();
+            } elseif (!empty($_POST['test_jabber'])) {
+	            $this->testJabber();
             }
 
             if ($language_refresh) {
@@ -255,6 +269,8 @@ class ConfigController extends AbstractController
                 $this->default_tab = 'pushover';
             } elseif (isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
                 $this->default_tab = 'telegram';
+            } elseif (isset($_POST['jabber_submit']) || !empty($_POST['test_jabber'])) {
+	            $this->default_tab = 'jabber';
             }
         }
         return $this->runAction('index');
@@ -379,6 +395,26 @@ class ConfigController extends AbstractController
         }
     }
 
+	/**
+	 * Test Jabber.
+	 */
+    protected function testJabber()
+    {
+	    $user = $this->getUser()->getUser();
+	    psm_jabber_send_message(
+		    psm_get_conf('jabber_host'),
+		    psm_get_conf('jabber_username'),
+		    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+		    $user->jabber,
+		    psm_get_lang('config', 'test_message'),
+		    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+		    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+	    );
+	    // no message - async ... so just info
+	    $this->addMessage(psm_get_lang('config', 'jabber_check'), 'info');
+	    // @todo possible to set message via ajax with callback ...
+    }
+
     protected function getLabels()
     {
         return array(
@@ -386,10 +422,12 @@ class ConfigController extends AbstractController
             'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
             'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
+	        'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
             'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
+	        'label_settings_jabber' => psm_get_lang('config', 'settings_jabber'),
             'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
             'label_settings_log' => psm_get_lang('config', 'settings_log'),
             'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
@@ -430,6 +468,18 @@ class ConfigController extends AbstractController
             'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
             'label_telegram_api_token' => psm_get_lang('config', 'telegram_api_token'),
             'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
+            'label_jabber_status' => psm_get_lang('config', 'jabber_status'),
+	        'label_jabber_description' => psm_get_lang('config', 'jabber_description'),
+            'label_jabber_host' => psm_get_lang('config', 'jabber_host'),
+	        'label_jabber_host_description' => psm_get_lang('config', 'jabber_host_description'),
+	        'label_jabber_port' => psm_get_lang('config', 'jabber_port'),
+	        'label_jabber_port_description' => psm_get_lang('config', 'jabber_port_description'),
+	        'label_jabber_username' => psm_get_lang('config', 'jabber_username'),
+	        'label_jabber_username_description' => psm_get_lang('config', 'jabber_username_description'),
+	        'label_jabber_domain' => psm_get_lang('config', 'jabber_domain'),
+	        'label_jabber_domain_description' => psm_get_lang('config', 'jabber_domain_description'),
+	        'label_jabber_password' => psm_get_lang('config', 'jabber_password'),
+	        'label_jabber_password_description' => psm_get_lang('config', 'jabber_password_description'),
             'label_alert_type' => psm_get_lang('config', 'alert_type'),
             'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
             'label_combine_notifications' => psm_get_lang('config', 'combine_notifications'),
@@ -440,6 +490,7 @@ class ConfigController extends AbstractController
             'label_log_sms' => psm_get_lang('config', 'log_sms'),
             'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
             'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
+	        'label_log_jabber' => psm_get_lang('config', 'log_jabber'),
             'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
             'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
             'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
