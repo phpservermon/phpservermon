@@ -67,7 +67,7 @@ class ConfigController extends AbstractController
         'email_smtp_host',
         'email_smtp_port',
         'email_smtp_username',
-        'email_smtp_password',
+        //'email_smtp_password', // not typical input - and saved encrypted
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
@@ -204,6 +204,8 @@ class ConfigController extends AbstractController
     {
         if (!empty($_POST)) {
             // save new config
+	        $emailSmtpPassword = filter_input(INPUT_POST, 'email_smtp_password');
+
             $clean = array(
                 'language' => $_POST['language'],
                 'sms_gateway' => $_POST['sms_gateway'],
@@ -216,6 +218,9 @@ class ConfigController extends AbstractController
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
                 'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
             );
+	        if ($emailSmtpPassword !== null && $emailSmtpPassword !== '') {
+		        $clean['email_smtp_password'] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $emailSmtpPassword);
+	        }
             foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
             }
@@ -411,6 +416,7 @@ class ConfigController extends AbstractController
             'label_email_smtp_security' => psm_get_lang('config', 'email_smtp_security'),
             'label_email_smtp_username' => psm_get_lang('config', 'email_smtp_username'),
             'label_email_smtp_password' => psm_get_lang('config', 'email_smtp_password'),
+            'label_email_smtp_password_description' => psm_get_lang('config', 'email_smtp_password_description'),
             'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
             'label_sms_status' => psm_get_lang('config', 'sms_status'),
             'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
