@@ -366,8 +366,10 @@ class StatusUpdater
             }
         }
 
-        // Check ssl cert
-        $this->checkSsl($this->server, $this->error, $result);
+        // Check ssl cert just when other error is not already in...
+	    if ($result !== false) {
+		    $this->checkSsl($this->server, $this->error, $result);
+	    }
 
         // check if server is available and rerun if asked.
         if (!$result && $run < $max_runs) {
