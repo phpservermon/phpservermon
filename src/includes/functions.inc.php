@@ -555,28 +555,27 @@ namespace {
             // update last check date
             psm_update_conf('last_update_check', time());
             $latest = psm_curl_get(PSM_UPDATE_URL);
-	        if ($latest['info'] === false || (int)$latest['info']['http_code'] >= 300) {
-	        	// error
-	        	return false;
-	        }
-            // extract latest version from Github.
-	        $githubInfo = json_decode($latest['exec']);
-	        if (property_exists($githubInfo, 'tag_name') === false) {
-	        	// version not found
-	        	return false;
-	        }
-	        $tagName = $githubInfo->tag_name;
-	        $latestVersion = str_replace('v', '', $tagName);
-	        // check from old version ... maybe has reason but I don't think so ...
-	        if (empty($latestVersion) === true || strlen($latestVersion) >= 15) {
-            	// weird version
-            	return false;
-
+            if ($latest['info'] === false || (int)$latest['info']['http_code'] >= 300) {
+                // error
+                return false;
             }
-	        // add latest version to database
-	        psm_update_conf('version_update_check', $latestVersion);
+            // extract latest version from Github.
+            $githubInfo = json_decode($latest['exec']);
+            if (property_exists($githubInfo, 'tag_name') === false) {
+                // version not found
+                return false;
+            }
+            $tagName = $githubInfo->tag_name;
+            $latestVersion = str_replace('v', '', $tagName);
+            // check from old version ... maybe has reason but I don't think so ...
+            if (empty($latestVersion) === true || strlen($latestVersion) >= 15) {
+                // weird version
+                return false;
+            }
+            // add latest version to database
+            psm_update_conf('version_update_check', $latestVersion);
         } else {
-	        $latestVersion = psm_get_conf('version_update_check');
+            $latestVersion = psm_get_conf('version_update_check');
         }
 
         $current = psm_get_conf('version');
