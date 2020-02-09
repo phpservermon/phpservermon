@@ -357,8 +357,8 @@ class Installer
         if (version_compare($version_from, '3.4.6-beta.1', '<')) {
             $this->upgrade346();
         }
-        if (version_compare($version_from, '3.4.7', '<')) {
-            $this->upgrade347();
+        if (version_compare($version_from, '3.4.6-beta.3', '<')) {
+            $this->upgrade346();
         }
         psm_update_conf('version', $version_to);
     }
@@ -685,15 +685,6 @@ class Installer
             ADD `ssl_cert_expiry_days` MEDIUMINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
             $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
-        $this->execSQL($queries);
-    }
-
-    /**
-     * Upgrade for v3.4.7
-     */
-    protected function upgrade347()
-    {
-        $queries = [];
         $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
             NOT NULL AFTER `telegram_id`;';
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `jabber` ENUM( 'yes','no' ) 
