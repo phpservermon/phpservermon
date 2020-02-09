@@ -415,14 +415,21 @@ class StatusUpdater
             $server['ssl_cert_expiry_days'] > 0
         ) {
             $cert_expiration_date = strtotime($this->curl_info['certinfo'][0]['Expire date']);
-            $expiration_time = round((int)($cert_expiration_date - time()) / 86400);
+            $expiration_time =
+                round((int)($cert_expiration_date - time()) / 86400);
             $latest_time = time() + (86400 * $server['ssl_cert_expiry_days']);
-            if ($expiration_time >= 0) {
+
+            if ($expiration_time - $server['ssl_cert_expiry_days'] < 0) {
+                // Cert is not expired, but date is withing user set range
                 $this->header = psm_get_lang('servers', 'ssl_cert_expiring') . " " .
                     psm_date($this->curl_info['certinfo'][0]['Expire date']) .
                     "\n\n" . $this->header;
+                $save['ssl_cert_expired_time'] = $expiration_time - $server['ssl_cert_expiry_days'];
+            } elseif ($expiration_time >= 0) {
+                // Cert is not expired
                 $save['ssl_cert_expired_time'] = null;
             } else {
+                // Cert is expired
                 $error = psm_get_lang('servers', 'ssl_cert_expired') . " " .
                     psm_timespan($cert_expiration_date) . ".\n\n" .
                     $error;
