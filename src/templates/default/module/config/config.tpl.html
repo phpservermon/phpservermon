@@ -99,7 +99,7 @@
                 <!-- email user -->
                 {{ macro.input_field("text", "email_smtp_username", null, "email_smtp_username", label_email_smtp_username, email_smtp_username, label_email_smtp_username, "255") }}
                 <!-- email password -->
-                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_email_smtp_password, "255", null, null, null, true) }}
+                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_leave_blank, "255", null, null, null, true) }}
                 {{ macro.button_test("testEmail", label_test) }}
                 {{ macro.input_hidden("test_email", "0") }}
                 {{ macro.button_save("email_submit",  label_save) }}

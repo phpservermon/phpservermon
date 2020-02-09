@@ -348,6 +348,9 @@ class Installer
         if (version_compare($version_from, '3.4.6-beta.1', '<')) {
             $this->upgrade346();
         }
+        if (version_compare($version_from, '3.4.6-beta.2', '<')) {
+            $this->upgrade346();
+        }
         psm_update_conf('version', $version_to);
     }
 
@@ -671,8 +674,22 @@ class Installer
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expiry_days` MEDIUMINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
-            $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
+            
+        if (
+            @psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            ) === false
+        ) {
+            // Prevents encrypting the password multiple times.
+            $queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` 
+                SET `value` = '" .
+                psm_password_encrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password')) .
+                "' WHERE `key` = 'email_smtp_password'";
+            $this->log('SMTP password is now encrypted.');
+        }
         $this->execSQL($queries);
     }
 }
