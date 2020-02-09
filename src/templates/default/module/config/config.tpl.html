@@ -129,6 +129,7 @@
         <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-telegram-tab">
             <fieldset>
                 <legend>{{ label_settings_pushover }}</legend>
+                <p>{{ label_pushover_description|raw }}</p>
                 <!-- enable pushover -->
                 {{ macro.input_checkbox("pushover_status", "pushover_status", label_pushover_status, pushover_status_checked) }}
                 <!-- enable pushover log -->
@@ -143,6 +144,7 @@
         <div class="tab-pane {{ telegram_active }}" id="config-telegram" role="tabpanel" aria-labelledby="config-pushover-tab">
             <fieldset>
                 <legend>{{ label_settings_telegram }}</legend>
+                <p>{{ label_telegram_description|raw }}</p>
                 <!-- enable telegram -->
                 {{ macro.input_checkbox("telegram_status", "telegram_status[]", label_telegram_status, telegram_status_checked) }}
                 <!-- enable telegram log -->
