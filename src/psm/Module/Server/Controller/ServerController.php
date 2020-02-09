@@ -97,13 +97,6 @@ class ServerController extends AbstractServerController
             psm_get_lang('menu', 'server_update')
         );
 
-        $icons = array(
-            'email' => 'icon-envelope',
-            'sms' => 'icon-mobile',
-            'pushover' => 'icon-pushover',
-            'telegram' => 'icon-telegram',
-        );
-
         $servers = $this->getServers();
         $server_count = count($servers);
 
@@ -126,6 +119,12 @@ class ServerController extends AbstractServerController
             $servers[$x] = $this->formatServer($servers[$x]);
         }
         $tpl_data['servers'] = $servers;
+
+        $tpl_data['config']['email'] = psm_get_conf('email_status');
+        $tpl_data['config']['sms'] = psm_get_conf('sms_status');
+        $tpl_data['config']['pushover'] = psm_get_conf('pushover_status');
+        $tpl_data['config']['telegram'] = psm_get_conf('telegram_status');
+
         return $this->twig->render('module/server/server/list.tpl.html', $tpl_data);
     }
 
