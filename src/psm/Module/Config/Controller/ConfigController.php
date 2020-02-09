@@ -186,14 +186,7 @@ class ConfigController extends AbstractController
         }
         // encrypted fields
         foreach ($this->encryptedFields as $encryptedField) {
-            if (true === isset($config[$encryptedField]) && trim($config[$encryptedField])) {
-                $tpl_data[$encryptedField] = psm_password_decrypt(
-                    $config['password_encrypt_key'],
-                    $config[$encryptedField]
-                );
-            } else {
-                $tpl_data[$encryptedField] = '';
-            }
+            $tpl_data[$encryptedField] = '';
         }
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
@@ -246,9 +239,8 @@ class ConfigController extends AbstractController
                 $value = filter_input(INPUT_POST, $encryptedField);
                 if ($value !== null && $value !== '') {
                     $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
-                } else {
-                    $clean[$encryptedField] = '';
                 }
+                // else { leave as is }
             }
             $language_refresh = ($clean['language'] != psm_get_conf('language'));
             foreach ($clean as $key => $value) {
@@ -478,6 +470,7 @@ class ConfigController extends AbstractController
             'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
             'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
             'label_days' => psm_get_lang('config', 'log_retention_days'),
+            'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
 
         );
     }
