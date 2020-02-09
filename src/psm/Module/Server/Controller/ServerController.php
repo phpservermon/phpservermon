@@ -114,6 +114,9 @@ class ServerController extends AbstractServerController
                 $servers[$x]['ip'] = '<a href="' . $servers[$x]['ip'] .
                     '" target="_blank" rel="noopener">' . $ip . '</a>';
             }
+            if ($servers[$x]['type'] == 'ping') {
+                $servers[$x]['port'] = '';
+            }
             if (($servers[$x]['active'] == 'yes')) {
                 $servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
             } else {
