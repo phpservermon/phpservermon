@@ -74,12 +74,12 @@ class ConfigController extends AbstractController
         'telegram_api_token',
     );
 
-	/**
-	 * Fields for saving encrypted.
-	 * @var array
-	 */
+    /**
+     * Fields for saving encrypted.
+     * @var array
+     */
     protected $encryptedFields = [
-    	'email_smtp_password'
+        'email_smtp_password'
     ];
 
     private $default_tab = 'general';
@@ -185,12 +185,15 @@ class ConfigController extends AbstractController
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
         // encrypted fields
-	    foreach ($this->encryptedFields as $encryptedField) {
-		    if (true === isset($config[$encryptedField]) && trim($config[$encryptedField])) {
-		    	$tpl_data[$encryptedField] = psm_password_decrypt($config['password_encrypt_key'], $config[$encryptedField]);
-		    } else {
-			    $tpl_data[$encryptedField] = '';
-		    }
+        foreach ($this->encryptedFields as $encryptedField) {
+            if (true === isset($config[$encryptedField]) && trim($config[$encryptedField])) {
+                $tpl_data[$encryptedField] = psm_password_decrypt(
+                    $config['password_encrypt_key'],
+                    $config[$encryptedField]
+                );
+            } else {
+                $tpl_data[$encryptedField] = '';
+            }
         }
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
@@ -219,7 +222,7 @@ class ConfigController extends AbstractController
     {
         if (!empty($_POST)) {
             // save new config
-	        $clean = array(
+            $clean = array(
                 'language' => $_POST['language'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
@@ -231,7 +234,7 @@ class ConfigController extends AbstractController
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
                 'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
             );
-	        foreach ($this->checkboxes as $input_key) {
+            foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
             }
             foreach ($this->fields as $input_key) {
@@ -240,12 +243,12 @@ class ConfigController extends AbstractController
                 }
             }
             foreach ($this->encryptedFields as $encryptedField) {
-            	$value = filter_input(INPUT_POST, $encryptedField);
-	            if ($value !== null && $value !== '') {
-		            $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
-	            } else {
-		            $clean[$encryptedField] = '';
-	            }
+                $value = filter_input(INPUT_POST, $encryptedField);
+                if ($value !== null && $value !== '') {
+                    $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
+                } else {
+                    $clean[$encryptedField] = '';
+                }
             }
             $language_refresh = ($clean['language'] != psm_get_conf('language'));
             foreach ($clean as $key => $value) {

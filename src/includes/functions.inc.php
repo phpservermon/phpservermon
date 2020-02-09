@@ -595,7 +595,10 @@ namespace {
             $phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
             $smtp_user = psm_get_conf('email_smtp_username');
-            $smtp_pass = psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password'));
+            $smtp_pass = psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            );
 
             if ($smtp_user != '' && $smtp_pass != '') {
                 $phpmailer->SMTPAuth = true;

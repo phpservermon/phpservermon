@@ -190,12 +190,12 @@ class Installer
     protected function installTables()
     {
         $tables = array(
-            PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
+        PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
 				`key` varchar(255) NOT NULL,
 				`value` varchar(255) NOT NULL,
 				PRIMARY KEY (`key`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
+        PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
 				`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
 				`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
@@ -212,19 +212,19 @@ class Installer
                 PRIMARY KEY (`user_id`),
                 UNIQUE KEY `unique_username` (`user_name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX .
-            'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+        PSM_DB_PREFIX .
+        'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
 				`user_id` int(11) unsigned NOT NULL,
 				`key` varchar(255) NOT NULL,
 				`value` varchar(255) NOT NULL,
                 PRIMARY KEY (`user_id`, `key`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
+        PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
 				`user_id` INT( 11 ) UNSIGNED NOT NULL ,
 				`server_id` INT( 11 ) UNSIGNED NOT NULL ,
                 PRIMARY KEY ( `user_id` , `server_id` )
             ) ENGINE = MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
+        PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
 				`log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`server_id` int(11) unsigned NOT NULL,
 				`type` enum('status','email','sms','pushover','telegram') NOT NULL,
@@ -232,12 +232,12 @@ class Installer
 				`datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
                 PRIMARY KEY  (`log_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
+        PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
                 `log_id`  int(11) UNSIGNED NOT NULL ,
                 `user_id`  int(11) UNSIGNED NOT NULL ,
                 PRIMARY KEY (`log_id`, `user_id`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
+        PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
 				`server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`ip` varchar(500) NOT NULL,
 				`port` int(5) NOT NULL,
@@ -275,7 +275,7 @@ class Installer
 				`last_output` TEXT,
 				PRIMARY KEY  (`server_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
+        PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
                 `servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `server_id` int(11) unsigned NOT NULL,
                 `date` datetime NOT NULL,
@@ -284,7 +284,7 @@ class Installer
                 PRIMARY KEY (`servers_uptime_id`),
                 KEY `server_id` (`server_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
-            PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
+        PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
 				`servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`server_id` int(11) unsigned NOT NULL,
 				`date` date NOT NULL,
@@ -671,7 +671,7 @@ class Installer
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expiry_days` MEDIUMINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
-            $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
         $this->execSQL($queries);
     }
