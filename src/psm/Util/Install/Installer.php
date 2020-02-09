@@ -358,7 +358,7 @@ class Installer
             $this->upgrade346();
         }
         if (version_compare($version_from, '3.4.7', '<')) {
-        	$this->upgrade347();
+            $this->upgrade347();
         }
         psm_update_conf('version', $version_to);
     }
@@ -688,20 +688,20 @@ class Installer
         $this->execSQL($queries);
     }
 
-	/**
-	 * Upgrade for v3.4.7
-	 */
+    /**
+     * Upgrade for v3.4.7
+     */
     protected function upgrade347()
     {
-		$queries = [];
-	    $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
+        $queries = [];
+        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
             NOT NULL AFTER `telegram_id`;';
-	    $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `jabber` ENUM( 'yes','no' ) 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `jabber` ENUM( 'yes','no' ) 
             NOT NULL DEFAULT 'yes' AFTER  `telegram`;";
-	    $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX .
-		    "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram', 'jabber' )
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX .
+            "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram', 'jabber' )
             CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
-	    $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
 					('jabber_status', '0'),
 					('log_jabber', '1'),
 					('jabber_host', ''),
@@ -709,6 +709,6 @@ class Installer
 					('jabber_username', ''),
 					('jabber_domain', ''),
 					('jabber_password', '');";
-	    $this->execSQL($queries);
+        $this->execSQL($queries);
     }
 }
