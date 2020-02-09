@@ -293,7 +293,6 @@ $sm_lang = array(
         'email_smtp_security_none' => 'None',
         'email_smtp_username' => 'SMTP username',
         'email_smtp_password' => 'SMTP password',
-        //'email_smtp_password_description' => '',
         'email_smtp_noauth' => 'Leave blank for no authentication',
         'sms_status' => 'Allow sending text messages',
         'sms_gateway' => 'Gateway to use for sending messages',

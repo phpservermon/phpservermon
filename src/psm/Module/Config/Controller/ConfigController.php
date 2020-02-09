@@ -429,7 +429,6 @@ class ConfigController extends AbstractController
             'label_email_smtp_security' => psm_get_lang('config', 'email_smtp_security'),
             'label_email_smtp_username' => psm_get_lang('config', 'email_smtp_username'),
             'label_email_smtp_password' => psm_get_lang('config', 'email_smtp_password'),
-            'label_email_smtp_password_description' => psm_get_lang('config', 'email_smtp_password_description'),
             'label_email_smtp_noauth' => psm_get_lang('config', 'email_smtp_noauth'),
             'label_sms_status' => psm_get_lang('config', 'sms_status'),
             'label_sms_gateway' => psm_get_lang('config', 'sms_gateway'),
