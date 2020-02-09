@@ -23,8 +23,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - Version [e.g. 3.3.5, develop]
+**Version (please complete the following information):**
+ - Version [e.g. 3.3.5]
+ - PHP [e.g. 7.3]
 
 **Additional context**
 Add any other context about the problem here.
