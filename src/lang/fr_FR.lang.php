@@ -113,16 +113,18 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover est un service qui simplifie les notifications en temps réel. Voir <a
- href="https://pushover.net/">leur site web</a> pour plus d\'informations.',
+ href="https://pushover.net/" target="_blank">leur site web</a> pour plus
+ d\'informations.',
         'pushover_key' => 'Clé Pushover',
         'pushover_device' => 'Appareil Pushover',
         'pushover_device_description' => 'Nom de l\'appareil auquel le message doit être envoyé. Laissez vide pour
  l\'envoyer à tous les appareils.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> est une application de messagerie
- instantanée qui facilite la réception de notification en temps réel. Lisez la <a
- href="http://docs.phpservermonitor.org/">documentation</a> pour obtenir plus
- d\'informations sur la configuration de ce service.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> est une application de
+ messagerie instantanée qui facilite la réception de notification en temps réel.
+ Lisez la <a href="http://docs.phpservermonitor.org/"
+ target="_blank">documentation</a> pour obtenir plus d\'informations sur la
+ configuration de ce service.',
         'telegram_chat_id' => 'ID de conversation (Chat ID) Telegram',
         'telegram_chat_id_description' => 'Les notifications seront envoyées à la conversation correspondante.',
         'telegram_get_chat_id' => 'Cliquez ici pour obtenir votre ID de conversation (Chat ID)',
@@ -302,22 +304,23 @@ $sm_lang = array(
         'sms_from' => 'SMS de l\'expéditeur',
         'pushover_status' => 'Autoriser l\'envoi des messages Pushover',
         'pushover_description' => 'Pushover est un service qui simplifie les notifications en temps réel. Voir <a
- href="https://pushover.net/">leur site web</a> pour plus d\'informations.',
+ href="https://pushover.net/" target="_blank">leur site web</a> pour plus
+ d\'informations.',
         'pushover_clone_app' => 'Cliquez ici pour créer votre application Pushover',
         'pushover_api_token' => 'Jeton application Pushover',
         'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s"
  target="_blank" rel="noopener">créer une application</a> sur leur site
  web et entrer ici le jeton (Token) de l\'application.',
         'telegram_status' => 'Autorise l\'envoi de message Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> est une application de messagerie
- instantanée qui facilite la réception de notification en temps réel. Lisez la <a
- href="http://docs.phpservermonitor.org/">documentation</a> pour obtenir plus
- d\'informations sur la configuration de ce service.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> est une application de
+ messagerie instantanée qui facilite la réception de notification en temps réel.
+ Lisez la <a href="http://docs.phpservermonitor.org/"
+ target="_blank">documentation</a> pour obtenir plus d\'informations sur la
+ configuration de ce service.',
         'telegram_api_token' => 'Token API Telegram',
         'telegram_api_token_description' => 'Afin de pouvoir utiliser Telegram, il vous faut obtenir un token api.
- Consultez la <a
- href="http://docs.phpservermonitor.org/">documentation</a> pour obtenir
- de l\'aide.',
+ Consultez la <a href="http://docs.phpservermonitor.org/"
+ target="_blank">documentation</a> pour obtenir de l\'aide.',
         'alert_type' => 'Choisissez quand vous souhaitez être notifié',
         'alert_type_description' => '<b>Changement d\'état&nbsp;: </b>Vous recevez une notification chaque fois que
  le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE

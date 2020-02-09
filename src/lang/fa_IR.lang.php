@@ -97,7 +97,8 @@ $sm_lang = array(
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover سرویسی است که دریافت اطلاعیه های بلادرنگ
  را ساده می کند. برای اطلاعات بیشتر <a
- href="https://pushover.net/">سایت آن ها</a> را ببینید.',
+ href="https://pushover.net/" target="_blank">سایت آن ها</a> را
+ ببینید.',
         'pushover_key' => 'کلید Pushover',
         'pushover_device' => 'دستگاه Pushover',
         'pushover_device_description' => 'نام دستگاه برای ارسال پیام. برای ارسال به
@@ -217,7 +218,8 @@ $sm_lang = array(
         'pushover_status' => 'اجازه ارسال پیام های Pushover',
         'pushover_description' => 'Pushover سرویسی است که دریافت اطلاعیه های بلادرنگ
  را ساده می کند. برای اطلاعات بیشتر <a
- href="https://pushover.net/">سایت آن ها</a> را ببینید.',
+ href="https://pushover.net/" target="_blank">سایت آن ها</a> را
+ ببینید.',
         'pushover_clone_app' => 'برای ایجاد برنامه پوش آور خود اینجا را کلیک
  کنید.',
         'pushover_api_token' => 'رمز API برنامه پوش آور',

@@ -91,7 +91,7 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian
- thực. Xem <a href="https://pushover.net/">website của họ</a> để biết
+ thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a> để biết
  thêm thông tin.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
@@ -208,7 +208,7 @@ $sm_lang = array(
         'sms_from' => 'Số điện thoại của người gửi',
         'pushover_status' => 'Cho phép gửi tin nhắn bằng Pushover',
         'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian
- thực. Xem <a href="https://pushover.net/">website của họ</a> để biết
+ thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a> để biết
  thêm thông tin.',
         'pushover_clone_app' => 'Nhấn vào đây để tạo ứng dụng Pushover của bạn',
         'pushover_api_token' => 'Pushover App API Token',

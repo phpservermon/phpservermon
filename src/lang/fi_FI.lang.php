@@ -94,7 +94,7 @@ $sm_lang = array(
         'email' => 'Sähköposti',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover on palvelu jolla on helppo lähettää reaaliaikaisia tilaviestejä. Katso
- <a href="https://pushover.net/">verkkosivuilta</a> lisäinfoa.',
+ <a href="https://pushover.net/" target="_blank">verkkosivuilta</a> lisäinfoa.',
         'pushover_key' => 'Pushover avain',
         'pushover_device' => 'Pushover laite',
         'pushover_device_description' => 'Laitteen nimi johon viesti lähetetään. Jätä tyhjäksi lähettääksesi
@@ -209,7 +209,7 @@ $sm_lang = array(
         'sms_from' => 'Lähettäjän puhelinnumero',
         'pushover_status' => 'Salli Pushover-viestien lähetys',
         'pushover_description' => 'Pushover on palvelu jolla on helppo lähettää reaaliaikaisia tilaviestejä. Katso
- <a href="https://pushover.net/">verkkosivuilta</a> lisäinfoa.',
+ <a href="https://pushover.net/" target="_blank">verkkosivuilta</a> lisäinfoa.',
         'pushover_clone_app' => 'Paina tästä luodaksesi Pushover-sovelluksesi',
         'pushover_api_token' => 'Pushover API-avain',
         'pushover_api_token_description' => 'Ennen kuin voit käyttää Pushoveria, sinun täytyy <a href="%1$s"

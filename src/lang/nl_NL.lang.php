@@ -110,7 +110,7 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te
- ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer
+ ontvangen. Zie <a href="https://pushover.net/" target="_blank">hun website</a> voor meer
  informatie.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
@@ -264,7 +264,7 @@ $sm_lang = array(
         'sms_from' => 'Telefoonnummer afzender',
         'pushover_status' => 'Sta Pushover berichten toe?',
         'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te
- ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer
+ ontvangen. Zie <a href="https://pushover.net/" target="_blank">hun website</a> voor meer
  informatie.',
         'pushover_clone_app' => 'Klik hier om je Pushover app te maken',
         'pushover_api_token' => 'Pushover App API Token',

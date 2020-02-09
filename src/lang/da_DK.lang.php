@@ -92,7 +92,8 @@ $sm_lang = array(
         'email' => 'E-mail',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover er en service der gør det let at modtage real-time notifikationer. Se <a
- href="https://pushover.net/">deres website</a> for mere information.',
+ href="https://pushover.net/" target="_blank">deres website</a> for mere
+ information.',
         'pushover_key' => 'Pushover nøgle',
         'pushover_device' => 'Pushover enhed',
         'pushover_device_description' => 'Navnet på enheden som beskeden skal sendes til. Lad denne være tom hvis
@@ -208,7 +209,8 @@ $sm_lang = array(
         'sms_from' => 'Afsenderens navn.',
         'pushover_status' => 'Tillad at sende Pushover beskeder',
         'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a
- href="https://pushover.net/">deres website</a> for yderligere information.',
+ href="https://pushover.net/" target="_blank">deres website</a> for yderligere
+ information.',
         'pushover_clone_app' => 'Klik her for at oprette din Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank"
