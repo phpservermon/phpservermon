@@ -77,8 +77,7 @@ class ConfigController extends AbstractController
 	    'jabber_host',
 	    'jabber_port',
 	    'jabber_username',
-	    'jabber_domain',
-	    //'jabber_password' // not typical input - and saved encrypted
+	    'jabber_domain'
     );
 
     /**
@@ -86,7 +85,8 @@ class ConfigController extends AbstractController
      * @var array
      */
     protected $encryptedFields = [
-        'email_smtp_password'
+        'email_smtp_password',
+	    'jabber_password'
     ];
 
     private $default_tab = 'general';
@@ -221,9 +221,7 @@ class ConfigController extends AbstractController
     protected function executeSave()
     {
         if (!empty($_POST)) {
-        	$jabberPassword = filter_input(INPUT_POST, 'jabber_password');
-
-            // save new config
+        	// save new config
             $clean = array(
                 'language' => $_POST['language'],
                 'sms_gateway' => $_POST['sms_gateway'],
@@ -236,10 +234,7 @@ class ConfigController extends AbstractController
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
                 'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime()))
             );
-	        if ($jabberPassword !== null && $jabberPassword !== '') {
-		        $clean['jabber_password'] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $jabberPassword);
-	        }
-            foreach ($this->checkboxes as $input_key) {
+	        foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
             }
             foreach ($this->fields as $input_key) {
