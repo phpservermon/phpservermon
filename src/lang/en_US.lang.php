@@ -113,15 +113,15 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a
- href="https://pushover.net/">their website</a> for more info.',
+ href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Device name to send the message to. Leave empty to send it to all devices.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to
- get real-time notifications. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
- install guide.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that
+ makes it easy to get real-time notifications. Visit the <a
+ href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more
+ info and an install guide.',
         'telegram_chat_id' => 'Telegram chat id',
         'telegram_chat_id_description' => 'The message will be send to the corresponding chat.',
         'telegram_get_chat_id' => 'Click here to get your chat id',
@@ -269,8 +269,8 @@ $sm_lang = array(
         'error_server_ip_bad_website' => 'The website URL is not valid.',
         'error_server_type_invalid' => 'The selected server type is invalid.',
         'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
-        'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid integer
- greater than or equal to 0.',
+        'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid
+ integer greater than or equal to 0.',
     ),
     'config' => array(
         'general' => 'General',
@@ -301,20 +301,21 @@ $sm_lang = array(
         'sms_from' => 'Sender\'s phone number',
         'pushover_status' => 'Allow sending Pushover messages',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a
- href="https://pushover.net/">their website</a> for more info.',
+ href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_clone_app' => 'Click here to create your Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank"
  rel="noopener">register an App</a> at their website and enter the App API
  Token here.',
         'telegram_status' => 'Allow sending Telegram messages',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to
- get real-time notifications. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
- install guide.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that
+ makes it easy to get real-time notifications. Visit the <a
+ href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more
+ info and an install guide.',
         'telegram_api_token' => 'Telegram API Token',
         'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for help.',
+ href="http://docs.phpservermonitor.org/"
+ target="_blank">documentation</a> for help.',
         'alert_type' => 'Select when you\'d like to be notified.',
         'alert_type_description' => '<b>Status change:</b> You will receive a notification when a server has a change
  in status. So from online -> offline or offline -> online.<br><br><b>Offline:</b>

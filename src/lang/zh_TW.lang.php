@@ -110,9 +110,9 @@ $sm_lang = array(
         'pushover_device' => 'Pushover 裝置',
         'pushover_device_description' => '發送訊息的裝置名稱，若保留空白，將會發送到所有的裝置。',
         'telegram' => 'Telegram 通知',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a>
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a>
  是一種聊天應用程式，它提供很容易使用的的即時通知能力。您可以到
- <a href="http://docs.phpservermonitor.org/">documentation</a>
+ <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a>
  了解更多的內容。',
         'telegram_chat_id' => 'Telegram Chat ID',
         'telegram_chat_id_description' => '將訊息發送到指定的聊天室',
@@ -258,18 +258,18 @@ $sm_lang = array(
         'sms_from' => '發送人電話號碼',
         'pushover_status' => '啟用Pushover通知',
         'pushover_description' => 'Pushover是線上服務，讓您可以方便的收到即時通知，請參考 <a
- href="https://pushover.net/"> 網站</a> 可以得到更詳細的資訊。</a> ',
+ href="https://pushover.net/" target="_blank"> 網站</a> 可以得到更詳細的資訊。</a> ',
         'pushover_clone_app' => '點選這裡可快速建立Pushover App',
         'pushover_api_token_description' => '在您使用 Pushover 通知之前，需要先到這裡-><a href="%1$s"
  target="_blank"  rel="noopener">註冊Pushover App帳號</a>
  接著在這個網頁輸入你的的Pushover App API Token號碼。',
         'telegram_status' => '允許發送 Telegram 訊息',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a>
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a>
  是一種聊天應用程式，它提供很容易使用的即時通知服務。請參考
- <a href="http://docs.phpservermonitor.org/">文件庫</a>
+ <a href="http://docs.phpservermonitor.org/" target="_blank">文件庫</a>
  可以取得更多資訊與安裝說明。',
         'telegram_api_token_description' => '使用 Telegram 通知之前，您必需先取得 API Token。請到 <a
- href="http://docs.phpservermonitor.org/">文件庫</a> 取得說明。',
+ href="http://docs.phpservermonitor.org/" target="_blank">文件庫</a> 取得說明。',
         'alert_type' => '需要提醒的類別',
         'alert_type_description' => '<b>狀態改變：</b> 伺服器 連線 -> 離線或連線 ->
  連線的狀態變化將會收到提醒通知。<br/><br /><b>離線：</b>

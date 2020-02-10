@@ -5,9 +5,8 @@
 		<div class="row">
 			{% for server in servers_offline %}
 			<div class="col-sm-4 col-md-3">
-				<noscript><a href="{{ server.url_view|raw }}"></noscript>
 				<div class="card text-white bg-danger mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></div>
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></div>
 					<div class="card-body">
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
@@ -15,14 +14,12 @@
 						</p>
 					</div>
 				</div>
-				<noscript></a></noscript>
 			</div>
 			{% endfor %}
 			{% for server in servers_warning %}
 			<div class="col-sm-4 col-md-3">
-				<noscript><a href="{{ server.url_view|raw }}"></noscript>
 				<div class="card text-white bg-warning mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></div>
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></div>
 					<div class="card-body">
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
@@ -30,14 +27,12 @@
 						</p>
 					</div>
 				</div>
-				<noscript></a></noscript>
 			</div>
 			{% endfor %}
 			{% for server in servers_online %}
 			<div class="col-sm-4 col-md-3">
-				<noscript><a href="{{ server.url_view|raw }}"></noscript>
 				<div class="card text-white bg-success mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></div>
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></div>
 					<div class="card-body">
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
@@ -46,7 +41,6 @@
 						</p>
 					</div>
 				</div>
-				<noscript></a></noscript>
 			</div>
 			{% endfor %}
 			{% if not servers_offline and not servers_warning and not servers_online %}
@@ -72,7 +66,7 @@
 				<tbody>
 					{% for server in servers_offline %}
 						<tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></th>
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_checked_nice }}</td>
 							<td></td>
@@ -80,7 +74,7 @@
 					{% endfor %}
 					{% for server in servers_warning %}
 						<tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></th>
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_checked_nice }}</td>
 							<td></td>
@@ -100,7 +94,7 @@
 				<tbody>
 					{% for server in servers_online %}
 						<tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></th>
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
 							<td>{{ server.rtime }}s</td>

@@ -396,7 +396,6 @@ class UserController extends AbstractController
             'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
             'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
             'label_telegram' => psm_get_lang('users', 'telegram'),
-            'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
             'label_telegram_id' => psm_get_lang('users', 'telegram_chat_id'),
             'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
             'label_email' => psm_get_lang('users', 'email'),

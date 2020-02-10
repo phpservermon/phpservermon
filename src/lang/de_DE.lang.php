@@ -93,8 +93,8 @@ $sm_lang = array(
         'email' => 'E-Mail',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in
- Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a>
- für weitere Informationen.',
+ Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/"
+ target="_blank">pushover.net</a> für weitere Informationen.',
         'pushover_key' => 'Pushover Key/Schlüssel',
         'pushover_device' => 'Pushover Gerät',
         'pushover_device_description' => 'Name des Gerätes, an das die Nachricht gesendet werden soll. Leer lassen,
@@ -213,8 +213,8 @@ $sm_lang = array(
         'sms_from' => 'SMS-Sendernummer',
         'pushover_status' => 'Ermögliche das Senden von Pushover-Nachrichten',
         'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in
- Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a>
- für weitere Informationen.',
+ Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/"
+ target="_blank">pushover.net</a> für weitere Informationen.',
         'pushover_clone_app' => 'Klicken Sie hier, um Ihre Pushover-Anwendung zu erstellen',
         'pushover_api_token' => 'Pushover-Anwendungs-API-Token',
         'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s"

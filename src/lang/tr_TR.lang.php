@@ -95,7 +95,7 @@ $sm_lang = array(
         'email' => 'E-posta',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover gerçek zamanlı bildirim alabilmek için bir servistir. Daha fazla bilgi
- için <a href="https://pushover.net/">sitesine</a> bakabilirsiniz.',
+ için <a href="https://pushover.net/" target="_blank">sitesine</a> bakabilirsiniz.',
         'pushover_key' => 'Pushover Anahtarı',
         'pushover_device' => 'Pushover Aracı',
         'pushover_device_description' => 'Mesajın gönderileceği cihazın adı. Tüm cihazlara göndermek için boş
@@ -211,7 +211,7 @@ $sm_lang = array(
         'sms_from' => 'Gönderen numarası',
         'pushover_status' => 'Pushover mesaj gönderimine izin ver',
         'pushover_description' => 'Pushover gerçek zamanlı bildirim alabilmek için bir servistir. Daha fazla bilgi
- için <a href="https://pushover.net/">sitesine</a> bakabilirsiniz.',
+ için <a href="https://pushover.net/" target="_blank">sitesine</a> bakabilirsiniz.',
         'pushover_clone_app' => 'Pushover uygulaması oluşturmak için buraya tıklayınız.',
         'pushover_api_token' => 'Pushover Uygulaması API Token Bilgisi',
         'pushover_api_token_description' => 'Pushover kullanmadan önce, <a href="%1$s" target="_blank"

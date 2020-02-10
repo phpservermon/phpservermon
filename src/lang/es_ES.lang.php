@@ -116,17 +116,17 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover es un servicio que hace que sea fácil de obtener notificaciones en tiempo
- real. Vea <a href="https://pushover.net/"> su página web </a> para más
- información.',
+ real. Vea <a href="https://pushover.net/" target="_blank"> su página web </a> para
+ más información.',
         'pushover_key' => 'Clave Pushover',
         'pushover_device' => 'Dispositivo Pushover',
         'pushover_device_description' => 'Nombre del dispositivo para enviar el mensaje. Dejar en blanco para enviarlo
  a todos los dispositivos.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to
- get real-time notifications. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
- install guide.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that
+ makes it easy to get real-time notifications. Visit the <a
+ href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more
+ info and an install guide.',
         'telegram_chat_id' => 'Telegram chat id',
         'telegram_chat_id_description' => 'El mensaje será enviado al chat correspondiente.',
         'telegram_get_chat_id' => 'Haga click aquí para obtener su chat id',
@@ -302,22 +302,22 @@ $sm_lang = array(
         'sms_from' => 'Número origen del SMS',
         'pushover_status' => '¿Habilitar el envío de mensajes Pushover?',
         'pushover_description' => 'Pushover es un servicio que hace que sea fácil de obtener notificaciones en tiempo
- real. Vea <a href="https://pushover.net/"> su página web </a> para más
- información.',
+ real. Vea <a href="https://pushover.net/" target="_blank"> su página web </a> para
+ más información.',
         'pushover_clone_app' => 'Haga clic aquí para crear tu aplicación Pushover',
         'pushover_api_token' => 'Token API de Pushover',
         'pushover_api_token_description' => 'Antes de poder utilizar Pushover, necesita <a href="%1$s" target="_blank"
  rel="noopener"> registrar </a> su aplicación en la página web e
  ingresar el token API.',
         'telegram_status' => '¿Habilitar el envío de mensajes de Telegram?',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> es una aplicación de mensajería
- instantánea que permite recibir notificaciones en tiempo real. Visite la <a
- href="http://docs.phpservermonitor.org/">documentación</a> para una guía mas
- detallada.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> es una aplicación de
+ mensajería instantánea que permite recibir notificaciones en tiempo real. Visite
+ la <a href="http://docs.phpservermonitor.org/" target="_blank">documentación</a>
+ para una guía mas detallada.',
         'telegram_api_token' => 'Token API de Telegram',
         'telegram_api_token_description' => 'Antes de utilizar Telegram, necesita un Token de API. Visite la <a
- href="http://docs.phpservermonitor.org/">documentación</a> para más
- información.',
+ href="http://docs.phpservermonitor.org/"
+ target="_blank">documentación</a> para más información.',
         'alert_type' => '¿Cuándo desea recibir notificaciones?',
         'alert_type_description' => '<b>Al cambiar el estado:</b> p.ej. en línea -> fuera de línea o fuera de línea
  -> en línea.<br><br /><b>Fuera de Línea:</b> Recibirá una notificación cuando
