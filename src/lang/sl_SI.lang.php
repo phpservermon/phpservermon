@@ -92,7 +92,7 @@ $sm_lang = array(
         'email' => 'E-pošta',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover je storitev, ki omogoča enostavno prejemanje obvestil v realnem času.
- Več informacij je na voljo <a href="https://pushover.net/">na njihovi spletni
+ Več informacij je na voljo <a href="https://pushover.net/" target="_blank">na njihovi spletni
  strani</a>.',
         'pushover_key' => 'Pushover ključ',
         'pushover_device' => 'Pushover naprava',
@@ -209,7 +209,7 @@ $sm_lang = array(
         'sms_from' => 'Telefonska številka pošiljatelja',
         'pushover_status' => 'Dovolim pošiljanje Pushover sporočil',
         'pushover_description' => 'Pushover je storitev, ki omogoča enostavno prejemanje obvestil v realnem času.
- Več informacij je na voljo <a href="https://pushover.net/">na njihovi spletni
+ Več informacij je na voljo <a href="https://pushover.net/" target="_blank">na njihovi spletni
  strani</a>.',
         'pushover_clone_app' => 'Kliknite za ustvarjanje vaše Pushover aplikacije',
         'pushover_api_token' => 'Pushover API žeton',

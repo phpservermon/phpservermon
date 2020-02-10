@@ -107,16 +107,16 @@ $sm_lang = array(
         'email' => 'E-post',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover er en tjeneste som gjør det enkelt å få meldinger i sanntid. Se <a
- href="https://pushover.net/">deres nettside</a> for mer info.',
+ href="https://pushover.net/" target="_blank">deres nettside</a> for mer info.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Enhetsnavn for å sende meldingen til. La det være tomt for å sende det
  til alle enheter.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> er en chat-app som gjør det enkelt å
- få meldinger i sanntid. Gå til <a
- href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for mer informasjon og
- en installasjonsguide. ',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> er en chat-app som
+ gjør det enkelt å få meldinger i sanntid. Gå til <a
+ href="http://docs.phpservermonitor.org/" target="_blank">dokumentasjonen</a> for
+ mer informasjon og en installasjonsguide. ',
         'telegram_chat_id' => 'Telegram chat-ID',
         'telegram_chat_id_description' => 'Meldingen vil bli sendt til tilhørende chat.',
         'telegram_get_chat_id' => 'Klikk her for å få chat-ID',
@@ -276,21 +276,21 @@ $sm_lang = array(
         'sms_from' => 'Avsenderens telefonnummer',
         'pushover_status' => 'Tillat sending av Pushover-meldinger',
         'pushover_description' => 'Pushover er en tjeneste som gjør det enkelt å få meldinger i sanntid. Se <a
- href="https://pushover.net/">deres nettside</a> for mer info.',
+ href="https://pushover.net/" target="_blank">deres nettside</a> for mer info.',
         'pushover_clone_app' => 'Klikk her for å lage din Pushover-app',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Før du kan bruke Pushover, må du <a href="%1$s" target="_blank"
  rel="noopener"> registrere en app </a> på deres nettside og angi App API
  Token her.',
         'telegram_status' => 'Tillat sending av Telegram-meldinger',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> er en chat-app som gjør det enkelt å
- få meldinger i sanntid. Gå til <a
- href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for mer informasjon og
- en installasjonsveiledning.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> er en chat-app som
+ gjør det enkelt å få meldinger i sanntid. Gå til <a
+ href="http://docs.phpservermonitor.org/" target="_blank">dokumentasjonen</a> for
+ mer informasjon og en installasjonsveiledning.',
         'telegram_api_token' => 'Telegram API Token',
         'telegram_api_token_description' => 'Før du kan bruke Telegram, må du få en API-token. Gå til <a
- href="http://docs.phpservermonitor.org/">dokumentasjonen</a> for å få
- hjelp.',
+ href="http://docs.phpservermonitor.org/"
+ target="_blank">dokumentasjonen</a> for å få hjelp.',
         'alert_type' => 'Velg når du vil bli varslet.',
         'alert_type_description' => '<b>Statusendring:</b> Du vil motta et varsel når en server har endret status.
  Så fra online -> offline eller offline -> online.<br><br /><b>Offline:</b> Du

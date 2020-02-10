@@ -104,7 +104,7 @@
                 <!-- email user -->
                 {{ macro.input_field("text", "email_smtp_username", null, "email_smtp_username", label_email_smtp_username, email_smtp_username, label_email_smtp_username, "255") }}
                 <!-- email password -->
-                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_email_smtp_password, "255", null, null, null, true) }}
+                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_leave_blank, "255", null, null, null, true) }}
                 {{ macro.button_test("testEmail", label_test) }}
                 {{ macro.input_hidden("test_email", "0") }}
                 {{ macro.button_save("email_submit",  label_save) }}
@@ -134,6 +134,7 @@
         <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-pushover-tab">
             <fieldset>
                 <legend>{{ label_settings_pushover }}</legend>
+                <p>{{ label_pushover_description|raw }}</p>
                 <!-- enable pushover -->
                 {{ macro.input_checkbox("pushover_status", "pushover_status", label_pushover_status, pushover_status_checked) }}
                 <!-- enable pushover log -->
@@ -148,6 +149,7 @@
         <div class="tab-pane {{ telegram_active }}" id="config-telegram" role="tabpanel" aria-labelledby="config-telegram-tab">
             <fieldset>
                 <legend>{{ label_settings_telegram }}</legend>
+                <p>{{ label_telegram_description|raw }}</p>
                 <!-- enable telegram -->
                 {{ macro.input_checkbox("telegram_status", "telegram_status[]", label_telegram_status, telegram_status_checked) }}
                 <!-- enable telegram log -->

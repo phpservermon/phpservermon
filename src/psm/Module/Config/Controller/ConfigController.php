@@ -69,7 +69,6 @@ class ConfigController extends AbstractController
         'email_smtp_host',
         'email_smtp_port',
         'email_smtp_username',
-        'email_smtp_password',
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
@@ -81,6 +80,14 @@ class ConfigController extends AbstractController
 	    'jabber_domain',
 	    //'jabber_password' // not typical input - and saved encrypted
     );
+
+    /**
+     * Fields for saving encrypted.
+     * @var array
+     */
+    protected $encryptedFields = [
+        'email_smtp_password'
+    ];
 
     private $default_tab = 'general';
 
@@ -184,6 +191,10 @@ class ConfigController extends AbstractController
         foreach ($this->fields as $input_key) {
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
+        // encrypted fields
+        foreach ($this->encryptedFields as $encryptedField) {
+            $tpl_data[$encryptedField] = '';
+        }
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
@@ -235,6 +246,13 @@ class ConfigController extends AbstractController
                 if (isset($_POST[$input_key])) {
                     $clean[$input_key] = $_POST[$input_key];
                 }
+            }
+            foreach ($this->encryptedFields as $encryptedField) {
+                $value = filter_input(INPUT_POST, $encryptedField);
+                if ($value !== null && $value !== '') {
+                    $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
+                }
+                // else { leave as is }
             }
             $language_refresh = ($clean['language'] != psm_get_conf('language'));
             foreach ($clean as $key => $value) {
@@ -502,6 +520,7 @@ class ConfigController extends AbstractController
             'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
             'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
             'label_days' => psm_get_lang('config', 'log_retention_days'),
+            'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
 
         );
     }

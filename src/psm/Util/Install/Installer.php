@@ -683,8 +683,23 @@ class Installer
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expiry_days` MEDIUMINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
-            $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
+
+	    if (
+		    @psm_password_decrypt(
+			    psm_get_conf('password_encrypt_key'),
+			    psm_get_conf('email_smtp_password')
+		    ) === false
+	    ) {
+		    // Prevents encrypting the password multiple times.
+		    $queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` 
+                SET `value` = '" .
+			    psm_password_encrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password')) .
+			    "' WHERE `key` = 'email_smtp_password'";
+		    $this->log('SMTP password is now encrypted.');
+	    }
+
         $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
             NOT NULL AFTER `telegram_id`;';
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `jabber` ENUM( 'yes','no' ) 
@@ -700,6 +715,7 @@ class Installer
 					('jabber_username', ''),
 					('jabber_domain', ''),
 					('jabber_password', '');";
+
         $this->execSQL($queries);
     }
 }
