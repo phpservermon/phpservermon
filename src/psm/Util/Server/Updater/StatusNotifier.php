@@ -590,23 +590,24 @@ class StatusNotifier
 		    $log_id = psm_add_log($this->server_id, 'jabber', $message);
 	    }
 
+	    $usersJabber = [];
 	    foreach ($users as $user) {
 		    // Log
 		    if (!empty($log_id)) {
 			    psm_add_log_user($log_id, $user['user_id']);
 		    }
-
-		    // Jabber
-		    psm_jabber_send_message(
-			    psm_get_conf('jabber_host'),
-			    psm_get_conf('jabber_username'),
-			    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
-			    $user['jabber'],
-			    $message,
-			    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
-			    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
-		    );
+		    $usersJabber[] = $user['jabber'];
 	    }
+	    // Jabber
+	    psm_jabber_send_message(
+		    psm_get_conf('jabber_host'),
+		    psm_get_conf('jabber_username'),
+		    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+		    $usersJabber,
+		    $message,
+		    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+		    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+	    );
     }
 
     /**

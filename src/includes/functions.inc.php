@@ -659,12 +659,12 @@ namespace {
      * @param string      $host
      * @param string      $username
      * @param string      $password
-     * @param string      $receiver
+     * @param array       $receivers
      * @param string      $message
      * @param int|null    $port
      * @param string|null $domain
      */
-    function psm_jabber_send_message($host, $username, $password, $receiver, $message, $port = null, $domain = null)
+    function psm_jabber_send_message($host, $username, $password, $receivers, $message, $port = null, $domain = null)
     {
         $options = [
             'jid' => $username, // incl. gmail.com
@@ -686,9 +686,11 @@ namespace {
             $client = new JAXL($options);
 
             // Add Callbacks
-            $client->add_cb('on_auth_success', function () use ($client, $receiver, $message) {
+            $client->add_cb('on_auth_success', function () use ($client, $receivers, $message) {
                 JAXLLogger::info('got on_auth_success cb');
-                $client->send_chat_msg($receiver, $message);
+                foreach ($receivers as $receiver) {
+	                $client->send_chat_msg($receiver, $message);
+                }
                 $client->send_end_stream();
             });
             $client->add_cb('on_auth_failure', function ($reason) use ($client) {

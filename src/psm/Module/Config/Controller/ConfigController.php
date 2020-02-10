@@ -418,7 +418,7 @@ class ConfigController extends AbstractController
 		    psm_get_conf('jabber_host'),
 		    psm_get_conf('jabber_username'),
 		    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
-		    $user->jabber,
+		    [$user->jabber],
 		    psm_get_lang('config', 'test_message'),
 		    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
 		    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
