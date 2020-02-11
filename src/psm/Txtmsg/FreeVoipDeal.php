@@ -63,7 +63,7 @@ class FreeVoipDeal extends Core
                 array(
                         "username" => $this->username,
                         "password" => $this->password,
-                        "from" => substr($this->originator, 0, 11),
+                        "from" => substr($this->originator, 0, 15),
                         "to" => $recipient,
                         "text" => $message,
                     )

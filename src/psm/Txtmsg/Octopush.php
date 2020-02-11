@@ -72,7 +72,7 @@ class Octopush extends Core
                     "api_key" => $this->password,
                     "sms_recipients" => $recipients,
                     "sms_type" => $smsType,
-                    "sms_sender" => substr($this->originator, 0, 11),
+                    "sms_sender" => substr($this->originator, 0, 15),
                     "sms_text" => $message,
                 )
         ));

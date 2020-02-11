@@ -58,7 +58,7 @@ class Smsglobal extends Core
         
         $recipients = join(',', $this->recipients);
         
-        $from = substr($this->originator, 0, 11); // Max 11 Characters
+        $from = substr($this->originator, 0, 15); // Max 15 Characters
         $message = substr(rawurlencode($message), 0, 153);
         
         $curl = curl_init();

@@ -64,7 +64,7 @@ class Smsit extends Core
                         "apiKey" => $this->password,
                         "mobile" => $recipient,
                         "message" => urlencode($message),
-                        "senderId" => substr($this->originator, 0, 11),
+                        "senderId" => substr($this->originator, 0, 15),
                     )
             ));
             

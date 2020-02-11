@@ -63,7 +63,7 @@ class Mosms extends Core
                 array(
                         "username" => $this->username,
                         "password" => $this->password,
-                        "customsender" => substr($this->originator, 0, 11),
+                        "customsender" => substr($this->originator, 0, 15),
                         "nr" => $recipient,
                         "type" => "text",
                         "data" => $message,

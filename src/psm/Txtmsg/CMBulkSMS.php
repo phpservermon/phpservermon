@@ -131,7 +131,7 @@ class CMBulkSMS extends Core
                 ),
                 'msg' => array(
                     array(
-                        'from' => substr($this->originator, 0, 11),
+                        'from' => substr($this->originator, 0, 15),
                         'to' => $recipients,
                         'body' => array(
                             'content' => $message
@@ -172,7 +172,7 @@ class CMBulkSMS extends Core
         $msg = $xml->addChild('MSG');
 
         // From
-        $msg->addChild('FROM', substr($this->originator, 0, 11));
+        $msg->addChild('FROM', substr($this->originator, 0, 15));
 
         // Recipients
         foreach ($this->recipients as $recipient) {
