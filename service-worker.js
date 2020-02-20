@@ -1,7 +1,7 @@
 var dataCacheName = 'PSM-v1';
 var cacheName = 'PSM-PWA-final-1';
 var filesToCache = [
-  '/',
+  '',
   'index.php',
   'src/templates/default/static/js/history.js',
   'src/templates/default/static/js/scripts.js',
