@@ -3,6 +3,24 @@ $theme-colors: (
     "success": #0E6800,
     "danger": #AC1F2D,
     "warning": #E67600);
+
+// xl higher
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 2000px
+) !default;
+
+//xl higher
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1840px
+) !default;
+
 @import "../plugin/bootstrap/scss/_functions";
 @import "../plugin/bootstrap/scss/functions";
 @import "../plugin/bootstrap/scss/variables";
