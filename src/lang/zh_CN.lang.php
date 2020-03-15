@@ -124,9 +124,6 @@ $sm_lang = array(
         'sms' => '短信',
         'pushover' => 'Pushover',
         'no_logs' => '没有日志',
-        'clear' => 'Clear log',
-        'delete_title' => 'Delete log',
-        'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
     ),
     'servers' => array(
         'server' => '业务',
