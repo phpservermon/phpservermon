@@ -135,6 +135,12 @@ class ServerController extends AbstractServerController
     {
         $back_to = isset($_GET['back_to']) ? $_GET['back_to'] : '';
 
+        $modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+        $this->addModal($modal);
+        $modal->setTitle(psm_get_lang('servers', 'delete_title'));
+        $modal->setMessage(psm_get_lang('servers', 'delete_message'));
+        $modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
         $tpl_data = $this->getLabels();
         $tpl_data['edit_server_id'] = $this->server_id;
         $tpl_data['url_save'] = psm_build_url(array(
@@ -142,6 +148,11 @@ class ServerController extends AbstractServerController
             'action' => 'save',
             'id' => $this->server_id,
             'back_to' => $back_to,
+        ));
+        $tpl_data['url_delete'] = psm_build_url(array(
+            'mod' => 'server',
+            'action' => 'delete',
+            'id' => $this->server_id,
         ));
 
         // depending on where the user came from, add the go back url:

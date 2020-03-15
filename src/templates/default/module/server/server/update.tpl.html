@@ -143,13 +143,25 @@
 			<!-- Telegram -->
 			{{ macro.input_select_monitoring("telegram", "telegram", label_send_telegram, edit_telegram_selected, label_yes, label_no, warning_telegram, label_warning_telegram) }}
 		</div>
-	</fieldset>
+    </fieldset>
 	<fieldset>
 		<legend>{{ label_fieldset_permissions }}</legend>
 		<!-- Permissions -->
 		{{ macro.input_select_multiple("user_id", "user_id[]", label_permissions, label_search, users, label_please_select) }}
-		{{ macro.button_save(null, label_save) }}
-		<a class="btn" href="{{ url_go_back|raw }}">{{ label_go_back }}</a>
-	</fieldset>
+    </fieldset>
+    <fieldset>
+        <legend>{{ label_save }}</legend>
+        {{ macro.button_save(null, label_save) }}
+        <a class="btn" href="{{ url_go_back|raw }}">{{ label_go_back }}</a>
+    </fieldset>
+    {% if edit_server_id > 0 %}
+    <fieldset>
+        <legend class="mt-4">{{ label_delete }}</legend>
+        <a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete"
+			data-modal-param="{{ edit_value_label }}">
+            <i class="fas fa-trash"></i> {{ label_delete }}
+        </a>
+    </fieldset>
+    {% endif %}
 	{{ macro.input_csrf() }}
 </form>
