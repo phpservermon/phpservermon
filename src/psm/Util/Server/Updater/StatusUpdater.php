@@ -178,9 +178,14 @@ class StatusUpdater
         if ($max_runs == null || $max_runs > 1) {
             $max_runs = 1;
         }
-        $result = null;
+        $result = null; 
         // Execute ping
-        $txt = exec("ping -c " . $max_runs . " " . $this->server['ip'] . " 2>&1", $output);
+        $pingCommand = 'ping6';
+        $serverIp = $this->server['ip'];
+        if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false){
+            $pingCommand = 'ping';
+        }        
+        $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
         // Non-greedy match on filler
         $re1 = '.*?';
         // Uninteresting: float
@@ -192,7 +197,9 @@ class StatusUpdater
         if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
             $result = $matches[1][0];
         }
-
+        if (substr($output[0],0,4) == 'PING' && strpos($output[count($output)-2],'packets transmitted')){
+            $result = 0;     
+        }        
         if (!is_null($result)) {
             $this->header = $output[0];
             $status = true;
