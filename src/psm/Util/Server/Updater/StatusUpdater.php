@@ -232,7 +232,11 @@ class StatusUpdater
         // save response time
         $starttime = microtime(true);
 
-        $fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, $timeout);
+        $serverIp = $this->server['ip'];
+        if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false){
+            $serverIp = "[$serverIp]";
+        }
+        $fp = @fsockopen($serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
         $this->rtime = (microtime(true) - $starttime);
