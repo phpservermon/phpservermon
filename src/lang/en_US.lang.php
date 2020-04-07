@@ -130,7 +130,7 @@ $sm_lang = array(
  this permission, Telegram doesn\'t allow us to send notifications to you.',
         'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank" rel="noopener"><button
  class="btn btn-primary">Next step</button></a> <br>This will open a chat
- with the bot. Here you need to press start of type /start.',
+ with the bot. Here you need to press start or type /start.',
         'telegram_bot_username_error_token' => '401 - Unauthorized. Please make sure that the API token is valid.',
         'telegram_bot_error' => 'An error has occurred while activating Telegram notification: %s',
         'delete_title' => 'Delete User',
