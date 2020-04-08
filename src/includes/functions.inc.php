@@ -965,7 +965,7 @@ namespace {
             if (!empty($this->token) && !empty($this->user) && !empty($this->message)) {
                 $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) .
                 '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
-                urlencode($this->message) . '&parse_mode=HTML';
+                urlencode($this->message) . '&parse_mode=HTML&disable_web_page_preview=True';
             }
             return $this->sendurl();
         }
