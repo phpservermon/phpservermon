@@ -10,3 +10,5 @@
 *.bak
 __MACOSX/
 .DS_Store
+.buildpath
+.settings/
