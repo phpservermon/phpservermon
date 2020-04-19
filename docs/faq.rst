@@ -151,3 +151,16 @@ What is the username of my bot?
 1. Go to profile on the monitor.
 2. Press activate.
 3. A button will appear, this will direct you to your Telegram bot.
+
+How do I setup Jabber notifications from Google account?
+------------------------
+A few steps are required to get Jabber notifications working for Google account.
+You need to be an administrator for this part.
+
+1. Go into you Google Account Security settings (https://myaccount.google.com/security).
+2. Check that you have two factor auth enabled. If not, activate it.
+3. Add new app password - copy it.
+4. Login to PhpServerMonitor dashboard > config > Jabber and use password from step 3 with your Google account in PhpServerMonitor jabber settings.
+5. As host use `talk.google.com`.
+6. As username use your whole Google account (for example `example@google.com`).
+7. As port use `5223` (really, not typo error ...).

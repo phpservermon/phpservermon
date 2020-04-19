@@ -653,6 +653,60 @@ namespace {
         return $telegram;
     }
 
+    /**
+     * Send message via XMPP.
+     *
+     * @param string      $host
+     * @param string      $username
+     * @param string      $password
+     * @param array       $receivers
+     * @param string      $message
+     * @param int|null    $port
+     * @param string|null $domain
+     */
+    function psm_jabber_send_message($host, $username, $password, $receivers, $message, $port = null, $domain = null)
+    {
+        $options = [
+            'jid' => $username, // incl. gmail.com
+            'pass' => $password,
+            'domain' => $domain, // gmail.com or null
+            'host' => $host, // talk.google.com
+            'port' => $port, // talk.google.com needs to have 5223 ... 5222 - CN problem - gmail.com vs talk.google.com
+            'log_path' => __DIR__ . '/../../logs/jaxl.log', // own log
+
+            // force tls
+            'force_tls' => PSM_JABBER_FORCE_TLS,
+            // (required) perform X-OAUTH2
+            'auth_type' => PSM_JABBER_AUTH_TYPE, //'X-OAUTH2', // auth failure with this option :( so just PLAIN ...
+
+            'log_level' => PSM_JABBER_DEBUG_LEVEL
+        ];
+
+        try {
+            $client = new JAXL($options);
+
+            // Add Callbacks
+            $client->add_cb('on_auth_success', function () use ($client, $receivers, $message) {
+                JAXLLogger::info('got on_auth_success cb');
+                foreach ($receivers as $receiver) {
+	                $client->send_chat_msg($receiver, $message);
+                }
+                $client->send_end_stream();
+            });
+            $client->add_cb('on_auth_failure', function ($reason) use ($client) {
+                $client->send_end_stream();
+                JAXLLogger::info('got on_auth_failure cb with reason: ' . $reason);
+            });
+            $client->add_cb('on_disconnect', function () use ($client) {
+                JAXLLogger::info('got on_disconnect cb');
+            });
+
+            $client->start();
+        } catch (Exception $ex) {
+            JAXLLogger::error('Exception: ' . $ex->getMessage());
+        }
+    }
+
 /**
  * Prepare a new SMS util.
  *

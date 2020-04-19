@@ -39,7 +39,7 @@ class ProfileController extends AbstractController
      * @var array $profile_fields
      */
     protected $profile_fields =
-        array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id');
+        array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'jabber');
 
     public function __construct(Database $db, \Twig_Environment $twig)
     {
@@ -90,6 +90,8 @@ class ProfileController extends AbstractController
             'label_activate_telegram' => psm_get_lang('users', 'activate_telegram'),
             'label_telegram_get_chat_id' => psm_get_lang('users', 'telegram_get_chat_id'),
             'telegram_get_chat_id_url' => PSM_TELEGRAM_GET_ID_URL,
+	        'label_jabber' => psm_get_lang('users', 'jabber'),
+	        'label_jabber_description' => psm_get_lang('users', 'jabber_description'),
             'label_email' => psm_get_lang('users', 'email'),
             'label_save' => psm_get_lang('system', 'save'),
             'form_action' => psm_build_url(array(

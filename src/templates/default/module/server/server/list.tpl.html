@@ -68,6 +68,12 @@
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">T</span>
 						</span>
 					{% endif %}
+					{% if server.jabber|lower == 'yes'%}
+					<span class="fa-layers">
+							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
+							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
+						</span>
+					{% endif %}
 				</td>
 				{% if user_level == 10 %}
 				<td>

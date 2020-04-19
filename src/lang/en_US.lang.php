@@ -133,6 +133,9 @@ $sm_lang = array(
  with the bot. Here you need to press start or type /start.',
         'telegram_bot_username_error_token' => '401 - Unauthorized. Please make sure that the API token is valid.',
         'telegram_bot_error' => 'An error has occurred while activating Telegram notification: %s',
+        'jabber' => 'Jabber',
+        'jabber_label' => 'Jabber',
+        'jabber_description' => 'You Jabber account',
         'delete_title' => 'Delete User',
         'delete_message' => 'Are you sure you want to delete user \'%1\'?',
         'deleted' => 'User deleted.',
@@ -160,6 +163,7 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'telegram' => 'Telegram',
+        'jabber' => 'Jabber',
         'no_logs' => 'No logs',
         'clear' => 'Clear log',
         'delete_title' => 'Delete log',
@@ -227,6 +231,8 @@ $sm_lang = array(
         'send_pushover' => 'Send Pushover notification',
         'telegram' => 'Telegram',
         'send_telegram' => 'Send Telegram notification',
+        'jabber' => 'Jabber',
+        'send_jabber' => 'Send Jabber notification',
         'users' => 'Users',
         'delete_title' => 'Delete server',
         'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -262,6 +268,7 @@ $sm_lang = array(
         'warning_notifications_disabled_email' => 'Email notifications are disabled.',
         'warning_notifications_disabled_pushover' => 'Pushover notifications are disabled.',
         'warning_notifications_disabled_telegram' => 'Telegram notifications are disabled.',
+        'warning_notifications_disabled_jabber' => 'Jabber notifications are disabled.',
         'error_server_no_match' => 'Server not found.',
         'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
         'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
@@ -316,6 +323,21 @@ $sm_lang = array(
         'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a
  href="http://docs.phpservermonitor.org/"
  target="_blank">documentation</a> for help.',
+        'jabber_status' => 'Allow sending Jabber (XMPP) messages',
+        'jabber_description' => 'Visit the <a
+ href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
+ install guide.',
+        'jabber_host' => 'Host',
+        'jabber_host_description' => 'Host of your Jabber account provider. For Google Account use talk.google.com.',
+        'jabber_port' => 'Port',
+        'jabber_port_description' => 'Port of your Jabber provider. Default 5222. For Google Account use 5223.',
+        'jabber_username' => 'Username',
+        'jabber_username_description' => 'For Google Account use incl. domain so for example example@google.com.',
+        'jabber_domain' => 'Domain',
+        'jabber_domain_description' => 'Domain of your Jabber provider. Left empty for Google Account.',
+        'jabber_password' => 'Password',
+        'jabber_password_description' => 'Fill only to set or change.',
+        'jabber_check' => 'Check your Jabber account if message was received.',
         'alert_type' => 'Select when you\'d like to be notified.',
         'alert_type_description' => '<b>Status change:</b> You will receive a notification when a server has a change
  in status. So from online -> offline or offline -> online.<br><br><b>Offline:</b>
@@ -339,15 +361,18 @@ $sm_lang = array(
         'log_sms' => 'Log text messages sent by the script',
         'log_pushover' => 'Log pushover messages sent by the script',
         'log_telegram' => 'Log Telegram messages sent by the script',
+        'log_jabber' => 'Log Jabber messages sent by the script',
         'updated' => 'The configuration has been updated.',
         'tab_email' => 'Email',
         'tab_sms' => 'SMS',
         'tab_pushover' => 'Pushover',
         'tab_telegram' => 'Telegram',
+        'tab_jabber' => 'Jabber',
         'settings_email' => 'Email settings',
         'settings_sms' => 'Text message settings',
         'settings_pushover' => 'Pushover settings',
         'settings_telegram' => 'Telegram settings',
+        'settings_jabber' => 'Jabber settings',
         'settings_notification' => 'Notification settings',
         'settings_log' => 'Log settings',
         'settings_proxy' => 'Proxy settings',
@@ -361,6 +386,7 @@ $sm_lang = array(
         'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user
  profile.',
         'test_telegram' => 'A Telegram notification will be sent to the chat id specified in your user profile.',
+        'test_jabber' => 'A Jabber notification will be sent to the jabber account specified in your user profile.',
         'send' => 'Send',
         'test_subject' => 'Test',
         'test_message' => 'Test message',
@@ -379,6 +405,11 @@ $sm_lang = array(
         'telegram_error_notoken' => 'Unable to send test notification: no Telegram API token found in the global
  configuration.',
         'telegram_error_noid' => 'Unable to send test notification: no chat id found in your profile.',
+        'jabber_sent' => 'Telegram notification sent',
+        'jabber_error' => 'An error has occurred while sending the Telegram notification: %s',
+        'jabber_error_noconfig' => 'Unable to send test notification: no Jabber account set in the global
+ configuration.',
+        'jabber_error_noaccount' => 'Unable to send test notification: no Jabber account found in your profile.',
         'log_retention_period' => 'Log retention period',
         'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server
  uptime. Enter 0 to disable log cleanup.',
@@ -394,6 +425,8 @@ $sm_lang = array(
  %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_telegram_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
  %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_jabber_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
+ %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
         'on_email_body' => 'Server \'%LABEL%\' is running again, it was down for
@@ -406,11 +439,16 @@ $sm_lang = array(
         'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for:
  %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
  %DATE%',
+        'on_jabber_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
         'combi_off_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_off_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
  Date: %DATE%<br><br>',
         'combi_on_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime:
  %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
@@ -419,6 +457,8 @@ $sm_lang = array(
  %DATE%</li></ul>',
         'combi_on_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
  %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
+        'combi_on_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
+ %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_email_subject' => 'IMPORTANT: \'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
         'combi_pushover_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
         'combi_email_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
@@ -426,6 +466,8 @@ $sm_lang = array(
         'combi_pushover_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
  servers are up again:</b><br>%UP_SERVERS%',
         'combi_telegram_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_jabber_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
  servers are up again:</b><br>%UP_SERVERS%',
     ),
     'login' => array(
