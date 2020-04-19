@@ -354,9 +354,6 @@ class Installer
         if (version_compare($version_from, '3.4.2', '<')) {
             $this->upgrade342();
         }
-        if (version_compare($version_from, '3.4.6-beta.1', '<')) {
-            $this->upgrade346();
-        }
         if (version_compare($version_from, '3.4.6-beta.3', '<')) {
             $this->upgrade346();
         }
