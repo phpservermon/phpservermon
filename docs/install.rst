@@ -146,6 +146,13 @@ In config.php add following line::
 
 After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php over the web from your allowed IP.
 
+Alternatively, define a secret key to allow the update over the web:
+
+In config.php add following line::
+
+     define('PSM_WEBCRON_KEY', 'YOURKEY');
+
+After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php?webcron_key=YOURKEY .
 
 Troubleshooting
 +++++++++++++++
