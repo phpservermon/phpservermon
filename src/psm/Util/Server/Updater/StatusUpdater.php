@@ -178,7 +178,7 @@ class StatusUpdater
         if ($max_runs == null || $max_runs > 1) {
             $max_runs = 1;
         }
-        $result = null; 
+        $result = null;
         // Execute ping
         $pingCommand = 'ping6';
         $serverIp = $this->server['ip'];
