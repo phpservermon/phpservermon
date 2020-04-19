@@ -154,9 +154,6 @@ In config.php add following line::
 
 After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php?webcron_key=YOURKEY .
 
-
-
-
 Troubleshooting
 +++++++++++++++
 
