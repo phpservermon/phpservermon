@@ -153,7 +153,7 @@ What is the username of my bot?
 3. A button will appear, this will direct you to your Telegram bot.
 
 How do I setup Jabber notifications from Google account?
-------------------------
+--------------------------------------------------------
 A few steps are required to get Jabber notifications working for Google account.
 You need to be an administrator for this part.
 
