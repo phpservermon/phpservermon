@@ -27,7 +27,11 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-4">{{ label_domain }}:</dt>
-						<dd class="col-md-8">{{ ip|raw }}</dd>
+						<dd class="col-md-8">
+							<a href="{{ ip|raw }}" title="{{ ip|raw }}" target="_blank" rel="noopener">
+								{{ ip|raw }}
+							</a>
+						</dd>
 					</dl>
 				</li>
 				{% if type|lower == 'service' %}
