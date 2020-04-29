@@ -82,6 +82,7 @@ Requirements
 * PHP cURL package
 * PHP PDO mysql driver
 * PHP-XML
+* PHP-JSON
 
 
 Install
