@@ -46,7 +46,9 @@
 				</select>
 			</div>
 			<!-- Custom port -->
-			{{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
+            {{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
+            <!-- SSL Cert check -->
+            {{ macro.input_field("number", "ssl_cert_expiry_days", "types typeWebsite", "ssl_cert_expiry_days", label_ssl_cert_expiry_days, edit_value_ssl_cert_expiry_days, 0, "5", 'ssl_cert_help', label_ssl_cert_expiry_days_description) }}
 			<!-- Request method -->
 			<div class="form-group types typeWebsite">
 				<label for="popular_request_methods">{{ label_request_method }}</label>
@@ -115,7 +117,7 @@
 			<!-- Warning threshold -->
 			{{ macro.input_field("number", "warning_threshold", null, "warning_threshold", label_warning_threshold, edit_value_warning_threshold, "0", "5", 'warning_threshold_help', label_warning_threshold_description) }}
 			<!-- Timeout -->
-			{{ macro.input_field("number", "timeout", null, "timeout", label_timeout, edit_value_timeout, null, "10", 'timeout_help', label_timeout_description) }}
+			{{ macro.input_field("number", "timeout", null, "timeout", label_timeout, edit_value_timeout, default_value_timeout, "10", 'timeout_help', label_timeout_description) }}
 		</div>
 	</fieldset>
 	<fieldset class="types typeWebsite">
@@ -124,7 +126,7 @@
 			<!-- Website username -->
 			{{ macro.input_field("text", "website_username", null, "website_username", label_website_username, edit_value_website_username, null, "255", 'website_username_help', label_website_username_description, null, true, null, null, true) }}
 			<!-- website password -->
-			{{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "10", 'website_password_help', label_website_password_description, null, true, null, null, true) }}
+			{{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "255", 'website_password_help', label_website_password_description, null, true, null, null, true) }}
 		</div>
 	</fieldset>
 	<fieldset>
@@ -140,14 +142,28 @@
 			{{ macro.input_select_monitoring("pushover", "pushover", label_send_pushover, edit_pushover_selected, label_yes, label_no, warning_pushover, label_warning_pushover) }}
 			<!-- Telegram -->
 			{{ macro.input_select_monitoring("telegram", "telegram", label_send_telegram, edit_telegram_selected, label_yes, label_no, warning_telegram, label_warning_telegram) }}
+			<!-- Jabber -->
+			{{ macro.input_select_monitoring("jabber", "jabber", label_send_jabber, edit_jabber_selected, label_yes, label_no, warning_jabber, label_warning_jabber) }}
 		</div>
-	</fieldset>
+    </fieldset>
 	<fieldset>
 		<legend>{{ label_fieldset_permissions }}</legend>
 		<!-- Permissions -->
 		{{ macro.input_select_multiple("user_id", "user_id[]", label_permissions, label_search, users, label_please_select) }}
-		{{ macro.button_save(null, label_save) }}
-		<a class="btn" href="{{ url_go_back|raw }}">{{ label_go_back }}</a>
-	</fieldset>
+    </fieldset>
+    <fieldset>
+        <legend>{{ label_save }}</legend>
+        {{ macro.button_save(null, label_save) }}
+        <a class="btn" href="{{ url_go_back|raw }}">{{ label_go_back }}</a>
+    </fieldset>
+    {% if edit_server_id > 0 %}
+    <fieldset>
+        <legend class="mt-4">{{ label_delete }}</legend>
+        <a class="btn btn-danger show-modal" href="{{ url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete"
+			data-modal-param="{{ edit_value_label }}">
+            <i class="fas fa-trash"></i> {{ label_delete }}
+        </a>
+    </fieldset>
+    {% endif %}
 	{{ macro.input_csrf() }}
 </form>

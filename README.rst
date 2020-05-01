@@ -5,7 +5,7 @@ PHP Server Monitor
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
 
-Version 3.4.5
+Version 3.5.0
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -16,7 +16,7 @@ Features:
 ---------
 
 * Monitor services and websites (see below).
-* Email, SMS, Pushover, Telegram notifications.
+* Email, SMS, Pushover, Telegram and Jabber notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -39,7 +39,7 @@ There are two different ways to monitor a server:
   In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has its own settings regarding notification.
-You can choose for email, text message (SMS), Pushover.net and Telegram notifications.
+You can choose for email, text message (SMS), Pushover.net, Telegram and Jabber notifications.
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
@@ -77,7 +77,7 @@ Requirements
 
 * Web server
 * MySQL database
-* For PHP5: 5.5.9+
+* For PHP5: 5.6.0+
 * For PHP7: 7.0.8+
 * PHP cURL package
 * PHP PDO mysql driver

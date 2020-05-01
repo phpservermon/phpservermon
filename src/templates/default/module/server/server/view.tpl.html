@@ -27,7 +27,11 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-4">{{ label_domain }}:</dt>
-						<dd class="col-md-8">{{ ip|raw }}</dd>
+						<dd class="col-md-8">
+							<a href="{{ ip|raw }}" title="{{ ip|raw }}" target="_blank" rel="noopener">
+								{{ ip|raw }}
+							</a>
+						</dd>
 					</dl>
 				</li>
 				{% if type|lower == 'service' %}
@@ -227,13 +231,13 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_error }}:</dt>
-						<dd class="col-md-9">{{ last_error }}</dd>
+						<dd class="col-md-9">{{ last_error|nl2br }}</dd>
 					</dl>
 				</li>
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_output }}:</dt>
-						<dd class="col-md-9">{{ last_output_truncated }}</dd>
+						<dd class="col-md-9">{{ last_output_truncated|nl2br }}</dd>
 						{% if last_output_truncated != last_output %}
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
@@ -247,7 +251,7 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_error_output }}:</dt>
-						<dd class="col-md-9">{{ last_error_output_truncated }}</dd>
+						<dd class="col-md-9">{{ last_error_output_truncated|nl2br }}</dd>
 						{% if last_error_output_truncated != last_error_output %}
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
@@ -324,6 +328,19 @@
 					<i class="fas fa-bell float-right"></i>
 					<noscript>&#10003</noscript>
 					{% elseif telegram|lower == 'no' %}
+					<i class="fas fa-bell-slash float-right"></i>
+					<noscript>&#10005</noscript>
+					{% else %}
+					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+					<noscript>&#8263</noscript>
+					{% endif %}
+				</li>
+				<li class="list-group-item">
+					{{ label_jabber }}:
+					{% if jabber|lower == 'yes' %}
+					<i class="fas fa-bell float-right"></i>
+					<noscript>&#10003</noscript>
+					{% elseif jabber|lower == 'no' %}
 					<i class="fas fa-bell-slash float-right"></i>
 					<noscript>&#10005</noscript>
 					{% else %}

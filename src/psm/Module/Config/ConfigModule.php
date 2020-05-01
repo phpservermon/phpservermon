@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -23,7 +24,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
+ * @since       phpservermon 3.0
  **/
 
 namespace psm\Module\Config;
@@ -31,16 +32,17 @@ namespace psm\Module\Config;
 use psm\Module\ModuleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ConfigModule implements ModuleInterface {
+class ConfigModule implements ModuleInterface
+{
 
-	public function load(ContainerBuilder $container) {
+    public function load(ContainerBuilder $container)
+    {
+    }
 
-	}
-
-	public function getControllers() {
-		return array(
-			'config' => __NAMESPACE__.'\Controller\ConfigController',
-		);
-
-	}
+    public function getControllers()
+    {
+        return array(
+            'config' => __NAMESPACE__ . '\Controller\ConfigController',
+        );
+    }
 }

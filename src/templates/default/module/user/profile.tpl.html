@@ -21,7 +21,8 @@
 	</fieldset>
 	<!-- Pushover settings -->
 	<fieldset>
-		<legend>{{ label_pushover }}</legend>
+        <legend>{{ label_pushover }}</legend>
+        <p>{{ label_pushover_description|raw }}</p>
 		<!-- pushover key -->
 		{{ macro.input_field("text", "pushover_key", null, "pushover_key", label_pushover_key, pushover_key, label_pushover_key, "255", "pushover_key_help", pushover_key_description) }}
 		<!-- pushover device -->
@@ -29,14 +30,21 @@
 	</fieldset>
 	<!-- Telegram settings -->
 	<fieldset>
-		<legend>{{ label_telegram }}</legend>
+        <legend>{{ label_telegram }}</legend>
+        <p>{{ label_telegram_description|raw }}</p>
 		<!-- telegram id -->
 		<div class="form-group">
-			<a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
+            <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
 		</div>
 		{{ macro.input_field("text", "telegram_id", null, "telegram_id", label_telegram_chat_id, telegram_id, label_telegram_chat_id, "255", "telegram_id_help", telegram_id_description) }}
 		<button class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
 		{{ macro.input_hidden("activate_telegram", "0") }}
-		{{ macro.button_save(null, label_save) }}
 	</fieldset>
+	<!-- Jabber settings -->
+	<fieldset>
+		<legend>{{ label_jabber }}</legend>
+		<!-- jabber -->
+		{{ macro.input_field("text", "jabber", null, "jabber", label_jabber, jabber, label_jabber, "255", "jabber_help", jabber_description) }}
+	</fieldset>
+	{{ macro.button_save(null, label_save) }}
 </form>

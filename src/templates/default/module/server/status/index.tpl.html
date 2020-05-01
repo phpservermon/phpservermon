@@ -5,9 +5,8 @@
 		<div class="row">
 			{% for server in servers_offline %}
 			<div class="col-sm-4 col-md-3">
-				<noscript><a href="{{ server.url_view|raw }}"></noscript>
 				<div class="card text-white bg-danger mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></div>
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></div>
 					<div class="card-body">
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
@@ -15,14 +14,25 @@
 						</p>
 					</div>
 				</div>
-				<noscript></a></noscript>
+			</div>
+			{% endfor %}
+			{% for server in servers_warning %}
+			<div class="col-sm-4 col-md-3">
+				<div class="card text-white bg-warning mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></div>
+					<div class="card-body">
+						<p class="card-text">
+							{{ label_last_online }}: {{ server.last_online_nice }}<br>
+							{{ label_last_check }}: {{ server.last_checked_nice }}
+						</p>
+					</div>
+				</div>
 			</div>
 			{% endfor %}
 			{% for server in servers_online %}
 			<div class="col-sm-4 col-md-3">
-				<noscript><a href="{{ server.url_view|raw }}"></noscript>
 				<div class="card text-white bg-success mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></div>
+					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></div>
 					<div class="card-body">
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
@@ -31,10 +41,9 @@
 						</p>
 					</div>
 				</div>
-				<noscript></a></noscript>
 			</div>
 			{% endfor %}
-			{% if not servers_offline and not servers_online %}
+			{% if not servers_offline and not servers_warning and not servers_online %}
 				{{ label_none }}
 				<div class="w-100"></div>
 				<button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
@@ -43,9 +52,9 @@
 	</div>
 	<div id="list-layout" class="{{ list_layout_active }}" aria-labelledby="block-layout" style="display:none;">
 		<div class="row table-responsive">
-			{% if servers_offline or servers_online %}
+			{% if servers_offline  or servers_warning or servers_online %}
 			<table class="table table-bordered table-hover">
-				{% if servers_offline %}
+				{% if servers_offline or servers_warning %}
 				<thead>
 					<tr>
 						<th scope="col">#</th>
@@ -57,7 +66,15 @@
 				<tbody>
 					{% for server in servers_offline %}
 						<tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></th>
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></th>
+							<td>{{ server.last_online_nice }}</td>
+							<td>{{ server.last_checked_nice }}</td>
+							<td></td>
+						</tr>
+					{% endfor %}
+					{% for server in servers_warning %}
+						<tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_checked_nice }}</td>
 							<td></td>
@@ -77,7 +94,7 @@
 				<tbody>
 					{% for server in servers_online %}
 						<tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></th>
+							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
 							<td>{{ server.rtime }}s</td>

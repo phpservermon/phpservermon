@@ -180,3 +180,8 @@ table tr[visible='true'] {
     transform-origin: 100% 4px;
     transition: all 1s;
 }
+
+.dropdown-menu.show {
+    left: inherit;
+    right: 0px;
+}

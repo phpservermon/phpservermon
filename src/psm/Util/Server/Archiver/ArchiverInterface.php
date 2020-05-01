@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -28,20 +29,21 @@
 
 namespace psm\Util\Server\Archiver;
 
-interface ArchiverInterface {
+interface ArchiverInterface
+{
 
-	/**
-	 * Archive for one or all servers.
-	 * @param int $server_id
-	 * @return boolean
-	 */
-	public function archive($server_id = null);
+    /**
+     * Archive for one or all servers.
+     * @param int $server_id
+     * @return boolean
+     */
+    public function archive($server_id = null);
 
-	/**
-	 * Cleanup data older than the retention period given.
-	 * @param \DateTime $retention_date
-	 * @param int $server_id
-	 * @return boolean
-	 */
-	public function cleanup(\DateTime $retention_date, $server_id = null);
+    /**
+     * Cleanup data older than the retention period given.
+     * @param \DateTime $retention_date
+     * @param int $server_id
+     * @return boolean
+     */
+    public function cleanup(\DateTime $retention_date, $server_id = null);
 }

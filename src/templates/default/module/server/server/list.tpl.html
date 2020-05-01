@@ -5,17 +5,17 @@
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
-				<th scope="col">{{ label_label }}</th>
-				<th scope="col">{{ label_domain }}</th>
-				<th scope="col">{{ label_port }}</th>
-				<th scope="col">{{ label_type }}</th>
-				<th scope="col">{{ label_rtime }}</th>
-				<th scope="col">{{ label_last_online }}</th>
-				<th scope="col">{{ label_last_offline }}</th>
-				<th scope="col">{{ label_monitoring }}</th>
-				{% if user_level == 10 %}
-				<th scope="col">&#32</th>
-				{% endif %}
+                <th scope="col">{{ label_label }}</th>
+                <th scope="col">{{ label_domain }}</th>
+                <th scope="col" style="width: 5%;">{{ label_port }}</th>
+                <th scope="col" style="width: 8%;">{{ label_type }}</th>
+                <th scope="col" style="width: 8%;">{{ label_rtime }}</th>
+                <th scope="col" style="width: 10%;">{{ label_last_online }}</th>
+                <th scope="col" style="width: 10%;">{{ label_last_offline }}</th>
+                <th scope="col" style="width: 10%;">{{ label_monitoring }}</th>
+                {% if user_level == 10 %}
+                <th scope="col" style="width: 5%;">&#32</th>
+                {% endif %}
 			</tr>
 			<tr class="warning no-result">
 					<td colspan="9"><i class="fas fa-exclamation-triangle"></i> No result</td>
@@ -50,22 +50,28 @@
 					{% else %}
 						<i class="fas fa-eye-slash" title="{{ server.active_title }}"></i>
 					{% endif %}
-					{% if server.email|lower == 'yes'%}
+					{% if server.email|lower == 'yes' and config.email|lower%}
 						<i class="fas fa-envelope" title="{{ label_email }}"></i>
 					{% endif %}
-					{% if server.sms|lower == 'yes'%}
+					{% if server.sms|lower == 'yes' and config.sms|lower%}
 						<i class="fas fa-sms" title="{{ label_sms }}"></i>
 					{% endif %}
-					{% if server.pushover|lower == 'yes'%}
+					{% if server.pushover|lower == 'yes'and config.pushover|lower %}
 						<span class="fa-layers">
 							<i class="fas fa-circle" title="{{ label_pushover }}"></i>
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">P</span>
 						</span>
 					{% endif %}
-					{% if server.telegram|lower == 'yes'%}
+					{% if server.telegram|lower == 'yes' and config.telegram|lower%}
 						<span class="fa-layers">
 							<i class="fas fa-circle" title="{{ label_telegram }}"></i>
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">T</span>
+						</span>
+					{% endif %}
+					{% if server.jabber|lower == 'yes'%}
+					<span class="fa-layers">
+							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
+							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
 						</span>
 					{% endif %}
 				</td>
@@ -81,7 +87,7 @@
 								<i class="fas fa-edit"></i> {{ label_edit }}
 							</a>
 							<a class="dropdown-item show-modal" href="{{ server.url_delete|raw }}" title="{{ label_delete }}" data-modal-id="delete"
-							 data-modal-param="{{ server.server_name }}">
+							 data-modal-param="{{ server.label }}">
 								<i class="fas fa-trash"></i> {{ label_delete }}
 							</a>
 						</div>

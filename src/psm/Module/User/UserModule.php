@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -23,7 +24,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
+ * @since       phpservermon 3.0
  **/
 
 namespace psm\Module\User;
@@ -31,19 +32,21 @@ namespace psm\Module\User;
 use psm\Module\ModuleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class UserModule implements ModuleInterface {
+class UserModule implements ModuleInterface
+{
 
-	public function load(ContainerBuilder $container) {
-		$event = $container->get('event');
-		$event->addSubscriber(new EventListener\UserSubscriber);
-	}
+    public function load(ContainerBuilder $container)
+    {
+        $event = $container->get('event');
+        $event->addSubscriber(new EventListener\UserSubscriber());
+    }
 
-	public function getControllers() {
-		return array(
-			'user' => __NAMESPACE__.'\Controller\UserController',
-			'login' => __NAMESPACE__.'\Controller\LoginController',
-			'profile' => __NAMESPACE__.'\Controller\ProfileController',
-		);
-
-	}
+    public function getControllers()
+    {
+        return array(
+            'user' => __NAMESPACE__ . '\Controller\UserController',
+            'login' => __NAMESPACE__ . '\Controller\LoginController',
+            'profile' => __NAMESPACE__ . '\Controller\ProfileController',
+        );
+    }
 }

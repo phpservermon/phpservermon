@@ -1,5 +1,8 @@
-$theme-colors: ("primary": #006AE0,
-"success": #20883A);
+$theme-colors: (
+    "primary": #0051AD,
+    "success": #0E6800,
+    "danger": #AC1F2D,
+    "warning": #E67600);
 @import "../plugin/bootstrap/scss/_functions";
 @import "../plugin/bootstrap/scss/functions";
 @import "../plugin/bootstrap/scss/variables";

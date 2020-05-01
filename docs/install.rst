@@ -92,6 +92,16 @@ Please note that some distros have user-specific crontabs (e.g. Debian). If that
 
      */15 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php
 
+If you want to check in different intervals online and offline servers you can use attribute `-s` (or `--status`) with value `on` or `off`.
+So for example you want to check your servers which are online every 10 minutes and offline every 5 seconds. So configure two cron jobs::
+
+     */10 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php -s on
+     */1 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php -s off
+
+By default `off` servers are checked every 5 seconds. If you want to change it add into your config file this constant with required value in seconds::
+
+	define('CRON_DOWN_INTERVAL', 1); // every 1 second call update
+
 The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
 After that the script is assumed dead and the cronjob will run again.
 If you want to change the 10 minutes timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
@@ -136,6 +146,13 @@ In config.php add following line::
 
 After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php over the web from your allowed IP.
 
+Alternatively, define a secret key to allow the update over the web:
+
+In config.php add following line::
+
+     define('PSM_WEBCRON_KEY', 'YOURKEY');
+
+After that, you can hit the url http(s)://"yourmonitor.com"/cron/status.cron.php?webcron_key=YOURKEY .
 
 Troubleshooting
 +++++++++++++++
@@ -144,3 +161,4 @@ If you have problems setting up or accessing your monitor and do not know why, e
 To enable debug mode, add the following line to your config.php file::
 
      define('PSM_DEBUG', true);
+

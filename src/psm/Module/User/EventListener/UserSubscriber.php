@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -32,22 +33,27 @@ use psm\Module\User\UserEvents;
 use psm\Module\User\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class UserSubscriber implements EventSubscriberInterface {
+class UserSubscriber implements EventSubscriberInterface
+{
 
-	public static function getSubscribedEvents() {
-		return array(
-			UserEvents::USER_ADD => array('onUserAdd', 0),
-			UserEvents::USER_EDIT => array('onUserEdit', 0),
-			UserEvents::USER_DELETE => array('onUserDelete', 0),
-		);
-	}
+    public static function getSubscribedEvents()
+    {
+        return array(
+            UserEvents::USER_ADD => array('onUserAdd', 0),
+            UserEvents::USER_EDIT => array('onUserEdit', 0),
+            UserEvents::USER_DELETE => array('onUserDelete', 0),
+        );
+    }
 
-	public function onUserAdd(UserEvent $event) {
-	}
+    public function onUserAdd(UserEvent $event)
+    {
+    }
 
-	public function onUserEdit(UserEvent $event) {
-	}
+    public function onUserEdit(UserEvent $event)
+    {
+    }
 
-	public function onUserDelete(UserEvent $event) {
-	}
+    public function onUserDelete(UserEvent $event)
+    {
+    }
 }

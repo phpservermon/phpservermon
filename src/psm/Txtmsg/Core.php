@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -27,38 +28,42 @@
 
 namespace psm\Txtmsg;
 
-abstract class Core implements TxtmsgInterface {
-	protected $originator;
-	protected $password;
-	protected $recipients = array();
-	protected $username;
+abstract class Core implements TxtmsgInterface
+{
+    protected $originator;
+    protected $password;
+    protected $recipients = array();
+    protected $username;
 
-	/**
-	 * Define login information for the gateway
-	 *
-	 * @param string $username
-	 * @param string $password
-	 */
-	public function setLogin($username, $password) {
-		$this->username = $username;
-		$this->password = $password;
-	}
+    /**
+     * Define login information for the gateway
+     *
+     * @param string $username
+     * @param string $password
+     */
+    public function setLogin($username, $password)
+    {
+        $this->username = $username;
+        $this->password = $password;
+    }
 
-	/**
-	 * Set the mobile number the text message will be send from
-	 *
-	 * @param string $originator
-	 */
-	public function setOriginator($originator) {
-		$this->originator = $originator;
-	}
+    /**
+     * Set the mobile number the text message will be send from
+     *
+     * @param string $originator
+     */
+    public function setOriginator($originator)
+    {
+        $this->originator = $originator;
+    }
 
-	/**
-	 * Add new recipient to the list
-	 *
-	 * @param string|int $recipient
-	 */
-	public function addRecipients($recipient) {
-		array_push($this->recipients, $recipient);
-	}
+    /**
+     * Add new recipient to the list
+     *
+     * @param string|int $recipient
+     */
+    public function addRecipients($recipient)
+    {
+        array_push($this->recipients, $recipient);
+    }
 }
