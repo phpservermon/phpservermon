@@ -105,7 +105,7 @@ If you are familiar with Vagrant (https://www.vagrantup.com)::
 Documentation
 -------------
 
-The documentation is available in the docs folder or http://docs.phpservermonitor.org.
+The documentation is available in the docs folder or https://docs.phpservermonitor.org.
 
 
 License
@@ -122,7 +122,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.
+along with PHP Server Monitor.  If not, see https://www.gnu.org/licenses/.
 
 Docker
 -------
