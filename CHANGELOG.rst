@@ -6,6 +6,11 @@ Not yet released
 ----------------
 \-
 
+v3.5.0 (released May 1, 2020)
+-----------------------------
+
+* See https://github.com/phpservermon/phpservermon/compare/v3.4.5...v3.5.0
+
 v3.4.5 (released September 30, 2019)
 ------------------------------------
 

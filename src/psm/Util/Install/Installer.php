@@ -141,53 +141,53 @@ class Installer
                 'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('language', 'en_US'),
-					('proxy', '0'),
-					('proxy_url', ''),
-					('proxy_user', ''),
-					('proxy_password', ''),
-					('email_status', '1'),
-					('email_from_email', 'monitor@example.org'),
-					('email_from_name', 'Server Monitor'),
-					('email_smtp', ''),
-					('email_smtp_host', ''),
-					('email_smtp_port', ''),
-					('email_smtp_security', ''),
-					('email_smtp_username', ''),
-					('email_smtp_password', ''),
-					('sms_status', '0'),
-					('sms_gateway', 'messagebird'),
-					('sms_gateway_username', 'username'),
-					('sms_gateway_password', 'password'),
-					('sms_from', '1234567890'),
-					('pushover_status', '0'),
-					('pushover_api_token', ''),
-					('telegram_status', '0'),
-					('telegram_api_token', ''),
-					('jabber_status', '1'),
-					('jabber_host', ''),
-					('jabber_port', ''),
-					('jabber_username', ''),
-					('jabber_domain', ''),
-					('jabber_password', ''),
-					('password_encrypt_key', '" . sha1(microtime()) . "'),
-					('alert_type', 'status'),
-					('log_status', '1'),
-					('log_email', '1'),
-					('log_sms', '1'),
-					('log_pushover', '1'),
-					('log_telegram', '1'),
-					('log_jabber', '1'),
-					('log_retention_period', '365'),
-					('version', '" . PSM_VERSION . "'),
-					('version_update_check', '" . PSM_VERSION . "'),
-					('auto_refresh_servers', '0'),
-					('show_update', '1'),
-					('last_update_check', '0'),
-					('cron_running', '0'),
-					('cron_running_time', '0'), 
-					('cron_off_running', '0'),
-					('cron_off_running_time', '0');";
+                    ('language', 'en_US'),
+                    ('proxy', '0'),
+                    ('proxy_url', ''),
+                    ('proxy_user', ''),
+                    ('proxy_password', ''),
+                    ('email_status', '1'),
+                    ('email_from_email', 'monitor@example.org'),
+                    ('email_from_name', 'Server Monitor'),
+                    ('email_smtp', ''),
+                    ('email_smtp_host', ''),
+                    ('email_smtp_port', ''),
+                    ('email_smtp_security', ''),
+                    ('email_smtp_username', ''),
+                    ('email_smtp_password', ''),
+                    ('sms_status', '0'),
+                    ('sms_gateway', 'messagebird'),
+                    ('sms_gateway_username', 'username'),
+                    ('sms_gateway_password', 'password'),
+                    ('sms_from', '1234567890'),
+                    ('pushover_status', '0'),
+                    ('pushover_api_token', ''),
+                    ('telegram_status', '0'),
+                    ('telegram_api_token', ''),
+                    ('jabber_status', '1'),
+                    ('jabber_host', ''),
+                    ('jabber_port', ''),
+                    ('jabber_username', ''),
+                    ('jabber_domain', ''),
+                    ('jabber_password', ''),
+                    ('password_encrypt_key', '" . sha1(microtime()) . "'),
+                    ('alert_type', 'status'),
+                    ('log_status', '1'),
+                    ('log_email', '1'),
+                    ('log_sms', '1'),
+                    ('log_pushover', '1'),
+                    ('log_telegram', '1'),
+                    ('log_jabber', '1'),
+                    ('log_retention_period', '365'),
+                    ('version', '" . PSM_VERSION . "'),
+                    ('version_update_check', '" . PSM_VERSION . "'),
+                    ('auto_refresh_servers', '0'),
+                    ('show_update', '1'),
+                    ('last_update_check', '0'),
+                    ('cron_running', '0'),
+                    ('cron_running_time', '0'), 
+                    ('cron_off_running', '0'),
+                    ('cron_off_running_time', '0');";
         $this->execSQL($queries);
     }
 
@@ -198,46 +198,46 @@ class Installer
     {
         $tables = array(
             PSM_DB_PREFIX . 'config' => "CREATE TABLE `" . PSM_DB_PREFIX . "config` (
-				`key` varchar(255) NOT NULL,
-				`value` varchar(255) NOT NULL,
-				PRIMARY KEY (`key`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+                `key` varchar(255) NOT NULL,
+                `value` varchar(255) NOT NULL,
+                PRIMARY KEY (`key`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'users' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users` (
-				`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
-				`password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
-				`password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
-				`password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
-				`rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
-				`level` tinyint(2) unsigned NOT NULL DEFAULT '20',
-				`name` varchar(255) NOT NULL,
-				`mobile` varchar(15) NOT NULL,
-				`pushover_key` varchar(255) NOT NULL,
-				`pushover_device` varchar(255) NOT NULL,
-				`telegram_id` varchar(255) NOT NULL,
-				`jabber` varchar(255) NOT NULL,
-				`email` varchar(255) NOT NULL,
+                `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
+                `password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
+                `password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
+                `password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
+                `rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
+                `level` tinyint(2) unsigned NOT NULL DEFAULT '20',
+                `name` varchar(255) NOT NULL,
+                `mobile` varchar(15) NOT NULL,
+                `pushover_key` varchar(255) NOT NULL,
+                `pushover_device` varchar(255) NOT NULL,
+                `telegram_id` varchar(255) NOT NULL,
+                `jabber` varchar(255) NOT NULL,
+                `email` varchar(255) NOT NULL,
                 PRIMARY KEY (`user_id`),
                 UNIQUE KEY `unique_username` (`user_name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX .
             'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
-				`user_id` int(11) unsigned NOT NULL,
-				`key` varchar(255) NOT NULL,
-				`value` varchar(255) NOT NULL,
+                `user_id` int(11) unsigned NOT NULL,
+                `key` varchar(255) NOT NULL,
+                `value` varchar(255) NOT NULL,
                 PRIMARY KEY (`user_id`, `key`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'users_servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
-				`user_id` INT( 11 ) UNSIGNED NOT NULL ,
-				`server_id` INT( 11 ) UNSIGNED NOT NULL ,
+                `user_id` INT( 11 ) UNSIGNED NOT NULL ,
+                `server_id` INT( 11 ) UNSIGNED NOT NULL ,
                 PRIMARY KEY ( `user_id` , `server_id` )
             ) ENGINE = MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
-				`log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`server_id` int(11) unsigned NOT NULL,
-				`type` enum('status','email','sms','pushover','telegram', 'jabber') NOT NULL,
-				`message` TEXT NOT NULL,
-				`datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
+                `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `server_id` int(11) unsigned NOT NULL,
+                `type` enum('status','email','sms','pushover','telegram', 'jabber') NOT NULL,
+                `message` TEXT NOT NULL,
+                `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
                 PRIMARY KEY  (`log_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'log_users' => "CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
@@ -246,44 +246,44 @@ class Installer
                 PRIMARY KEY (`log_id`, `user_id`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers' => "CREATE TABLE `" . PSM_DB_PREFIX . "servers` (
-				`server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`ip` varchar(500) NOT NULL,
-				`port` int(5) NOT NULL,
-				`request_method` varchar(50) NULL,
-				`label` varchar(255) NOT NULL,
-				`type` enum('ping','service','website') NOT NULL default 'service',
-				`pattern` varchar(255) NOT NULL default '',
-				`pattern_online` enum('yes','no') NOT NULL default 'yes',
-				`post_field` varchar(255) NULL,
-				`redirect_check` enum('ok','bad') NOT NULL default 'bad',
-				`allow_http_status` varchar(255) NOT NULL default '',
-				`header_name` varchar(255) NOT NULL default '',
-				`header_value` varchar(255) NOT NULL default '',
-				`status` enum('on','off') NOT NULL default 'on',
-				`error` varchar(255) NULL,
-				`rtime` FLOAT(9, 7) NULL,
-				`last_online` datetime NULL,
-				`last_offline` datetime NULL,
-				`last_offline_duration` varchar(255) NULL,
-				`last_check` datetime NULL,
-				`active` enum('yes','no') NOT NULL default 'yes',
-				`email` enum('yes','no') NOT NULL default 'yes',
-				`sms` enum('yes','no') NOT NULL default 'no',
-				`pushover` enum('yes','no') NOT NULL default 'yes',
-				`telegram` enum('yes','no') NOT NULL default 'yes',
-				`jabber` enum('yes','no') NOT NULL default 'yes',
-			    `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
-			    `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+                `server_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `ip` varchar(500) NOT NULL,
+                `port` int(5) NOT NULL,
+                `request_method` varchar(50) NULL,
+                `label` varchar(255) NOT NULL,
+                `type` enum('ping','service','website') NOT NULL default 'service',
+                `pattern` varchar(255) NOT NULL default '',
+                `pattern_online` enum('yes','no') NOT NULL default 'yes',
+                `post_field` varchar(255) NULL,
+                `redirect_check` enum('ok','bad') NOT NULL default 'bad',
+                `allow_http_status` varchar(255) NOT NULL default '',
+                `header_name` varchar(255) NOT NULL default '',
+                `header_value` varchar(255) NOT NULL default '',
+                `status` enum('on','off') NOT NULL default 'on',
+                `error` varchar(255) NULL,
+                `rtime` FLOAT(9, 7) NULL,
+                `last_online` datetime NULL,
+                `last_offline` datetime NULL,
+                `last_offline_duration` varchar(255) NULL,
+                `last_check` datetime NULL,
+                `active` enum('yes','no') NOT NULL default 'yes',
+                `email` enum('yes','no') NOT NULL default 'yes',
+                `sms` enum('yes','no') NOT NULL default 'no',
+                `pushover` enum('yes','no') NOT NULL default 'yes',
+                `telegram` enum('yes','no') NOT NULL default 'yes',
+                `jabber` enum('yes','no') NOT NULL default 'yes',
+                `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
+                `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                 `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
                 `ssl_cert_expired_time` varchar(255) NULL,
-			    `timeout` smallint(1) unsigned NULL DEFAULT NULL,
-			    `website_username` varchar(255) DEFAULT NULL,
-				`website_password` varchar(255) DEFAULT NULL,
-				`last_error` varchar(255) DEFAULT NULL,
-				`last_error_output` TEXT,
-				`last_output` TEXT,
-				PRIMARY KEY  (`server_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+                `timeout` smallint(1) unsigned NULL DEFAULT NULL,
+                `website_username` varchar(255) DEFAULT NULL,
+                `website_password` varchar(255) DEFAULT NULL,
+                `last_error` varchar(255) DEFAULT NULL,
+                `last_error_output` TEXT,
+                `last_output` TEXT,
+                PRIMARY KEY  (`server_id`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
                 `servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `server_id` int(11) unsigned NOT NULL,
@@ -294,14 +294,14 @@ class Installer
                 KEY `server_id` (`server_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers_history' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
-				`servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`server_id` int(11) unsigned NOT NULL,
-				`date` date NOT NULL,
-				`latency_min` float(9,7) NOT NULL,
-				`latency_avg` float(9,7) NOT NULL,
-				`latency_max` float(9,7) NOT NULL,
-				`checks_total` int(11) unsigned NOT NULL,
-				`checks_failed` int(11) unsigned NOT NULL,
+                `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `server_id` int(11) unsigned NOT NULL,
+                `date` date NOT NULL,
+                `latency_min` float(9,7) NOT NULL,
+                `latency_avg` float(9,7) NOT NULL,
+                `latency_max` float(9,7) NOT NULL,
+                `checks_total` int(11) unsigned NOT NULL,
+                `checks_failed` int(11) unsigned NOT NULL,
                 PRIMARY KEY (`servers_history_id`),
                 UNIQUE KEY `server_id_date` (`server_id`,`date`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
@@ -354,8 +354,8 @@ class Installer
         if (version_compare($version_from, '3.4.2', '<')) {
             $this->upgrade342();
         }
-        if (version_compare($version_from, '3.4.6-beta.3', '<')) {
-            $this->upgrade346();
+        if (version_compare($version_from, '3.5.0', '<')) {
+            $this->upgrade350();
         }
         psm_update_conf('version', $version_to);
     }
@@ -431,49 +431,49 @@ class Installer
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` CHANGE `user_id` `user_id` INT( 11 )
             UNSIGNED NOT NULL AUTO_INCREMENT;";
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
-			ADD `user_name` varchar(64) COLLATE utf8_general_ci NOT NULL 
+            ADD `user_name` varchar(64) COLLATE utf8_general_ci NOT NULL 
                 COMMENT 'user\'s name, unique' AFTER `user_id`,
-			ADD `password` varchar(255) COLLATE utf8_general_ci NOT NULL 
+            ADD `password` varchar(255) COLLATE utf8_general_ci NOT NULL 
                 COMMENT 'user\'s password in salted and hashed format' AFTER `user_name`,
-			ADD `password_reset_hash` char(40) COLLATE utf8_general_ci DEFAULT NULL 
+            ADD `password_reset_hash` char(40) COLLATE utf8_general_ci DEFAULT NULL 
                 COMMENT 'user\'s password reset code' AFTER `password`,
-			ADD `password_reset_timestamp` bigint(20) DEFAULT NULL 
+            ADD `password_reset_timestamp` bigint(20) DEFAULT NULL 
                 COMMENT 'timestamp of the password reset request' AFTER `password_reset_hash`,
-			ADD `rememberme_token` varchar(64) COLLATE utf8_general_ci DEFAULT NULL 
+            ADD `rememberme_token` varchar(64) COLLATE utf8_general_ci DEFAULT NULL 
                 COMMENT 'user\'s remember-me cookie token' AFTER `password_reset_timestamp`,
-			ADD `level` TINYINT( 2 ) UNSIGNED NOT NULL DEFAULT '20' AFTER `rememberme_token`;";
+            ADD `level` TINYINT( 2 ) UNSIGNED NOT NULL DEFAULT '20' AFTER `rememberme_token`;";
         // make sure all current users are admins (previously we didnt have non-admins):
         $queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_name`=`email`, `level`=10;";
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` ADD UNIQUE `unique_username` ( `user_name` );";
 
         $queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
-						`servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`server_id` int(11) unsigned NOT NULL,
-						`date` datetime NOT NULL,
-						`status` tinyint(1) unsigned NOT NULL,
-						`latency` float(9,7) DEFAULT NULL,
-						PRIMARY KEY (`servers_uptime_id`),
-						KEY `server_id` (`server_id`)
-					  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+                        `servers_uptime_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                        `server_id` int(11) unsigned NOT NULL,
+                        `date` datetime NOT NULL,
+                        `status` tinyint(1) unsigned NOT NULL,
+                        `latency` float(9,7) DEFAULT NULL,
+                        PRIMARY KEY (`servers_uptime_id`),
+                        KEY `server_id` (`server_id`)
+                      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
         $queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_history` (
-				`servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`server_id` int(11) unsigned NOT NULL,
-				`date` date NOT NULL,
-				`latency_min` float(9,7) NOT NULL,
-				`latency_avg` float(9,7) NOT NULL,
-				`latency_max` float(9,7) NOT NULL,
-				`checks_total` int(11) unsigned NOT NULL,
-				`checks_failed` int(11) unsigned NOT NULL,
-						  PRIMARY KEY (`servers_history_id`),
-						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
-						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+                `servers_history_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `server_id` int(11) unsigned NOT NULL,
+                `date` date NOT NULL,
+                `latency_min` float(9,7) NOT NULL,
+                `latency_avg` float(9,7) NOT NULL,
+                `latency_max` float(9,7) NOT NULL,
+                `checks_total` int(11) unsigned NOT NULL,
+                `checks_failed` int(11) unsigned NOT NULL,
+                          PRIMARY KEY (`servers_history_id`),
+                          UNIQUE KEY `server_id_date` (`server_id`,`date`)
+                        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
         $queries[] = "CREATE TABLE `" . PSM_DB_PREFIX . "users_servers` (
-						`user_id` INT( 11 ) UNSIGNED NOT NULL ,
-						`server_id` INT( 11 ) UNSIGNED NOT NULL ,
-						PRIMARY KEY ( `user_id` , `server_id` )
-						) ENGINE = MYISAM ;";
+                        `user_id` INT( 11 ) UNSIGNED NOT NULL ,
+                        `server_id` INT( 11 ) UNSIGNED NOT NULL ,
+                        PRIMARY KEY ( `user_id` , `server_id` )
+                        ) ENGINE = MYISAM ;";
         $this->execSQL($queries);
 
         // from 3.0 all user-server relations are in a separate table
@@ -525,11 +525,11 @@ class Installer
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `last_offline_duration` varchar(255) NULL;";
 
         $queries[] = "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
-						`user_id` int(11) unsigned NOT NULL,
-						`key` varchar(255) NOT NULL,
-						`value` varchar(255) NOT NULL,
-						PRIMARY KEY (`user_id`, `key`)
-					  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+                        `user_id` int(11) unsigned NOT NULL,
+                        `key` varchar(255) NOT NULL,
+                        `value` varchar(255) NOT NULL,
+                        PRIMARY KEY (`user_id`, `key`)
+                      ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
         $this->execSQL($queries);
     }
@@ -546,10 +546,10 @@ class Installer
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD `website_username` varchar(255) NULL,
             ADD `website_password` varchar(255) NULL AFTER `website_username`;";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('proxy', '0'),
-					('proxy_url', ''),
-					('proxy_user', ''),
-					('proxy_password', '');";
+                    ('proxy', '0'),
+                    ('proxy_url', ''),
+                    ('proxy_user', ''),
+                    ('proxy_password', '');";
 
         $this->execSQL($queries);
 
@@ -603,9 +603,9 @@ class Installer
             "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram' )
             CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('telegram_status', '0'),
-					('log_telegram', '1'),
-					('telegram_api_token', '');";
+                    ('telegram_status', '0'),
+                    ('log_telegram', '1'),
+                    ('telegram_api_token', '');";
         $this->execSQL($queries);
     }
 
@@ -673,9 +673,9 @@ class Installer
     }
 
     /**
-     * Upgrade for v3.4.6 release
+     * Upgrade for v3.5.0 release
      */
-    protected function upgrade346()
+    protected function upgrade350()
     {
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
@@ -683,19 +683,19 @@ class Installer
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
 
-	    if (
-		    @psm_password_decrypt(
-			    psm_get_conf('password_encrypt_key'),
-			    psm_get_conf('email_smtp_password')
-		    ) === false
-	    ) {
-		    // Prevents encrypting the password multiple times.
-		    $queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` 
+        if (
+            @psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            ) === false
+        ) {
+            // Prevents encrypting the password multiple times.
+            $queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` 
                 SET `value` = '" .
-			    psm_password_encrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password')) .
-			    "' WHERE `key` = 'email_smtp_password'";
-		    $this->log('SMTP password is now encrypted.');
-	    }
+                psm_password_encrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password')) .
+                "' WHERE `key` = 'email_smtp_password'";
+            $this->log('SMTP password is now encrypted.');
+        }
 
         $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `jabber` VARCHAR( 255 ) 
             NOT NULL AFTER `telegram_id`;';
@@ -705,13 +705,13 @@ class Installer
             "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'pushover', 'telegram', 'jabber' )
             CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-					('jabber_status', '0'),
-					('log_jabber', '1'),
-					('jabber_host', ''),
-					('jabber_port', ''),
-					('jabber_username', ''),
-					('jabber_domain', ''),
-					('jabber_password', '');";
+                    ('jabber_status', '0'),
+                    ('log_jabber', '1'),
+                    ('jabber_host', ''),
+                    ('jabber_port', ''),
+                    ('jabber_username', ''),
+                    ('jabber_domain', ''),
+                    ('jabber_password', '');";
 
         $this->execSQL($queries);
     }
