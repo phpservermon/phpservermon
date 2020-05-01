@@ -50,6 +50,8 @@ For a regular upgrade, follow these steps:
 * Follow the steps
 * Enjoy
 
+Alternatively you can use updater.sh script.
+
 From 2.0
 --------
 
