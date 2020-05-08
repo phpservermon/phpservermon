@@ -779,6 +779,9 @@ namespace {
             case 'solutionsinfini':
                 $sms = new \psm\Txtmsg\SolutionsInfini();
                 break;
+            case 'ysmal':
+                $sms = new \psm\Txtmsg\Ysmal();
+                break;
         }
 
         // copy login information from the config file
