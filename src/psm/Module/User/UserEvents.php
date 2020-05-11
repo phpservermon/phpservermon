@@ -35,15 +35,15 @@ final class UserEvents
     /**
      * @var string
      */
-    public const USER_ADD = 'user.add';
+    const USER_ADD = 'user.add';
 
     /**
      * @var string
      */
-    public const USER_EDIT = 'user.edit';
+    const USER_EDIT = 'user.edit';
 
     /**
      * @var string
      */
-    public const USER_DELETE = 'user.delete';
+    const USER_DELETE = 'user.delete';
 }

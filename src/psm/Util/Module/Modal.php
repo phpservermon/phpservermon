@@ -32,9 +32,9 @@ namespace psm\Util\Module;
 class Modal implements ModalInterface
 {
 
-    public const MODAL_TYPE_OK = 0;
-    public const MODAL_TYPE_OKCANCEL = 1;
-    public const MODAL_TYPE_DANGER = 2;
+    const MODAL_TYPE_OK = 0;
+    const MODAL_TYPE_OKCANCEL = 1;
+    const MODAL_TYPE_DANGER = 2;
 
     /**
      * prefix used for modal dialog box elements
