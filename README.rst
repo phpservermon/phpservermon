@@ -79,10 +79,19 @@ Requirements
 * MySQL database
 * For PHP5: 5.5.9+
 * For PHP7: 7.0.8+
-* PHP cURL package
-* PHP PDO mysql driver
-* PHP-XML
+* PHP Extensions (modules)
 
+  * ext-curl
+  * ext-ctype
+  * ext-filter
+  * ext-hash
+  * ext-json
+  * ext-libxml
+  * ext-openssl
+  * ext-pdo
+  * ext-pcre
+  * ext-sockets
+  * ext-xml
 
 Install
 -------
