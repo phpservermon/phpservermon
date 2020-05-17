@@ -4,21 +4,6 @@ $theme-colors: (
     "danger": #AC1F2D,
     "warning": #E67600);
 
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px
-);
-
-$container-max-widths: (
-  sm: 540px,
-  md: 720px,
-  lg: 960px,
-  xl: 2500px
-);
-
 @import "../plugin/bootstrap/scss/_functions";
 @import "../plugin/bootstrap/scss/functions";
 @import "../plugin/bootstrap/scss/variables";

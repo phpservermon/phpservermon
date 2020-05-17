@@ -1,6 +1,6 @@
 {% import 'main/macros.tpl.html' as macro %}
 {{ macro.input_csrf() }}
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="card text-white text-center col-md-2 pl-0 pr-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
 			<div class="card-body d-flex align-items-center justify-content-center">
