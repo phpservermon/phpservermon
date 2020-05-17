@@ -114,7 +114,7 @@ abstract class AbstractServerController extends AbstractController
      */
     protected function formatServer($server)
     {
-        $server['rtime'] = round((float) $server['rtime'], 4);
+        $server['rtime'] = $server['rtime'];
         $server['last_online'] = psm_timespan($server['last_online']);
         $server['last_offline'] = psm_timespan($server['last_offline']);
         if ($server['last_offline'] != psm_get_lang('system', 'never')) {
