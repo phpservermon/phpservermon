@@ -182,9 +182,9 @@ class StatusUpdater
         // Execute ping
         $pingCommand = 'ping6';
         $serverIp = $this->server['ip'];
-        if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false){
+        if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
             $pingCommand = 'ping';
-        }        
+        }
         $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
         // Non-greedy match on filler
         $re1 = '.*?';
@@ -197,9 +197,9 @@ class StatusUpdater
         if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
             $result = $matches[1][0];
         }
-        if (substr($output[0],0,4) == 'PING' && strpos($output[count($output)-2],'packets transmitted')){
-            $result = 0;     
-        }        
+        if (substr($output[0], 0, 4) == 'PING' && strpos($output[count($output) - 2], 'packets transmitted')) {
+            $result = 0;
+        }
         if (!is_null($result)) {
             $this->header = $output[0];
             $status = true;
@@ -233,7 +233,7 @@ class StatusUpdater
         $starttime = microtime(true);
 
         $serverIp = $this->server['ip'];
-        if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false){
+        if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
             $serverIp = "[$serverIp]";
         }
         $fp = @fsockopen($serverIp, $this->server['port'], $errno, $this->error, $timeout);

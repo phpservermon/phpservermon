@@ -57,7 +57,7 @@ class LogController extends AbstractServerController
             'label_sms' => psm_get_lang('log', 'sms'),
             'label_pushover' => psm_get_lang('log', 'pushover'),
             'label_telegram' => psm_get_lang('log', 'telegram'),
-	        'label_jabber' => psm_get_lang('log', 'jabber'),
+            'label_jabber' => psm_get_lang('log', 'jabber'),
             'label_title' => psm_get_lang('log', 'title'),
             'label_server' => psm_get_lang('servers', 'server'),
             'label_type' => psm_get_lang('log', 'type'),
@@ -161,9 +161,9 @@ class LogController extends AbstractServerController
         if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
             // restrict by user_id
             $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-						`us`.`user_id`={$this->getUser()->getUserId()}
-						AND `us`.`server_id`=`servers`.`server_id`
-						)";
+                        `us`.`user_id`={$this->getUser()->getUserId()}
+                        AND `us`.`server_id`=`servers`.`server_id`
+                        )";
         }
         $entries = $this->db->query(
             'SELECT ' .

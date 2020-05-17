@@ -102,7 +102,7 @@ class ServerController extends AbstractServerController
             'sms' => 'icon-mobile',
             'pushover' => 'icon-pushover',
             'telegram' => 'icon-telegram',
-	        'jabber' => 'icon-jabber'
+            'jabber' => 'icon-jabber'
         );
 
         $servers = $this->getServers();
@@ -236,7 +236,7 @@ class ServerController extends AbstractServerController
                 'edit_sms_selected' => $edit_server['sms'],
                 'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
-	            'edit_jabber_selected' => $edit_server['jabber'],
+                'edit_jabber_selected' => $edit_server['jabber'],
             ));
         }
 
@@ -310,7 +310,7 @@ class ServerController extends AbstractServerController
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
             'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
-	        'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
+            'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
         );
         // make sure websites start with http://
         if (
@@ -579,10 +579,10 @@ class ServerController extends AbstractServerController
             'label_send_sms' => psm_get_lang('servers', 'send_sms'),
             'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
             'label_telegram' => psm_get_lang('servers', 'telegram'),
-	    'label_jabber' => psm_get_lang('servers', 'jabber'),
+        'label_jabber' => psm_get_lang('servers', 'jabber'),
             'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_telegram' => psm_get_lang('servers', 'send_telegram'),
-	    'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
+        'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
             'label_users' => psm_get_lang('servers', 'users'),
             'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
             'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
