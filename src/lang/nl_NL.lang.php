@@ -81,6 +81,8 @@ $sm_lang = array(
         'minutes' => 'minuten',
         'second' => 'seconde',
         'seconds' => 'seconden',
+        'millisecond' => 'milliseconde',
+        'milliseconds' => 'milliseconden',
         'current' => 'huidig',
         'settings' => 'Instellingen',
     ),
