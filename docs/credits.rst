@@ -85,6 +85,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Nexmo SMS gateway
 
+* Mateusz Małek - https://github.com/mateuszmalek
+
+  * SMSAPI gateway
+
 Translators
 +++++++++++
 
