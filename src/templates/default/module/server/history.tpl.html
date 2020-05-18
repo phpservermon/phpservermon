@@ -20,7 +20,7 @@
 		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
 	</div><br>
 	{% endif %}
-		{{ graph.info.0.label }}: {{ graph.info.0.value }}s
+		{{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
 </div>
 
 {% if graph.id == 'history_short' %}

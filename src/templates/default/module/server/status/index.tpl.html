@@ -37,7 +37,7 @@
 						<p class="card-text">
 							{{ label_last_online }}: {{ server.last_online_nice }}<br>
 							{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}<br>
-							{{ label_rtime }}: {{ server.rtime }}
+							{{ label_rtime }}: {{ (server.rtime * 1000)|round(2) }} ms
 						</p>
 					</div>
 				</div>
@@ -97,7 +97,7 @@
 							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
-							<td>{{ server.rtime }}s</td>
+							<td>{{ (server.rtime * 1000)|round(2) }} ms</td>
 						</tr>
 					{% endfor %}
 				</tbody>

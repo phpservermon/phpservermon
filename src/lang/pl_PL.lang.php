@@ -67,6 +67,7 @@ $sm_lang = array(
         'a_minute_ago' => 'minutę temu',
         'seconds_ago' => '%d sekund temu',
         'a_second_ago' => 'sekundę temu',
+        'seconds' => 'sekund',
     ),
     'menu' => array(
         'config' => 'Konfiguracja',
@@ -212,8 +213,8 @@ $sm_lang = array(
         'sms_from' => 'Numer nadawcy',
         'pushover_status' => 'Pozwól na wysyłkę notyfikacji Pushover',
         'pushover_description' => 'Pushover jest usługą ułatwiającą otrzymywanie powiadomień w czasie
- rzeczywistym. Sprawdź <a href="https://pushover.net/" target="_blank">ich stronę</a> aby uzyskać
- więcej informacji.',
+ rzeczywistym. Sprawdź <a href="https://pushover.net/" target="_blank">ich
+ stronę</a> aby uzyskać więcej informacji.',
         'pushover_clone_app' => 'Kliknij tutaj aby stworzyć aplikację korzystającą z Pushover',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"
@@ -248,7 +249,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-odświeżanie',
         'auto_refresh_description' => 'Auto-odświeżanie strony serwera.<br><span class="small">Czas w sekundach, dla
  czasu 0 strona nie będzie odświeżana.</span>',
-        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'Email zostanie wysłany na adres podany w Twoim profilu.',
         'test_sms' => 'SMS zostanie wysłany na numer podany w Twoim profilu.',

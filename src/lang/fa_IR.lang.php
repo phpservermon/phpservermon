@@ -67,6 +67,7 @@ $sm_lang = array(
         'a_minute_ago' => 'حدود یک دقیقه پیش',
         'seconds_ago' => '%d ثانیه پیش',
         'a_second_ago' => 'یک ثانیه پیش',
+        'seconds' => 'ثانیه',
     ),
     'menu' => array(
         'config' => 'تنظیم',
@@ -263,7 +264,6 @@ $sm_lang = array(
         'auto_refresh' => 'رفرش خودکار',
         'auto_refresh_description' => 'رفرش خودکار صفحه سرورها.<br><span class="small">زمان
  به ثنیه, اگر 0 باشد صفحه رفرش نخواهد شد.</span>',
-        'seconds' => 'ثانیه',
         'test' => 'تست',
         'test_email' => 'یک ایمیل به آدرس تعیین شده در پروفایل شما ارسال
  خواهد شد.',

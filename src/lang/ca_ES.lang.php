@@ -347,7 +347,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-recàrrega',
         'auto_refresh_description' => 'Recarregar automàticament la plana Servidors.<br/><span class="small">Temps en
  segons, si poseu ZERO la plana no s\'auto-recarregarà.</span>',
-        'seconds' => 'segons',
         'test' => 'Provar',
         'test_email' => 'S\'enviarà un correu a l\'adreça que teniu al vostre perfil d\'usuari.',
         'test_sms' => 'S\'enviarà un SMS al telèfon que teniu al vostre perfil d\'usuari.',

@@ -354,7 +354,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-actualizar',
         'auto_refresh_description' => 'Auto-actualizar la página de servidores.<br><span class="small">Tiempo en
  segundos, si se utiliza 0 la página no se actualizará.</span>',
-        'seconds' => 'segundos',
         'test' => 'Prueba',
         'test_email' => 'Un correo electrónico será enviado a la dirección especificada en su perfil de usuario.',
         'test_sms' => 'Un SMS se enviará al número de teléfono especificado en su perfil de usuario.',
