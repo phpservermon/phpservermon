@@ -86,8 +86,7 @@ class SMSAPI extends Core
 
         // One user at a time.
         $recipients_chunk = array_chunk($this->recipients, 1);
-        foreach ($recipients_chunk as $recipient)
-        {
+        foreach ($recipients_chunk as $recipient) {
             try {
                 $response = $this->processSendOperation($host, $recipient, $message);
             } catch (\RuntimeException $e) {
