@@ -252,6 +252,20 @@ class HistoryGraph
         $prev_downtime = 0;
         $downtime = 0;
 
+        // get highest latency record for offline height
+        $n = count($records);
+        $highest_latency = 0.0000;
+        for ($i = 0; $i < $n; $i++) {
+            if (!array_key_exists('latency', $records[$i])) {
+                continue;
+            }
+            // Update if latency is higher
+            $highest_latency = $highest_latency < floatval($records[$i]['latency']) ?
+                floatval($records[$i]['latency']) : $highest_latency;
+        }
+        // to ms
+        $highest_latency = round($highest_latency * 1000);
+
         // Create the list of points and server down zones
         foreach ($records as $record) {
             $time = strtotime($record['date']);
