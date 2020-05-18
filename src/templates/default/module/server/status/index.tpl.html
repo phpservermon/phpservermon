@@ -1,10 +1,10 @@
 {% import 'main/macros.tpl.html' as macro %}
 {{ macro.input_csrf() }}
-<div class="container">
+<div class="container-fluid">
 	<div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
 		<div class="row">
 			{% for server in servers_offline %}
-			<div class="col-sm-4 col-md-3">
+			<div class="col-sm-4 col-md-3 col-xl-2">
 				<div class="card text-white bg-danger mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
 					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></div>
 					<div class="card-body">
@@ -17,7 +17,7 @@
 			</div>
 			{% endfor %}
 			{% for server in servers_warning %}
-			<div class="col-sm-4 col-md-3">
+			<div class="col-sm-4 col-md-3 col-xl-2">
 				<div class="card text-white bg-warning mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
 					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></div>
 					<div class="card-body">
@@ -30,7 +30,7 @@
 			</div>
 			{% endfor %}
 			{% for server in servers_online %}
-			<div class="col-sm-4 col-md-3">
+			<div class="col-sm-4 col-md-3 col-xl-2">
 				<div class="card text-white bg-success mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
 					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></div>
 					<div class="card-body">
