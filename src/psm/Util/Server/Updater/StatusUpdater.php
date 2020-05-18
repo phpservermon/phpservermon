@@ -187,12 +187,16 @@ class StatusUpdater
         }
 
         // execute PING
-        $txt = exec($pingCommand . " -c" . $max_runs . " " . $serverIp . " 2>&1", $output);
+        $txt = exec($pingCommand . " -c " . $max_runs . $serverIp . " 2>&1", $output);
 
-        // Check if output is PING and if 0,0% of packages are lost, otherwise fail.
-        preg_match('/([0][,.]?0{0,3})(% packet loss)$/', $output[count($output) - 2], $output_package_loss);
+        // Check if output is PING and if transmitted packets is equal to recieved packets.
+        preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
 
-        if (substr($output[0], 0, 4) == 'PING' && count($output_package_loss) !== 0) {
+        if (
+            substr($output[0], 0, 4) == 'PING' &&
+            !empty($output_package_loss) &&
+            $output_package_loss[1] === $output_package_loss[2]
+        ) {
             // Gets avg from 'round-trip min/avg/max/stddev = 7.109/7.109/7.109/0.000 ms'
             preg_match_all("/(\d+\.\d+)/", $output[count($output) - 1], $result);
             $result = floatval($result[0][1]);
@@ -205,8 +209,9 @@ class StatusUpdater
         } else {
             $this->header = "-";
             foreach ($output as $key => $value) {
-                $this->error .= $value . "\n";
+                $this->header .= $value . "\n";
             }
+            $this->error = $output[count($output) - 2];
             $status = false;
         }
         // To miliseconds
