@@ -50,6 +50,8 @@
                 <!-- Password encryption key -->
                 <!-- TODO how does the encryption function works currently? -->
                 {{ macro.input_field("text", "password_encrypt_key", null, "password_encrypt_key", label_password_encrypt_key, password_encrypt_key, "cab03a766...", "40", "password_encrypt_key_help", label_password_encrypt_key_note) }}
+                <!-- Custom user agent -->
+                {{ macro.input_field("text", "user_agent", null, "user_agent", label_user_agent, user_agent, "Mozilla/5.0...", "255", "user_agent_key_help", label_user_agent_key_note) }}
             </fieldset>
             <!-- Notification settings -->
             <fieldset>

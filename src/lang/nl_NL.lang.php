@@ -337,6 +337,9 @@ $sm_lang = array(
         'log_retention_period_description' => 'Aantal dagen dat logs van notificaties en archieven van server uptime
  worden bewaard. Vul 0 in om log opruiming uit te zetten.',
         'log_retention_days' => 'dagen',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Aangepaste user agent wordt door de monitor gebruikt bij de communicatie met externe
+ services.',
     ),
     'notifications' => array(
         'off_sms' => 'Server %LABEL% is DOWN: ip=%IP%, poort=%PORT%. Fout=%ERROR%',

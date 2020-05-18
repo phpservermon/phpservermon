@@ -273,6 +273,8 @@ $sm_lang = array(
  archiwizować uptime serwera. Wpisz 0 aby wyłączyć czyszczenie
  logów.',
         'log_retention_days' => 'dni',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Nazwa używana przez monitoring do identyfikacji ze sprawdzaną usługą.',
     ),
     'notifications' => array(
         'off_sms' => 'Serwer \'%LABEL%\' przestał odpowiadać: ip=%IP%, port=%PORT%. Błąd=%ERROR%',

@@ -51,7 +51,7 @@ The other way is to parse the access logs created by your webserver software, wh
 
 When using tools such as Google Analytics, the monitor requests will not show up in your statistics, because the monitor does not execute any Javascript.
 Tools that parse your raw access logs like Awstats, will include the requests made by the monitor.
-To make sure these requests can be identified, the monitor uses a custom user agent, which you can usually filter out. The user agent of the monitor looks like::
+To make sure these requests can be identified, the monitor uses a custom user agent, which you can usually filter out. The user agent can be modified in the config section, but bij default looks like::
 
      Mozilla/5.0 (compatible; phpservermon/3.0.1; +http://www.phpservermonitor.org)
 
