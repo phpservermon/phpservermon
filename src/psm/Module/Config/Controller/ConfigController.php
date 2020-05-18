@@ -77,7 +77,8 @@ class ConfigController extends AbstractController
         'jabber_host',
         'jabber_port',
         'jabber_username',
-        'jabber_domain'
+        'jabber_domain',
+        'site_title'
     );
 
     /**
@@ -191,6 +192,10 @@ class ConfigController extends AbstractController
         foreach ($this->fields as $input_key) {
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
+
+        $tpl_data['site_title'] = empty($tpl_data['site_title']) ?
+            strtoupper(psm_get_lang('system', 'title')) : $tpl_data['site_title'];
+
         // encrypted fields
         foreach ($this->encryptedFields as $encryptedField) {
             $tpl_data[$encryptedField] = '';
@@ -224,6 +229,7 @@ class ConfigController extends AbstractController
             // save new config
             $clean = array(
                 'language' => $_POST['language'],
+                'site_title' => $_POST['site_title'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
                 'email_smtp_security' =>
@@ -516,7 +522,7 @@ class ConfigController extends AbstractController
             'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
             'label_days' => psm_get_lang('config', 'log_retention_days'),
             'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
-
+            'label_site_title' => psm_get_lang('config', 'site_title'),
         );
     }
 }
