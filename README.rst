@@ -60,6 +60,7 @@ The following SMS gateways are currently available:
 * SolutionsInfini - <https://solutionsinfini.com/>
 * Plivo - <https://www.plivo.com/>
 * Callr - <https://www.callr.com/>
+* SMSAPI - <https://www.smsapi.com/en>
 
 
 
