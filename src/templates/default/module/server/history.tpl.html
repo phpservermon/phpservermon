@@ -30,7 +30,7 @@
 		data: {
 			datasets: [
 			{
-				data: [{{ graph.lines.offline.value }}],
+				data: [{{ graph.lines.offline.value * 1000 }}],
 				label: '{{ graph.lines.offline.name }}',
 				backgroundColor: '#dc3545',
 				borderColor: '#dc3545',
@@ -41,7 +41,7 @@
 				spanGaps: false,
 			},
 			{
-				data: [{{ graph.lines.online.value }}],
+				data: [{{ graph.lines.online.value * 1000 }}],
 				label: '{{graph.lines.online.name }}',
 				fill: false,
 				spanGaps: false,
