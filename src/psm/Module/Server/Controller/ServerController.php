@@ -174,6 +174,13 @@ class ServerController extends AbstractServerController
 
         $tpl_data['users'] = $this->db->select(PSM_DB_PREFIX . 'users', null, array('user_id', 'name'), '', 'name');
 
+        foreach ($tpl_data['users'] as &$user) {
+            $user['id'] = $user['user_id'];
+            unset($user['user_id']);
+            $user['label'] = $user['name'];
+            unset($user['name']);
+        }
+
         switch ($this->server_id) {
             case 0:
                 // insert mode
@@ -194,10 +201,6 @@ class ServerController extends AbstractServerController
 
                 $user_idc_selected = $this->getServerUsers($this->server_id);
                 foreach ($tpl_data['users'] as &$user) {
-                    $user['id'] = $user['user_id'];
-                    unset($user['user_id']);
-                    $user['label'] = $user['name'];
-                    unset($user['name']);
                     if (in_array($user['id'], $user_idc_selected)) {
                         $user['edit_selected'] = 'selected="selected"';
                     }
