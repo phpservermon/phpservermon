@@ -77,7 +77,8 @@ class ConfigController extends AbstractController
         'jabber_host',
         'jabber_port',
         'jabber_username',
-        'jabber_domain'
+        'jabber_domain',
+        'user_agent',
     );
 
     /**
@@ -191,6 +192,11 @@ class ConfigController extends AbstractController
         foreach ($this->fields as $input_key) {
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
+
+        $tpl_data['user_agent'] = empty($tpl_data['user_agent']) ?
+            'Mozilla/5.0 (compatible; phpservermon/' .
+            PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)' : $tpl_data['user_agent'];
+
         // encrypted fields
         foreach ($this->encryptedFields as $encryptedField) {
             $tpl_data[$encryptedField] = '';
@@ -516,7 +522,8 @@ class ConfigController extends AbstractController
             'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
             'label_days' => psm_get_lang('config', 'log_retention_days'),
             'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
-
+            'label_user_agent' => psm_get_lang('config', 'user_agent'),
+            'label_user_agent_key_note' => psm_get_lang('config', 'user_agent_key_note'),
         );
     }
 }

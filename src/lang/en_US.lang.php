@@ -414,6 +414,8 @@ $sm_lang = array(
         'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server
  uptime. Enter 0 to disable log cleanup.',
         'log_retention_days' => 'days',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Custom user agent used by monitor within communication with external services.',
     ),
     'notifications' => array(
         'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
