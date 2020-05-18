@@ -191,6 +191,7 @@ $sm_lang = array(
     ),
     'config' => array(
         'general' => 'Ogólne',
+        'site_title' => 'Tytuł strony',
         'language' => 'Język',
         'show_update' => 'Sprawdzić aktualizacje?',
         'email_status' => 'Pozwól na wysyłkę email',
