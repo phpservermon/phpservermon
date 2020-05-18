@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'vor über einer Minute',
         'seconds_ago' => 'vor %d Sekunden',
         'a_second_ago' => 'vor über einer Sekunde',
+        'seconds' => 'Sekunden',
     ),
     'menu' => array(
         'config' => 'Einstellungen',
@@ -249,7 +250,6 @@ $sm_lang = array(
         'auto_refresh_description' => 'Automatische Aktualisierung der Server-Übersichtsseite<br><span
  class="small">Zeit in Sekunden - die Ziffer \'0\' deaktiviert die automatische
  Aktualisierung.</span>',
-        'seconds' => 'Sekunden',
         'test' => 'Test',
         'test_email' => 'Eine E-Mail wird an die E-Mail-Adresse gesendet, die in Ihrem Profil hinterlegt ist.',
         'test_sms' => 'Eine SMS wird an die Telefonnummer gesendet, die in Ihrem Profil hinterlegt ist.',

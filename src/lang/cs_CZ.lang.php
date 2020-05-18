@@ -68,6 +68,7 @@ $sm_lang = array(
         'a_minute_ago' => 'cca před minutou',
         'seconds_ago' => 'před %d vteřinami',
         'a_second_ago' => 'před chvílí',
+        'seconds' => 'sekunder',
     ),
     'menu' => array(
         'config' => 'Konfigurace',
@@ -260,7 +261,6 @@ $sm_lang = array(
         'auto_refresh' => 'Automaticky obnovit',
         'auto_refresh_description' => 'Automaticky obnovit stránku Servery.<br><span class="small">Čas v sekundách,
  0 pro vypnutí automatického obnovení.</span>',
-        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'E-mail bude odeslán na adresu uvedenou v uživatelském profilu.',
         'test_sms' => 'SMS bude odeslána na telefonní číslo uvedené v uživatelském profilu.',

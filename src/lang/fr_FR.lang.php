@@ -361,7 +361,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-rachaîchissement',
         'auto_refresh_description' => 'Auto-rachaîchissement de la page serveurs.<br><span class="small">Temps en
  secondes. Si 0, la page n\'est pas rafraîchie.</span>',
-        'seconds' => 'secondes',
         'test' => 'Tester',
         'test_email' => 'Un email va vous être envoyé à l\'adresse définie dans votre profil utilisateur.',
         'test_sms' => 'Un SMS va vous être envoyé au numéro défini dans votre profil utilisateur.',

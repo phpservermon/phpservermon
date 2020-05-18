@@ -381,7 +381,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-refresh',
         'auto_refresh_description' => 'Auto-refresh servers page.<br><span class="small">Time in seconds, if 0 the
  page won\'t refresh.</span>',
-        'seconds' => 'seconds',
         'test' => 'Test',
         'test_email' => 'An email will be sent to the address specified in your user profile.',
         'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
