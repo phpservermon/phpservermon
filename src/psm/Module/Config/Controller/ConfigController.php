@@ -79,6 +79,7 @@ class ConfigController extends AbstractController
         'jabber_username',
         'jabber_domain',
         'user_agent',
+        'site_title'
     );
 
     /**
@@ -197,6 +198,9 @@ class ConfigController extends AbstractController
             'Mozilla/5.0 (compatible; phpservermon/' .
             PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)' : $tpl_data['user_agent'];
 
+        $tpl_data['site_title'] = empty($tpl_data['site_title']) ?
+            strtoupper(psm_get_lang('system', 'title')) : $tpl_data['site_title'];
+
         // encrypted fields
         foreach ($this->encryptedFields as $encryptedField) {
             $tpl_data[$encryptedField] = '';
@@ -230,6 +234,7 @@ class ConfigController extends AbstractController
             // save new config
             $clean = array(
                 'language' => $_POST['language'],
+                'site_title' => $_POST['site_title'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
                 'email_smtp_security' =>
@@ -524,6 +529,7 @@ class ConfigController extends AbstractController
             'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
             'label_user_agent' => psm_get_lang('config', 'user_agent'),
             'label_user_agent_key_note' => psm_get_lang('config', 'user_agent_key_note'),
+            'label_site_title' => psm_get_lang('config', 'site_title'),
         );
     }
 }

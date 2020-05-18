@@ -41,6 +41,8 @@
                 <legend>{{ label_general }}</legend>
                 <!-- Update check -->
                 {{ macro.input_checkbox("show_update", "show_update[]", label_show_update, show_update_checked) }}
+                <!-- Site title -->
+                {{ macro.input_field("text", "site_title", null, "site_title", label_site_title, site_title, label_site_title, "255", null, null, null, null, true) }}
                 <!-- Language -->
                 {{ macro.input_select("language", "language", label_language, languages, language_current) }}
                 <!-- Auto refresh -->

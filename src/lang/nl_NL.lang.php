@@ -244,6 +244,7 @@ $sm_lang = array(
     ),
     'config' => array(
         'general' => 'Algemeen',
+        'site_title' => 'Website titel',
         'language' => 'Taal',
         'show_update' => 'Controleer wekelijks voor updates?',
         'email_status' => 'Sta email berichten toe?',

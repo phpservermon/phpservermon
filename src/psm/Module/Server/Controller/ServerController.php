@@ -518,6 +518,15 @@ class ServerController extends AbstractServerController
         if (strlen($tpl_data['last_error_output']) > 255) {
             $tpl_data['last_error_output_truncated'] = substr($tpl_data['last_error_output'], 0, 255) . '...';
         }
+
+        // fetch server status logs
+        $log_entries = $this->getServerLogs($this->server_id);
+        for ($x = 0; $x < count($log_entries); $x++) {
+            $record = &$log_entries[$x];
+            $record['datetime_format'] = psm_date($record['datetime']);
+        }
+
+        $tpl_data['log_entries'] = $log_entries;
                 
         return $this->twig->render('module/server/server/view.tpl.html', $tpl_data);
     }
@@ -606,6 +615,10 @@ class ServerController extends AbstractServerController
             'label_settings' => psm_get_lang('system', 'settings'),
             'label_output' => psm_get_lang('servers', 'output'),
             'label_search' => psm_get_lang('system', 'search'),
+            'label_log_title' => psm_get_lang('log', 'title'),
+            'label_log_no_logs' => psm_get_lang('log', 'no_logs'),
+            'label_date' => psm_get_lang('system', 'date'),
+            'label_message' => psm_get_lang('system', 'message'),
         );
     }
 
@@ -626,5 +639,43 @@ class ServerController extends AbstractServerController
             $result[] = $user['user_id'];
         }
         return $result;
+    }
+
+    /**
+     * Get logs for a server
+     * @param int $server_id
+     * @param string $type status/email/sms
+     * @return \PDOStatement array
+     */
+    protected function getServerLogs($server_id, $type = 'status')
+    {
+        $sql_join = '';
+        if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+            // restrict by user_id
+            $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+						`us`.`user_id`={$this->getUser()->getUserId()}
+						AND `us`.`server_id`=`servers`.`server_id`
+						)";
+        }
+        $entries = $this->db->query(
+            'SELECT ' .
+            '`servers`.`label`, ' .
+            '`servers`.`ip`, ' .
+            '`servers`.`port`, ' .
+            '`servers`.`type` AS server_type, ' .
+            '`log`.`log_id`, ' .
+            '`log`.`type`, ' .
+            '`log`.`message`, ' .
+            '`log`.`datetime` ' .
+            'FROM `' . PSM_DB_PREFIX . 'log` AS `log` ' .
+            'JOIN `' . PSM_DB_PREFIX . 'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) ' .
+            $sql_join .
+            'WHERE `log`.`type`=\'' . $type . '\' ' .
+            'AND `log`.`server_id`=' . $server_id . ' ' .
+            'ORDER BY `datetime` DESC ' .
+            'LIMIT 0,20'
+        );
+
+        return $entries;
     }
 }

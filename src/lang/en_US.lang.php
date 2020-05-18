@@ -281,6 +281,7 @@ $sm_lang = array(
     ),
     'config' => array(
         'general' => 'General',
+        'site_title' => 'Site title',
         'language' => 'Language',
         'show_update' => 'Check for updates?',
         'password_encrypt_key' => 'The encryption key password',
