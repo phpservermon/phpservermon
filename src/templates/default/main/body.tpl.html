@@ -31,15 +31,17 @@
 
 <body>
 	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="index.php">{{ title }}</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
-		 aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">{{ title }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-		<div class="collapse navbar-collapse" id="navbar">
-			{{ html_menu|raw }}
-		</div>
+            <div class="collapse navbar-collapse" id="navbar">
+                {{ html_menu|raw }}
+            </div>
+        </div>
 	</nav>
 	{{ html_modal|raw }}
 	<main role="main" class="container-fluid px-4">
