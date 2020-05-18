@@ -179,36 +179,42 @@ class StatusUpdater
             $max_runs = 1;
         }
         $result = null;
-        // Execute ping
+        // Choose right ping version, ping6 for IPV6, ping for IPV4
         $pingCommand = 'ping6';
         $serverIp = $this->server['ip'];
         if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
             $pingCommand = 'ping';
         }
+
+        // execute PING
         $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
-        // Non-greedy match on filler
-        $re1 = '.*?';
-        // Uninteresting: float
-        $re2 = '[+-]?\\d*\\.\\d+(?![-+0-9\\.])';
-        // Non-greedy match on filler
-        $re3 = '.*?';
-        // Float 1
-        $re4 = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
-        if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
-            $result = $matches[1][0];
-        }
-        if (substr($output[0], 0, 4) == 'PING' && strpos($output[count($output) - 2], 'packets transmitted')) {
-            $result = 0;
-        }
-        if (!is_null($result)) {
-            $this->header = $output[0];
+
+        // Check if output is PING and if transmitted packets is equal to received packets.
+        preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
+
+        if (
+            substr($output[0], 0, 4) == 'PING' &&
+            !empty($output_package_loss) &&
+            $output_package_loss[1] === $output_package_loss[2]
+        ) {
+            // Gets avg from 'round-trip min/avg/max/stddev = 7.109/7.109/7.109/0.000 ms'
+            preg_match_all("/(\d+\.\d+)/", $output[count($output) - 1], $result);
+            $result = floatval($result[0][1]);
+
+            $this->header = "";
+            foreach ($output as $key => $value) {
+                $this->header .= $value . "\n";
+            }
             $status = true;
         } else {
             $this->header = "-";
-            $this->error = $output[0];
+            foreach ($output as $key => $value) {
+                $this->header .= $value . "\n";
+            }
+            $this->error = $output[count($output) - 2];
             $status = false;
         }
-        //Divide by a thousand to convert to milliseconds
+        // To miliseconds
         $this->rtime =  $result / 1000;
 
         // check if server is available and rerun if asked.
