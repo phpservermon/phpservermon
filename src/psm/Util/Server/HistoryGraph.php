@@ -74,7 +74,7 @@ class HistoryGraph
             1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
         );
         $info_fields = array(
-            'latency_avg' => '%01.4f',
+            'latency_avg' => '%01.5f',
             'uptime' => '%01.3f%%',
         );
 
@@ -280,11 +280,11 @@ class HistoryGraph
                         if ($record['status'] == 0) {
                             $lines['online'][] = $prev['status']
                                 // Previous datapoint was online
-                                ? '{ x: ' . ($time * 1000) . ', y: ' . $prev['latency'] . '}'
+                                ? '{ x: ' . ($time * 1000) . ', y: ' . $prev['latency'] * 1000 . '}'
                                 // Previous datapoint was offline
                                 : '{ x: ' . ($time * 1000) . ', y: null}';
                             // new outage start
-                            $lines['offline'][] = '{ x: ' . ($time * 1000) . ', y:0.1}';
+                            $lines['offline'][] = '{ x: ' . ($time * 1000) . ', y:' . $highest_latency . '}';
 
                             $prev_downtime != 0 ?: $prev_downtime = $time;
                         } else {
@@ -294,15 +294,15 @@ class HistoryGraph
                                 // Previous datapoint was online
                                 ? '{ x: ' . ($time * 1000) . ', y:null}'
                                 // Previous datapoint was offline
-                                : '{ x: ' . ($time * 1000) . ', y:0.1}';
+                                : '{ x: ' . ($time * 1000) . ', y:' . $highest_latency . '}';
                             $lines['online'][] = '{ x: ' . ($time * 1000) . ', y: ' .
-                                round((float) $record[$key], 4) . '}';
+                                round((float) $record[$key] * 1000, 2) . '}';
 
                             $prev_downtime == 0 ?: $downtime += ($time - $prev_downtime);
                             $prev_downtime = 0;
                         }
                     } else {
-                        $lines[$key][] = '{ x: \'' . $record['date'] . '\', y: ' . $record[$key] . '}';
+                        $lines[$key][] = '{ x: \'' . $record['date'] . '\', y: ' . $record[$key] * 1000 . '}';
                     }
                     $prev = $record;
                 }
@@ -312,7 +312,8 @@ class HistoryGraph
         // Record the first and last date as a string in the down array
         $prev_downtime == 0 ?: $downtime += ($now->getTimestamp() - $prev_downtime);
         if ($add_uptime) {
-            $prev['status'] ?: $lines['offline'][] = '{ x: ' . ($now->getTimestamp() * 1000) . ', y:0.1}';
+            $prev['status'] ?: $lines['offline'][] =
+                '{ x: ' . ($now->getTimestamp() * 1000) . ', y:' . $highest_latency . '}';
             $data['uptime'] = 100 - ($downtime / ($end_time->getTimestamp() - $start_time->getTimestamp()));
         }
 

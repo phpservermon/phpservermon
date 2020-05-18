@@ -20,7 +20,7 @@
 		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
 	</div><br>
 	{% endif %}
-		{{ graph.info.0.label }}: {{ graph.info.0.value }}s
+		{{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
 </div>
 
 {% if graph.id == 'history_short' %}
@@ -30,7 +30,7 @@
 		data: {
 			datasets: [
 			{
-				data: [{{ graph.lines.offline.value * 1000 }}],
+				data: [{{ graph.lines.offline.value }}],
 				label: '{{ graph.lines.offline.name }}',
 				backgroundColor: '#dc3545',
 				borderColor: '#dc3545',
@@ -41,7 +41,7 @@
 				spanGaps: false,
 			},
 			{
-				data: [{{ graph.lines.online.value * 1000 }}],
+				data: [{{ graph.lines.online.value }}],
 				label: '{{graph.lines.online.name }}',
 				fill: false,
 				spanGaps: false,
