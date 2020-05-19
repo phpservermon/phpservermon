@@ -1,5 +1,7 @@
 <script type="text/javascript" src="src/templates/default/static/plugin/momentjs/moment.js"></script>
 <script type="text/javascript" src="src/templates/default/static/plugin/chartjs/chart-2.7.3.min.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/hammer/hammer.min.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/chartjs/plugin-zoom.min.js"></script>
 {% for graph in graphs %}
 <div class="chart-container col-10" style="position: relative;  width:60vw">
 	<canvas id="{{ graph.id }}">Your browser does not support the canvas element.</canvas>
@@ -72,6 +74,18 @@
 						source: 'auto',
 					}
 				}]
+			},
+			plugins: {
+				zoom: {
+					pan: {
+						enabled: true,
+						mode: 'x',
+					},
+					zoom: {
+						enabled: true,
+						mode: 'x',
+					}
+				}
 			}
 		}
 	});
@@ -133,6 +147,18 @@
 						source: 'auto',
 					}
 				}]
+			},
+			plugins: {
+				zoom: {
+					pan: {
+						enabled: true,
+						mode: 'x',
+					},
+					zoom: {
+						enabled: true,
+						mode: 'x',
+					}
+				}
 			}
 		}
 	});
