@@ -69,10 +69,10 @@ class StatusNotifier
      */
     protected $send_telegram = false;
 
-	/**
-	 * Send Jabber?
-	 * @var bool
-	 */
+    /**
+     * Send Jabber?
+     * @var bool
+     */
     protected $send_jabber = false;
 
     /**
@@ -258,7 +258,7 @@ class StatusNotifier
         }
 
         if ($this->send_jabber && $this->server['jaber'] == 'yes') {
-	        $this->combine ? $this->setCombi('jabber') : $this->notifyByJabber($users);
+            $this->combine ? $this->setCombi('jabber') : $this->notifyByJabber($users);
         }
 
         return $notify;
@@ -461,7 +461,7 @@ class StatusNotifier
         $pushover->setTitle($title);
         $pushover->setMessage(str_replace('<br/>', "\n", $message));
         $pushover->setUrl(psm_build_url());
-        $pushover->setUrlTitle(psm_get_lang('system', 'title'));
+        $pushover->setUrlTitle(psm_get_conf('site_title', psm_get_lang('system', 'title')));
 
         // Log
         if (psm_get_conf('log_pushover')) {
@@ -562,52 +562,52 @@ class StatusNotifier
         }
     }
 
-	/**
-	 * @param array $users
-	 * @param array $combi
-	 */
+    /**
+     * @param array $users
+     * @param array $combi
+     */
     protected function notifyByJabber($users, $combi = [])
     {
-	    // Remove users that have no jabber
-	    foreach ($users as $k => $user) {
-		    if (trim($user['jabber']) === '') {
-			    unset($users[$k]);
-		    }
-	    }
+        // Remove users that have no jabber
+        foreach ($users as $k => $user) {
+            if (trim($user['jabber']) === '') {
+                unset($users[$k]);
+            }
+        }
 
-	    // Validation
-	    if (empty($users)) {
-		    return;
-	    }
+        // Validation
+        if (empty($users)) {
+            return;
+        }
 
-	    // Message
-	    $message = key_exists('message', $combi) ?
-		    $combi['message'] :
-		    psm_parse_msg($this->status_new, 'jabber_message', $this->server);
+        // Message
+        $message = key_exists('message', $combi) ?
+            $combi['message'] :
+            psm_parse_msg($this->status_new, 'jabber_message', $this->server);
 
-	    // Log
-	    if (psm_get_conf('log_jabber')) {
-		    $log_id = psm_add_log($this->server_id, 'jabber', $message);
-	    }
+        // Log
+        if (psm_get_conf('log_jabber')) {
+            $log_id = psm_add_log($this->server_id, 'jabber', $message);
+        }
 
-	    $usersJabber = [];
-	    foreach ($users as $user) {
-		    // Log
-		    if (!empty($log_id)) {
-			    psm_add_log_user($log_id, $user['user_id']);
-		    }
-		    $usersJabber[] = $user['jabber'];
-	    }
-	    // Jabber
-	    psm_jabber_send_message(
-		    psm_get_conf('jabber_host'),
-		    psm_get_conf('jabber_username'),
-		    psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
-		    $usersJabber,
-		    $message,
-		    (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
-		    (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
-	    );
+        $usersJabber = [];
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+            $usersJabber[] = $user['jabber'];
+        }
+        // Jabber
+        psm_jabber_send_message(
+            psm_get_conf('jabber_host'),
+            psm_get_conf('jabber_username'),
+            psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+            $usersJabber,
+            $message,
+            (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+            (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+        );
     }
 
     /**
@@ -622,12 +622,12 @@ class StatusNotifier
             SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`,
                 `u`.`pushover_device`, `u`.`telegram_id`, 
                 `u`.`jabber`
-			FROM `' . PSM_DB_PREFIX . 'users` AS `u`
-			JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-				`us`.`user_id`=`u`.`user_id`
-				AND `us`.`server_id` = {$server_id}
-			)
-		");
+            FROM `' . PSM_DB_PREFIX . 'users` AS `u`
+            JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+                `us`.`user_id`=`u`.`user_id`
+                AND `us`.`server_id` = {$server_id}
+            )
+        ");
         return $users;
     }
 }

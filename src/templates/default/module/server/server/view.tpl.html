@@ -1,6 +1,6 @@
 {% import 'main/macros.tpl.html' as macro %}
 {{ macro.input_csrf() }}
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="card text-white text-center col-md-2 pl-0 pr-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
 			<div class="card-body d-flex align-items-center justify-content-center">
@@ -51,7 +51,7 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-4">{{ label_rtime }}:</dt>
-						<dd class="col-md-8">{{ rtime }} {{ label_seconds }}</dd>
+						<dd class="col-md-8">{{ (rtime * 1000)|round(2) }} {{ label_milliseconds }}</dd>
 					</dl>
 				</li>
 			</ul>
@@ -354,6 +354,35 @@
 	<div class="row">
 		{{ html_history|raw }}
 	</div>
+	{% if log_entries %}
+	<div class="row mt-4">
+		<div class="card col-md-12 pl-0 pr-0">
+			<div class="card-header">
+				{{ label_log_title }}
+			</div>
+			<div class="card-body d-flex align-items-center justify-content-center">
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+						<tr>
+							<th scope="col" style="width: 15%;">{{ label_date }}</th>
+							<th scope="col">{{ label_message }}</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for entry in log_entries %}
+						<tr>
+							<td><time>{{ entry.datetime_format }}</time></td>
+							<td class="full">{{ entry.message|raw }}</td>
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
 
 	<div class="modal fade" id="modal_last_output" tabindex="-1" role="dialog" aria-labelledby="modal_last_output_label" aria-hidden="true">
 		<div class="modal-dialog" style="width:75%;max-width: 100%" role="document">

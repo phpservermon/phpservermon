@@ -452,8 +452,8 @@ namespace {
         }
 
         if ($add_agent) {
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/' .
-            PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)');
+            curl_setopt($ch, CURLOPT_USERAGENT, psm_get_conf('user_agent', 'Mozilla/5.0 (compatible; phpservermon/' .
+            PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)'));
         }
 
         $result['exec'] = curl_exec($ch);
@@ -689,7 +689,7 @@ namespace {
             $client->add_cb('on_auth_success', function () use ($client, $receivers, $message) {
                 JAXLLogger::info('got on_auth_success cb');
                 foreach ($receivers as $receiver) {
-	                $client->send_chat_msg($receiver, $message);
+                    $client->send_chat_msg($receiver, $message);
                 }
                 $client->send_end_stream();
             });
@@ -778,6 +778,9 @@ namespace {
                 break;
             case 'solutionsinfini':
                 $sms = new \psm\Txtmsg\SolutionsInfini();
+                break;
+            case 'smsapi':
+                $sms = new \psm\Txtmsg\SMSAPI();
                 break;
         }
 
