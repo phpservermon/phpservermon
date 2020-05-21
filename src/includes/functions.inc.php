@@ -457,7 +457,10 @@ namespace {
         }
 
         $result['exec'] = curl_exec($ch);
-        $result['info'] = curl_getinfo($ch);
+	$result['info'] = curl_getinfo($ch);
+	if (!empty($result['info']['certinfo']['Expire Date'])) {
+            $result['info']['certinfo']['Expire date'] = $result['info']['certinfo']['Expire Date'];
+        }
 
         curl_close($ch);
     
