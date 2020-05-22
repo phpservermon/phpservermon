@@ -187,7 +187,8 @@ class StatusUpdater
         }
 
         // execute PING
-        $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') $ping_count = " -n "; else $ping_count = " -c ";
+        $txt = exec($pingCommand . $ping_count . $max_runs . " " . $serverIp . " 2>&1", $output);
 
         // Check if output is PING and if transmitted packets is equal to received packets.
         preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
