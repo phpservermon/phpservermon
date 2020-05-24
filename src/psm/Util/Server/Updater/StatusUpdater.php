@@ -431,7 +431,9 @@ class StatusUpdater
             !empty($this->curl_info['certinfo']) &&
             $server['ssl_cert_expiry_days'] > 0
         ) {
-            $cert_expiration_date = strtotime($this->curl_info['certinfo'][0]['Expire date']);
+            $certinfo = reset($this->curl_info['certinfo']);
+            $certinfo = openssl_x509_parse($certinfo['Cert']);
+            $cert_expiration_date = $certinfo['validTo_time_t'];
             $expiration_time =
                 round((int)($cert_expiration_date - time()) / 86400);
             $latest_time = time() + (86400 * $server['ssl_cert_expiry_days']);
