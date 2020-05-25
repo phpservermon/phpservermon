@@ -196,3 +196,4 @@ The following libraries are being used by PHP Server Monitor:
 * PHP-Pushover - https://github.com/kryap/php-pushover
 * Symfony - https://symfony.com
 * Random_compat - https://github.com/paragonie/random_compat
+* Hammer.js - https://github.com/hammerjs/hammer.js
