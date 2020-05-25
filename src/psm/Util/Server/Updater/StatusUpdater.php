@@ -180,49 +180,75 @@ class StatusUpdater
             $max_runs = 1;
         }
         $serverIp = $this->server['ip'];
-        $pingCommand = 'ping6';
-        $ping_count = " -c ";
-
         $result = null;
 
-        // Choose right ping version, ping6 for IPV6, ping for IPV4
-        if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
-            $pingCommand = 'ping';
-        }
-
-        // Use -n instead of -c for Windows machines
+        // Windows / Linux variant: use socket on Windows, commandline on Linux
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $ping_count = " -n ";
-        }
 
-        // execute PING
-        $txt = exec($pingCommand . $ping_count . $max_runs . " " . $serverIp . " 2>&1", $output);
+            // socket ping - Code from http://stackoverflow.com/a/20467492
 
-        // Check if output is PING and if transmitted packets is equal to received packets.
-        preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
+            // save response time
+            $starttime = microtime(true);
 
-        if (
-            substr($output[0], 0, 4) == 'PING' &&
-            !empty($output_package_loss) &&
-            $output_package_loss[1] === $output_package_loss[2]
-        ) {
-            // Gets avg from 'round-trip min/avg/max/stddev = 7.109/7.109/7.109/0.000 ms'
-            preg_match_all("/(\d+\.\d+)/", $output[count($output) - 1], $result);
-            $result = floatval($result[0][1]);
+            // set ping payload
+            $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
 
-            $this->header = "";
-            foreach ($output as $key => $value) {
-                $this->header .= $value . "\n";
+            $socket = socket_create(AF_INET, SOCK_RAW, 1);
+            socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
+            socket_connect($socket, $serverIp, null);
+
+            socket_send($socket, $package, strLen($package), 0);
+            if (socket_read($socket, 255)) {
+                $status = true;
+            } else {
+                $status = false;
+
+                // set error  message
+                $errorcode = socket_last_error();
+                $this->error = "Couldn't create socket [" . $errorcode . "]: " . socket_strerror($errorcode);
             }
-            $status = true;
+            $this->rtime = microtime(true) - $starttime;
+            socket_close($socket);
+
         } else {
-            $this->header = "-";
-            foreach ($output as $key => $value) {
-                $this->header .= $value . "\n";
+
+            // Choose right ping version, ping6 for IPV6, ping for IPV4
+            $pingCommand = 'ping6';
+            if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+                $pingCommand = 'ping';
             }
-            $this->error = $output[count($output) - 2];
-            $status = false;
+
+            // execute PING
+            $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
+
+            // Check if output is PING and if transmitted packets is equal to received packets.
+            preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
+
+            if (
+                substr($output[0], 0, 4) == 'PING' &&
+                !empty($output_package_loss) &&
+                $output_package_loss[1] === $output_package_loss[2]
+            ) {
+                // Gets avg from 'round-trip min/avg/max/stddev = 7.109/7.109/7.109/0.000 ms'
+                preg_match_all("/(\d+\.\d+)/", $output[count($output) - 1], $result);
+                $result = floatval($result[0][1]);
+
+                $this->header = "";
+                foreach ($output as $key => $value) {
+                    $this->header .= $value . "\n";
+                }
+                $status = true;
+            } else {
+                $this->header = "-";
+                foreach ($output as $key => $value) {
+                    $this->header .= $value . "\n";
+                }
+                $this->error = $output[count($output) - 2];
+                $status = false;
+            }
+
         }
+
         // To miliseconds
         $this->rtime =  $result / 1000;
 
