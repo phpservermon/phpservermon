@@ -179,24 +179,24 @@ class StatusUpdater
         if ($max_runs == null || $max_runs > 1) {
             $max_runs = 1;
         }
-        $serverIp = $this->server['ip'];
-        $pingCommand = 'ping6';
-        $ping_count = " -c ";
-
+        $server_ip = $this->server['ip'];
+        $ping_command = 'ping';
+        $ping_count = "-c";
+        $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
         $result = null;
 
         // Choose right ping version, ping6 for IPV6, ping for IPV4
-        if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
-            $pingCommand = 'ping';
+        if (filter_var($server_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+            $ping_command = $os_is_windows ? 'ping -6' : 'ping6';
         }
 
         // Use -n instead of -c for Windows machines
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $ping_count = " -n ";
+        if ($os_is_windows) {
+            $ping_count = "-n";
         }
 
         // execute PING
-        $txt = exec($pingCommand . $ping_count . $max_runs . " " . $serverIp . " 2>&1", $output);
+        $txt = exec($ping_command . " " . $ping_count . " " . $max_runs . " " . $server_ip . " 2>&1", $output);
 
         // Check if output is PING and if transmitted packets is equal to received packets.
         preg_match('/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/', $output[count($output) - 2], $output_package_loss);
