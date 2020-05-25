@@ -195,7 +195,7 @@ class StatusUpdater
 
             $socket = socket_create(AF_INET, SOCK_RAW, 1);
             socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
-            socket_connect($socket, $serverIp, null);
+            socket_connect($socket, $this->server['ip'], null);
 
             socket_send($socket, $package, strLen($package), 0);
             if (socket_read($socket, 255)) {
