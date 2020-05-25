@@ -102,7 +102,7 @@ class InstallController extends AbstractController
             $errors++;
             $this->addMessage('The PDO MySQL driver needs to be installed.', 'error');
         } else {
-             $this->addMessage('PHP PDO MySQL driver found', 'success');
+            $this->addMessage('PHP PDO MySQL driver found', 'success');
         }
         if (!extension_loaded('filter')) {
             $this->addMessage('PHP is installed without the filter module. Please install filter.', 'warning');
