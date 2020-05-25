@@ -178,7 +178,7 @@ class StatusUpdater
         // Settings
         $max_runs = ($max_runs == null || $max_runs > 1) ? 1 : $max_runs;
         $server_ip = escapeshellcmd($this->server['ip']);
-        $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN';
+        $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
         $status = $os_is_windows ?
             $this->pingFromWindowsMachine($server_ip, $max_runs) :
