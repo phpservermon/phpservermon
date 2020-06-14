@@ -19,6 +19,15 @@
 		<!-- Mobile -->
 		{{ macro.input_field("tel", "mobile", null, "mobile", label_mobile, mobile, label_mobile, "15", null, null, null, null, null, null, "tel") }}
 	</fieldset>
+	<!-- Webhook settings -->
+	<fieldset>
+		<legend>{{ label_webhook }}</legend>
+		<p>{{ label_webhook_description|raw }}</p>
+		<!-- webhook url -->
+		{{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, webhook_url, label_webhook_url, "255", "webhook_url_help", webhook_url_description) }}
+		<!-- webhook json -->
+		{{ macro.input_field("text", "webhook_json", null, "webhook_json", label_webhook_json, webhook_json, label_webhook_json, "255", "webhook_json_help", webhook_json_description) }}
+	</fieldset>
 	<!-- Pushover settings -->
 	<fieldset>
         <legend>{{ label_pushover }}</legend>

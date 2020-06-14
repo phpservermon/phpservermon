@@ -134,11 +134,11 @@ class Installer
         $queries = array();
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "servers` (
             `ip`, `port`, `label`, `type`, `pattern`, `pattern_online`, `redirect_check`,
-            `status`, `rtime`, `active`, `email`, `sms`, `pushover`, `telegram`, `jabber`)
+            `status`, `rtime`, `active`, `email`, `sms`, `pushover`,`webhook`, `telegram`, `jabber`)
             VALUES ('http://sourceforge.net/index.php', 80, 'SourceForge', 'website', '',
-                'yes', 'bad', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes'),
+                'yes', 'bad', 'on', '0.0000000', 'yes', 'yes', 'yes', 'yes','yes', 'yes', 'yes'),
                 ('smtp.gmail.com', 465, 'Gmail SMTP', 'service', '',
-                'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')";
+                'yes', 'bad','on', '0.0000000', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users_servers` (`user_id`,`server_id`) VALUES (1, 1), (1, 2);";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
                     ('language', 'en_US'),
@@ -160,6 +160,7 @@ class Installer
                     ('sms_gateway_username', 'username'),
                     ('sms_gateway_password', 'password'),
                     ('sms_from', '1234567890'),
+                    ('webhook_status', '0'),
                     ('pushover_status', '0'),
                     ('pushover_api_token', ''),
                     ('telegram_status', '0'),
@@ -176,6 +177,7 @@ class Installer
                     ('log_email', '1'),
                     ('log_sms', '1'),
                     ('log_pushover', '1'),
+                    ('log_webhook', '1'),
                     ('log_telegram', '1'),
                     ('log_jabber', '1'),
                     ('log_retention_period', '365'),
@@ -214,7 +216,9 @@ class Installer
                 `mobile` varchar(15) NOT NULL,
                 `pushover_key` varchar(255) NOT NULL,
                 `pushover_device` varchar(255) NOT NULL,
-                `telegram_id` varchar(255) NOT NULL,
+                `webhook_url` varchar(255) NOT NULL,
+                `webhook_json` varchar(255) NOT NULL DEFAULT '{\"text\":\"servermon: #message\"}',
+                `telegram_id` varchar(255) NOT NULL ,
                 `jabber` varchar(255) NOT NULL,
                 `email` varchar(255) NOT NULL,
                 PRIMARY KEY (`user_id`),
@@ -235,7 +239,7 @@ class Installer
             PSM_DB_PREFIX . 'log' => "CREATE TABLE `" . PSM_DB_PREFIX . "log` (
                 `log_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `server_id` int(11) unsigned NOT NULL,
-                `type` enum('status','email','sms','pushover','telegram', 'jabber') NOT NULL,
+                `type` enum('status','email','sms','pushover','webhook','telegram', 'jabber') NOT NULL,
                 `message` TEXT NOT NULL,
                 `datetime` timestamp NOT NULL default CURRENT_TIMESTAMP,
                 PRIMARY KEY  (`log_id`)
@@ -270,6 +274,7 @@ class Installer
                 `email` enum('yes','no') NOT NULL default 'yes',
                 `sms` enum('yes','no') NOT NULL default 'no',
                 `pushover` enum('yes','no') NOT NULL default 'yes',
+                `webhook` enum('yes','no') NOT NULL default 'yes',
                 `telegram` enum('yes','no') NOT NULL default 'yes',
                 `jabber` enum('yes','no') NOT NULL default 'yes',
                 `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
@@ -553,7 +558,7 @@ class Installer
 
         $this->execSQL($queries);
 
-    // Create log_users table
+        // Create log_users table
         $this->execSQL("CREATE TABLE `" . PSM_DB_PREFIX . "log_users` (
                         `log_id`  int(11) UNSIGNED NOT NULL ,
                         `user_id`  int(11) UNSIGNED NOT NULL ,
@@ -659,7 +664,7 @@ class Installer
         $this->execSQL($queries);
         $this->log('Combined notifications enabled. Check out the config page for more info.');
     }
-    
+
     /**
      * Patch for v3.4.2 release
      * Version_compare was forgotten in v3.4.1 and query failed.
@@ -712,6 +717,28 @@ class Installer
                     ('jabber_username', ''),
                     ('jabber_domain', ''),
                     ('jabber_password', '');";
+
+        $this->execSQL($queries);
+    }
+
+    /**
+     * todo: changes for webhook support
+     * Upgrade for v3.6.0 release
+     */
+    protected function upgrade360()
+    {
+        $queries = array();
+
+        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `webhook_url` VARCHAR( 255 ) 
+            NOT NULL AFTER `telegram_id`;';
+        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `webhook_json` VARCHAR( 255 ) 
+            NOT NULL AFTER `telegram_id`;';
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX ." CHANGE `type` `type` ENUM('status','email','sms','webhook','pushover','telegram','jabber') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `webhook` ENUM( 'yes','no' ) 
+            NOT NULL DEFAULT 'yes' AFTER  `telegram`;";
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+                    ('webhook_status', '0'),
+                    ('log_webhook', '1')";
 
         $this->execSQL($queries);
     }
