@@ -61,7 +61,7 @@ The following SMS gateways are currently available:
 * Plivo - <https://www.plivo.com/>
 * Callr - <https://www.callr.com/>
 * SMSAPI - <https://www.smsapi.com/en>
-
+* LabsMobile - <https://www.labsmobile.com>
 
 
 Please note: for these gateways you will need an account with sufficient credits.
