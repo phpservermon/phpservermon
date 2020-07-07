@@ -34,8 +34,10 @@ namespace psm\Txtmsg;
 class OVHsms extends Core {
     
     /**
-     * Send sms using the OVH API
+     * Send sms using the OVH http2sms gateway
+     * Online documentation :https://docs.ovh.com/fr/sms/envoyer_des_sms_depuis_une_url_-_http2sms/
      * Ovh need Account and Login, then use format login@account in username field.
+     * 
      * @var string $message
      * @var string $this->username
      * @var string $this->password
@@ -84,7 +86,6 @@ class OVHsms extends Core {
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $xmlResults = simplexml_load_string($result);
         $err = curl_errno($curl);
-
 
         if ($err != 0 || $httpcode != 200 || $xmlResults === false ||($xmlResults->status != '100' && $xmlResults->status != '101')) {
             $success = 0;
