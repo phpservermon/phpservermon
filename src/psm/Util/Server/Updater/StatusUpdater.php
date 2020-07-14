@@ -89,7 +89,7 @@ class StatusUpdater
         $this->error = '';
         $this->header = '';
         $this->curl_info = '';
-        $this->rtime = '';
+        $this->rtime = 0;
 
         // get server info from db
         $this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
