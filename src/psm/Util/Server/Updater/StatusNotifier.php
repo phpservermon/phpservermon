@@ -58,6 +58,12 @@ class StatusNotifier
     protected $send_sms = false;
 
     /**
+     * Send Discord notification?
+     * @var boolean $send_discord
+     */
+    protected $send_discord = false;
+
+    /**
      * Send Pushover notification?
      * @var boolean $send_pushover
      */
@@ -128,6 +134,7 @@ class StatusNotifier
 
         $this->send_emails = (bool)psm_get_conf('email_status');
         $this->send_sms = (bool)psm_get_conf('sms_status');
+        $this->send_discord = (bool)psm_get_conf('discord_status');
         $this->send_pushover = (bool)psm_get_conf('pushover_status');
         $this->send_telegram = (bool)psm_get_conf('telegram_status');
         $this->send_jabber = (bool)psm_get_conf('jabber_status');
@@ -149,6 +156,7 @@ class StatusNotifier
         if (
             !$this->send_emails &&
             !$this->send_sms &&
+            !$this->send_discord &&
             !$this->send_pushover &&
             !$this->send_telegram &&
             !$this->send_jabber &&
@@ -175,6 +183,7 @@ class StatusNotifier
             'error',
             'email',
             'sms',
+            'discord',
             'pushover',
             'telegram',
             'jabber',
@@ -244,6 +253,12 @@ class StatusNotifier
             // sms will not be send combined as some gateways don't support long sms / charge extra
             // yay lets wake those nerds up!
             $this->notifyByTxtMsg($users);
+        }
+
+        // check if discord is enabled for this server
+        if ($this->send_discord && $this->server['discord'] == 'yes') {
+            // yay lets wake those nerds up!
+            $this->combine ? $this->setCombi('discord') : $this->notifyByDiscord($users);
         }
 
         // check if pushover is enabled for this server
@@ -416,6 +431,86 @@ class StatusNotifier
             $mail->ClearAddresses();
         }
     }
+
+
+    /**
+     * This functions performs the discord notifications
+     *
+     * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+     * @return void
+     */
+    protected function notifyByDiscord($users, $combi = array())
+    {
+
+        $message_log = key_exists('message', $combi) ?
+            $combi['message'] :
+            psm_parse_msg($this->status_new, 'discord_message', $this->server);
+
+
+        // Remove users that have no Discord webhook
+        foreach ($users as $k => $user) {
+            if (trim($user['discord']) == '') {
+                unset($users[$k]);
+            }
+        }
+
+        // Validation
+        if (empty($users)) {
+            return;
+        }
+
+        // fix message for Discord viewing
+        $message = str_replace(array('<b>', '</b>'), array('**', '**'), $message_log);
+        $message = str_replace(array('<ul>', '</ul>'), array('', ''), $message);
+        $message = str_replace(array('<br>', '</li>'), array("\n", "\n"), $message);
+        $message = str_replace('<li>', " * ", $message);
+
+
+        $json = json_decode(
+            '{"content":""}',
+            true
+        );
+        $json['content'] = $message;
+
+        // Log
+        if (psm_get_conf('log_discord')) {
+            $log_id = psm_add_log($this->server_id, 'discord', $message_log);
+        }
+
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+
+            // set discord webhook and send
+            try {
+                $msg = "payload_json=" . urlencode(json_encode($json));
+                $curl = curl_init(trim($user['discord']));
+                if(isset($curl)) {
+                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $msg);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    $result = curl_exec($curl);
+                    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $err = curl_errno($curl);
+
+                    if ($err != 0 || $httpcode != 204) {
+                        // $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+                        $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
+                            curl_strerror($err) . ". \nResult: " . $result;
+                        $log_id = psm_add_log($this->server_id, 'discord', $error);
+                    }
+                    curl_close($curl);
+                }
+            } catch (Exception $e) {
+                $log_id = psm_add_log($this->server_id, 'discord', $e->getMessage());
+            }
+        }
+    }
+
 
     /**
      * This functions performs the pushover notifications
@@ -619,8 +714,8 @@ class StatusNotifier
     {
         // find all the users with this server listed
         $users = $this->db->query('
-            SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`,
-                `u`.`pushover_device`, `u`.`telegram_id`, 
+            SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`discord`, `u`.`pushover_key`,
+                `u`.`pushover_device`, `u`.`telegram_id`,
                 `u`.`jabber`
             FROM `' . PSM_DB_PREFIX . 'users` AS `u`
             JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (

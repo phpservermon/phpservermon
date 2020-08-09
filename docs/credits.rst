@@ -89,6 +89,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * SMSAPI gateway
 
+* Daniel Krusky - https://github.com/dkrusky
+
+  * Discord webhook support
+
 Translators
 +++++++++++
 

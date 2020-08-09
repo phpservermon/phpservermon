@@ -18,6 +18,11 @@
                 label_tab_sms }}</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ discord_active }}" id="config-discord-tab" data-toggle="tab" href="#config-discord"
+               role="tab" aria-controls="config-discord" aria-selected="{% if discord_active %}true{% else %}false{% endif %}">{{
+                label_tab_discord }}</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ pushover_active }}" id="config-pushover-tab" data-toggle="tab" href="#config-pushover"
                 role="tab" aria-controls="config-pushover" aria-selected="{% if pushover_active %}true{% else %}false{% endif %}">{{
                 label_tab_pushover }}</a>
@@ -129,10 +134,22 @@
                 {{ macro.input_field("text", "sms_gateway_password", null, "sms_gateway_password", label_sms_gateway_password, sms_gateway_password, label_sms_gateway_password, "255") }}
                 <!-- sms sender number-->
                 {{ macro.input_field("text", "sms_from", null, "sms_from", label_sms_from, sms_from, "+31123456789", "255") }}
-                
+
                 {{ macro.button_test("testSms", label_test) }}
                 {{ macro.input_hidden("test_sms", "0") }}
                 {{ macro.button_save("sms_submit", label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ discord_active }}" id="config-discord" role="tabpanel" aria-labelledby="config-discord-tab">
+            <fieldset>
+                <legend>{{ label_settings_discord }}</legend>
+                <!-- enable discord -->
+                {{ macro.input_checkbox("discord_status", "discord_status[]", label_discord_status, discord_status_checked) }}
+                <!-- enable discord log -->
+                {{ macro.input_checkbox("log_discord", "log_discord[]", label_log_discord, log_discord_checked) }}
+                {{ macro.button_test("testDiscord", label_test) }}
+                {{ macro.input_hidden("test_discord", "0") }}
+                {{ macro.button_save("discord_submit", label_save) }}
             </fieldset>
         </div>
         <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-pushover-tab">
