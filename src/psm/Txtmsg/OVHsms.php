@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -22,20 +21,23 @@
  * @author      Alexis Urien <Alexis.urien@free.fr>
  * @Author      Tim Zandbergen <Tim@Xervion.nl>
  * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Alexandre ZANELLI <alexandre@les-z.org>
  * @copyright   Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @since       phpservermon 3.5
  **/
 
 namespace psm\Txtmsg;
 
-class Octopush extends Core
-{
+class OVHsms extends Core {
     
     /**
-     * Send sms using the Octopush API
+     * Send sms using the OVH http2sms gateway
+     * Online documentation :https://docs.ovh.com/fr/sms/envoyer_des_sms_depuis_une_url_-_http2sms/
+     * Ovh need Account and Login, then use format login@account in username field.
+     * 
      * @var string $message
      * @var string $this->username
      * @var string $this->password
@@ -46,7 +48,6 @@ class Octopush extends Core
      * @var SimpleXMLElement $xmlResults
      * @var string $err
      * @var string $recipient
-     * @var string $smsType
      * @var mixed $result
      *
      * @var int $success
@@ -54,28 +55,31 @@ class Octopush extends Core
      *
      * @return bool|string
      */
+     
     
-    public function sendSMS($message)
-    {
+    public function sendSMS($message) {
         $error = "";
         $success = 1;
-        $smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
+
+        $account_login = explode('@',$this->username); 
         
         $recipients = join(',', $this->recipients);
         
-        $message = ($smsType == "FR") ? rawurlencode($message . " STOP au XXXXX") : rawurlencode($message);
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
-            array(
-                    "user_login" => $this->username,
-                    "api_key" => $this->password,
-                    "sms_recipients" => $recipients,
-                    "sms_type" => $smsType,
-                    "sms_sender" => substr($this->originator, 0, 15),
-                    "sms_text" => $message,
+        curl_setopt($curl, CURLOPT_URL, "https://www.ovh.com/cgi-bin/sms/http2sms.cgi?".http_build_query(
+                array(
+                    "account" => $account_login[1],
+                    "login" => $account_login[0],
+                    "password" => $this->password,
+                    "from" => str_replace('+', '00', $this->originator),
+                    "to" => $recipients,
+                    "message" => $message,
+                    "contentType" => "text/xml",
+                    "noStop" => 1,
                 )
-        ));
+            )
+        );
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         
         $result = curl_exec($curl);
@@ -83,11 +87,9 @@ class Octopush extends Core
         $xmlResults = simplexml_load_string($result);
         $err = curl_errno($curl);
 
-        if ($err != 0 || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
+        if ($err != 0 || $httpcode != 200 || $xmlResults === false ||($xmlResults->status != '100' && $xmlResults->status != '101')) {
             $success = 0;
-            $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err) .
-                ". \nResult: " . $xmlResults->error_code .
-                ". Look at http://www.octopush-dm.com/en/errors for the error description.";
+            $error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->status." \n".$xmlResults->Message;
         }
         curl_close($curl);
         
