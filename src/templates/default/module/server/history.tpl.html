@@ -32,7 +32,7 @@
 		data: {
 			datasets: [
 			{
-				data: [{{ graph.lines.offline.value }}],
+				data: {{ graph.lines.offline.value|raw }},
 				label: '{{ graph.lines.offline.name }}',
 				backgroundColor: '#dc3545',
 				borderColor: '#dc3545',
@@ -43,7 +43,7 @@
 				spanGaps: false,
 			},
 			{
-				data: [{{ graph.lines.online.value }}],
+				data: {{ graph.lines.online.value|raw }},
 				label: '{{graph.lines.online.name }}',
 				fill: false,
 				spanGaps: false,
@@ -120,7 +120,7 @@
 			datasets: [
 			{% for key,line in graph.lines %}
 			{
-				data: [{{ line.value|raw }}],
+				data: {{ line.value|raw }},
 				label: '{{ line.name }}',
 				backgroundColor: colors['{{key}}'],
 				borderColor: colors['{{key}}'],
