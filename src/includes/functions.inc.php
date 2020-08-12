@@ -794,6 +794,8 @@ namespace {
             case 'solutionsinfini':
                 $sms = new \psm\Txtmsg\SolutionsInfini();
                 break;
+            case 'ysmal':
+                $sms = new \psm\Txtmsg\Ysmal();
             case 'smsapi':
                 $sms = new \psm\Txtmsg\SMSAPI();
                 break;
