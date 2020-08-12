@@ -28,12 +28,6 @@
 		<!-- pushover device -->
 		{{ macro.input_field("text", "pushover_device", null, "pushover_device", label_pushover_device, pushover_device, label_pushover_device, "255", "pushover_device_help", label_pushover_device_description) }}
 	</fieldset>
-    <!-- Discord settings -->
-    <fieldset>
-        <legend>{{ label_discord }}</legend>
-        <p>{{ label_discord_description|raw }}</p>
-		{{ macro.input_field("text", "discord", null, "discord", label_discord, discord, label_discord, "255", "discord_help", discord_description) }}
-    </fieldset>
 	<!-- Telegram settings -->
 	<fieldset>
         <legend>{{ label_telegram }}</legend>
@@ -51,6 +45,11 @@
 		<legend>{{ label_jabber }}</legend>
 		<!-- jabber -->
 		{{ macro.input_field("text", "jabber", null, "jabber", label_jabber, jabber, label_jabber, "255", "jabber_help", label_jabber_description) }}
+    </fieldset>
+    <!-- Discord settings -->
+    <fieldset>
+        <legend>{{ label_discord }}</legend>
+        {{ macro.input_field("text", "discord", null, "discord", label_discord, discord, "https://discordapp.com/api/webhooks/xxxxx", "255", "discord_help", label_discord_description) }}
     </fieldset>
     <!-- Webhook settings -->
     <fieldset>

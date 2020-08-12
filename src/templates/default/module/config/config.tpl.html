@@ -18,11 +18,6 @@
                 label_tab_sms }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ discord_active }}" id="config-discord-tab" data-toggle="tab" href="#config-discord"
-               role="tab" aria-controls="config-discord" aria-selected="{% if discord_active %}true{% else %}false{% endif %}">{{
-                label_tab_discord }}</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link {{ pushover_active }}" id="config-pushover-tab" data-toggle="tab" href="#config-pushover"
                 role="tab" aria-controls="config-pushover" aria-selected="{% if pushover_active %}true{% else %}false{% endif %}">{{
                 label_tab_pushover }}</a>
@@ -36,6 +31,11 @@
             <a class="nav-link {{ jabber_active }}" id="config-jabber-tab" data-toggle="tab" href="#config-jabber"
                role="tab" aria-controls="config-jabber" aria-selected="{% if jabber_active %}true{% else %}false{% endif %}">{{
             label_tab_jabber }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ discord_active }}" id="config-discord-tab" data-toggle="tab" href="#config-discord" role="tab"
+                aria-controls="config-discord" aria-selected="{% if discord_active %}true{% else %}false{% endif %}">{{
+                        label_tab_discord }}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ webhook_active }}" id="config-webhook-tab" data-toggle="tab" href="#config-webhook" role="tab"
