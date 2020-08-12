@@ -303,6 +303,8 @@ class InstallController extends AbstractController
             'level' => PSM_USER_ADMIN,
             'pushover_key' => '',
             'pushover_device' => '',
+            'webhook_url' => '',
+            'webhook_json' => '',
             'telegram_id' => '',
             'jabber' => ''
         );

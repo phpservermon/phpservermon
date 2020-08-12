@@ -130,6 +130,13 @@ $sm_lang = array(
         'jabber' => 'Jabber',
         'jabber_label' => 'Jabber',
         'jabber_description' => 'You Jabber account',
+        'webhook' => 'Webhook',
+        'webhook_description' => 'Send a json webhook to a certain endpoint. <br/> The json can be customized, e.g. {
+"text":"servermon: #message"}',
+        'webhook_url' => 'Webhook Url',
+        'webhook_url_description' => 'Webhook public endpoint url, should start with https://.',
+        'webhook_json' => 'Webhook JSON',
+        'webhook_json_description' => 'Define a custom json, use #message as message variable.',
         'delete_title' => 'Delete User',
         'delete_message' => 'Are you sure you want to delete user \'%1\'?',
         'deleted' => 'User deleted.',
@@ -156,6 +163,7 @@ $sm_lang = array(
         'sms' => 'SMS',
         'discord' => 'Discord',
         'pushover' => 'Pushover',
+        'webhook' => 'Webhook',
         'telegram' => 'Telegram',
         'jabber' => 'Jabber',
         'no_logs' => 'No logs',
@@ -219,6 +227,8 @@ $sm_lang = array(
         'send_sms' => 'Send SMS',
         'discord' => 'Discord',
         'send_discord' => 'Send Discord notificationn',
+        'webhook' => 'Webhook',
+        'send_webhook' => 'Send Webhook notification',
         'pushover' => 'Pushover',
         'send_pushover' => 'Send Pushover notification',
         'telegram' => 'Telegram',
@@ -258,6 +268,7 @@ $sm_lang = array(
         'warning_notifications_disabled_sms' => 'SMS notifications are disabled.',
         'warning_notifications_disabled_email' => 'Email notifications are disabled.',
         'warning_notifications_disabled_discord' => 'Discord notifications are disabled.',
+        'warning_notifications_disabled_webhook' => 'Webhook notifications are disabled.',
         'warning_notifications_disabled_pushover' => 'Pushover notifications are disabled.',
         'warning_notifications_disabled_telegram' => 'Telegram notifications are disabled.',
         'warning_notifications_disabled_jabber' => 'Jabber notifications are disabled.',
@@ -298,6 +309,12 @@ $sm_lang = array(
         'sms_gateway_password' => 'Gateway password',
         'sms_from' => 'Sender\'s phone number',
         'discord_status' => 'Allow sending Discord messages',
+        'webhook_status' => 'Allow sending webhooks',
+        'webhook_description' => 'Allow sending webhooks to services like slack. The message payload end endpoint are defined in the profile settings.',
+        'webhook_url' => 'Webhook Url',
+        'webhook_url_description' => 'Url to webhook endpoint',
+        'webhook_json' => 'Webhook Json',
+        'webhook_json_description' => 'Customized Json, use #message as message variable.',
         'pushover_status' => 'Allow sending Pushover messages',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_clone_app' => 'Click here to create your Pushover app',
@@ -335,6 +352,7 @@ $sm_lang = array(
         'log_sms' => 'Log text messages sent by the script',
         'log_discord' => 'Log Discord messages sent by the script',
         'log_pushover' => 'Log pushover messages sent by the script',
+        'log_webhook' => 'Log webhook messages sent by the script',
         'log_telegram' => 'Log Telegram messages sent by the script',
         'log_jabber' => 'Log Jabber messages sent by the script',
         'updated' => 'The configuration has been updated.',
@@ -342,12 +360,14 @@ $sm_lang = array(
         'tab_sms' => 'SMS',
         'tab_discord' => 'Discord',
         'tab_pushover' => 'Pushover',
+        'tab_webhook' => 'Webhook',
         'tab_telegram' => 'Telegram',
         'tab_jabber' => 'Jabber',
         'settings_email' => 'Email settings',
         'settings_sms' => 'Text message settings',
         'settings_discord' => 'Discord settings',
         'settings_pushover' => 'Pushover settings',
+        'settings_webhook' => 'Webhook settings',
         'settings_telegram' => 'Telegram settings',
         'settings_jabber' => 'Jabber settings',
         'settings_notification' => 'Notification settings',
@@ -360,6 +380,9 @@ $sm_lang = array(
         'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
         'test_discord' => 'A Discord notification will be sent to the webhook specified in your user profile.',
         'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user profile.',
+        'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user
+ profile.',
+        'test_webhook' => 'A webhook notification will be sent to the given url endpoint.',
         'test_telegram' => 'A Telegram notification will be sent to the chat id specified in your user profile.',
         'test_jabber' => 'A Jabber notification will be sent to the jabber account specified in your user profile.',
         'send' => 'Send',
@@ -373,6 +396,10 @@ $sm_lang = array(
         'discord_sent' => 'Discord notification sent',
         'discord_error' => 'An error has occurred while sending the Discord notification: %s',
         'discord_error_nowebhook' => 'Unable to send test Discord notification: no valid Discord webhook found in your user profile.',
+        'webhook_sent' => 'Webhook notification sent',
+        'webhook_error' => 'An error has occurred while sending the webhook notification: %s',
+        'webhook_error_nourl' => 'Unable to send test notification: no url found in user profile.',
+        'webhook_error_nojson' => 'Unable to send test notification: no json found in user profile.',
         'pushover_sent' => 'Pushover notification sent',
         'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
         'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global configuration.',
@@ -396,35 +423,77 @@ $sm_lang = array(
         'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
         'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_discord_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
+ %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_webhook_title' => 'Server \'%LABEL%\' is DOWN',
+        'off_webhook_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
+ %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
         'off_pushover_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_telegram_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_jabber_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
-        'on_email_body' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
-        'on_discord_message' => 'Server \'%LABEL%\' is running again, it was down for: %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
+        'on_email_body' => 'Server \'%LABEL%\' is running again, it was down for
+ %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
+        'on_discord_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
+        'on_webhook_title' => 'Server \'%LABEL%\' is RUNNING',
+        'on_webhook_message' => 'Server \'%LABEL%\' is running again, it was down for
+ %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
         'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
-        'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
-        'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for: %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
-        'on_jabber_message' => 'Server \'%LABEL%\' is running again, it was down for: %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
-        'combi_off_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error: %ERROR%</li><li>Date: %DATE%</li></ul>',
-        'combi_off_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>- Date: %DATE%<br><br>',
-        'combi_off_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error: %ERROR%</li><li>Date: %DATE%</li></ul>',
-        'combi_off_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>- Date: %DATE%<br><br>',
-        'combi_off_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>- Date: %DATE%<br><br>',
-        'combi_on_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
-        'combi_on_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime: %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
-        'combi_on_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
-        'combi_on_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime: %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
-        'combi_on_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime: %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
+        'on_pushover_message' => 'Server \'%LABEL%\' is running again, it was down for
+ %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
+        'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
+        'on_jabber_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
+        'combi_off_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
+ %ERROR%</li><li>Date: %DATE%</li></ul>',
+        'combi_off_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_off_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
+ %ERROR%</li><li>Date: %DATE%</li></ul>',
+        'combi_off_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
+ %ERROR%</li><li>Date: %DATE%</li></ul>',
+        'combi_off_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_off_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_on_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime:
+ %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
+        'combi_on_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port:
+ %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date:
+ %DATE%</li></ul>',
+        'combi_on_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>-
+ Downtime: %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
+        'combi_on_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port:
+ %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date:
+ %DATE%</li></ul>',
+        'combi_on_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
+ %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
+        'combi_on_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
+ %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_email_subject' => 'IMPORTANT: \'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
+        'combi_webhook_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
         'combi_pushover_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
-        'combi_email_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following servers are up again:</b><br>%UP_SERVERS%',
-        'combi_discord_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following servers are up again:</b><br>%UP_SERVERS%',
-        'combi_pushover_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following servers are up again:</b><br>%UP_SERVERS%',
-        'combi_telegram_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following servers are up again:</b><br>%UP_SERVERS%',
-        'combi_jabber_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following servers are up again:</b><br>%UP_SERVERS%',
+        'combi_email_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_discord_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_webhook_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_pushover_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_telegram_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_jabber_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
     ),
     'login' => array(
         'welcome_usermenu' => 'Welcome, %user_name%',

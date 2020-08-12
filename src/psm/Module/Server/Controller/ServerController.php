@@ -102,6 +102,7 @@ class ServerController extends AbstractServerController
             'sms' => 'icon-mobile',
             'discord' => 'icon-discord',
             'pushover' => 'icon-pushover',
+            'webhook' => 'icon-webhook',
             'telegram' => 'icon-telegram',
             'jabber' => 'icon-jabber'
         );
@@ -132,6 +133,7 @@ class ServerController extends AbstractServerController
         $tpl_data['config']['email'] = psm_get_conf('email_status');
         $tpl_data['config']['sms'] = psm_get_conf('sms_status');
         $tpl_data['config']['discord'] = psm_get_conf('discord_status');
+        $tpl_data['config']['webhook'] = psm_get_conf('webhook_status');
         $tpl_data['config']['pushover'] = psm_get_conf('pushover_status');
         $tpl_data['config']['telegram'] = psm_get_conf('telegram_status');
 
@@ -240,13 +242,14 @@ class ServerController extends AbstractServerController
                 'edit_email_selected' => $edit_server['email'],
                 'edit_sms_selected' => $edit_server['sms'],
                 'edit_discord_selected' => $edit_server['discord'],
+                'edit_webhook_selected' => $edit_server['webhook'],
                 'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
                 'edit_jabber_selected' => $edit_server['jabber'],
             ));
         }
 
-        $notifications = array('email', 'sms', 'discord', 'pushover', 'telegram', 'jabber');
+        $notifications = array('email', 'sms', 'pushover', 'discord', 'webhook', 'telegram', 'jabber');
         foreach ($notifications as $notification) {
             if (psm_get_conf($notification . '_status') == 0) {
                 $tpl_data['warning_' . $notification] = true;
@@ -316,6 +319,7 @@ class ServerController extends AbstractServerController
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
             'discord' => in_array($_POST['discord'], array('yes', 'no')) ? $_POST['discord'] : 'no',
             'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+            'webhook' => in_array($_POST['webhook'], array('yes', 'no')) ? $_POST['webhook'] : 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
             'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
         );
@@ -597,9 +601,12 @@ class ServerController extends AbstractServerController
             'label_send_discord' => psm_get_lang('servers', 'send_discord'),
             'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
+            'label_send_webhook' => psm_get_lang('servers', 'send_webhook'),
             'label_telegram' => psm_get_lang('servers', 'telegram'),
             'label_jabber' => psm_get_lang('servers', 'jabber'),
             'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
+            'label_webhook' => psm_get_lang('servers', 'webhook'),
+            'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_telegram' => psm_get_lang('servers', 'send_telegram'),
             'label_users' => psm_get_lang('servers', 'users'),
             'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),

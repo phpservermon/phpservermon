@@ -5,7 +5,7 @@ PHP Server Monitor
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
 
-Version 3.5.1
+Version 3.5.2
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -61,6 +61,7 @@ The following SMS gateways are currently available:
 * Plivo - <https://www.plivo.com/>
 * Callr - <https://www.callr.com/>
 * SMSAPI - <https://www.smsapi.com/en>
+* OVH SMS PRO - <https://www.ovhtelecom.fr/sms/>
 
 
 

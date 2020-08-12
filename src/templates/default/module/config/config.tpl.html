@@ -35,7 +35,12 @@
         <li class="nav-item">
             <a class="nav-link {{ jabber_active }}" id="config-jabber-tab" data-toggle="tab" href="#config-jabber"
                role="tab" aria-controls="config-jabber" aria-selected="{% if jabber_active %}true{% else %}false{% endif %}">{{
-                label_tab_jabber }}</a>
+            label_tab_jabber }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ webhook_active }}" id="config-webhook-tab" data-toggle="tab" href="#config-webhook" role="tab"
+                aria-controls="config-webhook" aria-selected="{% if webhook_active %}true{% else %}false{% endif %}">{{
+                label_tab_webhook }}</a>
         </li>
     </ul>
     <!-- Tab panes -->
@@ -198,6 +203,24 @@
                 {{ macro.button_test("testJabber", label_test) }}
                 {{ macro.input_hidden("test_jabber", "0") }}
                 {{ macro.button_save("jabber_submit",  label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ webhook_active }}" id="config-webhook" role="tabpanel" aria-labelledby="config-webhook-tab">
+            <fieldset>
+                <legend>{{ label_settings_webhook }}</legend>
+                <p>{{ label_webhook_description|raw }}</p>
+                <!-- enable webhooks -->
+                {{ macro.input_checkbox("webhook_status", "webhook_status", label_webhook_status, webhook_status_checked) }}
+                <!-- enable webhook log -->
+                {{ macro.input_checkbox("log_webhook", "log_webhook", label_log_webhook, log_webhook_checked) }}
+                <!-- webhook url -->
+                <!--  {{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, webhook_url, label_webhook_url, "255", "webhook_url_help", label_webhook_url_description) }} -->
+                <!-- webhook json -->
+                <!--   {{ macro.input_field("text", "webhook_json", null, "webhook_json", label_webhook_json, webhook_json, label_webhook_json, "255", "webhook_json_help", label_webhook_json_description) }} -->
+        
+                {{ macro.button_test("testWebhook", label_test) }}
+                {{ macro.input_hidden("test_webhook", "0") }}
+                {{ macro.button_save("webhook_submit",  label_save) }}
             </fieldset>
         </div>
     </div>
