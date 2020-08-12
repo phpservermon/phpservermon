@@ -725,7 +725,6 @@ class Installer
     }
 
     /**
-     * todo: changes for webhook support
      * Upgrade for v3.6.0 release
      */
     protected function upgrade360()
