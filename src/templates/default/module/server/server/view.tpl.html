@@ -323,19 +323,6 @@
 					{% endif %}
 				</li>
 				<li class="list-group-item">
-					{{ label_webhook }}:
-					{% if webhook|lower == 'yes' %}
-					<i class="fas fa-bell float-right"></i>
-					<noscript>&#10003</noscript>
-					{% elseif webhook|lower == 'no' %}
-					<i class="fas fa-bell-slash float-right"></i>
-					<noscript>&#10005</noscript>
-					{% else %}
-					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
-					<noscript>&#8263</noscript>
-					{% endif %}
-				</li>
-				<li class="list-group-item">
 					{{ label_telegram }}:
 					{% if telegram|lower == 'yes' %}
 					<i class="fas fa-bell float-right"></i>
@@ -360,7 +347,20 @@
 					<i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
 					<noscript>&#8263</noscript>
 					{% endif %}
-				</li>
+                </li>
+                <li class="list-group-item">
+                    {{ label_webhook }}:
+                    {% if webhook|lower == 'yes' %}
+                    <i class="fas fa-bell float-right"></i>
+                    <noscript>&#10003</noscript>
+                    {% elseif webhook|lower == 'no' %}
+                    <i class="fas fa-bell-slash float-right"></i>
+                    <noscript>&#10005</noscript>
+                    {% else %}
+                    <i class="fas fa-question-circle float-right" title="Value from database should either be yes or no."></i>
+                    <noscript>&#8263</noscript>
+                    {% endif %}
+                </li>
 			</ul>
 		</div>
 	</div>
