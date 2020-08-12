@@ -44,12 +44,14 @@ class ConfigController extends AbstractController
         'email_smtp',
         'sms_status',
         'pushover_status',
+        'webhook_status',
         'telegram_status',
         'jabber_status',
         'log_status',
         'log_email',
         'log_sms',
         'log_pushover',
+        'log_webhook',
         'log_telegram',
         'log_jabber',
         'show_update',
@@ -72,6 +74,8 @@ class ConfigController extends AbstractController
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
+        'webhook_url',
+        'webhook_json',
         'pushover_api_token',
         'telegram_api_token',
         'jabber_host',
@@ -208,7 +212,7 @@ class ConfigController extends AbstractController
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
-        $testmodals = array('email', 'sms', 'pushover', 'telegram', 'jabber');
+        $testmodals = array('email', 'sms', 'pushover','webhook', 'telegram', 'jabber');
         foreach ($testmodals as $modal_id) {
             $modal = new \psm\Util\Module\Modal(
                 $this->twig,
@@ -272,6 +276,8 @@ class ConfigController extends AbstractController
                 $this->testSMS();
             } elseif (!empty($_POST['test_pushover'])) {
                 $this->testPushover();
+            }elseif (!empty($_POST['test_webhook'])) {
+                $this->testWebhook();
             } elseif (!empty($_POST['test_telegram'])) {
                 $this->testTelegram();
             } elseif (!empty($_POST['test_jabber'])) {
@@ -291,6 +297,8 @@ class ConfigController extends AbstractController
                 $this->default_tab = 'sms';
             } elseif (isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
                 $this->default_tab = 'pushover';
+            } elseif (isset($_POST['webhook_submit']) || !empty($_POST['test_webhook'])) {
+                $this->default_tab = 'webhook';
             } elseif (isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
                 $this->default_tab = 'telegram';
             } elseif (isset($_POST['jabber_submit']) || !empty($_POST['test_jabber'])) {
@@ -346,6 +354,34 @@ class ConfigController extends AbstractController
         }
     }
 
+    /**
+     * Execute webhook test
+     *
+     * @todo move test to separate class
+     */
+    protected function testWebhook()
+    {
+
+        $user = $this->getUser()->getUser();
+
+
+        if (empty($user->webhook_url)) {
+            $this->addMessage(psm_get_lang('config', 'webhook_error_nourl'), 'error');
+        } elseif (empty($user->webhook_json)) {
+            $this->addMessage(psm_get_lang('config', 'webhook_error_nojson'), 'error');
+        } else {
+            $webhook = psm_build_webhook();
+            $webhook->setUrl($user->webhook_url);
+            $webhook->setJson($user->webhook_json);
+            $message = (psm_get_lang('config', 'test_message'));
+            $result = $webhook->sendWebhook($message);
+            if ($result==1) {
+                $this->addMessage(psm_get_lang('config', 'webhook_sent'), 'success');
+            } else {
+                $this->addMessage(sprintf(psm_get_lang('config', 'webhook_error'), $result), 'error');
+            }
+        }
+    }
     /**
      * Execute pushover test
      *
@@ -445,10 +481,12 @@ class ConfigController extends AbstractController
             'label_tab_email' => psm_get_lang('config', 'tab_email'),
             'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
             'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+            'label_tab_webhook' => psm_get_lang('config', 'tab_webhook'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
             'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
+            'label_settings_webhook' => psm_get_lang('config', 'settings_webhook'),
             'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
             'label_settings_jabber' => psm_get_lang('config', 'settings_jabber'),
@@ -479,6 +517,12 @@ class ConfigController extends AbstractController
             'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
             'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
             'label_sms_from' => psm_get_lang('config', 'sms_from'),
+            'label_webhook_description' => psm_get_lang('config', 'webhook_description'),
+            'label_webhook_status' => psm_get_lang('config', 'webhook_status'),
+            'label_webhook_url' => psm_get_lang('config', 'webhook_url'),
+            'label_webhook_url_description' => psm_get_lang('config', 'webhook_url_description'),
+            'label_webhook_json' => psm_get_lang('config', 'webhook_json'),
+            'label_webhook_json_description' => psm_get_lang('config', 'webhook_json_description'),
             'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
             'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
             'label_pushover_clone_app' => psm_get_lang('config', 'pushover_clone_app'),
@@ -513,6 +557,7 @@ class ConfigController extends AbstractController
             'label_log_email' => psm_get_lang('config', 'log_email'),
             'label_log_sms' => psm_get_lang('config', 'log_sms'),
             'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+            'label_log_webhook' => psm_get_lang('config', 'log_webhook'),
             'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
             'label_log_jabber' => psm_get_lang('config', 'log_jabber'),
             'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),

@@ -73,7 +73,10 @@
 							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
 						</span>
-					{% endif %}
+                    {% endif %}
+                    {% if server.webhook|lower == 'yes' and config.webhook|lower %}
+                    <i class="fas fa-hashtag" title="{{ label_webhook }}"></i>
+                    {% endif %}
 				</td>
 				{% if user_level == 10 %}
 				<td>
