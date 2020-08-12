@@ -26,7 +26,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
+ * @since       phpservermon 3.5
  **/
 
 namespace psm\Txtmsg;
