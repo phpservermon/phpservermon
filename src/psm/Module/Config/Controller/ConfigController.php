@@ -415,7 +415,7 @@ class ConfigController extends AbstractController
         }
     }
 
-     * Execute webhook test
+    /** Execute webhook test
      *
      * @todo move test to separate class
      */
