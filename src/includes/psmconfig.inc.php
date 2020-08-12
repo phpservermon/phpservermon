@@ -30,7 +30,7 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.6.0.beta1');
+define('PSM_VERSION', '3.6.0.beta2');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.

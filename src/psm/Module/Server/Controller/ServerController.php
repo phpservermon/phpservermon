@@ -100,6 +100,7 @@ class ServerController extends AbstractServerController
         $icons = array(
             'email' => 'icon-envelope',
             'sms' => 'icon-mobile',
+            'discord' => 'icon-discord',
             'pushover' => 'icon-pushover',
             'webhook' => 'icon-webhook',
             'telegram' => 'icon-telegram',
@@ -131,6 +132,7 @@ class ServerController extends AbstractServerController
 
         $tpl_data['config']['email'] = psm_get_conf('email_status');
         $tpl_data['config']['sms'] = psm_get_conf('sms_status');
+        $tpl_data['config']['discord'] = psm_get_conf('discord_status');
         $tpl_data['config']['webhook'] = psm_get_conf('webhook_status');
         $tpl_data['config']['pushover'] = psm_get_conf('pushover_status');
         $tpl_data['config']['telegram'] = psm_get_conf('telegram_status');
@@ -239,6 +241,7 @@ class ServerController extends AbstractServerController
                 'edit_active_selected' => $edit_server['active'],
                 'edit_email_selected' => $edit_server['email'],
                 'edit_sms_selected' => $edit_server['sms'],
+                'edit_discord_selected' => $edit_server['discord'],
                 'edit_webhook_selected' => $edit_server['webhook'],
                 'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
@@ -246,7 +249,7 @@ class ServerController extends AbstractServerController
             ));
         }
 
-        $notifications = array('email', 'sms', 'pushover','webhook', 'telegram', 'jabber');
+        $notifications = array('email', 'sms', 'pushover', 'discord', 'webhook', 'telegram', 'jabber');
         foreach ($notifications as $notification) {
             if (psm_get_conf($notification . '_status') == 0) {
                 $tpl_data['warning_' . $notification] = true;
@@ -274,7 +277,7 @@ class ServerController extends AbstractServerController
 
         // We need the server id to encrypt the password. Encryption will be done after the server is added
         $encrypted_password = '';
-        
+
         if (!empty($_POST['website_password'])) {
             $new_password = psm_POST('website_password');
 
@@ -314,6 +317,7 @@ class ServerController extends AbstractServerController
             'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
             'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
+            'discord' => in_array($_POST['discord'], array('yes', 'no')) ? $_POST['discord'] : 'no',
             'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
             'webhook' => in_array($_POST['webhook'], array('yes', 'no')) ? $_POST['webhook'] : 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
@@ -593,14 +597,17 @@ class ServerController extends AbstractServerController
             'label_send_email' => psm_get_lang('servers', 'send_email'),
             'label_sms' => psm_get_lang('servers', 'sms'),
             'label_send_sms' => psm_get_lang('servers', 'send_sms'),
+            'label_discord' => psm_get_lang('servers', 'discord'),
+            'label_send_discord' => psm_get_lang('servers', 'send_discord'),
+            'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
             'label_send_webhook' => psm_get_lang('servers', 'send_webhook'),
             'label_telegram' => psm_get_lang('servers', 'telegram'),
-        'label_jabber' => psm_get_lang('servers', 'jabber'),
+            'label_jabber' => psm_get_lang('servers', 'jabber'),
+            'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
             'label_webhook' => psm_get_lang('servers', 'webhook'),
             'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_telegram' => psm_get_lang('servers', 'send_telegram'),
-        'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
             'label_users' => psm_get_lang('servers', 'users'),
             'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
             'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),

@@ -34,7 +34,7 @@
         <p>{{ label_telegram_description|raw }}</p>
 		<!-- telegram id -->
 		<div class="form-group">
-            <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
+                    <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
 		</div>
 		{{ macro.input_field("text", "telegram_id", null, "telegram_id", label_telegram_chat_id, telegram_id, label_telegram_chat_id, "255", "telegram_id_help", label_telegram_id_description) }}
 		<button class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
@@ -45,6 +45,11 @@
 		<legend>{{ label_jabber }}</legend>
 		<!-- jabber -->
 		{{ macro.input_field("text", "jabber", null, "jabber", label_jabber, jabber, label_jabber, "255", "jabber_help", label_jabber_description) }}
+    </fieldset>
+    <!-- Discord settings -->
+    <fieldset>
+        <legend>{{ label_discord }}</legend>
+        {{ macro.input_field("text", "discord", null, "discord", label_discord, discord, "https://discordapp.com/api/webhooks/xxxxx", "255", "discord_help", label_discord_description) }}
     </fieldset>
     <!-- Webhook settings -->
     <fieldset>

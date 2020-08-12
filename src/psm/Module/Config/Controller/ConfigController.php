@@ -43,6 +43,7 @@ class ConfigController extends AbstractController
         'email_status',
         'email_smtp',
         'sms_status',
+        'discord_status',
         'pushover_status',
         'webhook_status',
         'telegram_status',
@@ -50,6 +51,7 @@ class ConfigController extends AbstractController
         'log_status',
         'log_email',
         'log_sms',
+        'log_discord',
         'log_pushover',
         'log_webhook',
         'log_telegram',
@@ -212,7 +214,8 @@ class ConfigController extends AbstractController
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
-        $testmodals = array('email', 'sms', 'pushover','webhook', 'telegram', 'jabber');
+        $testmodals = array('email', 'sms', 'discord', 'webhook', 'pushover', 'telegram', 'jabber');
+
         foreach ($testmodals as $modal_id) {
             $modal = new \psm\Util\Module\Modal(
                 $this->twig,
@@ -274,6 +277,8 @@ class ConfigController extends AbstractController
                 $this->testEmail();
             } elseif (!empty($_POST['test_sms'])) {
                 $this->testSMS();
+            } elseif (!empty($_POST['test_discord'])) {
+                $this->testDiscord();
             } elseif (!empty($_POST['test_pushover'])) {
                 $this->testPushover();
             }elseif (!empty($_POST['test_webhook'])) {
@@ -295,6 +300,8 @@ class ConfigController extends AbstractController
                 $this->default_tab = 'email';
             } elseif (isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
                 $this->default_tab = 'sms';
+            } elseif (isset($_POST['discord_submit']) || !empty($_POST['test_discord'])) {
+                $this->default_tab = 'discord';
             } elseif (isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
                 $this->default_tab = 'pushover';
             } elseif (isset($_POST['webhook_submit']) || !empty($_POST['test_webhook'])) {
@@ -355,7 +362,60 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * Execute webhook test
+     * Execute Discord test
+     *
+     * @todo move test to separate class
+     */
+    protected function testDiscord()
+    {
+        $user = $this->getUser()->getUser();
+        if (empty($user->discord)) {
+            $this->addMessage(psm_get_lang('config', 'discord_error_nowebhook'), 'error');
+        } else {
+            $success = 0;
+            $result = 'An unknown error has occurred.';
+            try {
+                $curl = curl_init($user->discord);
+                $json = json_decode(
+                    '{"content":""}',
+                    true
+                );
+                $json['content'] = psm_get_lang('config', 'test_message');
+                $msg = "payload_json=" . urlencode(json_encode($json));
+                if(isset($curl)) {
+                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $msg);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    $result = curl_exec($curl);
+                    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $err = curl_errno($curl);
+
+                    if ($err != 0 || $httpcode != 204) {
+                        $success = 0;
+                        // $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+                        $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
+                            curl_strerror($err) . ". \nResult: " . $result;
+                        $result = $error;
+                    } else {
+                        $success = 1;
+                    }
+                    curl_close($curl);
+                }
+            } catch (Exception $e) {
+                $success = 0;
+                $result = $e->getMessage();
+            }
+
+            if ($success === 1) {
+                $this->addMessage(psm_get_lang('config', 'discord_sent'), 'success');
+            } else {
+                $this->addMessage(sprintf(psm_get_lang('config', 'discord_error'), $result), 'error');
+            }
+        }
+    }
+
+    /** Execute webhook test
      *
      * @todo move test to separate class
      */
@@ -382,6 +442,7 @@ class ConfigController extends AbstractController
             }
         }
     }
+
     /**
      * Execute pushover test
      *
@@ -480,12 +541,14 @@ class ConfigController extends AbstractController
         return array(
             'label_tab_email' => psm_get_lang('config', 'tab_email'),
             'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
+            'label_tab_discord' => psm_get_lang('config', 'tab_discord'),
             'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
             'label_tab_webhook' => psm_get_lang('config', 'tab_webhook'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
             'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
+            'label_settings_discord' => psm_get_lang('config', 'settings_discord'),
             'label_settings_webhook' => psm_get_lang('config', 'settings_webhook'),
             'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
@@ -517,6 +580,8 @@ class ConfigController extends AbstractController
             'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
             'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
             'label_sms_from' => psm_get_lang('config', 'sms_from'),
+            'label_discord_status' => psm_get_lang('config', 'discord_status'),
+            'label_discord_description' => psm_get_lang('config', 'discord_description'),
             'label_webhook_description' => psm_get_lang('config', 'webhook_description'),
             'label_webhook_status' => psm_get_lang('config', 'webhook_status'),
             'label_webhook_url' => psm_get_lang('config', 'webhook_url'),
@@ -556,6 +621,7 @@ class ConfigController extends AbstractController
             'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
             'label_log_email' => psm_get_lang('config', 'log_email'),
             'label_log_sms' => psm_get_lang('config', 'log_sms'),
+            'label_log_discord' => psm_get_lang('config', 'log_discord'),
             'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
             'label_log_webhook' => psm_get_lang('config', 'log_webhook'),
             'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
