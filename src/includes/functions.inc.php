@@ -402,8 +402,7 @@ namespace {
         $website_password = false,
         $request_method = null,
         $post_field = null
-    )
-    {
+    ) {
         ($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
 
         $ch = curl_init();
@@ -1064,6 +1063,7 @@ namespace {
     {
         protected $url;
         protected $json;
+        protected $message;
 
         /**
          * Send Webhook
@@ -1078,26 +1078,27 @@ namespace {
             $error = "";
             $success = 1;
 
-            $message = strtr($this->json, array('#message' => $message));
-            $curl = curl_init();
+            $this->setMessage($message);
+            $jsonMessage = strtr($this->json, array('#message' => $this->message));
 
+            $curl = curl_init($this->url);
             curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $message);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonMessage);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($curl, CURLOPT_URL,$this->url );
             $result = curl_exec($curl);
+
             $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             $err = curl_errno($curl);
-            echo $err;
 
             if ($err != 0 || $httpcode < 200 || $httpcode >= 300) {
                 $success = 0;
                 $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . $err . ". \nResult: " . $result;
             }
-            curl_close($curl);
 
+            curl_close($curl);
 
             if ($success) {
                 return 1;
@@ -1145,6 +1146,27 @@ namespace {
         public function getJson()
         {
             return $this->json;
+        }
+
+        /**
+         * Set message
+         *
+         * @return string
+         * @var string $message
+         *
+         */
+        public function setMessage($message)
+        {
+            $message = str_replace("<ul>", "", $message);
+            $message = str_replace("</ul>", "\n", $message);
+            $message = str_replace("<li>", "- ", $message);
+            $message = str_replace("</li>", "\n", $message);
+            $message = str_replace("<br>", "\n", $message);
+            $message = str_replace("<br/>", "\n", $message);
+            $message = str_replace("<b>", "", $message);
+            $message = str_replace("<b/>", "", $message);
+            $message = strip_tags($message);
+            $this->message = (string)$message;
         }
     }
 }
