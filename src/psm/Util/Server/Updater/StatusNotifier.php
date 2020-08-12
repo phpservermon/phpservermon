@@ -536,7 +536,6 @@ class StatusNotifier
             $webhook->setJson($user['webhook_json']);
             $webhook->sendWebhook($message);
         }
-
     }
     /**
      * This functions performs the text message notifications
