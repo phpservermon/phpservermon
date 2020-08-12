@@ -729,44 +729,31 @@ class Installer
     }
 
     /**
-     * Patch for v3.5.1 release
-     * Added support for Discord webhooks
-     */
-    protected function upgrade351()
-    {
-        $queries = array();
-        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `discord` VARCHAR( 255 )
-            NOT NULL AFTER `mobile`;';
-        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `discord` ENUM( 'yes','no' )
-            NOT NULL DEFAULT 'yes' AFTER  `sms`;";
-        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX .
-            "log` CHANGE `type` `type` ENUM( 'status', 'email', 'sms', 'discord', 'pushover', 'telegram', 'jabber' )
-            CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
-        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
-                    ('discord_status', '0'),
-                    ('log_discord', '1');";
-        $this->execSQL($queries);
-    }
-    
-    /**
-     * Upgrade for v3.6.0 release
+     * Patch for v3.6.0 release
+     * Added support for Discord and webhooks
      */
     protected function upgrade360()
     {
         $queries = array();
 
-        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` 
-            ADD  `webhook_url` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;';
-        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` 
-            ADD  `webhook_json` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;';
-        $queries[] = "ALTER TABLE `' . PSM_DB_PREFIX . 'log` 
-            CHANGE `type` `type` ENUM('status','email','sms','webhook','pushover','telegram','jabber') 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` 
+            ADD  `webhook_url` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` 
+            ADD  `webhook_json` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "log` 
+            CHANGE `type` `type` ENUM('status','email','sms','discord','webhook','pushover','telegram','jabber') 
             CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
-        $queries[] = "ALTER TABLE `' . PSM_DB_PREFIX . 'servers` 
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `webhook` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `telegram`;";
-        $queries[] = "INSERT INTO `' . PSM_DB_PREFIX . 'config` (`key`, `value`) VALUE
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+                    ('discord_status', '0'),
+                    ('log_discord', '1'),
                     ('webhook_status', '0'),
                     ('log_webhook', '1')";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users` 
+            ADD `discord` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+            ADD `discord` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
         $this->execSQL($queries);
     }
 }
