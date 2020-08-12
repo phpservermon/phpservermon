@@ -62,9 +62,6 @@
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">P</span>
 						</span>
 					{% endif %}
-					{% if server.webhook|lower == 'yes' and config.webhook|lower %}
-					<i class="fas fa-hashtag" title="{{ label_webhook }}"></i>
-					{% endif %}
 					{% if server.telegram|lower == 'yes' and config.telegram|lower%}
 						<span class="fa-layers">
 							<i class="fas fa-circle" title="{{ label_telegram }}"></i>
@@ -76,7 +73,10 @@
 							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
 						</span>
-					{% endif %}
+                    {% endif %}
+                    {% if server.webhook|lower == 'yes' and config.webhook|lower %}
+                    <i class="fas fa-hashtag" title="{{ label_webhook }}"></i>
+                    {% endif %}
 				</td>
 				{% if user_level == 10 %}
 				<td>
