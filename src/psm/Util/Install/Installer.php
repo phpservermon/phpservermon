@@ -362,6 +362,9 @@ class Installer
         if (version_compare($version_from, '3.5.0', '<')) {
             $this->upgrade350();
         }
+        if (version_compare($version_from, '3.6.0', '<')) {
+            $this->upgrade360();
+        }
         psm_update_conf('version', $version_to);
     }
 
