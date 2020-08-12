@@ -6,6 +6,18 @@ Not yet released
 ----------------
 \-
 
+v3.5.2 (released August 12, 2020)
+-----------------------------
+
+* Fixed missing version numbers.
+* See https://github.com/phpservermon/phpservermon/compare/v3.5.1...v3.5.2
+
+v3.5.1 (released August 12, 2020)
+-----------------------------
+
+* Security update regaring jQuery, see #972.
+* See https://github.com/phpservermon/phpservermon/compare/v3.5.0...v3.5.1
+
 v3.5.0 (released May 1, 2020)
 -----------------------------
 
