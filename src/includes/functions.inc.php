@@ -758,6 +758,9 @@ namespace {
             case 'octopush':
                 $sms = new \psm\Txtmsg\Octopush();
                 break;
+            case 'ovhsms':
+                $sms = new \psm\Txtmsg\OVHsms();
+                break;
             case 'smsgw':
                 $sms = new \psm\Txtmsg\Smsgw();
                 break;
