@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'cerca de um minuto atrás',
         'seconds_ago' => '%d segundos atrás',
         'a_second_ago' => 'um segundo atrás',
+        'seconds' => 'segundos',
     ),
     'menu' => array(
         'config' => 'Configuração',
@@ -245,7 +246,6 @@ $sm_lang = array(
         'auto_refresh' => 'Atualizar automaticamente',
         'auto_refresh_description' => 'Atualizar automaticamente a página de servidores.<br><span class="small">Tempo
  em segundos, Se 0 a página não será atualizada.</span>',
-        'seconds' => 'segundos',
         'test' => 'Teste',
         'test_email' => 'Um e-mail será enviado para o endereço especificado em seu perfil de usuário.',
         'test_sms' => 'Um SMS será enviado para o número de telefone especificado em seu perfil de usuário.',

@@ -6,6 +6,7 @@
 	"require": {
 		"php": "^5.5.9|>=7.0.8",
 		"ext-curl": "*",
+		"ext-json": "*",
 		"ext-pdo": "*",
 		"ext-xml": "*",
 		"phpmailer/phpmailer": ">=6.0.6 ~6.0",

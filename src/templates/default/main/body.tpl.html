@@ -31,31 +31,33 @@
 
 <body>
 	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="index.php">{{ title }}</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
-		 aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">{{ title }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-		<div class="collapse navbar-collapse" id="navbar">
-			{{ html_menu|raw }}
-		</div>
+            <div class="collapse navbar-collapse" id="navbar">
+                {{ html_menu|raw }}
+            </div>
+        </div>
 	</nav>
 	{{ html_modal|raw }}
-	<main role="main" class="container">
+	<main role="main" class="container-fluid px-4">
 		<noscript>
 			<div class="alert alert-danger" role="alert">
 				<b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
 			</div>
 		</noscript>
 		{% if not user_level and subtitle %}<h1>{{ subtitle }}</h1>{% endif %}
-		<div class="container">{{ header_accessories|raw }}</div>
+		<div class="container-fluid">{{ header_accessories|raw }}</div>
 		{% for msg in messages %}
 		<div class="alert alert-{{ msg.class }}" role="alert">
 			<i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}
 		</div>
 		{% endfor %}
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">{{ html_sidebar|raw }}</div>
 			<div class="row" id="content">{{ html_content|raw }}</div>
 		</div>
@@ -74,7 +76,7 @@
 	</footer>
 	{% endblock %}
 	{% endif %}
-	<script src="src/templates/default/static/plugin/jquery/jquery-3.3.1.min.js"></script>
+	<script src="src/templates/default/static/plugin/jquery/jquery-3.5.1.min.js"></script>
 	<script src="src/templates/default/static/plugin/popper.js/popper.min.js"></script>
 	<script src="src/templates/default/static/plugin/bootstrap/js/dist/index.js"></script>
 	<script src="src/templates/default/static/plugin/bootstrap/js/dist/util.js"></script>

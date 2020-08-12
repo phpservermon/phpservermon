@@ -101,8 +101,9 @@ class ServerController extends AbstractServerController
             'email' => 'icon-envelope',
             'sms' => 'icon-mobile',
             'pushover' => 'icon-pushover',
+            'webhook' => 'icon-webhook',
             'telegram' => 'icon-telegram',
-	        'jabber' => 'icon-jabber'
+            'jabber' => 'icon-jabber'
         );
 
         $servers = $this->getServers();
@@ -130,6 +131,7 @@ class ServerController extends AbstractServerController
 
         $tpl_data['config']['email'] = psm_get_conf('email_status');
         $tpl_data['config']['sms'] = psm_get_conf('sms_status');
+        $tpl_data['config']['webhook'] = psm_get_conf('webhook_status');
         $tpl_data['config']['pushover'] = psm_get_conf('pushover_status');
         $tpl_data['config']['telegram'] = psm_get_conf('telegram_status');
 
@@ -174,6 +176,13 @@ class ServerController extends AbstractServerController
 
         $tpl_data['users'] = $this->db->select(PSM_DB_PREFIX . 'users', null, array('user_id', 'name'), '', 'name');
 
+        foreach ($tpl_data['users'] as &$user) {
+            $user['id'] = $user['user_id'];
+            unset($user['user_id']);
+            $user['label'] = $user['name'];
+            unset($user['name']);
+        }
+
         switch ($this->server_id) {
             case 0:
                 // insert mode
@@ -194,10 +203,6 @@ class ServerController extends AbstractServerController
 
                 $user_idc_selected = $this->getServerUsers($this->server_id);
                 foreach ($tpl_data['users'] as &$user) {
-                    $user['id'] = $user['user_id'];
-                    unset($user['user_id']);
-                    $user['label'] = $user['name'];
-                    unset($user['name']);
                     if (in_array($user['id'], $user_idc_selected)) {
                         $user['edit_selected'] = 'selected="selected"';
                     }
@@ -234,13 +239,14 @@ class ServerController extends AbstractServerController
                 'edit_active_selected' => $edit_server['active'],
                 'edit_email_selected' => $edit_server['email'],
                 'edit_sms_selected' => $edit_server['sms'],
+                'edit_webhook_selected' => $edit_server['webhook'],
                 'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
-	            'edit_jabber_selected' => $edit_server['jabber'],
+                'edit_jabber_selected' => $edit_server['jabber'],
             ));
         }
 
-        $notifications = array('email', 'sms', 'pushover', 'telegram', 'jabber');
+        $notifications = array('email', 'sms', 'pushover','webhook', 'telegram', 'jabber');
         foreach ($notifications as $notification) {
             if (psm_get_conf($notification . '_status') == 0) {
                 $tpl_data['warning_' . $notification] = true;
@@ -309,8 +315,9 @@ class ServerController extends AbstractServerController
             'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
             'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+            'webhook' => in_array($_POST['webhook'], array('yes', 'no')) ? $_POST['webhook'] : 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
-	        'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
+            'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
         );
         // make sure websites start with http://
         if (
@@ -518,6 +525,15 @@ class ServerController extends AbstractServerController
         if (strlen($tpl_data['last_error_output']) > 255) {
             $tpl_data['last_error_output_truncated'] = substr($tpl_data['last_error_output'], 0, 255) . '...';
         }
+
+        // fetch server status logs
+        $log_entries = $this->getServerLogs($this->server_id);
+        for ($x = 0; $x < count($log_entries); $x++) {
+            $record = &$log_entries[$x];
+            $record['datetime_format'] = psm_date($record['datetime']);
+        }
+
+        $tpl_data['log_entries'] = $log_entries;
                 
         return $this->twig->render('module/server/server/view.tpl.html', $tpl_data);
     }
@@ -578,11 +594,13 @@ class ServerController extends AbstractServerController
             'label_sms' => psm_get_lang('servers', 'sms'),
             'label_send_sms' => psm_get_lang('servers', 'send_sms'),
             'label_send_pushover' => psm_get_lang('servers', 'send_pushover'),
+            'label_send_webhook' => psm_get_lang('servers', 'send_webhook'),
             'label_telegram' => psm_get_lang('servers', 'telegram'),
-	    'label_jabber' => psm_get_lang('servers', 'jabber'),
+        'label_jabber' => psm_get_lang('servers', 'jabber'),
+            'label_webhook' => psm_get_lang('servers', 'webhook'),
             'label_pushover' => psm_get_lang('servers', 'pushover'),
             'label_send_telegram' => psm_get_lang('servers', 'send_telegram'),
-	    'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
+        'label_send_jabber' => psm_get_lang('servers', 'send_jabber'),
             'label_users' => psm_get_lang('servers', 'users'),
             'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
             'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
@@ -597,7 +615,8 @@ class ServerController extends AbstractServerController
             'label_yes' => psm_get_lang('system', 'yes'),
             'label_no' => psm_get_lang('system', 'no'),
             'label_add_new' => psm_get_lang('system', 'add_new'),
-            'label_seconds' => psm_get_lang('config', 'seconds'),
+            'label_seconds' => psm_get_lang('system', 'seconds'),
+            'label_milliseconds' => psm_get_lang('system', 'milliseconds'),
             'label_online' => psm_get_lang('servers', 'online'),
             'label_offline' => psm_get_lang('servers', 'offline'),
             'label_ok' => psm_get_lang('system', 'ok'),
@@ -606,6 +625,10 @@ class ServerController extends AbstractServerController
             'label_settings' => psm_get_lang('system', 'settings'),
             'label_output' => psm_get_lang('servers', 'output'),
             'label_search' => psm_get_lang('system', 'search'),
+            'label_log_title' => psm_get_lang('log', 'title'),
+            'label_log_no_logs' => psm_get_lang('log', 'no_logs'),
+            'label_date' => psm_get_lang('system', 'date'),
+            'label_message' => psm_get_lang('system', 'message'),
         );
     }
 
@@ -626,5 +649,43 @@ class ServerController extends AbstractServerController
             $result[] = $user['user_id'];
         }
         return $result;
+    }
+
+    /**
+     * Get logs for a server
+     * @param int $server_id
+     * @param string $type status/email/sms
+     * @return \PDOStatement array
+     */
+    protected function getServerLogs($server_id, $type = 'status')
+    {
+        $sql_join = '';
+        if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+            // restrict by user_id
+            $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+						`us`.`user_id`={$this->getUser()->getUserId()}
+						AND `us`.`server_id`=`servers`.`server_id`
+						)";
+        }
+        $entries = $this->db->query(
+            'SELECT ' .
+            '`servers`.`label`, ' .
+            '`servers`.`ip`, ' .
+            '`servers`.`port`, ' .
+            '`servers`.`type` AS server_type, ' .
+            '`log`.`log_id`, ' .
+            '`log`.`type`, ' .
+            '`log`.`message`, ' .
+            '`log`.`datetime` ' .
+            'FROM `' . PSM_DB_PREFIX . 'log` AS `log` ' .
+            'JOIN `' . PSM_DB_PREFIX . 'servers` AS `servers` ON (`servers`.`server_id`=`log`.`server_id`) ' .
+            $sql_join .
+            'WHERE `log`.`type`=\'' . $type . '\' ' .
+            'AND `log`.`server_id`=' . $server_id . ' ' .
+            'ORDER BY `datetime` DESC ' .
+            'LIMIT 0,20'
+        );
+
+        return $entries;
     }
 }

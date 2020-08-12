@@ -9,7 +9,7 @@
                 <th scope="col">{{ label_domain }}</th>
                 <th scope="col" style="width: 5%;">{{ label_port }}</th>
                 <th scope="col" style="width: 8%;">{{ label_type }}</th>
-                <th scope="col" style="width: 8%;">{{ label_rtime }}</th>
+                <th scope="col" style="width: 8%;">{{ label_rtime }} (ms)</th>
                 <th scope="col" style="width: 10%;">{{ label_last_online }}</th>
                 <th scope="col" style="width: 10%;">{{ label_last_offline }}</th>
                 <th scope="col" style="width: 10%;">{{ label_monitoring }}</th>
@@ -41,7 +41,7 @@
 				<td><div class="content">{{ server.ip|raw }}</div></td>
 				<td>{{ server.port }}</td>
 				<td>{{ server.type }}</td>
-				<td>{{ server.rtime }}</td>
+				<td>{{ (server.rtime * 1000)|round(2) }}</td>
 				<td><div class="content">{{ server.last_online }}</div></td>
 				<td><div class="content">{{ server.last_offline }}</div></td>
 				<td>
@@ -73,7 +73,10 @@
 							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
 							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
 						</span>
-					{% endif %}
+                    {% endif %}
+                    {% if server.webhook|lower == 'yes' and config.webhook|lower %}
+                    <i class="fas fa-hashtag" title="{{ label_webhook }}"></i>
+                    {% endif %}
 				</td>
 				{% if user_level == 10 %}
 				<td>

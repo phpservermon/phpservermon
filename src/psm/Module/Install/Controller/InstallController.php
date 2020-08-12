@@ -75,11 +75,11 @@ class InstallController extends AbstractController
 
         $phpv = phpversion();
         if (
-            version_compare($phpv, '5.6.0', '<') ||
+            version_compare($phpv, '5.5.9', '<') ||
             (version_compare($phpv, '7.0.8', '<') && version_compare($phpv, '7.0.0', '>='))
         ) {
             $errors++;
-            $this->addMessage('PHP 5.6.0+ or 7.0.8+ is required to run PHP Server Monitor. You\'re using ' .
+            $this->addMessage('PHP 5.5.9+ or 7.0.8+ is required to run PHP Server Monitor. You\'re using ' .
                 $phpv . '.', 'error');
         } else {
             $this->addMessage('PHP version: ' . $phpv, 'success');
@@ -101,6 +101,53 @@ class InstallController extends AbstractController
         if (!in_array('mysql', \PDO::getAvailableDrivers())) {
             $errors++;
             $this->addMessage('The PDO MySQL driver needs to be installed.', 'error');
+        } else {
+            $this->addMessage('PHP PDO MySQL driver found', 'success');
+        }
+        if (!extension_loaded('filter')) {
+            $this->addMessage('PHP is installed without the filter module. Please install filter.', 'warning');
+        } else {
+            $this->addMessage('PHP filter module found', 'success');
+        }
+        if (!extension_loaded('ctype')) {
+            $this->addMessage('PHP is installed without the ctype module. Please install ctype.', 'warning');
+        } else {
+            $this->addMessage('PHP ctype module found', 'success');
+        }
+        if (!extension_loaded('hash')) {
+            $this->addMessage('PHP is installed without the hash module. Please install hash.', 'warning');
+        } else {
+            $this->addMessage('PHP hash module found', 'success');
+        }
+        if (!extension_loaded('json')) {
+            $this->addMessage('PHP is installed without the json module. Please install json.', 'warning');
+        } else {
+            $this->addMessage('PHP json module found', 'success');
+        }
+        if (!extension_loaded('libxml')) {
+            $this->addMessage('PHP is installed without the libxml module. Please install libxml.', 'warning');
+        } else {
+            $this->addMessage('PHP libxml module found', 'success');
+        }
+        if (!extension_loaded('openssl')) {
+            $this->addMessage('PHP is installed without the openssl module. Please install openssl.', 'warning');
+        } else {
+            $this->addMessage('PHP openssl module found', 'success');
+        }
+        if (!extension_loaded('pcre')) {
+            $this->addMessage('PHP is installed without the pcre module. Please install pcre.', 'warning');
+        } else {
+            $this->addMessage('PHP pcre module found', 'success');
+        }
+        if (!extension_loaded('sockets')) {
+            $this->addMessage('PHP is installed without the sockets module. Please install sockets.', 'warning');
+        } else {
+            $this->addMessage('PHP sockets module found', 'success');
+        }
+        if (!extension_loaded('xml')) {
+            $this->addMessage('PHP is installed without the xml module. Please install xml.', 'warning');
+        } else {
+            $this->addMessage('PHP xml module found', 'success');
         }
         if (!ini_get('date.timezone')) {
             $this->addMessage(
@@ -256,8 +303,10 @@ class InstallController extends AbstractController
             'level' => PSM_USER_ADMIN,
             'pushover_key' => '',
             'pushover_device' => '',
+            'webhook_url' => '',
+            'webhook_json' => '',
             'telegram_id' => '',
-	        'jabber' => ''
+            'jabber' => ''
         );
 
         $validator = $this->container->get('util.user.validator');
