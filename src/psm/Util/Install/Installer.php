@@ -731,14 +731,16 @@ class Installer
     {
         $queries = array();
 
-        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `webhook_url` VARCHAR( 255 ) 
-            NOT NULL AFTER `telegram_id`;';
-        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` ADD  `webhook_json` VARCHAR( 255 ) 
-            NOT NULL AFTER `telegram_id`;';
-        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX ." CHANGE `type` `type` ENUM('status','email','sms','webhook','pushover','telegram','jabber') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
-        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` ADD  `webhook` ENUM( 'yes','no' ) 
-            NOT NULL DEFAULT 'yes' AFTER  `telegram`;";
-        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` 
+            ADD  `webhook_url` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;';
+        $queries[] = 'ALTER TABLE `' . PSM_DB_PREFIX . 'users` 
+            ADD  `webhook_json` VARCHAR( 255 ) NOT NULL AFTER `telegram_id`;';
+        $queries[] = "ALTER TABLE `' . PSM_DB_PREFIX . 'log` 
+            CHANGE `type` `type` ENUM('status','email','sms','webhook','pushover','telegram','jabber') 
+            CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
+        $queries[] = "ALTER TABLE `' . PSM_DB_PREFIX . 'servers` 
+            ADD `webhook` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `telegram`;";
+        $queries[] = "INSERT INTO `' . PSM_DB_PREFIX . 'config` (`key`, `value`) VALUE
                     ('webhook_status', '0'),
                     ('log_webhook', '1')";
 
