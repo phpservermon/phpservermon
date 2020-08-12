@@ -63,7 +63,7 @@ class Octopush extends Core
         
         $recipients = join(',', $this->recipients);
         
-        $message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
+        $message = ($smsType == "FR") ? rawurlencode($message . " STOP au XXXXX") : rawurlencode($message);
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
