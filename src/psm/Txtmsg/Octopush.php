@@ -59,7 +59,7 @@ class Octopush extends Core
     {
         $error = "";
         $success = 1;
-        $smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
+        $smsType = "FR"; //FR = premium, WWW = world, XXX = Low cost
         
         $recipients = join(',', $this->recipients);
         
