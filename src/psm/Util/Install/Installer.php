@@ -341,6 +341,9 @@ class Installer
         if (version_compare($version_from, '3.4.2', '<')) {
             $this->upgrade342();
         }
+        if (version_compare($version_from, '3.6.0', '<')) {
+            $this->upgrade360();
+        }
         psm_update_conf('version', $version_to);
     }
 
@@ -654,5 +657,15 @@ class Installer
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_output` `last_output` TEXT;";
         $this->execSQL($queries);
+    }
+
+    protected function upgrade360()
+    {
+        $queries = array();
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` (
+            `user_name`, `level`, `name`, `email`)
+            VALUES ('__PUBLIC__', 30, 'Public page', 'publicpage@psm.psm')";
+        $this->execSQL($queries);
+        $this->log('Added user \'__PUBLIC__\'.');
     }
 }
