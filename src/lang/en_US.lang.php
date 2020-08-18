@@ -152,6 +152,7 @@ $sm_lang = array(
         'error_user_password_invalid' => 'The entered password is invalid.',
         'error_user_password_no_match' => 'The entered passwords do not match.',
         'error_user_admin_cant_be_deleted' => 'You can\'t remove the last administrator.',
+        'error_user_cant_be_anonymous' => 'Only user \'__public__\' can have the level anonymous.'
     ),
     'log' => array(
         'title' => 'Log entries',

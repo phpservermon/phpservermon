@@ -274,6 +274,14 @@ class UserController extends AbstractController
             $user_validator->username($clean['user_name'], $user_id);
             $user_validator->email($clean['email']);
             $user_validator->level($clean['level']);
+            
+            // Won't allow anonymous level for users other than __PUBLIC__
+            if ($clean['user_name'] !== "__PUBLIC__" && (int) $clean['level'] === (int) PSM_USER_ANONYMOUS) {
+                $this->addMessage(psm_get_lang('users', 'error_user_cant_be_anonymous'), 'error');
+                $clean['level'] = PSM_USER_USER;
+            }
+
+            // Won't allow removing the last admin
             if (
                 count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1 &&
                     $this->getUser()->getUserLevel() == PSM_USER_ADMIN
