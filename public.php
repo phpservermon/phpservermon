@@ -33,4 +33,8 @@ namespace {
     require __DIR__ . '/src/bootstrap.php';
 
     $router->run('server_status');
+
+    // By destroying the session the login will show when going to another page
+    session_destroy();
+    
 }
