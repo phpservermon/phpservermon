@@ -83,6 +83,8 @@ $sm_lang = array(
         'minutes' => 'minut',
         'second' => 'sekunda',
         'seconds' => 'sekundy',
+        'millisecond' => 'milisekunka',
+        'milliseconds' => 'milisekundy',
         'current' => 'aktualnie',
         'settings' => 'Ustawienia',
         'search' => 'Szukaj',
@@ -119,6 +121,10 @@ $sm_lang = array(
         'pushover_device' => 'Urządzenie dla Pushover',
         'pushover_device_description' => 'Nazwa urządzenia do którego wysłać powiadomienie. Pozostaw puste aby
  wysłać do wszystkich urządzeń.',
+        'discord' => 'Discord',
+        'discord_label' => 'Discord',
+        'discord_description' => 'Podaj swoje <a href="https://discordjs.guide/popular-topics/webhooks.html"
+ target="_blank">webhook</a> tutaj.',
         'telegram' => 'Telegram',
         'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> jest komunikatorem
  internetowym, który umożliwa notyfikacje w czasie rzeczywistym. Odwiedź stronę
@@ -140,6 +146,14 @@ $sm_lang = array(
         'jabber' => 'Jabber',
         'jabber_label' => 'Jabber',
         'jabber_description' => 'Twoje konto Jabber',
+        'webhook' => 'Webhook',
+        'webhook_description' => 'Wyślij json webhook do wybranego endpoint. <br/>Zapytanie json może być dowolnie
+ dostosowane np.  {"text":"servermon: #message"}',
+        'webhook_url' => 'Webhook URL',
+        'webhook_url_description' => 'Publiczne webhook endpoint URL powinny się zaczynać od https://.',
+        'webhook_json' => 'Webhook JSON',
+        'webhook_json_description' => 'Zdefiniuj niestandardowy json, użyj #message jak zmienną z treścią
+ wiadomości.',
         'delete_title' => 'Usuń użytkownika',
         'delete_message' => 'Czy jesteś pewny że chcesz usunąć użytkownika \'%1\'?',
         'deleted' => 'Użytkownik usunięty.',
@@ -165,7 +179,9 @@ $sm_lang = array(
         'status' => 'Status',
         'email' => 'Email',
         'sms' => 'SMS',
+        'discord' => 'Discord',
         'pushover' => 'Pushover',
+        'webhook' => 'Webhook',
         'telegram' => 'Telegram',
         'jabber' => 'Jabber',
         'no_logs' => 'Brak logów',
@@ -234,12 +250,16 @@ $sm_lang = array(
         'send_email' => 'Wyślij Email',
         'sms' => 'SMS',
         'send_sms' => 'Wyślij SMS',
+        'discord' => 'Discord',
+        'send_discord' => 'Wyślij powiadomienie Discord',
+        'webhook' => 'Webook',
+        'send_webhook' => 'Wyślij powiadomienie Webhook',
         'pushover' => 'Pushover',
-        'send_pushover' => 'Wyślij notyfikacje Pushover',
+        'send_pushover' => 'Wyślij powiadomienie Pushover',
         'telegram' => 'Telegram',
-        'send_telegram' => 'Wyślij notyfikacje Telegram',
+        'send_telegram' => 'Wyślij powiadomienie Telegram',
         'jabber' => 'Jabber',
-        'send_jabber' => 'Wyślij notyfikacje Jabber',
+        'send_jabber' => 'Wyślij powiadomienie Jabber',
         'users' => 'Użytkownicy',
         'delete_title' => 'Usuń serwer',
         'delete_message' => 'Czy jesteś pewny że chcesz usunąć serwer \'%1\'?',
@@ -274,6 +294,8 @@ $sm_lang = array(
         'chart_short_time_format' => '%H:%M',
         'warning_notifications_disabled_sms' => 'Powiadomienia SMS są wyłączone.',
         'warning_notifications_disabled_email' => 'Powiadomienia Email są wyłączone.',
+        'warning_notifications_disabled_discord' => 'Powiadomienia Discord są wyłączone.',
+        'warning_notifications_disabled_webhook' => 'Powiadomienia Webhook są wyłączone.',
         'warning_notifications_disabled_pushover' => 'Powiadomienia Pushover są wyłączone.',
         'warning_notifications_disabled_telegram' => 'Powiadomienia Telegram są wyłączone.',
         'warning_notifications_disabled_jabber' => 'Powiadomienia Jabber są wyłączone.',
@@ -289,6 +311,7 @@ $sm_lang = array(
     ),
     'config' => array(
         'general' => 'Ogólne',
+        'site_title' => 'Tytuł strony',
         'language' => 'Język',
         'show_update' => 'Sprawdzić aktualizacje?',
         'password_encrypt_key' => 'Klucz szyfrowania haseł',
@@ -315,7 +338,18 @@ $sm_lang = array(
         'sms_gateway_username' => 'Login do bramki',
         'sms_gateway_password' => 'Hasło do bramki',
         'sms_from' => 'Numer nadawcy',
-        'pushover_status' => 'Pozwól na wysyłkę notyfikacji Pushover',
+        'discord_status' => 'Zezwól na wysyłanie powiadomień Discord',
+        'discord_description' => 'Discord jest serwisem, który umożliwia wysyłania powiadomień w czasie
+ rzeczywistym. Odwiedź <a href="https://discord.com/" target="_blank">stronę
+ serwisu</a> żeby otrzymać więcej informacji.',
+        'webhook_status' => 'Zezwól na wysyłanie powiadomień webhooks.',
+        'webhook_description' => 'Zezwól na wysyłanie powiadomień webhooks do serwisów takich jak Slack. Endpoint
+ dla payload wiadomości jest zdefiniowany w ustawieniach profilu użytkownika.',
+        'webhook_url' => 'Webhook URL',
+        'webhook_url_description' => 'URL dla webhook endpoint',
+        'webhook_json' => 'Webhook Json',
+        'webhook_json_description' => 'Niestandardowsy Json, użyj #message jak zmienną z treścią wiadomości.',
+        'pushover_status' => 'Zezwól na wysyłanie powiadomień Pushover',
         'pushover_description' => 'Pushover jest usługą ułatwiającą otrzymywanie powiadomień w czasie
  rzeczywistym. Sprawdź <a href="https://pushover.net/" target="_blank">ich
  stronę</a> aby uzyskać więcej informacji.',
@@ -324,7 +358,7 @@ $sm_lang = array(
         'pushover_api_token_description' => 'Zanim zaczniesz używać Pushover, musisz <a href="%1$s" target="_blank"
  rel="noopener"> zarejestrować aplikację</a> na ich stronie internetowej
  i wpisać tutaj App API Token.',
-        'telegram_status' => 'Pozwól na wysyłkę notyfikacji Telegram',
+        'telegram_status' => 'Zezwól na wysyłanie powiadomień Telegram',
         'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> jest komunikatorem
  internetowym, który umożliwa notyfikacje w czasie rzeczywistym. Odwiedź stronę
  z <a href="http://docs.phpservermonitor.org/" target="_blank">documentacja</a> aby
@@ -333,7 +367,7 @@ $sm_lang = array(
         'telegram_api_token_description' => 'Zanim zaczniesz używać Telegram, potrzebujesz uzyskać API Token.
  Odwiedź strone z <a href="http://docs.phpservermonitor.org/"
  target="_blank">dokumentacją</a> żeby uzyskać pomocy.',
-        'jabber_status' => 'Pozwól na wysyłkę notyfikacji Jabber (XMPP)',
+        'jabber_status' => 'Zezwól na wysyłanie powiadomień Jabber (XMPP)',
         'jabber_description' => 'Odwiedź stronę <a href="http://docs.phpservermonitor.org/">dokumentacją</a> aby
  uzyskać więcej informaji oraz przewodnik po instalacji.',
         'jabber_host' => 'Host',
@@ -360,7 +394,7 @@ $sm_lang = array(
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Zawsze',
         'combine_notifications' => 'Scalanie powiadomień',
-        'combine_notifications_description' => 'Ogranicza ilość wysłanych powiadomień poprzez scalanie wszystkich
+        'combine_notifications_description' => 'Ogranicza ilość wysyłanych powiadomień poprzez scalanie wszystkich
  powiadomień w jedną wiadomość (nie dotyczy powiadomień SMS).',
         'alert_proxy' => 'Jeżeli włączone to proxy nigdy nie bedzie użyte dla serwisów',
         'alert_proxy_url' => 'Fomat: host:port',
@@ -369,18 +403,24 @@ $sm_lang = array(
  wydarzenia.',
         'log_email' => 'Emaile wysłane przez skrypt',
         'log_sms' => 'SMS wysłane przez skrypt',
+        'log_discord' => 'Notyfikacje Discord wysłane przez skrypt',
         'log_pushover' => 'Notyfikacje Pushover wysłane przez skrypt',
+        'log_webhook' => 'Notyfikacje Webhook wysłane przez skrypt',
         'log_telegram' => 'Notyfikacje Telegram wysłane przez skrypt',
         'log_jabber' => 'Notyfikacje Jabber wysłane przez skrypt',
         'updated' => 'Konfiguracja została zaktualizowana.',
         'tab_email' => 'Email',
         'tab_sms' => 'SMS',
+        'tab_discord' => 'Discord',
         'tab_pushover' => 'Pushover',
+        'tab_webhook' => 'Webhook',
         'tab_telegram' => 'Telegram',
         'tab_jabber' => 'Jabber',
         'settings_email' => 'Ustawienia Email',
         'settings_sms' => 'Ustawienia SMS',
+        'settings_discord' => 'Ustawienie Discord',
         'settings_pushover' => 'Ustawienia Pushover',
+        'settings_webhook' => 'Ustawienia Webhook',
         'settings_telegram' => 'Ustawienia Telegram',
         'settings_jabber' => 'Ustawienia Jabber',
         'settings_notification' => 'Ustawienia powiadomień',
@@ -389,12 +429,14 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-odświeżanie',
         'auto_refresh_description' => 'Auto-odświeżanie strony serwera.<br><span class="small">Czas w sekundach, dla
  czasu 0 strona nie będzie odświeżana.</span>',
-        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'Email zostanie wysłany na adres podany w Twoim profilu.',
         'test_sms' => 'SMS zostanie wysłany na numer podany w Twoim profilu.',
+        'test_discord' => 'Powiadomienie Discord zostanie wysłane do webhook, który został podany w Twoim profilu
+ użytkownika.',
         'test_pushover' => 'Powiadomienie Pushover zostanie wysłane na klucz użytkownika/urządzenie podane w Twoim
  profilu użytkownika.',
+        'test_webhook' => 'Powiadomienia Webhook zostanie wysłane do endpoint o podanym URL.',
         'test_telegram' => 'Powiadomienie Telegram zostanie wysłane na chat id podane w Twoim profilu użytkownika.',
         'test_jabber' => 'Powiadomienie Telegram zostanie wysłane na konto Jabber podane w Twoim profilu
  użytkownika.',
@@ -406,6 +448,16 @@ $sm_lang = array(
         'sms_sent' => 'Sms wysłany',
         'sms_error' => 'Błąd podczas wysyłania sms. %s',
         'sms_error_nomobile' => 'Nie udało się wysłać testowego SMS: brak poprawnego telefonu w Twoim profilu.',
+        'discord_sent' => 'Powiadomienie Discord wysłane',
+        'discord_error' => 'Błąd podczas wysyłania powiadomienia Pushover: %s',
+        'discord_error_nowebhook' => 'Błąd podczas wysyłania powiadomienia Discord: brak prawidłowego Discord
+ webhook w profilu użytkownika.',
+        'webhook_sent' => 'Powiadomienie Webhook wysłane',
+        'webhook_error' => 'Błąd podczas wysyłania powiadomienia Webhook: %s',
+        'webhook_error_nourl' => 'Błąd podczas wysyłania testowego powiadomienia: brak Webhook URL w profilu
+ użytkownika.',
+        'webhook_error_nojson' => 'Błąd podczas wysyłania testowego powiadomienia: brak json w profilu
+ użytkownika.',
         'pushover_sent' => 'Powiadomienie Pushover wysłane.',
         'pushover_error' => 'Błąd podczas wysyłania powiadomienia Pushover: %s',
         'pushover_error_noapp' => 'Błąd podczas wysyłania testowego powiadomienia: brak Pushover App API token w
@@ -429,11 +481,19 @@ $sm_lang = array(
  archiwizować uptime serwera. Wpisz 0 aby wyłączyć czyszczenie
  logów.',
         'log_retention_days' => 'dni',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Niestandardowy user agent używany przez monitor do komunikacji z zewnętrznymi
+ serwisami.',
     ),
     'notifications' => array(
         'off_sms' => 'Serwer \'%LABEL%\' przestał odpowiadać: ip=%IP%, port=%PORT%. Błąd=%ERROR%',
         'off_email_subject' => 'Uwaga: Serwer \'%LABEL%\' nie odpowiada',
         'off_email_body' => 'Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port:
+ %PORT%<br>Błąd: %ERROR%<br>Data: %DATE%',
+        'off_discord_message' => 'Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port:
+ %PORT%<br>Błąd: %ERROR%<br>Data: %DATE%',
+        'off_webhook_title' => 'Serwer \'%LABEL%\' nie odpowiada',
+        'off_webhook_message' => 'Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port:
  %PORT%<br>Błąd: %ERROR%<br>Data: %DATE%',
         'off_pushover_title' => 'Serwer \'%LABEL%\' nie odpowiada',
         'off_pushover_message' => 'Błąd połączenia do serwera:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port:
@@ -448,6 +508,13 @@ $sm_lang = array(
         'on_email_body' => 'Serwer \'%LABEL%\' znów odpowiada, był offline przez
  %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data:
  %DATE%',
+        'on_discord_message' => 'Serwer \'%LABEL%\' znów odpowiada, był offline przez
+ %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data:
+ %DATE%',
+        'on_webhook_title' => 'Serwer \'%LABEL%\' działa poprawnie',
+        'on_webhook_message' => 'Serwer \'%LABEL%\' znów odpowiada, był offline przez
+ %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data:
+ %DATE%',
         'on_pushover_title' => 'Serwer \'%LABEL%\' działa poprawnie',
         'on_pushover_message' => 'Serwer \'%LABEL%\' znów działa poprawnie, był offline przez
  %LAST_OFFLINE_DURATION%:<br><br>Serwer: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Data:
@@ -460,6 +527,10 @@ $sm_lang = array(
  %DATE%',
         'combi_off_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
+        'combi_off_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_off_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
+ %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
@@ -468,6 +539,10 @@ $sm_lang = array(
  Date: %DATE%<br><br>',
         'combi_on_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime:
  %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
+        'combi_on_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime:
+ %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
+        'combi_on_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
+ %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_on_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port:
  %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date:
  %DATE%</li></ul>',
@@ -476,8 +551,13 @@ $sm_lang = array(
         'combi_on_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
  %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_email_subject' => 'WAŻNE: \'%UP%\' serverów znowu ONLINE, \'%DOWN%\' serverów jest OFFLINE',
+        'combi_webhook_subject' => '\'%UP%\' serverów jest znowu ONLINE UP, \'%DOWN%\' serverów jest OFFLINE',
         'combi_pushover_subject' => '\'%UP%\' serverów jest znowu ONLINE UP, \'%DOWN%\' serverów jest OFFLINE',
         'combi_email_message' => '<b>Następujące serwery są offline:</b><br>%DOWN_SERVERS%<br><b>Następujące
+ serwery są znowu online:</b><br>%UP_SERVERS%',
+        'combi_discord_message' => '<b>Następujące serwery są offline:</b><br>%DOWN_SERVERS%<br><b>Następujące
+ serwery są znowu online:</b><br>%UP_SERVERS%',
+        'combi_webhook_message' => '<b>Następujące serwery są offline:</b><br>%DOWN_SERVERS%<br><b>Następujące
  serwery są znowu online:</b><br>%UP_SERVERS%',
         'combi_pushover_message' => '<b>Następujące serwery są offline:</b><br>%DOWN_SERVERS%<br><b>Następujące
  serwery są znowu online:</b><br>%UP_SERVERS%',
