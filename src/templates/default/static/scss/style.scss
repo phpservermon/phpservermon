@@ -24,6 +24,10 @@ body {
     margin-bottom: 80px;
 }
 
+.container-fluid {
+    max-width: 1920px;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -179,4 +183,9 @@ table tr[visible='true'] {
     width: 95px;
     transform-origin: 100% 4px;
     transition: all 1s;
+}
+
+.dropdown-menu.show {
+    left: inherit;
+    right: 0px;
 }

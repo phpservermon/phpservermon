@@ -6,6 +6,7 @@
 	"require": {
 		"php": "^5.5.9|>=7.0.8",
 		"ext-curl": "*",
+		"ext-json": "*",
 		"ext-pdo": "*",
 		"ext-xml": "*",
 		"phpmailer/phpmailer": ">=6.0.6 ~6.0",
@@ -16,7 +17,8 @@
 		"symfony/filesystem": "~3.4",
 		"php-pushover/php-pushover": "dev-master",
 		"paragonie/random_compat": "^2.0",
-		"twig/twig": "~1.35"
+		"twig/twig": "~1.35",
+		"jaxl/jaxl": "^3.1"
 	},
 	"autoload": {
 		"files": [

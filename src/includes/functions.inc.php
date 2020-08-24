@@ -34,21 +34,21 @@ namespace {
 #
 ###############################################
 
-/**
- * Retrieve language settings from the selected language file
- * Return false if arg is not found
- *
- * @return string|bool
- * @see psm_load_lang()
- */
+    /**
+     * Retrieve language settings from the selected language file
+     * Return false if arg is not found
+     *
+     * @return string|bool
+     * @see psm_load_lang()
+     */
     function psm_get_lang()
     {
         $args = func_get_args();
-    
+
         if (empty($args)) {
             return isset($GLOBALS['sm_lang']) ? $GLOBALS['sm_lang'] : $GLOBALS['sm_lang_default'];
         }
-    
+
         if (isset($GLOBALS['sm_lang'])) {
             $lang = $GLOBALS['sm_lang'];
             $not_found = false;
@@ -72,13 +72,13 @@ namespace {
         return $lang;
     }
 
-/**
- * Load default language from the English (en_US) language file to the $GLOBALS['sm_lang_default'] variable
- * Load language from the language file to the $GLOBALS['sm_lang'] variable if language is different from default
- *
- * @param string $lang language
- * @see psm_get_lang()
- */
+    /**
+     * Load default language from the English (en_US) language file to the $GLOBALS['sm_lang_default'] variable
+     * Load language from the language file to the $GLOBALS['sm_lang'] variable if language is different from default
+     *
+     * @param string $lang language
+     * @see psm_get_lang()
+     */
     function psm_load_lang($lang)
     {
         // load default language - English (en_US)
@@ -86,29 +86,29 @@ namespace {
         $default_lang_file = PSM_PATH_LANG . 'en_US.lang.php';
 
         file_exists($default_lang_file) ? require $default_lang_file :
-        trigger_error("English translation needs to be installed at all time!", E_USER_ERROR);
+            trigger_error("English translation needs to be installed at all time!", E_USER_ERROR);
         isset($sm_lang) ? $GLOBALS['sm_lang_default'] = $sm_lang :
-        trigger_error("\$sm_lang not found in English translation!", E_USER_ERROR);
+            trigger_error("\$sm_lang not found in English translation!", E_USER_ERROR);
         unset($sm_lang);
         // load translation is the selected language is not English (en_US)
         if ($lang != "en_US") {
             $lang_file = PSM_PATH_LANG . $lang . '.lang.php';
             file_exists($lang_file) ? require $lang_file :
-            trigger_error("Translation file could not be found! Default language will be used.", E_USER_WARNING);
-        
+                trigger_error("Translation file could not be found! Default language will be used.", E_USER_WARNING);
+
             isset($sm_lang) ? $GLOBALS['sm_lang'] = $sm_lang :
-            trigger_error("\$sm_lang not found in translation file! Default language will be used.", E_USER_WARNING);
+                trigger_error("\$sm_lang not found in translation file! Default language will be used.", E_USER_WARNING);
             isset($sm_lang['locale']) ? setlocale(LC_TIME, $sm_lang['locale']) :
-            trigger_error("locale could not ben found in translation file.", E_USER_WARNING);
+                trigger_error("locale could not ben found in translation file.", E_USER_WARNING);
         }
     }
 
-/**
- * Retrieve a list with keys of the available languages
- *
- * @return array
- * @see psm_load_lang()
- */
+    /**
+     * Retrieve a list with keys of the available languages
+     *
+     * @return array
+     * @see psm_load_lang()
+     */
     function psm_get_langs()
     {
         $fn_ext = '.lang.php';
@@ -133,11 +133,11 @@ namespace {
         return $langs;
     }
 
-/**
- * Retrieve a list with available sms gateways
- *
- * @return array
- */
+    /**
+     * Retrieve a list with available sms gateways
+     *
+     * @return array
+     */
     function psm_get_sms_gateways()
     {
         $sms_gateway_files = glob(PSM_PATH_SMS_GATEWAY . '*.php');
@@ -155,14 +155,14 @@ namespace {
         return $sms_gateways;
     }
 
-/**
- * Get a setting from the config.
- *
- * @param string $key
- * @param mixed $alt if not set, return this alternative
- * @return string
- * @see psm_load_conf()
- */
+    /**
+     * Get a setting from the config.
+     *
+     * @param string $key
+     * @param mixed $alt if not set, return this alternative
+     * @return string
+     * @see psm_load_conf()
+     */
     function psm_get_conf($key, $alt = null)
     {
         if (!isset($GLOBALS['sm_config'])) {
@@ -173,13 +173,13 @@ namespace {
         return $result;
     }
 
-/**
- * Load config from the database to the $GLOBALS['sm_config'] variable
- *
- * @global object $db
- * @return boolean
- * @see psm_get_conf()
- */
+    /**
+     * Load config from the database to the $GLOBALS['sm_config'] variable
+     *
+     * @return boolean
+     * @global object $db
+     * @see psm_get_conf()
+     */
     function psm_load_conf()
     {
         global $db;
@@ -204,14 +204,14 @@ namespace {
         }
     }
 
-/**
- * Update a config setting.
- *
- * If the key does not exist yet it will be created.
- * @global \psm\Service\Database $db
- * @param string $key
- * @param string $value
- */
+    /**
+     * Update a config setting.
+     *
+     * If the key does not exist yet it will be created.
+     * @param string $key
+     * @param string $value
+     * @global \psm\Service\Database $db
+     */
     function psm_update_conf($key, $value)
     {
         global $db;
@@ -223,8 +223,8 @@ namespace {
             $db->save(
                 PSM_DB_PREFIX . 'config',
                 array(
-                'key' => $key,
-                'value' => $value,
+                    'key' => $key,
+                    'value' => $value,
                 )
             );
         } else {
@@ -243,16 +243,16 @@ namespace {
 #
 ###############################################
 
-/**
- * This function merely adds the message to the log table. It does not perform any checks,
- * everything should have been handled when calling this function
- *
- * @param string $server_id
- * @param string $type
- * @param string $message
- *
- * @return int log_id
- */
+    /**
+     * This function merely adds the message to the log table. It does not perform any checks,
+     * everything should have been handled when calling this function
+     *
+     * @param string $server_id
+     * @param string $type
+     * @param string $message
+     *
+     * @return int log_id
+     */
     function psm_add_log($server_id, $type, $message)
     {
         global $db;
@@ -260,19 +260,19 @@ namespace {
         return $db->save(
             PSM_DB_PREFIX . 'log',
             array(
-            'server_id' => $server_id,
-            'type' => $type,
-            'message' => $message,
+                'server_id' => $server_id,
+                'type' => $type,
+                'message' => $message,
             )
         );
     }
 
-/**
- * This function just adds a user to the log_users table.
- *
- * @param $log_id
- * @param $user_id
- */
+    /**
+     * This function just adds a user to the log_users table.
+     *
+     * @param $log_id
+     * @param $user_id
+     */
     function psm_add_log_user($log_id, $user_id)
     {
         global $db;
@@ -280,19 +280,19 @@ namespace {
         $db->save(
             PSM_DB_PREFIX . 'log_users',
             array(
-            'log_id' => $log_id,
-            'user_id' => $user_id,
+                'log_id' => $log_id,
+                'user_id' => $user_id,
             )
         );
     }
 
-/**
- * This function adds the result of a check to the uptime table for logging purposes.
- *
- * @param int $server_id
- * @param int $status
- * @param string $latency
- */
+    /**
+     * This function adds the result of a check to the uptime table for logging purposes.
+     *
+     * @param int $server_id
+     * @param int $status
+     * @param string $latency
+     */
     function psm_log_uptime($server_id, $status, $latency)
     {
         global $db;
@@ -300,62 +300,62 @@ namespace {
         $db->save(
             PSM_DB_PREFIX . 'servers_uptime',
             array(
-            'server_id' => $server_id,
-            'date' => date('Y-m-d H:i:s'),
-            'status' => $status,
-            'latency' => $latency,
+                'server_id' => $server_id,
+                'date' => date('Y-m-d H:i:s'),
+                'status' => $status,
+                'latency' => $latency,
             )
         );
     }
 
-/**
- * Converts an interval into a string
- *
- * @param DateInterval $interval
- * @return string
- */
+    /**
+     * Converts an interval into a string
+     *
+     * @param DateInterval $interval
+     * @return string
+     */
     function psm_format_interval(DateInterval $interval)
     {
         $result = "";
 
         if ($interval->y) {
             $result .= $interval->format("%y ") . (($interval->y == 1) ?
-            psm_get_lang('system', 'year') : psm_get_lang('system', 'years')) . " ";
+                    psm_get_lang('system', 'year') : psm_get_lang('system', 'years')) . " ";
         }
         if ($interval->m) {
             $result .= $interval->format("%m ") . (($interval->m == 1) ?
-            psm_get_lang('system', 'month') : psm_get_lang('system', 'months')) . " ";
+                    psm_get_lang('system', 'month') : psm_get_lang('system', 'months')) . " ";
         }
         if ($interval->d) {
             $result .= $interval->format("%d ") . (($interval->d == 1) ?
-            psm_get_lang('system', 'day') : psm_get_lang('system', 'days')) . " ";
+                    psm_get_lang('system', 'day') : psm_get_lang('system', 'days')) . " ";
         }
         if ($interval->h) {
             $result .= $interval->format("%h ") . (($interval->h == 1) ?
-            psm_get_lang('system', 'hour') : psm_get_lang('system', 'hours')) . " ";
+                    psm_get_lang('system', 'hour') : psm_get_lang('system', 'hours')) . " ";
         }
         if ($interval->i) {
             $result .= $interval->format("%i ") . (($interval->i == 1) ?
-            psm_get_lang('system', 'minute') : psm_get_lang('system', 'minutes')) . " ";
+                    psm_get_lang('system', 'minute') : psm_get_lang('system', 'minutes')) . " ";
         }
         if ($interval->s) {
             $result .= $interval->format("%s ") . (($interval->s == 1) ?
-            psm_get_lang('system', 'second') : psm_get_lang('system', 'seconds')) . " ";
+                    psm_get_lang('system', 'second') : psm_get_lang('system', 'seconds')) . " ";
         }
 
         return $result;
     }
 
-/**
- * Parses a string from the language file with the correct variables replaced in the message
- *
- * @param boolean|null $status
- * @param string $type is either 'sms', 'email', 'pushover_title', 'pushover_message' or 'telegram_message'
- * @param array $vars server information about the server which may be placed in a message:
- *     %KEY% will be replaced by your value
- * @param boolean $combi parse other message if notifications need to be send combined
- * @return string parsed message
- */
+    /**
+     * Parses a string from the language file with the correct variables replaced in the message
+     *
+     * @param boolean|null $status
+     * @param string $type is either 'sms', 'email', 'pushover_title', 'pushover_message', 'webhook_title', 'webhook_message' or 'telegram_message'
+     * @param array $vars server information about the server which may be placed in a message:
+     *     %KEY% will be replaced by your value
+     * @param boolean $combi parse other message if notifications need to be send combined
+     * @return string parsed message
+     */
     function psm_parse_msg($status, $type, $vars, $combi = false)
     {
         if (is_bool($status)) {
@@ -378,20 +378,20 @@ namespace {
         return $message;
     }
 
-/**
- * Shortcut to curl_init(), curl_exec and curl_close()
- *
- * @param string $href
- * @param boolean $header return headers?
- * @param boolean $body return body?
- * @param int|null $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
- * @param boolean $add_agent add user agent?
- * @param string|bool $website_username Username website
- * @param string|bool $website_password Password website
- * @param string|null $request_method Request method like GET, POST etc.
- * @param string|null $post_field POST data
- * @return string cURL result
- */
+    /**
+     * Shortcut to curl_init(), curl_exec and curl_close()
+     *
+     * @param string $href
+     * @param boolean $header return headers?
+     * @param boolean $body return body?
+     * @param int|null $timeout connection timeout in seconds. defaults to PSM_CURL_TIMEOUT (10 secs).
+     * @param boolean $add_agent add user agent?
+     * @param string|bool $website_username Username website
+     * @param string|bool $website_password Password website
+     * @param string|null $request_method Request method like GET, POST etc.
+     * @param string|null $post_field POST data
+     * @return array cURL result
+     */
     function psm_curl_get(
         $href,
         $header = false,
@@ -418,7 +418,8 @@ namespace {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_ENCODING, '');
-    
+        curl_setopt($ch, CURLOPT_CERTINFO, 1);
+
         if (!empty($request_method)) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
         }
@@ -451,31 +452,33 @@ namespace {
         }
 
         if ($add_agent) {
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/' .
-            PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)');
+            curl_setopt($ch, CURLOPT_USERAGENT, psm_get_conf('user_agent', 'Mozilla/5.0 (compatible; phpservermon/' .
+                PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)'));
         }
 
-        $result = curl_exec($ch);
+        $result['exec'] = curl_exec($ch);
+        $result['info'] = curl_getinfo($ch);
+
         curl_close($ch);
-    
+
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
             echo PHP_EOL .
-            '==============cURL Result for: ' . $href . '===========================================' . PHP_EOL;
+                '==============cURL Result for: ' . $href . '===========================================' . PHP_EOL;
             print_r($result);
             echo PHP_EOL .
-            '==============END cURL Resul for: ' . $href . '===========================================' . PHP_EOL;
+                '==============END cURL Resul for: ' . $href . '===========================================' . PHP_EOL;
         }
 
         return $result;
     }
 
-/**
- * Get a "nice" timespan message
- *
- * Source: http://www.interactivetools.com/forum/forum-posts.php?postNum=2208966
- * @param string $time
- * @return string
- */
+    /**
+     * Get a "nice" timespan message
+     *
+     * Source: http://www.interactivetools.com/forum/forum-posts.php?postNum=2208966
+     * @param string $time
+     * @return string
+     */
     function psm_timespan($time)
     {
         if (empty($time) || $time == '0000-00-00 00:00:00') {
@@ -486,7 +489,7 @@ namespace {
         }
         if ($time < strtotime(date('Y-m-d 00:00:00')) - 60 * 60 * 24 * 3) {
             $format = psm_get_lang('system', (date('Y') !== date('Y', $time)) ?
-            'long_day_format' : 'short_day_format');
+                'long_day_format' : 'short_day_format');
             // Check for Windows to find and replace the %e
             // modifier correctly
             if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
@@ -497,7 +500,7 @@ namespace {
         $d = time() - $time;
         if ($d >= 60 * 60 * 24) {
             $format = psm_get_lang('system', (date('l', time() - 60 * 60 * 24) == date('l', $time)) ?
-            'yesterday_format' : 'other_day_format');
+                'yesterday_format' : 'other_day_format');
             return strftime($format, $time);
         }
         if ($d >= 60 * 60 * 2) {
@@ -519,11 +522,11 @@ namespace {
         return psm_get_lang('system', 'a_second_ago');
     }
 
-/**
- * Get a localised date from MySQL date format
- * @param string $time
- * @return string
- */
+    /**
+     * Get a localised date from MySQL date format
+     * @param string $time
+     * @return string
+     */
     function psm_date($time)
     {
         if (empty($time) || $time == '0000-00-00 00:00:00') {
@@ -532,12 +535,12 @@ namespace {
         return strftime('%x %X', strtotime($time));
     }
 
-/**
- * Check if an update is available for PHP Server Monitor.
- *
- * Will only check for new version if user turned updates on in config.
- * @return boolean
- */
+    /**
+     * Check if an update is available for PHP Server Monitor.
+     *
+     * Will only check for new version if user turned updates on in config.
+     * @return boolean
+     */
     function psm_update_available()
     {
         if (!psm_get_conf('show_update')) {
@@ -552,32 +555,41 @@ namespace {
             // update last check date
             psm_update_conf('last_update_check', time());
             $latest = psm_curl_get(PSM_UPDATE_URL);
-            // extract latest version from Github.
-            preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
-            // add latest version to database
-            if (!empty($latest) && strlen($latest[2]) < 15) {
-                psm_update_conf('version_update_check', $latest[2]);
+            if ($latest['info'] === false || (int)$latest['info']['http_code'] >= 300) {
+                // error
+                return false;
             }
+            // extract latest version from Github.
+            $githubInfo = json_decode($latest['exec']);
+            if (property_exists($githubInfo, 'tag_name') === false) {
+                // version not found
+                return false;
+            }
+            $tagName = $githubInfo->tag_name;
+            $latestVersion = str_replace('v', '', $tagName);
+            // check from old version ... maybe has reason but I don't think so ...
+            if (empty($latestVersion) === true || strlen($latestVersion) >= 15) {
+                // weird version
+                return false;
+            }
+            // add latest version to database
+            psm_update_conf('version_update_check', $latestVersion);
         } else {
-            $latest[2] = psm_get_conf('version_update_check');
+            $latestVersion = psm_get_conf('version_update_check');
         }
 
-        if (!empty($latest)) {
-            $current = psm_get_conf('version');
-            return version_compare($latest[2], $current, '>');
-        } else {
-            return false;
-        }
+        $current = psm_get_conf('version');
+        return version_compare($latestVersion, $current, '>');
     }
 
-/**
- * Prepare a new phpmailer instance.
- *
- * If the from name and email are left blank they will be prefilled from the config.
- * @param string $from_name
- * @param string $from_email
- * @return \PHPMailer\PHPMailer\PHPMailer
- */
+    /**
+     * Prepare a new phpmailer instance.
+     *
+     * If the from name and email are left blank they will be prefilled from the config.
+     * @param string $from_name
+     * @param string $from_email
+     * @return \PHPMailer\PHPMailer\PHPMailer
+     */
     function psm_build_mail($from_name = null, $from_email = null)
     {
         $phpmailer = new \PHPMailer\PHPMailer\PHPMailer();
@@ -588,11 +600,14 @@ namespace {
         if (psm_get_conf('email_smtp') == '1') {
             $phpmailer->IsSMTP();
             $phpmailer->Host = psm_get_conf('email_smtp_host');
-            $phpmailer->Port = (int) psm_get_conf('email_smtp_port');
+            $phpmailer->Port = (int)psm_get_conf('email_smtp_port');
             $phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
             $smtp_user = psm_get_conf('email_smtp_username');
-            $smtp_pass = psm_get_conf('email_smtp_password');
+            $smtp_pass = psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            );
 
             if ($smtp_user != '' && $smtp_pass != '') {
                 $phpmailer->SMTPAuth = true;
@@ -613,11 +628,11 @@ namespace {
         return $phpmailer;
     }
 
-/**
- * Prepare a new Pushover util.
- *
- * @return \Pushover
- */
+    /**
+     * Prepare a new Pushover util.
+     *
+     * @return \Pushover
+     */
     function psm_build_pushover()
     {
         $pushover = new \Pushover();
@@ -626,10 +641,22 @@ namespace {
         return $pushover;
     }
 
-/**
- *
- * @return \Telegram
- */
+    /**
+     * Prepare a new Webhook util.
+     *
+     * @return Webhook
+     */
+    function psm_build_webhook()
+    {
+        $webhook = new Webhook();
+
+        return $webhook;
+    }
+
+    /**
+     *
+     * @return \Telegram
+     */
     function psm_build_telegram()
     {
         $telegram = new \Telegram();
@@ -638,11 +665,65 @@ namespace {
         return $telegram;
     }
 
-/**
- * Prepare a new SMS util.
- *
- * @return \psm\Txtmsg\TxtmsgInterface
- */
+    /**
+     * Send message via XMPP.
+     *
+     * @param string $host
+     * @param string $username
+     * @param string $password
+     * @param array $receivers
+     * @param string $message
+     * @param int|null $port
+     * @param string|null $domain
+     */
+    function psm_jabber_send_message($host, $username, $password, $receivers, $message, $port = null, $domain = null)
+    {
+        $options = [
+            'jid' => $username, // incl. gmail.com
+            'pass' => $password,
+            'domain' => $domain, // gmail.com or null
+            'host' => $host, // talk.google.com
+            'port' => $port, // talk.google.com needs to have 5223 ... 5222 - CN problem - gmail.com vs talk.google.com
+            'log_path' => __DIR__ . '/../../logs/jaxl.log', // own log
+
+            // force tls
+            'force_tls' => PSM_JABBER_FORCE_TLS,
+            // (required) perform X-OAUTH2
+            'auth_type' => PSM_JABBER_AUTH_TYPE, //'X-OAUTH2', // auth failure with this option :( so just PLAIN ...
+
+            'log_level' => PSM_JABBER_DEBUG_LEVEL
+        ];
+
+        try {
+            $client = new JAXL($options);
+
+            // Add Callbacks
+            $client->add_cb('on_auth_success', function () use ($client, $receivers, $message) {
+                JAXLLogger::info('got on_auth_success cb');
+                foreach ($receivers as $receiver) {
+                    $client->send_chat_msg($receiver, $message);
+                }
+                $client->send_end_stream();
+            });
+            $client->add_cb('on_auth_failure', function ($reason) use ($client) {
+                $client->send_end_stream();
+                JAXLLogger::info('got on_auth_failure cb with reason: ' . $reason);
+            });
+            $client->add_cb('on_disconnect', function () use ($client) {
+                JAXLLogger::info('got on_disconnect cb');
+            });
+
+            $client->start();
+        } catch (Exception $ex) {
+            JAXLLogger::error('Exception: ' . $ex->getMessage());
+        }
+    }
+
+    /**
+     * Prepare a new SMS util.
+     *
+     * @return \psm\Txtmsg\TxtmsgInterface
+     */
     function psm_build_sms()
     {
         $sms = null;
@@ -689,6 +770,9 @@ namespace {
             case 'octopush':
                 $sms = new \psm\Txtmsg\Octopush();
                 break;
+            case 'ovhsms':
+                $sms = new \psm\Txtmsg\OVHsms();
+                break;
             case 'smsgw':
                 $sms = new \psm\Txtmsg\Smsgw();
                 break;
@@ -710,6 +794,11 @@ namespace {
             case 'solutionsinfini':
                 $sms = new \psm\Txtmsg\SolutionsInfini();
                 break;
+            case 'ysmal':
+                $sms = new \psm\Txtmsg\Ysmal();
+            case 'smsapi':
+                $sms = new \psm\Txtmsg\SMSAPI();
+                break;
         }
 
         // copy login information from the config file
@@ -721,20 +810,20 @@ namespace {
         return $sms;
     }
 
-/**
- * Generate a new link to the current monitor
- * @param array|string $params key value pairs or pre-formatted string
- * @param boolean $urlencode urlencode all params?
- * @param boolean $htmlentities use entities in url?
- * @return string
- */
+    /**
+     * Generate a new link to the current monitor
+     * @param array|string $params key value pairs or pre-formatted string
+     * @param boolean $urlencode urlencode all params?
+     * @param boolean $htmlentities use entities in url?
+     * @return string
+     */
     function psm_build_url($params = array(), $urlencode = true, $htmlentities = true)
     {
         if (defined('PSM_BASE_URL') && PSM_BASE_URL !== null) {
             $url = PSM_BASE_URL;
         } else {
             $url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ||
-            $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+                $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
             // on Windows, dirname() adds both back- and forward slashes (http://php.net/dirname).
             // for urls, we only want the forward slashes.
             $url .= dirname($_SERVER['SCRIPT_NAME']);
@@ -761,12 +850,12 @@ namespace {
         return $url;
     }
 
-/**
- * Try existence of a GET var, if not return the alternative
- * @param string $key
- * @param string $alt
- * @return mixed
- */
+    /**
+     * Try existence of a GET var, if not return the alternative
+     * @param string $key
+     * @param string $alt
+     * @return mixed
+     */
     function psm_GET($key, $alt = null)
     {
         if (isset($_GET[$key])) {
@@ -776,12 +865,12 @@ namespace {
         }
     }
 
-/**
- * Try existence of a POST var, if not return the alternative
- * @param string $key
- * @param string|array|bool $alt
- * @return mixed
- */
+    /**
+     * Try existence of a POST var, if not return the alternative
+     * @param string $key
+     * @param string|array|bool $alt
+     * @return mixed
+     */
     function psm_POST($key, $alt = null)
     {
         if (isset($_POST[$key])) {
@@ -791,12 +880,12 @@ namespace {
         }
     }
 
-/**
- * Check if we are in CLI mode
- *
- * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli.
- * @return boolean
- */
+    /**
+     * Check if we are in CLI mode
+     *
+     * Note, php_sapi cannot be used because cgi-fcgi returns both for web and cli.
+     * @return boolean
+     */
     function psm_is_cli()
     {
         return (!isset($_SERVER['SERVER_SOFTWARE']) || php_sapi_name() == 'cli');
@@ -808,11 +897,11 @@ namespace {
 #
 ###############################################
 
-/**
- * Only used for debugging and testing
- *
- * @param mixed $arr
- */
+    /**
+     * Only used for debugging and testing
+     *
+     * @param mixed $arr
+     */
     function pre($arr = null)
     {
         echo "<pre>";
@@ -823,9 +912,9 @@ namespace {
         echo "</pre>";
     }
 
-/**
- * Send headers to the browser to avoid caching
- */
+    /**
+     * Send headers to the browser to avoid caching
+     */
     function psm_no_cache()
     {
         header("Expires: Mon, 20 Dec 1998 01:00:00 GMT");
@@ -834,14 +923,14 @@ namespace {
         header("Pragma: no-cache");
     }
 
-/**
- * Encrypts the password for storage in the database
- *
- * @param string $key
- * @param string $password
- * @return string
- * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
- */
+    /**
+     * Encrypts the password for storage in the database
+     *
+     * @param string $key
+     * @param string $password
+     * @return string
+     * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+     */
     function psm_password_encrypt($key, $password)
     {
         if (empty($password)) {
@@ -870,14 +959,14 @@ namespace {
         return $encrypted;
     }
 
-/**
- * Decrypts password stored in the database for future use
- *
- * @param string $key
- * @param string $encryptedString
- * @return string
- * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
- */
+    /**
+     * Decrypts password stored in the database for future use
+     *
+     * @param string $key
+     * @param string $encryptedString
+     * @return string
+     * @author Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+     */
     function psm_password_decrypt($key, $encryptedString)
     {
         if (empty($encryptedString)) {
@@ -885,7 +974,7 @@ namespace {
         }
 
         if (empty($key)) {
-             throw new \InvalidArgumentException('invalid_encryption_key');
+            throw new \InvalidArgumentException('invalid_encryption_key');
         }
 
         // using open ssl
@@ -893,26 +982,23 @@ namespace {
         $cipher = "AES-256-CBC";
         $ivlen = openssl_cipher_iv_length($cipher);
         $iv = substr($data, 0, $ivlen);
-        $decrypted = rtrim(
-            openssl_decrypt(
-                base64_encode(substr($data, $ivlen)),
-                $cipher,
-                hash('sha256', $key, true),
-                OPENSSL_ZERO_PADDING,
-                $iv
-            ),
-            "\0"
+        $decrypted = openssl_decrypt(
+            substr($data, $ivlen),
+            $cipher,
+            hash('sha256', $key, true),
+            OPENSSL_RAW_DATA,
+            $iv
         );
-    
+
         return $decrypted;
     }
 
-/**
-* Send notification to Telegram
-*
-* @return string
-* @author Tim Zandbergen <tim@xervion.nl>
-*/
+    /**
+     * Send notification to Telegram
+     *
+     * @return string
+     * @author Tim Zandbergen <tim@xervion.nl>
+     */
     class Telegram
     {
         private $token;
@@ -922,12 +1008,14 @@ namespace {
 
         public function setToken($token)
         {
-            $this->token = (string) $token;
+            $this->token = (string)$token;
         }
+
         public function setUser($user)
         {
-            $this->user = (string) $user;
+            $this->user = (string)$user;
         }
+
         public function setMessage($message)
         {
             $message = str_replace("<ul>", "", $message);
@@ -936,8 +1024,9 @@ namespace {
             $message = str_replace("</li>", "\n", $message);
             $message = str_replace("<br>", "\n", $message);
             $message = str_replace("<br/>", "\n", $message);
-            $this->message = (string) $message;
+            $this->message = (string)$message;
         }
+
         public function sendurl()
         {
             $con = curl_init($this->url);
@@ -948,15 +1037,17 @@ namespace {
             $response = json_decode($response, true);
             return $response;
         }
+
         public function send()
         {
             if (!empty($this->token) && !empty($this->user) && !empty($this->message)) {
                 $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) .
-                '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
-                urlencode($this->message) . '&parse_mode=HTML';
+                    '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
+                    urlencode($this->message) . '&parse_mode=HTML&disable_web_page_preview=True';
             }
             return $this->sendurl();
         }
+
         // Get the bots username
         public function getBotUsername()
         {
@@ -964,6 +1055,123 @@ namespace {
                 $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) . '/getMe';
             }
             return $this->sendurl();
+        }
+    }
+
+    /**
+     * Send notification via webhooks
+     *
+     * @return string
+     * @author Malte Grosse
+     */
+    class Webhook
+    {
+        protected $url;
+        protected $json;
+        protected $message;
+
+        /**
+         * Send Webhook
+         *
+         * @return bool|string
+         * @var string $message
+         *
+         */
+
+        public function sendWebhook($message)
+        {
+            $error = "";
+            $success = 1;
+
+            $this->setMessage($message);
+            $jsonMessage = strtr($this->json, array('#message' => $this->message));
+
+            $curl = curl_init($this->url);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonMessage);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            $result = curl_exec($curl);
+
+            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $err = curl_errno($curl);
+
+            if ($err != 0 || $httpcode < 200 || $httpcode >= 300) {
+                $success = 0;
+                $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . $err . ". \nResult: " . $result;
+            }
+
+            curl_close($curl);
+
+            if ($success) {
+                return 1;
+            }
+            return $error;
+        }
+
+        /**
+         * setUrl
+         *
+         * @var string $url
+         *
+         */
+        public function setUrl($url)
+        {
+            $this->url = $url;
+        }
+
+        /**
+         * getUrl
+         *
+         * @return string
+         */
+        public function getUrl()
+        {
+            return $this->url;
+        }
+
+        /**
+         * setJson
+         *
+         * @var string $json
+         *
+         */
+        public function setJson($json)
+        {
+            $this->json = $json;
+        }
+
+        /**
+         * getJson
+         *
+         * @return string
+         */
+        public function getJson()
+        {
+            return $this->json;
+        }
+
+        /**
+         * Set message
+         *
+         * @return string
+         * @var string $message
+         *
+         */
+        public function setMessage($message)
+        {
+            $message = str_replace("<ul>", "", $message);
+            $message = str_replace("</ul>", "\n", $message);
+            $message = str_replace("<li>", "- ", $message);
+            $message = str_replace("</li>", "\n", $message);
+            $message = str_replace("<br>", "\n", $message);
+            $message = str_replace("<br/>", "\n", $message);
+            $message = str_replace("<b>", "", $message);
+            $message = str_replace("<b/>", "", $message);
+            $message = strip_tags($message);
+            $this->message = (string)$message;
         }
     }
 }

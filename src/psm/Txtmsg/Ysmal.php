@@ -19,65 +19,71 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Perri Vardy-Mason
+ * @author      Dylan Ysmal <dylan@ysmal.fr>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.1
+ * @since       phpservermon 3.5
  **/
 
 namespace psm\Txtmsg;
 
-class Smsit extends Core
+class Ysmal extends Core
 {
-    
+
     /**
-     * Send sms using the Smsit API
-     *
+     * Send sms using the Hermes SMS API on Ysmal.fr
      * @var string $message
-     * @var string $this->password
      * @var array $this->recipients
-     * @var array $this->originator
+     * @var string $this->password
      *
-     * @var resource $curl
-     * @var string $err
-     * @var String $recipient
      * @var mixed $result
+     * @var array $headers
      *
      * @var int $success
      * @var string $error
      *
      * @return bool|string
      */
-    
+
     public function sendSMS($message)
     {
         $success = 1;
-        $error = "";
-        
+        $error = '';
+
         foreach ($this->recipients as $recipient) {
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_URL, "https://www.smsit.dk/api/v2?" . http_build_query(
-                array(
-                        "apiKey" => $this->password,
-                        "mobile" => $recipient,
-                        "message" => urlencode($message),
-                        "senderId" => substr($this->originator, 0, 15),
-                    )
-            ));
-            
-            $result = curl_exec($curl);
-            $err = curl_errno($curl);
-            curl_close($curl);
-            
-            if ($err != 0 || is_numeric(strpos($result, "{\"errors\":[{\"code\":"))) {
+            $opts['http'] = [
+                'method' => 'POST',
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                    'User-Agent: PHPServerMonitor (+https://phpservermonitor.org)',
+                'content' => http_build_query([
+                    'key' => $this->password,
+                    'number' => $recipient,
+                    'message' => $message
+                ]),
+                'ignore_errors' => true
+            ];
+
+            $api = 'https://sms-api.ysmal.fr/';
+            $ctx = stream_context_create($opts);
+            $res = file_get_contents($api, false, $ctx);
+
+            $json = json_decode($res, true);
+            if ($json === NULL) {
                 $success = 0;
-                $error = $result;
+                $error = "($recipient) json_decode_error";
+                break;
+            }
+
+            if ($json['status'] !== 'success') {
+                $success = 0;
+                $error = "($recipient) $json[error]";
+                break;
             }
         }
-        
+
         if ($success) {
             return 1;
         }

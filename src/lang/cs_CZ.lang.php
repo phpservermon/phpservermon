@@ -68,6 +68,7 @@ $sm_lang = array(
         'a_minute_ago' => 'cca před minutou',
         'seconds_ago' => 'před %d vteřinami',
         'a_second_ago' => 'před chvílí',
+        'seconds' => 'sekunder',
     ),
     'menu' => array(
         'config' => 'Konfigurace',
@@ -95,7 +96,7 @@ $sm_lang = array(
         'email' => 'E-mail',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover je služba umožňující jednoduše zasílat real-time upozornění.
- Více na <a href="https://pushover.net/">webu Pushover</a>',
+ Více na <a href="https://pushover.net/" target="_blank">webu Pushover</a>',
         'pushover_key' => 'Pushover Token',
         'pushover_device' => 'Pushover Zařízení',
         'pushover_device_description' => 'Název zařízení, na které má být zráva odeslána. Ponechte prázdné
@@ -227,7 +228,7 @@ $sm_lang = array(
         'sms_from' => 'Telefonní číslo odesilatele',
         'pushover_status' => 'Povolit zasílání Pushover zpráv',
         'pushover_description' => 'Pushover je služba umožňující jednoduše zasílat real-time upozornění.
- Více na <a href="https://pushover.net/">webu Pushover</a>',
+ Více na <a href="https://pushover.net/" target="_blank">webu Pushover</a>',
         'pushover_clone_app' => 'Klikněte pro vytvoření Pushover aplikace',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Pře použitím Pushoveru se musíte <a href="%1$s" target="_blank"
@@ -260,7 +261,6 @@ $sm_lang = array(
         'auto_refresh' => 'Automaticky obnovit',
         'auto_refresh_description' => 'Automaticky obnovit stránku Servery.<br><span class="small">Čas v sekundách,
  0 pro vypnutí automatického obnovení.</span>',
-        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'E-mail bude odeslán na adresu uvedenou v uživatelském profilu.',
         'test_sms' => 'SMS bude odeslána na telefonní číslo uvedené v uživatelském profilu.',

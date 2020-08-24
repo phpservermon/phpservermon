@@ -67,6 +67,7 @@ $sm_lang = array(
         'a_minute_ago' => '1分钟前',
         'seconds_ago' => '%d 秒前',
         'a_second_ago' => '刚刚',
+        'seconds' => '秒',
     ),
     'menu' => array(
         'config' => '设置',
@@ -124,9 +125,6 @@ $sm_lang = array(
         'sms' => '短信',
         'pushover' => 'Pushover',
         'no_logs' => '没有日志',
-        'clear' => 'Clear log',
-        'delete_title' => 'Delete log',
-        'delete_message' => 'Are you sure you want to delete <b>all</b> logs?',
     ),
     'servers' => array(
         'server' => '业务',
@@ -262,7 +260,6 @@ $sm_lang = array(
         'auto_refresh' => '自动刷新',
         'auto_refresh_description' => '自动刷新服务器页.<br><span class="small">单位为秒, 设置为 0
  则不自动刷新.</span>',
-        'seconds' => '秒',
         'test' => '测试',
         'test_email' => '将发送一封邮件到您账户设置的邮件地址.',
         'test_sms' => '将发送一封短信到您账户设置的手机号码.',

@@ -5,7 +5,7 @@ PHP Server Monitor
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
 
-Version 3.6.0
+Version 3.6.0.beta2
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -16,7 +16,7 @@ Features:
 ---------
 
 * Monitor services and websites (see below).
-* Email, SMS, Pushover, Telegram notifications.
+* Email, SMS, Discord, Pushover, Telegram and Jabber notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -39,7 +39,7 @@ There are two different ways to monitor a server:
   In both cases the script will return a "status offline", and will start sending out notifications.
 
 Each server has its own settings regarding notification.
-You can choose for email, text message (SMS), Pushover.net and Telegram notifications.
+You can choose for email, text message (SMS), Pushover.net, Telegram and Jabber notifications.
 The following SMS gateways are currently available:
 
 * Clickatell - <https://www.clickatell.com>
@@ -60,6 +60,8 @@ The following SMS gateways are currently available:
 * SolutionsInfini - <https://solutionsinfini.com/>
 * Plivo - <https://www.plivo.com/>
 * Callr - <https://www.callr.com/>
+* SMSAPI - <https://www.smsapi.com/en>
+* OVH SMS PRO - <https://www.ovhtelecom.fr/sms/>
 
 
 
@@ -79,10 +81,19 @@ Requirements
 * MySQL database
 * For PHP5: 5.5.9+
 * For PHP7: 7.0.8+
-* PHP cURL package
-* PHP PDO mysql driver
-* PHP-XML
+* PHP Extensions (modules)
 
+  * ext-curl
+  * ext-ctype
+  * ext-filter
+  * ext-hash
+  * ext-json
+  * ext-libxml
+  * ext-openssl
+  * ext-pdo
+  * ext-pcre
+  * ext-sockets
+  * ext-xml
 
 Install
 -------
@@ -105,7 +116,7 @@ If you are familiar with Vagrant (https://www.vagrantup.com)::
 Documentation
 -------------
 
-The documentation is available in the docs folder or http://docs.phpservermonitor.org.
+The documentation is available in the docs folder or https://docs.phpservermonitor.org.
 
 
 License
@@ -122,7 +133,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.
+along with PHP Server Monitor.  If not, see https://www.gnu.org/licenses/.
 
 Docker
 -------

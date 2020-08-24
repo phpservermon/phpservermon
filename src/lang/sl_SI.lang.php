@@ -65,6 +65,7 @@ $sm_lang = array(
         'a_minute_ago' => 'pred približno minuto',
         'seconds_ago' => 'pred %d sekundami',
         'a_second_ago' => 'pred sekundo',
+        'seconds' => 'sekund',
     ),
     'menu' => array(
         'config' => 'Nastavitve',
@@ -92,8 +93,8 @@ $sm_lang = array(
         'email' => 'E-pošta',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover je storitev, ki omogoča enostavno prejemanje obvestil v realnem času.
- Več informacij je na voljo <a href="https://pushover.net/">na njihovi spletni
- strani</a>.',
+ Več informacij je na voljo <a href="https://pushover.net/" target="_blank">na
+ njihovi spletni strani</a>.',
         'pushover_key' => 'Pushover ključ',
         'pushover_device' => 'Pushover naprava',
         'pushover_device_description' => 'Ime naprave na katero naj se pošlje obvestilo. Če želite obvestilo
@@ -209,8 +210,8 @@ $sm_lang = array(
         'sms_from' => 'Telefonska številka pošiljatelja',
         'pushover_status' => 'Dovolim pošiljanje Pushover sporočil',
         'pushover_description' => 'Pushover je storitev, ki omogoča enostavno prejemanje obvestil v realnem času.
- Več informacij je na voljo <a href="https://pushover.net/">na njihovi spletni
- strani</a>.',
+ Več informacij je na voljo <a href="https://pushover.net/" target="_blank">na
+ njihovi spletni strani</a>.',
         'pushover_clone_app' => 'Kliknite za ustvarjanje vaše Pushover aplikacije',
         'pushover_api_token' => 'Pushover API žeton',
         'pushover_api_token_description' => 'Pred uporabo storitve Pushover, morate na njihovi spletni strani <a
@@ -247,7 +248,6 @@ $sm_lang = array(
         'auto_refresh_description' => 'Samodejno posodabljanje pregleda statusa strežnikov.<br><span
  class="small">Čas v sekundah. Če je vrednost 0 se stran ne bo samodejno
  posodabljala.</span>',
-        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'Na naslov, ki ste ga določili v vašem profilu, bo poslano e-sporočilo.',
         'test_sms' => 'Na telefonsko številko, ki ste jo določili v vašem profilu, bo poslan SMS.',

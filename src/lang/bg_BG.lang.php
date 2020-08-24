@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'преди минута',
         'seconds_ago' => 'преди %d секунди',
         'a_second_ago' => 'преди секунда',
+        'seconds' => 'секунди',
     ),
     'menu' => array(
         'config' => 'Настройки',
@@ -99,8 +100,8 @@ $sm_lang = array(
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover е услуга, която улеснява получаването на
  известия в реално време. Посетете <a
- href="https://pushover.net/">техния сайт</a> за повече
- информация.',
+ href="https://pushover.net/" target="_blank">техния сайт</a> за
+ повече информация.',
         'pushover_key' => 'Pushover Ключ',
         'pushover_device' => 'Pushover Устройство',
         'pushover_device_description' => 'Име на устройство, което да получава
@@ -219,8 +220,6 @@ $sm_lang = array(
         'email_smtp' => 'Активиране на SMTP',
         'email_smtp_host' => 'SMTP сървър',
         'email_smtp_port' => 'SMTP порт',
-        'email_smtp_security' => 'SMTP security',
-        'email_smtp_security_none' => 'None',
         'email_smtp_username' => 'SMTP потребителско име',
         'email_smtp_password' => 'SMTP парола',
         'email_smtp_noauth' => 'Оставете празно за "без аутентикация"',
@@ -232,8 +231,8 @@ $sm_lang = array(
         'pushover_status' => 'Позволява изпращането на Pushover съобщения',
         'pushover_description' => 'Pushover е услуга, която улеснява получаването на
  известия в реално време. Посетете <a
- href="https://pushover.net/">техния сайт</a> за повече
- информация.',
+ href="https://pushover.net/" target="_blank">техния сайт</a> за
+ повече информация.',
         'pushover_clone_app' => 'Кликнете тук за да създаване на вашият Pushover App',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Преди да използвате Pushover, трябва да <a
@@ -267,7 +266,6 @@ $sm_lang = array(
  системата',
         'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от
  системата',
-        'log_pushover' => 'Log pushover messages sent by the script',
         'updated' => 'Настройките са обновени успешно.',
         'tab_email' => 'Имейл',
         'tab_sms' => 'SMS',

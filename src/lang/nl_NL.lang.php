@@ -81,6 +81,8 @@ $sm_lang = array(
         'minutes' => 'minuten',
         'second' => 'seconde',
         'seconds' => 'seconden',
+        'millisecond' => 'milliseconde',
+        'milliseconds' => 'milliseconden',
         'current' => 'huidig',
         'settings' => 'Instellingen',
     ),
@@ -110,8 +112,8 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te
- ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer
- informatie.',
+ ontvangen. Zie <a href="https://pushover.net/" target="_blank">hun website</a> voor
+ meer informatie.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Apparaat waar de berichten naar toe gaan. Laat leeg voor alle apparaten.',
@@ -244,6 +246,7 @@ $sm_lang = array(
     ),
     'config' => array(
         'general' => 'Algemeen',
+        'site_title' => 'Website titel',
         'language' => 'Taal',
         'show_update' => 'Controleer wekelijks voor updates?',
         'email_status' => 'Sta email berichten toe?',
@@ -264,8 +267,8 @@ $sm_lang = array(
         'sms_from' => 'Telefoonnummer afzender',
         'pushover_status' => 'Sta Pushover berichten toe?',
         'pushover_description' => 'Pushover is een dienst die het gemakkelijk maakt om real-time notificaties te
- ontvangen. Zie <a href="https://pushover.net/">hun website</a> voor meer
- informatie.',
+ ontvangen. Zie <a href="https://pushover.net/" target="_blank">hun website</a> voor
+ meer informatie.',
         'pushover_clone_app' => 'Klik hier om je Pushover app te maken',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Voordat je Pushover kunt gebruiken moet je een <a href="%1$s"
@@ -308,7 +311,6 @@ $sm_lang = array(
         'auto_refresh' => 'Herlaad automatisch',
         'auto_refresh_description' => 'Auto-herladen servers pagina.<br><span class="small">Tijd in seconden, als de
  tijd 0 is wordt de pagina niet ververst.</span>',
-        'seconds' => 'seconden',
         'test' => 'Test',
         'test_email' => 'Er zal een email verstuurd worden naar het email adres in je profiel.',
         'test_sms' => 'Er zal een SMS verstuurd worden naar het telefoonnummer in je profiel.',
@@ -336,6 +338,9 @@ $sm_lang = array(
         'log_retention_period_description' => 'Aantal dagen dat logs van notificaties en archieven van server uptime
  worden bewaard. Vul 0 in om log opruiming uit te zetten.',
         'log_retention_days' => 'dagen',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Aangepaste user agent wordt door de monitor gebruikt bij de communicatie met externe
+ services.',
     ),
     'notifications' => array(
         'off_sms' => 'Server %LABEL% is DOWN: ip=%IP%, poort=%PORT%. Fout=%ERROR%',

@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'cerca de um minuto atrás',
         'seconds_ago' => '%d segundos atrás',
         'a_second_ago' => 'um segundo atrás',
+        'seconds' => 'segundos',
     ),
     'menu' => array(
         'config' => 'Configuração',
@@ -93,7 +94,7 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover para enviar notificações em real-tome. Veja <a
- href="https://pushover.net/">o website</a> para mais informações.',
+ href="https://pushover.net/" target="_blank">o website</a> para mais informações.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Nome do Device para enviar a mensagem. Deixe em branco para enviar a todos
@@ -209,7 +210,7 @@ $sm_lang = array(
         'sms_from' => 'Número de telefone de envio',
         'pushover_status' => 'Habilitar envio de mensagens Pushover',
         'pushover_description' => 'Pushover é um serviço de notificações em tempo real. Veja <a
- href="https://pushover.net/">o website</a> para mais informações.',
+ href="https://pushover.net/" target="_blank">o website</a> para mais informações.',
         'pushover_clone_app' => 'Clique aqui para criar sua app Pushover',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank"
@@ -245,7 +246,6 @@ $sm_lang = array(
         'auto_refresh' => 'Atualizar automaticamente',
         'auto_refresh_description' => 'Atualizar automaticamente a página de servidores.<br><span class="small">Tempo
  em segundos, Se 0 a página não será atualizada.</span>',
-        'seconds' => 'segundos',
         'test' => 'Teste',
         'test_email' => 'Um e-mail será enviado para o endereço especificado em seu perfil de usuário.',
         'test_sms' => 'Um SMS será enviado para o número de telefone especificado em seu perfil de usuário.',

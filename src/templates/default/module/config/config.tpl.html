@@ -27,6 +27,21 @@
                 role="tab" aria-controls="config-telegram" aria-selected="{% if telegram_active %}true{% else %}false{% endif %}">{{
                 label_tab_telegram }}</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ jabber_active }}" id="config-jabber-tab" data-toggle="tab" href="#config-jabber"
+               role="tab" aria-controls="config-jabber" aria-selected="{% if jabber_active %}true{% else %}false{% endif %}">{{
+            label_tab_jabber }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ discord_active }}" id="config-discord-tab" data-toggle="tab" href="#config-discord" role="tab"
+                aria-controls="config-discord" aria-selected="{% if discord_active %}true{% else %}false{% endif %}">{{
+                        label_tab_discord }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ webhook_active }}" id="config-webhook-tab" data-toggle="tab" href="#config-webhook" role="tab"
+                aria-controls="config-webhook" aria-selected="{% if webhook_active %}true{% else %}false{% endif %}">{{
+                label_tab_webhook }}</a>
+        </li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -36,6 +51,8 @@
                 <legend>{{ label_general }}</legend>
                 <!-- Update check -->
                 {{ macro.input_checkbox("show_update", "show_update[]", label_show_update, show_update_checked) }}
+                <!-- Site title -->
+                {{ macro.input_field("text", "site_title", null, "site_title", label_site_title, site_title, label_site_title, "255", null, null, null, null, true) }}
                 <!-- Language -->
                 {{ macro.input_select("language", "language", label_language, languages, language_current) }}
                 <!-- Auto refresh -->
@@ -43,6 +60,8 @@
                 <!-- Password encryption key -->
                 <!-- TODO how does the encryption function works currently? -->
                 {{ macro.input_field("text", "password_encrypt_key", null, "password_encrypt_key", label_password_encrypt_key, password_encrypt_key, "cab03a766...", "40", "password_encrypt_key_help", label_password_encrypt_key_note) }}
+                <!-- Custom user agent -->
+                {{ macro.input_field("text", "user_agent", null, "user_agent", label_user_agent, user_agent, "Mozilla/5.0...", "255", "user_agent_key_help", label_user_agent_key_note) }}
             </fieldset>
             <!-- Notification settings -->
             <fieldset>
@@ -99,7 +118,7 @@
                 <!-- email user -->
                 {{ macro.input_field("text", "email_smtp_username", null, "email_smtp_username", label_email_smtp_username, email_smtp_username, label_email_smtp_username, "255") }}
                 <!-- email password -->
-                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_email_smtp_password, "255", null, null, null, true) }}
+                {{ macro.input_field("password", "email_smtp_password", null, "email_smtp_password", label_email_smtp_password, email_smtp_password, label_leave_blank, "255", null, null, null, true) }}
                 {{ macro.button_test("testEmail", label_test) }}
                 {{ macro.input_hidden("test_email", "0") }}
                 {{ macro.button_save("email_submit",  label_save) }}
@@ -120,15 +139,28 @@
                 {{ macro.input_field("text", "sms_gateway_password", null, "sms_gateway_password", label_sms_gateway_password, sms_gateway_password, label_sms_gateway_password, "255") }}
                 <!-- sms sender number-->
                 {{ macro.input_field("text", "sms_from", null, "sms_from", label_sms_from, sms_from, "+31123456789", "255") }}
-                
+
                 {{ macro.button_test("testSms", label_test) }}
                 {{ macro.input_hidden("test_sms", "0") }}
                 {{ macro.button_save("sms_submit", label_save) }}
             </fieldset>
         </div>
-        <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-telegram-tab">
+        <div class="tab-pane {{ discord_active }}" id="config-discord" role="tabpanel" aria-labelledby="config-discord-tab">
+            <fieldset>
+                <legend>{{ label_settings_discord }}</legend>
+                <!-- enable discord -->
+                {{ macro.input_checkbox("discord_status", "discord_status[]", label_discord_status, discord_status_checked) }}
+                <!-- enable discord log -->
+                {{ macro.input_checkbox("log_discord", "log_discord[]", label_log_discord, log_discord_checked) }}
+                {{ macro.button_test("testDiscord", label_test) }}
+                {{ macro.input_hidden("test_discord", "0") }}
+                {{ macro.button_save("discord_submit", label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-pushover-tab">
             <fieldset>
                 <legend>{{ label_settings_pushover }}</legend>
+                <p>{{ label_pushover_description|raw }}</p>
                 <!-- enable pushover -->
                 {{ macro.input_checkbox("pushover_status", "pushover_status", label_pushover_status, pushover_status_checked) }}
                 <!-- enable pushover log -->
@@ -140,9 +172,10 @@
                 {{ macro.button_save("pushover_submit",  label_save) }}
             </fieldset>
         </div>
-        <div class="tab-pane {{ telegram_active }}" id="config-telegram" role="tabpanel" aria-labelledby="config-pushover-tab">
+        <div class="tab-pane {{ telegram_active }}" id="config-telegram" role="tabpanel" aria-labelledby="config-telegram-tab">
             <fieldset>
                 <legend>{{ label_settings_telegram }}</legend>
+                <p>{{ label_telegram_description|raw }}</p>
                 <!-- enable telegram -->
                 {{ macro.input_checkbox("telegram_status", "telegram_status[]", label_telegram_status, telegram_status_checked) }}
                 <!-- enable telegram log -->
@@ -152,6 +185,42 @@
                 {{ macro.button_test("testTelegram", label_test) }}
                 {{ macro.input_hidden("test_telegram", "0") }}
                 {{ macro.button_save("telegram_submit",  label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ jabber_active }}" id="config-jabber" role="tabpanel" aria-labelledby="config-jabber-tab">
+            <fieldset>
+                <legend>{{ label_settings_jabber }}</legend>
+                <!-- enable jabber -->
+                {{ macro.input_checkbox("jabber_status", "jabber_status[]", label_jabber_status, jabber_status_checked) }}
+                <!-- enable jabber log -->
+                {{ macro.input_checkbox("log_jabber", "log_jabber[]", label_log_jabber, log_jabber_checked) }}
+                <!-- jabber settings -->
+                {{ macro.input_field("text", "jabber_host", null, "jabber_host", label_jabber_host, jabber_host, label_jabber_host, "255", "jabber_host_help", label_jabber_host_description) }}
+                {{ macro.input_field("number", "jabber_port", null, "jabber_port", label_jabber_port, jabber_port, label_jabber_port, "255", "jabber_port_help", label_jabber_port_description) }}
+                {{ macro.input_field("text", "jabber_username", null, "jabber_username", label_jabber_username, jabber_username, label_jabber_username, "255", 'jabber_username_help', label_jabber_username_description) }}
+                {{ macro.input_field("text", "jabber_domain", null, "jabber_domain", label_jabber_domain, jabber_domain, label_jabber_domain, "255", "jabber_domain_help", label_jabber_domain_description) }}
+                {{ macro.input_field("password", "jabber_password", null, "jabber_password", label_jabber_password, jabber_password, label_jabber_password, "255", "jabber_password_help", label_jabber_password_description) }}
+                {{ macro.button_test("testJabber", label_test) }}
+                {{ macro.input_hidden("test_jabber", "0") }}
+                {{ macro.button_save("jabber_submit",  label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ webhook_active }}" id="config-webhook" role="tabpanel" aria-labelledby="config-webhook-tab">
+            <fieldset>
+                <legend>{{ label_settings_webhook }}</legend>
+                <p>{{ label_webhook_description|raw }}</p>
+                <!-- enable webhooks -->
+                {{ macro.input_checkbox("webhook_status", "webhook_status", label_webhook_status, webhook_status_checked) }}
+                <!-- enable webhook log -->
+                {{ macro.input_checkbox("log_webhook", "log_webhook", label_log_webhook, log_webhook_checked) }}
+                <!-- webhook url -->
+                <!--  {{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, webhook_url, label_webhook_url, "255", "webhook_url_help", label_webhook_url_description) }} -->
+                <!-- webhook json -->
+                <!--   {{ macro.input_field("text", "webhook_json", null, "webhook_json", label_webhook_json, webhook_json, label_webhook_json, "255", "webhook_json_help", label_webhook_json_description) }} -->
+        
+                {{ macro.button_test("testWebhook", label_test) }}
+                {{ macro.input_hidden("test_webhook", "0") }}
+                {{ macro.button_save("webhook_submit",  label_save) }}
             </fieldset>
         </div>
     </div>

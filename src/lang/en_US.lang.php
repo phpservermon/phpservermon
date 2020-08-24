@@ -50,9 +50,7 @@ $sm_lang = array(
         'no' => 'No',
         'insert' => 'Insert',
         'add_new' => 'Add new',
-        'update_available' => 'A new version ({version}) is available. Click <a
- href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank"
- rel="noopener">here</a> to download the update.',
+        'update_available' => 'A new version ({version}) is available. Click <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">here</a> to download the update.',
         'back_to_top' => 'Back to top',
         'go_back' => 'Go back',
         'ok' => 'OK',
@@ -83,6 +81,8 @@ $sm_lang = array(
         'minutes' => 'minutes',
         'second' => 'second',
         'seconds' => 'seconds',
+        'millisecond' => 'millisecond',
+        'milliseconds' => 'milliseconds',
         'current' => 'current',
         'settings' => 'Settings',
         'search' => 'Search',
@@ -113,27 +113,33 @@ $sm_lang = array(
         'mobile' => 'Mobile',
         'email' => 'Email',
         'pushover' => 'Pushover',
-        'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a
- href="https://pushover.net/">their website</a> for more info.',
+        'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Device name to send the message to. Leave empty to send it to all devices.',
+        'discord' => 'Discord',
+        'discord_label' => 'Discord',
+        'discord_description' => 'Put your <a href="https://discordjs.guide/popular-topics/webhooks.html" target="_blank">webhook</a> here.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to
- get real-time notifications. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
- install guide.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that makes it easy to get real-time notifications. Visit the <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more info and an install guide.',
         'telegram_chat_id' => 'Telegram chat id',
         'telegram_chat_id_description' => 'The message will be send to the corresponding chat.',
         'telegram_get_chat_id' => 'Click here to get your chat id',
         'activate_telegram' => 'Activate Telegram notifications',
-        'activate_telegram_description' => 'Allow Telegram notifications to be sent to the specified chat id. Without
- this permission, Telegram doesn\'t allow us to send notifications to you.',
-        'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank" rel="noopener"><button
- class="btn btn-primary">Next step</button></a> <br>This will open a chat
- with the bot. Here you need to press start of type /start.',
+        'activate_telegram_description' => 'Allow Telegram notifications to be sent to the specified chat id. Without this permission, Telegram doesn\'t allow us to send notifications to you.',
+        'telegram_bot_username_found' => 'The bot was found!<br><a href="%s" target="_blank" rel="noopener"><button class="btn btn-primary">Next step</button></a> <br>This will open a chat with the bot. Here you need to press start or type /start.',
         'telegram_bot_username_error_token' => '401 - Unauthorized. Please make sure that the API token is valid.',
         'telegram_bot_error' => 'An error has occurred while activating Telegram notification: %s',
+        'jabber' => 'Jabber',
+        'jabber_label' => 'Jabber',
+        'jabber_description' => 'You Jabber account',
+        'webhook' => 'Webhook',
+        'webhook_description' => 'Send a json webhook to a certain endpoint. <br/> The json can be customized, e.g. {
+"text":"servermon: #message"}',
+        'webhook_url' => 'Webhook Url',
+        'webhook_url_description' => 'Webhook public endpoint url, should start with https://.',
+        'webhook_json' => 'Webhook JSON',
+        'webhook_json_description' => 'Define a custom json, use #message as message variable.',
         'delete_title' => 'Delete User',
         'delete_message' => 'Are you sure you want to delete user \'%1\'?',
         'deleted' => 'User deleted.',
@@ -142,8 +148,7 @@ $sm_lang = array(
         'profile' => 'Profile',
         'profile_updated' => 'Your profile has been updated.',
         'error_user_name_bad_length' => 'Usernames must be between 2 and 64 characters.',
-        'error_user_name_invalid' => 'The username may only contain alphabetic characters (a-z, A-Z), digits (0-9),
- dots (.) and underscores (_).',
+        'error_user_name_invalid' => 'The username may only contain alphabetic characters (a-z, A-Z), digits (0-9), dots (.) and underscores (_).',
         'error_user_name_exists' => 'The given username already exists in the database.',
         'error_user_email_bad_length' => 'Email addresses must be between 5 and 255 characters.',
         'error_user_email_invalid' => 'The email address is invalid.',
@@ -160,8 +165,11 @@ $sm_lang = array(
         'status' => 'Status',
         'email' => 'Email',
         'sms' => 'SMS',
+        'discord' => 'Discord',
         'pushover' => 'Pushover',
+        'webhook' => 'Webhook',
         'telegram' => 'Telegram',
+        'jabber' => 'Jabber',
         'no_logs' => 'No logs',
         'clear' => 'Clear log',
         'delete_title' => 'Delete log',
@@ -197,17 +205,13 @@ $sm_lang = array(
         'type_service' => 'Service',
         'type_ping' => 'Ping',
         'pattern' => 'Search string/pattern',
-        'pattern_description' => 'If this pattern is not found on the website, the server will be marked
- online/offline. Regular expressions are allowed.',
+        'pattern_description' => 'If this pattern is not found on the website, the server will be marked online/offline. Regular expressions are allowed.',
         'pattern_online' => 'Pattern indicates website is',
-        'pattern_online_description' => 'Online: If this pattern was found on the website, the server will be marked
- online. Offline: If this pattern was not found on the website, the server
- will be marked offline.',
+        'pattern_online_description' => 'Online: If this pattern was found on the website, the server will be marked online. Offline: If this pattern was not found on the website, the server will be marked offline.',
         'redirect_check' => 'Redirecting to another domain is',
         'redirect_check_description' => 'Redirect to another domain is usually a bad sign.',
         'allow_http_status' => 'Allow HTTP status code',
-        'allow_http_status_description' => 'Mark website as online. HTTP Status codes lower then 400 are marked as
- online by default. Seperate with |.',
+        'allow_http_status_description' => 'Mark website as online. HTTP Status codes lower then 400 are marked as online by default. Seperate with |.',
         'header_name' => 'Header name',
         'header_value' => 'Header value',
         'header_name_description' => 'Case-sensitive.',
@@ -225,10 +229,16 @@ $sm_lang = array(
         'send_email' => 'Send Email',
         'sms' => 'SMS',
         'send_sms' => 'Send SMS',
+        'discord' => 'Discord',
+        'send_discord' => 'Send Discord notification',
+        'webhook' => 'Webhook',
+        'send_webhook' => 'Send Webhook notification',
         'pushover' => 'Pushover',
         'send_pushover' => 'Send Pushover notification',
         'telegram' => 'Telegram',
         'send_telegram' => 'Send Telegram notification',
+        'jabber' => 'Jabber',
+        'send_jabber' => 'Send Jabber notification',
         'users' => 'Users',
         'delete_title' => 'Delete server',
         'delete_message' => 'Are you sure you want to delete server \'%1\'?',
@@ -249,6 +259,10 @@ $sm_lang = array(
         'hour' => 'Hour',
         'warning_threshold' => 'Warning threshold',
         'warning_threshold_description' => 'Number of failed checks required before it is marked offline.',
+        'ssl_cert_expiry_days' => 'SSL Certificate Validity',
+        'ssl_cert_expiry_days_description' => 'The minimum remaining days the SSL certificate is still valid. Use 0 to disable check.',
+        'ssl_cert_expired' => 'SSL certificate expired since',
+        'ssl_cert_expiring' => 'SSL certificate expiring:',
         'chart_last_week' => 'Last week',
         'chart_history' => 'History',
         'chart_day_format' => '%Y-%m-%d',
@@ -257,8 +271,11 @@ $sm_lang = array(
         'chart_short_time_format' => '%H:%M',
         'warning_notifications_disabled_sms' => 'SMS notifications are disabled.',
         'warning_notifications_disabled_email' => 'Email notifications are disabled.',
+        'warning_notifications_disabled_discord' => 'Discord notifications are disabled.',
+        'warning_notifications_disabled_webhook' => 'Webhook notifications are disabled.',
         'warning_notifications_disabled_pushover' => 'Pushover notifications are disabled.',
         'warning_notifications_disabled_telegram' => 'Telegram notifications are disabled.',
+        'warning_notifications_disabled_jabber' => 'Jabber notifications are disabled.',
         'error_server_no_match' => 'Server not found.',
         'error_server_label_bad_length' => 'The label must be between 1 and 255 characters.',
         'error_server_ip_bad_length' => 'The domain / IP must be between 1 and 255 characters.',
@@ -266,14 +283,15 @@ $sm_lang = array(
         'error_server_ip_bad_website' => 'The website URL is not valid.',
         'error_server_type_invalid' => 'The selected server type is invalid.',
         'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
+        'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid integer greater than or equal to 0.',
     ),
     'config' => array(
         'general' => 'General',
+        'site_title' => 'Site title',
         'language' => 'Language',
         'show_update' => 'Check for updates?',
         'password_encrypt_key' => 'The encryption key password',
-        'password_encrypt_key_note' => 'This key is used to encrypt passwords that are stored on servers for access to
- websites. If the key will change the stored password is invalid!',
+        'password_encrypt_key_note' => 'This key is used to encrypt passwords that are stored on servers for access to websites. If the key will change the stored password is invalid!',
         'proxy' => 'Enable proxy',
         'proxy_url' => 'Proxy URL',
         'proxy_user' => 'Proxy username',
@@ -294,67 +312,84 @@ $sm_lang = array(
         'sms_gateway_username' => 'Gateway username',
         'sms_gateway_password' => 'Gateway password',
         'sms_from' => 'Sender\'s phone number',
+        'discord_status' => 'Allow sending Discord messages',
+        'discord_description' => 'Discord is a service that makes it easy to get real-time notifications. See <a href="https://discord.com/" target="_blank">their website</a> for more info.',
+        'webhook_status' => 'Allow sending webhooks',
+        'webhook_description' => 'Allow sending webhooks to services like slack. The message payload end endpoint are defined in the profile settings.',
+        'webhook_url' => 'Webhook Url',
+        'webhook_url_description' => 'Url to webhook endpoint',
+        'webhook_json' => 'Webhook Json',
+        'webhook_json_description' => 'Customized Json, use #message as message variable.',
         'pushover_status' => 'Allow sending Pushover messages',
-        'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a
- href="https://pushover.net/">their website</a> for more info.',
+        'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_clone_app' => 'Click here to create your Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
-        'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank"
- rel="noopener">register an App</a> at their website and enter the App API
- Token here.',
+        'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
         'telegram_status' => 'Allow sending Telegram messages',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> is a chat app that makes it easy to
- get real-time notifications. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for more info and an
- install guide.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that makes it easy to get real-time notifications. Visit the <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more info and an install guide.',
         'telegram_api_token' => 'Telegram API Token',
-        'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a
- href="http://docs.phpservermonitor.org/">documentation</a> for help.',
+        'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for help.',
+        'jabber_status' => 'Allow sending Jabber (XMPP) messages',
+        'jabber_description' => 'Visit the <a href="http://docs.phpservermonitor.org/">documentation</a> for more info and an install guide.',
+        'jabber_host' => 'Host',
+        'jabber_host_description' => 'Host of your Jabber account provider. For Google Account use talk.google.com.',
+        'jabber_port' => 'Port',
+        'jabber_port_description' => 'Port of your Jabber provider. Default 5222. For Google Account use 5223.',
+        'jabber_username' => 'Username',
+        'jabber_username_description' => 'For Google Account use incl. domain so for example example@google.com.',
+        'jabber_domain' => 'Domain',
+        'jabber_domain_description' => 'Domain of your Jabber provider. Left empty for Google Account.',
+        'jabber_password' => 'Password',
+        'jabber_password_description' => 'Fill only to set or change.',
+        'jabber_check' => 'Check your Jabber account if message was received.',
         'alert_type' => 'Select when you\'d like to be notified.',
-        'alert_type_description' => '<b>Status change:</b> You will receive a notification when a server has a change
- in status. So from online -> offline or offline -> online.<br><br><b>Offline:</b>
- You will receive a notification when a server goes offline for the *FIRST TIME
- ONLY*. For example, your cronjob is every 15 minutes and your server goes down at
- 1 am and stays down till 6 am. You will get 1 notification at 1 am and that\'s
- it.<br><br><b>Always:</b> You will receive a notification every time the script
- runs and a site is down, even if the site has been offline for hours.',
+        'alert_type_description' => '<b>Status change:</b> You will receive a notification when a server has a change in status. So from online -> offline or offline -> online.<br><br><b>Offline:</b> You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, your cronjob is every 15 minutes and your server goes down at 1 am and stays down till 6 am. You will get 1 notification at 1 am and that\'s it.<br><br><b>Always:</b> You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
         'alert_type_status' => 'Status change',
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Always',
         'combine_notifications' => 'Combine notifications',
-        'combine_notifications_description' => 'Reduces the amount of notification by combining the notifications into
- 1 single notification. (This does not affect SMS notifications.)',
+        'combine_notifications_description' => 'Reduces the amount of notification by combining the notifications into 1 single notification. (This does not affect SMS notifications.)',
         'alert_proxy' => 'Even if enabled, proxy is never used for services',
         'alert_proxy_url' => 'Format: host:port',
         'log_status' => 'Log status',
-        'log_status_description' => 'If log status is set to TRUE, the monitor will log the event whenever the
- notification settings are passed.',
+        'log_status_description' => 'If log status is set to TRUE, the monitor will log the event whenever the notification settings are passed.',
         'log_email' => 'Log emails sent by the script',
         'log_sms' => 'Log text messages sent by the script',
+        'log_discord' => 'Log Discord messages sent by the script',
         'log_pushover' => 'Log pushover messages sent by the script',
+        'log_webhook' => 'Log webhook messages sent by the script',
         'log_telegram' => 'Log Telegram messages sent by the script',
+        'log_jabber' => 'Log Jabber messages sent by the script',
         'updated' => 'The configuration has been updated.',
         'tab_email' => 'Email',
         'tab_sms' => 'SMS',
+        'tab_discord' => 'Discord',
         'tab_pushover' => 'Pushover',
+        'tab_webhook' => 'Webhook',
         'tab_telegram' => 'Telegram',
+        'tab_jabber' => 'Jabber',
         'settings_email' => 'Email settings',
         'settings_sms' => 'Text message settings',
+        'settings_discord' => 'Discord settings',
         'settings_pushover' => 'Pushover settings',
+        'settings_webhook' => 'Webhook settings',
         'settings_telegram' => 'Telegram settings',
+        'settings_jabber' => 'Jabber settings',
         'settings_notification' => 'Notification settings',
         'settings_log' => 'Log settings',
         'settings_proxy' => 'Proxy settings',
         'auto_refresh' => 'Auto-refresh',
-        'auto_refresh_description' => 'Auto-refresh servers page.<br><span class="small">Time in seconds, if 0 the
- page won\'t refresh.</span>',
-        'seconds' => 'seconds',
+        'auto_refresh_description' => 'Auto-refresh servers page.<br><span class="small">Time in seconds, if 0 the page won\'t refresh.</span>',
         'test' => 'Test',
         'test_email' => 'An email will be sent to the address specified in your user profile.',
         'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
+        'test_discord' => 'A Discord notification will be sent to the webhook specified in your user profile.',
+        'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user profile.',
         'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user
  profile.',
+        'test_webhook' => 'A webhook notification will be sent to the given url endpoint.',
         'test_telegram' => 'A Telegram notification will be sent to the chat id specified in your user profile.',
+        'test_jabber' => 'A Jabber notification will be sent to the jabber account specified in your user profile.',
         'send' => 'Send',
         'test_subject' => 'Test',
         'test_message' => 'Test message',
@@ -363,34 +398,54 @@ $sm_lang = array(
         'sms_sent' => 'SMS sent',
         'sms_error' => 'An error has occurred while sending the SMS: %s',
         'sms_error_nomobile' => 'Unable to send test SMS: no valid phone number found in your profile.',
+        'discord_sent' => 'Discord notification sent',
+        'discord_error' => 'An error has occurred while sending the Discord notification: %s',
+        'discord_error_nowebhook' => 'Unable to send test Discord notification: no valid Discord webhook found in your user profile.',
+        'webhook_sent' => 'Webhook notification sent',
+        'webhook_error' => 'An error has occurred while sending the webhook notification: %s',
+        'webhook_error_nourl' => 'Unable to send test notification: no url found in user profile.',
+        'webhook_error_nojson' => 'Unable to send test notification: no json found in user profile.',
         'pushover_sent' => 'Pushover notification sent',
         'pushover_error' => 'An error has occurred while sending the Pushover notification: %s',
-        'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global
- configuration.',
+        'pushover_error_noapp' => 'Unable to send test notification: no Pushover App API token found in the global configuration.',
         'pushover_error_nokey' => 'Unable to send test notification: no Pushover key found in your profile.',
         'telegram_sent' => 'Telegram notification sent',
         'telegram_error' => 'An error has occurred while sending the Telegram notification: %s',
-        'telegram_error_notoken' => 'Unable to send test notification: no Telegram API token found in the global
- configuration.',
+        'telegram_error_notoken' => 'Unable to send test notification: no Telegram API token found in the global configuration.',
         'telegram_error_noid' => 'Unable to send test notification: no chat id found in your profile.',
+        'jabber_sent' => 'Telegram notification sent',
+        'jabber_error' => 'An error has occurred while sending the Telegram notification: %s',
+        'jabber_error_noconfig' => 'Unable to send test notification: no Jabber account set in the global configuration.',
+        'jabber_error_noaccount' => 'Unable to send test notification: no Jabber account found in your profile.',
         'log_retention_period' => 'Log retention period',
-        'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server
- uptime. Enter 0 to disable log cleanup.',
+        'log_retention_period_description' => 'Number of days to keep logs of notifications and archives of server uptime. Enter 0 to disable log cleanup.',
         'log_retention_days' => 'days',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Custom user agent used by monitor within communication with external services.',
     ),
     'notifications' => array(
         'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
         'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
+        'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_discord_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
  %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_webhook_title' => 'Server \'%LABEL%\' is DOWN',
+        'off_webhook_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
+ %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
-        'off_pushover_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
- %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
-        'off_telegram_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
- %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_pushover_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_telegram_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_jabber_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is RUNNING',
         'on_email_body' => 'Server \'%LABEL%\' is running again, it was down for
+ %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
+        'on_discord_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
+        'on_webhook_title' => 'Server \'%LABEL%\' is RUNNING',
+        'on_webhook_message' => 'Server \'%LABEL%\' is running again, it was down for
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
  %DATE%',
         'on_pushover_title' => 'Server \'%LABEL%\' is RUNNING',
@@ -400,26 +455,49 @@ $sm_lang = array(
         'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for:
  %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
  %DATE%',
+        'on_jabber_message' => 'Server \'%LABEL%\' is running again, it was down for:
+ %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
+ %DATE%',
         'combi_off_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
+ %ERROR%</li><li>Date: %DATE%</li></ul>',
+        'combi_off_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
+        'combi_off_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Error:
  %ERROR%</li><li>Date: %DATE%</li></ul>',
         'combi_off_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
  Date: %DATE%<br><br>',
+        'combi_off_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Error: %ERROR%<br>-
+ Date: %DATE%<br><br>',
         'combi_on_email_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port: %PORT%</li><li>Downtime:
  %LAST_OFFLINE_DURATION%</li><li>Date: %DATE%</li></ul>',
+        'combi_on_webhook_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port:
+ %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date:
+ %DATE%</li></ul>',
+        'combi_on_discord_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>-
+ Downtime: %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_on_pushover_message' => '<ul><li>Server: %LABEL%</li><li>IP: %IP%</li><li>Port:
  %PORT%</li><li>Downtime: %LAST_OFFLINE_DURATION%</li><li>Date:
  %DATE%</li></ul>',
         'combi_on_telegram_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
  %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
+        'combi_on_jabber_message' => '- Server: %LABEL%<br>- IP: %IP%<br>- Port: %PORT%<br>- Downtime:
+ %LAST_OFFLINE_DURATION%<br>- Date: %DATE%<br><br>',
         'combi_email_subject' => 'IMPORTANT: \'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
+        'combi_webhook_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
         'combi_pushover_subject' => '\'%UP%\' servers UP again, \'%DOWN%\' servers DOWN',
         'combi_email_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_discord_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_webhook_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
  servers are up again:</b><br>%UP_SERVERS%',
         'combi_pushover_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
  servers are up again:</b><br>%UP_SERVERS%',
         'combi_telegram_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
+ servers are up again:</b><br>%UP_SERVERS%',
+        'combi_jabber_message' => '<b>The following servers went down:</b><br>%DOWN_SERVERS%<br><b>The following
  servers are up again:</b><br>%UP_SERVERS%',
     ),
     'login' => array(
@@ -437,8 +515,7 @@ $sm_lang = array(
         'password_forgot' => 'Forgot password?',
         'password_reset' => 'Reset password',
         'password_reset_email_subject' => 'Reset your password for PHP Server Monitor',
-        'password_reset_email_body' => 'Please use the following link to reset your password. Please note it expires
- in 1 hour.<br><br>%link%',
+        'password_reset_email_body' => 'Please use the following link to reset your password. Please note it expires in 1 hour.<br><br>%link%',
         'error_user_incorrect' => 'The provided username could not be found.',
         'error_login_incorrect' => 'The information is incorrect.',
         'error_login_passwords_nomatch' => 'The provided passwords do not match.',

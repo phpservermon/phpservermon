@@ -43,13 +43,19 @@ class ConfigController extends AbstractController
         'email_status',
         'email_smtp',
         'sms_status',
+        'discord_status',
         'pushover_status',
+        'webhook_status',
         'telegram_status',
+        'jabber_status',
         'log_status',
         'log_email',
         'log_sms',
+        'log_discord',
         'log_pushover',
+        'log_webhook',
         'log_telegram',
+        'log_jabber',
         'show_update',
         'combine_notifications',
     );
@@ -67,13 +73,29 @@ class ConfigController extends AbstractController
         'email_smtp_host',
         'email_smtp_port',
         'email_smtp_username',
-        'email_smtp_password',
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
+        'webhook_url',
+        'webhook_json',
         'pushover_api_token',
         'telegram_api_token',
+        'jabber_host',
+        'jabber_port',
+        'jabber_username',
+        'jabber_domain',
+        'user_agent',
+        'site_title'
     );
+
+    /**
+     * Fields for saving encrypted.
+     * @var array
+     */
+    protected $encryptedFields = [
+        'email_smtp_password',
+        'jabber_password'
+    ];
 
     private $default_tab = 'general';
 
@@ -178,9 +200,22 @@ class ConfigController extends AbstractController
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
 
+        $tpl_data['user_agent'] = empty($tpl_data['user_agent']) ?
+            'Mozilla/5.0 (compatible; phpservermon/' .
+            PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)' : $tpl_data['user_agent'];
+
+        $tpl_data['site_title'] = empty($tpl_data['site_title']) ?
+            strtoupper(psm_get_lang('system', 'title')) : $tpl_data['site_title'];
+
+        // encrypted fields
+        foreach ($this->encryptedFields as $encryptedField) {
+            $tpl_data[$encryptedField] = '';
+        }
+
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
-        $testmodals = array('email', 'sms', 'pushover', 'telegram');
+        $testmodals = array('email', 'sms', 'discord', 'webhook', 'pushover', 'telegram', 'jabber');
+
         foreach ($testmodals as $modal_id) {
             $modal = new \psm\Util\Module\Modal(
                 $this->twig,
@@ -206,6 +241,7 @@ class ConfigController extends AbstractController
             // save new config
             $clean = array(
                 'language' => $_POST['language'],
+                'site_title' => $_POST['site_title'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
                 'email_smtp_security' =>
@@ -214,7 +250,7 @@ class ConfigController extends AbstractController
                     : '',
                 'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
                 'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
-                'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime())),
+                'password_encrypt_key' => psm_POST('password_encrypt_key', sha1(microtime()))
             );
             foreach ($this->checkboxes as $input_key) {
                 $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
@@ -223,6 +259,13 @@ class ConfigController extends AbstractController
                 if (isset($_POST[$input_key])) {
                     $clean[$input_key] = $_POST[$input_key];
                 }
+            }
+            foreach ($this->encryptedFields as $encryptedField) {
+                $value = filter_input(INPUT_POST, $encryptedField);
+                if ($value !== null && $value !== '') {
+                    $clean[$encryptedField] =  psm_password_encrypt(psm_get_conf('password_encrypt_key'), $value);
+                }
+                // else { leave as is }
             }
             $language_refresh = ($clean['language'] != psm_get_conf('language'));
             foreach ($clean as $key => $value) {
@@ -234,10 +277,16 @@ class ConfigController extends AbstractController
                 $this->testEmail();
             } elseif (!empty($_POST['test_sms'])) {
                 $this->testSMS();
+            } elseif (!empty($_POST['test_discord'])) {
+                $this->testDiscord();
             } elseif (!empty($_POST['test_pushover'])) {
                 $this->testPushover();
+            }elseif (!empty($_POST['test_webhook'])) {
+                $this->testWebhook();
             } elseif (!empty($_POST['test_telegram'])) {
                 $this->testTelegram();
+            } elseif (!empty($_POST['test_jabber'])) {
+                $this->testJabber();
             }
 
             if ($language_refresh) {
@@ -251,10 +300,16 @@ class ConfigController extends AbstractController
                 $this->default_tab = 'email';
             } elseif (isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
                 $this->default_tab = 'sms';
+            } elseif (isset($_POST['discord_submit']) || !empty($_POST['test_discord'])) {
+                $this->default_tab = 'discord';
             } elseif (isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
                 $this->default_tab = 'pushover';
+            } elseif (isset($_POST['webhook_submit']) || !empty($_POST['test_webhook'])) {
+                $this->default_tab = 'webhook';
             } elseif (isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
                 $this->default_tab = 'telegram';
+            } elseif (isset($_POST['jabber_submit']) || !empty($_POST['test_jabber'])) {
+                $this->default_tab = 'jabber';
             }
         }
         return $this->runAction('index');
@@ -302,6 +357,88 @@ class ConfigController extends AbstractController
                 } else {
                     $this->addMessage(sprintf(psm_get_lang('config', 'sms_error'), $result), 'error');
                 }
+            }
+        }
+    }
+
+    /**
+     * Execute Discord test
+     *
+     * @todo move test to separate class
+     */
+    protected function testDiscord()
+    {
+        $user = $this->getUser()->getUser();
+        if (empty($user->discord)) {
+            $this->addMessage(psm_get_lang('config', 'discord_error_nowebhook'), 'error');
+        } else {
+            $success = 0;
+            $result = 'An unknown error has occurred.';
+            try {
+                $curl = curl_init($user->discord);
+                $json = json_decode(
+                    '{"content":""}',
+                    true
+                );
+                $json['content'] = psm_get_lang('config', 'test_message');
+                $msg = "payload_json=" . urlencode(json_encode($json));
+                if(isset($curl)) {
+                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $msg);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    $result = curl_exec($curl);
+                    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $err = curl_errno($curl);
+
+                    if ($err != 0 || $httpcode != 204) {
+                        $success = 0;
+                        // $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+                        $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
+                            curl_strerror($err) . ". \nResult: " . $result;
+                        $result = $error;
+                    } else {
+                        $success = 1;
+                    }
+                    curl_close($curl);
+                }
+            } catch (Exception $e) {
+                $success = 0;
+                $result = $e->getMessage();
+            }
+
+            if ($success === 1) {
+                $this->addMessage(psm_get_lang('config', 'discord_sent'), 'success');
+            } else {
+                $this->addMessage(sprintf(psm_get_lang('config', 'discord_error'), $result), 'error');
+            }
+        }
+    }
+
+    /** Execute webhook test
+     *
+     * @todo move test to separate class
+     */
+    protected function testWebhook()
+    {
+
+        $user = $this->getUser()->getUser();
+
+
+        if (empty($user->webhook_url)) {
+            $this->addMessage(psm_get_lang('config', 'webhook_error_nourl'), 'error');
+        } elseif (empty($user->webhook_json)) {
+            $this->addMessage(psm_get_lang('config', 'webhook_error_nojson'), 'error');
+        } else {
+            $webhook = psm_build_webhook();
+            $webhook->setUrl($user->webhook_url);
+            $webhook->setJson($user->webhook_json);
+            $message = (psm_get_lang('config', 'test_message'));
+            $result = $webhook->sendWebhook($message);
+            if ($result==1) {
+                $this->addMessage(psm_get_lang('config', 'webhook_sent'), 'success');
+            } else {
+                $this->addMessage(sprintf(psm_get_lang('config', 'webhook_error'), $result), 'error');
             }
         }
     }
@@ -379,17 +516,43 @@ class ConfigController extends AbstractController
         }
     }
 
+    /**
+     * Test Jabber.
+     */
+    protected function testJabber()
+    {
+        $user = $this->getUser()->getUser();
+        psm_jabber_send_message(
+            psm_get_conf('jabber_host'),
+            psm_get_conf('jabber_username'),
+            psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+            [$user->jabber],
+            psm_get_lang('config', 'test_message'),
+            (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+            (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+        );
+        // no message - async ... so just info
+        $this->addMessage(psm_get_lang('config', 'jabber_check'), 'info');
+        // @todo possible to set message via ajax with callback ...
+    }
+
     protected function getLabels()
     {
         return array(
             'label_tab_email' => psm_get_lang('config', 'tab_email'),
             'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
+            'label_tab_discord' => psm_get_lang('config', 'tab_discord'),
             'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+            'label_tab_webhook' => psm_get_lang('config', 'tab_webhook'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
+            'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
+            'label_settings_discord' => psm_get_lang('config', 'settings_discord'),
+            'label_settings_webhook' => psm_get_lang('config', 'settings_webhook'),
             'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
+            'label_settings_jabber' => psm_get_lang('config', 'settings_jabber'),
             'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
             'label_settings_log' => psm_get_lang('config', 'settings_log'),
             'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
@@ -417,6 +580,14 @@ class ConfigController extends AbstractController
             'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
             'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
             'label_sms_from' => psm_get_lang('config', 'sms_from'),
+            'label_discord_status' => psm_get_lang('config', 'discord_status'),
+            'label_discord_description' => psm_get_lang('config', 'discord_description'),
+            'label_webhook_description' => psm_get_lang('config', 'webhook_description'),
+            'label_webhook_status' => psm_get_lang('config', 'webhook_status'),
+            'label_webhook_url' => psm_get_lang('config', 'webhook_url'),
+            'label_webhook_url_description' => psm_get_lang('config', 'webhook_url_description'),
+            'label_webhook_json' => psm_get_lang('config', 'webhook_json'),
+            'label_webhook_json_description' => psm_get_lang('config', 'webhook_json_description'),
             'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
             'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
             'label_pushover_clone_app' => psm_get_lang('config', 'pushover_clone_app'),
@@ -430,6 +601,18 @@ class ConfigController extends AbstractController
             'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
             'label_telegram_api_token' => psm_get_lang('config', 'telegram_api_token'),
             'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
+            'label_jabber_status' => psm_get_lang('config', 'jabber_status'),
+            'label_jabber_description' => psm_get_lang('config', 'jabber_description'),
+            'label_jabber_host' => psm_get_lang('config', 'jabber_host'),
+            'label_jabber_host_description' => psm_get_lang('config', 'jabber_host_description'),
+            'label_jabber_port' => psm_get_lang('config', 'jabber_port'),
+            'label_jabber_port_description' => psm_get_lang('config', 'jabber_port_description'),
+            'label_jabber_username' => psm_get_lang('config', 'jabber_username'),
+            'label_jabber_username_description' => psm_get_lang('config', 'jabber_username_description'),
+            'label_jabber_domain' => psm_get_lang('config', 'jabber_domain'),
+            'label_jabber_domain_description' => psm_get_lang('config', 'jabber_domain_description'),
+            'label_jabber_password' => psm_get_lang('config', 'jabber_password'),
+            'label_jabber_password_description' => psm_get_lang('config', 'jabber_password_description'),
             'label_alert_type' => psm_get_lang('config', 'alert_type'),
             'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
             'label_combine_notifications' => psm_get_lang('config', 'combine_notifications'),
@@ -438,20 +621,26 @@ class ConfigController extends AbstractController
             'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
             'label_log_email' => psm_get_lang('config', 'log_email'),
             'label_log_sms' => psm_get_lang('config', 'log_sms'),
+            'label_log_discord' => psm_get_lang('config', 'log_discord'),
             'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
+            'label_log_webhook' => psm_get_lang('config', 'log_webhook'),
             'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
+            'label_log_jabber' => psm_get_lang('config', 'log_jabber'),
             'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
             'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
             'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
             'label_auto_refresh_description' => psm_get_lang('config', 'auto_refresh_description'),
-            'label_seconds' => psm_get_lang('config', 'seconds'),
+            'label_seconds' => psm_get_lang('system', 'seconds'),
             'label_save' => psm_get_lang('system', 'save'),
             'label_test' => psm_get_lang('config', 'test'),
             'label_log_retention_period' => psm_get_lang('config', 'log_retention_period'),
             'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
             'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
             'label_days' => psm_get_lang('config', 'log_retention_days'),
-
+            'label_leave_blank' => psm_get_lang('users', 'password_leave_blank'),
+            'label_user_agent' => psm_get_lang('config', 'user_agent'),
+            'label_user_agent_key_note' => psm_get_lang('config', 'user_agent_key_note'),
+            'label_site_title' => psm_get_lang('config', 'site_title'),
         );
     }
 }

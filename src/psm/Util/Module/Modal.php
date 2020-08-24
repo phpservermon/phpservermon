@@ -32,9 +32,9 @@ namespace psm\Util\Module;
 class Modal implements ModalInterface
 {
 
-    public const MODAL_TYPE_OK = 0;
-    public const MODAL_TYPE_OKCANCEL = 1;
-    public const MODAL_TYPE_DANGER = 2;
+    const MODAL_TYPE_OK = 0;
+    const MODAL_TYPE_OKCANCEL = 1;
+    const MODAL_TYPE_DANGER = 2;
 
     /**
      * prefix used for modal dialog box elements
@@ -145,7 +145,7 @@ class Modal implements ModalInterface
         $tpl = $this->twig->loadTemplate('util/module/modal.tpl.html');
         $html = $tpl->render(array(
             'modal_id' => $this->modal_id,
-            'modal_title' => !empty($this->title) ? $this->title : psm_get_lang('system', 'title'),
+            'modal_title' => !empty($this->title) ? $this->title : psm_get_conf('site_title', psm_get_lang('system', 'title')),
             'modal_body' => $message,
             'has_cancel' => $has_cancel,
             'label_cancel' => psm_get_lang('system', 'cancel'),

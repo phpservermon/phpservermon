@@ -81,10 +81,15 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
+          `s`.`discord`,
+					`s`.`webhook`,
 					`s`.`pushover`,
 					`s`.`telegram`,
+					`s`.`jabber`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
+                    `s`.`ssl_cert_expiry_days`,
+                    `s`.`ssl_cert_expired_time`,
 					`s`.`timeout`,
 					`s`.`website_username`,
 					`s`.`website_password`,
@@ -111,7 +116,7 @@ abstract class AbstractServerController extends AbstractController
      */
     protected function formatServer($server)
     {
-        $server['rtime'] = round((float) $server['rtime'], 4);
+        $server['rtime'] = $server['rtime'];
         $server['last_online'] = psm_timespan($server['last_online']);
         $server['last_offline'] = psm_timespan($server['last_offline']);
         if ($server['last_offline'] != psm_get_lang('system', 'never')) {
@@ -120,7 +125,16 @@ abstract class AbstractServerController extends AbstractController
         }
         $server['last_check'] = psm_timespan($server['last_check']);
 
-        if ($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
+        if (
+            (
+                $server['status'] == 'on' &&
+                $server['warning_threshold_counter'] > 0
+            ) || (
+                $server['status'] == 'on' &&
+                $server['ssl_cert_expired_time'] !== null &&
+                $server['ssl_cert_expiry_days'] > 0
+            )
+        ) {
             $server['status'] = 'warning';
         }
 

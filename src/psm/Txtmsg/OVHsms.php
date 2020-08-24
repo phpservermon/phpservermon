@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -19,30 +18,36 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
+ * @author      Alexis Urien <Alexis.urien@free.fr>
+ * @Author      Tim Zandbergen <Tim@Xervion.nl>
  * @author      Ward Pieters <ward@wardpieters.nl>
- * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
+ * @author      Alexandre ZANELLI <alexandre@les-z.org>
+ * @copyright   Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.1
+ * @since       phpservermon 3.5
  **/
 
 namespace psm\Txtmsg;
 
-class Smsglobal extends Core
-{
-
+class OVHsms extends Core {
+    
     /**
-     * Send sms using the Smsglobal API
+     * Send sms using the OVH http2sms gateway
+     * Online documentation :https://docs.ovh.com/fr/sms/envoyer_des_sms_depuis_une_url_-_http2sms/
+     * Ovh need Account and Login, then use format login@account in username field.
+     * 
      * @var string $message
+     * @var string $this->username
      * @var string $this->password
      * @var array $this->recipients
      * @var array $this->originator
      *
      * @var resource $curl
+     * @var SimpleXMLElement $xmlResults
      * @var string $err
      * @var string $recipient
-     * @var string $from
      * @var mixed $result
      *
      * @var int $success
@@ -50,42 +55,41 @@ class Smsglobal extends Core
      *
      * @return bool|string
      */
+     
     
-    public function sendSMS($message)
-    {
+    public function sendSMS($message) {
         $error = "";
         $success = 1;
+
+        $account_login = explode('@',$this->username); 
         
         $recipients = join(',', $this->recipients);
         
-        $from = substr($this->originator, 0, 15); // Max 15 Characters
-        $message = substr(rawurlencode($message), 0, 153);
-        
+
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_URL, "https://www.smsglobal.com/http-api.php?" . http_build_query(
-            array(
-                "action" => "sendsms",
-                "user" => $this->username,
-                "password" => $this->password,
-                "from" => $from,
-                "to" => $recipients,
-                "clientcharset" => "ISO-8859-1",
-                "text" => $message,
+        curl_setopt($curl, CURLOPT_URL, "https://www.ovh.com/cgi-bin/sms/http2sms.cgi?".http_build_query(
+                array(
+                    "account" => $account_login[1],
+                    "login" => $account_login[0],
+                    "password" => $this->password,
+                    "from" => str_replace('+', '00', $this->originator),
+                    "to" => $recipients,
+                    "message" => $message,
+                    "contentType" => "text/xml",
+                    "noStop" => 1,
+                )
             )
-        ));
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         
         $result = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        
+        $xmlResults = simplexml_load_string($result);
         $err = curl_errno($curl);
-            
-        if ($err != 0 || substr($result, 0, 5) != "OK: 0") {
+
+        if ($err != 0 || $httpcode != 200 || $xmlResults === false ||($xmlResults->status != '100' && $xmlResults->status != '101')) {
             $success = 0;
-            $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
-            $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
-                curl_strerror($err) . ". \nResult: " . $result;
+            $error = "HTTP_code: ".$httpcode.".\ncURL error (".$err."): ".curl_strerror($err).". \nResult: ".$xmlResults->status." \n".$xmlResults->Message;
         }
         curl_close($curl);
         

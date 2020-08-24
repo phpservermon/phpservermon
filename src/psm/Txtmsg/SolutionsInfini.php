@@ -66,7 +66,7 @@ class SolutionsInfini extends Core
                     "api_key" => $this->password,
                     "method" => "sms",
                     "to" => $recipients,
-                    "sender" => substr($this->originator, 0, 11),
+                    "sender" => substr($this->originator, 0, 15),
                     "message" => $message,
                 )
         ));

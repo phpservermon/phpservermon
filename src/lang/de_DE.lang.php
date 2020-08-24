@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'vor über einer Minute',
         'seconds_ago' => 'vor %d Sekunden',
         'a_second_ago' => 'vor über einer Sekunde',
+        'seconds' => 'Sekunden',
     ),
     'menu' => array(
         'config' => 'Einstellungen',
@@ -93,8 +94,8 @@ $sm_lang = array(
         'email' => 'E-Mail',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in
- Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a>
- für weitere Informationen.',
+ Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/"
+ target="_blank">pushover.net</a> für weitere Informationen.',
         'pushover_key' => 'Pushover Key/Schlüssel',
         'pushover_device' => 'Pushover Gerät',
         'pushover_device_description' => 'Name des Gerätes, an das die Nachricht gesendet werden soll. Leer lassen,
@@ -213,8 +214,8 @@ $sm_lang = array(
         'sms_from' => 'SMS-Sendernummer',
         'pushover_status' => 'Ermögliche das Senden von Pushover-Nachrichten',
         'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in
- Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a>
- für weitere Informationen.',
+ Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/"
+ target="_blank">pushover.net</a> für weitere Informationen.',
         'pushover_clone_app' => 'Klicken Sie hier, um Ihre Pushover-Anwendung zu erstellen',
         'pushover_api_token' => 'Pushover-Anwendungs-API-Token',
         'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s"
@@ -249,7 +250,6 @@ $sm_lang = array(
         'auto_refresh_description' => 'Automatische Aktualisierung der Server-Übersichtsseite<br><span
  class="small">Zeit in Sekunden - die Ziffer \'0\' deaktiviert die automatische
  Aktualisierung.</span>',
-        'seconds' => 'Sekunden',
         'test' => 'Test',
         'test_email' => 'Eine E-Mail wird an die E-Mail-Adresse gesendet, die in Ihrem Profil hinterlegt ist.',
         'test_sms' => 'Eine SMS wird an die Telefonnummer gesendet, die in Ihrem Profil hinterlegt ist.',

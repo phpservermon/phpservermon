@@ -158,9 +158,13 @@ class UserController extends AbstractController
             'name',
             'user_name',
             'mobile',
+            'discord',
+            'webhook_url',
+            'webhook_json',
             'pushover_key',
             'pushover_device',
             'telegram_id',
+            'jabber',
             'email'
         );
 
@@ -254,9 +258,13 @@ class UserController extends AbstractController
             'password_repeat',
             'level',
             'mobile',
+            'discord',
+            'webhook_url',
+            'webhook_json',
             'pushover_key',
             'pushover_device',
             'telegram_id',
+            'jabber',
             'email'
         );
         $clean = array();
@@ -310,6 +318,15 @@ class UserController extends AbstractController
         if ($user_id > 0) {
             // edit user
             unset($clean['password']); // password update is executed separately
+            $admins = $this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN));
+            if (
+                (int) count($admins) === (int) 1 &&
+                (int) $admins[0]['user_id'] === (int) $user_id &&
+                (int) $clean['level'] === (int) PSM_USER_USER
+            ) {
+                $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
+                $clean['level'] = PSM_USER_ADMIN;
+            }
             $this->db->save(PSM_DB_PREFIX . 'users', $clean, array('user_id' => $user_id));
             $this->addMessage(psm_get_lang('users', 'updated'), 'success');
 
@@ -360,7 +377,11 @@ class UserController extends AbstractController
         try {
             $this->container->get('util.user.validator')->userId($id);
 
-            if (count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1) {
+            $admins = $this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN));
+            if (
+                (int) count($admins) === (int) 1 &&
+                (int) $admins[0]['user_id'] === (int) $id
+            ) {
                 $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'error');
             } else {
                 $this->db->delete(PSM_DB_PREFIX . 'users', array('user_id' => $id,));
@@ -392,15 +413,24 @@ class UserController extends AbstractController
             'label_level' => psm_get_lang('users', 'level'),
             'label_level_description' => psm_get_lang('users', 'level_description'),
             'label_mobile' => psm_get_lang('users', 'mobile'),
+            'label_discord' => psm_get_lang('users', 'discord'),
+            'label_discord_description' => psm_get_lang('users', 'discord_description'),
+            'label_webhook' => psm_get_lang('users', 'webhook'),
+            'label_webhook_description' => psm_get_lang('users', 'webhook_description'),
+            'label_webhook_url' => psm_get_lang('users', 'webhook_url'),
+            'label_webhook_url_description' => psm_get_lang('users', 'webhook_url_description'),
+            'label_webhook_json' => psm_get_lang('users', 'webhook_json'),
+            'label_webhook_json_description' => psm_get_lang('users', 'webhook_json_description'),
             'label_pushover' => psm_get_lang('users', 'pushover'),
             'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
             'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
             'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
             'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
             'label_telegram' => psm_get_lang('users', 'telegram'),
-            'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
             'label_telegram_id' => psm_get_lang('users', 'telegram_chat_id'),
             'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
+            'label_jabber' => psm_get_lang('users', 'jabber'),
+            'label_jabber_description' => psm_get_lang('users', 'jabber_description'),
             'label_email' => psm_get_lang('users', 'email'),
             'label_servers' => psm_get_lang('menu', 'server'),
             'label_save' => psm_get_lang('system', 'save'),

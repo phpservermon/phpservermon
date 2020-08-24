@@ -64,7 +64,7 @@ class ClickSend extends Core
         foreach ($this->recipients as $recipient) {
             $data['messages'][] = array(
                 'source' => 'phpservermon',
-                'from' => substr($this->originator, 0, 11),
+                'from' => substr($this->originator, 0, 15),
                 'to' => $recipient,
                 'body' => $message,
             );

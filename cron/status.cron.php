@@ -28,6 +28,9 @@
 
 namespace {
 // include main configuration and functionality
+    use psm\Router;
+    use psm\Util\Server\UpdateManager;
+
     require_once __DIR__ . '/../src/bootstrap.php';
 
     if (!psm_is_cli()) {
@@ -41,7 +44,10 @@ namespace {
         $data = @unserialize(PSM_CRON_ALLOW);
         $allow = $data === false ? PSM_CRON_ALLOW : $data;
 
-        if (!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
+        if (!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)
+          && ! (array_key_exists ("webcron_key", $_GET) &&
+             $_GET["webcron_key"]==PSM_WEBCRON_KEY && (PSM_WEBCRON_KEY != ""))
+        ) {
             header('HTTP/1.0 403 Forbidden');
             die('
         <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>
@@ -81,21 +87,79 @@ namespace {
 // however if the cron has been running for X mins, we'll assume it died and run anyway
 // if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
 // or you can provide the --timeout=x argument
+
+    $status = null;
+    if (PHP_SAPI === 'cli') {
+        $shortOptions = 's:'; // status
+
+        $longOptions = [
+            'status:'
+        ];
+
+        $options = getopt($shortOptions, $longOptions);
+
+        $possibleValues = [
+            'on' => 'on',
+            '1' => 'on',
+            'up' => 'on',
+            'off' => 'off',
+            '0' => 'off',
+            'down' => 'off'
+        ];
+
+        if (
+            true === array_key_exists('status', $options) &&
+            true === array_key_exists(strtolower($options['status']), $possibleValues)
+        ) {
+            $status = $possibleValues[$options['status']];
+        } elseif (
+            true === array_key_exists('s', $options) &&
+            true === array_key_exists(strtolower($options['s']), $possibleValues)
+        ) {
+            $status = $possibleValues[$options['s']];
+        }
+    }
+
+    if ($status === 'off') {
+        $confPrefix = 'cron_off_';
+    } else {
+        $confPrefix = 'cron_';
+    }
+
     $time = time();
     if (
-        psm_get_conf('cron_running') == 1
+        psm_get_conf($confPrefix . 'running') == 1
         && $cron_timeout > 0
-        && ($time - psm_get_conf('cron_running_time') < $cron_timeout)
+        && ($time - psm_get_conf($confPrefix . 'running_time') < $cron_timeout)
     ) {
         die('Cron is already running. Exiting.');
     }
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
-        psm_update_conf('cron_running', 1);
+        psm_update_conf($confPrefix . 'running', 1);
     }
-    psm_update_conf('cron_running_time', $time);
+    psm_update_conf($confPrefix . 'running_time', $time);
 
+    /** @var Router $router */
+    /** @var UpdateManager $autorun */
     $autorun = $router->getService('util.server.updatemanager');
-    $autorun->run(true);
 
-    psm_update_conf('cron_running', 0);
+    if ($status !== 'off') {
+        $autorun->run(true, $status);
+    } else {
+        set_time_limit(60);
+        if (false === defined('CRON_DOWN_INTERVAL')) {
+            define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
+        }
+        $start = time();
+        $i = 0;
+        while ($i < 59) {
+            $autorun->run(true, $status);
+            if ($i < (59 - CRON_DOWN_INTERVAL)) {
+                time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
+            }
+            $i += CRON_DOWN_INTERVAL;
+        }
+    }
+
+    psm_update_conf($confPrefix . 'running', 0);
 }

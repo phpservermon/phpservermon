@@ -67,10 +67,10 @@ class CMBulkSMS extends Core
     protected $messageBody;
 
     /** @var string JSON Gateway API URL */
-    public const GATEWAY_URL_JSON = "https://gw.cmtelecom.com/v1.0/message";
+    const GATEWAY_URL_JSON = "https://gw.cmtelecom.com/v1.0/message";
 
     /** @var string XML Gateway API URL */
-    public const GATEWAY_URL_XML = "https://sgw01.cm.nl/gateway.ashx";
+    const GATEWAY_URL_XML = "https://sgw01.cm.nl/gateway.ashx";
 
     /**
      * Build the message and send cURL request to the sms gateway
@@ -131,7 +131,7 @@ class CMBulkSMS extends Core
                 ),
                 'msg' => array(
                     array(
-                        'from' => substr($this->originator, 0, 11),
+                        'from' => substr($this->originator, 0, 15),
                         'to' => $recipients,
                         'body' => array(
                             'content' => $message
@@ -172,7 +172,7 @@ class CMBulkSMS extends Core
         $msg = $xml->addChild('MSG');
 
         // From
-        $msg->addChild('FROM', substr($this->originator, 0, 11));
+        $msg->addChild('FROM', substr($this->originator, 0, 15));
 
         // Recipients
         foreach ($this->recipients as $recipient) {

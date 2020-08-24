@@ -109,16 +109,17 @@ $sm_lang = array(
         'email' => 'Correu',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover és un servei que fa fàcil obtenir notificacions en temps real. Veieu <a
- href="https://pushover.net/">la seva web</a> per a més informació.',
+ href="https://pushover.net/" target="_blank">la seva web</a> per a més
+ informació.',
         'pushover_key' => 'Clau Pushover',
         'pushover_device' => 'Dispositiu Pushover',
         'pushover_device_description' => 'Nom del dispositiu al qual enviar els missatges. Deixau en blanc per enviar
  a tots els dispositius.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> és una app de missatgeria que
- facilita el rebre notificacions en temps real. Consulteu la <a
- href="http://docs.phpservermonitor.org/">documentació</a> per a més informació i
- per saber com instal·lar-ho.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> és una app de
+ missatgeria  que facilita el rebre notificacions en temps real. Consulteu la <a
+ href="http://docs.phpservermonitor.org/" target="_blank">documentació</a> per a
+ més informació i per saber com instal·lar-ho.',
         'telegram_chat_id' => 'Codi ID del xat a Telegram',
         'telegram_chat_id_description' => 'Els missatges seran enviats al xat de Telegram amb aquest ID.',
         'telegram_get_chat_id' => 'Premeu aquí per a obtenir el codi ID del vostre xat',
@@ -298,15 +299,14 @@ $sm_lang = array(
  target="_blank">registrar una app</a> al seu portal web i introduïr
  aquí el Token de la API.',
         'telegram_status' => 'Permetre l\'enviament de missatges per Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> és una app de xat (mòbil i PC) que
- facilita la recepció de notificacions en temps real. Veieu la <a
- href="http://docs.phpservermonitor.org/">documentació</a> per saber més i saber
- com activar-ho.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> és una app de xat
+ (mòbil i PC) que facilita la recepció de notificacions en temps real. Veieu la <a
+ href="http://docs.phpservermonitor.org/" target="_blank">documentació</a> per
+ saber més i saber com activar-ho.',
         'telegram_api_token' => 'Token de l\'API de Telegram',
         'telegram_api_token_description' => 'Abans de poder emprar Telegram necessiteu obtenir un token de l\'API.
- Consulteu la <a
- href="http://docs.phpservermonitor.org/">documentació</a> per saber
- més.',
+ Consulteu la <a href="http://docs.phpservermonitor.org/"
+ target="_blank">documentació</a> per saber més.',
         'alert_type' => 'Seleccioneu quan voleu ser notificats.',
         'alert_type_description' => '<b>Canvi d\'estat:</b> Rebreu una notificació quan un servidor tingui un canvi
  d\'estat. És a dir, passi d\'estar en línia a fora de línia o viceversa.<br
@@ -347,7 +347,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-recàrrega',
         'auto_refresh_description' => 'Recarregar automàticament la plana Servidors.<br/><span class="small">Temps en
  segons, si poseu ZERO la plana no s\'auto-recarregarà.</span>',
-        'seconds' => 'segons',
         'test' => 'Provar',
         'test_email' => 'S\'enviarà un correu a l\'adreça que teniu al vostre perfil d\'usuari.',
         'test_sms' => 'S\'enviarà un SMS al telèfon que teniu al vostre perfil d\'usuari.',

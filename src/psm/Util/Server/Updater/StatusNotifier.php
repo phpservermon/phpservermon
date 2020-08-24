@@ -33,6 +33,7 @@
  * @see \psm\Util\Server\Updater\Autorun
  */
 namespace psm\Util\Server\Updater;
+use Norgul\Xmpp\Options;
 use psm\Service\Database;
 
 class StatusNotifier
@@ -57,16 +58,34 @@ class StatusNotifier
     protected $send_sms = false;
 
     /**
+     * Send Discord notification?
+     * @var boolean $send_discord
+     */
+    protected $send_discord = false;
+
+    /**
      * Send Pushover notification?
      * @var boolean $send_pushover
      */
     protected $send_pushover = false;
 
     /**
+     * Send webhook notification?
+     * @var boolean $send_webhook
+     */
+    protected $send_webhook = false;
+
+    /**
      * Send telegram?
      * @var boolean $send_telegram
      */
     protected $send_telegram = false;
+
+    /**
+     * Send Jabber?
+     * @var bool
+     */
+    protected $send_jabber = false;
 
     /**
      * Save log records?
@@ -119,12 +138,15 @@ class StatusNotifier
     {
         $this->db = $db;
 
-        $this->send_emails = psm_get_conf('email_status');
-        $this->send_sms = psm_get_conf('sms_status');
-        $this->send_pushover = psm_get_conf('pushover_status');
-        $this->send_telegram = psm_get_conf('telegram_status');
-        $this->save_logs = psm_get_conf('log_status');
-        $this->combine = psm_get_conf('combine_notifications');
+        $this->send_emails = (bool)psm_get_conf('email_status');
+        $this->send_sms = (bool)psm_get_conf('sms_status');
+        $this->send_discord = (bool)psm_get_conf('discord_status');
+        $this->send_webhook = (bool)psm_get_conf('webhook_status');
+        $this->send_pushover = (bool)psm_get_conf('pushover_status');
+        $this->send_telegram = (bool)psm_get_conf('telegram_status');
+        $this->send_jabber = (bool)psm_get_conf('jabber_status');
+        $this->save_logs = (bool)psm_get_conf('log_status');
+        $this->combine = (bool)psm_get_conf('combine_notifications');
     }
 
     /**
@@ -141,8 +163,11 @@ class StatusNotifier
         if (
             !$this->send_emails &&
             !$this->send_sms &&
+            !$this->send_discord &&
+            !$this->send_webhook &&
             !$this->send_pushover &&
             !$this->send_telegram &&
+            !$this->send_jabber &&
             !$this->save_logs
         ) {
             // seems like we have nothing to do. skip the rest
@@ -166,8 +191,11 @@ class StatusNotifier
             'error',
             'email',
             'sms',
+            'discord',
+            'webhook',
             'pushover',
             'telegram',
+            'jabber',
             'last_online',
             'last_offline',
             'last_offline_duration',
@@ -236,6 +264,18 @@ class StatusNotifier
             $this->notifyByTxtMsg($users);
         }
 
+        // check if discord is enabled for this server
+        if ($this->send_discord && $this->server['discord'] == 'yes') {
+            // yay lets wake those nerds up!
+            $this->combine ? $this->setCombi('discord') : $this->notifyByDiscord($users);
+        }
+
+        // check if webhook is enabled for this server
+        if ($this->send_webhook && $this->server['webhook'] == 'yes') {
+            // yay lets wake those nerds up!
+            $this->combine ? $this->setCombi('webhook') : $this->notifyByWebhook($users);
+        }
+
         // check if pushover is enabled for this server
         if ($this->send_pushover && $this->server['pushover'] == 'yes') {
             // yay lets wake those nerds up!
@@ -245,6 +285,10 @@ class StatusNotifier
         // check if telegram is enabled for this server
         if ($this->send_telegram && $this->server['telegram'] == 'yes') {
             $this->combine ? $this->setCombi('telegram') : $this->notifyByTelegram($users);
+        }
+
+        if ($this->send_jabber && $this->server['jaber'] == 'yes') {
+            $this->combine ? $this->setCombi('jabber') : $this->notifyByJabber($users);
         }
 
         return $notify;
@@ -403,6 +447,86 @@ class StatusNotifier
         }
     }
 
+
+    /**
+     * This functions performs the discord notifications
+     *
+     * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+     * @return void
+     */
+    protected function notifyByDiscord($users, $combi = array())
+    {
+
+        $message_log = key_exists('message', $combi) ?
+            $combi['message'] :
+            psm_parse_msg($this->status_new, 'discord_message', $this->server);
+
+
+        // Remove users that have no Discord webhook
+        foreach ($users as $k => $user) {
+            if (trim($user['discord']) == '') {
+                unset($users[$k]);
+            }
+        }
+
+        // Validation
+        if (empty($users)) {
+            return;
+        }
+
+        // fix message for Discord viewing
+        $message = str_replace(array('<b>', '</b>'), array('**', '**'), $message_log);
+        $message = str_replace(array('<ul>', '</ul>'), array('', ''), $message);
+        $message = str_replace(array('<br>', '</li>'), array("\n", "\n"), $message);
+        $message = str_replace('<li>', " * ", $message);
+
+
+        $json = json_decode(
+            '{"content":""}',
+            true
+        );
+        $json['content'] = $message;
+
+        // Log
+        if (psm_get_conf('log_discord')) {
+            $log_id = psm_add_log($this->server_id, 'discord', $message_log);
+        }
+
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+
+            // set discord webhook and send
+            try {
+                $msg = "payload_json=" . urlencode(json_encode($json));
+                $curl = curl_init(trim($user['discord']));
+                if(isset($curl)) {
+                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $msg);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    $result = curl_exec($curl);
+                    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $err = curl_errno($curl);
+
+                    if ($err != 0 || $httpcode != 204) {
+                        // $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
+                        $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
+                            curl_strerror($err) . ". \nResult: " . $result;
+                        $log_id = psm_add_log($this->server_id, 'discord', $error);
+                    }
+                    curl_close($curl);
+                }
+            } catch (Exception $e) {
+                $log_id = psm_add_log($this->server_id, 'discord', $e->getMessage());
+            }
+        }
+    }
+
+
     /**
      * This functions performs the pushover notifications
      *
@@ -447,7 +571,7 @@ class StatusNotifier
         $pushover->setTitle($title);
         $pushover->setMessage(str_replace('<br/>', "\n", $message));
         $pushover->setUrl(psm_build_url());
-        $pushover->setUrlTitle(psm_get_lang('system', 'title'));
+        $pushover->setUrlTitle(psm_get_conf('site_title', psm_get_lang('system', 'title')));
 
         // Log
         if (psm_get_conf('log_pushover')) {
@@ -468,7 +592,48 @@ class StatusNotifier
             $pushover->send();
         }
     }
+    /**
+     * This functions performs the webhook notifications
+     *
+     * @param \PDOStatement $users
+     * @param array $combi contains message and subject (optional)
+     * @return void
+     */
+    protected function notifyByWebhook($users, $combi = array())
+    {
+        foreach ($users as $k => $user) {
+            if (trim($user['webhook_url']) == '') {
+                unset($users[$k]);
+            }
+        }
+        $webhook = psm_build_webhook();
 
+
+        $message = key_exists('message', $combi) ?
+            $combi['message'] :
+            psm_parse_msg($this->status_new, 'webhook_message', $this->server);
+        $message = str_replace('<br/>', "\n", $message);
+        $message = str_replace('<br>', "\n", $message);
+        $title = key_exists('subject', $combi) ?
+            $combi['subject'] :
+            psm_parse_msg($this->status_new, 'webhook_title', $this->server);
+
+        // Log
+        if (psm_get_conf('log_webhook')) {
+            $log_id = psm_add_log($this->server_id, 'webhook', $message);
+        }
+
+        // send notifications to all users
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+            $webhook->setUrl($user['webhook_url']);
+            $webhook->setJson($user['webhook_json']);
+            $webhook->sendWebhook($message);
+        }
+    }
     /**
      * This functions performs the text message notifications
      *
@@ -549,6 +714,54 @@ class StatusNotifier
     }
 
     /**
+     * @param array $users
+     * @param array $combi
+     */
+    protected function notifyByJabber($users, $combi = [])
+    {
+        // Remove users that have no jabber
+        foreach ($users as $k => $user) {
+            if (trim($user['jabber']) === '') {
+                unset($users[$k]);
+            }
+        }
+
+        // Validation
+        if (empty($users)) {
+            return;
+        }
+
+        // Message
+        $message = key_exists('message', $combi) ?
+            $combi['message'] :
+            psm_parse_msg($this->status_new, 'jabber_message', $this->server);
+
+        // Log
+        if (psm_get_conf('log_jabber')) {
+            $log_id = psm_add_log($this->server_id, 'jabber', $message);
+        }
+
+        $usersJabber = [];
+        foreach ($users as $user) {
+            // Log
+            if (!empty($log_id)) {
+                psm_add_log_user($log_id, $user['user_id']);
+            }
+            $usersJabber[] = $user['jabber'];
+        }
+        // Jabber
+        psm_jabber_send_message(
+            psm_get_conf('jabber_host'),
+            psm_get_conf('jabber_username'),
+            psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
+            $usersJabber,
+            $message,
+            (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
+            (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
+        );
+    }
+
+    /**
      * Get all users for the provided server id
      * @param int $server_id
      * @return \PDOStatement array
@@ -556,15 +769,16 @@ class StatusNotifier
     public function getUsers($server_id)
     {
         // find all the users with this server listed
-        $users = $this->db->query("
-            SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`,
-                `u`.`pushover_device`, `u`.`telegram_id`
-			FROM `" . PSM_DB_PREFIX . "users` AS `u`
-			JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-				`us`.`user_id`=`u`.`user_id`
-				AND `us`.`server_id` = {$server_id}
-			)
-		");
+        $users = $this->db->query('
+            SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`discord`, `u`.`webhook_url`,`u`.`webhook_json`,
+                `u`.`pushover_device`, `u`.`telegram_id`, 
+                `u`.`jabber`
+            FROM `' . PSM_DB_PREFIX . 'users` AS `u`
+            JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+                `us`.`user_id`=`u`.`user_id`
+                AND `us`.`server_id` = {$server_id}
+            )
+        ");
         return $users;
     }
 }

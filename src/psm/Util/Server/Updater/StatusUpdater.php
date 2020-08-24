@@ -41,6 +41,8 @@ class StatusUpdater
 
     public $header = '';
 
+    public $curl_info = '';
+
     public $rtime = 0;
 
     public $status_new = false;
@@ -86,7 +88,8 @@ class StatusUpdater
         $this->server_id = $server_id;
         $this->error = '';
         $this->header = '';
-        $this->rtime = '';
+        $this->curl_info = '';
+        $this->rtime = 0;
 
         // get server info from db
         $this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
@@ -96,7 +99,7 @@ class StatusUpdater
             'type', 'pattern', 'pattern_online', 'post_field',
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
-            'warning_threshold_counter', 'timeout', 'website_username',
+            'warning_threshold_counter', 'ssl_cert_expiry_days', 'ssl_cert_expired_time', 'timeout', 'website_username',
             'website_password', 'last_offline'
         ));
         if (empty($this->server)) {
@@ -165,40 +168,26 @@ class StatusUpdater
     }
 
     /**
-     * Check the current servers ping status - Code from http://stackoverflow.com/a/20467492
+     * Check the current servers ping status
      * @param int $max_runs
      * @param int $run
      * @return boolean
      */
     protected function updatePing($max_runs, $run = 1)
     {
-        // save response time
-        $starttime = microtime(true);
-        // set ping payload
-        $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+        // Settings
+        $max_runs = ($max_runs == null || $max_runs > 1) ? 1 : $max_runs;
+        $server_ip = escapeshellcmd($this->server['ip']);
+        $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
-        $socket = socket_create(AF_INET, SOCK_RAW, 1);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
-        socket_connect($socket, $this->server['ip'], null);
-
-        socket_send($socket, $package, strLen($package), 0);
-        if (socket_read($socket, 255)) {
-            $status = true;
-        } else {
-            $status = false;
-
-            // set error  message
-            $errorcode = socket_last_error();
-            $this->error = "Couldn't create socket [" . $errorcode . "]: " . socket_strerror($errorcode);
-        }
-        $this->rtime = microtime(true) - $starttime;
-        socket_close($socket);
+        $status = $os_is_windows ?
+            $this->pingFromWindowsMachine($server_ip, $max_runs) :
+            $this->pingFromNonWindowsMachine($server_ip, $max_runs);
 
         // check if server is available and rerun if asked.
         if (!$status && $run < $max_runs) {
             return $this->updatePing($max_runs, $run + 1);
         }
-
         return $status;
     }
 
@@ -216,7 +205,11 @@ class StatusUpdater
         // save response time
         $starttime = microtime(true);
 
-        $fp = @fsockopen($this->server['ip'], $this->server['port'], $errno, $this->error, $timeout);
+        $serverIp = $this->server['ip'];
+        if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+            $serverIp = "[$serverIp]";
+        }
+        $fp = @fsockopen($serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
         $this->rtime = (microtime(true) - $starttime);
@@ -257,12 +250,13 @@ class StatusUpdater
             $this->server['request_method'],
             $this->server['post_field']
         );
-        $this->header = $curl_result;
+        $this->header = $curl_result['exec'];
+        $this->curl_info = $curl_result['info'];
 
         $this->rtime = (microtime(true) - $starttime);
 
         // the first line would be the status code..
-        $status_code = strtok($curl_result, "\r\n");
+        $status_code = strtok($curl_result['exec'], "\r\n");
         // keep it general
         // $code[2][0] = status code
         // $code[3][0] = name of status code
@@ -293,7 +287,7 @@ class StatusUpdater
                         ($this->server['pattern_online'] == 'yes') ==
                         !preg_match(
                             "/{$this->server['pattern']}/i",
-                            $curl_result
+                            $curl_result['exec']
                         )
                     ) {
                         $this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " .
@@ -308,7 +302,7 @@ class StatusUpdater
                     $location_matches = array();
                     preg_match(
                         '/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/',
-                        $curl_result,
+                        $curl_result['exec'],
                         $location_matches
                     );
                     if (!empty($location_matches)) {
@@ -329,7 +323,7 @@ class StatusUpdater
                 if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
                     $header_flag = false;
                     // Only get the header text if the result also includes the body
-                    $header_text = substr($curl_result, 0, strpos($curl_result, "\r\n\r\n"));
+                    $header_text = substr($curl_result['exec'], 0, strpos($curl_result['exec'], "\r\n\r\n"));
                     foreach (explode("\r\n", $header_text) as $i => $line) {
                         if ($i === 0 || strpos($line, ':') == false) {
                             continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
@@ -354,6 +348,11 @@ class StatusUpdater
                     }
                 }
             }
+        }
+
+        // Check ssl cert just when other error is not already in...
+        if ($result !== false) {
+            $this->checkSsl($this->server, $this->error, $result);
         }
 
         // check if server is available and rerun if asked.
@@ -382,5 +381,130 @@ class StatusUpdater
     public function getRtime()
     {
         return $this->rtime;
+    }
+
+    /**
+     *  Check if a server speaks SSL and if the certificate is not expired.
+     * @param string $error
+     * @param bool $result
+     */
+    private function checkSsl($server, &$error, &$result)
+    {
+        if (version_compare(PHP_VERSION, '7.1', '<')) {
+            $error = "The server you're running PSM on must use PHP 7.1 or higher to test the SSL expiration.";
+            return;
+        }
+        if (
+            !empty($this->curl_info['certinfo']) &&
+            $server['ssl_cert_expiry_days'] > 0
+        ) {
+            $certinfo = reset($this->curl_info['certinfo']);
+            $certinfo = openssl_x509_parse($certinfo['Cert']);
+            $cert_expiration_date = $certinfo['validTo_time_t'];
+            $expiration_time =
+                round((int)($cert_expiration_date - time()) / 86400);
+            $latest_time = time() + (86400 * $server['ssl_cert_expiry_days']);
+
+            if ($expiration_time - $server['ssl_cert_expiry_days'] < 0) {
+                // Cert is not expired, but date is withing user set range
+                $this->header = psm_get_lang('servers', 'ssl_cert_expiring') . " " .
+                    psm_date($this->curl_info['certinfo'][0]['Expire date']) .
+                    "\n\n" . $this->header;
+                $save['ssl_cert_expired_time'] = $expiration_time - $server['ssl_cert_expiry_days'];
+            } elseif ($expiration_time >= 0) {
+                // Cert is not expired
+                $save['ssl_cert_expired_time'] = null;
+            } else {
+                // Cert is expired
+                $error = psm_get_lang('servers', 'ssl_cert_expired') . " " .
+                    psm_timespan($cert_expiration_date) . ".\n\n" .
+                    $error;
+                $save['ssl_cert_expired_time'] = $expiration_time;
+            }
+            $this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
+        }
+    }
+
+    /**
+     *  Ping from a Windows Machine
+     * @param string $server_id
+     * @param int $max_runs
+     * @return boolean
+     */
+    private function pingFromWindowsMachine($server_ip, $max_runs)
+    {
+        // Windows / Linux variant: use socket on Windows, commandline on Linux
+        // socket ping - Code from http://stackoverflow.com/a/20467492
+        // save response time
+        $starttime = microtime(true);
+
+        // set ping payload
+        $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+
+        $socket = socket_create(AF_INET, SOCK_RAW, 1);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 10, 'usec' => 0));
+        socket_connect($socket, $server_ip, null);
+        socket_send($socket, $package, strLen($package), 0);
+        // socket_read returns a string or false
+        $status = socket_read($socket, 255) !== false ? true : false;
+        
+        if ($status) {
+            $this->header = "Success.";
+        } else {
+            $this->error = "Couldn't create socket [" . $errorcode . "]: " . socket_strerror(socket_last_error());
+        }
+
+        $this->rtime = microtime(true) - $starttime;
+        socket_close($socket);
+
+        return $status;
+    }
+
+    /**
+     *  Ping from a non Windows Machine
+     * @param string $server_id
+     * @param int $max_runs
+     * @param string $ping_command
+     * @return boolean
+     */
+    private function pingFromNonWindowsMachine($server_ip, $max_runs)
+    {
+
+        // Choose right ping version, ping6 for IPV6, ping for IPV4
+        $ping_command = filter_var($server_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false ? 'ping6' : 'ping';
+
+        // execute PING
+        exec($ping_command . " -c " . $max_runs . " " . $server_ip . " 2>&1", $output);
+
+        // Check if output is PING and if transmitted packets is equal to received packets.
+        preg_match(
+            '/^(\d{1,3}) packets transmitted, (\d{1,3}).*$/',
+            $output[count($output) - 2],
+            $output_package_loss
+        );
+
+        if (
+            substr($output[0], 0, 4) == 'PING' &&
+            !empty($output_package_loss) &&
+            $output_package_loss[1] === $output_package_loss[2]
+        ) {
+            // Gets avg from 'round-trip min/avg/max/stddev = 7.109/7.109/7.109/0.000 ms'
+            preg_match_all("/(\d+\.\d+)/", $output[count($output) - 1], $result);
+            // Converted to milliseconds
+            $this->rtime = floatval($result[0][1]) / 1000;
+
+            $this->header = "";
+            foreach ($output as $key => $value) {
+                $this->header .= $value . "\n";
+            }
+            return true;
+        }
+
+        $this->header = "-";
+        foreach ($output as $key => $value) {
+            $this->header .= $value . "\n";
+        }
+        $this->error = $output[count($output) - 2];
+        return false;
     }
 }

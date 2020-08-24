@@ -61,7 +61,7 @@ The other way is to parse the access logs created by your webserver software, wh
 
 When using tools such as Google Analytics, the monitor requests will not show up in your statistics, because the monitor does not execute any Javascript.
 Tools that parse your raw access logs like Awstats, will include the requests made by the monitor.
-To make sure these requests can be identified, the monitor uses a custom user agent, which you can usually filter out. The user agent of the monitor looks like::
+To make sure these requests can be identified, the monitor uses a custom user agent, which you can usually filter out. The user agent can be modified in the config section, but bij default looks like::
 
      Mozilla/5.0 (compatible; phpservermon/3.0.1; +http://www.phpservermonitor.org)
 
@@ -169,3 +169,16 @@ What is the username of my bot?
 1. Go to profile on the monitor.
 2. Press activate.
 3. A button will appear, this will direct you to your Telegram bot.
+
+How do I setup Jabber notifications from Google account?
+--------------------------------------------------------
+A few steps are required to get Jabber notifications working for Google account.
+You need to be an administrator for this part.
+
+1. Go into you Google Account Security settings (https://myaccount.google.com/security).
+2. Check that you have two factor auth enabled. If not, activate it.
+3. Add new app password - copy it.
+4. Login to PhpServerMonitor dashboard > config > Jabber and use password from step 3 with your Google account in PhpServerMonitor jabber settings.
+5. As host use `talk.google.com`.
+6. As username use your whole Google account (for example `example@google.com`).
+7. As port use `5223` (really, not typo error ...).

@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'umbes minut aega tagasi',
         'seconds_ago' => '%d sekundit tagasi',
         'a_second_ago' => 'üks sekund tagasi',
+        'seconds' => 'sekundit',
     ),
     'menu' => array(
         'config' => 'Konfiguratsioon',
@@ -93,7 +94,8 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover on teenus, mis teeb reaalaja teavitused imelihtsaks. Vaata <a
- href="https://pushover.net/">nende kodulehte</a> rohkema info jaoks.',
+ href="https://pushover.net/" target="_blank">nende kodulehte</a> rohkema info
+ jaoks.',
         'pushover_key' => 'Pushoveri Võti',
         'pushover_device' => 'Pushoveri Seade',
         'pushover_device_description' => 'Seadme nimi, kuhu teavitus saata. Jäta tühjaks, et saata igale seadmele.',
@@ -207,7 +209,8 @@ $sm_lang = array(
         'sms_from' => 'Saatja telefoni number',
         'pushover_status' => 'Luba Pushoveri sõnumite saatmine',
         'pushover_description' => 'Pushover on teenus, mis teeb reaalaja teavitused imelihtsaks. Vaata <a
- href="https://pushover.net/">nende kodulehte</a> rohkema info jaoks.',
+ href="https://pushover.net/" target="_blank">nende kodulehte</a> rohkema info
+ jaoks.',
         'pushover_clone_app' => 'Kliki siia, et teha oma Pushover äpp',
         'pushover_api_token' => 'Pushover Äppi API Žetoon',
         'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank"
@@ -242,7 +245,6 @@ $sm_lang = array(
         'auto_refresh' => 'Automaatne värskendamine',
         'auto_refresh_description' => 'Värskenda lehte automaatselt.<br><span class="small">Aeg sekundites, kui 0
  siis lehte ei värskendata.</span>',
-        'seconds' => 'sekundit',
         'test' => 'Test',
         'test_email' => 'Email saadetakse profiilil märgitud aadressile.',
         'test_sms' => 'SMS saadetakse profiilil märgitud numbrile.',

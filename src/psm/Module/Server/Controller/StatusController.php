@@ -100,6 +100,8 @@ class StatusController extends AbstractServerController
                 $layout_data['servers_offline'][] = $server;
             } elseif ($server['warning_threshold_counter'] > 0) {
                 $layout_data['servers_warning'][] = $server;
+            } elseif ($server['ssl_cert_expired_time'] !== null && $server['ssl_cert_expiry_days'] > 0) {
+                $layout_data['servers_warning'][] = $server;
             } else {
                 $layout_data['servers_online'][] = $server;
             }

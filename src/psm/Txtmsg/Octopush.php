@@ -59,11 +59,11 @@ class Octopush extends Core
     {
         $error = "";
         $success = 1;
-        $smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
+        $smsType = "FR"; //FR = premium, WWW = world, XXX = Low cost
         
         $recipients = join(',', $this->recipients);
         
-        $message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
+        $message = ($smsType == "FR") ? rawurlencode($message . " STOP au XXXXX") : rawurlencode($message);
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
@@ -72,7 +72,7 @@ class Octopush extends Core
                     "api_key" => $this->password,
                     "sms_recipients" => $recipients,
                     "sms_type" => $smsType,
-                    "sms_sender" => substr($this->originator, 0, 11),
+                    "sms_sender" => substr($this->originator, 0, 15),
                     "sms_text" => $message,
                 )
         ));

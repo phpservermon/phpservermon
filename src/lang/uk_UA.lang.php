@@ -116,7 +116,7 @@ $sm_lang = array(
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover — сервіс, що дозволяє легко отримувати
  сповіщення у реальному часі. За деталями
- перейдіть на <a href="https://pushover.net/">їхній
+ перейдіть на <a href="https://pushover.net/" target="_blank">їхній
  вебсайт</a>.',
         'pushover_key' => 'Ключ Pushover',
         'pushover_device' => 'Пристрій Pushover',
@@ -124,11 +124,12 @@ $sm_lang = array(
  повідомлення. Залиште пустим, щоб
  надсилати на всі пристрої.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> — чат-застосунок, що
- дозволяє легко отримувати сповіщення у
- реальному часі. За деталями й інструкцією зі
- встановлення зверніться до <a
- href="http://docs.phpservermonitor.org/">документації</a>.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> —
+ чат-застосунок, що дозволяє легко отримувати
+ сповіщення у реальному часі. За деталями й
+ інструкцією зі встановлення зверніться до <a
+ href="http://docs.phpservermonitor.org/"
+ target="_blank">документації</a>.',
         'telegram_chat_id' => 'Ідентифікатор чату Telegram',
         'telegram_chat_id_description' => 'Повідомлення буде надіслане у
  відповідний чат.',
@@ -330,8 +331,8 @@ $sm_lang = array(
         'pushover_status' => 'Дозволити надсилання Pushover-повідомлень',
         'pushover_description' => 'Pushover — сервіс, що дозволяє легко отримувати
  сповіщення у реальному часі. За детальнішою
- інформацію перейдіть на <a
- href="https://pushover.net/">їхній вебсайт</a>.',
+ інформацію перейдіть на <a href="https://pushover.net/"
+ target="_blank">їхній вебсайт</a>.',
         'pushover_clone_app' => 'Натисніть тут, щоб створити ваш Pushover-додаток',
         'pushover_api_token' => 'Токен API Pushover-додатку',
         'pushover_api_token_description' => 'Перед використанням Pushover ви маєте <a
@@ -339,16 +340,17 @@ $sm_lang = array(
  Додаток</a> на їхньому вебсайті та ввести
  токен API Додатку тут.',
         'telegram_status' => 'Дозволити надсилання Telegram-повідомлень',
-        'telegram_description' => '<a href="https://telegram.org/">Telegram</a> — чат-застосунок, що
- дозволяє легко отримувати сповіщення у
- реальному часі. Детальніша інформація та
- інструкція зі встановлення доступні у <a
- href="http://docs.phpservermonitor.org/">документації</a>.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> —
+ чат-застосунок, що дозволяє легко отримувати
+ сповіщення у реальному часі. Детальніша
+ інформація та інструкція зі встановлення
+ доступні у <a href="http://docs.phpservermonitor.org/"
+ target="_blank">документації</a>.',
         'telegram_api_token' => 'Токен Telegram API',
         'telegram_api_token_description' => 'Перед використанням Telegram ви маєте
  отримати токен API. За довідкою
- зверніться до <a
- href="http://docs.phpservermonitor.org/">документації</a>.',
+ зверніться до <a href="http://docs.phpservermonitor.org/"
+ target="_blank">документації</a>.',
         'alert_type' => 'Виберіть, коли б вам хотілося отримувати
  сповіщення.',
         'alert_type_description' => '<b>Зміна статусу:</b> Ви отримуватимете
@@ -404,7 +406,6 @@ $sm_lang = array(
         'auto_refresh_description' => 'Сторінка автооновлення серверів.<br><span
  class="small">Час у секундах; якщо 0, сторінка не
  оновлюватиметься.</span>',
-        'seconds' => 'секунд',
         'test' => 'Тест',
         'test_email' => 'Електронний лист буде надісланий на адресу,
  вказану у вашому профілі користувача.',
