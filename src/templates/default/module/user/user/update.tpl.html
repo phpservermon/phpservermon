@@ -4,9 +4,9 @@
 		<legend>{{ titlemode }}</legend>
 		<div class="col">
 			<!-- Username -->
-			{{ macro.input_field("text", "user_name", null, "user_name", label_user_name, edit_value_user_name, null, "255", null, null, null, true, true) }}
+			{{ macro.input_field("text", "user_name", null, "user_name", label_user_name, edit_value_user_name, null, "255", null, null, null, null, true) }}
 			<!-- Name -->
-			{{ macro.input_field("text", "name", null, "name", label_name, edit_value_name, null, "255", null, null, null, true) }}
+			{{ macro.input_field("text", "name", null, "name", label_name, edit_value_name, null, "255", null, null, null, null, true) }}
 			<!-- Level -->
 			{{ macro.input_select("level", "level", label_level, levels, user_level) }}
 			<!-- Password -->
@@ -17,7 +17,7 @@
 			{{ macro.input_field("email", "email", null, "email", label_email, edit_value_email, null, "255") }}
 			<!-- Mobile -->
 			{{ macro.input_field("tel", "mobile", null, "mobile", label_mobile, edit_value_mobile, null, "20") }}
-      <!-- Discord -->
+            <!-- Discord -->
 			{{ macro.input_field("text", "discord", null, "discord", label_discord, edit_value_discord, null, "255") }}
 			<!-- Webhook_url -->
 			{{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, edit_value_webhook_url, null, "255") }}
