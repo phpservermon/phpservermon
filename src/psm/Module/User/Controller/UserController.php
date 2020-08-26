@@ -289,15 +289,6 @@ class UserController extends AbstractController
                 $clean['level'] = PSM_USER_USER;
             }
 
-            // Won't allow removing the last admin
-            if (
-                count($this->db->select(PSM_DB_PREFIX . 'users', array('level' => PSM_USER_ADMIN))) == 1 &&
-                    $this->getUser()->getUserLevel() == PSM_USER_ADMIN
-            ) {
-                $this->addMessage(psm_get_lang('users', 'error_user_admin_cant_be_deleted'), 'warning');
-                $clean['level'] = PSM_USER_ADMIN;
-            }
-
             // always validate password for new users,
             // but only validate it for existing users when they change it.
             if ($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
