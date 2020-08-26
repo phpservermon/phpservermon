@@ -291,9 +291,16 @@ class UserController extends AbstractController
 
             // always validate password for new users,
             // but only validate it for existing users when they change it.
-            if ($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
+            if (($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) && $clean['user_name'] != '__PUBLIC__') {
                 $user_validator->password($clean['password'], $clean['password_repeat']);
             }
+
+            // Auto generate password for __PUBLIC__ user
+            if ($clean['user_name'] === '__PUBLIC__') {
+                $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+                $clean['password'] = substr(str_shuffle($chars), 0, 24);
+            }
+
             if ($user_id > 0) {
                 $user_validator->userId($user_id);
             }
