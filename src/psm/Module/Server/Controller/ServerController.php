@@ -611,6 +611,8 @@ class ServerController extends AbstractServerController
             'label_users' => psm_get_lang('servers', 'users'),
             'label_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
             'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
+            'label_connectivity_sanity_test' => psm_get_lang('servers', 'connectivity_sanity_test'),
+            'label_connectivity_sanity_test_description' => psm_get_lang('servers', 'connectivity_sanity_test_description'),
             'label_ssl_cert_expiry_days' => psm_get_lang('servers', 'ssl_cert_expiry_days'),
             'label_ssl_cert_expiry_days_description' => psm_get_lang('servers', 'ssl_cert_expiry_days_description'),
             'label_action' => psm_get_lang('system', 'action'),
