@@ -65,7 +65,6 @@ The following SMS gateways are currently available:
 * Infobip - <https://www.infobip.com/>
 
 
-
 Please note: for these gateways you will need an account with sufficient credits.
 
 
