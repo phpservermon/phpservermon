@@ -62,7 +62,7 @@ The following SMS gateways are currently available:
 * Callr - <https://www.callr.com/>
 * SMSAPI - <https://www.smsapi.com/en>
 * OVH SMS PRO - <https://www.ovhtelecom.fr/sms/>
-
+* Infobip - <https://www.infobip.com/>
 
 
 Please note: for these gateways you will need an account with sufficient credits.
