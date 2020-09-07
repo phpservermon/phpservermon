@@ -24,7 +24,7 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.2
+ * @since       phpservermon 3.6.0
  **/
 
 namespace psm\Txtmsg;
@@ -66,7 +66,7 @@ class Infobip extends Core
                     "&password=" . $this->password .
                     "&to=" . $recipient .
                     "&text=" . urlencode($message) .
-                    //Add Your Sender Name Here
+                    //add your sender id here
                     "&from="
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
