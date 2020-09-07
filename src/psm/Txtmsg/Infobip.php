@@ -62,7 +62,7 @@ class Infobip extends Core
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                "https://pi.infobip.com/sms/1/text/query?username=" . $this->username .
+                "https://api.infobip.com/sms/1/text/query?username=" . $this->username .
                     "&password=" . $this->password .
                     "&to=" . $recipient .
                     "&text=" . urlencode($message) .
