@@ -1068,23 +1068,22 @@ namespace {
     {
         protected $url;
         protected $json;
-        protected $message;
 
         /**
          * Send Webhook
          *
          * @return bool|string
-         * @var string $message
+         * @var array $replacements an array of the replacements
          *
          */
 
-        public function sendWebhook($message)
+        public function sendWebhook($replacements)
         {
             $error = "";
             $success = 1;
 
-            $this->setMessage($message);
-            $jsonMessage = strtr($this->json, array('#message' => $this->message));
+            $replacements['#message'] = $this->stripTagsFromMessage($replacements['#message']);
+            $jsonMessage = strtr($this->json, $replacements);
 
             $curl = curl_init($this->url);
             curl_setopt($curl, CURLOPT_POST, 1);
@@ -1160,7 +1159,7 @@ namespace {
          * @var string $message
          *
          */
-        public function setMessage($message)
+        public function stripTagsFromMessage($message)
         {
             $message = str_replace("<ul>", "", $message);
             $message = str_replace("</ul>", "\n", $message);
@@ -1171,7 +1170,7 @@ namespace {
             $message = str_replace("<b>", "", $message);
             $message = str_replace("<b/>", "", $message);
             $message = strip_tags($message);
-            $this->message = (string)$message;
+            return (string)$message;
         }
     }
 }
