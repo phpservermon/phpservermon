@@ -635,6 +635,7 @@ class StatusNotifier
                 '#message' => $message,
                 '#server_ip' => $this->server['ip'],
                 '#server_label' => $this->server['label'],
+                '#server_error' => $this->server['error'],
                 '#server_last_offline_duration' => $this->status_new ? $this->server['last_offline_duration'] : '',
                 '#status' => $this->status_new ? 'online' : 'offline'
             ]);
