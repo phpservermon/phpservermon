@@ -345,6 +345,9 @@ class StatusUpdater
                     if (!$header_flag) {
                         // Header was not present
                         $result = false;
+                        $this->error =
+                            'HEADER ERROR : Header "' . $this->server['header_name'] .
+                            '" not found or does not match "/' . $this->server['header_value'] . '/i".';
                     }
                 }
             }
@@ -447,7 +450,7 @@ class StatusUpdater
         socket_send($socket, $package, strLen($package), 0);
         // socket_read returns a string or false
         $status = socket_read($socket, 255) !== false ? true : false;
-        
+
         if ($status) {
             $this->header = "Success.";
         } else {
