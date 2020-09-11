@@ -331,23 +331,20 @@ class StatusUpdater
                             list ($key, $value) = explode(': ', $line);
                             // Header found (case-insensitive)
                             if (strcasecmp($key, $this->server['header_name']) == 0) {
-                                // The value doesn't match what we needed
-                                if (!preg_match("/{$this->server['header_value']}/i", $value)) {
-                                    $result = false;
-                                } else {
+                                // The value matches what we need, everything is fine
+                                if (preg_match("/{$this->server['header_value']}/i", $value)) {
                                     $header_flag = true;
-                                    break; // No need to go further
+                                    break; // The correct header is found, we leave the loop
                                 }
                             }
                         }
                     }
 
                     if (!$header_flag) {
-                        // Header was not present
-                        $result = false;
-                        $this->error =
-                            'HEADER ERROR : Header "' . $this->server['header_name'] .
+                        // Header was not present, set error message and $result variable
+                        $this->error = 'HEADER ERROR : Header "' . $this->server['header_name'] .
                             '" not found or does not match "/' . $this->server['header_value'] . '/i".';
+                        $result = false;
                     }
                 }
             }
