@@ -59,7 +59,7 @@ $sm_lang = array(
         'long_day_format' => '%B %e, %Y',
         'yesterday_format' => 'Gestern um %k:%M Uhr',
         'other_day_format' => '%A um %k:%M Uhr',
-        'never' => 'Never',
+        'never' => 'Nie',
         'hours_ago' => 'vor %d Stunden',
         'an_hour_ago' => 'vor über einer Stunde',
         'minutes_ago' => 'vor %d Minuten',
@@ -128,7 +128,7 @@ $sm_lang = array(
         'no_logs' => 'Keine Logs vorhanden.',
         'clear' => 'Protokoll Logs',
         'delete_title' => 'Protokoll Logs',
-        'delete_message' => 'Bist du sicher, dass du <b>alle</b> logs löschen möchtest?',
+        'delete_message' => 'Bist du sicher, dass du <b>alle</b> Logs löschen möchtest?',
     ),
     'servers' => array(
         'server' => 'Server',
@@ -202,8 +202,8 @@ $sm_lang = array(
         'email_smtp' => 'SMTP-Versand aktivieren',
         'email_smtp_host' => 'SMTP Server/Host',
         'email_smtp_port' => 'SMTP Port',
-        'email_smtp_security' => 'SMTP security',
-        'email_smtp_security_none' => 'None',
+        'email_smtp_security' => 'SMTP Authentifizierung',
+        'email_smtp_security_none' => 'Keine',
         'email_smtp_username' => 'SMTP Benutzername',
         'email_smtp_password' => 'SMTP Passwort',
         'email_smtp_noauth' => 'Feld leer lassen, bei fehlender Authentifizierung',
@@ -286,14 +286,14 @@ $sm_lang = array(
         'off_pushover_message' => 'Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite
  aufbauen:<br><br>Dienst/Webseite: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fehler:
  %ERROR%<br>Datum: %DATE% Uhr',
-        'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, it was down for
+        'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, offline für
  %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
-        'on_email_body' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, it was down for
+        'on_email_body' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, offline für
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum:
  %DATE% Uhr',
         'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
-        'on_pushover_message' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, it was down for
+        'on_pushover_message' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, offline für
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
  %PORT%<br>Datum: %DATE% Uhr',
     ),
@@ -313,7 +313,7 @@ $sm_lang = array(
         'password_reset' => 'Passwort zurücksetzen',
         'password_reset_email_subject' => 'Setzen Sie Ihr Zugangspasswort für den Server Monitor',
         'password_reset_email_body' => 'Benutzen Sie bitte den folgenden Link, um Ihr Zugangspasswort zurückzusetzen.
- Bitte beachten Sie: Der Link verfällt in 1 Stunde.<br><br>%link%',
+ Bitte beachten Sie: Der Link verfällt in einer Stunde.<br><br>%link%',
         'error_user_incorrect' => 'Der angegebene Benutzername konnte nicht gefunden werden.',
         'error_login_incorrect' => 'Die angegebenen Informationen sind leider nicht korrekt.',
         'error_login_passwords_nomatch' => 'Die angegebenen Passwörter stimmen nicht überein.',
