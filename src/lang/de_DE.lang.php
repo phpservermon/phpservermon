@@ -126,8 +126,8 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'no_logs' => 'Keine Logs vorhanden.',
-        'clear' => 'Protokoll Logs',
-        'delete_title' => 'Protokoll Logs',
+        'clear' => 'Logs löschen',
+        'delete_title' => 'Logs löschen',
         'delete_message' => 'Bist du sicher, dass du <b>alle</b> Logs löschen möchtest?',
     ),
     'servers' => array(
