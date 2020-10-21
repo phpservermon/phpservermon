@@ -418,6 +418,7 @@ $sm_lang = array(
         'log_retention_days' => 'days',
         'user_agent' => 'User Agent',
         'user_agent_key_note' => 'Custom user agent used by monitor within communication with external services.',
+        'public_status' => 'Make Status-Page public?'
     ),
     'notifications' => array(
         'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
@@ -518,6 +519,7 @@ $sm_lang = array(
         'error_reset_invalid_link' => 'The reset link you provided is invalid.',
         'success_password_forgot' => 'An email has been sent to you with information how to reset your password.',
         'success_password_reset' => 'Your password has been reset successfully. Please login.',
+        'anonymous_username' => 'Anonymous',
     ),
     'error' => array(
         '401_unauthorized' => 'Unauthorized',

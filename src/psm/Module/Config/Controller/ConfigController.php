@@ -58,6 +58,7 @@ class ConfigController extends AbstractController
         'log_jabber',
         'show_update',
         'combine_notifications',
+        'public_status',
     );
 
     /**
@@ -641,6 +642,7 @@ class ConfigController extends AbstractController
             'label_user_agent' => psm_get_lang('config', 'user_agent'),
             'label_user_agent_key_note' => psm_get_lang('config', 'user_agent_key_note'),
             'label_site_title' => psm_get_lang('config', 'site_title'),
+            'label_public_status' => psm_get_lang('config','public_status'),
         );
     }
 }

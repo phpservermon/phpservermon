@@ -46,12 +46,24 @@ abstract class AbstractServerController extends AbstractController
         $sql_where = '';
 
         if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
-            // restrict by user_id
-            $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-						`us`.`user_id`={$this->getUser()->getUserId()}
+            if ($this->getUser()->getUserLevel() == PSM_USER_ANONYMOUS && psm_get_conf(public_status) == true) {
+                // restrict by user_id of anonymous User - if configured to do so
+                $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+						`us`.`user_id`= 0
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
+            }
+            else {
+                // restrict by user_id
+                $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
+    						`us`.`user_id`={$this->getUser()->getUserId()}
+    						AND `us`.`server_id`=`s`.`server_id`
+    						)";
+            }
         }
+        
+        
+        
         if ($server_id !== null) {
             $server_id = intval($server_id);
             $sql_where = "WHERE `s`.`server_id`={$server_id} ";
