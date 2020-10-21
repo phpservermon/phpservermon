@@ -369,6 +369,9 @@ class Installer
         if (version_compare($version_from, '3.6.0', '<')) {
             $this->upgrade360();
         }
+        if (version_compare($version_from, '3.7.0', '<')) {
+            $this->upgrade370();
+        }
         psm_update_conf('version', $version_to);
     }
 
@@ -756,4 +759,22 @@ class Installer
             ADD `discord` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
         $this->execSQL($queries);
     }
+    
+    /**
+     * Upgrade for v3.7.0 release
+     * Added support for public Status-Pages
+     */
+    protected function upgrade370()
+    {
+        $queries = array();
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
+                    ('public_status', '0')";
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` 
+            (`user_id`, `user_name`, `password`, `password_reset_hash`, `password_reset_timestamp`, `rememberme_token`, `level`, `name`, `mobile`, `discord`, `pushover_key`, `pushover_device`, `webhook_url`, `webhook_json`, `telegram_id`, `jabber`, `email`)
+            VALUES 
+            ('0', 'anonymous', 'NO_PASSWORD_REQUIRED', NULL, NULL, NULL, '30', '', '', '', '', '', '', '{\"text\":\"servermon: #message\"}', '', '', '')";
+        $queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_id` = '0' WHERE `monitor_users`.`user_id` = 3"; 
+        $this->execSQL($queries);
+    }
+
 }
