@@ -19,6 +19,7 @@
 	</ul>
 </noscript>
 <noscript><div hidden></noscript>
+{% if ulvl < 30 %}
 <ul class="navbar-nav">
 	<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,4 +36,21 @@
 	</li>
 	-->
 </ul>
+{% else %}
+<ul class="navbar-nav">
+	<li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{{ label_usermenu }}
+		</a>
+		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			<a class="dropdown-item" href="{{ url_login|raw }}">{{ label_login }} </a>
+		</div>
+	</li>
+	<!--
+	<li class="nav-item">
+		<i class="text-white fas fa-universal-access fa-lg nav-link"></i>
+	</li>
+	-->
+</ul>
+{% endif %}
 <noscript></div></noscript>

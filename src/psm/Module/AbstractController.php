@@ -278,8 +278,10 @@ abstract class AbstractController implements ControllerInterface
             'label_help' => psm_get_lang('menu', 'help'),
             'label_profile' => psm_get_lang('users', 'profile'),
             'label_logout' => psm_get_lang('login', 'logout'),
+            'label_login' => psm_get_lang('login', 'login'),
             'url_profile' => psm_build_url(array('mod' => 'user_profile')),
             'url_logout' => psm_build_url(array('logout' => 1)),
+            'url_login' => psm_build_url(array('mod' => 'user_profile')),
             'label_current' => psm_get_lang('system', 'current'),
         );
 
@@ -311,6 +313,11 @@ abstract class AbstractController implements ControllerInterface
                 psm_get_lang('login', 'welcome_usermenu')
             );
         }
+        else {
+            $tpl_data['label_usermenu'] = psm_get_lang('login','anonymous_username');
+        }
+        
+        $tpl_data['ulvl'] = $ulvl;
         return $this->twig->render('main/menu.tpl.html', $tpl_data);
     }
 

@@ -43,6 +43,12 @@ class StatusController extends AbstractServerController
 
         $this->setCSRFKey('status');
         $this->setActions(array('index', 'saveLayout'), 'index');
+        
+        /** 
+         * Check for configuration of public available Status-Page
+         */
+        if (psm_get_conf('public_status'))
+            $this->setMinUserLevelRequired(PSM_USER_ANONYMOUS,array('index'));
     }
 
     /**
@@ -92,10 +98,19 @@ class StatusController extends AbstractServerController
             if ($server['last_offline_nice'] != psm_get_lang('system', 'never')) {
                 $server['last_offline_duration_nice'] = "(" . $server['last_offline_duration'] . ")";
             }
-            $server['url_view'] = psm_build_url(
-                array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status')
-            );
 
+            /**
+             * Link Server-Title with detailed Status-Page only when User is NOT Anonymous
+             */
+            if ($this->getUser()->getUserLevel() != PSM_USER_ANONYMOUS) {
+                $server['url_view'] = psm_build_url(
+                    array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status')
+                );
+            }
+            else
+            {
+                $server['url_view'] = psm_build_url();
+            }
             if ($server['status'] == "off") {
                 $layout_data['servers_offline'][] = $server;
             } elseif ($server['warning_threshold_counter'] > 0) {
