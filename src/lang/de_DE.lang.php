@@ -275,6 +275,7 @@ $sm_lang = array(
  Protokollierungsdaten im System. Geben Sie die Ziffer \'0\' ein, um die
  automatische Bereinigung/Löschung zu deaktivieren.',
         'log_retention_days' => 'Tage',
+        'public_status' => 'Status Seite öffentlich machen?',
     ),
     'notifications' => array(
         'off_sms' => 'Dienst/Webseite \'%LABEL%\' ist offline: ip=%IP%, port=%PORT%. Fehler=%ERROR%',
@@ -322,6 +323,7 @@ $sm_lang = array(
  Ihr Passwort zurücksetzen können.',
         'success_password_reset' => 'Ihr Passwort wurde erfolgreich zurückgesetzt. Bitte versuchen Sie, sich erneut
  anzumelden.',
+        'anonymous_username' => 'Anonymous',
     ),
     'error' => array(
         '401_unauthorized' => 'Nicht autorisiert',
