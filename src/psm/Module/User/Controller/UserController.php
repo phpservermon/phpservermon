@@ -102,7 +102,7 @@ class UserController extends AbstractController
 
         $users = $this->db->select(
             PSM_DB_PREFIX . 'users',
-            null,
+            'user_id > 0',
             array('user_id', 'user_name', 'level', 'name', 'mobile', 'email'),
             null,
             array('name')

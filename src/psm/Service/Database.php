@@ -435,7 +435,7 @@ class Database
                 }
                 $query = substr($query, 0, -5);
             } else {
-                if (strpos($where, '=') === false) {
+                if ((strpos($where, '=') === false ) && (strpos($where, '>') === false) && (strpos($where, '<') === false)) {
                     // no field given, use primary field
                     $primary = $this->getPrimary($table);
                     $query .= " WHERE `{$table}`.`{$primary}`={$this->quote($where)}";
