@@ -772,7 +772,7 @@ class Installer
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` 
             (`user_id`, `user_name`, `password`, `password_reset_hash`, `password_reset_timestamp`, `rememberme_token`, `level`, `name`, `mobile`, `discord`, `pushover_key`, `pushover_device`, `webhook_url`, `webhook_json`, `telegram_id`, `jabber`, `email`)
             VALUES 
-            ('0', 'anonymous', 'NO_PASSWORD_REQUIRED', NULL, NULL, NULL, '30', '', '', '', '', '', '', '{\"text\":\"servermon: #message\"}', '', '', '')";
+            ('0', 'anonymous', 'NO_PASSWORD_REQUIRED', NULL, NULL, NULL, '30', 'Anonymous / Public', '', '', '', '', '', '{\"text\":\"servermon: #message\"}', '', '', '')";
         $queries[] = "UPDATE `" . PSM_DB_PREFIX . "users` SET `user_id` = '0' WHERE `monitor_users`.`user_id` = 3"; 
         $this->execSQL($queries);
     }
