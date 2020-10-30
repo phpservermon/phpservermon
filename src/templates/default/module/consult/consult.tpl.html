@@ -1,0 +1,127 @@
+{{ macro.input_csrf() }}
+<div class="container">
+    <div class="row">
+        <div class="card text-white text-center col-md-2 pl-0 pr-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
+            <div class="card-body d-flex align-items-center justify-content-center">
+                {% if status|lower == 'on' %}
+                <i class="fas fa-check-circle fa-6x"></i>
+                <noscript><h1>&#10003</h1></noscript>
+                {% elseif status|lower == 'warning' %}
+                <i class="fas fa-exclamation-triangle fa-6x"></i>
+                <noscript><h1>&#9888</h1></noscript>
+                {% elseif status|lower == 'off' %}
+                <i class="fas fa-times-circle fa-6x"></i>
+                <noscript><h1>&#10005</h1></noscript>
+                {% else %}
+                <i class="fas fa-question-circle fa-6x"></i>
+                <noscript><h1>&#8263</h1></noscript>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card col-md-5 mr-5 ml-auto pl-0 pr-0 mb-4">
+            <div class="card-header">
+                {{ label }}
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-4">{{ label_domain }}:</dt>
+                        <dd class="col-md-8">
+                            <a href="{{ ip|raw }}" title="{{ ip|raw }}" target="_blank" rel="noopener">
+                                {{ ip|raw }}
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                {% if type|lower == 'service' %}
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-4">{{ label_port }}:</dt>
+                        <dd class="col-md-8">{{ port }}</dd>
+                    </dl>
+                </li>
+                {% endif %}
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-4">{{ label_status }}:</dt>
+                        <dd class="col-md-8">{{ status }}</dd>
+                    </dl>
+                </li>
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-4">{{ label_rtime }}:</dt>
+                        <dd class="col-md-8">{{ rtime }} {{ label_seconds }}</dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card col-md-3 ml-5 pl-0 pr-0 mb-4">
+            <div class="card-header">
+                {{ label_status }}
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-6">{{ label_last_online }}:</dt>
+                        <dd class="col-md-6">{{ last_online }}</dd>
+                    </dl>
+                </li>
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-6">{{ label_last_offline }}:</dt>
+                        <dd class="col-md-6">{{ last_offline }}</dd>
+                    </dl>
+                </li>
+                <li class="list-group-item">
+                    <dl class="row">
+                        <dt class="col-md-6">{{ label_last_check }}:</dt>
+                        <dd class="col-md-6">{{ last_check }}</dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        {{ html_history|raw }}
+    </div>
+
+    <div class="modal fade" id="modal_last_output" tabindex="-1" role="dialog" aria-labelledby="modal_last_output_label" aria-hidden="true">
+        <div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_last_output_label">{{ label_last_output }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="word-wrap: break-word;">
+                    {{ last_output|nl2br }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_last_error" tabindex="-1" role="dialog" aria-labelledby="modal_last_error_label" aria-hidden="true">
+        <div class="modal-dialog" style="width:75%;max-width: 100%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_last_error_label">{{ label_last_error_output }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="word-wrap: break-word;">
+                    {{ last_error_output|nl2br }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

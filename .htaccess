@@ -18,3 +18,9 @@ AddOutputFilterByType DEFLATE application/rss+xml
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
 </IfModule>
+
+#Rule to avoid some characters in urls
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+[a-zàâäéèêëîïôöûüA-Z0-9-\-\'\$\*\µ\§\£\€\:\(\)\,\;\.\!\<\^\{\}\°]+)$ ?mod=consult&action=view&ip=$1 [QSA,L]

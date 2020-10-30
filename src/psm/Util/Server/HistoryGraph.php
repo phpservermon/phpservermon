@@ -95,6 +95,10 @@ class HistoryGraph
         $tpl_data = array(
             'graphs' => $graphs,
         );
+
+        //$graphs[1]['info'][0]['value'] = '1.2336';
+        //echo '<pre>';
+        //print_r($graphs);die;
         return $this->twig->render('module/server/history.tpl.html', $tpl_data);
     }
 

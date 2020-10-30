@@ -24,14 +24,19 @@
 	<link href="src/templates/default/static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="src/templates/default/static/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="src/templates/default/static/css/style.min.css" rel="stylesheet">
+	{% if custom_navbar == 1 %}
+	<link href="src/templates/default/static/openscop/css/style.css" rel="stylesheet">
+	{% endif  %}
 	<!--[if lt IE 9]>
     	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 </head>
 
 <body>
-	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="index.php">{{ title }}</a>
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark  {% if custom_navbar == 1 %}bg-light navbar_openscop {% else %} bg-dark {% endif %}">
+		<a class="navbar-brand" href="index.php">
+				<img src="{{ logo_url }}" class="img-fluid logo-openscop" />
+			{{ title }}</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
 		 aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>

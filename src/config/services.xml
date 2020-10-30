@@ -12,6 +12,7 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 			<parameter>module.server</parameter>
 			<parameter>module.user</parameter>
 			<parameter>module.install</parameter>
+			<parameter>module.consult</parameter>
 		</parameter>
 
 		<parameter key="path.src" type="constant">PSM_PATH_SRC</parameter>
@@ -31,6 +32,7 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 		<service id="module.server" class="psm\Module\Server\ServerModule" />
 		<service id="module.user" class="psm\Module\User\UserModule" />
 		<service id="module.install" class="psm\Module\Install\InstallModule" />
+		<service id="module.consult" class="psm\Module\Consult\ConsultModule" />
 		<!--MODULES end-->
 
 		<!--SERVICES start-->
