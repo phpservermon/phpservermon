@@ -10,7 +10,7 @@ Users
 What are the differences between the user levels?
 -------------------------------------------------
 
-There are 2 user levels available: regular user and administrator.
+There are 3 user levels available: anonymous, regular user and administrator.
 
 Administrators:
 
@@ -24,6 +24,16 @@ Regular users:
 * View the history and logs of their assigned servers.
 * Run the updater on their assigned servers.
 
+Anonymous:
+Only meant for user '__PUBLIC__' and can't be assigned to any other user.
+
+* View the status of their assigned servers without password.
+
+I removed user '__PUBLIC__', what now?
+--------------------------------------
+
+* Go to users -> create new user.
+* Set the username to '__PUBLIC__', level to 'anonymous' and the rest is up to you. 
 
 Servers
 +++++++
@@ -100,6 +110,14 @@ After upgrading, my email stopped working.
 ------------------------------------------
 
 Run 'php composer.phar update' and you should be good to go!
+
+Setting up a public page.
+-------------------------
+
+1. Set PSM_PUBLIC to true in config.php.
+2. If not yet existing, create a user with username '__PUBLIC__'. See Users -> "I removed user '__PUBLIC__', what now?" for help.
+3. Add servers to user '__PUBLIC__'.
+4. Go to /public.php.
 
 Notifications
 +++++++++++++
