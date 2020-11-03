@@ -29,11 +29,6 @@
 
 namespace psm\Module\Consult\Controller;
 
-use psm\Module\AbstractController;
-use psm\Module\Consult\Controller\AbstractConsultController;
-use psm\Module\Server\Controller\AbstractServerController;
-use psm\Service\Database;
-
 abstract class AbstractConsultServerController extends AbstractConsultController
 {
     /**
@@ -101,15 +96,5 @@ abstract class AbstractConsultServerController extends AbstractConsultController
         }
 
         return $servers;
-    }
-
-    /**
-     * Format server data for display
-     * @param array $server
-     * @return array
-     */
-    protected function formatServer($server)
-    {
-        return parent::formatServer($server);
     }
 }
