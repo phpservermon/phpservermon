@@ -602,6 +602,11 @@ namespace {
             $phpmailer->Host = psm_get_conf('email_smtp_host');
             $phpmailer->Port = (int)psm_get_conf('email_smtp_port');
             $phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
+            
+            if( $phpmailer->SMTPSecure == '' ) {
+                $phpmailer->SMTPAutoTLS = false;
+                $phpmailer->SMTPSecure = false;
+            }
 
             $smtp_user = psm_get_conf('email_smtp_username');
             $smtp_pass = psm_password_decrypt(
