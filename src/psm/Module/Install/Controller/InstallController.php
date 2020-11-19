@@ -306,6 +306,7 @@ class InstallController extends AbstractController
             'webhook_url' => '',
             'webhook_json' => '',
             'telegram_id' => '',
+            'discord' => '',
             'jabber' => ''
         );
 
