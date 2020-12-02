@@ -39,7 +39,6 @@ class PromoSMS extends Core
      * @var string $this->password
      * @var array $this->recipients
      * @var array $headers
-     * @var array $this->originator
      *
      * @var resource $curl
      * @var string $err
@@ -69,7 +68,7 @@ class PromoSMS extends Core
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_POSTFIELDS => http_build_query(array(
-                'text' => urlencode($message),
+                'text' => htmlspecialchars($message),
                 'type' => 1,
                 'recipients' => $this->recipients,
             ))
