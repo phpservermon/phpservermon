@@ -283,25 +283,16 @@ class StatusUpdater
         $this->rtime = (microtime(true) - $starttime);
 
         // the first line would be the status code..
-        $status_code = strtok($curl_result['exec'], "\r\n");
-        // keep it general
-        // $code[2][0] = status code
-        // $code[3][0] = name of status code
-        $code_matches = array();
-        preg_match_all("/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/", $status_code, $code_matches);
-
-        if (empty($code_matches[0])) {
+        $code = $curl_result['info']['http_code'];
+        if (empty($code)) {
             // somehow we dont have a proper response.
             $this->error = 'TIMEOUT ERROR: no response from server';
             $result = false;
         } else {
-            $code = $code_matches[2][0];
-            $msg = $code_matches[3][0];
-
             $allow_http_status = explode("|", $this->server['allow_http_status']);
             // All status codes starting with a 4 or higher mean trouble!
             if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
-                $this->error = "HTTP STATUS ERROR: " . $code . ' ' . $msg;
+                $this->error = "HTTP STATUS ERROR: " . $code;
                 $result = false;
             } else {
                 $result = true;
