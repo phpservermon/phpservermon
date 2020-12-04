@@ -3,7 +3,6 @@
 
 //General
 $is_active=true;
-$only_allow_ip="";
 
 // index.php config
 //definition when will ping be old, in seconds
