@@ -1,4 +1,32 @@
 
 README / Instruction:
 
+Now you can write an externat application, tiggering an update
+in the server monitor.
 
+External application -> calls api  -> phpservermom can monitor the api.
+
+Installation:
+1: Take config_sample.php and set your configuration.
+2: Safe it as config.php.
+3: Ready to use.
+
+
+Set up new monitoring:
+1: Set external application calling the https://yourdomain.com/phpservermon/api/external_ping_api/0.1/index.php?i=set&iv=<<setname>>&key=<<yourkey>>
+url. (setname = give the call a name. yourkey = after the first call of the script you find the key in the file key.config.)
+
+SAMPLE: http://127.0.0.1/phpservermon/api/external_ping_api/0.1/index.php?i=get&iv=testapp1&key=WTn9cYxz5PWadaVqEdki0FwhmLkjje5RXgDVTAlWdq3Uvv5hR1i0TI1AFN7Z
+
+2: Go to: http://127.0.0.1/phpservermon/?&mod=server&action=edit and add a new server monitoring.
+Label = Your name (may your setname, step 1)
+Domain/IP = SAMPLE:  http://127.0.0.1/phpservermon/api/external_ping_api/0.1/index.php?i=get&iv=testapp1&key=WTn9cYxz5PWadaVqEdki0FwhmLkjje5RXgDVTAlWdq3Uvv5hR1i0TI1AFN7Z
+Type = Website
+Search string/pattern = "Last update"
+
+3: Test it and enjoy it.
+
+
+
+
+Best regards M.S.

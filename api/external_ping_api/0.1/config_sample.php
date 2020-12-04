@@ -6,7 +6,7 @@ $is_active=true;
 
 // index.php config
 //definition when will ping be old, in seconds
-$old_time_definition = 60;
+$old_time_definition = 15;
 $create_non_exsisting_files=true;
 
 //keyit.php config
