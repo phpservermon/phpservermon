@@ -71,6 +71,13 @@ switch ($index) {
            throw new Exception('run_get function failed.'); 
         }
         break;
+    case "getall":
+        //GET_ALL
+        if (run_get_all($old_time_definition)==true){}else{
+               //Error
+             throw new Exception('run_get function failed.'); 
+         }
+        break;
     case "set":
         //SET
         if (run_set($index_value)==true){}else{
@@ -153,6 +160,78 @@ function run_get($index_value, $old_time_definition){
 
 
 }
+
+
+
+function run_get_all($old_time_definition){
+
+    //make HTML comment
+    echo "<!--Getting All....-->";
+    
+
+                //Prepare result_text
+                $result_text="";
+
+                // generate file path for every file in folder
+                foreach(glob('data/*.txt') as $file) {
+                  
+
+
+                        //Open File
+                        $information_file = read_from_file($file);
+
+                        //Get now timestamp
+                        $date = new DateTime();
+                        $timestamp_now = $date->getTimestamp();
+
+                        //calculate time diff
+                        $time_diff = $timestamp_now - $information_file ;
+
+
+                    // Check if older than 
+                    if ($information_file + ($old_time_definition) < $timestamp_now){
+
+
+
+                        //Last updtae is older than x time
+                        $result_text= $result_text .  $file . " Older than " . $old_time_definition . "sec. Timediff: " . $time_diff . " sec." . "<br>" ;
+
+
+                    }
+
+                
+         
+
+//Secure file
+secure_file($file);
+
+
+
+                }
+
+
+           //Check if every index_value / token is up to date
+           if($result_text ==""){
+            //all up to date
+            // Last update is NOT older than x time
+            echo "Last update done. All index_values or tokens are up to date.";
+
+        }else{
+            //nor all are up to date
+            echo $result_text;
+        }
+
+
+
+
+
+//giveback ok
+return true;
+
+
+}
+
+
 
 
 function run_set($index_value){

@@ -29,7 +29,7 @@ include_once("config.php");
 if (file_exists($filename)) {
 
 
-    $key = $_GET[$key_name];
+    $key =  check_and_give_me_get_input($key_name);
 
     //open file and read it
     $myfile = fopen($filename, "r") or die("keyit.php: 1 Unable to open file!");
@@ -187,5 +187,8 @@ function sendmailtorecipients($contacts_array,$subject,$message,$output=false){
     function getCurrentUrl() {
         return ((empty($_SERVER['HTTPS'])) ? 'http' : 'https') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
+
+
+
 
 ?>

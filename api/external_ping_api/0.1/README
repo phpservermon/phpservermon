@@ -28,5 +28,11 @@ Search string/pattern = "Last update"
 
 
 
+There is additional:
 
-Best regards M.S.
+You can also use the i=getall&iv=1 GET call,
+it returns the status of all monitored index_values (or tokens).
+
+
+Best regards 
+https://github.com/dmd2222
