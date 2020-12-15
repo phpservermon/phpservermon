@@ -799,6 +799,9 @@ namespace {
             case 'smsapi':
                 $sms = new \psm\Txtmsg\SMSAPI();
                 break;
+            case 'promosms':
+                $sms = new \psm\Txtmsg\PromoSMS();
+                break;
         }
 
         // copy login information from the config file
