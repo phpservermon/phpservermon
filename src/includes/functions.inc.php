@@ -755,6 +755,9 @@ namespace {
             case 'smsglobal':
                 $sms = new \psm\Txtmsg\Smsglobal();
                 break;
+            case 'infobip':
+                $sms = new \psm\Txtmsg\Infobip();
+                break;
             case 'freevoipdeal':
                 $sms = new \psm\Txtmsg\FreeVoipDeal();
                 break;
@@ -798,6 +801,9 @@ namespace {
                 $sms = new \psm\Txtmsg\Ysmal();
             case 'smsapi':
                 $sms = new \psm\Txtmsg\SMSAPI();
+                break;
+            case 'promosms':
+                $sms = new \psm\Txtmsg\PromoSMS();
                 break;
         }
 

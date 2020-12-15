@@ -100,6 +100,17 @@ class User
             }
             $this->session = $session;
 
+            if (PSM_PUBLIC === true && PSM_PUBLIC_PAGE === true) {
+                $query_user = $this->db_connection->prepare('SELECT * FROM ' .
+                    PSM_DB_PREFIX . 'users WHERE user_name = :user_name and level = :level');
+                $query_user->bindValue(':user_name', "__PUBLIC__", \PDO::PARAM_STR);
+                $query_user->bindValue(':level', PSM_USER_ANONYMOUS, \PDO::PARAM_STR);
+                $query_user->execute();
+
+                // get result row (as an object)
+                $this->setUserLoggedIn($query_user->fetchObject()->user_id);
+            }
+
             if ((!defined('PSM_INSTALL') || !PSM_INSTALL)) {
                 // check the possible login actions:
                 // 1. login via session data (happens each time user opens a page on your php project AFTER

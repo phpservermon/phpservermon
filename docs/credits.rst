@@ -93,6 +93,10 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Discord webhook support
 
+* Łukasz Szczepański - https://github.com/NixNotCastey
+
+  * PromoSMS gateway
+
 Translators
 +++++++++++
 
