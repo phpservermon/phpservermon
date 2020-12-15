@@ -46,23 +46,24 @@ The following SMS gateways are currently available:
 * Inetworx - <https://www.inetworx.ch>
 * Messagebird - <https://www.messagebird.com>
 * Mosms - <https://www.mosms.com>
-* Smsglobal - <https://smsglobal.com/>
-* SMSit - <https://www.smsit.dk/>
+* Smsglobal - <https://smsglobal.com>
+* SMSit - <https://www.smsit.dk>
 * Spryng - <https://www.spryng.nl>
 * Textmarketer - <https://www.textmarketer.co.uk>
 * FreeVoipDeal - <https://www.freevoipdeal.com>
-* Nexmo - <https://www.nexmo.com/>
-* OctoPush - <https://www.octopush.com/>
-* FreeMobile (FR) - <https://mobile.free.fr/>
+* Nexmo - <https://www.nexmo.com>
+* OctoPush - <https://www.octopush.com>
+* FreeMobile (FR) - <https://mobile.free.fr>
 * Twilio - <https://twilio.com>
-* CM Telecom - <https://www.cm.com/>
-* GatewayAPI - <https://gatewayapi.com/>
-* SolutionsInfini - <https://solutionsinfini.com/>
-* Plivo - <https://www.plivo.com/>
-* Callr - <https://www.callr.com/>
+* CM Telecom - <https://www.cm.com>
+* GatewayAPI - <https://gatewayapi.com>
+* SolutionsInfini - <https://solutionsinfini.com>
+* Plivo - <https://www.plivo.com>
+* Callr - <https://www.callr.com>
 * SMSAPI - <https://www.smsapi.com/en>
-* OVH SMS PRO - <https://www.ovhtelecom.fr/sms/>
-* Infobip - <https://www.infobip.com/>
+* OVH SMS PRO - <https://www.ovhtelecom.fr/sms>
+* PromoSMS - <https://promosms.com>
+* Infobip - <https://www.infobip.com>
 
 
 Please note: for these gateways you will need an account with sufficient credits.
