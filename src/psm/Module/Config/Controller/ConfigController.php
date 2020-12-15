@@ -58,6 +58,8 @@ class ConfigController extends AbstractController
         'log_jabber',
         'show_update',
         'combine_notifications',
+        'dirauth_status',
+        'authdir_ldapfollowref',
     );
 
     /**
@@ -85,7 +87,18 @@ class ConfigController extends AbstractController
         'jabber_username',
         'jabber_domain',
         'user_agent',
-        'site_title'
+        'site_title',
+        'authdir_host_locn',
+        'authdir_host_port',
+        'authdir_userdomain',
+        'authdir_ldapver',
+        'authdir_basedn',
+        'authdir_usernameattrib',
+        'authdir_groupnameattrib',
+        'authdir_groupmemattrib',
+        'authdir_usercontainerrdn',
+        'authdir_groupcontainerrdn',
+        'authdir_groupname',
     );
 
     /**
@@ -162,6 +175,20 @@ class ConfigController extends AbstractController
             );
         }
 
+        foreach (array("20", "10") as $authdir_defaultrole) {
+            $tpl_data['authdir_defaultroles'][] = array(
+                'value' => $authdir_defaultrole,
+                'label' => psm_get_lang('users', 'level_' . $authdir_defaultrole),
+            );
+        }
+
+        foreach (array("openldap", "adds", "adlds") as $authdir_type) {
+            $tpl_data['authdir_type'][] = array(
+                'value' => $authdir_type,
+                'label' => psm_get_lang('config', 'authdir_type_' . $authdir_type),
+            );
+        }
+
         $tpl_data['email_smtp_security'] = array(
             array(
                 'value' => '',
@@ -181,6 +208,10 @@ class ConfigController extends AbstractController
             $config['sms_gateway'] : current($sms_gateways);
         $tpl_data['alert_type_selected'] = isset($config['alert_type']) ?
             $config['alert_type'] : '';
+        $tpl_data['authdir_type_selected'] =  isset($config['authdir_type']) ?
+            $config['authdir_type'] : '';
+        $tpl_data['authdir_defaultrole_selected'] =  isset($config['authdir_defaultrole']) ?
+            $config['authdir_defaultrole'] : '20';
         $tpl_data['email_smtp_security_selected'] =  isset($config['email_smtp_security']) ?
             $config['email_smtp_security'] : '';
         $tpl_data['auto_refresh_servers'] = isset($config['auto_refresh_servers']) ?
@@ -244,6 +275,8 @@ class ConfigController extends AbstractController
                 'site_title' => $_POST['site_title'],
                 'sms_gateway' => $_POST['sms_gateway'],
                 'alert_type' => $_POST['alert_type'],
+                'authdir_defaultrole' => $_POST['authdir_defaultrole'],
+                'authdir_type' => $_POST['authdir_type'],
                 'email_smtp_security' =>
                     in_array($_POST['email_smtp_security'], array('', 'ssl', 'tls'))
                     ? $_POST['email_smtp_security']
@@ -296,6 +329,8 @@ class ConfigController extends AbstractController
 
             if (isset($_POST['general_submit'])) {
                 $this->default_tab = 'general';
+            } elseif (isset($_POST['auth_submit'])) {
+                $this->default_tab = 'auth';
             } elseif (isset($_POST['email_submit']) || !empty($_POST['test_email'])) {
                 $this->default_tab = 'email';
             } elseif (isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
@@ -546,6 +581,7 @@ class ConfigController extends AbstractController
             'label_tab_webhook' => psm_get_lang('config', 'tab_webhook'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
             'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
+            'label_tab_auth' => psm_get_lang('config', 'tab_auth'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
             'label_settings_discord' => psm_get_lang('config', 'settings_discord'),
@@ -553,6 +589,7 @@ class ConfigController extends AbstractController
             'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
             'label_settings_jabber' => psm_get_lang('config', 'settings_jabber'),
+            'label_settings_dirauth' => psm_get_lang('config', 'settings_dirauth'),
             'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
             'label_settings_log' => psm_get_lang('config', 'settings_log'),
             'label_settings_proxy' => psm_get_lang('config', 'settings_proxy'),
@@ -613,6 +650,36 @@ class ConfigController extends AbstractController
             'label_jabber_domain_description' => psm_get_lang('config', 'jabber_domain_description'),
             'label_jabber_password' => psm_get_lang('config', 'jabber_password'),
             'label_jabber_password_description' => psm_get_lang('config', 'jabber_password_description'),
+            'label_dirauth_status' => psm_get_lang('config', 'dirauth_status'),
+            'label_authdir_host_locn' => psm_get_lang('config', 'authdir_host_locn'),
+            'label_authdir_host_port' => psm_get_lang('config', 'authdir_host_port'),
+            'label_authdir_type' => psm_get_lang('config', 'authdir_type'),
+            'label_authdir_type_description' => psm_get_lang('config', 'authdir_type_description'),
+            'label_authdir_userdomain' => psm_get_lang('config', 'authdir_userdomain'),
+            'label_authdir_userdomain_description' => psm_get_lang('config', 'authdir_userdomain_description'),
+            'label_authdir_ldapver' => psm_get_lang('config', 'authdir_ldapver'),
+            'label_authdir_ldapver_description' => psm_get_lang('config', 'authdir_ldapver_description'),
+            'label_authdir_ldapfollowref' => psm_get_lang('config', 'authdir_ldapfollowref'),
+            'label_authdir_ldapfollowref_description' => psm_get_lang('config', 'authdir_ldapfollowref_description'),
+            'label_authdir_basedn' => psm_get_lang('config', 'authdir_basedn'),
+            'label_authdir_basedn_description' => psm_get_lang('config', 'authdir_basedn_description'),
+            'label_authdir_usernameattrib' => psm_get_lang('config', 'authdir_usernameattrib'),
+            'label_authdir_usernameattrib_description' => psm_get_lang('config', 'authdir_usernameattrib_description'),
+            'label_authdir_groupnameattrib' => psm_get_lang('config', 'authdir_groupnameattrib'),
+            'label_authdir_groupnameattrib_description' =>
+                psm_get_lang('config', 'authdir_groupnameattrib_description'),
+            'label_authdir_groupmemattrib' => psm_get_lang('config', 'authdir_groupmemattrib'),
+            'label_authdir_groupmemattrib_description' => psm_get_lang('config', 'authdir_groupmemattrib_description'),
+            'label_authdir_usercontainerrdn' => psm_get_lang('config', 'authdir_usercontainerrdn'),
+            'label_authdir_usercontainerrdn_description' =>
+                psm_get_lang('config', 'authdir_usercontainerrdn_description'),
+            'label_authdir_groupcontainerrdn' => psm_get_lang('config', 'authdir_groupcontainerrdn'),
+            'label_authdir_groupcontainerrdn_description' =>
+                psm_get_lang('config', 'authdir_groupcontainerrdn_description'),
+            'label_authdir_groupname' => psm_get_lang('config', 'authdir_groupname'),
+            'label_authdir_groupname_description' => psm_get_lang('config', 'authdir_groupname_description'),
+            'label_authdir_defaultrole' => psm_get_lang('config', 'authdir_defaultrole'),
+            'label_authdir_defaultrole_description' => psm_get_lang('config', 'authdir_defaultrole_description'),
             'label_alert_type' => psm_get_lang('config', 'alert_type'),
             'label_alert_type_description' => psm_get_lang('config', 'alert_type_description'),
             'label_combine_notifications' => psm_get_lang('config', 'combine_notifications'),
