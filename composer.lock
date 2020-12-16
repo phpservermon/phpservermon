@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b24d7cc3989b64b679b388afafb16d09",
+    "content-hash": "984f0f8f41cf0e1d0b08397e6bb565a0",
     "packages": [
         {
             "name": "jaxl/jaxl",
@@ -78,6 +78,58 @@
                 "xmpp"
             ],
             "time": "2016-09-13T01:59:35+00:00"
+        },
+        {
+            "name": "mnsami/composer-custom-directory-installer",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mnsami/composer-custom-directory-installer.git",
+                "reference": "8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mnsami/composer-custom-directory-installer/zipball/8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5",
+                "reference": "8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": [
+                    "Composer\\CustomDirectoryInstaller\\LibraryPlugin",
+                    "Composer\\CustomDirectoryInstaller\\PearPlugin",
+                    "Composer\\CustomDirectoryInstaller\\PluginPlugin"
+                ],
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Composer\\CustomDirectoryInstaller": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mina Nabil Sami",
+                    "email": "mina.nsami@gmail.com"
+                }
+            ],
+            "description": "A composer plugin, to help install packages of different types in custom paths.",
+            "keywords": [
+                "composer",
+                "composer-installer",
+                "composer-plugin"
+            ],
+            "time": "2016-05-25T08:26:02+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -160,27 +212,31 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.1.7",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0"
+                "reference": "e38888a75c070304ca5514197d4847a59a5c853f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0",
-                "reference": "2c2370ba3df7034f9eb7b8f387c97b52b2ba5ad0",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/e38888a75c070304ca5514197d4847a59a5c853f",
+                "reference": "e38888a75c070304ca5514197d4847a59a5c853f",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-filter": "*",
+                "ext-hash": "*",
                 "php": ">=5.5.0"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
                 "doctrine/annotations": "^1.2",
-                "friendsofphp/php-cs-fixer": "^2.2",
-                "phpunit/phpunit": "^4.8 || ^5.7"
+                "phpcompatibility/php-compatibility": "^9.3.5",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.5.6",
+                "yoast/phpunit-polyfills": "^0.2.0"
             },
             "suggest": {
                 "ext-mbstring": "Needed to send email in multibyte encoding charset",
@@ -220,11 +276,11 @@
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "funding": [
                 {
-                    "url": "https://github.com/synchro",
+                    "url": "https://github.com/Synchro",
                     "type": "github"
                 }
             ],
-            "time": "2020-07-14T18:50:27+00:00"
+            "time": "2020-11-25T15:24:57+00:00"
         },
         {
             "name": "psr/container",
@@ -916,6 +972,188 @@
                 "templating"
             ],
             "time": "2020-02-11T05:59:23+00:00"
+        },
+        {
+            "name": "viharm/php-db-auth",
+            "version": "v2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/viharm/phpdbauth.git",
+                "reference": "60c1b0a28d26178d5e4960d49185af85734643c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/viharm/phpdbauth/get/60c1b0a28d26178d5e4960d49185af85734643c6.zip",
+                "reference": "60c1b0a28d26178d5e4960d49185af85734643c6",
+                "shasum": ""
+            },
+            "require": {
+                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "php": ">=5.3.0",
+                "viharm/php-khelper": "^1.4.1"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "./Lib/phpKhelper": [
+                        "viharm/php-khelper"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Viharm",
+                    "email": "viharm@malviya.net",
+                    "homepage": "http://viharm.malviya.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP library for looking up users in a database table field",
+            "homepage": "https://bitbucket.org/viharm/phpdbauth",
+            "keywords": [
+                "auth",
+                "database",
+                "php"
+            ],
+            "time": "2020-01-05T11:48:12+00:00"
+        },
+        {
+            "name": "viharm/php-khelper",
+            "version": "v1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/viharm/phpKhelper.git",
+                "reference": "92aea82d609d3c9dc39952c9e386578f532e7140"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/viharm%2FphpKhelper/repository/archive.zip?sha=92aea82d609d3c9dc39952c9e386578f532e7140",
+                "reference": "92aea82d609d3c9dc39952c9e386578f532e7140",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Viharm",
+                    "email": "viharm@malviya.net",
+                    "homepage": "http://viharm.malviya.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A companion PHP library to accompany Kint (http://kint-php.github.io/kint/)",
+            "homepage": "https://gitlab.com/viharm/phpKhelper",
+            "keywords": [
+                "debug",
+                "kint",
+                "php"
+            ],
+            "time": "2018-09-15T08:27:02+00:00"
+        },
+        {
+            "name": "viharm/php-ldap-auth",
+            "version": "v2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/viharm/phpldapauth.git",
+                "reference": "3a60e626bfb63eda786dad30f09bd75fd5172cb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/viharm/phpldapauth/get/3a60e626bfb63eda786dad30f09bd75fd5172cb1.zip",
+                "reference": "3a60e626bfb63eda786dad30f09bd75fd5172cb1",
+                "shasum": ""
+            },
+            "require": {
+                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "php": ">=5.3.0",
+                "viharm/php-khelper": "^1.4.1"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "./Lib/phpKhelper": [
+                        "viharm/php-khelper"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Viharm",
+                    "email": "viharm@malviya.net",
+                    "homepage": "http://viharm.malviya.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP library for authenticating with a directory server",
+            "homepage": "https://bitbucket.org/viharm/phpldapauth",
+            "keywords": [
+                "ad",
+                "auth",
+                "ldap",
+                "openldap",
+                "php"
+            ],
+            "time": "2020-11-24T21:56:47+00:00"
+        },
+        {
+            "name": "viharm/psm-ldap-auth",
+            "version": "v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/viharm/PsmLDAPauth.git",
+                "reference": "1addeb0403a19e457f2c622a67156f52568da308"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/viharm%2FPsmLDAPauth/repository/archive.zip?sha=1addeb0403a19e457f2c622a67156f52568da308",
+                "reference": "1addeb0403a19e457f2c622a67156f52568da308",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "viharm/php-db-auth": "^2.6.0",
+                "viharm/php-ldap-auth": "^2.4.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Viharm",
+                    "email": "viharm@malviya.net",
+                    "homepage": "http://viharm.malviya.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Module for authenticating PHP Server Monitor users against a directory",
+            "homepage": "https://gitlab.com/viharm/PsmLDAPauth",
+            "keywords": [
+                "ad",
+                "auth",
+                "ldap",
+                "openldap",
+                "php",
+                "php server monitor",
+                "psm"
+            ],
+            "time": "2020-11-24T22:57:57+00:00"
         }
     ],
     "packages-dev": [],
