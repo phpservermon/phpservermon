@@ -196,6 +196,7 @@ $sm_lang = array(
         'general' => 'Allgemein',
         'language' => 'Sprache',
         'show_update' => 'Wöchentlich auf Aktualisierungen prüfen?',
+        'email_add_url' => 'Server URL an E-Mail anhängen?',
         'email_status' => 'E-Mail-Versand erlauben?',
         'email_from_email' => 'Absenderadresse',
         'email_from_name' => 'Name des Absenders',
@@ -221,6 +222,9 @@ $sm_lang = array(
         'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s"
  target="_blank" rel="noopener">Anwendung hier registrieren</a> und Ihren
  Anwendungs-API-Token hier eingeben.',
+        'telegram_status' => 'Telegram Nachrichten erlauben?',
+        'telegram_add_url' => 'Server URL an Nachricht anhängen?',
+        'jabber_status' => 'Allow sending Jabber (XMPP) messages',
         'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
         'alert_type_description' => '<b>Status geändert:</b> ... wenn sich der Status ändert<br>z. B. online ->
  offline oder offline -> online.<br><br><b>Offline: </b>Sie bekommen eine
@@ -237,6 +241,7 @@ $sm_lang = array(
         'log_email' => 'E-Mail-Versand protokollieren?',
         'log_sms' => 'SMS-Versand protokollieren?',
         'log_pushover' => 'Pushover-Versand protokollieren?',
+        'log_telegram' => 'Telegram-Versand protokollieren?',
         'updated' => 'Die Einstellungen wurden gespeichert.',
         'tab_email' => 'E-Mail',
         'tab_sms' => 'SMS',

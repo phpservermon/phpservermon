@@ -426,7 +426,8 @@ class StatusNotifier
 
         $body = key_exists('message', $combi) ?
             $combi['message'] :
-            psm_parse_msg($this->status_new, 'email_body', $this->server);
+	    psm_parse_msg($this->status_new, 'email_body', $this->server);
+	if (bool)psm_get_conf('email_add_url')) $body .= PHP_EOL.PHP_EOL.'<a href="'.PSM_BASE_URL.'">'.PSM_BASE_URL.'</a>';
         $mail->Body = $body;
         $mail->AltBody = str_replace('<br/>', "\n", $body);
 
@@ -695,8 +696,9 @@ class StatusNotifier
         $message = key_exists('message', $combi) ?
             $combi['message'] :
             psm_parse_msg($this->status_new, 'telegram_message', $this->server);
+	if (bool)psm_get_conf('telegram_add_url')) $body .= PHP_EOL.PSM_BASE_URL;
         $telegram = psm_build_telegram();
-        $telegram->setMessage($message);
+        $telegram->setMessage($message;
         
         // Log
         if (psm_get_conf('log_telegram')) {

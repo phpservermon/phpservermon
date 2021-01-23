@@ -142,6 +142,8 @@
                 {{ macro.input_checkbox("email_status", "email_status[]", label_email_status, email_status_checked) }}
                 <!-- enable email log -->
                 {{ macro.input_checkbox("log_email", "log_email[]", label_log_email, log_email_checked) }}
+                <!-- enable adding url to email -->
+                {{ macro.input_checkbox("email_add_url", "email_add_url[]", label_email_add_url, email_add_url_checked) }}
                 <!-- email name -->
                 {{ macro.input_field("text", "email_from_name", null, "email_from_name", label_email_from_name, email_from_name, label_email_from_name, "255") }}
                 <!-- email address -->
@@ -222,6 +224,8 @@
                 {{ macro.input_checkbox("telegram_status", "telegram_status[]", label_telegram_status, telegram_status_checked) }}
                 <!-- enable telegram log -->
                 {{ macro.input_checkbox("log_telegram", "log_telegram[]", label_log_telegram, log_telegram_checked) }}
+                <!-- enable adding url to telegram -->
+                {{ macro.input_checkbox("telegram_add_url", "telegram_add_url[]", label_telegram_add_url, telegram_add_url_checked) }}
                 <!-- telegram key -->
                 {{ macro.input_field("text", "telegram_api_token", null, "telegram_api_token", label_telegram_api_token, telegram_api_token, label_telegram_api_token, "255", "telegram_api_token_help", label_telegram_api_token_description) }}
                 {{ macro.button_test("testTelegram", label_test) }}
