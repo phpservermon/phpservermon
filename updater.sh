@@ -50,7 +50,7 @@ echo Downloading latest Version of PHPServerMonitor \($version\)
 downloadfile=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep "zipball" | cut -d '"' -f 4)
 
 # download latest release
-curl -so update.zip.keep $downloadfile
+curl -Lso update.zip.keep $downloadfile
 
 echo Save config.php 
 mv config.php config.php.keep
