@@ -419,6 +419,7 @@ namespace {
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_CERTINFO, 1);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, '');
 
         if (!empty($request_method)) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
