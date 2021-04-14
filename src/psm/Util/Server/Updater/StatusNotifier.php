@@ -696,7 +696,7 @@ class StatusNotifier
         $message = key_exists('message', $combi) ?
             $combi['message'] :
             psm_parse_msg($this->status_new, 'telegram_message', $this->server);
-	    if ((bool)psm_get_conf('telegram_add_url')) $body .= PHP_EOL.PSM_BASE_URL;
+	    if ((bool)psm_get_conf('telegram_add_url')) $message .= '<br>'.PSM_BASE_URL;
         $telegram = psm_build_telegram();
         $telegram->setMessage($message);
         
