@@ -287,7 +287,7 @@ class StatusNotifier
             $this->combine ? $this->setCombi('telegram') : $this->notifyByTelegram($users);
         }
 
-        if ($this->send_jabber && $this->server['jaber'] == 'yes') {
+        if ($this->send_jabber && $this->server['jabber'] == 'yes') {
             $this->combine ? $this->setCombi('jabber') : $this->notifyByJabber($users);
         }
 
