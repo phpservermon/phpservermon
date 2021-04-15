@@ -316,7 +316,7 @@ class StatusNotifier
             }
             return;
         }
-        
+
         $this->combiNotification['notifications'][$method][$status][$this->server_id] =
             psm_parse_msg($this->status_new, $method . '_message', $this->server, true);
     }
@@ -632,7 +632,14 @@ class StatusNotifier
             }
             $webhook->setUrl($user['webhook_url']);
             $webhook->setJson($user['webhook_json']);
-            $webhook->sendWebhook($message);
+            $webhook->sendWebhook([
+                '#message' => $message,
+                '#server_ip' => $this->server['ip'],
+                '#server_label' => $this->server['label'],
+                '#server_error' => $this->server['error'],
+                '#server_last_offline_duration' => $this->status_new ? $this->server['last_offline_duration'] : '',
+                '#status' => $this->status_new ? 'online' : 'offline'
+            ]);
         }
     }
     /**
@@ -699,12 +706,12 @@ class StatusNotifier
 	    if ((bool)psm_get_conf('telegram_add_url')) $message .= '<br>'.PSM_BASE_URL;
         $telegram = psm_build_telegram();
         $telegram->setMessage($message);
-        
+
         // Log
         if (psm_get_conf('log_telegram')) {
             $log_id = psm_add_log($this->server_id, 'telegram', $message);
         }
-        
+
         foreach ($users as $user) {
             // Log
             if (!empty($log_id)) {
