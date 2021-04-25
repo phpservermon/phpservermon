@@ -1,5 +1,0 @@
-fixtures:
-  repositories:
-    stdlib: http://github.com/puppetlabs/puppetlabs-stdlib.git
-  symlinks:
-    java: "#{source_dir}"
