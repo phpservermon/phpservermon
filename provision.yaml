@@ -77,3 +77,9 @@
 
   - name: copy psm config file
     shell: /bin/cp -far /vagrant/dev/config.php /vagrant/config.php
+
+  - name: apply nginx modifications
+    service:
+        name: nginx
+        state: restarted
+
