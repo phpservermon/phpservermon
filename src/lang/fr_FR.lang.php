@@ -136,7 +136,7 @@ $sm_lang = array(
  rel="noopener"><button class="btn btn-primary">Étape suivante</button></a>
  <br>Cela va ouvrir une conversation avec le BOT. Vous devez appuyer sur
  \'/start\' ou le saisir.',
-        'telegram_bot_username_error_token' => '<b>401 - Unauthorized</b>. Assuez-vous que le Token API soit valide.',
+        'telegram_bot_username_error_token' => '<b>401 - Unauthorized</b>. Assurez-vous que le Token API soit valide.',
         'telegram_bot_error' => 'Une erreur s\'est produite en tentant d\'activer les notifications Telegram&nbsp;: %s',
         'delete_title' => 'Supprimer un utilisateur',
         'delete_message' => 'Êtes-vous sûr de vouloir supprimer l\'utilisateur \'%1\'&nbsp;?',
@@ -194,7 +194,7 @@ $sm_lang = array(
         'custom_request_method' => 'Type de requête personalisée',
         'popular_request_methods' => 'Type de requête prédéfinie',
         'post_field' => 'Champ POST',
-        'post_field_description' => 'Les données qui seront envoyés en utilisant le type de requête choisi.',
+        'post_field_description' => 'Les données qui seront envoyées en utilisant le type de requête choisi.',
         'please_select' => 'Veuillez choisir',
         'type' => 'Type',
         'type_website' => 'Site Web',
@@ -209,14 +209,14 @@ $sm_lang = array(
  site, le serveur sera considéré hors-ligne.',
         'redirect_check' => 'La redirection vers un autre domaine est',
         'redirect_check_description' => 'Une redirection vers un autre domaine est généralement mauvais signe.',
-        'allow_http_status' => 'Autoriser les codes de status HTTP',
-        'allow_http_status_description' => 'Marquer le serveur en ligne. Les codes de status HTTP inférieur à 400
- sont considérés comme en ligne par défaut. Séparés les valeurs avec
+        'allow_http_status' => 'Autoriser Les codes de statuts HTTP',
+        'allow_http_status_description' => 'Marquer le serveur en ligne. Les codes de statuts HTTP inférieur à 400
+ sont considérés comme en ligne par défaut. Séparer les valeurs avec
  |.',
         'header_name' => 'Nom d\'en-têtes',
         'header_value' => 'Valeur d\'en-tête',
         'header_name_description' => 'Sensible à la casse.',
-        'header_value_description' => 'Les expréssions régulières sont autorisées.',
+        'header_value_description' => 'Les expressions régulières sont autorisées.',
         'last_check' => 'Dernière vérification',
         'last_online' => 'Dernière fois OK',
         'last_offline' => 'Dernière fois hors-ligne',
@@ -277,11 +277,10 @@ $sm_lang = array(
         'general' => 'Général',
         'language' => 'Langue',
         'show_update' => 'Vérifier les nouvelles mises à jour chaque semaine',
-        'password_encrypt_key' => 'Clée de cryptage des mots de passe',
-        'password_encrypt_key_note' => 'Cette clée est utilisée pour crypter les mots de passe qui sont enregistrés
- dans la base de donnée pour les serveurs qui requiert une authentification.
- Si la clé est modifié, les mots de passe enregistré ne seront plus
- valide&nbsp;!',
+        'password_encrypt_key' => 'Clé de chiffrement des mots de passe',
+        'password_encrypt_key_note' => 'password_encrypt_key_note' => 'Cette clé est utilisée pour chiffrer les mots 
+de passe qui sont enregistrés dans la base de données pour les serveurs qui requierent une authentification. Si la clé 
+est modifiée, les mots de passe enregistrés ne seront plus valide&nbsp;!',
         'proxy' => 'Activer le proxy',
         'proxy_url' => 'URL du proxy',
         'proxy_user' => 'Nom d\'utilisateur du proxy',
@@ -358,8 +357,8 @@ $sm_lang = array(
         'settings_notification' => 'Configuration des notifications',
         'settings_log' => 'Configuration des événements',
         'settings_proxy' => 'Configuration du proxy',
-        'auto_refresh' => 'Auto-rachaîchissement',
-        'auto_refresh_description' => 'Auto-rachaîchissement de la page serveurs.<br><span class="small">Temps en
+        'auto_refresh' => 'Auto-rafraîchissement',
+        'auto_refresh_description' => 'Auto-rafraîchissement de la page serveurs.<br><span class="small">Temps en
  secondes. Si 0, la page n\'est pas rafraîchie.</span>',
         'test' => 'Tester',
         'test_email' => 'Un email va vous être envoyé à l\'adresse définie dans votre profil utilisateur.',
@@ -385,9 +384,9 @@ $sm_lang = array(
  définie dans votre profil.',
         'telegram_sent' => 'Notification Telegram envoyée',
         'telegram_error' => 'Une erreur s\'est produite lors de l\'envoi de la notification&nbsp;: %s',
-        'telegram_error_notoken' => 'Impossible d\'envoyé la notification de test&nbsp;: aucun token APII token
+        'telegram_error_notoken' => 'Impossible d\'envoyer la notification de test&nbsp;: aucun token APII token
  trouvé dans la configuration.',
-        'telegram_error_noid' => 'Impossible d\'envoyé la notification de test&nbsp;: aucun ID de conversation
+        'telegram_error_noid' => 'Impossible d\'envoyer la notification de test&nbsp;: aucun ID de conversation
  trouvé dans votre profil utilisateur.',
         'log_retention_period' => 'Durée de conservation',
         'log_retention_period_description' => 'Nombre de jours de conservation des événements envoyés et des temps
@@ -416,7 +415,7 @@ $sm_lang = array(
         'on_pushover_message' => 'Le Serveur \'%LABEL%\' est de nouveau OK, il était hors-ligne pendant
  %LAST_OFFLINE_DURATION%:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port:
  %PORT%<br>Date: %DATE%',
-        'on_telegram_message' => 'Server \'%LABEL%\' is running again, it was down for:
+        'on_telegram_message' => 'Server \'%LABEL%\' est de nouveau OK, il était hors-ligne pendant:
  %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date:
  %DATE%',
         'combi_off_email_message' => '<ul><li>Serveur&nbsp;: %LABEL%</li><li>IP&nbsp;: %IP%</li><li>Port&nbsp;:
@@ -433,15 +432,15 @@ $sm_lang = array(
  %DATE%</li></ul>',
         'combi_on_telegram_message' => '- Serveur&nbsp;: %LABEL%<br>- IP: %IP%<br>- Port&nbsp;: %PORT%<br>-
  Durée&nbsp;: %LAST_OFFLINE_DURATION%<br>- Date&nbsp;: %DATE%<br><br>',
-        'combi_email_subject' => 'IMPORTANT&nbsp;: \'%UP%\' serveurs de nouveaux en ligne, \'%DOWN%\' serveurs
+        'combi_email_subject' => 'IMPORTANT&nbsp;: \'%UP%\' serveur(s) de nouveau en ligne, \'%DOWN%\'
  hors-ligne',
-        'combi_pushover_subject' => '\'%UP%\' serveurs de nouveaux en ligne, \'%DOWN%\' serveurs hors-ligne',
-        'combi_email_message' => '<b>Les serveurs suivants sont hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Les
- serveurs suivants sont en ligne&nbsp;:</b><br>%UP_SERVERS%',
-        'combi_pushover_message' => '<b>Les serveurs suivants sont hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Les
- serveurs suivants sont en ligne&nbsp;:</b><br>%UP_SERVERS%',
-        'combi_telegram_message' => '<b>Les serveurs suivants sont hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Les
- serveurs suivants sont en ligne&nbsp;:</b><br>%UP_SERVERS%',
+        'combi_pushover_subject' => '\'%UP%\' serveur(s) de nouveaux en ligne, \'%DOWN%\' serveur(s) hors-ligne',
+        'combi_email_message' => '<b>Le(s) serveur(s) suivant(s) hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Le(s)
+ serveur(s) suivant(s) en ligne&nbsp;:</b><br>%UP_SERVERS%',
+        'combi_pushover_message' => '<b>Le(s) serveur(s) suivant(s) hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Le(s)
+ serveur(s) suivant(s) en ligne&nbsp;:</b><br>%UP_SERVERS%',
+        'combi_telegram_message' => '<b>Le(s) serveur(s) suivant(s) hors-ligne&nbsp;:</b><br>%DOWN_SERVERS%<br><b>Le(s)
+ serveur(s) suivant(s) en ligne&nbsp;:</b><br>%UP_SERVERS%',
     ),
     'login' => array(
         'welcome_usermenu' => 'Bonjour %user_name%',
