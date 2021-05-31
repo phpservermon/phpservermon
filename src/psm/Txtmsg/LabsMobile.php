@@ -20,11 +20,11 @@
  *
  * @package     phpservermon
  * @author      Erik Shupingahua  <erikrs92@gmail.com>
- * @copyright   Copyright (c) 2020 Erik Shupingahua <erikrs92@gmail.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.1
+ * @since       phpservermon 3.5
  **/
 
 namespace psm\Txtmsg;
