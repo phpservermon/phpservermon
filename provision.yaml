@@ -7,7 +7,7 @@
     package:
      name: '*'
      state: latest
- 
+
      #  - name: Install base packages
      #    apt: name={{ item }} state=installed
      #    with_items:
@@ -15,7 +15,7 @@
      #      - tmux
      #    tags:
      #      - packages
-     #  
+     #
 
 
      #  - name: Update apt-get repo and cache
@@ -30,7 +30,7 @@
 
   - name: Update repositories cache
     apt:
-      update_cache: yes     
+      update_cache: yes
 
   - name: ensure nginx is at the latest version
     apt: name=nginx state=latest
