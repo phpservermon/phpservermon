@@ -147,6 +147,7 @@ class Installer
                     ('proxy_user', ''),
                     ('proxy_password', ''),
                     ('email_status', '1'),
+                    ('email_add_url', '0'),
                     ('email_from_email', 'monitor@example.org'),
                     ('email_from_name', 'Server Monitor'),
                     ('email_smtp', ''),
@@ -164,6 +165,7 @@ class Installer
                     ('pushover_status', '0'),
                     ('pushover_api_token', ''),
                     ('telegram_status', '0'),
+                    ('telegram_add_url', '0'),
                     ('telegram_api_token', ''),
                     ('jabber_status', '1'),
                     ('jabber_host', ''),
@@ -724,7 +726,6 @@ class Installer
                     ('jabber_username', ''),
                     ('jabber_domain', ''),
                     ('jabber_password', '');";
-
         $this->execSQL($queries);
     }
 
@@ -754,6 +755,11 @@ class Installer
             ADD `discord` VARCHAR( 255 ) NOT NULL AFTER `mobile`;";
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `discord` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER  `sms`;";
+        $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` (
+            `user_name`, `level`, `name`, `email`)
+            VALUES ('__PUBLIC__', 30, 'Public page', 'publicpage@psm.psm')";
         $this->execSQL($queries);
+
+        $this->log('Public page is now available. Added user \'__PUBLIC__\'. See documentation for more info.');
     }
 }

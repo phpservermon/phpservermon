@@ -282,12 +282,25 @@ class UserController extends AbstractController
             $user_validator->username($clean['user_name'], $user_id);
             $user_validator->email($clean['email']);
             $user_validator->level($clean['level']);
+            
+            // Won't allow anonymous level for users other than __PUBLIC__
+            if ($clean['user_name'] !== "__PUBLIC__" && (int) $clean['level'] === (int) PSM_USER_ANONYMOUS) {
+                $this->addMessage(psm_get_lang('users', 'error_user_cant_be_anonymous'), 'error');
+                $clean['level'] = PSM_USER_USER;
+            }
 
             // always validate password for new users,
             // but only validate it for existing users when they change it.
-            if ($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
+            if (($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) && $clean['user_name'] != '__PUBLIC__') {
                 $user_validator->password($clean['password'], $clean['password_repeat']);
             }
+
+            // Auto generate password for __PUBLIC__ user
+            if ($clean['user_name'] === '__PUBLIC__') {
+                $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+                $clean['password'] = substr(str_shuffle($chars), 0, 24);
+            }
+
             if ($user_id > 0) {
                 $user_validator->userId($user_id);
             }

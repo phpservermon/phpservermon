@@ -106,7 +106,10 @@ $sm_lang = array(
         'level' => 'Level',
         'level_10' => 'Administrator',
         'level_20' => 'User',
-        'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the global configuration.<br><b>Users</b> can only view and run the updater for the servers that have been assigned to them.',
+        'level_30' => 'Anonymous',
+        'level_description' => '<b>Administrators</b> have full access: they can manage servers, users and edit the
+ global configuration.<br><b>Users</b> can only view and run the updater for the
+ servers that have been assigned to them.',
         'mobile' => 'Mobile',
         'email' => 'Email',
         'pushover' => 'Pushover',
@@ -131,12 +134,11 @@ $sm_lang = array(
         'jabber_label' => 'Jabber',
         'jabber_description' => 'You Jabber account',
         'webhook' => 'Webhook',
-        'webhook_description' => 'Send a json webhook to a certain endpoint. <br/> The json can be customized, e.g. {
-"text":"servermon: #message"}',
+        'webhook_description' => 'Send a json webhook to a certain endpoint.',
         'webhook_url' => 'Webhook Url',
         'webhook_url_description' => 'Webhook public endpoint url, should start with https://.',
         'webhook_json' => 'Webhook JSON',
-        'webhook_json_description' => 'Define a custom json, use #message as message variable.',
+        'webhook_json_description' => 'Define a custom json, e.g. {"username": "servermon: #server_label" "text": "#server_ip is **#status**"}.<br>Available variables: #message, #server_error, #server_ip, #server_label, #server_last_offline_duration and #status',
         'delete_title' => 'Delete User',
         'delete_message' => 'Are you sure you want to delete user \'%1\'?',
         'deleted' => 'User deleted.',
@@ -154,6 +156,7 @@ $sm_lang = array(
         'error_user_password_invalid' => 'The entered password is invalid.',
         'error_user_password_no_match' => 'The entered passwords do not match.',
         'error_user_admin_cant_be_deleted' => 'You can\'t remove the last administrator.',
+        'error_user_cant_be_anonymous' => 'Only user \'__public__\' can have the level anonymous.'
     ),
     'log' => array(
         'title' => 'Log entries',
@@ -293,6 +296,7 @@ $sm_lang = array(
         'proxy_user' => 'Proxy username',
         'proxy_password' => 'Proxy password',
         'email_status' => 'Allow sending email',
+        'email_add_url' => 'Add url to the monitor in email',
         'email_from_email' => 'Email from address',
         'email_from_name' => 'Email from name',
         'email_smtp' => 'Enable SMTP',
@@ -315,13 +319,14 @@ $sm_lang = array(
         'webhook_url' => 'Webhook Url',
         'webhook_url_description' => 'Url to webhook endpoint',
         'webhook_json' => 'Webhook Json',
-        'webhook_json_description' => 'Customized Json, use #message as message variable.',
+        'webhook_json_description' => 'Define a custom json. Available variables: #message, #server_error, #server_ip, #server_label, #server_last_offline_duration and #status',
         'pushover_status' => 'Allow sending Pushover messages',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_clone_app' => 'Click here to create your Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Before you can use Pushover, you need to <a href="%1$s" target="_blank" rel="noopener">register an App</a> at their website and enter the App API Token here.',
         'telegram_status' => 'Allow sending Telegram messages',
+        'telegram_add_url' => 'Add url to the monitor in the message',
         'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> is a chat app that makes it easy to get real-time notifications. Visit the <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for more info and an install guide.',
         'telegram_api_token' => 'Telegram API Token',
         'telegram_api_token_description' => 'Before you can use Telegram, you need to get a API token. Visit the <a href="http://docs.phpservermonitor.org/" target="_blank">documentation</a> for help.',
@@ -338,6 +343,53 @@ $sm_lang = array(
         'jabber_password' => 'Password',
         'jabber_password_description' => 'Fill only to set or change.',
         'jabber_check' => 'Check your Jabber account if message was received.',
+        'dirauth_status' => 'Authenticate with directory service',
+        'authdir_host_locn' => 'Directory host',
+        'authdir_host_port' => 'Directory port',
+        'authdir_type' => 'Service type',
+        'authdir_type_description' => 'OpenLDAP: Directory is an OpenLDAP service.<br>AD
+        DS: Directory is an Active Directory Domain Service.<br>AD
+        LDS: Directory is an Active Directory Lightweight Directory
+        Service.',
+        'authdir_type_openldap' => 'OpenLDAP',
+        'authdir_type_adds' => 'AD DS',
+        'authdir_type_adlds' => 'AD LDS',
+        'authdir_userdomain' => 'Active Directory domain',
+        'authdir_userdomain_description' => 'User domain for Active Directory. This is typically the NETBIOS domain
+        for AD DS and the DNS domain for AD LDS. Not used for OpenLDAP
+        directories.',
+        'authdir_ldapver' => 'LDAP protocol version',
+        'authdir_ldapver_description' => 'Version of the LDAP specification. This is typically Version 3 (default).
+        Version 2 was deprecated in 2003 (RFC3494).',
+        'authdir_ldapfollowref' => 'Follow referrals',
+        'authdir_ldapfollowref_description' => 'Follow referrals if the specified server refers to another server for
+        the required information. Leave unchecked if you are unaware of this
+        functionality.',
+        'authdir_basedn' => 'Base DN*',
+        'authdir_basedn_description' => 'Base distinguished name (DN) of the directory service. E.g.,
+        dc=domain,dc=tld. This is a required field.',
+        'authdir_usernameattrib' => 'Username attribute',
+        'authdir_usernameattrib_description' => 'Attribute used by the directory service to refer to the username of
+        the user.',
+        'authdir_groupnameattrib' => 'Group name attribute',
+        'authdir_groupnameattrib_description' => 'Attribute used by the directory service to refer to the group name
+        of a group. This is used to check for group membership.',
+        'authdir_groupmemattrib' => 'Group member attribute',
+        'authdir_groupmemattrib_description' => 'Attribute used by the directory service to refer to the group(s) of
+        which the user is a member. This is used to check for group
+        membership.',
+        'authdir_usercontainerrdn' => 'User container RDN',
+        'authdir_usercontainerrdn_description' => 'Relative distinguished name of the users container in the
+        directory. E.g., ou=Users',
+        'authdir_groupcontainerrdn' => 'Group container RDN',
+        'authdir_groupcontainerrdn_description' => 'Relative distinguished name of the groups container in the
+        directory. E.g., ou=Groups',
+        'authdir_groupname' => 'Authorised directory group',
+        'authdir_groupname_description' => 'Directory group authorised to access application. Directory users not
+        members of this group will not be authenticated (currently not available
+        for AD).',
+        'authdir_defaultrole' => 'Default role',
+        'authdir_defaultrole_description' => 'Default role to be assigned to users logging in for the first time.',
         'alert_type' => 'Select when you\'d like to be notified.',
         'alert_type_description' => '<b>Status change:</b> You will receive a notification when a server has a change in status. So from online -> offline or offline -> online.<br><br><b>Offline:</b> You will receive a notification when a server goes offline for the *FIRST TIME ONLY*. For example, your cronjob is every 15 minutes and your server goes down at 1 am and stays down till 6 am. You will get 1 notification at 1 am and that\'s it.<br><br><b>Always:</b> You will receive a notification every time the script runs and a site is down, even if the site has been offline for hours.',
         'alert_type_status' => 'Status change',
@@ -364,6 +416,7 @@ $sm_lang = array(
         'tab_webhook' => 'Webhook',
         'tab_telegram' => 'Telegram',
         'tab_jabber' => 'Jabber',
+        'tab_auth' => 'Authentication',
         'settings_email' => 'Email settings',
         'settings_sms' => 'Text message settings',
         'settings_discord' => 'Discord settings',
@@ -374,6 +427,7 @@ $sm_lang = array(
         'settings_notification' => 'Notification settings',
         'settings_log' => 'Log settings',
         'settings_proxy' => 'Proxy settings',
+        'settings_dirauth' => 'LDAP settings',
         'auto_refresh' => 'Auto-refresh',
         'auto_refresh_description' => 'Auto-refresh servers page.<br><span class="small">Time in seconds, if 0 the page won\'t refresh.</span>',
         'test' => 'Test',
@@ -409,8 +463,8 @@ $sm_lang = array(
         'telegram_error' => 'An error has occurred while sending the Telegram notification: %s',
         'telegram_error_notoken' => 'Unable to send test notification: no Telegram API token found in the global configuration.',
         'telegram_error_noid' => 'Unable to send test notification: no chat id found in your profile.',
-        'jabber_sent' => 'Telegram notification sent',
-        'jabber_error' => 'An error has occurred while sending the Telegram notification: %s',
+        'jabber_sent' => 'Jabber notification sent',
+        'jabber_error' => 'An error has occurred while sending the Jabber notification: %s',
         'jabber_error_noconfig' => 'Unable to send test notification: no Jabber account set in the global configuration.',
         'jabber_error_noaccount' => 'Unable to send test notification: no Jabber account found in your profile.',
         'log_retention_period' => 'Log retention period',

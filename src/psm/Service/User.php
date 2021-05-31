@@ -100,6 +100,17 @@ class User
             }
             $this->session = $session;
 
+            if (PSM_PUBLIC === true && PSM_PUBLIC_PAGE === true) {
+                $query_user = $this->db_connection->prepare('SELECT * FROM ' .
+                    PSM_DB_PREFIX . 'users WHERE user_name = :user_name and level = :level');
+                $query_user->bindValue(':user_name', "__PUBLIC__", \PDO::PARAM_STR);
+                $query_user->bindValue(':level', PSM_USER_ANONYMOUS, \PDO::PARAM_STR);
+                $query_user->execute();
+
+                // get result row (as an object)
+                $this->setUserLoggedIn($query_user->fetchObject()->user_id);
+            }
+
             if ((!defined('PSM_INSTALL') || !PSM_INSTALL)) {
                 // check the possible login actions:
                 // 1. login via session data (happens each time user opens a page on your php project AFTER
@@ -219,20 +230,51 @@ class User
     {
         $user_name = trim($user_name);
         $user_password = trim($user_password);
+        $ldapauthstatus = false;
 
         if (empty($user_name) && empty($user_password)) {
             return false;
         }
+
+        $dirauthconfig = psm_get_conf('dirauth_status');
+        
+        // LDAP auth enabled
+        if ($dirauthconfig === '1') {
+            $ldaplibpath = realpath(
+                PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR .
+                'vendor' . DIRECTORY_SEPARATOR .
+                'viharm' . DIRECTORY_SEPARATOR .
+                'psm-ldap-auth' . DIRECTORY_SEPARATOR .
+                'psmldapauth.php'
+            );
+            // If the library is found
+            if ($ldaplibpath) {
+                // Delegate the authentication to the PsmLDAPauth module.
+                // If LDAP auth fails or if library not found, fall back to native auth
+                include_once($ldaplibpath);
+                $ldapauthstatus = psmldapauth($user_name, $user_password, $GLOBALS['sm_config'], $this->db_connection);
+            }
+        }
+
         $user = $this->getUserByUsername($user_name);
 
-        // using PHP 5.5's password_verify() function to check if the provided passwords
-        // fits to the hash of that user's password
-        if (!isset($user->user_id)) {
-            password_verify($user_password, 'dummy_call_against_timing');
-            return false;
-        } elseif (!password_verify($user_password, $user->password)) {
-            return false;
-        }
+        // Authenticated
+        if ($ldapauthstatus === true) {
+          // Remove password to prevent it from being saved in the DB.
+          // Otherwise, user may still be authenticated if LDAP is disabled later.
+          $user_password = null;
+          @fn_Debug('Authenticated', $user);
+        } else {
+
+          // using PHP 5.5's password_verify() function to check if the provided passwords
+          // fits to the hash of that user's password
+          if (!isset($user->user_id)) {
+              password_verify($user_password, 'dummy_call_against_timing');
+              return false;
+          } elseif (!password_verify($user_password, $user->password)) {
+              return false;
+          }
+        } // not authenticated
 
         $this->setUserLoggedIn($user->user_id, true);
 
