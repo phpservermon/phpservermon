@@ -278,7 +278,7 @@ $sm_lang = array(
         'language' => 'Langue',
         'show_update' => 'Vérifier les nouvelles mises à jour chaque semaine',
         'password_encrypt_key' => 'Clé de chiffrement des mots de passe',
-        'password_encrypt_key_note' => 'password_encrypt_key_note' => 'Cette clé est utilisée pour chiffrer les mots 
+        'password_encrypt_key_note' => 'Cette clé est utilisée pour chiffrer les mots 
 de passe qui sont enregistrés dans la base de données pour les serveurs qui requierent une authentification. Si la clé 
 est modifiée, les mots de passe enregistrés ne seront plus valide&nbsp;!',
         'proxy' => 'Activer le proxy',
