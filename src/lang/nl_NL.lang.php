@@ -250,6 +250,7 @@ $sm_lang = array(
         'language' => 'Taal',
         'show_update' => 'Controleer wekelijks voor updates?',
         'email_status' => 'Sta email berichten toe?',
+        'email_add_url' => 'Voeg url van de monitor toe aan de email',
         'email_from_email' => 'Email van adres',
         'email_from_name' => 'Email van naam',
         'email_smtp' => 'SMTP gebruiken',
@@ -275,6 +276,7 @@ $sm_lang = array(
  target="_blank" rel="noopener">App registreren</a> via hun website, en
  daarvan de App API Token hier invullen.',
         'telegram_status' => 'Sta Telegram berichten toe?',
+        'telegram_add_url' => 'voeg url van de monitor toe aan het bericht',
         'telegram_api_token' => 'Telegram API Token',
         'alert_type' => 'Selecteer wanneer je een notificatie wilt',
         'alert_type_description' => '<b>Status verandert:</b> Je ontvangt alleen bericht wanneer een server van status

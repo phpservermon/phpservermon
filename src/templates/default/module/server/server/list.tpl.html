@@ -63,17 +63,23 @@
 						</span>
 					{% endif %}
 					{% if server.telegram|lower == 'yes' and config.telegram|lower%}
-						<span class="fa-layers">
-							<i class="fas fa-circle" title="{{ label_telegram }}"></i>
-							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">T</span>
-						</span>
+                        <i class="fab fa-telegram" title="{{ label_telegram }}"></i>
 					{% endif %}
 					{% if server.jabber|lower == 'yes'%}
 					<span class="fa-layers">
-							<i class="fas fa-circle" title="{{ label_jabber }}"></i>
-							<span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
-						</span>
-					{% endif %}
+                        <i class="fas fa-circle" title="{{ label_jabber }}"></i>
+                        <span class="fa-layers-text fa-inverse" style="font-weight:400; font-size:75%">J</span>
+                    </span>
+                    {% endif %}
+                    {% if server.discord|lower == 'yes' and config.discord|lower %}
+                        <i class="fab fa-discord" title="{{ label_discord }}"></i>
+                    {% endif %}
+                    {% if server.webhook|lower == 'yes' and config.webhook|lower %}
+                        <span class="fa-layers">
+                            <i class="fas fa-circle" title="{{ label_webhook }}"></i>
+                            <span class="fa-layers-text fa-inverse" style="font-weight:600; font-size:55%">W</span>
+                        </span>
+                    {% endif %}
 				</td>
 				{% if user_level == 10 %}
 				<td>

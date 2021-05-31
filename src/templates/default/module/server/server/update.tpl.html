@@ -143,7 +143,11 @@
 			<!-- Telegram -->
 			{{ macro.input_select_monitoring("telegram", "telegram", label_send_telegram, edit_telegram_selected, label_yes, label_no, warning_telegram, label_warning_telegram) }}
 			<!-- Jabber -->
-			{{ macro.input_select_monitoring("jabber", "jabber", label_send_jabber, edit_jabber_selected, label_yes, label_no, warning_jabber, label_warning_jabber) }}
+            {{ macro.input_select_monitoring("jabber", "jabber", label_send_jabber, edit_jabber_selected, label_yes, label_no, warning_jabber, label_warning_jabber) }}
+            <!-- Discord -->
+            {{ macro.input_select_monitoring("discord", "discord", label_send_discord, edit_discord_selected, label_yes, label_no, warning_discord, label_warning_discord) }}
+            <!-- Webhook -->
+            {{ macro.input_select_monitoring("webhook", "webhook", label_send_webhook, edit_webhook_selected, label_yes, label_no, warning_webhook, label_warning_webhook) }}
 		</div>
     </fieldset>
 	<fieldset>

@@ -8,6 +8,11 @@
                 label_general }}</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ auth_active }}" id="config-auth-tab" data-toggle="tab" href="#config-auth" role="tab"
+                aria-controls="config-auth" aria-selected="{% if auth_active %}true{% else %}false{% endif %}">{{
+                    label_tab_auth }}</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ email_active }}" id="config-email-tab" data-toggle="tab" href="#config-email" role="tab"
                 aria-controls="config-email" aria-selected="{% if email_active %}true{% else %}false{% endif %}">{{
                 label_tab_email }}</a>
@@ -30,7 +35,17 @@
         <li class="nav-item">
             <a class="nav-link {{ jabber_active }}" id="config-jabber-tab" data-toggle="tab" href="#config-jabber"
                role="tab" aria-controls="config-jabber" aria-selected="{% if jabber_active %}true{% else %}false{% endif %}">{{
-                label_tab_jabber }}</a>
+            label_tab_jabber }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ discord_active }}" id="config-discord-tab" data-toggle="tab" href="#config-discord" role="tab"
+                aria-controls="config-discord" aria-selected="{% if discord_active %}true{% else %}false{% endif %}">{{
+                        label_tab_discord }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ webhook_active }}" id="config-webhook-tab" data-toggle="tab" href="#config-webhook" role="tab"
+                aria-controls="config-webhook" aria-selected="{% if webhook_active %}true{% else %}false{% endif %}">{{
+                label_tab_webhook }}</a>
         </li>
     </ul>
     <!-- Tab panes -->
@@ -83,6 +98,43 @@
                 {{ macro.button_save("general_submit",  label_save) }}
             </fieldset>
         </div>
+        <div class="tab-pane {{ auth_active }}" id="config-auth" role="tabpanel" aria-labelledby="config-auth-tab">
+            <!-- Auth settings -->
+            <fieldset>
+                <legend>{{ label_settings_dirauth }}</legend>
+                <!-- enable ldap -->
+                {{ macro.input_checkbox("dirauth_status", "dirauth_status[]", label_dirauth_status, dirauth_status_checked) }}
+                <!-- Directory host -->
+                {{ macro.input_field("text", "authdir_host_locn", null, "authdir_host_locn", label_authdir_host_locn, authdir_host_locn, label_authdir_host_locn, "100") }}
+                <!-- smtp security -->
+                {{ macro.input_select("authdir_type", "authdir_type", label_authdir_type, authdir_type, authdir_type_selected, "authdir_type_help", label_authdir_type_description) }}
+                <!-- Directory port -->
+                {{ macro.input_field("text", "authdir_host_port", null, "authdir_host_port", label_authdir_host_port, authdir_host_port, label_authdir_host_port, "10") }}
+                <!-- Active Directory domain -->
+                {{ macro.input_field("text", "authdir_userdomain", null, "authdir_userdomain", label_authdir_userdomain, authdir_userdomain, label_authdir_userdomain, "100", "authdir_userdomain_help", label_authdir_userdomain_description) }}
+                <!-- LDAP protecol version -->
+                {{ macro.input_field("text", "authdir_ldapver", null, "authdir_ldapver", label_authdir_ldapver, authdir_ldapver, label_authdir_ldapver, "100", "authdir_ldapver_help", label_authdir_ldapver_description) }}
+                <!-- Follow referrals -->
+                {{ macro.input_checkbox("authdir_ldapfollowref", "authdir_ldapfollowref[]", label_authdir_ldapfollowref, authdir_ldapfollowref_checked, "authdir_ldapfollowref_help", label_authdir_ldapfollowref_description) }}
+                <!-- Base DN* -->
+                {{ macro.input_field("text", "authdir_basedn", null, "authdir_basedn", label_authdir_basedn, authdir_basedn, "dc=domain,dc=tld", "100", "authdir_basedn_help", label_authdir_basedn_description) }}
+                <!-- Username attribute -->
+                {{ macro.input_field("text", "authdir_usernameattrib", null, "authdir_usernameattrib", label_authdir_usernameattrib, authdir_usernameattrib, label_authdir_usernameattrib, "100", "authdir_usernameattrib_help", label_authdir_usernameattrib_description) }}
+                <!-- Group name attribute -->
+                {{ macro.input_field("text", "authdir_groupnameattrib", null, "authdir_groupnameattrib", label_authdir_groupnameattrib, authdir_groupnameattrib, label_authdir_groupnameattrib, "100", "authdir_groupnameattrib_help", label_authdir_groupnameattrib_description) }}
+                <!-- Group member attribute -->
+                {{ macro.input_field("text", "authdir_groupmemattrib", null, "authdir_groupmemattrib", label_authdir_groupmemattrib, authdir_groupmemattrib, label_authdir_groupmemattrib, "100", "authdir_groupmemattrib_help", label_authdir_groupmemattrib_description) }}
+                <!-- User container RDN -->
+                {{ macro.input_field("text", "authdir_usercontainerrdn", null, "authdir_usercontainerrdn", label_authdir_usercontainerrdn, authdir_usercontainerrdn, "ou=Users", "100", "authdir_usercontainerrdn_help", label_authdir_usercontainerrdn_description) }}
+                <!-- Group container RDN -->
+                {{ macro.input_field("text", "authdir_groupcontainerrdn", null, "authdir_groupcontainerrdn", label_authdir_groupcontainerrdn, authdir_groupcontainerrdn, "ou=Groups", "100", "authdir_groupcontainerrdn_help", label_authdir_groupcontainerrdn_description) }}
+                <!-- Authorised directory group -->
+                {{ macro.input_field("text", "authdir_groupname", null, "authdir_groupname", label_authdir_groupname, authdir_groupname, label_authdir_groupname, "100", "authdir_groupname_help", label_authdir_groupname_description) }}
+                <!-- Default role -->
+                {{ macro.input_select("authdir_defaultrole", "authdir_defaultrole", label_authdir_defaultrole, authdir_defaultroles, authdir_defaultrole_selected, "authdir_defaultrole_help", label_authdir_defaultrole_description) }}
+                {{ macro.button_save("auth_submit",  label_save) }}
+            </fieldset>
+        </div>
         <div class="tab-pane {{ email_active }}" id="config-email" role="tabpanel" aria-labelledby="config-email-tab">
             <fieldset>
                 <legend>{{ label_settings_email }}</legend>
@@ -90,6 +142,8 @@
                 {{ macro.input_checkbox("email_status", "email_status[]", label_email_status, email_status_checked) }}
                 <!-- enable email log -->
                 {{ macro.input_checkbox("log_email", "log_email[]", label_log_email, log_email_checked) }}
+                <!-- enable adding url to email -->
+                {{ macro.input_checkbox("email_add_url", "email_add_url[]", label_email_add_url, email_add_url_checked) }}
                 <!-- email name -->
                 {{ macro.input_field("text", "email_from_name", null, "email_from_name", label_email_from_name, email_from_name, label_email_from_name, "255") }}
                 <!-- email address -->
@@ -129,10 +183,22 @@
                 {{ macro.input_field("text", "sms_gateway_password", null, "sms_gateway_password", label_sms_gateway_password, sms_gateway_password, label_sms_gateway_password, "255") }}
                 <!-- sms sender number-->
                 {{ macro.input_field("text", "sms_from", null, "sms_from", label_sms_from, sms_from, "+31123456789", "255") }}
-                
+
                 {{ macro.button_test("testSms", label_test) }}
                 {{ macro.input_hidden("test_sms", "0") }}
                 {{ macro.button_save("sms_submit", label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ discord_active }}" id="config-discord" role="tabpanel" aria-labelledby="config-discord-tab">
+            <fieldset>
+                <legend>{{ label_settings_discord }}</legend>
+                <!-- enable discord -->
+                {{ macro.input_checkbox("discord_status", "discord_status[]", label_discord_status, discord_status_checked) }}
+                <!-- enable discord log -->
+                {{ macro.input_checkbox("log_discord", "log_discord[]", label_log_discord, log_discord_checked) }}
+                {{ macro.button_test("testDiscord", label_test) }}
+                {{ macro.input_hidden("test_discord", "0") }}
+                {{ macro.button_save("discord_submit", label_save) }}
             </fieldset>
         </div>
         <div class="tab-pane {{ pushover_active }}" id="config-pushover" role="tabpanel" aria-labelledby="config-pushover-tab">
@@ -158,6 +224,8 @@
                 {{ macro.input_checkbox("telegram_status", "telegram_status[]", label_telegram_status, telegram_status_checked) }}
                 <!-- enable telegram log -->
                 {{ macro.input_checkbox("log_telegram", "log_telegram[]", label_log_telegram, log_telegram_checked) }}
+                <!-- enable adding url to telegram -->
+                {{ macro.input_checkbox("telegram_add_url", "telegram_add_url[]", label_telegram_add_url, telegram_add_url_checked) }}
                 <!-- telegram key -->
                 {{ macro.input_field("text", "telegram_api_token", null, "telegram_api_token", label_telegram_api_token, telegram_api_token, label_telegram_api_token, "255", "telegram_api_token_help", label_telegram_api_token_description) }}
                 {{ macro.button_test("testTelegram", label_test) }}
@@ -181,6 +249,24 @@
                 {{ macro.button_test("testJabber", label_test) }}
                 {{ macro.input_hidden("test_jabber", "0") }}
                 {{ macro.button_save("jabber_submit",  label_save) }}
+            </fieldset>
+        </div>
+        <div class="tab-pane {{ webhook_active }}" id="config-webhook" role="tabpanel" aria-labelledby="config-webhook-tab">
+            <fieldset>
+                <legend>{{ label_settings_webhook }}</legend>
+                <p>{{ label_webhook_description|raw }}</p>
+                <!-- enable webhooks -->
+                {{ macro.input_checkbox("webhook_status", "webhook_status", label_webhook_status, webhook_status_checked) }}
+                <!-- enable webhook log -->
+                {{ macro.input_checkbox("log_webhook", "log_webhook", label_log_webhook, log_webhook_checked) }}
+                <!-- webhook url -->
+                <!--  {{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, webhook_url, label_webhook_url, "255", "webhook_url_help", label_webhook_url_description) }} -->
+                <!-- webhook json -->
+                <!--   {{ macro.input_field("text", "webhook_json", null, "webhook_json", label_webhook_json, webhook_json, label_webhook_json, "255", "webhook_json_help", label_webhook_json_description) }} -->
+        
+                {{ macro.button_test("testWebhook", label_test) }}
+                {{ macro.input_hidden("test_webhook", "0") }}
+                {{ macro.button_save("webhook_submit",  label_save) }}
             </fieldset>
         </div>
     </div>

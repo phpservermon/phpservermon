@@ -39,7 +39,7 @@ class ProfileController extends AbstractController
      * @var array $profile_fields
      */
     protected $profile_fields =
-        array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'telegram_id', 'jabber');
+        array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'discord', 'webhook_url', 'webhook_json', 'telegram_id', 'jabber');
 
     public function __construct(Database $db, \Twig_Environment $twig)
     {
@@ -78,11 +78,21 @@ class ProfileController extends AbstractController
             'label_password_repeat' => psm_get_lang('users', 'password_repeat'),
             'label_level' => psm_get_lang('users', 'level'),
             'label_mobile' => psm_get_lang('users', 'mobile'),
+            'label_webhook' => psm_get_lang('users', 'webhook'),
+            'label_webhook_description' => psm_get_lang('users', 'webhook_description'),
+            'label_webhook_url' => psm_get_lang('users', 'webhook_url'),
+            'label_webhook_url_description' => psm_get_lang('users', 'webhook_url_description'),
+            'label_webhook_json' => psm_get_lang('users', 'webhook_json'),
+            'label_webhook_json_description' => psm_get_lang('users', 'webhook_json_description'),
             'label_pushover' => psm_get_lang('users', 'pushover'),
             'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
             'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
             'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
             'label_pushover_device_description' => psm_get_lang('users', 'pushover_device_description'),
+
+            'label_discord' => psm_get_lang('users', 'discord'),
+            'label_discord_description' => psm_get_lang('users', 'discord_description'),
+
             'label_telegram' => psm_get_lang('users', 'telegram'),
             'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
             'label_telegram_chat_id' => psm_get_lang('users', 'telegram_chat_id'),

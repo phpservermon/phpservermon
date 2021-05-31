@@ -5,7 +5,7 @@ PHP Server Monitor
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
 
-Version 3.5.2
+Version 3.6.0.beta2
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -16,7 +16,7 @@ Features:
 ---------
 
 * Monitor services and websites (see below).
-* Email, SMS, Pushover, Telegram and Jabber notifications.
+* Email, SMS, Discord, Pushover, Telegram and Jabber notifications.
 * View history graphs of uptime and latency.
 * User authentication with 2 levels (administrator and regular user).
 * Logs of connection errors, outgoing emails and text messages.
@@ -46,22 +46,24 @@ The following SMS gateways are currently available:
 * Inetworx - <https://www.inetworx.ch>
 * Messagebird - <https://www.messagebird.com>
 * Mosms - <https://www.mosms.com>
-* Smsglobal - <https://smsglobal.com/>
-* SMSit - <https://www.smsit.dk/>
+* Smsglobal - <https://smsglobal.com>
+* SMSit - <https://www.smsit.dk>
 * Spryng - <https://www.spryng.nl>
 * Textmarketer - <https://www.textmarketer.co.uk>
 * FreeVoipDeal - <https://www.freevoipdeal.com>
-* Nexmo - <https://www.nexmo.com/>
-* OctoPush - <https://www.octopush.com/>
-* FreeMobile (FR) - <https://mobile.free.fr/>
+* Nexmo - <https://www.nexmo.com>
+* OctoPush - <https://www.octopush.com>
+* FreeMobile (FR) - <https://mobile.free.fr>
 * Twilio - <https://twilio.com>
-* CM Telecom - <https://www.cm.com/>
-* GatewayAPI - <https://gatewayapi.com/>
-* SolutionsInfini - <https://solutionsinfini.com/>
-* Plivo - <https://www.plivo.com/>
-* Callr - <https://www.callr.com/>
+* CM Telecom - <https://www.cm.com>
+* GatewayAPI - <https://gatewayapi.com>
+* SolutionsInfini - <https://solutionsinfini.com>
+* Plivo - <https://www.plivo.com>
+* Callr - <https://www.callr.com>
 * SMSAPI - <https://www.smsapi.com/en>
-* OVH SMS PRO - <https://www.ovhtelecom.fr/sms/>
+* OVH SMS PRO - <https://www.ovhtelecom.fr/sms>
+* PromoSMS - <https://promosms.com>
+* Infobip - <https://www.infobip.com>
 * LabsMobile - <https://www.labsmobile.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
