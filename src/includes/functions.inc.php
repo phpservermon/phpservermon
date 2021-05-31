@@ -805,6 +805,8 @@ namespace {
                 break;
             case 'promosms':
                 $sms = new \psm\Txtmsg\PromoSMS();
+            case 'labsmobile':
+                $sms = new \psm\Txtmsg\LabsMobile();
                 break;
         }
 

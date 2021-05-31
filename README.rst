@@ -64,7 +64,7 @@ The following SMS gateways are currently available:
 * OVH SMS PRO - <https://www.ovhtelecom.fr/sms>
 * PromoSMS - <https://promosms.com>
 * Infobip - <https://www.infobip.com>
-
+* LabsMobile - <https://www.labsmobile.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 
