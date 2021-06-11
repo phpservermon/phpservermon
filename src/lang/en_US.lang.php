@@ -112,6 +112,7 @@ $sm_lang = array(
  servers that have been assigned to them.',
         'mobile' => 'Mobile',
         'email' => 'Email',
+        'pushover_active' => 'Activate Pushover?',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',
         'pushover_key' => 'Pushover Key',

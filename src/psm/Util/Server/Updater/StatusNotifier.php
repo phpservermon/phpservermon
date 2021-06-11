@@ -542,6 +542,9 @@ class StatusNotifier
             if (trim($user['pushover_key']) == '') {
                 unset($users[$k]);
             }
+            if (!isset($user['pushover_active']) || $user['pushover_active'] != '1') {
+                unset($users[$k]);
+            }
         }
 
         // Validation
@@ -692,6 +695,9 @@ class StatusNotifier
             if (trim($user['telegram_id']) == '') {
                 unset($users[$k]);
             }
+            if (!isset($user['telegram_active']) || $user['telegram_active'] != '1') {
+                unset($users[$k]);
+            }
         }
 
         // Validation
@@ -781,7 +787,7 @@ class StatusNotifier
         $users = $this->db->query('
             SELECT `u`.`user_id`, `u`.`name`,`u`.`email`, `u`.`mobile`, `u`.`pushover_key`, `u`.`discord`, `u`.`webhook_url`,`u`.`webhook_json`,
                 `u`.`pushover_device`, `u`.`telegram_id`, 
-                `u`.`jabber`
+                `u`.`jabber`, `u`.`telegram_active`, `u`.`pushover_active`
             FROM `' . PSM_DB_PREFIX . 'users` AS `u`
             JOIN `' . PSM_DB_PREFIX . "users_servers` AS `us` ON (
                 `us`.`user_id`=`u`.`user_id`

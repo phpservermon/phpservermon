@@ -50,6 +50,8 @@ class UserController extends AbstractController
             'index', 'edit', 'delete', 'save',
         ), 'index');
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'user'));
+
+        
     }
 
     public function run($action = null)
@@ -161,13 +163,16 @@ class UserController extends AbstractController
             'discord',
             'webhook_url',
             'webhook_json',
+            'pushover_active',
             'pushover_key',
             'pushover_device',
+            'telegram_active',
             'telegram_id',
             'jabber',
             'email'
         );
-
+        
+        
         if ($user_id == 0) {
             // insert mode
             $title = psm_get_lang('system', 'insert');

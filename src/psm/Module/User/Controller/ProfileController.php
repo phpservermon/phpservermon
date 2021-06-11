@@ -41,6 +41,9 @@ class ProfileController extends AbstractController
     protected $profile_fields =
         array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'discord', 'webhook_url', 'webhook_json', 'telegram_id', 'jabber');
 
+    protected $checkboxes = 
+        array('pushover_active', 'telegram_active');
+
     public function __construct(Database $db, \Twig_Environment $twig)
     {
         parent::__construct($db, $twig);
@@ -85,6 +88,7 @@ class ProfileController extends AbstractController
             'label_webhook_json' => psm_get_lang('users', 'webhook_json'),
             'label_webhook_json_description' => psm_get_lang('users', 'webhook_json_description'),
             'label_pushover' => psm_get_lang('users', 'pushover'),
+            'label_pushover_active' => psm_get_lang('users', 'pushover_active'),
             'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
             'label_pushover_key' => psm_get_lang('users', 'pushover_key'),
             'label_pushover_device' => psm_get_lang('users', 'pushover_device'),
@@ -94,6 +98,7 @@ class ProfileController extends AbstractController
             'label_discord_description' => psm_get_lang('users', 'discord_description'),
 
             'label_telegram' => psm_get_lang('users', 'telegram'),
+            'label_telegram_active' => psm_get_lang('users', 'telegram_active'),
             'label_telegram_description' => psm_get_lang('users', 'telegram_description'),
             'label_telegram_chat_id' => psm_get_lang('users', 'telegram_chat_id'),
             'label_telegram_chat_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
@@ -111,9 +116,19 @@ class ProfileController extends AbstractController
             'level' => psm_get_lang('users', 'level_' . $user->level),
             'placeholder_password' => psm_get_lang('users', 'password_leave_blank'),
         );
+
         foreach ($this->profile_fields as $field) {
             $tpl_data[$field] = (isset($user->$field)) ? $user->$field : '';
         }
+
+        foreach ($this->checkboxes as $input_key) {
+            $tpl_data[$input_key . '_checked'] =
+                (isset($user->$input_key) && (int) $user->$input_key == 1)
+                ? 'checked="checked"'
+                : '';
+        }
+
+
         return $this->twig->render('module/user/profile.tpl.html', $tpl_data);
     }
 
@@ -160,6 +175,10 @@ class ProfileController extends AbstractController
         unset($clean['password']);
         unset($clean['password_repeat']);
 
+        foreach ($this->checkboxes as $input_key) {
+            $clean[$input_key] = (isset($_POST[$input_key])) ? '1' : '0';
+        }
+        
         $this->db->save(PSM_DB_PREFIX . 'users', $clean, array('user_id' => $this->getUser()->getUserId()));
         $this->container->get('event')->dispatch(
             \psm\Module\User\UserEvents::USER_EDIT,

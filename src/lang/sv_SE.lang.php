@@ -97,10 +97,12 @@ $sm_lang = array(
         'pushover_description' => 'Pushover är en tjänst som skickar meddelande i realtid. Se <a
  href="https://pushover.net/" target="_blank">deras webbsida</a> för mer
  information.',
+        'pushover_active' => 'Aktivera Pushover',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Enhetsnman att skicka meddelande till. Lämna tomt för att skicka till alla
  enheter.',
+       'telegram_active' => 'Aktivera Telegram',
         'delete_title' => 'Radera användare',
         'delete_message' => 'Är du säker att du vill radera användare \'%1\'?',
         'deleted' => 'Användare raderad.',
