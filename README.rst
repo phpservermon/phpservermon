@@ -65,6 +65,7 @@ The following SMS gateways are currently available:
 * PromoSMS - <https://promosms.com>
 * Infobip - <https://www.infobip.com>
 * LabsMobile - <https://www.labsmobile.com>
+* Tele2 Messaging - <https://portal.tele2messaging.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

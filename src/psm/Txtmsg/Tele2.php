@@ -31,7 +31,30 @@ namespace psm\Txtmsg;
 
 class Tele2 extends Core
 {
-    
+    /**
+     * Formats the number to e.g. 45701234567 instead of +45701234567/00451234567
+     * Error if the number begins with a single 0, indicates no country code has been provided. 
+     * Will still attempt to send to this and other numbers, but return an error message.
+     * Also remove spaces, braces and other special characters
+     */
+    private function formatNumber( $number ) : string 
+    {
+        $number = str_replace(['-', ' ', '(', ')'], '', $number);
+		
+        if (substr($number, 0, 1) === '+') {
+            return substr($number, 1);
+        }
+        elseif (substr($number, 0, 2) === '00') {
+            return substr($number, 2);
+        }
+        elseif (substr($number, 0, 1) === '0') {
+            return null;
+        }
+		else return $number;
+
+    }
+
+
     /**
      * Send sms using the Tele2 Messaging API based on Infobip
      * The username can be blank, password is the API key
@@ -59,22 +82,25 @@ class Tele2 extends Core
     public function sendSMS($message)
     {      
         $success = 1;
-        $error = "";
+        $error = '';
 
         /**
          * Creates a curl object, loops through participants to add them to the same message and makes a single API call to send to all
          */
         $ch = curl_init("https://api.tele2messaging.com/sms/2/text/advanced");
         
-        /**
-         * To Do: Add validation/formatting for message to format [countrycode][number_without_0] e.g. 4571234567 instead of +451234567/00451234567/01234567
-         */
+        
+        
         $recipients = [];
 
         foreach ($this->recipients as $recipient) {
-             $recipients[] = [
-                'to' => "$recipient"
-             ];
+            $format = $this->formatNumber($recipient);
+            if (!$format) {
+                $error = "ERROR: Incorrect format, needs to include country code (e.g. 45123456789 instead of 0123456789/450123456789/+45123456789/0045123456789)";
+            }
+            $recipients[] = [
+               'to' => $format ?? $recipient
+            ];
         }
 
         $postfields = [
@@ -106,13 +132,11 @@ class Tele2 extends Core
         $result = curl_exec($ch);
         $returncode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
-        if ($returncode !== 200) {
+        if ($returncode !== 200 || $error !== '') {
             $success = 0;
+            $error .= $result;
         }
-        else {
-            $error = $result;
-        }
-
+        
         return ($success === 1 ? 1 : $error);
     }   
 }
