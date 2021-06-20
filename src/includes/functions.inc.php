@@ -810,6 +810,9 @@ namespace {
             case 'labsmobile':
                 $sms = new \psm\Txtmsg\LabsMobile();
                 break;
+            case 'tele2':
+                $sms = new \psm\Txtmsg\Tele2();
+                break;
         }
 
         // copy login information from the config file
