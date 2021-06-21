@@ -58,7 +58,7 @@ class FreeMobileSMS extends Core
             array(
                     "user" => $this->username,
                     "pass" => $this->password,
-                    "msg" => urlencode($message),
+                    "msg" => rawurlencode($message),
                 )
         ));
 
