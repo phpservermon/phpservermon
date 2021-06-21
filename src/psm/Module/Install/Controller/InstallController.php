@@ -301,12 +301,10 @@ class InstallController extends AbstractController
             'email' => psm_POST('email', ''),
             'mobile' => '',
             'level' => PSM_USER_ADMIN,
-            'pushover_active' => '1',
             'pushover_key' => '',
             'pushover_device' => '',
             'webhook_url' => '',
             'webhook_json' => '',
-            'telegram_active' => '1',
             'telegram_id' => '',
             'discord' => '',
             'jabber' => ''

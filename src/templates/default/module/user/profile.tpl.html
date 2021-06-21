@@ -23,8 +23,6 @@
 	<fieldset>
         <legend>{{ label_pushover }}</legend>
         <p>{{ label_pushover_description|raw }}</p>
-		<!-- pushover active -->
-		{{ macro.input_checkbox("pushover_active", "pushover_active", label_pushover_active, pushover_active_checked) }}
 		<!-- pushover key -->
 		{{ macro.input_field("text", "pushover_key", null, "pushover_key", label_pushover_key, pushover_key, label_pushover_key, "255", "pushover_key_help", label_pushover_key_description) }}
 		<!-- pushover device -->
@@ -34,8 +32,6 @@
 	<fieldset>
         <legend>{{ label_telegram }}</legend>
         <p>{{ label_telegram_description|raw }}</p>
-		<!-- pushover active -->
-		{{ macro.input_checkbox("telegram_active", "telegram_active", label_telegram_active, telegram_active_checked) }}
 		<!-- telegram id -->
 		<div class="form-group">
                     <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>

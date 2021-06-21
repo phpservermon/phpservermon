@@ -229,7 +229,6 @@ class ConfigController extends AbstractController
                 ? 'checked="checked"'
                 : '';
         }
-        
         foreach ($this->fields as $input_key) {
             $tpl_data[$input_key] = (isset($config[$input_key])) ? $config[$input_key] : '';
         }
