@@ -198,9 +198,9 @@ class User
     {
         if (isset($_COOKIE['rememberme'])) {
             // extract data from the cookie
-            list ($user_id, $token, $hash) = explode(':', $_COOKIE['rememberme']);
+            list($user_id, $token, $hash) = explode('_', $_COOKIE['rememberme']);
             // check cookie hash validity
-            if ($hash == hash('sha256', $user_id . ':' . $token . PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
+            if ($hash == hash('sha256', $user_id . '_' . $token . PSM_LOGIN_COOKIE_SECRET_KEY) && !empty($token)) {
                 // cookie looks good, try to select corresponding user
                 // get real token from database (and all other data)
                 $user = $this->getUser($user_id);
@@ -321,15 +321,15 @@ class User
     protected function newRememberMeCookie()
     {
         // generate 64 char random string and store it in current user data
-        $random_token_string = hash('sha256', mt_rand());
+        $random_token_string = hash('sha256', random_bytes(64));
         $sth = $this->db_connection->prepare('UPDATE ' .
             PSM_DB_PREFIX . 'users SET rememberme_token = :user_rememberme_token WHERE user_id = :user_id');
         $sth->execute(array(':user_rememberme_token' => $random_token_string, ':user_id' => $this->getUserId()));
 
         // generate cookie string that consists of userid, randomstring and combined hash of both
-        $cookie_string_first_part = $this->getUserId() . ':' . $random_token_string;
+        $cookie_string_first_part = $this->getUserId() . '_' . $random_token_string;
         $cookie_string_hash = hash('sha256', $cookie_string_first_part . PSM_LOGIN_COOKIE_SECRET_KEY);
-        $cookie_string = $cookie_string_first_part . ':' . $cookie_string_hash;
+        $cookie_string = $cookie_string_first_part . '_' . $cookie_string_hash;
 
         // set cookie
         setcookie('rememberme', $cookie_string, time() + PSM_LOGIN_COOKIE_RUNTIME, "/", PSM_LOGIN_COOKIE_DOMAIN);
@@ -526,10 +526,8 @@ class User
             }
 
             $this->user_preferences = array();
-            foreach (
-                $this->db_connection->query('SELECT `key`,`value` FROM `' .
-                PSM_DB_PREFIX . 'users_preferences` WHERE `user_id` = ' . $this->user_id) as $row
-            ) {
+            foreach ($this->db_connection->query('SELECT `key`,`value` FROM `' .
+                PSM_DB_PREFIX . 'users_preferences` WHERE `user_id` = ' . $this->user_id) as $row) {
                 $this->user_preferences[$row['key']] = $row['value'];
             }
         }
