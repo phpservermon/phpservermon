@@ -72,7 +72,7 @@ class User
     protected $user_id;
 
     /**
-     *Current user preferences
+     * Current user preferences
      * @var array $user_preferences
      */
     protected $user_preferences;
@@ -237,15 +237,15 @@ class User
         }
 
         $dirauthconfig = psm_get_conf('dirauth_status');
-        
+
         // LDAP auth enabled
         if ($dirauthconfig === '1') {
             $ldaplibpath = realpath(
                 PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR .
-                'vendor' . DIRECTORY_SEPARATOR .
-                'viharm' . DIRECTORY_SEPARATOR .
-                'psm-ldap-auth' . DIRECTORY_SEPARATOR .
-                'psmldapauth.php'
+                    'vendor' . DIRECTORY_SEPARATOR .
+                    'viharm' . DIRECTORY_SEPARATOR .
+                    'psm-ldap-auth' . DIRECTORY_SEPARATOR .
+                    'psmldapauth.php'
             );
             // If the library is found
             if ($ldaplibpath) {
@@ -260,20 +260,20 @@ class User
 
         // Authenticated
         if ($ldapauthstatus === true) {
-          // Remove password to prevent it from being saved in the DB.
-          // Otherwise, user may still be authenticated if LDAP is disabled later.
-          $user_password = null;
-          @fn_Debug('Authenticated', $user);
+            // Remove password to prevent it from being saved in the DB.
+            // Otherwise, user may still be authenticated if LDAP is disabled later.
+            $user_password = null;
+            @fn_Debug('Authenticated', $user);
         } else {
 
-          // using PHP 5.5's password_verify() function to check if the provided passwords
-          // fits to the hash of that user's password
-          if (!isset($user->user_id)) {
-              password_verify($user_password, 'dummy_call_against_timing');
-              return false;
-          } elseif (!password_verify($user_password, $user->password)) {
-              return false;
-          }
+            // using PHP 5.5's password_verify() function to check if the provided passwords
+            // fits to the hash of that user's password
+            if (!isset($user->user_id)) {
+                password_verify($user_password, 'dummy_call_against_timing');
+                return false;
+            } elseif (!password_verify($user_password, $user->password)) {
+                return false;
+            }
         } // not authenticated
 
         $this->setUserLoggedIn($user->user_id, true);
@@ -390,8 +390,8 @@ class User
         }
         // generate timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
         $temporary_timestamp = time();
-        // generate random hash for email password reset verification (40 char string)
-        $user_password_reset_hash = sha1(uniqid(mt_rand(), true));
+        // generate random hash for email password reset verification (64 char string)
+        $user_password_reset_hash = hash('sha256', uniqid(random_bytes(64), true));
 
         $query_update = $this->db_connection->prepare('UPDATE ' .
             PSM_DB_PREFIX . 'users SET password_reset_hash = :user_password_reset_hash,
