@@ -1,5 +1,7 @@
 <script type="text/javascript" src="src/templates/default/static/plugin/momentjs/moment.js"></script>
 <script type="text/javascript" src="src/templates/default/static/plugin/chartjs/chart-2.7.3.min.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/hammer/hammer.min.js"></script>
+<script type="text/javascript" src="src/templates/default/static/plugin/chartjs/plugin-zoom.min.js"></script>
 {% for graph in graphs %}
 <div class="chart-container col-10" style="position: relative;  width:60vw">
 	<canvas id="{{ graph.id }}">Your browser does not support the canvas element.</canvas>
@@ -20,7 +22,7 @@
 		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
 	</div><br>
 	{% endif %}
-		{{ graph.info.0.label }}: {{ graph.info.0.value }}s
+		{{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
 </div>
 
 {% if graph.id == 'history_short' %}
@@ -30,7 +32,7 @@
 		data: {
 			datasets: [
 			{
-				data: [{{ graph.lines.offline.value }}],
+				data: {{ graph.lines.offline.value|raw }},
 				label: '{{ graph.lines.offline.name }}',
 				backgroundColor: '#dc3545',
 				borderColor: '#dc3545',
@@ -41,7 +43,7 @@
 				spanGaps: false,
 			},
 			{
-				data: [{{ graph.lines.online.value }}],
+				data: {{ graph.lines.online.value|raw }},
 				label: '{{graph.lines.online.name }}',
 				fill: false,
 				spanGaps: false,
@@ -72,6 +74,25 @@
 						source: 'auto',
 					}
 				}]
+			},
+			plugins: {
+				zoom: {
+					pan: {
+						enabled: true,
+						mode: 'x',
+                        rangeMax: {
+                            x: new Date,
+                        },
+					},
+					zoom: {
+						enabled: true,
+						mode: 'x',
+                        rangeMax: {
+                            x: new Date,
+                        },
+                        speed: 0.05,
+					}
+				}
 			}
 		}
 	});
@@ -99,7 +120,7 @@
 			datasets: [
 			{% for key,line in graph.lines %}
 			{
-				data: [{{ line.value|raw }}],
+				data: {{ line.value|raw }},
 				label: '{{ line.name }}',
 				backgroundColor: colors['{{key}}'],
 				borderColor: colors['{{key}}'],
@@ -133,6 +154,25 @@
 						source: 'auto',
 					}
 				}]
+			},
+			plugins: {
+				zoom: {
+					pan: {
+						enabled: true,
+						mode: 'x',
+                        rangeMax: {
+                            x: new Date,
+                        },
+					},
+					zoom: {
+						enabled: true,
+						mode: 'x',
+                        rangeMax: {
+                            x: new Date,
+                        },
+                        speed: 0.05,
+					}
+				}
 			}
 		}
 	});

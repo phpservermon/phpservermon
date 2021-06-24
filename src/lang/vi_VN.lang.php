@@ -64,6 +64,7 @@ $sm_lang = array(
         'a_minute_ago' => 'khoảng một phút trước',
         'seconds_ago' => '%d giây trước',
         'a_second_ago' => 'một giây trước',
+        'seconds' => 'giây',
     ),
     'menu' => array(
         'config' => 'Cấu hình',
@@ -91,8 +92,8 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian
- thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a> để biết
- thêm thông tin.',
+ thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a>
+ để biết thêm thông tin.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Tên thiết bị để gửi tin nhắn đến. Để trống để gửi
@@ -208,8 +209,8 @@ $sm_lang = array(
         'sms_from' => 'Số điện thoại của người gửi',
         'pushover_status' => 'Cho phép gửi tin nhắn bằng Pushover',
         'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian
- thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a> để biết
- thêm thông tin.',
+ thực. Xem <a href="https://pushover.net/" target="_blank">website của họ</a>
+ để biết thêm thông tin.',
         'pushover_clone_app' => 'Nhấn vào đây để tạo ứng dụng Pushover của bạn',
         'pushover_api_token' => 'Pushover App API Token',
         'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a
@@ -246,7 +247,6 @@ $sm_lang = array(
         'auto_refresh' => 'Tự động làm mới',
         'auto_refresh_description' => 'Tự động làm mới servers page.<br><span class="small">Trong vài giây,
  nếu 0 trang sẽ không làm mới.</span>',
-        'seconds' => 'giây',
         'test' => 'Thử',
         'test_email' => 'Một email sẽ được gửi đến địa chỉ được xác định trong hồ sơ
  người dùng của bạn.',

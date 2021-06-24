@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'umbes minut aega tagasi',
         'seconds_ago' => '%d sekundit tagasi',
         'a_second_ago' => 'üks sekund tagasi',
+        'seconds' => 'sekundit',
     ),
     'menu' => array(
         'config' => 'Konfiguratsioon',
@@ -244,7 +245,6 @@ $sm_lang = array(
         'auto_refresh' => 'Automaatne värskendamine',
         'auto_refresh_description' => 'Värskenda lehte automaatselt.<br><span class="small">Aeg sekundites, kui 0
  siis lehte ei värskendata.</span>',
-        'seconds' => 'sekundit',
         'test' => 'Test',
         'test_email' => 'Email saadetakse profiilil märgitud aadressile.',
         'test_sms' => 'SMS saadetakse profiilil märgitud numbrile.',

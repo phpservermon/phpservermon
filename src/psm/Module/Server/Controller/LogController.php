@@ -55,9 +55,11 @@ class LogController extends AbstractServerController
             'label_status' => psm_get_lang('log', 'status'),
             'label_email' => psm_get_lang('log', 'email'),
             'label_sms' => psm_get_lang('log', 'sms'),
+            'label_discord' => psm_get_lang('log', 'discord'),
             'label_pushover' => psm_get_lang('log', 'pushover'),
+            'label_webhook' => psm_get_lang('log', 'webhook'),
             'label_telegram' => psm_get_lang('log', 'telegram'),
-	        'label_jabber' => psm_get_lang('log', 'jabber'),
+            'label_jabber' => psm_get_lang('log', 'jabber'),
             'label_title' => psm_get_lang('log', 'title'),
             'label_server' => psm_get_lang('servers', 'server'),
             'label_type' => psm_get_lang('log', 'type'),
@@ -77,7 +79,7 @@ class LogController extends AbstractServerController
             $modal->setTitle(psm_get_lang('log', 'delete_title'));
             $modal->setMessage(psm_get_lang('log', 'delete_message'));
             $modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
-            
+
             $sidebar->addButton(
                 'clear_logn',
                 psm_get_lang('log', 'clear'),
@@ -89,7 +91,7 @@ class LogController extends AbstractServerController
             );
         }
 
-        $log_types = array('status', 'email', 'sms', 'pushover', 'telegram', 'jabber');
+        $log_types = array('status', 'email', 'sms', 'pushover', 'telegram', 'jabber', 'discord', 'webhook');
 
         foreach ($log_types as $key) {
             $records = $this->getEntries($key);
@@ -161,9 +163,9 @@ class LogController extends AbstractServerController
         if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
             // restrict by user_id
             $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-						`us`.`user_id`={$this->getUser()->getUserId()}
-						AND `us`.`server_id`=`servers`.`server_id`
-						)";
+                        `us`.`user_id`={$this->getUser()->getUserId()}
+                        AND `us`.`server_id`=`servers`.`server_id`
+                        )";
         }
         $entries = $this->db->query(
             'SELECT ' .

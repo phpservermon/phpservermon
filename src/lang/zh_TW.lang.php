@@ -258,7 +258,8 @@ $sm_lang = array(
         'sms_from' => '發送人電話號碼',
         'pushover_status' => '啟用Pushover通知',
         'pushover_description' => 'Pushover是線上服務，讓您可以方便的收到即時通知，請參考 <a
- href="https://pushover.net/" target="_blank"> 網站</a> 可以得到更詳細的資訊。</a> ',
+ href="https://pushover.net/" target="_blank"> 網站</a>
+ 可以得到更詳細的資訊。</a> ',
         'pushover_clone_app' => '點選這裡可快速建立Pushover App',
         'pushover_api_token_description' => '在您使用 Pushover 通知之前，需要先到這裡-><a href="%1$s"
  target="_blank"  rel="noopener">註冊Pushover App帳號</a>
@@ -269,7 +270,8 @@ $sm_lang = array(
  <a href="http://docs.phpservermonitor.org/" target="_blank">文件庫</a>
  可以取得更多資訊與安裝說明。',
         'telegram_api_token_description' => '使用 Telegram 通知之前，您必需先取得 API Token。請到 <a
- href="http://docs.phpservermonitor.org/" target="_blank">文件庫</a> 取得說明。',
+ href="http://docs.phpservermonitor.org/" target="_blank">文件庫</a>
+ 取得說明。',
         'alert_type' => '需要提醒的類別',
         'alert_type_description' => '<b>狀態改變：</b> 伺服器 連線 -> 離線或連線 ->
  連線的狀態變化將會收到提醒通知。<br/><br /><b>離線：</b>
@@ -298,7 +300,6 @@ $sm_lang = array(
         'settings_log' => '記錄設定',
         'settings_proxy' => 'Proxy 設定',
         'auto_refresh' => '自動更新',
-        'seconds' => '秒',
         'test' => '測試',
         'test_email' => '電子郵件將發送到您在使用者設定內指定的電子郵件信箱。',
         'test_sms' => '簡訊將發送到您在使用者設定內指定的行動電話號碼。',

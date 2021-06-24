@@ -67,6 +67,7 @@ $sm_lang = array(
         'a_minute_ago' => 'yaklaşık bir dakika önce',
         'seconds_ago' => '%d saniye önce',
         'a_second_ago' => 'bir saniye önce',
+        'seconds' => 'saniye',
     ),
     'menu' => array(
         'config' => 'Ayarlar',
@@ -248,7 +249,6 @@ $sm_lang = array(
         'auto_refresh' => 'Otomatik Yenileme',
         'auto_refresh_description' => 'Otomatik yenileme sunucu sayfası<br><span class="small">Eğer sayfa yenilenmez
  ise.</span>',
-        'seconds' => 'saniye',
         'test' => 'Test',
         'test_email' => 'Profilinizde tanımladığınız e-posta adresinize bir e-posta gönderilecek.',
         'test_sms' => 'Profilinizde tanımladığınız numaranıza bir SMS mesajı gönderilecek.',

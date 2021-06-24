@@ -19,62 +19,73 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Victor Macko
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
+ * @since       phpservermon 3.6.0
  **/
 
 namespace psm\Txtmsg;
 
-class FreeMobileSMS extends Core
+class Infobip extends Core
 {
     
     /**
-     * Send sms using the FreeMobileSMS API
+     * Send sms using the infobip.com API
      *
      * @var string $message
      * @var string $this->password
-     * @var string $this->username
+     * @var array $this->recipients
+     * @var array $this->originator
+     * @var string $recipients
      *
      * @var resource $curl
      * @var string $err
+     * @var mixed $result
+     *
      * @var int $success
      * @var string $error
-     * @var string $http_code
      *
      * @return bool|string
      */
-    
+
+ 
+					
     public function sendSMS($message)
     {
         $success = 1;
-        $error = "";
-        
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_URL, "https://smsapi.free-mobile.fr/sendmsg?" . http_build_query(
-            array(
-                    "user" => $this->username,
-                    "pass" => $this->password,
-                    "msg" => rawurlencode($message),
-                )
-        ));
+        $error = '';
+        foreach ($this->recipients as $recipient) {
+            $ch = curl_init();
+            curl_setopt(
+                $ch,
+                CURLOPT_URL,
+                "https://api.infobip.com/sms/1/text/query?username=" . $this->username .
+                    "&password=" . $this->password .
+                    "&to=" . $recipient .
+                    "&text=" . urlencode($message) .
+                    //add your sender id here
+                    "&from="
+            );
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $headers = array();
+            $headers[] = "Content-Type: application/x-www-form-urlencoded";
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $result = curl_exec($ch);
+            curl_close($ch);
 
-        $result = curl_exec($curl);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $err = curl_errno($curl);
-        
-        if ($err != 0 || $httpcode != 200) {
-            $success = 0;
-                $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err);
+            // Check for errors
+            if (is_numeric(strpos($result, "FAILED"))) {
+                $error = $result;
+                $success = 0;
+            }
         }
-        curl_close($curl);
-        
-        if ($success) {
+        if ($success == 1) {
             return 1;
         }
         return $error;
     }
 }
+

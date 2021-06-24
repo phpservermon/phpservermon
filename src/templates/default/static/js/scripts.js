@@ -51,6 +51,7 @@ $().ready(function () {
 	}
 	$('#label').focus();
 });
+
 $("#type").change(function () {
 	switch ($("select#type option:checked").val()) {
 		case "website":
@@ -101,6 +102,21 @@ $("select#popular_ports").change(function () {
 			$('#port').val($("select#popular_ports option:checked").val());
 			$('.port').slideUp();
 	}
+}).change();
+
+$("#user_name").change(function ()
+{
+    switch ($("#user_name").val()) {
+        case "__PUBLIC__":
+            $('#password').parent().slideUp();
+            $('#password_repeat').parent().slideUp();
+            $("select#level").val('30');
+            $("#name").val('Public page');
+            break;
+        default:
+            $('#password').parent().slideDown();
+            $('#password_repeat').parent().slideDown();
+    }
 }).change();
 
 

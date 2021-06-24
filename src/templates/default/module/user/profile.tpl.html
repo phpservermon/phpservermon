@@ -24,9 +24,9 @@
         <legend>{{ label_pushover }}</legend>
         <p>{{ label_pushover_description|raw }}</p>
 		<!-- pushover key -->
-		{{ macro.input_field("text", "pushover_key", null, "pushover_key", label_pushover_key, pushover_key, label_pushover_key, "255", "pushover_key_help", pushover_key_description) }}
+		{{ macro.input_field("text", "pushover_key", null, "pushover_key", label_pushover_key, pushover_key, label_pushover_key, "255", "pushover_key_help", label_pushover_key_description) }}
 		<!-- pushover device -->
-		{{ macro.input_field("text", "pushover_device", null, "pushover_device", label_pushover_device, pushover_device, label_pushover_device, "255", "pushover_device_help", pushover_device_description) }}
+		{{ macro.input_field("text", "pushover_device", null, "pushover_device", label_pushover_device, pushover_device, label_pushover_device, "255", "pushover_device_help", label_pushover_device_description) }}
 	</fieldset>
 	<!-- Telegram settings -->
 	<fieldset>
@@ -34,17 +34,31 @@
         <p>{{ label_telegram_description|raw }}</p>
 		<!-- telegram id -->
 		<div class="form-group">
-            <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
+                    <a class="btn btn-primary mb-2" href="{{ telegram_get_chat_id_url }}">{{ label_telegram_get_chat_id }}</a>
 		</div>
-		{{ macro.input_field("text", "telegram_id", null, "telegram_id", label_telegram_chat_id, telegram_id, label_telegram_chat_id, "255", "telegram_id_help", telegram_id_description) }}
-		<button class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
+		{{ macro.input_field("text", "telegram_id", null, "telegram_id", label_telegram_chat_id, telegram_id, label_telegram_chat_id, "255", "telegram_id_help", label_telegram_id_description) }}
+		<button type="button" class="btn btn-primary show-modal" data-toggle="modal" data-modal-id="activateTelegram">{{ label_activate_telegram }}</button>
 		{{ macro.input_hidden("activate_telegram", "0") }}
 	</fieldset>
 	<!-- Jabber settings -->
 	<fieldset>
 		<legend>{{ label_jabber }}</legend>
 		<!-- jabber -->
-		{{ macro.input_field("text", "jabber", null, "jabber", label_jabber, jabber, label_jabber, "255", "jabber_help", jabber_description) }}
-	</fieldset>
+		{{ macro.input_field("text", "jabber", null, "jabber", label_jabber, jabber, label_jabber, "255", "jabber_help", label_jabber_description) }}
+    </fieldset>
+    <!-- Discord settings -->
+    <fieldset>
+        <legend>{{ label_discord }}</legend>
+        {{ macro.input_field("text", "discord", null, "discord", label_discord, discord, "https://discordapp.com/api/webhooks/xxxxx", "255", "discord_help", label_discord_description) }}
+    </fieldset>
+    <!-- Webhook settings -->
+    <fieldset>
+        <legend>{{ label_webhook }}</legend>
+        <p>{{ label_webhook_description|raw }}</p>
+        <!-- webhook url -->
+        {{ macro.input_field("text", "webhook_url", null, "webhook_url", label_webhook_url, webhook_url, "https://test.com/api/abcde", "255", "webhook_url_help", label_webhook_url_description) }}
+        <!-- webhook json -->
+        {{ macro.input_field("text", "webhook_json", null, "webhook_json", label_webhook_json, webhook_json, "{\"text\":\"servermon: #message\"}", "255", "webhook_json_help", label_webhook_json_description) }}
+    </fieldset>
 	{{ macro.button_save(null, label_save) }}
 </form>

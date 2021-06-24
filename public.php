@@ -19,31 +19,22 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@mailbox.org>
+ * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 3.2
+ * @since       phpservermon 3.6.0
  **/
 
-namespace psm\Module\User;
+namespace {
+    define('PSM_PUBLIC_PAGE', true);
 
-final class UserEvents
-{
+    require __DIR__ . '/src/bootstrap.php';
 
-    /**
-     * @var string
-     */
-    const USER_ADD = 'user.add';
+    $router->run('server_status');
 
-    /**
-     * @var string
-     */
-    const USER_EDIT = 'user.edit';
-
-    /**
-     * @var string
-     */
-    const USER_DELETE = 'user.delete';
+    // By destroying the session the login will show when going to another page
+    session_destroy();
+    
 }

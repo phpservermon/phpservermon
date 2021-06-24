@@ -121,12 +121,12 @@ $sm_lang = array(
  пустым, что бы отправлять уведомления на
  все устройства.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный мессенджер
- для получения уведомлений в реальном
- времени. Посетите <a
- href="http://docs.phpservermonitor.org/" target="_blank">раздел документации</a>
- для получения доп. информации и инструкций по
- установке.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный
+ мессенджер для получения уведомлений в
+ реальном времени. Посетите <a
+ href="http://docs.phpservermonitor.org/" target="_blank">раздел
+ документации</a> для получения доп. информации
+ и инструкций по установке.',
         'telegram_chat_id' => 'Telegram chat id',
         'telegram_chat_id_description' => 'Сообщения будут отправляться на
  указанный идентификатор чата.',
@@ -313,12 +313,12 @@ $sm_lang = array(
  rel="noopener">"App"</a> на их веб-сайте и ввести "App
  API Token" сюда.',
         'telegram_status' => 'Разрешить отправку уведомлений в Telegram',
-        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный мессенджер
- для получения уведомлений в реальном
- времени. Посетите <a
- href="http://docs.phpservermonitor.org/" target="_blank">раздел документации</a>
- для получения доп. информации и инструкций по
- установке.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный
+ мессенджер для получения уведомлений в
+ реальном времени. Посетите <a
+ href="http://docs.phpservermonitor.org/" target="_blank">раздел
+ документации</a> для получения доп. информации
+ и инструкций по установке.',
         'telegram_api_token' => 'Telegram API Token',
         'telegram_api_token_description' => 'Прежде чем вы сможете начать
  пользоваться Telegram, вам необходимо
@@ -371,7 +371,6 @@ $sm_lang = array(
  серверов.<br><span class="small">Время в секундах.
  Если указано 0, то страница не будет
  обновляться.</span>',
-        'seconds' => 'секунд',
         'test' => 'Проверка',
         'test_email' => 'Сообщение будет отправлено на адрес указаный в
  профиле пользователя.',

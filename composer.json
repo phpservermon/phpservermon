@@ -6,9 +6,10 @@
 	"require": {
 		"php": "^5.5.9|>=7.0.8",
 		"ext-curl": "*",
+		"ext-json": "*",
 		"ext-pdo": "*",
 		"ext-xml": "*",
-		"phpmailer/phpmailer": ">=6.0.6 ~6.0",
+		"phpmailer/phpmailer": ">=6.5.0 ~6.0",
 		"symfony/config": "~3.4",
 		"symfony/dependency-injection": "~3.4",
 		"symfony/event-dispatcher": "~3.4",
@@ -17,7 +18,8 @@
 		"php-pushover/php-pushover": "dev-master",
 		"paragonie/random_compat": "^2.0",
 		"twig/twig": "~1.35",
-		"jaxl/jaxl": "^3.1"
+		"jaxl/jaxl": "^3.1",
+		"viharm/psm-ldap-auth": "^1.1"
 	},
 	"autoload": {
 		"files": [

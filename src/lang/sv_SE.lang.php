@@ -67,6 +67,7 @@ $sm_lang = array(
         'a_minute_ago' => 'ungefär en minut sen',
         'seconds_ago' => '%d sekunder sedan',
         'a_second_ago' => 'en sekund sedan',
+        'seconds' => 'sekunder',
     ),
     'menu' => array(
         'config' => 'Inställningar',
@@ -94,7 +95,8 @@ $sm_lang = array(
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover är en tjänst som skickar meddelande i realtid. Se <a
- href="https://pushover.net/" target="_blank">deras webbsida</a> för mer information.',
+ href="https://pushover.net/" target="_blank">deras webbsida</a> för mer
+ information.',
         'pushover_key' => 'Pushover Key',
         'pushover_device' => 'Pushover Device',
         'pushover_device_description' => 'Enhetsnman att skicka meddelande till. Lämna tomt för att skicka till alla
@@ -245,7 +247,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-uppdatera',
         'auto_refresh_description' => 'Auto-uppdatera status-sidan.<br><span class="small">Tid i sekunder, om "0" så
  uppdateras sidan inte automatiskt.</span>',
-        'seconds' => 'sekunder',
         'test' => 'Test',
         'test_email' => 'Ett emial kommer skickas till adressen i din profil.',
         'test_sms' => 'Ett SMS kommer skickas till mobilnumret i din profil.',

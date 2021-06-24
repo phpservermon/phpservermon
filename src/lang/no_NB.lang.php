@@ -326,7 +326,6 @@ $sm_lang = array(
         'auto_refresh' => 'Auto-refresh',
         'auto_refresh_description' => 'Auto-refresh server side.<br><span class="small">Tid i sekunder, hvis 0 siden
  ikke blir oppdatert.</span>',
-        'seconds' => 'sekunder',
         'test' => 'Test',
         'test_email' => 'En e-post vil bli sendt til adressen spesifisert i brukerprofilen din.',
         'test_sms' => 'En tekstmelding vil bli sendt til telefonnummeret som er angitt i brukerprofilen din.',

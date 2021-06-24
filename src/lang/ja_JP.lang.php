@@ -345,7 +345,6 @@ $sm_lang = array(
         'auto_refresh' => '自動更新',
         'auto_refresh_description' => 'サーバーページを自動更新します。<br><span
  class="small">時間を秒で指定し、0に設定すると更新しません。</span>',
-        'seconds' => '秒',
         'test' => 'テスト',
         'test_email' => 'あなたのユーザープロフィールで指定されたアドレスに電子メールが送信されます。',
         'test_sms' => 'あなたのユーザープロフィールで指定された電話番号にSMSが送信されます。',

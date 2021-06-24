@@ -66,6 +66,7 @@ $sm_lang = array(
         'a_minute_ago' => 'преди минута',
         'seconds_ago' => 'преди %d секунди',
         'a_second_ago' => 'преди секунда',
+        'seconds' => 'секунди',
     ),
     'menu' => array(
         'config' => 'Настройки',
@@ -219,8 +220,6 @@ $sm_lang = array(
         'email_smtp' => 'Активиране на SMTP',
         'email_smtp_host' => 'SMTP сървър',
         'email_smtp_port' => 'SMTP порт',
-        'email_smtp_security' => 'SMTP security',
-        'email_smtp_security_none' => 'None',
         'email_smtp_username' => 'SMTP потребителско име',
         'email_smtp_password' => 'SMTP парола',
         'email_smtp_noauth' => 'Оставете празно за "без аутентикация"',
@@ -267,7 +266,6 @@ $sm_lang = array(
  системата',
         'log_sms' => 'Да се пази ли лог на изпратените SMS съобщения от
  системата',
-        'log_pushover' => 'Log pushover messages sent by the script',
         'updated' => 'Настройките са обновени успешно.',
         'tab_email' => 'Имейл',
         'tab_sms' => 'SMS',

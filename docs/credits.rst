@@ -85,6 +85,18 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Nexmo SMS gateway
 
+* Mateusz Małek - https://github.com/mateuszmalek
+
+  * SMSAPI gateway
+
+* Daniel Krusky - https://github.com/dkrusky
+
+  * Discord webhook support
+
+* Łukasz Szczepański - https://github.com/NixNotCastey
+
+  * PromoSMS gateway
+
 Translators
 +++++++++++
 
@@ -192,3 +204,4 @@ The following libraries are being used by PHP Server Monitor:
 * PHP-Pushover - https://github.com/kryap/php-pushover
 * Symfony - https://symfony.com
 * Random_compat - https://github.com/paragonie/random_compat
+* Hammer.js - https://github.com/hammerjs/hammer.js
