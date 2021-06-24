@@ -29,6 +29,9 @@
 namespace psm\Module\Server\Controller;
 
 use psm\Service\Database;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
@@ -50,16 +53,77 @@ class ServerController extends AbstractServerController
 
         $this->setCSRFKey('server');
         $this->setActions(array(
-            'index', 'edit', 'save', 'delete', 'view',
+            'index', 'edit', 'save', 'delete', 'view', 'export', 'import', 'importpost'
         ), 'index');
 
         // make sure only admins are allowed to edit/delete servers:
         $this->setMinUserLevelRequiredForAction(PSM_USER_ADMIN, array(
-            'delete', 'edit', 'save'
+            'delete', 'edit', 'save', 'export'
         ));
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server'));
     }
 
+    /**
+     * Exports a JSON file with the server configuration
+     */
+    protected function executeExport()
+    {
+       $request = new Request();
+       $response = new Response(
+           json_encode($this->getServers()),
+           200, 
+           ['Content-Type' => 'application/json']
+       );
+
+       $response->prepare($request);
+       $response->send();
+       return exit;
+    }
+
+    /**
+     * Import settings page
+     */
+    protected function executeImport()
+    {
+        $sidebar = new \psm\Util\Module\Sidebar($this->twig);
+        $this->setSidebar($sidebar);
+        if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+            $modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+            $this->addModal($modal);
+            $modal->setTitle(psm_get_lang('servers', 'delete_title'));
+            $modal->setMessage(psm_get_lang('servers', 'delete_message'));
+            $modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
+            $tpl_data = [
+                'label_upload'  => 'Upload',
+                'url_save'      => psm_build_url(array(
+                    'mod' => 'server',
+                    'action' => 'importpost',
+                    'back_to' => ""
+                ))
+                ];
+
+            return $this->twig->render('module/server/server/import.tpl.html', $tpl_data);
+        }
+        else {
+            return $this->executeIndex();
+        }
+    }
+
+    /**
+     * Import post page
+     */
+    protected function executeImportpost() 
+    {
+        /** 
+         * - Load file from $_FILES
+         * - Check if valid JSON
+         * - List all allowed fields
+         * - foreach (check if exists, else import)
+         * 
+         * Check if exists based on?
+         */
+    }
     /**
      * Prepare the template to show a list of all servers
      */
@@ -85,6 +149,24 @@ class ServerController extends AbstractServerController
                 'plus',
                 'success',
                 psm_get_lang('system', 'add_new')
+            );
+
+            $sidebar->addButton(
+                'export_config', 
+                psm_get_lang('system', 'export_config'),
+                psm_build_url(array('mod' => 'server', 'action' => 'export')),
+                'arrow-down',
+                'success',
+                psm_get_lang('system', 'export_config')
+            );
+
+            $sidebar->addButton(
+                'import_config', 
+                psm_get_lang('system', 'import_config'),
+                psm_build_url(array('mod' => 'server', 'action' => 'import')),
+                'arrow-up',
+                'success',
+                psm_get_lang('system', 'import_config')
             );
         }
 
