@@ -3,6 +3,9 @@
  autocomplete="off" enctype="multipart/form-data">
 	<fieldset>
 		<legend>{{ titlemode }}</legend>
+		{% if error_message != "" %}
+		<div class="card text-white bg-danger px-3 pt-3 pb-2 mb-4"><h3>Error: {{ error_message }}</h3></div>
+		{% endif %}
 		<div class="col">
 			<!-- Label -->
 			{{ macro.input_upload("import_upload", "import_upload", "Upload Configuration", null, null) }}

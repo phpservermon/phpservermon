@@ -64,67 +64,6 @@ class ServerController extends AbstractServerController
     }
 
     /**
-     * Exports a JSON file with the server configuration
-     */
-    protected function executeExport()
-    {
-       $request = new Request();
-       $response = new Response(
-           json_encode($this->getServers()),
-           200, 
-           ['Content-Type' => 'application/json']
-       );
-
-       $response->prepare($request);
-       $response->send();
-       return exit;
-    }
-
-    /**
-     * Import settings page
-     */
-    protected function executeImport()
-    {
-        $sidebar = new \psm\Util\Module\Sidebar($this->twig);
-        $this->setSidebar($sidebar);
-        if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
-            $modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
-            $this->addModal($modal);
-            $modal->setTitle(psm_get_lang('servers', 'delete_title'));
-            $modal->setMessage(psm_get_lang('servers', 'delete_message'));
-            $modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
-
-            $tpl_data = [
-                'label_upload'  => 'Upload',
-                'url_save'      => psm_build_url(array(
-                    'mod' => 'server',
-                    'action' => 'importpost',
-                    'back_to' => ""
-                ))
-                ];
-
-            return $this->twig->render('module/server/server/import.tpl.html', $tpl_data);
-        }
-        else {
-            return $this->executeIndex();
-        }
-    }
-
-    /**
-     * Import post page
-     */
-    protected function executeImportpost() 
-    {
-        /** 
-         * - Load file from $_FILES
-         * - Check if valid JSON
-         * - List all allowed fields
-         * - foreach (check if exists, else import)
-         * 
-         * Check if exists based on?
-         */
-    }
-    /**
      * Prepare the template to show a list of all servers
      */
     protected function executeIndex()
@@ -350,11 +289,19 @@ class ServerController extends AbstractServerController
     /**
      * Executes the saving of one of the servers
      */
-    protected function executeSave()
+    protected function executeSave($internal = false)
     {
+
         if (empty($_POST)) {
             // dont process anything if no data has been posted
             return $this->executeIndex();
+        }
+
+        if ($internal) {
+            $this->server_id = (isset($_POST['server_id']) ? $_POST['server_id'] : 0);
+            if (empty($this->getServers($this->server_id))) {
+                $this->server_id = 0;
+            }
         }
 
         // We need the server id to encrypt the password. Encryption will be done after the server is added
@@ -365,6 +312,7 @@ class ServerController extends AbstractServerController
 
             if ($this->server_id > 0) {
                 $edit_server = $this->getServers($this->server_id);
+
                 $hash = sha1($edit_server['website_password']);
 
                 if ($new_password == $hash) {
@@ -375,7 +323,6 @@ class ServerController extends AbstractServerController
                 }
             }
         }
-
         $clean = array(
             'label' => trim(strip_tags(psm_POST('label', ''))),
             'ip' => trim(strip_tags(psm_POST('ip', ''))),
@@ -451,6 +398,7 @@ class ServerController extends AbstractServerController
 
         // check for edit or add
         if ($this->server_id > 0) {
+
             // edit
             $this->db->save(
                 PSM_DB_PREFIX . 'servers',
@@ -497,13 +445,15 @@ class ServerController extends AbstractServerController
             // add all new users
             $this->db->insertMultiple(PSM_DB_PREFIX . 'users_servers', $user_idc_save);
         }
-
-        $back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
-        if ($back_to == 'view') {
-            return $this->runAction('view');
-        } else {
-            return $this->runAction('index');
+        if (!$internal) {
+            $back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
+            if ($back_to == 'view') {
+                return $this->runAction('view');
+            } else {
+                return $this->runAction('index');
+            }
         }
+        return true;
     }
 
     /**
@@ -526,6 +476,89 @@ class ServerController extends AbstractServerController
         }
         return $this->runAction('index');
     }
+    
+    /**
+     * Exports a JSON file with the server configuration
+     */
+    protected function executeExport()
+    {
+        $request = new Request();
+        $response = new Response(
+            json_encode($this->getServers()),
+            200,
+            array(
+                'Content-disposition'    => 'attachment; filename=server_export.json',
+                'Content-Type'           => 'application/json'
+            )
+        );
+
+        $response->prepare($request);
+        $response->send();
+        return exit;
+    }
+
+    /**
+     * Import settings page
+     */
+    protected function executeImport($error = "")
+    {
+        $sidebar = new \psm\Util\Module\Sidebar($this->twig);
+        $this->setSidebar($sidebar);
+        if ($this->getUser()->getUserLevel() == PSM_USER_ADMIN) {
+            $modal = new \psm\Util\Module\Modal($this->twig, 'delete', \psm\Util\Module\Modal::MODAL_TYPE_DANGER);
+            $this->addModal($modal);
+            $modal->setTitle(psm_get_lang('servers', 'delete_title'));
+            $modal->setMessage(psm_get_lang('servers', 'delete_message'));
+            $modal->setOKButtonLabel(psm_get_lang('system', 'delete'));
+
+            $tpl_data = [
+                'label_upload'  => 'Upload',
+                'error_message' => $error,
+                'url_save'      => psm_build_url(array(
+                    'mod' => 'server',
+                    'action' => 'importpost',
+                    'back_to' => ""
+                ))
+            ];
+
+            return $this->twig->render('module/server/server/import.tpl.html', $tpl_data);
+        }
+        else {
+            return $this->executeIndex();
+        }
+    }
+
+    /**
+     * Import post page
+     */
+    protected function executeImportpost()
+    {
+        $temp_name = $_FILES['import_upload']['tmp_name'];
+        echo "Started decode";
+        $file = json_decode(
+            file_get_contents($temp_name),
+            true
+        );
+
+        if (!$file) {
+            echo "NoFile";
+            return $this->executeImport("Not a valid JSON file");
+        }
+
+        foreach ($file as $server) {
+            $_POST = $server;
+            $this->executeSave(true);
+        }
+
+        return $this->executeIndex();
+        /**
+         * - List all allowed fields
+         * - foreach (check if exists, else import)
+         *
+         * Check if exists based on?
+         */
+    }
+
 
     /**
      * Prepare the view template
