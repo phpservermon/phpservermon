@@ -9,7 +9,7 @@
 		"ext-json": "*",
 		"ext-pdo": "*",
 		"ext-xml": "*",
-		"phpmailer/phpmailer": ">=6.4.1 ~6.0",
+		"phpmailer/phpmailer": ">=6.5.0 ~6.0",
 		"symfony/config": "~3.4",
 		"symfony/dependency-injection": "~3.4",
 		"symfony/event-dispatcher": "~3.4",
