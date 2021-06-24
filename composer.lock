@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21bf20f2a7d6602e659723ca99c80d66",
+    "content-hash": "c967e1466fd2a2effd7f76650bba60d7",
     "packages": [
         {
             "name": "jaxl/jaxl",
@@ -77,6 +77,11 @@
                 "php",
                 "xmpp"
             ],
+            "support": {
+                "forum": "https://groups.google.com/forum/#!forum/jaxl",
+                "issues": "https://github.com/jaxl/JAXL/issues",
+                "source": "https://github.com/jaxl/JAXL"
+            },
             "time": "2016-09-13T01:59:35+00:00"
         },
         {
@@ -129,6 +134,10 @@
                 "composer-installer",
                 "composer-plugin"
             ],
+            "support": {
+                "issues": "https://github.com/mnsami/composer-custom-directory-installer/issues",
+                "source": "https://github.com/mnsami/composer-custom-directory-installer/tree/master"
+            },
             "time": "2016-05-25T08:26:02+00:00"
         },
         {
@@ -178,6 +187,11 @@
                 "pseudorandom",
                 "random"
             ],
+            "support": {
+                "email": "info@paragonie.com",
+                "issues": "https://github.com/paragonie/random_compat/issues",
+                "source": "https://github.com/paragonie/random_compat"
+            },
             "time": "2021-04-17T09:33:01+00:00"
         },
         {
@@ -194,6 +208,7 @@
                 "reference": "ef1df985bf3acb17b1f1f8fe2df2c3c9a16bef32",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -208,20 +223,24 @@
                 }
             ],
             "description": "PHP class for the Pushover.net project",
+            "support": {
+                "issues": "https://github.com/cschalenborgh/php-pushover/issues",
+                "source": "https://github.com/cschalenborgh/php-pushover/tree/master"
+            },
             "time": "2021-01-12T12:43:39+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.4.1",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "9256f12d8fb0cd0500f93b19e18c356906cbed3d"
+                "reference": "a5b5c43e50b7fba655f793ad27303cd74c57363c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9256f12d8fb0cd0500f93b19e18c356906cbed3d",
-                "reference": "9256f12d8fb0cd0500f93b19e18c356906cbed3d",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/a5b5c43e50b7fba655f793ad27303cd74c57363c",
+                "reference": "a5b5c43e50b7fba655f793ad27303cd74c57363c",
                 "shasum": ""
             },
             "require": {
@@ -274,7 +293,17 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2021-04-29T12:25:04+00:00"
+            "support": {
+                "issues": "https://github.com/PHPMailer/PHPMailer/issues",
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Synchro",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-06-16T14:33:43+00:00"
         },
         {
             "name": "psr/container",
@@ -318,6 +347,10 @@
                 "container-interop",
                 "psr"
             ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/1.1.1"
+            },
             "time": "2021-03-05T17:36:06+00:00"
         },
         {
@@ -377,6 +410,23 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/config/tree/v3.4.47"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -443,6 +493,23 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/dependency-injection/tree/v3.4.47"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -502,6 +569,23 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/event-dispatcher/tree/v3.4.47"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -547,6 +631,23 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/filesystem/tree/v3.4.47"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -596,20 +697,37 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/http-foundation/tree/v3.4.47"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.22.1",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e"
+                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/c6c942b1ac76c82448322025e084cadc56048b4e",
-                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/46cd95797e9df938fdd2b03693b5fca5e64b01ce",
+                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce",
                 "shasum": ""
             },
             "require": {
@@ -621,7 +739,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.22-dev"
+                    "dev-main": "1.23-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -658,20 +776,37 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2021-01-07T16:49:33+00:00"
+            "support": {
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-02-19T12:13:01+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.22.1",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1"
+                "reference": "2df51500adbaebdc4c38dea4c89a2e131c45c8a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/5232de97ee3b75b0360528dae24e73db49566ab1",
-                "reference": "5232de97ee3b75b0360528dae24e73db49566ab1",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2df51500adbaebdc4c38dea4c89a2e131c45c8a1",
+                "reference": "2df51500adbaebdc4c38dea4c89a2e131c45c8a1",
                 "shasum": ""
             },
             "require": {
@@ -683,7 +818,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.22-dev"
+                    "dev-main": "1.23-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -721,7 +856,24 @@
                 "portable",
                 "shim"
             ],
-            "time": "2021-01-22T09:19:47+00:00"
+            "support": {
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-27T09:27:20+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -772,20 +924,37 @@
                 "portable",
                 "shim"
             ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php70/tree/v1.20.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-10-23T14:02:19+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v1.44.2",
+            "version": "v1.44.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "138c493c5b8ee7cff3821f80b8896d371366b5fe"
+                "reference": "4d400421528e9fa40caaffcf7824c172526dd99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/138c493c5b8ee7cff3821f80b8896d371366b5fe",
-                "reference": "138c493c5b8ee7cff3821f80b8896d371366b5fe",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4d400421528e9fa40caaffcf7824c172526dd99d",
+                "reference": "4d400421528e9fa40caaffcf7824c172526dd99d",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +1005,21 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2021-01-05T10:10:05+00:00"
+            "support": {
+                "issues": "https://github.com/twigphp/Twig/issues",
+                "source": "https://github.com/twigphp/Twig/tree/v1.44.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-16T12:11:20+00:00"
         },
         {
             "name": "viharm/php-db-auth",
@@ -884,6 +1067,10 @@
                 "database",
                 "php"
             ],
+            "support": {
+                "issues": "https://bitbucket.org/viharm/phpdbauth/issues",
+                "source": "https://bitbucket.org/viharm/phpdbauth/src/60c1b0a28d26178d5e4960d49185af85734643c6/?at=master"
+            },
             "time": "2020-01-05T11:48:12+00:00"
         },
         {
@@ -973,6 +1160,10 @@
                 "openldap",
                 "php"
             ],
+            "support": {
+                "issues": "https://bitbucket.org/viharm/phpldapauth/issues",
+                "source": "https://bitbucket.org/viharm/phpldapauth/src/3a60e626bfb63eda786dad30f09bd75fd5172cb1/?at=v2.5.1"
+            },
             "time": "2020-11-24T21:56:47+00:00"
         },
         {
@@ -1018,6 +1209,9 @@
                 "php server monitor",
                 "psm"
             ],
+            "support": {
+                "issues": "https://gitlab.com/viharm/PsmLDAPauth/issues"
+            },
             "time": "2020-11-24T22:57:57+00:00"
         }
     ],
@@ -1036,5 +1230,6 @@
         "ext-pdo": "*",
         "ext-xml": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
