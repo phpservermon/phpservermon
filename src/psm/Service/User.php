@@ -332,7 +332,7 @@ class User
         $cookie_string = $cookie_string_first_part . '_' . $cookie_string_hash;
 
         // set cookie
-        setcookie('rememberme', $cookie_string, time() + PSM_LOGIN_COOKIE_RUNTIME, "/", PSM_LOGIN_COOKIE_DOMAIN);
+        setcookie('rememberme', $cookie_string, time() + PSM_LOGIN_COOKIE_RUNTIME, "/", PSM_LOGIN_COOKIE_DOMAIN, TRUE);
     }
 
     /**
