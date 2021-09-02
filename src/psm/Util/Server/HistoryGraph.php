@@ -120,6 +120,7 @@ class HistoryGraph
         $hour = new DateTime('-1 hour');
         $day = new DateTime('-1 day');
         $week = new DateTime('-1 week');
+		$month = new DateTime('-1 month');
         
         $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
 
@@ -145,6 +146,11 @@ class HistoryGraph
             'unit' => 'day',
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
+        );
+		$data['buttons'][] = array(
+            'unit' => 'day',
+            'time' => $month->getTimestamp() * 1000,
+            'label' => psm_get_lang('servers', 'month')
         );
 
         return $data;
