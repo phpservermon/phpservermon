@@ -71,12 +71,21 @@ class HistoryGraph
         $archive->archive($server_id);
 
         $now = new DateTime();
+
+		if(PSM_UPTIME_ARCHIVE == 'quarterly'){
+			$start_date = new DateTime('-3 month 0:0:0');
+		}else if(PSM_UPTIME_ARCHIVE == 'monthly'){
+			$start_date = new DateTime('-1 month 0:0:0');
+		}else{
+			$start_date = new DateTime('-1 week 0:0:0');
+		}
+
         $last_week = new DateTime('-1 week 0:0:0');
         $last_month = new DateTime('-1 month 0:0:0');
         $last_year = new DateTime('-1 year -1 week 0:0:0');
 
         $graphs = array(
-            0 => $this->generateGraphUptime($server_id, $last_month, $now),
+            0 => $this->generateGraphUptime($server_id, $start_date, $now),
             1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
         );
         $info_fields = array(
