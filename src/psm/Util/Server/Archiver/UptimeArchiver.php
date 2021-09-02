@@ -66,7 +66,12 @@ class UptimeArchiver implements ArchiverInterface
     public function archive($server_id = null)
     {
 		// WIP, create more dynamic by config, temp use config.php
-        $latest_date = new \DateTime('-1 week 0:0:0');
+
+		if(PSM_UPTIME_ARCHIVE == 'monthly'){
+			$latest_date = new \DateTime('-1 month 0:0:0');
+		}else{
+			$latest_date = new \DateTime('-1 week 0:0:0');
+		}
 
         // Lock tables to prevent simultaneous archiving (by other sessions or the cron job)
         try {
