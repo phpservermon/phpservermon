@@ -72,10 +72,11 @@ class HistoryGraph
 
         $now = new DateTime();
         $last_week = new DateTime('-1 week 0:0:0');
+        $last_month = new DateTime('-1 month 0:0:0');
         $last_year = new DateTime('-1 year -1 week 0:0:0');
 
         $graphs = array(
-            0 => $this->generateGraphUptime($server_id, $last_week, $now),
+            0 => $this->generateGraphUptime($server_id, $last_month, $now),
             1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
         );
         $info_fields = array(
