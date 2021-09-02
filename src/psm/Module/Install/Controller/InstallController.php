@@ -202,6 +202,7 @@ class InstallController extends AbstractController
                 'db_pass' => '',
                 'db_prefix' => 'psm_',
                 'base_url' => $this->getBaseUrl(),
+				'uptime_archive' => 'weekly',
             );
 
             $changed = false;
