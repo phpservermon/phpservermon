@@ -56,7 +56,10 @@ class UptimeArchiver implements ArchiverInterface
     }
 
     /**
-     * Archive all server status records older than 1 week.
+     * Archive all server status records older than (X) based on config.
+	 * quarterly = up to last 3 months
+	 * monthly = up to last 1 month
+	 * default / weekly = up to 1 week
      *
      * Archiving means calculating averages per day, and storing 1 single
      * history row for each day for each server.
@@ -65,8 +68,6 @@ class UptimeArchiver implements ArchiverInterface
      */
     public function archive($server_id = null)
     {
-		// WIP, create more dynamic by config, temp use config.php
-
 		if(PSM_UPTIME_ARCHIVE == 'quarterly'){
 			$latest_date = new \DateTime('-3 month 0:0:0');
 		}else if(PSM_UPTIME_ARCHIVE == 'monthly'){
