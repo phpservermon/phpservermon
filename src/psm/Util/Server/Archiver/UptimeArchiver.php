@@ -67,7 +67,9 @@ class UptimeArchiver implements ArchiverInterface
     {
 		// WIP, create more dynamic by config, temp use config.php
 
-		if(PSM_UPTIME_ARCHIVE == 'monthly'){
+		if(PSM_UPTIME_ARCHIVE == 'quarterly'){
+			$latest_date = new \DateTime('-3 month 0:0:0');
+		}else if(PSM_UPTIME_ARCHIVE == 'monthly'){
 			$latest_date = new \DateTime('-1 month 0:0:0');
 		}else{
 			$latest_date = new \DateTime('-1 week 0:0:0');
