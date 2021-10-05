@@ -17,11 +17,5 @@ Vagrant.configure("2") do |config|
   vb.memory = "2048"
   vb.cpus = "2"
   end
-
-  #config.vm.provider :libvirt do |v|
-  #  v.memory = 1024
-  #  v.cpus = 1
-  #  end
-  #end
 end
 end
