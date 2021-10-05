@@ -4,7 +4,9 @@ PHP Server Monitor
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/erickrf/nlpnet
    :target: https://gitter.im/phpservermon/phpservermon
-
+.. image:: https://cdn.huntr.dev/huntr_security_badge_mono.svg
+   :alt: huntr
+   :target: https://huntr.dev
 Version 3.6.0.beta2
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
@@ -64,7 +66,8 @@ The following SMS gateways are currently available:
 * OVH SMS PRO - <https://www.ovhtelecom.fr/sms>
 * PromoSMS - <https://promosms.com>
 * Infobip - <https://www.infobip.com>
-
+* LabsMobile - <https://www.labsmobile.com>
+* Tele2 Messaging - <https://portal.tele2messaging.com>
 
 Please note: for these gateways you will need an account with sufficient credits.
 

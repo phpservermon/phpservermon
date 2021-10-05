@@ -212,7 +212,7 @@ class Installer
                 `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `user_name` varchar(64) NOT NULL COMMENT 'user''s name, unique',
                 `password` varchar(255) NOT NULL COMMENT 'user''s password in salted and hashed format',
-                `password_reset_hash` char(40) DEFAULT NULL COMMENT 'user''s password reset code',
+                `password_reset_hash` varchar(64) DEFAULT NULL COMMENT 'user''s password reset code',
                 `password_reset_timestamp` bigint(20) DEFAULT NULL COMMENT 'timestamp of the password reset request',
                 `rememberme_token` varchar(64) DEFAULT NULL COMMENT 'user''s remember-me cookie token',
                 `level` tinyint(2) unsigned NOT NULL DEFAULT '20',
@@ -230,7 +230,7 @@ class Installer
                 UNIQUE KEY `unique_username` (`user_name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX .
-            'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
+                'users_preferences' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "users_preferences` (
                 `user_id` int(11) unsigned NOT NULL,
                 `key` varchar(255) NOT NULL,
                 `value` varchar(255) NOT NULL,
@@ -732,6 +732,7 @@ class Installer
     /**
      * Patch for v3.6.0 release
      * Added support for Discord and webhooks
+     * Password_reset_hash varchar 40 -> 64 to allow for SHA256 hash
      */
     protected function upgrade360()
     {
@@ -758,6 +759,8 @@ class Installer
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "users` (
             `user_name`, `level`, `name`, `email`)
             VALUES ('__PUBLIC__', 30, 'Public page', 'publicpage@psm.psm')";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "users`
+            CHANGE `password_reset_hash` `password_reset_hash`  VARCHAR( 64 ) DEFAULT NULL COMMENT 'user''s password reset code';";
         $this->execSQL($queries);
 
         $this->log('Public page is now available. Added user \'__PUBLIC__\'. See documentation for more info.');

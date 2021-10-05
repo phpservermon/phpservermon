@@ -603,7 +603,9 @@ namespace {
             $phpmailer->Host = psm_get_conf('email_smtp_host');
             $phpmailer->Port = (int)psm_get_conf('email_smtp_port');
             $phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
-
+            if (psm_get_conf('email_smtp_security') == ''){
+                $phpmailer->SMTPAutoTLS = false;
+            }
             $smtp_user = psm_get_conf('email_smtp_username');
             $smtp_pass = psm_password_decrypt(
                 psm_get_conf('password_encrypt_key'),
@@ -805,6 +807,11 @@ namespace {
                 break;
             case 'promosms':
                 $sms = new \psm\Txtmsg\PromoSMS();
+            case 'labsmobile':
+                $sms = new \psm\Txtmsg\LabsMobile();
+                break;
+            case 'tele2':
+                $sms = new \psm\Txtmsg\Tele2();
                 break;
         }
 
