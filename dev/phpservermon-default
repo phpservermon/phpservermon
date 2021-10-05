@@ -26,7 +26,7 @@ server {
     }
 
     location = /robots.txt {
-        denyall;
+        deny all;
         log_not_found off;
         access_log off;
     }
