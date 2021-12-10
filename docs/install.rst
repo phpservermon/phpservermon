@@ -26,7 +26,7 @@ To change these values correctly, only update the second parameter of the functi
      define('PSM_DB_HOST', 'db_host');
      define('PSM_DB_NAME', 'db_name');
      define('PSM_DB_USER', 'db_user');
-     define('PSM_DB_PASS', 'db_user_password');
+     define('PSM_DB_PASS', 'db_user_password'); NOTE: password containing '%' will cause an error.
      define('PSM_DB_PORT', 'most likely 3306, may also be empty');
 
 For example: to change your username you should ONLY change the 'db\_user' part.
