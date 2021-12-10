@@ -8,4 +8,3 @@ define('PSM_DB_PORT', '3306'); //3306 is the default port for MySQL. If no specf
 define('PSM_BASE_URL', '');
 define('PSM_WEBCRON_KEY', '');
 define('PSM_PUBLIC', false);
-

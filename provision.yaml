@@ -61,7 +61,7 @@
     shell: /vagrant/setup-php.sh
 
   - name: copy psm config file
-    shell: /bin/cp -far /vagrant/dev/config.php /vagrant/config.php
+    shell: /bin/cp -far /vagrant/dev/vagrant-config.php /vagrant/config.php
 
   - name: apply nginx modifications
     service:
