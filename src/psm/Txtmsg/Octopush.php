@@ -73,6 +73,8 @@ class Octopush extends Core
             'recipients' => $recipients,
             'text' => $message.(($smsType === "sms_premium") ? ' STOP au XXXXX' : ''),
             'type' => $smsType,
+            'purpose' => 'alert',
+            'with_replies' => false,
             'sender' => substr($this->originator, 0, 15),
         ]));
 
