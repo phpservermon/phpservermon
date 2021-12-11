@@ -85,12 +85,15 @@ class Octopush extends Core
         $headers[] = 'Cache-Control: no-cache';
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $result = curl_exec($ch);
+        $result = json_decode(curl_exec($ch), true);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if (!in_array($httpcode, [200, 201]) || curl_errno($ch)) {
-            return "HTTP code: " . $httpcode . ".\ncURL error (" . curl_error($ch) . "): " . curl_errno($ch) . ". Look at http://www.octopush-dm.com/en/errors for the error description.";
-        }
+        $err = curl_errno($ch);
         curl_close($ch);
+
+        if ($err != 0 || $httpcode != 201) {
+            return $result['code'] . " - " . $result['message'];
+        }
+
         return 1;
     }
 }
