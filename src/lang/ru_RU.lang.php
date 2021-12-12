@@ -33,7 +33,6 @@ $sm_lang = array(
         '0' => 'ru_RU.UTF-8',
         '1' => 'ru_RU',
         '2' => 'russian',
-        '3' => 'russian',
     ),
     'locale_tag' => 'ru',
     'locale_dir' => 'ltr',
