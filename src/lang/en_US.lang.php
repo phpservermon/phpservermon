@@ -435,8 +435,6 @@ $sm_lang = array(
         'test_sms' => 'An SMS will be sent to the phone number specified in your user profile.',
         'test_discord' => 'A Discord notification will be sent to the webhook specified in your user profile.',
         'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user profile.',
-        'test_pushover' => 'A Pushover notification will be sent to the user key/device specified in your user
- profile.',
         'test_webhook' => 'A webhook notification will be sent to the given url endpoint.',
         'test_telegram' => 'A Telegram notification will be sent to the chat id specified in your user profile.',
         'test_jabber' => 'A Jabber notification will be sent to the jabber account specified in your user profile.',
@@ -478,8 +476,6 @@ $sm_lang = array(
         'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
         'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_discord_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
-        'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
- %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_webhook_title' => 'Server \'%LABEL%\' is DOWN',
         'off_webhook_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
  %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
