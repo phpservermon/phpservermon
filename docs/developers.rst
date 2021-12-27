@@ -51,13 +51,13 @@ If you are not familiar with Vagrant, have a look at https://www.vagrantup.com/ 
 
 
 To ease development, a Vagrantfile has been included along with a full provisioning profile generated using ansible.
-The Vagrantfile is configured to set up a Ubuntu 20.04 box with PHP 7.4 (FPM) and MySQL installed, with a dedicated private IP for accessing the dev environment(http://192.168.50.100).
+The Vagrantfile is configured to set up a Ubuntu 20.04 box with PHP 7.4 (FPM) and MySQL installed, with a dedicated private IP for accessing the dev environment(http://192.168.56.100).
 To set up the development environment, make sure you have Vagrant, Ansible and VirtualBox (https://www.virtualbox.org/) installed, then run::
 
      vagrant up
 
 The initial setup may take some time as the virtual machine needs to be provisioned.
-After that, you can access your development environment by navigating to http://192.168.50.100/.
+After that, you can access your development environment by navigating to http://192.168.56.100/.
 The config.php file has been created automatically, but the first time you do need to run through the install wizard.
 
 Code
