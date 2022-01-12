@@ -95,98 +95,126 @@ class StatusUpdater
         $this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
             'server_id' => $server_id,
         ), array(
-            'server_id', 'ip', 'port', 'request_method', 'label',
+            'server_id', 'connectivity_sanity_test',
+            'ip', 'port', 'request_method', 'label',
             'type', 'pattern', 'pattern_online', 'post_field',
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
-            'warning_threshold_counter', 'ssl_cert_expiry_days', 'ssl_cert_expired_time', 'timeout', 'website_username',
+            'warning_threshold_counter', 'ssl_cert_expiry_days',
+            'ssl_cert_expired_time', 'timeout', 'website_username',
             'website_password', 'last_offline'
         ));
         if (empty($this->server)) {
             return false;
         }
-
-        switch ($this->server['type']) {
-            case 'ping':
-                $this->status_new = $this->updatePing($max_runs);
-                break;
-            case 'service':
-                $this->status_new = $this->updateService($max_runs);
-                break;
-            case 'website':
-                $this->status_new = $this->updateWebsite($max_runs);
-                break;
+        
+        // do Sanity Test before checking the actual server
+        $sanity_result_before = true;
+        $sanity_result_after = true;
+        $connectivity_sanity_test_ip = escapeshellcmd($this->server['connectivity_sanity_test']);
+        if (!empty($connectivity_sanity_test_ip))
+        {
+            $sanity_result_before = $this->updatePing($connectivity_sanity_test_ip, 1);
         }
-
-        // update server status
-        $save = array(
-            'last_check' => date('Y-m-d H:i:s'),
-            'error' => $this->error,
-            'rtime' => $this->rtime
-        );
-        if (!empty($this->error)) {
-            $save['last_error'] = $this->error;
-        }
-
-        // log the uptime before checking the warning threshold,
-        // so that the warnings can still be reviewed in the server history.
-        psm_log_uptime($this->server_id, (int) $this->status_new, $this->rtime);
-
-        if ($this->status_new == true) {
-            // if the server is on, add the last_online value and reset the error threshold counter
-            $save['status'] = 'on';
-            $save['last_online'] = date('Y-m-d H:i:s');
-            $save['last_output'] = substr($this->header, 0, 5000);
-            $save['warning_threshold_counter'] = 0;
-            if ($this->server['status'] == 'off') {
-                $online_date = new \DateTime($save['last_online']);
-                $offline_date = new \DateTime($this->server['last_offline']);
-                $difference = $online_date->diff($offline_date);
-                $save['last_offline_duration'] = trim(psm_format_interval($difference));
+        
+        if ($sanity_result_before) {
+            // check the actual server
+            switch ($this->server['type']) {
+                case 'ping':
+                    $ip_to_ping = escapeshellcmd($this->server['ip']);
+                    $this->status_new = $this->updatePing($ip_to_ping, $max_runs);
+                    break;
+                case 'service':
+                    $this->status_new = $this->updateService($max_runs);
+                    break;
+                case 'website':
+                    $this->status_new = $this->updateWebsite($max_runs);
+                    break;
             }
-        } else {
-            // server is offline, increase the error counter and set last offline
-            $save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
-            $save['last_error_output'] = empty($this->header) ?
-                "Could not get headers. probably HTTP 50x error." : $this->header;
+            
+            // do Sanity Test again after checking the server
+            if (!empty($connectivity_sanity_test_ip))
+            {
+                $sanity_result_after = $this->updatePing($connectivity_sanity_test_ip, 1);
+            }
+        }
+        
+        // Only log the results if both sanity tests pass (or if they were not requested)
+        if ($sanity_result_before && $sanity_result_after) {
+            
+            // update server status
+            $save = array(
+                'last_check' => date('Y-m-d H:i:s'),
+                'error' => $this->error,
+                'rtime' => $this->rtime
+            );
+            if (!empty($this->error)) {
+                $save['last_error'] = $this->error;
+            }
 
-            if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
-                // the server is offline but the error threshold has not been met yet.
-                // so we are going to leave the status "on" for now while we are in a sort of warning state..
+            // log the uptime before checking the warning threshold,
+            // so that the warnings can still be reviewed in the server history.
+            psm_log_uptime($this->server_id, (int) $this->status_new, $this->rtime);
+
+            if ($this->status_new == true) {
+                // if the server is on, add the last_online value and reset the error threshold counter
                 $save['status'] = 'on';
-                $this->status_new = true;
+                $save['last_online'] = date('Y-m-d H:i:s');
+                $save['last_output'] = substr($this->header, 0, 5000);
+                $save['warning_threshold_counter'] = 0;
+                if ($this->server['status'] == 'off') {
+                    $online_date = new \DateTime($save['last_online']);
+                    $offline_date = new \DateTime($this->server['last_offline']);
+                    $difference = $online_date->diff($offline_date);
+                    $save['last_offline_duration'] = trim(psm_format_interval($difference));
+                }
             } else {
-                $save['status'] = 'off';
-                if ($this->server['status'] == 'on') {
-                    $save['last_offline'] = $save['last_check'];
+                // server is offline, increase the error counter and set last offline
+                $save['warning_threshold_counter'] = $this->server['warning_threshold_counter'] + 1;
+                $save['last_error_output'] = empty($this->header) ?
+                    "Could not get headers. probably HTTP 50x error." : $this->header;
+
+                if ($save['warning_threshold_counter'] < $this->server['warning_threshold']) {
+                    // the server is offline but the error threshold has not been met yet.
+                    // so we are going to leave the status "on" for now while we are in a sort of warning state..
+                    $save['status'] = 'on';
+                    $this->status_new = true;
+                } else {
+                    $save['status'] = 'off';
+                    if ($this->server['status'] == 'on') {
+                        $save['last_offline'] = $save['last_check'];
+                    }
                 }
             }
-        }
-        $this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
+            $this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
 
-        return $this->status_new;
+            return $this->status_new;
+        } else {
+            // if either Sanity Test failed, do not log the results from the server check
+            return false;
+        }
     }
 
     /**
      * Check the current servers ping status
+     * @param string $ip_to_ping
      * @param int $max_runs
      * @param int $run
      * @return boolean
      */
-    protected function updatePing($max_runs, $run = 1)
+    protected function updatePing($ip_to_ping, $max_runs, $run = 1)
     {
         // Settings
         $max_runs = ($max_runs == null || $max_runs > 1) ? 1 : $max_runs;
-        $server_ip = escapeshellcmd($this->server['ip']);
         $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
         $status = $os_is_windows ?
-            $this->pingFromWindowsMachine($server_ip, $max_runs) :
-            $this->pingFromNonWindowsMachine($server_ip, $max_runs);
+            $this->pingFromWindowsMachine($ip_to_ping, $max_runs) :
+            $this->pingFromNonWindowsMachine($ip_to_ping, $max_runs);
 
         // check if server is available and rerun if asked.
         if (!$status && $run < $max_runs) {
-            return $this->updatePing($max_runs, $run + 1);
+            return $this->updatePing($ip_to_ping, $max_runs, $run + 1);
         }
         return $status;
     }

@@ -45,6 +45,8 @@
 					</optgroup>
 				</select>
 			</div>
+			<!-- Connectivity Sanity Test -->
+            {{ macro.input_field("text", "connectivity_sanity_test", null, "connectivity_sanity_test", label_connectivity_sanity_test, edit_value_connectivity_sanity_test, null, null, null, label_connectivity_sanity_test_description, null, null, null) }}
 			<!-- Custom port -->
             {{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
             <!-- SSL Cert check -->
