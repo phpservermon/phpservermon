@@ -65,7 +65,7 @@
 				</thead>
 				<tbody>
 					{% for server in servers_offline %}
-						<tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+						<tr class="bg-danger text-white">
 							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_checked_nice }}</td>
@@ -73,7 +73,7 @@
 						</tr>
 					{% endfor %}
 					{% for server in servers_warning %}
-						<tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+						<tr class="bg-warning text-white">
 							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_checked_nice }}</td>
@@ -93,7 +93,7 @@
 				</thead>
 				<tbody>
 					{% for server in servers_online %}
-						<tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+						<tr class="bg-success text-white">
 							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></th>
 							<td>{{ server.last_online_nice }}</td>
 							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
