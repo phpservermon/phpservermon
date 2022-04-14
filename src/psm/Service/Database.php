@@ -533,16 +533,29 @@ class Database
      */
     protected function connect()
     {
+        $isHostUnixSocket = strpos($this->db_host, ':') === 0;
+
         // Initizale connection
         try {
-            $this->pdo = new \PDO(
-                'mysql:host=' . $this->db_host .
-                    ';port=' . $this->db_port .
-                    ';dbname=' . $this->db_name .
-                    ';charset=utf8',
-                $this->db_user,
-                $this->db_pass
-            );
+            if ($isHostUnixSocket) {
+                $this->pdo = new \PDO(
+                    'mysql:unix_socket=' . ltrim($this->db_host, ':') .
+                        ';dbname=' . $this->db_name .
+                        ';charset=utf8',
+                    $this->db_user,
+                    $this->db_pass
+                );
+            } else {
+                $this->pdo = new \PDO(
+                    'mysql:host=' . $this->db_host .
+                        ';port=' . $this->db_port .
+                        ';dbname=' . $this->db_name .
+                        ';charset=utf8',
+                    $this->db_user,
+                    $this->db_pass
+                );
+            }
+
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->status = true;
         } catch (\PDOException $e) {
