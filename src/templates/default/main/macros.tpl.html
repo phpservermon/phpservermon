@@ -33,6 +33,22 @@
     </div>
 {% endmacro input_select %}
 
+
+{% macro input_upload(id, name, label,  help, help_label) %}
+<div class="form-group">
+        <label for="{{ id }}">{{ label }}</label> <br \>
+        <input type="file" id="{{ id }}" name="{{ name }}"
+            {% if help %}aria-describedby="{{ help }}"{% endif %}>
+        
+        {% if help %}
+            <small id="{{ help }}" class="form-text text-muted">{{
+            help_label|striptags('<a>,<b>,<br>')|raw }}</small>
+        {% endif %}
+    
+</div>
+{% endmacro input_upload %}
+
+
 {% macro input_select_multiple(id, name, label, placeholder, options, select_message) %}
     <div class="form-group">
         <label for="{{ id }}">{{ label }}</label>
