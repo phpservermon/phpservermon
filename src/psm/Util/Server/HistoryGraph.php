@@ -71,11 +71,21 @@ class HistoryGraph
         $archive->archive($server_id);
 
         $now = new DateTime();
+
+		if(PSM_UPTIME_ARCHIVE == 'quarterly'){
+			$start_date = new DateTime('-3 month 0:0:0');
+		}else if(PSM_UPTIME_ARCHIVE == 'monthly'){
+			$start_date = new DateTime('-1 month 0:0:0');
+		}else{
+			$start_date = new DateTime('-1 week 0:0:0');
+		}
+
         $last_week = new DateTime('-1 week 0:0:0');
+        $last_month = new DateTime('-1 month 0:0:0');
         $last_year = new DateTime('-1 year -1 week 0:0:0');
 
         $graphs = array(
-            0 => $this->generateGraphUptime($server_id, $last_week, $now),
+            0 => $this->generateGraphUptime($server_id, $start_date, $now),
             1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
         );
         $info_fields = array(
@@ -120,6 +130,7 @@ class HistoryGraph
         $hour = new DateTime('-1 hour');
         $day = new DateTime('-1 day');
         $week = new DateTime('-1 week');
+		$month = new DateTime('-1 month');
         
         $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
 
@@ -145,6 +156,11 @@ class HistoryGraph
             'unit' => 'day',
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
+        );
+		$data['buttons'][] = array(
+            'unit' => 'day',
+            'time' => $month->getTimestamp() * 1000,
+            'label' => psm_get_lang('servers', 'month')
         );
 
         return $data;
