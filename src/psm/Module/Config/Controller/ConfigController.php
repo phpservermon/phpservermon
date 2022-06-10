@@ -470,7 +470,7 @@ class ConfigController extends AbstractController
             $webhook = psm_build_webhook();
             $webhook->setUrl($user->webhook_url);
             $webhook->setJson($user->webhook_json);
-            $message = (psm_get_lang('config', 'test_message'));
+            $message = ['#message' => (psm_get_lang('config', 'test_message'))];
             $result = $webhook->sendWebhook($message);
             if ($result==1) {
                 $this->addMessage(psm_get_lang('config', 'webhook_sent'), 'success');

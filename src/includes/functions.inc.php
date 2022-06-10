@@ -1087,7 +1087,7 @@ namespace {
          * Send Webhook
          *
          * @return bool|string
-         * @var array $replacements an array of the replacements
+         * @var array $replacements should be an array of key value as strings where key is the placeholder name to replace in json template with the value
          *
          */
 
@@ -1096,8 +1096,13 @@ namespace {
             $error = "";
             $success = 1;
 
+            $jsonMessage = $this->json;
+
             $replacements['#message'] = $this->stripTagsFromMessage($replacements['#message']);
-            $jsonMessage = strtr($this->json, $replacements);
+
+           foreach($replacements as $key => $val) {
+                 $jsonMessage = str_replace($key, $val, $jsonMessage);
+            }
 
             $curl = curl_init($this->url);
             curl_setopt($curl, CURLOPT_POST, 1);

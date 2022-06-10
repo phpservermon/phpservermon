@@ -13,3 +13,4 @@ __MACOSX/
 .buildpath
 .settings/
 /.vscode
+/.vs
