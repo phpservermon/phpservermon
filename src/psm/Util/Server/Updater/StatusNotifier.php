@@ -609,6 +609,7 @@ class StatusNotifier
         }
         $webhook = psm_build_webhook();
 
+        $subject = key_exists('subject', $combi) ? $combi['subject'] : psm_parse_msg($this->status_new, 'email_subject', $this->server);
 
         $message = key_exists('message', $combi) ?
             $combi['message'] :
@@ -638,7 +639,8 @@ class StatusNotifier
                 '#server_label' => $this->server['label'],
                 '#server_error' => $this->server['error'],
                 '#server_last_offline_duration' => $this->status_new ? $this->server['last_offline_duration'] : '',
-                '#status' => $this->status_new ? 'online' : 'offline'
+                '#status' => $this->status_new ? 'online' : 'offline',
+                '#subject' => $subject
             ]);
         }
     }
