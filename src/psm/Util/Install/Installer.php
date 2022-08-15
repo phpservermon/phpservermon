@@ -293,6 +293,7 @@ class Installer
                 `last_error` varchar(255) DEFAULT NULL,
                 `last_error_output` TEXT,
                 `last_output` TEXT,
+                `custom_header` TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (`server_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
