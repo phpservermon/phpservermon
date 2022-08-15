@@ -283,6 +283,8 @@ $sm_lang = array(
         'error_server_type_invalid' => 'The selected server type is invalid.',
         'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
         'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid integer greater than or equal to 0.',
+        'custom_header' => 'Custom header',
+        'custom_header_description' => 'Allows to add a custom header to the request.',
     ),
     'config' => array(
         'general' => 'General',

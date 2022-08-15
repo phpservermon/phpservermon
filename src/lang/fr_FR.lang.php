@@ -272,6 +272,8 @@ $sm_lang = array(
         'error_server_ip_bad_website' => 'L\'URL du site web n\'est pas valide.',
         'error_server_type_invalid' => 'Le type de service sélectionné n\'est pas valide.',
         'error_server_warning_threshold_invalid' => 'Le seuil d\'alerte doit être un nombre entier supérieur à 0.',
+        'custom_header' => 'Header personnalisé',
+        'custom_header_description' => 'Permet d\'ajouter une directive HEADER personnalisée à la requête',
     ),
     'config' => array(
         'general' => 'Général',
