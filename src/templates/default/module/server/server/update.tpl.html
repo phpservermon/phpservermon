@@ -120,6 +120,12 @@
 			{{ macro.input_field("number", "timeout", null, "timeout", label_timeout, edit_value_timeout, default_value_timeout, "10", 'timeout_help', label_timeout_description) }}
 		</div>
 	</fieldset>
+	<fieldset>
+		<legend>{{ label_custom_header }} ({{ label_optional }})</legend>
+		<div class="col">
+			{{ macro.input_field("text", "custom_header", null, "custom_header", label_custom_header, edit_custom_header, "Cookie:...", null, 'custom_header_help', label_custom_header_description) }}
+		</div>
+	</fieldset>
 	<fieldset class="types typeWebsite">
 		<legend>{{ label_authentication_settings }} ({{ label_optional }})</legend>
 		<div class="col">
