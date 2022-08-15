@@ -390,6 +390,7 @@ namespace {
      * @param string|bool $website_password Password website
      * @param string|null $request_method Request method like GET, POST etc.
      * @param string|null $post_field POST data
+     * @param string|null $custom_header HEADER data
      * @return array cURL result
      */
     function psm_curl_get(
@@ -401,7 +402,8 @@ namespace {
         $website_username = false,
         $website_password = false,
         $request_method = null,
-        $post_field = null
+        $post_field = null,
+        $custom_header = null
     ) {
         ($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
 
@@ -427,6 +429,10 @@ namespace {
 
         if (!empty($post_field)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
+        }
+
+        if (!empty($custom_header)){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array($custom_header));
         }
 
         if (

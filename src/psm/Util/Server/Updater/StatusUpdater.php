@@ -100,7 +100,7 @@ class StatusUpdater
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
             'warning_threshold_counter', 'ssl_cert_expiry_days', 'ssl_cert_expired_time', 'timeout', 'website_username',
-            'website_password', 'last_offline'
+            'website_password', 'last_offline', 'custom_header'
         ));
         if (empty($this->server)) {
             return false;
@@ -248,7 +248,8 @@ class StatusUpdater
             psm_password_decrypt($this->server['server_id'] .
                 psm_get_conf('password_encrypt_key'), $this->server['website_password']),
             $this->server['request_method'],
-            $this->server['post_field']
+            $this->server['post_field'],
+            $this->server['custom_header']
         );
         $this->header = $curl_result['exec'];
         $this->curl_info = $curl_result['info'];
