@@ -166,28 +166,28 @@
 define puppi::project::y4maven (
   $source,
   $http_user                = '',
-  $http_password            = '',
+  $http_password            = undef,
   $artifact_type            = 'release',
   $deploy_root              = '',
-  $user                     = 'root',
+  $user                     = undef,
   $war_suffix               = 'suffixnotset',
   $zip_suffix               = 'suffixnotset',
   $jar_root                 = '',
-  $jar_user                 = '',
+  $jar_user                 = undef,
   $jar_suffix               = 'suffixnotset',
   $document_root            = '',
-  $document_user            = '',
+  $document_user            = undef,
   $document_suffix          = 'suffixnotset',
   $document_init_source     = '',
   $config_root              = '',
-  $config_user              = '',
+  $config_user              = undef,
   $config_suffix            = 'suffixnotset',
   $config_init_source       = '',
   $predeploy_customcommand  = '',
-  $predeploy_user           = '',
+  $predeploy_user           = undef,
   $predeploy_priority       = '39',
   $postdeploy_customcommand = '',
-  $postdeploy_user          = '',
+  $postdeploy_user          = undef, 
   $postdeploy_priority      = '41',
   $init_script              = '',
   $disable_services         = '',
@@ -277,7 +277,7 @@ define puppi::project::y4maven (
       priority  => '10' ,
       command   => 'check_project.sh' ,
       arguments => $name ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -293,7 +293,7 @@ define puppi::project::y4maven (
       priority  => '20' ,
       command   => 'get_file.sh' ,
       arguments => $platform_metadata_arguments,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -302,7 +302,7 @@ define puppi::project::y4maven (
       priority  => '21' ,
       command   => 'get_metadata.sh' ,
       arguments => "-m ${document_suffix} -mc ${config_suffix} -mj ${jar_suffix} -mw ${war_suffix} -mz ${zip_suffix} -at ${artifact_type}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -318,7 +318,7 @@ define puppi::project::y4maven (
       priority  => '22' ,
       command   => 'get_maven_files.sh' ,
       arguments => $platform_zipfile_arguments,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -334,7 +334,7 @@ define puppi::project::y4maven (
       priority  => '23' ,
       command   => 'get_file.sh' ,
       arguments => $extensions_metadata_arguments,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -343,7 +343,7 @@ define puppi::project::y4maven (
       priority  => '24' ,
       command   => 'get_metadata.sh' ,
       arguments => "-m ${document_suffix} -mc ${config_suffix} -mj ${jar_suffix} -mw ${war_suffix} -mz ${zip_suffix} -at ${artifact_type}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -359,7 +359,7 @@ define puppi::project::y4maven (
       priority  => '25' ,
       command   => 'get_maven_files.sh' ,
       arguments => $extensions_zipfile_arguments,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -377,7 +377,7 @@ define puppi::project::y4maven (
       priority  => '26' ,
       command   => 'get_file.sh' ,
       arguments => $config_metadata_arguments,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -386,7 +386,7 @@ define puppi::project::y4maven (
       priority  => '27' ,
       command   => 'get_metadata.sh' ,
       arguments => "-m ${document_suffix} -mc ${config_suffix} -mj ${jar_suffix} -mw ${war_suffix} -mz ${zip_suffix} -at ${artifact_type}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -395,7 +395,7 @@ define puppi::project::y4maven (
       priority  => '28' ,
       command   => 'get_maven_files.sh' ,
       arguments => "${source} configfile" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -406,7 +406,7 @@ define puppi::project::y4maven (
       priority  => '30' ,
       command   => 'firewall.sh' ,
       arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -418,7 +418,7 @@ define puppi::project::y4maven (
       priority  => '30' ,
       command   => 'archive.sh' ,
       arguments => "-b ${deploy_root} -t war -s move -m diff -o '${backup_rsync_options}' -n ${backup_retention}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -429,7 +429,7 @@ define puppi::project::y4maven (
       priority  => '30' ,
       command   => 'archive.sh' ,
       arguments => "-b ${jar_root} -t jar -s move -m diff -o '${backup_rsync_options}' -n ${backup_retention}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -440,7 +440,7 @@ define puppi::project::y4maven (
       priority  => '30' ,
       command   => 'archive.sh' ,
       arguments => "-b ${config_root} -t config -d predeploydir_configfile -o '${backup_rsync_options}' -n ${backup_retention}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -451,7 +451,7 @@ define puppi::project::y4maven (
       priority  => '30' ,
       command   => 'archive.sh' ,
       arguments => "-b ${document_root} -t docroot -d predeploydir_configfile -o '${backup_rsync_options}' -n ${backup_retention}" ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -462,7 +462,7 @@ define puppi::project::y4maven (
       priority  => '36' ,
       command   => 'service.sh' ,
       arguments => "stop ${disable_services}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -473,7 +473,7 @@ define puppi::project::y4maven (
       priority  => '38' ,
       command   => 'service.sh' ,
       arguments => "stop ${init_script}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -538,7 +538,7 @@ define puppi::project::y4maven (
       priority  => '44' ,
       command   => 'service.sh' ,
       arguments => "start ${init_script}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -549,7 +549,7 @@ define puppi::project::y4maven (
       priority  => '45' ,
       command   => 'service.sh' ,
       arguments => "start ${disable_services}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -560,7 +560,7 @@ define puppi::project::y4maven (
       priority  => '47' ,
       command   => 'firewall.sh' ,
       arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -571,7 +571,7 @@ define puppi::project::y4maven (
       priority  => '80' ,
       command   => 'check_project.sh' ,
       arguments => $name ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -585,7 +585,7 @@ define puppi::project::y4maven (
       priority  => '25' ,
       command   => 'firewall.sh' ,
       arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -596,7 +596,7 @@ define puppi::project::y4maven (
       priority  => '37' ,
       command   => 'service.sh' ,
       arguments => "stop ${disable_services}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -607,7 +607,7 @@ define puppi::project::y4maven (
       priority  => '38' ,
       command   => 'service.sh' ,
       arguments => "stop ${init_script}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -662,7 +662,7 @@ define puppi::project::y4maven (
       priority  => '42' ,
       command   => 'service.sh' ,
       arguments => "start ${init_script}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -673,7 +673,7 @@ define puppi::project::y4maven (
       priority  => '44' ,
       command   => 'service.sh' ,
       arguments => "start ${disable_services}" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -684,7 +684,7 @@ define puppi::project::y4maven (
       priority  => '46' ,
       command   => 'firewall.sh' ,
       arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -695,7 +695,7 @@ define puppi::project::y4maven (
       priority  => '80' ,
       command   => 'check_project.sh' ,
       arguments => $name ,
-      user      => 'root' ,
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
@@ -709,7 +709,7 @@ define puppi::project::y4maven (
       priority  => '20' ,
       command   => 'report_mail.sh' ,
       arguments => $report_email ,
-      user      => 'root',
+      user      => undef,
       project   => $name ,
       enable    => $enable ,
     }
