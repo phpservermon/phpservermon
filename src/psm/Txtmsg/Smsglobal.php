@@ -64,7 +64,7 @@ class Smsglobal extends Core
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_URL, "https://www.smsglobal.com/http-api.php?" . http_build_query(
+        curl_setopt($curl, CURLOPT_URL, "https://api.smsglobal.com/http-api.php?" . http_build_query(
             array(
                 "action" => "sendsms",
                 "user" => $this->username,
