@@ -21,9 +21,10 @@
  * @package     phpservermon
  * @author      Simon Berka <berka@berkasimon.com>
  * @author      Pavel Laupe Dvorak <pavel@pavel-dvorak.cz>
+ * @author      OUBRECHT.com
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.5.2
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -68,13 +69,27 @@ $sm_lang = array(
         'a_minute_ago' => 'cca před minutou',
         'seconds_ago' => 'před %d vteřinami',
         'a_second_ago' => 'před chvílí',
-        'seconds' => 'sekunder',
+        'year' => 'rok',
+        'years' => 'roky',
+        'month' => 'měsíc',
+        'months' => 'měsíce',
+        'day' => 'den',
+        'days' => 'dny',
+        'hour' => 'hodina',
+        'hours' => 'hodiny',
+        'minute' => 'minuta',
+        'minutes' => 'munuty',
+        'second' => 'vteřina',
+        'seconds' => 'vteřiny',
+        'current' => 'aktuální',
+        'settings' => 'Nastavení',
+        'search' => 'Hledat',
     ),
     'menu' => array(
         'config' => 'Konfigurace',
         'server' => 'Servery',
         'server_log' => 'Log',
-        'server_status' => 'Status',
+        'server_status' => 'Stav',
         'server_update' => 'Aktualizace',
         'user' => 'Uživatelé',
         'help' => 'Nápověda',
@@ -127,7 +142,7 @@ $sm_lang = array(
         'sms' => 'SMS',
         'pushover' => 'Pushover',
         'no_logs' => 'Žádné záznamy',
-        'clear' => 'Jasný protokol',
+        'clear' => 'Smazat log',
         'delete_title' => 'Odstranit protokol',
         'delete_message' => 'Opravdu chcete odstranit protokoly <b>všechny</b>?',
     ),
@@ -147,6 +162,7 @@ $sm_lang = array(
         'website_password_description' => 'Heslo pro přístup na stránku. Heslo je v databázi šifrované.',
         'fieldset_monitoring' => 'Monitoring',
         'fieldset_permissions' => 'Oprávnění',
+        'permissions' => 'Servery budou viditelné pro tyto uživatele',
         'port' => 'Port',
         'custom_port' => 'Uživatelský Port',
         'popular_ports' => 'Populární Porty',
@@ -160,13 +176,22 @@ $sm_lang = array(
         'last_check' => 'Poslední kontrola',
         'last_online' => 'Naposledy online',
         'last_offline' => 'Naposledy offline',
+        'last_output' => 'Poslední pozitivní výstup',
+        'last_error' => 'Poslední chyba',
+        'last_error_output' => 'Poslední chyba - výstup',
+        'output' => 'Výstup',
         'monitoring' => 'Monitoring',
         'no_monitoring' => 'Žádné monitorované služby',
         'email' => 'E-mail',
         'send_email' => 'Odeslat e-mail',
         'sms' => 'SMS',
-        'send_sms' => 'Odeslat SMS',
+        'send_sms' => 'Odeslat SMS upozornění',
         'pushover' => 'Pushover',
+        'send_pushover' => 'Odeslat Pushover upozornění',
+        'telegram' => 'Telegram',
+        'send_telegram' => 'Odeslat Telegram upozornění',
+        'jabber' => 'Jabber',
+        'send_jabber' => 'Odeslat Jabber upozornění',
         'users' => 'Uživatelé',
         'delete_title' => 'Smazat server',
         'delete_message' => 'Opravdu si přejete smazat \'%1\'?',
@@ -205,6 +230,10 @@ $sm_lang = array(
     'config' => array(
         'general' => 'Obecné',
         'language' => 'Jazyk',
+        'proxy' => 'Zapnout proxy',
+        'proxy_url' => 'Proxy URL',
+        'proxy_user' => 'Proxy uživatelské jméno',
+        'proxy_password' => 'Proxy heslo',
         'show_update' => 'Kontrolovat aktualizace?',
         'password_encrypt_key' => 'Šifrovací klíč pro hesla',
         'password_encrypt_key_note' => 'Tímto klíčem se šifrují hesla, která se ukládají u serverů pro
@@ -243,6 +272,11 @@ $sm_lang = array(
         'alert_type_status' => 'Změna stavu',
         'alert_type_offline' => 'Offline',
         'alert_type_always' => 'Vždy',
+        'combine_notifications' => 'Kombinovat upozornění',
+        'combine_notifications_description' => 'Snižuje množství oznámení tím, že je spojuje do
+        1 jediné oznámení. (Toto nemá vliv na oznámení SMS.)',
+        'alert_proxy' => 'Proxy server se nikdy nepoužívá pro služby, i když je povolen.',
+        'alert_proxy_url' => 'Formát: server:port',
         'log_status' => 'Log',
         'log_status_description' => 'Pokud je Log nastaven na hodnotu TRUE, systém do něj zapíše veškerá
  provedená upozornění.',
@@ -258,9 +292,11 @@ $sm_lang = array(
         'settings_pushover' => 'Nastavení Pushover',
         'settings_notification' => 'Nastavení upozornění',
         'settings_log' => 'Nastavení logu',
+        'settings_proxy' => 'Proxy nastavení',
         'auto_refresh' => 'Automaticky obnovit',
         'auto_refresh_description' => 'Automaticky obnovit stránku Servery.<br><span class="small">Čas v sekundách,
  0 pro vypnutí automatického obnovení.</span>',
+        'seconds' => 'sekund',
         'test' => 'Test',
         'test_email' => 'E-mail bude odeslán na adresu uvedenou v uživatelském profilu.',
         'test_sms' => 'SMS bude odeslána na telefonní číslo uvedené v uživatelském profilu.',
@@ -289,16 +325,14 @@ $sm_lang = array(
     'notifications' => array(
         'off_sms' => 'Server \'%LABEL%\' je offline: ip=%IP%, port=%PORT%. Chyba=%ERROR%',
         'off_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je offline',
-        'off_email_body' => 'Nebylo možné spojit se se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
- %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
+        'off_email_body' => 'Nebylo možné se spojit se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
         'off_pushover_title' => 'Server \'%LABEL%\' je offline',
-        'off_pushover_message' => 'Nebylo možné spojit se se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
- %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
+        'off_pushover_message' => 'Nebylo možné se spojit se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
+        'off_telegram_message' => 'Nebylo možné se spojit se serverem:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Chyba: %ERROR%<br>Datum: %DATE%',
         'on_sms' => 'Server \'%LABEL%\' je online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'DŮLEŽITÉ: Server \'%LABEL%\' je online',
-        'on_email_body' => 'Server \'%LABEL%\' je opět online, it was down for
- %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum:
- %DATE%',
+        'on_email_body' => 'Server \'%LABEL%\' je opět online, byl nedostupný %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE%',
+        'on_telegram_message' => 'Server \'%LABEL%\' je opět online, byl nedostupný %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE%',
         'on_pushover_title' => 'Server \'%LABEL%\' je online',
         'on_pushover_message' => 'Server \'%LABEL%\' je znovu online, it was down for
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
