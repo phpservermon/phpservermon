@@ -57,13 +57,16 @@ class Octopush extends Core
     {
         $smsType = "sms_premium"; // Or "sms_low_cost"
 
-
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL, 'https://api.octopush.com/v1/public/sms-campaign/send');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'api-login: '.$this->username,
+            'api-key: '.$this->password,
+            'cache-control: no-cache',
+        ]);
         $recipients = [];
         foreach ($this->recipients as $recipient) {
             $recipients[] = ['phone_number' => ((substr($recipient, 0, 1) != '+') ? '+' : '').(string)$recipient];
@@ -78,19 +81,14 @@ class Octopush extends Core
             'sender' => substr($this->originator, 0, 15),
         ]));
 
-        $headers = array();
-        $headers[] = 'Content-Type: application/json';
-        $headers[] = 'Api-Key: '.$this->password;
-        $headers[] = 'Api-Login: '.$this->username;
-        $headers[] = 'Cache-Control: no-cache';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
 
         $result = json_decode(curl_exec($ch), true);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_errno($ch);
         curl_close($ch);
 
-        if ($err != 0 || $httpcode != 201) {
+        if ($err != 0 || ($httpcode != 201 && $httpcode != 200)) {
             return $result['code'] . " - " . $result['message'];
         }
 
