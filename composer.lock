@@ -86,20 +86,20 @@
         },
         {
             "name": "mnsami/composer-custom-directory-installer",
-            "version": "1.1.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mnsami/composer-custom-directory-installer.git",
-                "reference": "8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5"
+                "reference": "85f66323978d0b1cb0e6acc7f69b3e7b912f82d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mnsami/composer-custom-directory-installer/zipball/8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5",
-                "reference": "8cc82e0c5801cc3bf53ba452afdcaa5c6ff645a5",
+                "url": "https://api.github.com/repos/mnsami/composer-custom-directory-installer/zipball/85f66323978d0b1cb0e6acc7f69b3e7b912f82d9",
+                "reference": "85f66323978d0b1cb0e6acc7f69b3e7b912f82d9",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0",
+                "composer-plugin-api": "^1.0 || ^2.0",
                 "php": ">=5.3"
             },
             "type": "composer-plugin",
@@ -136,9 +136,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mnsami/composer-custom-directory-installer/issues",
-                "source": "https://github.com/mnsami/composer-custom-directory-installer/tree/master"
+                "source": "https://github.com/mnsami/composer-custom-directory-installer/tree/2.0.0"
             },
-            "time": "2016-05-25T08:26:02+00:00"
+            "time": "2020-08-18T11:00:11+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -1023,20 +1023,20 @@
         },
         {
             "name": "viharm/php-db-auth",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/viharm/phpdbauth.git",
-                "reference": "60c1b0a28d26178d5e4960d49185af85734643c6"
+                "reference": "27ea793aae007d0d222650311f2af9a1f88865b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/viharm/phpdbauth/get/60c1b0a28d26178d5e4960d49185af85734643c6.zip",
-                "reference": "60c1b0a28d26178d5e4960d49185af85734643c6",
+                "url": "https://bitbucket.org/viharm/phpdbauth/get/27ea793aae007d0d222650311f2af9a1f88865b3.zip",
+                "reference": "27ea793aae007d0d222650311f2af9a1f88865b3",
                 "shasum": ""
             },
             "require": {
-                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "mnsami/composer-custom-directory-installer": "^2.0.0",
                 "php": ">=5.3.0",
                 "viharm/php-khelper": "^1.4.1"
             },
@@ -1069,9 +1069,9 @@
             ],
             "support": {
                 "issues": "https://bitbucket.org/viharm/phpdbauth/issues",
-                "source": "https://bitbucket.org/viharm/phpdbauth/src/60c1b0a28d26178d5e4960d49185af85734643c6/?at=master"
+                "source": "https://bitbucket.org/viharm/phpdbauth/src/27ea793aae007d0d222650311f2af9a1f88865b3/?at=v2.7.1"
             },
-            "time": "2020-01-05T11:48:12+00:00"
+            "time": "2022-03-13T23:01:02+00:00"
         },
         {
             "name": "viharm/php-khelper",
@@ -1114,20 +1114,20 @@
         },
         {
             "name": "viharm/php-ldap-auth",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/viharm/phpldapauth.git",
-                "reference": "3a60e626bfb63eda786dad30f09bd75fd5172cb1"
+                "reference": "260c158ebbd0ae5069dc30e2a840c8541ed2ad24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/viharm/phpldapauth/get/3a60e626bfb63eda786dad30f09bd75fd5172cb1.zip",
-                "reference": "3a60e626bfb63eda786dad30f09bd75fd5172cb1",
+                "url": "https://bitbucket.org/viharm/phpldapauth/get/260c158ebbd0ae5069dc30e2a840c8541ed2ad24.zip",
+                "reference": "260c158ebbd0ae5069dc30e2a840c8541ed2ad24",
                 "shasum": ""
             },
             "require": {
-                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "mnsami/composer-custom-directory-installer": "^2.0.0",
                 "php": ">=5.3.0",
                 "viharm/php-khelper": "^1.4.1"
             },
@@ -1162,28 +1162,28 @@
             ],
             "support": {
                 "issues": "https://bitbucket.org/viharm/phpldapauth/issues",
-                "source": "https://bitbucket.org/viharm/phpldapauth/src/3a60e626bfb63eda786dad30f09bd75fd5172cb1/?at=v2.5.1"
+                "source": "https://bitbucket.org/viharm/phpldapauth/src/260c158ebbd0ae5069dc30e2a840c8541ed2ad24/?at=v2.5.2"
             },
-            "time": "2020-11-24T21:56:47+00:00"
+            "time": "2022-03-13T23:14:26+00:00"
         },
         {
             "name": "viharm/psm-ldap-auth",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/viharm/PsmLDAPauth.git",
-                "reference": "1addeb0403a19e457f2c622a67156f52568da308"
+                "reference": "7c84d7ba6b23e9ea226be671f74f48fec62bed73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/viharm%2FPsmLDAPauth/repository/archive.zip?sha=1addeb0403a19e457f2c622a67156f52568da308",
-                "reference": "1addeb0403a19e457f2c622a67156f52568da308",
+                "url": "https://gitlab.com/api/v4/projects/viharm%2FPsmLDAPauth/repository/archive.zip?sha=7c84d7ba6b23e9ea226be671f74f48fec62bed73",
+                "reference": "7c84d7ba6b23e9ea226be671f74f48fec62bed73",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "viharm/php-db-auth": "^2.6.0",
-                "viharm/php-ldap-auth": "^2.4.0"
+                "viharm/php-ldap-auth": "^2.5.1"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -1210,9 +1210,10 @@
                 "psm"
             ],
             "support": {
-                "issues": "https://gitlab.com/viharm/PsmLDAPauth/issues"
+                "issues": "https://gitlab.com/viharm/PsmLDAPauth/issues",
+                "source": "https://gitlab.com/viharm/PsmLDAPauth/-/tree/v1.1.4"
             },
-            "time": "2020-11-24T22:57:57+00:00"
+            "time": "2022-03-13T19:46:17+00:00"
         }
     ],
     "packages-dev": [],
@@ -1231,5 +1232,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }
