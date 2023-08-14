@@ -252,7 +252,7 @@ class User
                 // Delegate the authentication to the PsmLDAPauth module.
                 // If LDAP auth fails or if library not found, fall back to native auth
                 include_once($ldaplibpath);
-                $ldapauthstatus = psmldapauth($user_name, $user_password, $GLOBALS['sm_config'], $this->db_connection, $this->getUserByUsername($user_name)); 
+                $ldapauthstatus = psmldapauth($user_name, $user_password, $GLOBALS['sm_config'], $this->db_connection, $this->getUserByUsername($user_name));
             }
         }
 
