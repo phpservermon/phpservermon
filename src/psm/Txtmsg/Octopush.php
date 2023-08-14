@@ -20,11 +20,12 @@
  *
  * @package     phpservermon
  * @author      Alexis Urien <Alexis.urien@free.fr>
- * @Author      Tim Zandbergen <Tim@Xervion.nl>
+ * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @author      Ward Pieters <ward@wardpieters.nl>
+ * @author      Marc Farré <contact@marc.fun>
  * @copyright   Copyright (c) 2016 Alexis Urien <alexis.urien@free.fr>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: @package_version@
+ * @version     Release: v3.5.2
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 2.1
  **/
@@ -42,58 +43,55 @@ class Octopush extends Core
      * @var array $this->recipients
      * @var array $this->originator
      *
-     * @var resource $curl
+     * @var resource $ch
      * @var SimpleXMLElement $xmlResults
      * @var string $err
      * @var string $recipient
      * @var string $smsType
      * @var mixed $result
      *
-     * @var int $success
-     * @var string $error
-     *
      * @return bool|string
      */
     
     public function sendSMS($message)
     {
-        $error = "";
-        $success = 1;
-        $smsType = "XXX"; //FR = premium, WWW = world, XXX = Low cost
-        
-        $recipients = join(',', $this->recipients);
-        
-        $message = ($smsType == "FR") ? urlencode($message . " STOP au XXXX") : urlencode($message);
+        $smsType = "sms_premium"; // Or "sms_low_cost"
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://www.octopush-dm.com/api/sms/?" . http_build_query(
-            array(
-                    "user_login" => $this->username,
-                    "api_key" => $this->password,
-                    "sms_recipients" => $recipients,
-                    "sms_type" => $smsType,
-                    "sms_sender" => substr($this->originator, 0, 15),
-                    "sms_text" => $message,
-                )
-        ));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        
-        $result = curl_exec($curl);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $xmlResults = simplexml_load_string($result);
-        $err = curl_errno($curl);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.octopush.com/v1/public/sms-campaign/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'api-login: '.$this->username,
+            'api-key: '.$this->password,
+            'cache-control: no-cache',
+        ]);
+        $recipients = [];
+        foreach ($this->recipients as $recipient) {
+            $recipients[] = ['phone_number' => ((substr($recipient, 0, 1) != '+') ? '+' : '').(string)$recipient];
+        }
 
-        if ($err != 0 || $httpcode != 200 || $xmlResults === false || $xmlResults->error_code != '000') {
-            $success = 0;
-            $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err) .
-                ". \nResult: " . $xmlResults->error_code .
-                ". Look at http://www.octopush-dm.com/en/errors for the error description.";
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+            'recipients' => $recipients,
+            'text' => $message.(($smsType === "sms_premium") ? ' STOP au XXXXX' : ''),
+            'type' => $smsType,
+            'purpose' => 'alert',
+            'with_replies' => false,
+            'sender' => substr($this->originator, 0, 15),
+        ]));
+
+        $response = curl_exec($ch);
+
+        $result = json_decode(curl_exec($ch), true);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $err = curl_errno($ch);
+        curl_close($ch);
+
+        if ($err != 0 || ($httpcode != 201 && $httpcode != 200)) {
+            return $result['code'] . " - " . $result['message'];
         }
-        curl_close($curl);
-        
-        if ($success) {
-            return 1;
-        }
-        return $error;
+
+        return 1;
     }
 }

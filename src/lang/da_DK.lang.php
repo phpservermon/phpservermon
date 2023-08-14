@@ -65,6 +65,7 @@ $sm_lang = array(
         'a_minute_ago' => 'omkring et minut siden',
         'seconds_ago' => '%d sekunder siden',
         'a_second_ago' => 'et sekund siden',
+        'seconds' => 'sekunder',
     ),
     'menu' => array(
         'config' => 'Indstillinger',
@@ -245,7 +246,6 @@ $sm_lang = array(
         'auto_refresh' => 'Genopfrisk automatisk',
         'auto_refresh_description' => 'Genopfrisk automatisk serversider.<br><span class="small">Tid i sekunder. Hvis
  0 vil siden ikke genopfriske automatisk</span>',
-        'seconds' => 'sekunder',
         'test' => 'Test',
         'test_email' => 'En e-mail vil blive sendt til den adresse, der er angivet i din brugerprofil.',
         'test_sms' => 'En SMS vil blive sendt til det nummer, der er angivet i din brugerprofil.',

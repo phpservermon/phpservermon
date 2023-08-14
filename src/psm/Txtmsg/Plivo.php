@@ -74,7 +74,7 @@ class Plivo extends Core
                 array(
                     "src" => $this->originator,
                     "dst" => $recipients,
-                    "text" => urlencode($message)
+                    "text" => $message
                 )
             ),
             CURLOPT_HTTPHEADER => array(

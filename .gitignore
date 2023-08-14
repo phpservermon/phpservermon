@@ -12,3 +12,4 @@ __MACOSX/
 .DS_Store
 .buildpath
 .settings/
+/.vscode

@@ -59,13 +59,14 @@ $sm_lang = array(
         'long_day_format' => '%B %e, %Y',
         'yesterday_format' => 'Gestern um %k:%M Uhr',
         'other_day_format' => '%A um %k:%M Uhr',
-        'never' => 'Never',
+        'never' => 'Nie',
         'hours_ago' => 'vor %d Stunden',
         'an_hour_ago' => 'vor über einer Stunde',
         'minutes_ago' => 'vor %d Minuten',
         'a_minute_ago' => 'vor über einer Minute',
         'seconds_ago' => 'vor %d Sekunden',
         'a_second_ago' => 'vor über einer Sekunde',
+        'seconds' => 'Sekunden',
     ),
     'menu' => array(
         'config' => 'Einstellungen',
@@ -124,10 +125,10 @@ $sm_lang = array(
         'email' => 'E-Mail',
         'sms' => 'SMS',
         'pushover' => 'Pushover',
-        'no_logs' => 'Keine Logs vorhanden.',
-        'clear' => 'Protokoll Logs',
-        'delete_title' => 'Protokoll Logs',
-        'delete_message' => 'Bist du sicher, dass du <b>alle</b> logs löschen möchtest?',
+        'no_logs' => 'Keine Protokolle vorhanden.',
+        'clear' => 'Protokoll löschen',
+        'delete_title' => 'Protokoll löschen',
+        'delete_message' => 'Bist du sicher, dass du <b>alle</b> Protokolle löschen möchtest?',
     ),
     'servers' => array(
         'server' => 'Server',
@@ -195,14 +196,15 @@ $sm_lang = array(
         'general' => 'Allgemein',
         'language' => 'Sprache',
         'show_update' => 'Wöchentlich auf Aktualisierungen prüfen?',
+        'email_add_url' => 'Server URL an E-Mail anhängen?',
         'email_status' => 'E-Mail-Versand erlauben?',
         'email_from_email' => 'Absenderadresse',
         'email_from_name' => 'Name des Absenders',
         'email_smtp' => 'SMTP-Versand aktivieren',
         'email_smtp_host' => 'SMTP Server/Host',
         'email_smtp_port' => 'SMTP Port',
-        'email_smtp_security' => 'SMTP security',
-        'email_smtp_security_none' => 'None',
+        'email_smtp_security' => 'SMTP Authentifizierung',
+        'email_smtp_security_none' => 'Keine',
         'email_smtp_username' => 'SMTP Benutzername',
         'email_smtp_password' => 'SMTP Passwort',
         'email_smtp_noauth' => 'Feld leer lassen, bei fehlender Authentifizierung',
@@ -220,6 +222,9 @@ $sm_lang = array(
         'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s"
  target="_blank" rel="noopener">Anwendung hier registrieren</a> und Ihren
  Anwendungs-API-Token hier eingeben.',
+        'telegram_status' => 'Telegram Nachrichten erlauben?',
+        'telegram_add_url' => 'Server URL an Nachricht anhängen?',
+        'jabber_status' => 'Allow sending Jabber (XMPP) messages',
         'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
         'alert_type_description' => '<b>Status geändert:</b> ... wenn sich der Status ändert<br>z. B. online ->
  offline oder offline -> online.<br><br><b>Offline: </b>Sie bekommen eine
@@ -236,6 +241,7 @@ $sm_lang = array(
         'log_email' => 'E-Mail-Versand protokollieren?',
         'log_sms' => 'SMS-Versand protokollieren?',
         'log_pushover' => 'Pushover-Versand protokollieren?',
+        'log_telegram' => 'Telegram-Versand protokollieren?',
         'updated' => 'Die Einstellungen wurden gespeichert.',
         'tab_email' => 'E-Mail',
         'tab_sms' => 'SMS',
@@ -249,7 +255,6 @@ $sm_lang = array(
         'auto_refresh_description' => 'Automatische Aktualisierung der Server-Übersichtsseite<br><span
  class="small">Zeit in Sekunden - die Ziffer \'0\' deaktiviert die automatische
  Aktualisierung.</span>',
-        'seconds' => 'Sekunden',
         'test' => 'Test',
         'test_email' => 'Eine E-Mail wird an die E-Mail-Adresse gesendet, die in Ihrem Profil hinterlegt ist.',
         'test_sms' => 'Eine SMS wird an die Telefonnummer gesendet, die in Ihrem Profil hinterlegt ist.',
@@ -286,14 +291,14 @@ $sm_lang = array(
         'off_pushover_message' => 'Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite
  aufbauen:<br><br>Dienst/Webseite: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fehler:
  %ERROR%<br>Datum: %DATE% Uhr',
-        'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, it was down for
+        'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, offline für
  %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
-        'on_email_body' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, it was down for
+        'on_email_body' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, offline für
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum:
  %DATE% Uhr',
         'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
-        'on_pushover_message' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, it was down for
+        'on_pushover_message' => 'Dienst/Webseite \'%LABEL%\' ist wieder erreichbar, offline für
  %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port:
  %PORT%<br>Datum: %DATE% Uhr',
     ),
@@ -313,7 +318,7 @@ $sm_lang = array(
         'password_reset' => 'Passwort zurücksetzen',
         'password_reset_email_subject' => 'Setzen Sie Ihr Zugangspasswort für den Server Monitor',
         'password_reset_email_body' => 'Benutzen Sie bitte den folgenden Link, um Ihr Zugangspasswort zurückzusetzen.
- Bitte beachten Sie: Der Link verfällt in 1 Stunde.<br><br>%link%',
+ Bitte beachten Sie: Der Link verfällt in einer Stunde.<br><br>%link%',
         'error_user_incorrect' => 'Der angegebene Benutzername konnte nicht gefunden werden.',
         'error_login_incorrect' => 'Die angegebenen Informationen sind leider nicht korrekt.',
         'error_login_passwords_nomatch' => 'Die angegebenen Passwörter stimmen nicht überein.',

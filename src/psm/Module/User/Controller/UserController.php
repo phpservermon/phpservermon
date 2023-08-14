@@ -158,6 +158,9 @@ class UserController extends AbstractController
             'name',
             'user_name',
             'mobile',
+            'discord',
+            'webhook_url',
+            'webhook_json',
             'pushover_key',
             'pushover_device',
             'telegram_id',
@@ -255,6 +258,9 @@ class UserController extends AbstractController
             'password_repeat',
             'level',
             'mobile',
+            'discord',
+            'webhook_url',
+            'webhook_json',
             'pushover_key',
             'pushover_device',
             'telegram_id',
@@ -276,12 +282,25 @@ class UserController extends AbstractController
             $user_validator->username($clean['user_name'], $user_id);
             $user_validator->email($clean['email']);
             $user_validator->level($clean['level']);
+            
+            // Won't allow anonymous level for users other than __PUBLIC__
+            if ($clean['user_name'] !== "__PUBLIC__" && (int) $clean['level'] === (int) PSM_USER_ANONYMOUS) {
+                $this->addMessage(psm_get_lang('users', 'error_user_cant_be_anonymous'), 'error');
+                $clean['level'] = PSM_USER_USER;
+            }
 
             // always validate password for new users,
             // but only validate it for existing users when they change it.
-            if ($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) {
+            if (($user_id == 0 || ($user_id > 0 && $clean['password'] != '')) && $clean['user_name'] != '__PUBLIC__') {
                 $user_validator->password($clean['password'], $clean['password_repeat']);
             }
+
+            // Auto generate password for __PUBLIC__ user
+            if ($clean['user_name'] === '__PUBLIC__') {
+                $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
+                $clean['password'] = substr(str_shuffle($chars), 0, 24);
+            }
+
             if ($user_id > 0) {
                 $user_validator->userId($user_id);
             }
@@ -392,6 +411,14 @@ class UserController extends AbstractController
             'label_level' => psm_get_lang('users', 'level'),
             'label_level_description' => psm_get_lang('users', 'level_description'),
             'label_mobile' => psm_get_lang('users', 'mobile'),
+            'label_discord' => psm_get_lang('users', 'discord'),
+            'label_discord_description' => psm_get_lang('users', 'discord_description'),
+            'label_webhook' => psm_get_lang('users', 'webhook'),
+            'label_webhook_description' => psm_get_lang('users', 'webhook_description'),
+            'label_webhook_url' => psm_get_lang('users', 'webhook_url'),
+            'label_webhook_url_description' => psm_get_lang('users', 'webhook_url_description'),
+            'label_webhook_json' => psm_get_lang('users', 'webhook_json'),
+            'label_webhook_json_description' => psm_get_lang('users', 'webhook_json_description'),
             'label_pushover' => psm_get_lang('users', 'pushover'),
             'label_pushover_description' => psm_get_lang('users', 'pushover_description'),
             'label_pushover_key' => psm_get_lang('users', 'pushover_key'),

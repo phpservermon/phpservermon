@@ -108,6 +108,19 @@ namespace {
         }
     }
 
+    // check for a public page var
+    // This should be defined in the config
+    if (!defined('PSM_PUBLIC')) {
+        define('PSM_PUBLIC', false);
+    }
+
+    // check for a public page
+    // This variable is for internal use
+    // and should not be changed by the user manualy
+    if (!defined('PSM_PUBLIC_PAGE')) {
+        define('PSM_PUBLIC_PAGE', false);
+    }
+
     $lang = psm_get_conf('language', 'en_US');
     psm_load_lang($lang);
 }

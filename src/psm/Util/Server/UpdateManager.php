@@ -53,9 +53,9 @@ class UpdateManager implements ContainerAwareInterface
      */
     public function run($skip_perms = false, $status = null)
     {
-    	if (false === in_array($status, ['on', 'off'], true)) {
-    		$status = null;
-	    }
+        if (false === in_array($status, ['on', 'off'], true)) {
+            $status = null;
+        }
 
         // check if we need to restrict the servers to a certain user
         $sql_join = '';
@@ -63,17 +63,17 @@ class UpdateManager implements ContainerAwareInterface
         if (!$skip_perms && $this->container->get('user')->getUserLevel() > PSM_USER_ADMIN) {
             // restrict by user_id
             $sql_join = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (
-						`us`.`user_id`={$this->container->get('user')->getUserId()}
-						AND `us`.`server_id`=`s`.`server_id`
-						)";
+                        `us`.`user_id`={$this->container->get('user')->getUserId()}
+                        AND `us`.`server_id`=`s`.`server_id`
+                        )";
         }
 
         $sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`header_name`,
-            `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`telegram`, 
+            `s`.`header_value`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`,`s`.`webhook`,`s`.`telegram`, 
             `s`.`jabber`
-				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
-				{$sql_join}
-				WHERE `active`='yes' " . ($status !== null ? ' AND `status` = \'' . $status . '\'' : '');
+                FROM `" . PSM_DB_PREFIX . "servers` AS `s`
+                {$sql_join}
+                WHERE `active`='yes' " . ($status !== null ? ' AND `status` = \'' . $status . '\'' : '');
 
         $servers = $this->container->get('db')->query($sql);
 

@@ -1,0 +1,84 @@
+upstream php-fpm {
+server unix:/var/run/php/php7.4-fpm.sock;
+}
+
+server {
+listen 80;
+server_name 192.168.56.100;
+
+root /vagrant;
+index index.php;
+charset UTF-8;
+
+gzip on;
+gzip_http_version 1.1;
+gzip_vary on;
+gzip_comp_level 6;
+gzip_proxied any;
+gzip_types text/plain text/xml text/css application/x-javascript;
+
+access_log /var/log/nginx/psm.access.log;
+error_log /var/log/nginx/psm.com.error.log;
+
+location = /favicon.ico {
+log_not_found off;
+access_log off;
+}
+
+location = /robots.txt {
+deny all;
+log_not_found off;
+access_log off;
+}
+
+location ~ /\.svn/* {
+deny all;
+}
+
+location ~ /\.git/* {
+deny all;
+}
+
+location /nginx_status {
+stub_status on;
+access_log off;
+}
+
+location / {
+try_files $uri $uri/ /index.php?q=$uri&$args;
+}
+
+location ~ \.php$ {
+
+set $nocache "";
+if ($http_cookie ~ (comment_author_.*|wordpress_logged_in.*|wp-postpass_.*)) {
+set $nocache "Y";
+}
+
+fastcgi_pass php-fpm;
+fastcgi_index index.php;
+fastcgi_param SCRIPT_FILENAME /vagrant$fastcgi_script_name;
+fastcgi_intercept_errors on;
+include fastcgi_params;
+
+fastcgi_cache_use_stale error timeout invalid_header http_500;
+fastcgi_cache_key $host$request_uri;
+fastcgi_cache off;
+fastcgi_cache_valid 200 1m;
+fastcgi_cache_bypass $nocache;
+fastcgi_no_cache $nocache;
+}
+
+location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+expires max;
+log_not_found off;
+}
+
+location ~ ^/(status|ping)$ {
+include /etc/nginx/fastcgi_params;
+fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
+allow 127.0.0.1;
+deny all;
+}
+}

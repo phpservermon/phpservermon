@@ -72,7 +72,7 @@
 			<!-- Custom request method -->
 			{{ macro.input_field("text", "request_method", "requestMethod types typeWebsite", "request_method", label_custom_request_method, edit_value_request_method, null, "50") }}
 			<!-- Post field -->
-			{{ macro.input_field("text", "post_field", "types typeWebsite typeGroup", "post_field", label_post_field, edit_value_post_field, "param1=val1&param2=val2&...", "50", 'post_field_help', label_post_field_description) }}
+			{{ macro.input_field("text", "post_field", "types typeWebsite typeGroup", "post_field", label_post_field, edit_value_post_field, "param1=val1&param2=val2&...", "255", 'post_field_help', label_post_field_description) }}
 			<!-- Pattern -->
 			{{ macro.input_field("text", "pattern", "types typeWebsite", "pattern", label_pattern, edit_value_pattern, null, "255", 'pattern_help', label_pattern_description) }}
 			<!-- Pattern online/offline (Didn't use the macro because of the custom col.) -->
@@ -143,7 +143,11 @@
 			<!-- Telegram -->
 			{{ macro.input_select_monitoring("telegram", "telegram", label_send_telegram, edit_telegram_selected, label_yes, label_no, warning_telegram, label_warning_telegram) }}
 			<!-- Jabber -->
-			{{ macro.input_select_monitoring("jabber", "jabber", label_send_jabber, edit_jabber_selected, label_yes, label_no, warning_jabber, label_warning_jabber) }}
+            {{ macro.input_select_monitoring("jabber", "jabber", label_send_jabber, edit_jabber_selected, label_yes, label_no, warning_jabber, label_warning_jabber) }}
+            <!-- Discord -->
+            {{ macro.input_select_monitoring("discord", "discord", label_send_discord, edit_discord_selected, label_yes, label_no, warning_discord, label_warning_discord) }}
+            <!-- Webhook -->
+            {{ macro.input_select_monitoring("webhook", "webhook", label_send_webhook, edit_webhook_selected, label_yes, label_no, warning_webhook, label_warning_webhook) }}
 		</div>
     </fieldset>
 	<fieldset>
