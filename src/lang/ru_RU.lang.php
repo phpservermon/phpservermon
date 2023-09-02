@@ -43,19 +43,20 @@ $sm_lang = array(
         'save' => 'Сохранить',
         'edit' => 'Редактировать',
         'delete' => 'Удалить',
+        'view' => 'Просмотр',
         'date' => 'Дата',
         'message' => 'Сообщение',
         'yes' => 'Да',
         'no' => 'Нет',
         'insert' => 'Добавить',
-        'add_new' => 'Добавить новый',
-        'update_available' => 'Новая версия ({version}) доступна по адресу <a
- href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank"
- rel="noopener">http://www.phpservermonitor.org</a>.',
+        'add_new' => 'Добавить',
+        'update_available' => 'Новая версия ({version}) доступна по адресу <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank"  rel="noopener">http://www.phpservermonitor.org</a>.',
         'back_to_top' => 'Наверх',
         'go_back' => 'Вернуться',
-        'ok' => 'OK',
+        'ok' => 'Норма (не уведомлять)',
+        'bad' => 'Не норма (уведомлять)',
         'cancel' => 'Отмена',
+        'none' => 'Не указано',
         'activate' => 'Активировать',
         'short_day_format' => '%e %B',
         'long_day_format' => '%e %B %Y',
@@ -80,6 +81,11 @@ $sm_lang = array(
         'minutes' => 'минут',
         'second' => 'секунда',
         'seconds' => 'секунд',
+        'millisecond' => 'мс',
+        'milliseconds' => 'мс',
+        'current' => 'current',
+        'settings' => 'Настройки',
+        'search' => 'Поиск',
     ),
     'menu' => array(
         'config' => 'Параметры',
@@ -100,50 +106,39 @@ $sm_lang = array(
         'level' => 'Уровень',
         'level_10' => 'Администратор',
         'level_20' => 'Пользователь',
-        'level_description' => '<b>Администраторы</b> имеют полный доступ: они
- могут управлять серверами, пользователями и
- изменять общую
- конфигурацию.<br><b>Пользователи</b> могут только
- просматривать и запускать проверку для
- серверов, которые были к ним прикреплены.',
+        'level_30' => 'Анонимный',
+        'level_description' => '<b>Администраторы</b> имеют полный доступ: они могут управлять серверами, пользователями и изменять общую конфигурацию.<br><b>Пользователи</b> могут только просматривать и запускать проверку для серверов, которые были к ним прикреплены.',
         'mobile' => 'Телефон',
         'email' => 'E-mail',
         'pushover' => 'Pushover',
-        'pushover_description' => 'Pushover - это сервис, который позволяет легко
- получать уведомления в режиме реального
- времени. Больше информации на <a
- href="https://pushover.net/" target="_blank">их веб-сайте</a>.',
+        'pushover_description' => 'Pushover - это сервис, который позволяет легко получать уведомления в режиме реального времени. Больше информации на <a href="https://pushover.net/" target="_blank">их веб-сайте</a>.',
         'pushover_key' => 'Pushover ключ',
         'pushover_device' => 'Pushover устройство',
-        'pushover_device_description' => 'Имя устройства, на которое будут
- отправляться уведомления. Оставьте
- пустым, что бы отправлять уведомления на
- все устройства.',
+        'pushover_device_description' => 'Имя устройства, на которое будут отправляться уведомления. Оставьте пустым, что бы отправлять уведомления на все устройства.',
+        'discord' => 'Discord',
+        'discord_label' => 'Discord',
+        'discord_description' => 'Укажите ваш <a href="https://discordjs.guide/popular-topics/webhooks.html" target="_blank">вебхук</a> здесь.',
         'telegram' => 'Telegram',
-        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный
- мессенджер для получения уведомлений в
- реальном времени. Посетите <a
- href="http://docs.phpservermonitor.org/" target="_blank">раздел
- документации</a> для получения доп. информации
- и инструкций по установке.',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный мессенджер для получения уведомлений в
+ реальном времени. Посетите <a href="http://docs.phpservermonitor.org/" target="_blank">раздел
+ документации</a> для получения доп. информации и инструкций по установке.',
         'telegram_chat_id' => 'Telegram chat id',
-        'telegram_chat_id_description' => 'Сообщения будут отправляться на
- указанный идентификатор чата.',
+        'telegram_chat_id_description' => 'Сообщения будут отправляться на указанный идентификатор чата.',
         'telegram_get_chat_id' => 'Нажмите здесь чтобы получить ваш chat id',
         'activate_telegram' => 'Активировать уведомления в Telegram',
-        'activate_telegram_description' => 'Разрешить отправку уведомлений на
- указанный идентификатор чата. Без этого
- разрешения Telegram не позволит нам
- отправлять вам уведомления.',
-        'telegram_bot_username_found' => 'Бот обнаружен!<br><a href="%s" target="_blank"
- rel="noopener"><button class="btn btn-primary">Следующий
- шаг</button></a> <br>Откроется чат с ботом. Здесь
- вам нужно нажать кнопку Start или отправить
- команду /start.',
-        'telegram_bot_username_error_token' => '401 - Unauthorized. Пожалуйста укажите
- действительный API токен..',
-        'telegram_bot_error' => 'Произошла ошибка при активации уведомления
- Telegram: %s',
+        'activate_telegram_description' => 'Разрешить отправку уведомлений на указанный идентификатор чата. Без этого разрешения Telegram не позволит нам отправлять вам уведомления.',
+        'telegram_bot_username_found' => 'Бот обнаружен!<br><a href="%s" target="_blank" rel="noopener"><button class="btn btn-primary">Следующий шаг</button></a> <br>Откроется чат с ботом. Здесь вам нужно нажать кнопку Start или отправить команду /start.',
+        'telegram_bot_username_error_token' => '401 - Unauthorized. Пожалуйста укажите действительный API токен.',
+        'telegram_bot_error' => 'Произошла ошибка при активации уведомления Telegram: %s',
+        'jabber' => 'Jabber',
+        'jabber_label' => 'Jabber',
+        'jabber_description' => 'Ваш Jabber аккаунт',
+        'webhook' => 'Вебхук',
+        'webhook_description' => 'Отправить JSON вебхук на указанный URL.',
+        'webhook_url' => 'URL вебхука',
+        'webhook_url_description' => 'Публичный URL вебхука, должен начинаться с https://',
+        'webhook_json' => 'JSON сообщение',
+        'webhook_json_description' => 'Указать пользовательский JSON, например: {"Любой текст": "servermon: #server_label" "любой текст": "#server_ip is **#status**"}.<br>Доступные переменные: #message, #server_error, #server_ip, #server_label, #server_last_offline_duration и #status',
         'delete_title' => 'Удалить пользователя',
         'delete_message' => 'Вы уверены что хотите удалить пользователя \'%1\'?',
         'deleted' => 'Пользователь удален.',
@@ -152,26 +147,28 @@ $sm_lang = array(
         'profile' => 'Профиль',
         'profile_updated' => 'Ваш профиль был обновлен.',
         'error_user_name_bad_length' => 'Логин должен содержать от 2 до 64 знаков.',
-        'error_user_name_invalid' => 'Имя пользователя может содержать только
- латинские символы (a-z, A-Z), цифры (0-9), точки (.)
- и подчеркивание (_).',
+        'error_user_name_invalid' => 'Имя пользователя может содержать только латинские символы (a-z, A-Z), цифры (0-9), точки (.) и подчеркивание (_).',
         'error_user_name_exists' => 'Данный логин уже существует.',
         'error_user_email_bad_length' => 'E-mail может содержать от 5 до 255 знаков.',
         'error_user_email_invalid' => 'E-mail указан неверно.',
-        'error_user_level_invalid' => 'Данный уровень пользователя
- недействителен.',
+        'error_user_level_invalid' => 'Данный уровень пользователя недействителен.',
         'error_user_no_match' => 'Данного пользователя нет в базе данных.',
         'error_user_password_invalid' => 'Пароль указан неверно.',
         'error_user_password_no_match' => 'Введенные пароли не совпадают.',
+        'error_user_admin_cant_be_deleted' => 'Вы не можете удалить последнего администратора.',
+        'error_user_cant_be_anonymous' => 'Только пользователь \'__public__\' может иметь уровень Анонимный.'
     ),
     'log' => array(
-        'title' => 'Запись',
+        'title' => 'Логи',
         'type' => 'Тип',
         'status' => 'Статус',
         'email' => 'E-mail',
         'sms' => 'SMS',
+        'discord' => 'Discord',
         'pushover' => 'Pushover',
+        'webhook' => 'Webhook',
         'telegram' => 'Telegram',
+        'jabber' => 'Jabber',
         'no_logs' => 'Записей нет',
         'clear' => 'Очистить логи',
         'delete_title' => 'Удаление логов',
@@ -187,30 +184,33 @@ $sm_lang = array(
         'authentication_settings' => 'Настройки аутентификации',
         'optional' => 'необязательно',
         'website_username' => 'Имя пользователя',
-        'website_username_description' => 'Имя пользователя для доступа к сайту.
- (Поддерживается только Apache authentication.)',
+        'website_username_description' => 'Имя пользователя для доступа к сайту. (Поддерживается только Apache authentication.)',
         'website_password' => 'Пароль',
-        'website_password_description' => 'пароль для доступа к сайту. Пароль будет
- храниться в зашифрованном виде.',
+        'website_password_description' => 'пароль для доступа к сайту. Пароль будет храниться в зашифрованном виде.',
         'fieldset_monitoring' => 'Мониторинг',
         'fieldset_permissions' => 'Права доступа',
+        'permissions' => 'Сервер будет доступен для просмотра указанным пользователям',
         'port' => 'Порт',
         'custom_port' => 'Указать порт',
         'popular_ports' => 'Популярные порты',
+        'request_method' => 'Метод запроса',
+        'custom_request_method' => 'Пользовательский метод запроса',
+        'popular_request_methods' => 'Популярные методы запроса',
+        'post_field' => 'Параметры запроса',
+        'post_field_description' => 'Данные, которые будут отправлены, используя тип запроса, выбранный выше.',
         'please_select' => 'Выберите',
         'type' => 'Тип',
         'type_website' => 'Веб-сайт',
         'type_service' => 'Сервис',
         'type_ping' => 'Пинг',
         'pattern' => 'Искать текст/шаблон',
-        'pattern_description' => 'Если текст по шаблону не найден на сайте,
- сервер будет помечен как Оффлайн. Регулярные
- выражения допустимы.',
+        'pattern_description' => 'Если текст по шаблону не найден на сайте, сервер будет помечен как Оффлайн. Регулярные выражения допустимы.',
         'pattern_online' => 'Шаблон указывает что вебсайт:',
-        'pattern_online_description' => 'Online: Если этот шаблон найден на веб-сайте,
- сервер будет отмечен Онлайн. Offline: Если
- этот шаблон не найден на веб-сайте, сервер
- будет отмечен как Оффлайн.',
+        'pattern_online_description' => 'Online: Если этот шаблон найден на веб-сайте, сервер будет отмечен Онлайн. Offline: Если этот шаблон не найден на веб-сайте, сервер будет отмечен как Оффлайн.',
+        'redirect_check' => 'Начичите редиректа на другой домен',
+        'redirect_check_description' => 'Редирект на другой домен обычно является плохим знаком.',
+        'allow_http_status' => 'Разрешенные коды ответа HTTP',
+        'allow_http_status_description' => 'Сайт будет считаться айт как онлайн. Сайт с HTTP кодами ответа меньше 400 считается онлайн по умолчанию. Разделять знаком |.',
         'header_name' => 'Название заголовка',
         'header_value' => 'Значение заголовка',
         'header_name_description' => 'с учетом регистра.',
@@ -220,14 +220,24 @@ $sm_lang = array(
         'last_offline' => 'Был оффлайн',
         'monitoring' => 'Мониторинг',
         'no_monitoring' => 'Нет мониторинга',
+        'last_output' => 'Последний положительный вывод',
+        'last_error' => 'Последняя ошибка',
+        'last_error_output' => 'Последний вывод с ошибкой',
+        'output' => 'Результаты проверки',
         'email' => 'E-mail',
-        'send_email' => 'Отправить E-mail',
+        'send_email' => 'Отправлять E-mail',
         'sms' => 'CMC',
-        'send_sms' => 'Отправить CMC',
+        'send_sms' => 'Отправлять CMC',
+        'discord' => 'Discord',
+        'send_discord' => 'Отправлять уведомления в Discord',
+        'webhook' => 'Вебхук',
+        'send_webhook' => 'Отправлять уведомления на вебхук',
         'pushover' => 'Pushover',
         'send_pushover' => 'Отправлять уведомления в Pushover',
         'telegram' => 'Telegram',
         'send_telegram' => 'Отправлять уведомления в Telegram',
+        'jabber' => 'Jabber',
+        'send_jabber' => 'Отправлять Jabber уведомления',
         'users' => 'Пользователи',
         'delete_title' => 'Удалить сервер',
         'delete_message' => 'Вы уверены что хотите удалить сервер \'%1\'?',
@@ -247,9 +257,11 @@ $sm_lang = array(
         'day' => 'День',
         'hour' => 'Час',
         'warning_threshold' => 'Порог предупреждения',
-        'warning_threshold_description' => 'Количество неудачных проверок,
- требуемых чтобы сервер был помечен как
- Оффлайн.',
+        'warning_threshold_description' => 'Количество неудачных проверок, требуемых чтобы сервер был помечен как Оффлайн.',
+        'ssl_cert_expiry_days' => 'Валидность SSL сертификата',
+        'ssl_cert_expiry_days_description' => 'Количество дней до истечения срока действия SSL-сертификата. Используйте 0 для отключения проверки.',
+        'ssl_cert_expired' => 'Срок действия SSL-сертификата истек с',
+        'ssl_cert_expiring' => 'SSL-сертификат истекает:',
         'chart_last_week' => 'Прошлая неделя',
         'chart_history' => 'История',
         'chart_day_format' => '%d.%m.%Y',
@@ -258,32 +270,33 @@ $sm_lang = array(
         'chart_short_time_format' => '%H:%M',
         'warning_notifications_disabled_sms' => 'SMS уведомления отключены.',
         'warning_notifications_disabled_email' => 'E-mail уведомления отключены.',
+        'warning_notifications_disabled_discord' => 'Уведомления в Discord отключены.',
+        'warning_notifications_disabled_webhook' => 'Уведомления на вебхук отключены',
         'warning_notifications_disabled_pushover' => 'Pushover уведомления отключены.',
         'warning_notifications_disabled_telegram' => 'Уведомления в Telegram отключены.',
+        'warning_notifications_disabled_jabber' => 'Jabber уведомления отключены.',
         'error_server_no_match' => 'Сервер не найден.',
-        'error_server_label_bad_length' => 'Название должно содержать от 1 до 255
- знаков.',
+        'error_server_label_bad_length' => 'Название должно содержать от 1 до 255 знаков.',
         'error_server_ip_bad_length' => 'Домен/IP должен содержать от 1 до 255 знаков',
         'error_server_ip_bad_service' => 'IP-адрес недействителен.',
         'error_server_ip_bad_website' => 'Ссылка веб-страницы недействительна.',
         'error_server_type_invalid' => 'Выбраный тип сервера недействителен.',
-        'error_server_warning_threshold_invalid' => 'Порог предупреждения должен иметь
- значение больше 0',
+        'error_server_warning_threshold_invalid' => 'Порог предупреждения должен иметь значение больше 0',
+        'error_server_ssl_cert_expiry_days' => 'Оставшиеся дни срока действия сертификата SSL должны быть целым числом, большим или равным 0.',
     ),
     'config' => array(
         'general' => 'Основные',
+        'site_title' => 'Заголовок сайта',
         'language' => 'Язык',
         'show_update' => 'Проверять обновления?',
         'password_encrypt_key' => 'Ключ шифрования пароля',
-        'password_encrypt_key_note' => 'Этот ключ используется для шифрования
- паролей, которые указаны на серверах (для
- доступа к веб-сайтам). Если ключ изменится,
- сохраненный пароль будет недействителен!',
+        'password_encrypt_key_note' => 'Этот ключ используется для шифрования паролей, которые указаны на серверах (для доступа к веб-сайтам). Если ключ изменится, сохраненный пароль будет недействителен!',
         'proxy' => 'Использовать прокси',
         'proxy_url' => 'Адрес прокси',
         'proxy_user' => 'Имя пользователя прокси',
         'proxy_password' => 'Пароль прокси',
         'email_status' => 'Разрешить отправку email',
+        'email_add_url' => 'Добавлять ссылку на мониторинг в текст сообщения',
         'email_from_email' => 'Отправлять от адреса',
         'email_from_name' => 'Отправлять от имени',
         'email_smtp' => 'Использовать SMTP',
@@ -299,87 +312,115 @@ $sm_lang = array(
         'sms_gateway_username' => 'Пользователь',
         'sms_gateway_password' => 'Пароль',
         'sms_from' => 'Номер отправителя',
+        'discord_status' => 'Разрешить отправку сообщений в Discord',
+        'discord_description' => 'Discord - это сервис, который позволяет легко получать уведомления в режиме реального времени. Посетите <a href="https://discord.com/" target="_blank">сайт Discord</a> для подробностей.',
+        'webhook_status' => 'Разрешить отправку сообщений на вебхук',
+        'webhook_description' => 'Разрешить отправку на вебхук различных сервисов, например slack. URL вебхука и формат сообщения указываются в профиле пользователя.',
+        'webhook_url' => 'URL вебхука',
+        'webhook_url_description' => 'URL вебхука',
+        'webhook_json' => 'JSON сообщение',
+        'webhook_json_description' => 'Указать пользовательский JSON. Доступные переменные: #message, #server_error, #server_ip, #server_label, #server_last_offline_duration и #status',
         'pushover_status' => 'Разрешить отправку Pushover сообщений',
-        'pushover_description' => 'Pushover - это сервис, который позволяет легко
- получать уведомления в режиме реального
- времени. Больше информации на <a
- href="https://pushover.net/" target="_blank">их веб-сайте</a>.',
+        'pushover_description' => 'Pushover - это сервис, который позволяет легко получать уведомления в режиме реального времени. Больше информации на <a href="https://pushover.net/" target="_blank">их веб-сайте</a>.',
         'pushover_clone_app' => 'Нажмите здесь чтобы создать ваш Pushover app',
         'pushover_api_token' => 'Pushover App API Token',
-        'pushover_api_token_description' => 'Прежде чем вы сможете начать
- пользоваться Pushover, вам необходимо
- зарегистрировать <a href="%1$s" target="_blank"
- rel="noopener">"App"</a> на их веб-сайте и ввести "App
- API Token" сюда.',
+        'pushover_api_token_description' => 'Прежде чем вы сможете начать пользоваться Pushover, вам необходимо зарегистрировать <a href="%1$s" target="_blank" rel="noopener">"App"</a> на их веб-сайте и ввести "App API Token" сюда.',
         'telegram_status' => 'Разрешить отправку уведомлений в Telegram',
-        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный
- мессенджер для получения уведомлений в
- реальном времени. Посетите <a
- href="http://docs.phpservermonitor.org/" target="_blank">раздел
- документации</a> для получения доп. информации
- и инструкций по установке.',
+        'telegram_add_url' => 'Добавлять ссылку на мониторинг в текст сообщения',
+        'telegram_description' => '<a href="https://telegram.org/" target="_blank">Telegram</a> удобный мессенджер для получения уведомлений в реальном времени. Посетите <a href="http://docs.phpservermonitor.org/" target="_blank">раздел документации</a> для получения доп. информации и инструкций по установке.',
         'telegram_api_token' => 'Telegram API Token',
-        'telegram_api_token_description' => 'Прежде чем вы сможете начать
- пользоваться Telegram, вам необходимо
- получить API Token. Посетите <a
- href="http://docs.phpservermonitor.org/" target="_blank">раздел
- документации</a> для получения помощи.',
+        'telegram_api_token_description' => 'Прежде чем вы сможете начать пользоваться Telegram, вам необходимо получить API Token. Посетите <a href="http://docs.phpservermonitor.org/" target="_blank">раздел документации</a> для получения помощи.',
+        'jabber_status' => 'Разрешить отправку Jabber (XMPP) сообщений',
+        'jabber_description' => 'Посетите <a href="http://docs.phpservermonitor.org/">страницу документации</a> для получения подробностей.',
+        'jabber_host' => 'Хост',
+        'jabber_host_description' => 'Сервер вашего Jabber провайдера. Для аккаунта Google используйте talk.google.com.',
+        'jabber_port' => 'Порт',
+        'jabber_port_description' => 'Порт вашего Jabber провайдера. По умолчанию 5222. Для аккаунта Google используйте 5223.',
+        'jabber_username' => 'Имя пользователя',
+        'jabber_username_description' => 'Для аккаунта Google указывайте вместе с доменом, например example@google.com.',
+        'jabber_domain' => 'Домен',
+        'jabber_domain_description' => 'Домен вашего Jabber провайдера. Оставьте пустым для Google аккаунта.',
+        'jabber_password' => 'Пароль',
+        'jabber_password_description' => 'Заполняйте только для установки или изменения пароля.',
+        'jabber_check' => 'Проверьте ваш аккаунт Jabber, если сообщение было получено.',
+        'dirauth_status' => 'Аутентифицироваться с помощью службы каталогов',
+        'authdir_host_locn' => 'Хост каталога',
+        'authdir_host_port' => 'Порт каталога',
+        'authdir_type' => 'Тип сервиса',
+        'authdir_type_description' => 'OpenLDAP: Directory - это служба OpenLDAP.<br>AD DS: Directory - это доменная служба Active Directory.<br>AD LDS: Directory - это упрощенная служба каталогов Active Directory.',
+        'authdir_type_openldap' => 'OpenLDAP',
+        'authdir_type_adds' => 'AD DS',
+        'authdir_type_adlds' => 'AD LDS',
+        'authdir_userdomain' => 'Домен Active Directory',
+        'authdir_userdomain_description' => 'Пользовательский домен для Active Directory. Обычно это домен NETBIOS для AD DS и домен DNS для AD LDS. Не используется для каталогов OpenLDAP.',
+        'authdir_ldapver' => 'Версия протокола LDAP',
+        'authdir_ldapver_description' => 'Версия спецификации LDAP. Обычно это Версия 3 (по умолчанию). Версия 2 устарела в 2003 году (RFC3494).',
+        'authdir_ldapfollowref' => 'Следовать ссылкам',
+        'authdir_ldapfollowref_description' => 'Следовать ссылкам, если указанный сервер обращается к другому серверу за необходимой информацией. Не устанавливайте флажок, если вы не знаете об этой функции.',
+        'authdir_basedn' => 'Базовый DN*',
+        'authdir_basedn_description' => 'Базовое отличительное имя (DN) службы каталогов. Например, dc=domain,dc=tld. Это обязательное поле.',
+        'authdir_usernameattrib' => 'Атрибут имени пользователя',
+        'authdir_usernameattrib_description' => 'Атрибут, используемый службой каталогов для ссылки на имя пользователя.',
+        'authdir_groupnameattrib' => 'Атрибут имени группы',
+        'authdir_groupnameattrib_description' => 'Атрибут, используемый службой каталогов для ссылки на имя группы в группе. Используется для проверки членства в группе.',
+        'authdir_groupmemattrib' => 'Атрибут члена группы',
+        'authdir_groupmemattrib_description' => 'Атрибут, используемый службой каталогов для ссылки на группу (группы), членом которых является пользователь. Используется для проверки членства в группе.',
+        'authdir_usercontainerrdn' => 'Контейнер RDN для пользователя',
+        'authdir_usercontainerrdn_description' => 'Относительное отличительное имя контейнера пользователей в каталоге. Например, ou=Users',
+        'authdir_groupcontainerrdn' => 'Контейнер RDN для группы',
+        'authdir_groupcontainerrdn_description' => 'Относительное отличительное имя контейнера групп в каталоге. Например, ou=Groups',
+        'authdir_groupname' => 'Авторизованная группа каталогов',
+        'authdir_groupname_description' => 'Группа каталогов, авторизованная для доступа к приложению. Пользователи каталога, не входящие в эту группу, не будут аутентифицированы (в настоящее время недоступно для AD).',
+        'authdir_defaultrole' => 'Роль по умолчанию',
+        'authdir_defaultrole_description' => 'Роль по умолчанию, назначаемая пользователям, входящим в систему в первый раз.',
         'alert_type' => 'Тип уведомлений',
-        'alert_type_description' => '<b>Изменение статуса:</b> Вы получите
- уведомление об изменение статуса. Для
- онлайн -> оффлайн или офлайн -> онлайн.<br><br
- /><b>Оффлайн:</b> Вы получите уведомление
- только когда сервер перейдет в статус
- оффлайн. Например, задание Cron выставлено на
- каждые 15 минут. Сервер перейдет в статус
- оффлайн в 1:00 и не измениться до 6:00. Вы
- получите 1 уведомление только в
- 1:00<br><br><b>Всегда:</b> Вы будете получать
- уведомление при каждом запуске скрипта
- проверки, как только сервер перейдет в
- статус оффлайн, даже если сервер находится в
- этом статусе несколько часов.',
+        'alert_type_description' => '<b>Изменение статуса:</b> Вы получите уведомление об изменение статуса. Для онлайн -> оффлайн или офлайн -> онлайн.<br><br /><b>Оффлайн:</b> Вы получите уведомление только когда сервер перейдет в статус оффлайн. Например, задание Cron выставлено на каждые 15 минут. Сервер перейдет в статус оффлайн в 1:00 и не измениться до 6:00. Вы получите 1 уведомление только в 1:00<br><br><b>Всегда:</b> Вы будете получать уведомление при каждом запуске скрипта проверки, как только сервер перейдет в статус оффлайн, даже если сервер находится в этом статусе несколько часов.',
         'alert_type_status' => 'Изменение статуса',
         'alert_type_offline' => 'Оффлайн',
         'alert_type_always' => 'Всегда',
-        'alert_proxy' => 'Даже если включено, прокси никогда не
- используется для сервисов',
+        'combine_notifications' => 'Комбинировать уведомления',
+        'combine_notifications_description' => 'Уменьшит количество уведомлений, объединяя их в одно уведомление. (Это не влияет на SMS-уведомления.)',
+        'alert_proxy' => 'Даже если включено, прокси никогда не используется для сервисов',
         'alert_proxy_url' => 'Формат: адрес:порт',
         'log_status' => 'Лог статусов',
-        'log_status_description' => 'Если лог статусов включен, монитор будет
- логировать все события выбранные в типе
- уведомлений.',
-        'log_email' => 'Логировать уведомления отправленые по E-mail',
-        'log_sms' => 'Логировать уведомления отправленые по SMS',
+        'log_status_description' => 'Если лог статусов включен, монитор будет логировать все события выбранные в типе уведомлений.',
+        'log_email' => 'Логировать E-mail уведомления',
+        'log_sms' => 'Логировать SMS уведомления',
+        'log_discord' => 'Логировать Discord уведомления',
         'log_pushover' => 'Логировать Pushover уведомления',
+        'log_webhook' => 'Логировать вебхук уведомления',
         'log_telegram' => 'Логировать Telegram уведомления',
+        'log_jabber' => 'Логировать Jabber уведомления',
         'updated' => 'Настройки успешно сохранены.',
         'tab_email' => 'Email',
         'tab_sms' => 'SMS',
+        'tab_discord' => 'Discord',
         'tab_pushover' => 'Pushover',
+        'tab_webhook' => 'Webhook',
         'tab_telegram' => 'Telegram',
+        'tab_jabber' => 'Jabber',
+        'tab_auth' => 'Аутентификация',
         'settings_email' => 'Настройка E-mail',
         'settings_sms' => 'Настройка SMS',
+        'settings_discord' => 'Настройка Discord',
         'settings_pushover' => 'Настройка Pushover',
+        'settings_webhook' => 'Настройка вебхука',
         'settings_telegram' => 'Настройка Telegram',
+        'settings_jabber' => 'Настройка Jabber',
         'settings_notification' => 'Настройка уведомлений',
         'settings_log' => 'Настройка логирования',
         'settings_proxy' => 'Настройка прокси',
+        'settings_dirauth' => 'Настройка LDAP',
         'auto_refresh' => 'Авто-обновление',
-        'auto_refresh_description' => 'Авто-обновление страницы статуса
- серверов.<br><span class="small">Время в секундах.
- Если указано 0, то страница не будет
- обновляться.</span>',
+        'auto_refresh_description' => 'Авто-обновление страницы статуса серверов.<br><span class="small">Время в секундах. Если указано 0, то страница не будет обновляться.</span>',
         'test' => 'Проверка',
-        'test_email' => 'Сообщение будет отправлено на адрес указаный в
- профиле пользователя.',
-        'test_sms' => 'SMS будет отправлено на номер телефона указаный в
- профиле пользователя.',
-        'test_pushover' => 'Pushover уведомление будет отправленно на
- устройство указанное в профиле пользователя.',
-        'test_telegram' => 'Уведомление Telegram будет отправлено на
- идентификатор чата, указанный в профиле
- пользователя.',
+        'test_email' => 'Сообщение будет отправлено на адрес указаный в профиле пользователя.',
+        'test_sms' => 'SMS будет отправлено на номер телефона, указаный в профиле пользователя.',
+        'test_discord' => 'Уведомление Discord будет отправлено на вебхук, указанный в профиле пользователя.',
+        'test_pushover' => 'Pushover уведомление будет отправленно на устройство, указанное в профиле пользователя.',
+        'test_webhook' => 'Уведомление вебхука будет отправлено на URL, указанный в профиле пользователя',
+        'test_telegram' => 'Уведомление Telegram будет отправлено на идентификатор чата, указанный в профиле пользователя.',
+        'test_jabber' => 'Уведомление будет отправлено на учетную запись Jabber, указанную в профиле пользователя.',
         'send' => 'Отправить',
         'test_subject' => 'Проверка',
         'test_message' => 'Тестовое сообщение',
@@ -387,57 +428,75 @@ $sm_lang = array(
         'email_error' => 'Ошибка отправки email',
         'sms_sent' => 'SMS отправлено',
         'sms_error' => 'При отправке SMS произошла ошибка: %s',
-        'sms_error_nomobile' => 'Не удалось отправить тестовое SMS:
- действительный номер телефона не найден в
- вашем профиле.',
+        'sms_error_nomobile' => 'Не удалось отправить тестовое SMS: действительный номер телефона не найден в вашем профиле.',
+        'discord_sent' => 'Уведомление Discord отправлено',
+        'discord_error' => 'Произошла ошибка во время отправки Discord уведомления: %s',
+        'discord_error_nowebhook' => 'Произошла ошибка во время отправки Discord уведомления: валидный Discord вебхук не найден в вашем профиле.',
+        'webhook_sent' => 'Уведомление вебхук отправлено',
+        'webhook_error' => 'Произошла ошибка во время отправки вебхук уведомления: %s',
+        'webhook_error_nourl' => 'Не удалось отправить тестовое уведомление: URL вебхука не найден в вашем профиле.',
+        'webhook_error_nojson' => 'Не удалось отправить тестовое уведомление: JSON не найден в вашем профиле',
         'pushover_sent' => 'Pushover уведомление отправлено',
-        'pushover_error' => 'Произошла ошибка во время отправки Pushover
- уведомления: %s',
-        'pushover_error_noapp' => 'Не удалось отправить тестовое уведомление:
- Pushover "App API token" не найден в основных
- настройках.',
-        'pushover_error_nokey' => 'Не удалось отправить тестовое уведомление:
- Pushover ключ не найден в вашем профиле.',
+        'pushover_error' => 'Произошла ошибка во время отправки Pushover уведомления: %s',
+        'pushover_error_noapp' => 'Не удалось отправить тестовое уведомление: Pushover "App API token" не найден в основных настройках.',
+        'pushover_error_nokey' => 'Не удалось отправить тестовое уведомление: Pushover ключ не найден в вашем профиле.',
         'telegram_sent' => 'Уведомление в Telegram отправлено',
-        'telegram_error' => 'Произошла ошибка при отправке уведомления в
- Telegram: %s',
-        'telegram_error_notoken' => 'Не удалось отправить тестовое уведомление:
- Telegram API token не найден в основных настройках.',
-        'telegram_error_noid' => 'Не удалось отправить тестовое уведомление:
- идентификатор чата не найден в вашем профиле.',
+        'telegram_error' => 'Произошла ошибка при отправке уведомления в Telegram: %s',
+        'telegram_error_notoken' => 'Не удалось отправить тестовое уведомление: Telegram API token не найден в основных настройках.',
+        'telegram_error_noid' => 'Не удалось отправить тестовое уведомление: идентификатор чата не найден в вашем профиле.',
+        'jabber_sent' => 'Уведомление Jabber отправлено',
+        'jabber_error' => 'Произошла ошибка при отправке Jabber уведомления: %s',
+        'jabber_error_noconfig' => 'Не удалось отправить тестовое уведомление: аккаунт Jabber не найден в основных настройках',
+        'jabber_error_noaccount' => 'Не удалось отправить тестовое уведомление: аккаунт Jabber не найден в вашем профиле.',
         'log_retention_period' => 'Период хранения логов',
-        'log_retention_period_description' => 'Количество дней хранения логов
- уведомлений и архива аптайма серверов.
- Введите 0 для выключения очистки логов.',
+        'log_retention_period_description' => 'Количество дней хранения логов уведомлений и архива аптайма серверов. Введите 0 для выключения очистки логов.',
         'log_retention_days' => 'дней',
+        'user_agent' => 'User Agent',
+        'user_agent_key_note' => 'Пользовательский user agent, используемый мониторингом при взаимодействии с внешними службами.',
     ),
     'notifications' => array(
-        'off_sms' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН: IP=%IP%, Порт=%PORT%.
- Ошибка=%ERROR%',
+        'off_sms' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН: IP=%IP%, Порт=%PORT%. Ошибка=%ERROR%',
         'off_email_subject' => 'ВАЖНО: сервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
-        'off_email_body' => 'Невозможно подключиться к следующему
- серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт:
- %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
-        'off_pushover_title' => 'Cервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
-        'off_pushover_message' => 'Невозможно подключиться к следующему
- серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт:
- %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
-        'off_telegram_message' => 'Невозможно подключиться к следующему
- серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт:
- %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
-        'on_sms' => 'Сервер \'%LABEL%\' снова ДОСТУПЕН: IP=%IP%, Порт=%PORT%. Был
- недоступен: %LAST_OFFLINE_DURATION%',
-        'on_email_subject' => 'ВАЖНО: Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
-        'on_email_body' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен:
- %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт:
- %PORT%<br>Дата: %DATE%',
+        'off_email_body' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'off_discord_message' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'off_webhook_title' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
+        'off_webhook_message' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP:
+ %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'off_pushover_title' => 'Сервер \'%LABEL%\' сейчас НЕДОСТУПЕН',
+        'off_pushover_message' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'off_telegram_message' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'off_jabber_message' => 'Невозможно подключиться к следующему серверу:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Ошибка: %ERROR%<br>Дата: %DATE%',
+        'on_sms' => 'Сервер \'%LABEL%\' снова ДОСТУПЕН: IP=%IP%, Порт=%PORT%. Был недоступен: %LAST_OFFLINE_DURATION%',
+        'on_email_subject' => 'ВАЖНО: Сервер \'%LABEL%\' снова ДОСТУПЕН',
+        'on_email_body' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'on_discord_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'on_webhook_title' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
+        'on_webhook_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%:<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
         'on_pushover_title' => 'Сервер \'%LABEL%\' сейчас ДОСТУПЕН',
-        'on_pushover_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был
- недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP:
- %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
-        'on_telegram_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был
- недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP:
- %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'on_pushover_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'on_telegram_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'on_jabber_message' => 'Сервер \'%LABEL%\' снова доступен.<br>Был недоступен: %LAST_OFFLINE_DURATION%<br><br>Сервер: %LABEL%<br>IP: %IP%<br>Порт: %PORT%<br>Дата: %DATE%',
+        'combi_off_email_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Ошибка: %ERROR%</li><li>Дата: %DATE%</li></ul>',
+        'combi_off_discord_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Ошибка: %ERROR%<br>- Дата: %DATE%<br><br>',
+        'combi_off_webhook_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Ошибка: %ERROR%</li><li>Дата: %DATE%</li></ul>',
+        'combi_off_pushover_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Ошибка: %ERROR%</li><li>Дата: %DATE%</li></ul>',
+        'combi_off_telegram_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Ошибка: %ERROR%<br>- Дата: %DATE%<br><br>',
+        'combi_off_jabber_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Ошибка: %ERROR%<br>- Дата: %DATE%<br><br>',
+        'combi_on_email_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Упал: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
+        'combi_on_webhook_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Упал: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
+        'combi_on_discord_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Упал: %LAST_OFFLINE_DURATION%<br>- Дата: %DATE%<br><br>',
+        'combi_on_pushover_message' => '<ul><li>Сервер: %LABEL%</li><li>IP: %IP%</li><li>Порт: %PORT%</li><li>Упал: %LAST_OFFLINE_DURATION%</li><li>Дата: %DATE%</li></ul>',
+        'combi_on_telegram_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Упал: %LAST_OFFLINE_DURATION%<br>- Дата: %DATE%<br><br>',
+        'combi_on_jabber_message' => '- Сервер: %LABEL%<br>- IP: %IP%<br>- Порт: %PORT%<br>- Упал: %LAST_OFFLINE_DURATION%<br>- Дата: %DATE%<br><br>',
+        'combi_email_subject' => 'ВАЖНО: \'%UP%\' сервера снова ДОСТУПНЫ, \'%DOWN%\' сервера НЕДОСТУПНЫ',
+        'combi_webhook_subject' => '\'%UP%\' сервера снова ДОСТУПНЫ, \'%DOWN%\' сервера НЕДОСТУПНЫ',
+        'combi_pushover_subject' => '\'%UP%\' сервера снова ДОСТУПНЫ, \'%DOWN%\' сервера НЕДОСТУПНЫ',
+        'combi_email_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
+        'combi_discord_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
+        'combi_webhook_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
+        'combi_pushover_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
+        'combi_telegram_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
+        'combi_jabber_message' => '<b>Следующие сервера ушли в ОФФЛАЙН:</b><br>%DOWN_SERVERS%<br><b>Следующие сервера снова ОНЛАЙН:</b><br>%UP_SERVERS%',
     ),
     'login' => array(
         'welcome_usermenu' => 'Здравствуйте, %user_name%',
@@ -454,17 +513,13 @@ $sm_lang = array(
         'password_forgot' => 'Забыли пароль?',
         'password_reset' => 'Сбросить пароль',
         'password_reset_email_subject' => 'Сброс пароля для PHP Server Monitor',
-        'password_reset_email_body' => 'Пожалуйста, используйте следующую ссылку
- для сброса пароля. Ссылка действительна 1
- час.<br><br>%link%',
+        'password_reset_email_body' => 'Пожалуйста, используйте следующую ссылку для сброса пароля. Ссылка действительна 1 час.<br><br>%link%',
         'error_user_incorrect' => 'Пользователь с указаными данными не найден.',
         'error_login_incorrect' => 'Информация указана неверно.',
         'error_login_passwords_nomatch' => 'Пароль указан неверно.',
         'error_reset_invalid_link' => 'Ссылка для сброса пароля недействительна.',
-        'success_password_forgot' => 'Вам был отправлен email, с инструкциями по
- сбросу пароля.',
-        'success_password_reset' => 'Ваш пароль был сброшен. Пожалуйста
- авторизуйтесь.',
+        'success_password_forgot' => 'Вам был отправлен email, с инструкциями по сбросу пароля.',
+        'success_password_reset' => 'Ваш пароль был сброшен. Пожалуйста авторизуйтесь.',
     ),
     'error' => array(
         '401_unauthorized' => 'Доступ закрыт',
