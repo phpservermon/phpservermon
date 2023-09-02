@@ -424,10 +424,12 @@ class StatusNotifier
             psm_parse_msg($this->status_new, 'email_subject', $this->server);
         $mail->Priority = 1;
 
+        $publicUrl = PSM_BASE_URL.'/public.php';
+
         $body = key_exists('message', $combi) ?
             $combi['message'] :
 	    psm_parse_msg($this->status_new, 'email_body', $this->server);
-	    if ((bool)psm_get_conf('email_add_url')) $body .= PHP_EOL.PHP_EOL.'<a href="'.PSM_BASE_URL.'">'.PSM_BASE_URL.'</a>';
+	    if ((bool)psm_get_conf('email_add_url')) $body .= PHP_EOL.PHP_EOL.'<a href="'.$publicUrl.'">'.$publicUrl.'</a>';
         $mail->Body = $body;
         $mail->AltBody = str_replace('<br/>', "\n", $body);
 
@@ -609,6 +611,7 @@ class StatusNotifier
         }
         $webhook = psm_build_webhook();
 
+        $subject = key_exists('subject', $combi) ? $combi['subject'] : psm_parse_msg($this->status_new, 'email_subject', $this->server);
 
         $message = key_exists('message', $combi) ?
             $combi['message'] :
@@ -638,7 +641,8 @@ class StatusNotifier
                 '#server_label' => $this->server['label'],
                 '#server_error' => $this->server['error'],
                 '#server_last_offline_duration' => $this->status_new ? $this->server['last_offline_duration'] : '',
-                '#status' => $this->status_new ? 'online' : 'offline'
+                '#status' => $this->status_new ? 'online' : 'offline',
+                '#subject' => $subject
             ]);
         }
     }
