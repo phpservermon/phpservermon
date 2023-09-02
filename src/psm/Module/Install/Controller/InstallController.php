@@ -84,7 +84,7 @@ class InstallController extends AbstractController
         } else {
             $this->addMessage('PHP version: ' . $phpv, 'success');
         }
-        if (version_compare(PHP_RELEASE_VERSION, '7', '<')) {
+        if (version_compare(PHP_MAJOR_VERSION, '7', '<')) {
             $this->addMessage(
                 'PHP 5 reaches the end of life (January 1, 2019), please update to PHP 7.
                  PHP supported versions can be found
