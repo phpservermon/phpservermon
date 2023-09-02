@@ -41,7 +41,7 @@ namespace {
 
         // define won't accept array before php 7.0.0
         // check if data is serialized (not needed when using php 7.0.0 and higher)
-        $data = @unserialize(PSM_CRON_ALLOW);
+        $data = (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 7) ? false : @unserialize(PSM_CRON_ALLOW);
         $allow = $data === false ? PSM_CRON_ALLOW : $data;
 
         if (!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)
