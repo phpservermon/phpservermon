@@ -44,10 +44,16 @@ namespace {
         $data = @unserialize(PSM_CRON_ALLOW);
         $allow = $data === false ? PSM_CRON_ALLOW : $data;
 
-        if (!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)
-          && ! (array_key_exists ("webcron_key", $_GET) &&
-             $_GET["webcron_key"]==PSM_WEBCRON_KEY && (PSM_WEBCRON_KEY != ""))
-        ) {
+        $ipWhitelistCheckPassed = in_array($_SERVER['REMOTE_ADDR'], $allow)
+            && in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)
+            && PSM_WEBCRON_ENABLE_IP_WHITELIST;
+
+        $webCronKeyCheckPassed =
+            array_key_exists ("webcron_key", $_GET)
+            && $_GET["webcron_key"] == PSM_WEBCRON_KEY
+            && (PSM_WEBCRON_KEY != "");
+
+        if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
             header('HTTP/1.0 403 Forbidden');
             die('
         <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>
