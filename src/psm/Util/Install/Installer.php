@@ -293,6 +293,7 @@ class Installer
                 `last_error` varchar(255) DEFAULT NULL,
                 `last_error_output` TEXT,
                 `last_output` TEXT,
+                `custom_header` TEXT NULL DEFAULT NULL,
                 PRIMARY KEY  (`server_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -747,6 +748,8 @@ class Installer
             CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;";
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
             ADD `webhook` ENUM( 'yes','no' ) NOT NULL DEFAULT 'yes' AFTER `telegram`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+            ADD `custom_header` TEXT NULL DEFAULT NULL AFTER `last_output`;";
         $queries[] = "INSERT INTO `" . PSM_DB_PREFIX . "config` (`key`, `value`) VALUE
                     ('discord_status', '0'),
                     ('log_discord', '1'),

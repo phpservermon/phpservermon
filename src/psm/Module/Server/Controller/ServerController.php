@@ -246,6 +246,7 @@ class ServerController extends AbstractServerController
                 'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
                 'edit_jabber_selected' => $edit_server['jabber'],
+                'edit_custom_header' => $edit_server['custom_header'],
             ));
         }
 
@@ -322,6 +323,7 @@ class ServerController extends AbstractServerController
             'webhook' => in_array($_POST['webhook'], array('yes', 'no')) ? $_POST['webhook'] : 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
             'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
+            'custom_header' => empty(psm_POST('custom_header')) ? null : psm_POST('custom_header'),
         );
         // make sure websites start with http://
         if (
@@ -636,6 +638,8 @@ class ServerController extends AbstractServerController
             'label_log_no_logs' => psm_get_lang('log', 'no_logs'),
             'label_date' => psm_get_lang('system', 'date'),
             'label_message' => psm_get_lang('system', 'message'),
+            'label_custom_header' => psm_get_lang('servers', 'custom_header'),
+            'label_custom_header_description' => psm_get_lang('servers', 'custom_header_description'),
         );
     }
 

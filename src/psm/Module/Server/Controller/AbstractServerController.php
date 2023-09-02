@@ -95,7 +95,8 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`website_password`,
 					`s`.`last_error`,
 					`s`.`last_error_output`,
-					`s`.`last_output`
+					`s`.`last_output`,
+                    `s`.`custom_header`
 				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				{$sql_where}
