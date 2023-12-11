@@ -490,18 +490,14 @@ namespace {
         }
         if ($time < strtotime(date('Y-m-d 00:00:00')) - 60 * 60 * 24 * 3) {
             $format = psm_get_lang('system', (date('Y') !== date('Y', $time) ? 'long_day_format' : 'short_day_format'));
-            // Check for Windows to find and replace the %e
-            // modifier correctly
-            if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-                $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
-            }
-            return date(strftime_format_to_date_format($format), $time);
+            
+            return formatLanguage($format, $time);
         }
         $d = time() - $time;
         if ($d >= 60 * 60 * 24) {
             $format = psm_get_lang('system', (date('l', time() - 60 * 60 * 24) == date('l', $time)) ?
             'yesterday_format' : 'other_day_format');
-            return date(strftime_format_to_date_format($format), $time);
+            return formatLanguage($format, $time);
         }
         if ($d >= 60 * 60 * 2) {
             return sprintf(psm_get_lang('system', 'hours_ago'), intval($d / (60 * 60)));
@@ -532,7 +528,7 @@ namespace {
         if (empty($time) || $time == '0000-00-00 00:00:00') {
             return psm_get_lang('system', 'never');
         }
-        return date(strftime_format_to_date_format('%x %X'), strtotime($time));
+        return formatLanguage('%x %X', strtotime($time));
     }
 
     /**
@@ -1012,7 +1008,7 @@ namespace {
      * @return string|string[]
      * @throws Exception
      */
-    function strftime_format_to_date_format($strftimeformat){
+    function strftimeFormatToDateFormat($strftimeformat){
         $unsupported = ['%U', '%V', '%C', '%g', '%G'];
         $foundunsupported = [];
         foreach($unsupported as $unsup){
@@ -1034,6 +1030,44 @@ namespace {
             $strftimeformat
         );
         return $phpdateformat;
+    }
+
+    function formatLanguage(string $formatSTRF,int $timestamp) : string {
+        $format = strftimeFormatToDateFormat($formatSTRF);
+        
+        $dt = new DateTime();
+        $dt->setTimestamp($timestamp);
+
+        $language = isset($GLOBALS['sm_lang']) ? $GLOBALS['sm_lang']['locale'][1] : $GLOBALS['sm_lang_default']['locale'][1];
+        $curTz = $dt->getTimezone();
+        if($curTz->getName() === 'Z'){
+            //INTL don't know Z
+            $curTz = new DateTimeZone('UTC');
+        }
+
+        $formatPattern = strtr($format,array(
+            'D' => '{#1}',
+            'l' => '{#2}',
+            'M' => '{#3}',
+            'F' => '{#4}',
+        ));
+        $strDate = $dt->format($formatPattern);
+        $regEx = '~\{#\d\}~';
+        while(preg_match($regEx,$strDate,$match)) {
+            $IntlFormat = strtr($match[0],array(
+              '{#1}' => 'E',
+              '{#2}' => 'EEEE',
+              '{#3}' => 'MMM',
+              '{#4}' => 'MMMM',
+            ));
+            $fmt = datefmt_create($language, IntlDateFormatter::FULL, IntlDateFormatter::FULL,
+                $curTz, IntlDateFormatter::GREGORIAN, $IntlFormat
+            );
+            $replace = $fmt ? datefmt_format( $fmt ,$dt) : "???";
+            $strDate = str_replace($match[0], $replace, $strDate);
+        }
+
+        return $strDate;
     }
 
 	/**
