@@ -67,11 +67,11 @@ class Modal implements ModalInterface
 
     /**
      * Twig environment
-     * @var \Twig_Environment $twig
+     * @var \Twig\Environment $twig
      */
     protected $twig;
 
-    public function __construct(\Twig_Environment $twig, $modal_id = 'main', $type = self::MODAL_TYPE_OK)
+    public function __construct(\Twig\Environment $twig, $modal_id = 'main', $type = self::MODAL_TYPE_OK)
     {
         $this->modal_id = $modal_id;
         $this->twig = $twig;
@@ -142,7 +142,7 @@ class Modal implements ModalInterface
             }
         }
 
-        $tpl = $this->twig->loadTemplate('util/module/modal.tpl.html');
+        $tpl = $this->twig->load('util/module/modal.tpl.html');
         $html = $tpl->render(array(
             'modal_id' => $this->modal_id,
             'modal_title' => !empty($this->title) ? $this->title : psm_get_conf('site_title', psm_get_lang('system', 'title')),

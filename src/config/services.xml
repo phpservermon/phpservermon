@@ -42,16 +42,16 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 			<argument>%db.port%</argument>
 		</service>
 
-		<service id="event" class="Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher">
+		<service id="event" class="Symfony\Component\EventDispatcher\EventDispatcher">
 			<argument type="service" id="service_container" />
 		</service>
 		<service id="user" class="psm\Service\User">
 			<argument type="service" id="db" />
 		</service>
-		<service id="twig.loader" class="Twig_Loader_Filesystem">
+		<service id="twig.loader" class="Twig\Loader\FilesystemLoader">
 			<argument>%path.templates%/%config.theme%</argument>
 		</service>
-		<service id="twig" class="Twig_Environment">
+		<service id="twig" class="Twig\Environment">
 			<argument type="service" id="twig.loader" />
 		</service>
 		<!--SERVICES end-->

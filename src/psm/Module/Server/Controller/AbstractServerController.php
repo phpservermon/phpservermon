@@ -81,7 +81,7 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`active`,
 					`s`.`email`,
 					`s`.`sms`,
-          `s`.`discord`,
+					`s`.`discord`,
 					`s`.`webhook`,
 					`s`.`pushover`,
 					`s`.`telegram`,

@@ -32,7 +32,7 @@ namespace psm\Util\Server;
 use DateTime;
 use psm\Service\Database;
 use Twig\Error\Error;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * History util, create HTML for server graphs
@@ -52,7 +52,7 @@ class HistoryGraph
      */
     protected $twig;
 
-    public function __construct(Database $db, Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         $this->db = $db;
         $this->twig = $twig;
@@ -294,7 +294,7 @@ class HistoryGraph
                         // Previous datapoint was offline
                             : ['x' => $time_ms, 'y' => null];
                     // new outage start
-                    $lines['offline'][] = ['x' => $time_ms, 'y' => $highest_latency];
+                    $lines['offline'][] = ['x' => $time_ms, 'y' => 0];
 
                     if ($prev_downtime === 0) {
                         $prev_downtime = $time;
@@ -306,7 +306,7 @@ class HistoryGraph
                         // Previous datapoint was online
                             ? ['x' => $time_ms, 'y' => null]
                         // Previous datapoint was offline
-                            : ['x' => $time_ms, 'y' => $highest_latency];
+                            : ['x' => $time_ms, 'y' => 0];
                     $lines['online'][] = ['x' => $time_ms, 'y' => round($record['latency'] * 1000, 3)];
 
                     if ($prev_downtime !== 0) {

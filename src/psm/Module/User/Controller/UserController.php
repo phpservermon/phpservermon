@@ -39,7 +39,7 @@ class UserController extends AbstractController
 {
     public $servers = array();
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 

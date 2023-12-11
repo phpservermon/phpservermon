@@ -4,20 +4,20 @@
 	"license": "GPL-3.0-or-later",
 	"homepage": "https://www.phpservermonitor.org",
 	"require": {
-		"php": "^5.5.9|>=7.0.8",
+		"php": ">=8.1.0",
 		"ext-curl": "*",
 		"ext-json": "*",
 		"ext-pdo": "*",
 		"ext-xml": "*",
-		"phpmailer/phpmailer": ">=6.5.0 ~6.0",
-		"symfony/config": "~3.4",
-		"symfony/dependency-injection": "~3.4",
-		"symfony/event-dispatcher": "~3.4",
-		"symfony/http-foundation": ">=3.4.35 ~3.4",
-		"symfony/filesystem": "~3.4",
-		"php-pushover/php-pushover": "dev-master",
-		"paragonie/random_compat": "^2.0",
-		"twig/twig": "~1.35",
+		"phpmailer/phpmailer": "^6.9",
+		"symfony/config": "^4.4",
+		"symfony/dependency-injection": "^4.4",
+		"symfony/event-dispatcher": "^5.4",
+		"symfony/http-foundation": "^6.4",
+		"symfony/filesystem": "^5.4",
+		"php-pushover/php-pushover": "^1.0",
+		"paragonie/random_compat": "^9.99",
+		"twig/twig": "^3.8",
 		"jaxl/jaxl": "^3.1",
 		"viharm/psm-ldap-auth": "^1.1"
 	},
@@ -28,6 +28,11 @@
 		],
 		"psr-4": {
 			"psm\\": "src/psm/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"mnsami/composer-custom-directory-installer": true
 		}
 	}
 }

@@ -63,7 +63,7 @@ namespace {
     }
 
     $cron_timeout = PSM_CRON_TIMEOUT;
-// parse a couple of arguments
+	// parse a couple of arguments
     if (!empty($_SERVER['argv'])) {
         foreach ($_SERVER['argv'] as $argv) {
             $argi = explode('=', ltrim($argv, '--'));
@@ -83,10 +83,10 @@ namespace {
         }
     }
 
-// prevent cron from running twice at the same time
-// however if the cron has been running for X mins, we'll assume it died and run anyway
-// if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
-// or you can provide the --timeout=x argument
+	// prevent cron from running twice at the same time
+	// however if the cron has been running for X mins, we'll assume it died and run anyway
+	// if you want to change PSM_CRON_TIMEOUT, have a look in src/includes/psmconfig.inc.php.
+	// or you can provide the --timeout=x argument
 
     $status = null;
     if (PHP_SAPI === 'cli') {

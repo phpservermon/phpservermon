@@ -47,7 +47,7 @@ class InstallController extends AbstractController
      */
     protected $path_config_old;
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 

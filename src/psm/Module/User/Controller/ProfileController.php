@@ -41,7 +41,7 @@ class ProfileController extends AbstractController
     protected $profile_fields =
         array('name', 'user_name', 'email', 'mobile', 'pushover_key', 'pushover_device', 'discord', 'webhook_url', 'webhook_json', 'telegram_id', 'jabber');
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 
