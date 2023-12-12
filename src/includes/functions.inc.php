@@ -489,20 +489,15 @@ namespace {
             $time = strtotime($time);
         }
         if ($time < strtotime(date('Y-m-d 00:00:00')) - 60 * 60 * 24 * 3) {
-            $format = psm_get_lang('system', (date('Y') !== date('Y', $time)) ?
-                'long_day_format' : 'short_day_format');
-            // Check for Windows to find and replace the %e
-            // modifier correctly
-            if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-                $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
-            }
-            return strftime($format, $time);
+            $format = psm_get_lang('system', (date('Y') !== date('Y', $time) ? 'long_day_format' : 'short_day_format'));
+            
+            return formatLanguage($format, $time);
         }
         $d = time() - $time;
         if ($d >= 60 * 60 * 24) {
             $format = psm_get_lang('system', (date('l', time() - 60 * 60 * 24) == date('l', $time)) ?
-                'yesterday_format' : 'other_day_format');
-            return strftime($format, $time);
+            'yesterday_format' : 'other_day_format');
+            return formatLanguage($format, $time);
         }
         if ($d >= 60 * 60 * 2) {
             return sprintf(psm_get_lang('system', 'hours_ago'), intval($d / (60 * 60)));
@@ -533,7 +528,7 @@ namespace {
         if (empty($time) || $time == '0000-00-00 00:00:00') {
             return psm_get_lang('system', 'never');
         }
-        return strftime('%x %X', strtotime($time));
+        return formatLanguage('%x %X', strtotime($time));
     }
 
     /**
@@ -1006,13 +1001,81 @@ namespace {
 
         return $decrypted;
     }
-
+    
     /**
-     * Send notification to Telegram
-     *
-     * @return string
-     * @author Tim Zandbergen <tim@xervion.nl>
+     * Convert strftime format to php date format
+     * @param $strftimeformat
+     * @return string|string[]
+     * @throws Exception
      */
+    function strftimeFormatToDateFormat($strftimeformat){
+        $unsupported = ['%U', '%V', '%C', '%g', '%G'];
+        $foundunsupported = [];
+        foreach($unsupported as $unsup){
+            if (strpos($strftimeformat, $unsup) !== false){
+                $foundunsupported[] = $unsup;
+            }
+        }
+        if (!empty($foundunsupported)){
+            throw new \Exception("Found these unsupported chars: ".implode(",", $foundunsupported).' in '.$strftimeformat);
+        }
+        // It is important to note that some do not translate accurately ie. lowercase L is supposed to convert to number with a preceding space if it is under 10, there is no accurate conversion so we just use 'g'
+        $phpdateformat = str_replace(
+            ['%a','%A','%d','%e','%u','%w','%W','%b','%h','%B','%m','%y','%Y', '%D',    '%F',   '%x', '%n', '%t', '%H', '%k', '%I', '%l', '%M', '%p', '%P', '%r' /* %I:%M:%S %p */, '%R' /* %H:%M */, '%S', '%T' /* %H:%M:%S */, '%X', '%z', '%Z',
+                '%c', '%s',
+                '%%'],
+            ['D','l', 'd', 'j', 'N', 'w', 'W', 'M', 'M', 'F', 'm', 'y', 'Y', 'm/d/y', 'Y-m-d', 'm/d/y',"\n","\t", 'H', 'G', 'h', 'g', 'i', 'A', 'a', 'h:i:s A', 'H:i', 's', 'H:i:s', 'H:i:s', 'O', 'T',
+                'D M j H:i:s Y' /*Tue Feb 5 00:45:10 2009*/, 'U',
+                '%'],
+            $strftimeformat
+        );
+        return $phpdateformat;
+    }
+
+    function formatLanguage(string $formatSTRF,int $timestamp) : string {
+        $format = strftimeFormatToDateFormat($formatSTRF);
+        
+        $dt = new DateTime();
+        $dt->setTimestamp($timestamp);
+
+        $language = isset($GLOBALS['sm_lang']) ? $GLOBALS['sm_lang']['locale'][1] : $GLOBALS['sm_lang_default']['locale'][1];
+        $curTz = $dt->getTimezone();
+        if($curTz->getName() === 'Z'){
+            //INTL don't know Z
+            $curTz = new DateTimeZone('UTC');
+        }
+
+        $formatPattern = strtr($format,array(
+            'D' => '{#1}',
+            'l' => '{#2}',
+            'M' => '{#3}',
+            'F' => '{#4}',
+        ));
+        $strDate = $dt->format($formatPattern);
+        $regEx = '~\{#\d\}~';
+        while(preg_match($regEx,$strDate,$match)) {
+            $IntlFormat = strtr($match[0],array(
+              '{#1}' => 'E',
+              '{#2}' => 'EEEE',
+              '{#3}' => 'MMM',
+              '{#4}' => 'MMMM',
+            ));
+            $fmt = datefmt_create($language, IntlDateFormatter::FULL, IntlDateFormatter::FULL,
+                $curTz, IntlDateFormatter::GREGORIAN, $IntlFormat
+            );
+            $replace = $fmt ? datefmt_format( $fmt ,$dt) : "???";
+            $strDate = str_replace($match[0], $replace, $strDate);
+        }
+
+        return $strDate;
+    }
+
+	/**
+	* Send notification to Telegram
+	*
+	* @return string
+	* @author Tim Zandbergen <tim@xervion.nl>
+	*/
     class Telegram
     {
         private $token;

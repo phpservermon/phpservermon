@@ -37,7 +37,7 @@ use psm\Service\Database;
 class StatusController extends AbstractServerController
 {
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 
@@ -70,6 +70,13 @@ class StatusController extends AbstractServerController
             'layout' => $layout,
             'url_save' => psm_build_url(array('mod' => 'server', 'action' => 'edit')),
         );
+
+        $auto_refresh_seconds = psm_get_conf('auto_refresh_servers');
+        if (intval($auto_refresh_seconds) > 0) {
+            $this->twig->addGlobal('auto_refresh', true);
+            $this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
+        }
+
         $this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
 
         $this->addFooter(false);
@@ -105,12 +112,6 @@ class StatusController extends AbstractServerController
             } else {
                 $layout_data['servers_online'][] = $server;
             }
-        }
-
-        $auto_refresh_seconds = psm_get_conf('auto_refresh_servers');
-        if (intval($auto_refresh_seconds) > 0) {
-            $this->twig->addGlobal('auto_refresh', true);
-            $this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
         }
 
         if ($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {

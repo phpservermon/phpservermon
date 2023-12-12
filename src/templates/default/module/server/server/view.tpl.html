@@ -237,7 +237,7 @@
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-3">{{ label_last_output }}:</dt>
-						<dd class="col-md-9">{{ last_output_truncated|nl2br }}</dd>
+						<dd class="col-md-9">{{ last_output_truncated|raw|nl2br }}</dd>
 						{% if last_output_truncated != last_output %}
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
@@ -420,7 +420,7 @@
 					</button>
 				</div>
 				<div class="modal-body" style="word-wrap: break-word;">
-					{{ last_output|nl2br }}
+					{{ last_output|raw|nl2br }}
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

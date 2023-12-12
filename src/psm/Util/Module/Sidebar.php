@@ -57,7 +57,7 @@ class Sidebar implements SidebarInterface
      */
     protected $twig;
 
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(\Twig\Environment $twig)
     {
         $this->twig = $twig;
     }
@@ -182,7 +182,7 @@ class Sidebar implements SidebarInterface
             }
         }
 
-        $tpl = $this->twig->loadTemplate('util/module/sidebar.tpl.html');
+        $tpl = $this->twig->load('util/module/sidebar.tpl.html');
         $html = $tpl->render($tpl_data);
 
         return $html;

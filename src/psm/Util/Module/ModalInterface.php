@@ -32,7 +32,7 @@ namespace psm\Util\Module;
 interface ModalInterface
 {
 
-    public function __construct(\Twig_Environment $twig);
+    public function __construct(\Twig\Environment $twig);
 
     public function getModalID();
     public function createHTML();

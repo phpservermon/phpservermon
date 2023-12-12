@@ -42,7 +42,7 @@ class ServerController extends AbstractServerController
      */
     protected $server_id;
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 
@@ -518,14 +518,14 @@ class ServerController extends AbstractServerController
                 'label' => $server_available['label'],
             );
         }
-                
+        
         $tpl_data['last_output_truncated'] = $tpl_data['last_output'];
         $tpl_data['last_error_output_truncated'] = $tpl_data['last_error_output'];
-                
+
         if (strlen($tpl_data['last_output']) > 255) {
             $tpl_data['last_output_truncated'] = substr($tpl_data['last_output'], 0, 255) . '...';
         }
-                
+
         if (strlen($tpl_data['last_error_output']) > 255) {
             $tpl_data['last_error_output_truncated'] = substr($tpl_data['last_error_output'], 0, 255) . '...';
         }

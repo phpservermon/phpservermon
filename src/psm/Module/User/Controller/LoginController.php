@@ -35,7 +35,7 @@ use psm\Service\Database;
 class LoginController extends AbstractController
 {
 
-    public function __construct(Database $db, \Twig_Environment $twig)
+    public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 
