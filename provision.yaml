@@ -43,7 +43,7 @@
   - name: install php7.4-mysql
     apt: name=php7.4-mysql state=latest
 
-  - name: ensure gpupg2 is at the latest version
+  - name: ensure gnupg2 is at the latest version
     apt: name=gnupg2 state=latest
 
   - name: ensure percona-server-57 is installed
