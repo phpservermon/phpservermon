@@ -121,6 +121,12 @@ namespace {
         define('PSM_PUBLIC_PAGE', false);
     }
 
+    // check for a uptime archive
+    // This should be defined in the config
+    if (!defined('PSM_UPTIME_ARCHIVE')) {
+        define('PSM_UPTIME_ARCHIVE', 'monthly);
+    }
+
     $lang = psm_get_conf('language', 'en_US');
     psm_load_lang($lang);
 }
