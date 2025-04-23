@@ -9,5 +9,5 @@ define('PSM_BASE_URL', '');
 define('PSM_WEBCRON_KEY', '');
 define('PSM_WEBCRON_ENABLE_IP_WHITELIST', 'true'); // Enable IP whitelisting for calling webcron
 define('PSM_PUBLIC', false);
-define('PSM_UPTIME_ARCHIVE', 'monthly);
+define('PSM_UPTIME_ARCHIVE', 'monthly');
 
