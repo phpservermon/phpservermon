@@ -1,0 +1,18 @@
+{% import 'main/macros.tpl.html' as macro %}
+<form name="importpost" action="{{ url_save|raw }}" class="col-md-6 pl-0 pr-0" id="importpost" method="post"
+ autocomplete="off" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{{ titlemode }}</legend>
+		{% if error_message != "" %}
+		<div class="card text-white bg-danger px-3 pt-3 pb-2 mb-4"><h3>Error: {{ error_message }}</h3></div>
+		{% endif %}
+		<div class="col">
+			<!-- Label -->
+			{{ macro.input_upload("import_upload", "import_upload", "Upload Configuration", null, null) }}
+
+			<!-- Submit -->
+			<legend>{{ label_upload }}</legend>
+			{{ macro.button_save(null, label_upload) }}
+			<a class="btn" href="{{ url_go_back|raw }}">Go Back</a>
+	{{ macro.input_csrf() }}
+</form>
