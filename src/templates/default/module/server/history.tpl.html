@@ -17,12 +17,25 @@
 		</div>
 	<noscript></div></noscript><div class="w-100"></div>
 	<br>
-	{% if graph.id == 'history_short' %}
-	<div id="meter" data-value="{{ graph.uptime|round(3) }}" translation="{{ graph.info.1.label|lower }}">
-		<span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
-	</div><br>
-	{% endif %}
-		{{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
+        {% if graph.id == 'history_short' %}
+        <div id="meter" data-value="{{ graph.uptime|round(3) }}" translation="{{ graph.info.1.label|lower }}">
+                <span id="needle" style="transform: rotate({{ ((graph.uptime|round/100)*180)|round }}deg);"></span>
+        </div><br>
+        {% if graph.uptime_summary is defined and graph.uptime_summary %}
+        <div class="card">
+                <div class="card-header">{{ graph.info.1.label }}</div>
+                <ul class="list-group list-group-flush mb-0">
+                        {% for uptime in graph.uptime_summary %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ uptime.label }}
+                                <span>{{ uptime.value|number_format(3, '.', '') }}%</span>
+                        </li>
+                        {% endfor %}
+                </ul>
+        </div><br>
+        {% endif %}
+        {% endif %}
+                {{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
 </div>
 
 {% if graph.id == 'history_short' %}
