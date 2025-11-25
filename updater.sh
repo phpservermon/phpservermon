@@ -77,11 +77,17 @@ rm update.zip
 # restore original config.php back from config.php.keep
 mv config.php.keep config.php
 
-# run php composer.phar install or update
-if [ -d "vendor" ]; then
-    php composer.phar update
+# run composer install or update
+if command -v composer >/dev/null 2>&1; then
+    COMPOSER_CMD="composer"
 else
-    php composer.phar install
+    COMPOSER_CMD="php composer.phar"
+fi
+
+if [ -d "vendor" ]; then
+    ${COMPOSER_CMD} update
+else
+    ${COMPOSER_CMD} install
 fi
 
 echo Update finished!
