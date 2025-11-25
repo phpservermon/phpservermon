@@ -95,7 +95,7 @@ class StatusUpdater
         $this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
             'server_id' => $server_id,
         ), array(
-            'server_id', 'ip', 'port', 'request_method', 'label',
+            'server_id', 'ip', 'port', 'protocol', 'request_method', 'label',
             'type', 'pattern', 'pattern_online', 'post_field',
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
@@ -209,7 +209,9 @@ class StatusUpdater
         if (filter_var($serverIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
             $serverIp = "[$serverIp]";
         }
-        $fp = @fsockopen($serverIp, $this->server['port'], $errno, $this->error, $timeout);
+
+        $protocol = ($this->server['protocol'] === 'udp') ? 'udp://' : '';
+        $fp = @fsockopen($protocol . $serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
         $this->rtime = (microtime(true) - $starttime);
