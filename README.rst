@@ -119,7 +119,10 @@ In a nutshell: unzip, upload, run install.php, enjoy.
 If you have downloaded the source from GitHub (and not a pre-built package), the dependencies are not included.
 To be able to run an installation from the repo, you need to run the following command to install the dependencies::
 
-     php composer.phar install
+     composer install
+
+If you do not have Composer installed globally, you can still use ``php composer.phar install`` provided you have a recent
+Composer PHAR available locally.
 
 If you are familiar with Vagrant (https://www.vagrantup.com)::
 
