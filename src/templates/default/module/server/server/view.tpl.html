@@ -2,7 +2,7 @@
 {{ macro.input_csrf() }}
 <div class="container-fluid">
 	<div class="row">
-		<div class="card text-white text-center col-md-2 pl-0 pr-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
+		<div class="card text-white text-center col-md-2 ps-0 pe-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
 			<div class="card-body d-flex align-items-center justify-content-center">
 				{% if status|lower == 'on' %}
 				<i class="fas fa-check-circle fa-6x"></i>
@@ -19,7 +19,7 @@
 				{% endif %}
 			</div>
 		</div>
-		<div class="card col-md-5 ml-auto pl-0 pr-0 mb-4">
+		<div class="card col-md-5 ms-auto ps-0 pe-0 mb-4">
 			<div class="card-header">
 				{{ label }}
 			</div>
@@ -56,7 +56,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card col-md-4 ml-auto pl-0 pr-0 mb-4">
+		<div class="card col-md-4 ms-auto ps-0 pe-0 mb-4">
 			<div class="card-header">
 				{{ label_settings }}
 			</div>
@@ -83,7 +83,7 @@
 		</div>
 		<!--
 	{% if type|lower == 'website' %}
-	<div class="card col-md-3 pl-0 pr-0 mb-4">
+	<div class="card col-md-3 ps-0 pe-0 mb-4">
 		<div class="card-header">
 			{{ label_authentication_settings }}
 		</div>
@@ -101,7 +101,7 @@
 				</dl>
 			</li>
 		</ul>
-	</div><div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+	</div><div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -120,7 +120,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+	<div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -139,7 +139,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card col-md-4 pl-0 pr-0 mb-4">
+	<div class="card col-md-4 ps-0 pe-0 mb-4">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -158,7 +158,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card col-md-3 pl-0 pr-0 mb-4 ml-auto">
+	<div class="card col-md-3 ps-0 pe-0 mb-4 ms-auto">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -177,7 +177,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card col-md-4 pl-0 pr-0 mb-4 ml-auto">
+	<div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -198,7 +198,7 @@
 	</div>
 	{% endif %}
 -->
-		<div class="card col-md-3 pl-0 pr-0 mb-4">
+		<div class="card col-md-3 ps-0 pe-0 mb-4">
 			<div class="card-header">
 				{{ label_status }}
 			</div>
@@ -223,7 +223,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card col-md-6 ml-auto pl-0 pr-0 mb-4">
+		<div class="card col-md-6 ms-auto ps-0 pe-0 mb-4">
 			<div class="card-header">
 				{{ label_output }}
 			</div>
@@ -241,7 +241,7 @@
 						{% if last_output_truncated != last_output %}
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
-							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_output">
+							<button type="button" class="btn btn-link" style="float: right;" data-bs-toggle="modal" data-bs-target="#modal_last_output">
 								Show more...
 							</button>
 						</dd>
@@ -255,7 +255,7 @@
 						{% if last_error_output_truncated != last_error_output %}
 						<dt class="col-md-3"></dt>
 						<dd class="col-md-9">
-							<button type="button" class="btn btn-link" style="float: right;" data-toggle="modal" data-target="#modal_last_error">
+							<button type="button" class="btn btn-link" style="float: right;" data-bs-toggle="modal" data-bs-target="#modal_last_error">
 								Show more...
 							</button>
 						</dd>
@@ -265,7 +265,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card col-md-2  ml-auto pl-0 pr-0 mb-4">
+		<div class="card col-md-2  ms-auto ps-0 pe-0 mb-4">
 			<div class="card-header">
 				{{ label_fieldset_monitoring }}
 			</div>
@@ -382,7 +382,7 @@
 	</div>
 	{% if log_entries %}
 	<div class="row mt-4">
-		<div class="card col-md-12 pl-0 pr-0">
+		<div class="card col-md-12 ps-0 pe-0">
 			<div class="card-header">
 				{{ label_log_title }}
 			</div>

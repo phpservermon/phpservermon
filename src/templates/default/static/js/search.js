@@ -1,32 +1,41 @@
-$('.search_icon p').hide();
-$(".search_input").keyup(function () {
-    var searchTerm = $(".search_input").val().toLowerCase();
-    $("table tbody tr").each(function (e) {
-        col1 = this.cells[0].innerText.toLowerCase().indexOf(searchTerm);
-        col2 = this.cells[1].innerText.toLowerCase().indexOf(searchTerm);
-        if (col1 >= 0) {
-            $(this).attr('visible', 'true');
-        } else if (col2 >= 0) {
-            $(this).attr('visible', 'true');
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.search_input');
+    const searchIcon = document.querySelector('.search_icon i');
+    const searchCount = document.querySelector('.search_icon p');
+    const noResult = document.querySelector('.no-result');
+
+    if (!searchInput) return;
+
+    if (searchCount) searchCount.style.display = 'none';
+
+    const updateResults = () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('table tbody tr');
+
+        rows.forEach((row) => {
+            const [col1, col2] = [row.cells[0], row.cells[1]];
+            const matches = (col1 && col1.innerText.toLowerCase().includes(searchTerm)) ||
+                (col2 && col2.innerText.toLowerCase().includes(searchTerm));
+            row.setAttribute('visible', matches ? 'true' : 'false');
+        });
+
+        const jobCount = document.querySelectorAll('table tbody tr[visible="true"]').length;
+
+        if (searchInput.value === '') {
+            if (searchIcon) searchIcon.style.display = '';
+            if (searchCount) searchCount.style.display = 'none';
         } else {
-            $(this).attr('visible', 'false');
+            if (searchIcon) searchIcon.style.display = 'none';
+            if (searchCount) searchCount.style.display = '';
         }
-    });
 
-    var jobCount = $('table tbody tr[visible="true"]').length;
-    if ($(".search_input").is(":placeholder-shown")) {
-        $('.search_icon i').show();
-        $('.search_icon p').hide();
-    } else {
-        $('.search_icon i').hide();
-        $('.search_icon p').show();
+        if (searchCount) searchCount.textContent = jobCount;
 
-    }
-    $('.search_icon p').text(jobCount);
+        if (noResult) {
+            noResult.style.display = jobCount === 0 ? '' : 'none';
+        }
+    };
 
-    if (jobCount == '0') {
-        $('.no-result').show();
-    } else {
-        $('.no-result').hide();
-    }
+    searchInput.addEventListener('input', updateResults);
+    updateResults();
 });

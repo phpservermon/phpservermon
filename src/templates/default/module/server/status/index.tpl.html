@@ -1,127 +1,177 @@
 {% import 'main/macros.tpl.html' as macro %}
 {{ macro.input_csrf() }}
+{% set total_servers = servers_offline|length + servers_warning|length + servers_online|length %}
+{% set uptime_percent = total_servers ? ((servers_online|length / total_servers) * 100)|round(1) : 0 %}
+{% set alerting_count = servers_offline|length + servers_warning|length %}
+{% set average_latency = 0 %}
+{% if servers_online %}
+    {% set latency_sum = 0 %}
+    {% for server in servers_online %}
+        {% set latency_sum = latency_sum + (server.rtime * 1000) %}
+    {% endfor %}
+    {% set average_latency = (latency_sum / (servers_online|length))|round(1) %}
+{% endif %}
 <div class="container-fluid">
-	<div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
-		<div class="row">
-			{% for server in servers_offline %}
-			<div class="col-sm-4 col-md-3 col-xl-2">
-				<div class="card text-white bg-danger mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></div>
-					<div class="card-body">
-						<p class="card-text">
-							{{ label_last_online }}: {{ server.last_online_nice }}<br>
-							{{ label_last_check }}: {{ server.last_checked_nice }}
-						</p>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-			{% for server in servers_warning %}
-			<div class="col-sm-4 col-md-3 col-xl-2">
-				<div class="card text-white bg-warning mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></div>
-					<div class="card-body">
-						<p class="card-text">
-							{{ label_last_online }}: {{ server.last_online_nice }}<br>
-							{{ label_last_check }}: {{ server.last_checked_nice }}
-						</p>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-			{% for server in servers_online %}
-			<div class="col-sm-4 col-md-3 col-xl-2">
-				<div class="card text-white bg-success mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-					<div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></div>
-					<div class="card-body">
-						<p class="card-text">
-							{{ label_last_online }}: {{ server.last_online_nice }}<br>
-							{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}<br>
-							{{ label_rtime }}: {{ (server.rtime * 1000)|round(2) }} ms
-						</p>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-			{% if not servers_offline and not servers_warning and not servers_online %}
-				{{ label_none }}
-				<div class="w-100"></div>
-				<button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
-			{% endif %}
-		</div>
-	</div>
-	<div id="list-layout" class="{{ list_layout_active }}" aria-labelledby="block-layout" style="display:none;">
-		<div class="row table-responsive">
-			{% if servers_offline  or servers_warning or servers_online %}
-			<table class="table table-bordered table-hover">
-				{% if servers_offline or servers_warning %}
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">{{ label_last_online }}</th>
-						<th scope="col">{{ label_last_check }}</th>
-						<th scope="col">{{ label_rtime }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for server in servers_offline %}
-						<tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_offline }})</span></a></th>
-							<td>{{ server.last_online_nice }}</td>
-							<td>{{ server.last_checked_nice }}</td>
-							<td></td>
-						</tr>
-					{% endfor %}
-					{% for server in servers_warning %}
-						<tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_warning }})</span></a></th>
-							<td>{{ server.last_online_nice }}</td>
-							<td>{{ server.last_checked_nice }}</td>
-							<td></td>
-						</tr>
-					{% endfor %}
-				</tbody>
-				{% endif %}
-				{% if servers_online %}
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">{{ label_last_online }}</th>
-						<th scope="col">{{ label_last_offline }}</th>
-						<th scope="col">{{ label_rtime }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for server in servers_online %}
-						<tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-							<th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="sr-only"> ({{ label_online }})</span></a></th>
-							<td>{{ server.last_online_nice }}</td>
-							<td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</td>
-							<td>{{ (server.rtime * 1000)|round(2) }} ms</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-				{% endif %}
-			</table>
-			{% else %}
-				{{ label_none }}
-				<div class="w-100"></div>
-				<button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
-			{% endif %}
-		</div>
-	</div>
+        <div class="row g-3 status-metrics mb-4">
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card">
+                                <div class="metric-label">Overall uptime</div>
+                                <div class="metric-value">{{ uptime_percent }}%</div>
+                                <div class="metric-trend text-success"><i class="fas fa-arrow-up"></i> Healthy footprint</div>
+                        </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card">
+                                <div class="metric-label">Online</div>
+                                <div class="metric-value">{{ servers_online|length }}</div>
+                                <div class="metric-trend text-muted">Tracking {{ total_servers }} monitored</div>
+                        </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card">
+                                <div class="metric-label">Alerts</div>
+                                <div class="metric-value">{{ alerting_count }}</div>
+                                <div class="metric-trend {% if alerting_count > 0 %}text-danger{% else %}text-success{% endif %}">
+                                        {% if alerting_count > 0 %}
+                                                <i class="fas fa-bolt"></i> Needs attention
+                                        {% else %}
+                                                <i class="fas fa-check"></i> No open incidents
+                                        {% endif %}
+                                </div>
+                        </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card">
+                                <div class="metric-label">Avg latency</div>
+                                <div class="metric-value">{{ average_latency }} ms</div>
+                                <div class="metric-trend text-muted">Across responding hosts</div>
+                        </div>
+                </div>
+        </div>
+        <div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
+                <div class="row">
+                        {% for server in servers_offline %}
+                        <div class="col-sm-4 col-md-3 col-xl-2">
+                                <div class="card status-card bg-danger text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a></div>
+                                        <div class="card-body">
+                                                <p class="card-text">
+                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
+                                                        {{ label_last_check }}: {{ server.last_checked_nice }}
+                                                </p>
+                                        </div>
+                                </div>
+                        </div>
+                        {% endfor %}
+                        {% for server in servers_warning %}
+                        <div class="col-sm-4 col-md-3 col-xl-2">
+                                <div class="card status-card bg-warning text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_warning }})</span></a></div>
+                                        <div class="card-body">
+                                                <p class="card-text">
+                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
+                                                        {{ label_last_check }}: {{ server.last_checked_nice }}
+                                                </p>
+                                        </div>
+                                </div>
+                        </div>
+                        {% endfor %}
+                        {% for server in servers_online %}
+                        <div class="col-sm-4 col-md-3 col-xl-2">
+                                <div class="card status-card bg-success text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a></div>
+                                        <div class="card-body">
+                                                <p class="card-text">
+                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
+                                                        {{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}<br>
+                                                        {{ label_rtime }}: {{ (server.rtime * 1000)|round(2) }} ms
+                                                </p>
+                                        </div>
+                                </div>
+                        </div>
+                        {% endfor %}
+                        {% if not servers_offline and not servers_warning and not servers_online %}
+                                {{ label_none }}
+                                <div class="w-100"></div>
+                                <button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
+                        {% endif %}
+                </div>
+        </div>
+        <div id="list-layout" class="{{ list_layout_active }}" aria-labelledby="block-layout" style="display:none;">
+                <div class="row table-responsive">
+                        {% if servers_offline  or servers_warning or servers_online %}
+                        <table class="table table-bordered table-hover">
+                                {% if servers_offline or servers_warning %}
+                                <thead>
+                                        <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">{{ label_last_online }}</th>
+                                                <th scope="col">{{ label_last_check }}</th>
+                                                <th scope="col">{{ label_rtime }}</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {% for server in servers_offline %}
+                                                <tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a></th>
+                                                        <td>{{ server.last_online_nice }}</td>
+                                                        <td>{{ server.last_checked_nice }}</td>
+                                                        <td></td>
+                                                </tr>
+                                        {% endfor %}
+                                        {% for server in servers_warning %}
+                                                <tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_warning }})</span></a></th>
+                                                        <td>{{ server.last_online_nice }}</td>
+                                                        <td>{{ server.last_checked_nice }}</td>
+                                                        <td></td>
+                                                </tr>
+                                        {% endfor %}
+                                </tbody>
+                                {% endif %}
+                                {% if servers_online %}
+                                <thead>
+                                        <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">{{ label_last_online }}</th>
+                                                <th scope="col">{{ label_last_offline }}</th>
+                                                <th scope="col">{{ label_rtime }}</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {% for server in servers_online %}
+                                                <tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a></th>
+                                                        <td>{{ server.last_online_nice }}</td>
+                                                        <td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice}}</td>
+                                                        <td>{{ (server.rtime * 1000)|round(2) }} ms</td>
+                                                </tr>
+                                        {% endfor %}
+                                </tbody>
+                                {% endif %}
+                        </table>
+                        {% else %}
+                                {{ label_none }}
+                                <div class="w-100"></div>
+                                <button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
+                        {% endif %}
+                </div>
+        </div>
 </div>
 
 {% if auto_refresh %}
 <script>
-setInterval(function() {
-	$.ajax({
-		url:"?",
-		success: function(html, status) {
-			$("#content").html(html);
-			psm_setLayout({{ layout }});
-		}
-	});
-}, {{ auto_refresh_seconds }} * 1000);
+const refreshStatus = () => {
+        fetch('?',{headers:{'X-Requested-With':'XMLHttpRequest'}})
+                .then(response => response.text())
+                .then(html => {
+                        const contentArea = document.getElementById('content');
+                        if (contentArea) {
+                                contentArea.innerHTML = html;
+                                psm_setLayout({{ layout }});
+                        }
+                });
+};
+setInterval(refreshStatus, {{ auto_refresh_seconds }} * 1000);
 </script>
 {% endif %}

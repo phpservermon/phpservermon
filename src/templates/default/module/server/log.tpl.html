@@ -2,7 +2,7 @@
 <ul class="nav nav-tabs" style="width:100%" id="log_tab" role="tablist">
 	{% for tab in tabs %}
 	<li class="nav-item">
-		<a class="nav-link {{ tab.tab_active }}" id="log-{{ tab.id }}-tab" data-toggle="tab" href="#log-{{ tab.id }}" role="tab" aria-controls="log-{{ tab.id }}" aria-selected="{% if tab.tab_active %}true{% else %}false{% endif %}">{{ tab.label }}</a>
+		<a class="nav-link {{ tab.tab_active }}" id="log-{{ tab.id }}-tab" data-bs-toggle="tab" href="#log-{{ tab.id }}" role="tab" aria-controls="log-{{ tab.id }}" aria-selected="{% if tab.tab_active %}true{% else %}false{% endif %}">{{ tab.label }}</a>
 	</li>
 	{% endfor %}
 </ul>

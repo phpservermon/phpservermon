@@ -4,7 +4,7 @@
 <head>
         <meta charset="utf-8">
         <title>{{ title }}{% if subtitle %} - {{ subtitle }}{% endif %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="PHP Server Monitor - {{ subtitle }}">
         <meta name="robots" content="noindex" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,8 +24,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link href="src/templates/default/static/css/bootstrap.min.css" rel="stylesheet">
-        <link href="src/templates/default/static/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
         <link href="src/templates/default/static/css/style.min.css" rel="stylesheet">
         <link href="src/templates/default/static/css/custom.css" rel="stylesheet">
         <!--[if lt IE 9]>
@@ -33,22 +32,36 @@
         <![endif]-->
 </head>
 
-<body class="app-shell">
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark app-navbar shadow-sm">
+<body class="app-shell" data-theme="auto">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light app-navbar shadow-sm">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
-                <span class="navbar-brand-icon d-inline-flex align-items-center justify-content-center mr-2">
+                <span class="navbar-brand-icon d-inline-flex align-items-center justify-content-center me-2">
                         <i class="fas fa-wave-square"></i>
                 </span>
                 <a class="navbar-brand" href="index.php">{{ title }}</a>
             </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbar">
-                {{ html_menu|raw }}
+                <div class="d-lg-flex align-items-center w-100">
+                        {{ html_menu|raw }}
+                        <div class="ms-lg-auto d-flex align-items-center gap-2 nav-quick-actions mt-3 mt-lg-0">
+                                <a class="btn btn-sm btn-primary" href="index.php?mod=server&action=edit">
+                                        <i class="fas fa-plus me-1"></i> Add server
+                                </a>
+                                <a class="btn btn-sm btn-outline-secondary" href="index.php?mod=server_log">
+                                        <i class="fas fa-bell-slash me-1"></i> Silence alerts
+                                </a>
+                                <button class="btn btn-sm btn-outline-light theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                                        <span class="theme-icon" data-theme-preference="light"><i class="fas fa-sun"></i></span>
+                                        <span class="theme-icon" data-theme-preference="dark"><i class="fas fa-moon"></i></span>
+                                </button>
+                        </div>
+                </div>
             </div>
         </div>
         </nav>
@@ -60,19 +73,19 @@
                         </div>
                 </noscript>
 
-                <section class="page-hero glass-card shadow-sm mb-4">
-                        <div class="d-flex align-items-start flex-wrap justify-content-between">
+                <section class="page-hero surface-card shadow-sm mb-4">
+                        <div class="d-flex align-items-start flex-wrap justify-content-between gap-3">
                                 <div class="hero-titles">
-                                        <p class="eyebrow text-uppercase mb-1">Modern monitoring</p>
+                                        <p class="eyebrow text-uppercase mb-1">Live monitoring</p>
                                         {% if not user_level and subtitle %}
                                                 <h1 class="page-heading mb-2">{{ subtitle }}</h1>
                                         {% else %}
                                                 <h1 class="page-heading mb-2">{{ title }}</h1>
                                         {% endif %}
-                                        <p class="text-muted mb-0">Real-time visibility with refreshed styling and streamlined controls.</p>
+                                        <p class="text-muted mb-0">Readable, responsive controls designed for long dashboard sessions.</p>
                                 </div>
-                                <div class="hero-meta text-right">
-                                        <span class="badge badge-pill version-pill">v{{ version }}</span>
+                                <div class="hero-meta text-end">
+                                        <span class="badge rounded-pill version-pill">v{{ version }}</span>
                                 </div>
                         </div>
                         {% if header_accessories %}
@@ -86,7 +99,7 @@
                 </div>
                 {% endfor %}
 
-                <div class="content-surface glass-card shadow-sm">
+                <div class="content-surface surface-card shadow-sm">
                         <div class="row">{{ html_sidebar|raw }}</div>
                         <div class="row mt-4" id="content">{{ html_content|raw }}</div>
                 </div>
@@ -105,19 +118,8 @@
 	</footer>
 	{% endblock %}
 	{% endif %}
-	<script src="src/templates/default/static/plugin/jquery/jquery-3.5.1.min.js"></script>
-	<script src="src/templates/default/static/plugin/popper.js/popper.min.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/index.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/util.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/tab.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/dropdown.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/collapse.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/button.js"></script>
-	<script src="src/templates/default/static/plugin/bootstrap/js/dist/alert.js"></script>
-	{% if html_modal|raw %}<script src="src/templates/default/static/plugin/bootstrap/js/dist/modal.js"></script>{% endif %}
-	<script type="text/javascript" src="src/templates/default/static/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-	<script type="text/javascript" src="src/templates/default/static/plugin/bootstrap-select/dist/js/i18n/defaults-{{ language }}.min.js"></script>
-	<script defer src="src/templates/default/static/plugin/font-awesome/js/solid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script defer src="src/templates/default/static/plugin/font-awesome/js/solid.min.js"></script>
     <script defer src="src/templates/default/static/plugin/font-awesome/js/fontawesome.min.js" data-auto-replace-svg="nest"></script>
     <script defer src="src/templates/default/static/plugin/font-awesome/js/brands.min.js" data-auto-replace-svg="nest"></script>
 	<script type="text/javascript" src="src/templates/default/static/js/scripts.js"></script>
