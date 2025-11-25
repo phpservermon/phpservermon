@@ -168,6 +168,8 @@ class ServerController extends AbstractServerController
 
         $tpl_data = $this->getLabels();
         self::setDefaultMonitoringNotificationsToConfiguredValues( $tpl_data );
+        $tpl_data['edit_protocol_selected_tcp'] = '';
+        $tpl_data['edit_protocol_selected_udp'] = '';
 
         $tpl_data['edit_server_id'] = $this->server_id;
         $tpl_data['url_save'] = psm_build_url(array(
@@ -228,18 +230,25 @@ class ServerController extends AbstractServerController
                 break;
         }
 
+        if (empty($edit_server)) {
+            $tpl_data['edit_protocol_selected_tcp'] = 'selected="selected"';
+        }
+
         if (!empty($edit_server)) {
             // attempt to prefill previously posted fields
             foreach ($edit_server as $key => $value) {
                 $edit_server[$key] = psm_POST($key, $value);
             }
 
+            $protocol = empty($edit_server['protocol']) ? 'tcp' : $edit_server['protocol'];
+
             $tpl_data = array_merge($tpl_data, array(
                 'edit_value_label' => $edit_server['label'],
                 'edit_value_ip' => $edit_server['ip'],
                 'edit_value_port' => $edit_server['port'],
+                'edit_protocol_selected_' . $protocol => 'selected="selected"',
                 'edit_value_request_method' => $edit_server['request_method'],
-                'edit_value_post_field' => $edit_server['post_field'],
+                    'edit_value_post_field' => $edit_server['post_field'],
                 'edit_value_timeout' => $edit_server['timeout'],
                 'edit_value_pattern' => $edit_server['pattern'],
                 'edit_pattern_selected_' . $edit_server['pattern_online'] => 'selected="selected"',
@@ -317,6 +326,7 @@ class ServerController extends AbstractServerController
             'website_username' => psm_POST('website_username'),
             'website_password' => $encrypted_password,
             'port' => intval(psm_POST('port', 0)),
+            'protocol' => (psm_POST('protocol') === 'udp') ? 'udp' : 'tcp',
             'request_method' => empty(psm_POST('request_method')) ? null : psm_POST('request_method'),
             'post_field' => empty(psm_POST('post_field')) ? null : psm_POST('post_field'),
             'type' => psm_POST('type', ''),
@@ -577,6 +587,9 @@ class ServerController extends AbstractServerController
             'label_fieldset_permissions' => psm_get_lang('servers', 'fieldset_permissions'),
             'label_permissions' => psm_get_lang('servers', 'permissions'),
             'label_port' => psm_get_lang('servers', 'port'),
+            'label_protocol' => psm_get_lang('servers', 'protocol'),
+            'label_protocol_tcp' => psm_get_lang('servers', 'protocol_tcp'),
+            'label_protocol_udp' => psm_get_lang('servers', 'protocol_udp'),
             'label_custom_port' => psm_get_lang('servers', 'custom_port'),
             'label_popular_ports' => psm_get_lang('servers', 'popular_ports'),
             'label_request_method' => psm_get_lang('servers', 'request_method'),
