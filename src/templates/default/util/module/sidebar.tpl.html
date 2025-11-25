@@ -1,10 +1,10 @@
 {% for item in items %}
 	{% if item.type == 'link' %}
 		<a class="nav-link {{ item.url|raw }} {{ item.class_active }}"><i class="fas fa-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
-	{% elseif item.type == 'button' %}
-		<a class="btn btn-{{ item.btn_class }} mr-2 mb-3 {{ item.class_active }}" title="{{ item.title }}" href="{{ item.url|raw }}" {% if item.modal_id != null %}data-toggle="modal" data-modal-id="{{ item.modal_id }}"{% endif %}><i class="fas fa-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
-	{% elseif item.type == 'dropdown' %}
-		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fas fa-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
+        {% elseif item.type == 'button' %}
+                <a class="btn btn-{{ item.btn_class }} me-2 mb-3 {{ item.class_active }}" title="{{ item.title }}" href="{{ item.url|raw }}" {% if item.modal_id != null %}data-bs-toggle="modal" data-modal-id="{{ item.modal_id }}"{% endif %}><i class="fas fa-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
+        {% elseif item.type == 'dropdown' %}
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fas fa-{{ item.icon }}"></i>&nbsp;{{ item.label }}</a>
 		<div class="dropdown-menu">
 			{% for option in item.options %}
 				<a class="dropdown-item" href="{{ option.url|raw }}">{{ option.label }}</a>
