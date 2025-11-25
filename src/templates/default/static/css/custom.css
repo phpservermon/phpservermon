@@ -1,4 +1,246 @@
-/*# Used to override main styles for custom layout adjustments and colors. */
-.container-fluid {
-    max-width: 100%;
+/* Custom modern UI enhancements */
+:root {
+    --psm-surface: #0b1224;
+    --psm-panel: rgba(21, 30, 52, 0.75);
+    --psm-border: rgba(255, 255, 255, 0.08);
+    --psm-accent: #38bdf8;
+    --psm-accent-strong: #0ea5e9;
+    --psm-success: #34d399;
+    --psm-warning: #fbbf24;
+    --psm-danger: #f87171;
+    --psm-text: #e2e8f0;
+    --psm-muted: #94a3b8;
+    --psm-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+body.app-shell {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.07), transparent 25%),
+                radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.08), transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(52, 211, 153, 0.05), transparent 30%),
+                var(--psm-surface);
+    color: var(--psm-text);
+    letter-spacing: 0.01em;
+}
+
+.app-main {
+    margin-top: 1.5rem;
+}
+
+.app-navbar {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1224 60%, #0f172a 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+}
+
+.navbar-brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.35) 100%);
+    color: #e0f2fe;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--psm-shadow);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--psm-muted);
+    transition: color 180ms ease, transform 180ms ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.page-hero {
+    padding: 1.5rem;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid var(--psm-border);
+}
+
+.page-heading {
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    color: var(--psm-muted);
+}
+
+.version-pill {
+    background: rgba(56, 189, 248, 0.2);
+    color: #e0f2fe;
+    font-weight: 600;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.glass-card {
+    background: var(--psm-panel);
+    border-radius: 18px;
+    border: 1px solid var(--psm-border);
+    box-shadow: var(--psm-shadow);
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.content-surface {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem 2rem;
+}
+
+.alert {
+    border: 1px solid var(--psm-border);
+    border-radius: 14px;
+    color: #0b1224;
+}
+
+.alert-success { background: linear-gradient(135deg, rgba(52, 211, 153, 0.9), rgba(16, 185, 129, 0.95)); color: #052e16; }
+.alert-warning { background: linear-gradient(135deg, rgba(251, 191, 36, 0.92), rgba(245, 158, 11, 0.96)); color: #422006; }
+.alert-danger { background: linear-gradient(135deg, rgba(248, 113, 113, 0.92), rgba(239, 68, 68, 0.96)); color: #450a0a; }
+
+.modern-alert i {
+    margin-right: 0.4rem;
+}
+
+.table {
+    color: #e2e8f0;
+    border-color: var(--psm-border);
+}
+
+.table thead th {
+    border-bottom: 1px solid var(--psm-border);
+    color: #cbd5e1;
+    letter-spacing: 0.02em;
+}
+
+.table td,
+.table th {
+    border-top: 1px solid var(--psm-border);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.card,
+.list-group-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--psm-border);
+    border-radius: 14px;
+    color: #e2e8f0;
+}
+
+.form-control,
+.custom-select,
+.bootstrap-select .dropdown-toggle {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--psm-border);
+    border-radius: 12px;
+    color: #f8fafc;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.form-control:focus,
+.custom-select:focus,
+.bootstrap-select .dropdown-toggle:focus {
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.2);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-info,
+.btn-secondary {
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.65rem 1.1rem;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary { background: linear-gradient(135deg, #0ea5e9, #22d3ee); }
+.btn-success { background: linear-gradient(135deg, #16a34a, #22c55e); }
+.btn-warning { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1f1300; }
+.btn-danger { background: linear-gradient(135deg, #ef4444, #f87171); }
+.btn-info { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
+.btn-secondary { background: linear-gradient(135deg, #475569, #64748b); }
+
+.btn:hover,
+.btn:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+    color: #f8fafc;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.badge-info,
+.badge-primary,
+.badge-success,
+.badge-warning,
+.badge-danger,
+.badge-secondary {
+    padding: 0.5rem 0.7rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: 16px;
+    border: 1px solid var(--psm-border);
+    color: #e2e8f0;
+}
+
+.footer {
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid var(--psm-border);
+    color: var(--psm-muted);
+}
+
+.footer a {
+    color: #e0f2fe;
+}
+
+hr {
+    border-top-color: var(--psm-border);
+}
+
+/* Responsive tweaks */
+@media (max-width: 767px) {
+    .app-main {
+        padding: 1rem !important;
+    }
+
+    .glass-card {
+        padding: 1rem;
+    }
+
+    .content-surface {
+        padding: 1rem;
+    }
 }

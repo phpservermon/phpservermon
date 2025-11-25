@@ -2,38 +2,46 @@
 <html lang="{{ language_current }}" dir="{{ direction_current }}" class="{{ direction_current }}">
 
 <head>
-	<meta charset="utf-8">
-	<title>{{ title }}{% if subtitle %} - {{ subtitle }}{% endif %}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="PHP Server Monitor - {{ subtitle }}">
-	<meta name="robots" content="noindex" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="manifest" href="manifest.json">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-title" content="PSM">
-	<link rel="apple-touch-icon" href="phpservermon.png">
-	<meta name="msapplication-TileImage" content="phpservermon.png">
-	<meta name="msapplication-TileColor" content="#424242">
-	<!-- TODO add base url -->
-	<!-- <link rel="canonical" href=""> -->
-	<meta name="theme-color" content="#424242">
-	<link rel="icon" type="image/x-icon" href="favicon.ico" />
-	<link rel="icon" type="image/png" href="favicon.png" />
-	<link rel="apple-touch-icon" href="favicon.png" />
-	<link href="src/templates/default/static/css/bootstrap.min.css" rel="stylesheet">
-	<link href="src/templates/default/static/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-	<link href="src/templates/default/static/css/style.min.css" rel="stylesheet">
-	<link href="src/templates/default/static/css/custom.css" rel="stylesheet">
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
+        <meta charset="utf-8">
+        <title>{{ title }}{% if subtitle %} - {{ subtitle }}{% endif %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="PHP Server Monitor - {{ subtitle }}">
+        <meta name="robots" content="noindex" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="manifest" href="manifest.json">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="PSM">
+        <link rel="apple-touch-icon" href="phpservermon.png">
+        <meta name="msapplication-TileImage" content="phpservermon.png">
+        <meta name="msapplication-TileColor" content="#424242">
+        <!-- TODO add base url -->
+        <!-- <link rel="canonical" href=""> -->
+        <meta name="theme-color" content="#0f172a">
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <link rel="apple-touch-icon" href="favicon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="src/templates/default/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="src/templates/default/static/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="src/templates/default/static/css/style.min.css" rel="stylesheet">
+        <link href="src/templates/default/static/css/custom.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+                <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
 
-<body>
-	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+<body class="app-shell">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark app-navbar shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">{{ title }}</a>
+            <div class="d-flex align-items-center">
+                <span class="navbar-brand-icon d-inline-flex align-items-center justify-content-center mr-2">
+                        <i class="fas fa-wave-square"></i>
+                </span>
+                <a class="navbar-brand" href="index.php">{{ title }}</a>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,26 +51,46 @@
                 {{ html_menu|raw }}
             </div>
         </div>
-	</nav>
-	{{ html_modal|raw }}
-	<main role="main" class="container-fluid px-4">
-		<noscript>
-			<div class="alert alert-danger" role="alert">
-				<b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
-			</div>
-		</noscript>
-		{% if not user_level and subtitle %}<h1>{{ subtitle }}</h1>{% endif %}
-		<div class="container-fluid">{{ header_accessories|raw }}</div>
-		{% for msg in messages %}
-		<div class="alert alert-{{ msg.class }}" role="alert">
-			<i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}
-		</div>
-		{% endfor %}
-		<div class="container-fluid">
-			<div class="row">{{ html_sidebar|raw }}</div>
-			<div class="row" id="content">{{ html_content|raw }}</div>
-		</div>
-	</main>
+        </nav>
+        {{ html_modal|raw }}
+        <main role="main" class="app-main container-fluid px-4 py-4">
+                <noscript>
+                        <div class="alert alert-danger shadow-sm" role="alert">
+                                <b>Javascript is disabled!</b> PHP Server Monitor works best with JavaScript enabled!
+                        </div>
+                </noscript>
+
+                <section class="page-hero glass-card shadow-sm mb-4">
+                        <div class="d-flex align-items-start flex-wrap justify-content-between">
+                                <div class="hero-titles">
+                                        <p class="eyebrow text-uppercase mb-1">Modern monitoring</p>
+                                        {% if not user_level and subtitle %}
+                                                <h1 class="page-heading mb-2">{{ subtitle }}</h1>
+                                        {% else %}
+                                                <h1 class="page-heading mb-2">{{ title }}</h1>
+                                        {% endif %}
+                                        <p class="text-muted mb-0">Real-time visibility with refreshed styling and streamlined controls.</p>
+                                </div>
+                                <div class="hero-meta text-right">
+                                        <span class="badge badge-pill version-pill">v{{ version }}</span>
+                                </div>
+                        </div>
+                        {% if header_accessories %}
+                        <div class="mt-3 hero-actions">{{ header_accessories|raw }}</div>
+                        {% endif %}
+                </section>
+
+                {% for msg in messages %}
+                <div class="alert alert-{{ msg.class }} shadow-sm modern-alert" role="alert">
+                        <i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}
+                </div>
+                {% endfor %}
+
+                <div class="content-surface glass-card shadow-sm">
+                        <div class="row">{{ html_sidebar|raw }}</div>
+                        <div class="row mt-4" id="content">{{ html_content|raw }}</div>
+                </div>
+        </main>
 	{% if add_footer %}
 	{% block footer %}
 	<footer class="footer" role="contentinfo">
