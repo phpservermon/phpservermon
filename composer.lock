@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58126e08e315755f4364c2bd87f6cfd1",
+    "content-hash": "6d670f8410eefbf39f3f02455ef6933d",
     "packages": [
         {
             "name": "jaxl/jaxl",
