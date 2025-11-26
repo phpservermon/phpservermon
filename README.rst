@@ -94,8 +94,7 @@ Requirements
 
 * Web server
 * MySQL database
-* For PHP5: 5.5.9+
-* For PHP7: 7.0.8+
+* PHP 8.2+
 * PHP Extensions (modules)
 
   * ext-curl
