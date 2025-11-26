@@ -4,7 +4,7 @@
 	"license": "GPL-3.0-or-later",
 	"homepage": "https://www.phpservermonitor.org",
 	"require": {
-		"php": "^7.4|>=8.1",
+                "php": ">=8.2",
 		"ext-curl": "*",
 		"ext-json": "*",
 		"ext-pdo": "*",
