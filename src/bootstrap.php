@@ -71,7 +71,7 @@ namespace {
     if (!file_exists($vendor_autoload)) {
         trigger_error(
             "No dependencies found in vendor dir. Did you install the dependencies?
-                Please run \"composer install\" (or \"php composer.phar install\" with a recent Composer PHAR).",
+                Please run \"php composer.phar install\".",
             E_USER_ERROR
         );
     }

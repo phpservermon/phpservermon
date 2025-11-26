@@ -73,10 +73,6 @@ Installing from GitHub
 If you have downloaded the source from GitHub (and not a pre-built package), the dependencies are not included.
 To be able to run an installation from the repo, you need to run the following command to install the dependencies::
 
-     composer install
-
-If you prefer to use a local PHAR instead of a global Composer installation, make sure it is up to date and run::
-
      php composer.phar install
 
 

@@ -109,7 +109,7 @@ The second part is the actual message. There are a few variables you can use in 
 After upgrading, my email stopped working.
 ------------------------------------------
 
-Run ``composer update`` and you should be good to go (or ``php composer.phar update`` if you are using a recent local PHAR).
+Run 'php composer.phar update' and you should be good to go!
 
 Setting up a public page.
 -------------------------
