@@ -54,8 +54,10 @@ namespace {
     }
 
     // Debug enabled: report everything
-    // Debug disabled: report error only if created manually
-    ini_set('display_errors', 1);
+    // Debug disabled: report error only to logs so the UI stays clean
+    $displayErrors = PSM_DEBUG ? '1' : '0';
+    ini_set('display_errors', $displayErrors);
+    ini_set('display_startup_errors', $displayErrors);
     PSM_DEBUG ? error_reporting(E_ALL) : error_reporting(E_USER_ERROR);
 
     // check for a cron allowed ip array

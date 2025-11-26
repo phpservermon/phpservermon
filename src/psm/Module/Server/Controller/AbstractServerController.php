@@ -142,13 +142,13 @@ abstract class AbstractServerController extends AbstractController
             $server['status'] = 'warning';
         }
 
-        $server['error'] = htmlentities($server['error']);
+        $server['error'] = htmlentities($server['error'] ?? '', ENT_QUOTES, 'UTF-8');
         $server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
         $server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
-        $server['last_error'] = htmlentities($server['last_error']);
-        $server['last_error_output'] = htmlentities($server['last_error_output']);
-        $server['last_output'] = htmlentities($server['last_output']);
+        $server['last_error'] = htmlentities($server['last_error'] ?? '', ENT_QUOTES, 'UTF-8');
+        $server['last_error_output'] = htmlentities($server['last_error_output'] ?? '', ENT_QUOTES, 'UTF-8');
+        $server['last_output'] = htmlentities($server['last_output'] ?? '', ENT_QUOTES, 'UTF-8');
 
         $url_actions = array('delete', 'edit', 'view');
         foreach ($url_actions as $action) {
