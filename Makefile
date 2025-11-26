@@ -10,9 +10,9 @@ help:
 	@echo ' - make install           - install all dependencies '
 
 install:
-        @echo 'Downloading dependencies using Composer'
-        composer install
-        @echo 'Install complete '
+	@echo 'Downloading dependencies using Composer'
+	php composer.phar install
+	@echo 'Install complete '
 
 export:
 	@echo 'Building release for tag $(tag) '
@@ -30,9 +30,9 @@ endif
 endif
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
 	find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" | xargs -I file php -l file
-        @echo 'Downloading dependencies'
-        cd $(RELEASE_DIR)/$(RELEASE_FILE); composer install; composer dump-autoload --optimize; cd ../../;
-        rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.phar
+	@echo 'Downloading dependencies'
+	cd $(RELEASE_DIR)/$(RELEASE_FILE); php composer.phar install; php composer.phar dump-autoload --optimize; cd ../../;
+	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.phar
 	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.json
 	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.lock
 	@echo 'Building HTML documentation using sphinx (http://sphinx-doc.org/)'
