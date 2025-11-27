@@ -223,6 +223,7 @@ class Router
     {
         $twig = $this->container->get('twig');
         $session = $this->container->get('user')->getSession();
+        $request = Request::createFromGlobals();
         if (!$session->has('csrf_token')) {
             $session->set('csrf_token', bin2hex(random_bytes(32)));
         }
@@ -244,6 +245,20 @@ class Router
         $twig->addGlobal('direction_current', psm_get_lang('locale_dir'));
         $twig->addGlobal('language_current', psm_get_lang('locale_tag'));
         $twig->addGlobal('language', psm_get_lang('locale')[1]);
+        $asset_base = rtrim($request->getBasePath(), '/');
+        $twig->addGlobal('asset_base', ($asset_base === '' ? '/' : $asset_base . '/'));
+        $twig->addFunction(
+            new \Twig\TwigFunction(
+                'asset',
+                function (string $path = '') use ($asset_base) {
+                    $normalized_path = ltrim($path, '/');
+                    if ($normalized_path === '') {
+                        return ($asset_base === '' ? '/' : $asset_base . '/');
+                    }
+                    return ($asset_base === '' ? '/' : $asset_base . '/') . $normalized_path;
+                }
+            )
+        );
 
         return $twig;
     }
