@@ -242,13 +242,15 @@ function initUserNameWatcher() {
 function loadSearchEnhancements() {
         if (!document.querySelector('.search_input')) return;
 
+        const assetBase = document.body.dataset.assetBase || '/';
+
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'src/templates/default/static/css/search.min.css';
+        link.href = `${assetBase}src/templates/default/static/css/search.min.css`;
         document.head.appendChild(link);
 
         const script = document.createElement('script');
-        script.src = 'src/templates/default/static/js/search.js';
+        script.src = `${assetBase}src/templates/default/static/js/search.js`;
         script.defer = true;
         document.head.appendChild(script);
 }
