@@ -19,7 +19,7 @@
     --psm-surface-alt: #111827;
     --psm-border: #1f2937;
     --psm-text: #e5e7eb;
-    --psm-muted: #94a3b8;
+    --psm-muted: #cbd5e1;
     --psm-accent: #38bdf8;
     --psm-accent-soft: rgba(56, 189, 248, 0.12);
     --psm-success: #34d399;
@@ -190,8 +190,11 @@ body.app-shell {
     border: 1px solid var(--psm-border);
     background: var(--psm-surface);
     border-radius: 14px;
-    padding: 1rem 1.25rem;
+    padding: 1.1rem 1.25rem;
     box-shadow: var(--psm-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .metric-label {
@@ -202,15 +205,46 @@ body.app-shell {
 }
 
 .metric-value {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--psm-text);
 }
 
 .metric-trend {
     font-size: 0.95rem;
-    margin-top: 0.25rem;
 }
+
+.metric-top,
+.metric-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.metric-top {
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--psm-border);
+}
+
+.metric-meta {
+    flex-wrap: wrap;
+}
+
+.metric-sparkline {
+    flex: 1;
+    min-width: 120px;
+    height: 38px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.2));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--psm-border);
+}
+
+.sparkline-success { background: linear-gradient(90deg, rgba(52, 211, 153, 0.2), rgba(52, 211, 153, 0.35)); }
+.sparkline-warning { background: linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.32)); }
+.sparkline-danger { background: linear-gradient(90deg, rgba(248, 113, 113, 0.2), rgba(248, 113, 113, 0.36)); }
+.sparkline-neutral { background: linear-gradient(90deg, rgba(148, 163, 184, 0.18), rgba(148, 163, 184, 0.3)); }
 
 .form-control,
 .form-select,

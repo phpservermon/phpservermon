@@ -14,37 +14,57 @@
 <div class="container-fluid">
         <div class="row g-3 status-metrics mb-4">
                 <div class="col-md-3 col-sm-6">
-                        <div class="metric-card">
-                                <div class="metric-label">Overall uptime</div>
-                                <div class="metric-value">{{ uptime_percent }}%</div>
-                                <div class="metric-trend text-success"><i class="fas fa-arrow-up"></i> Healthy footprint</div>
-                        </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                        <div class="metric-card">
-                                <div class="metric-label">Online</div>
-                                <div class="metric-value">{{ servers_online|length }}</div>
-                                <div class="metric-trend text-muted">Tracking {{ total_servers }} monitored</div>
-                        </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                        <div class="metric-card">
-                                <div class="metric-label">Alerts</div>
-                                <div class="metric-value">{{ alerting_count }}</div>
-                                <div class="metric-trend {% if alerting_count > 0 %}text-danger{% else %}text-success{% endif %}">
-                                        {% if alerting_count > 0 %}
-                                                <i class="fas fa-bolt"></i> Needs attention
-                                        {% else %}
-                                                <i class="fas fa-check"></i> No open incidents
-                                        {% endif %}
+                        <div class="metric-card h-100">
+                                <div class="metric-top">
+                                        <div class="metric-label">Overall uptime</div>
+                                        <div class="metric-value">{{ uptime_percent }}%</div>
+                                </div>
+                                <div class="metric-meta">
+                                        <div class="metric-trend text-success"><i class="fas fa-arrow-up"></i> Healthy footprint</div>
+                                        <div class="metric-sparkline sparkline-success" aria-hidden="true"></div>
                                 </div>
                         </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                        <div class="metric-card">
-                                <div class="metric-label">Avg latency</div>
-                                <div class="metric-value">{{ average_latency }} ms</div>
-                                <div class="metric-trend text-muted">Across responding hosts</div>
+                        <div class="metric-card h-100">
+                                <div class="metric-top">
+                                        <div class="metric-label">Online</div>
+                                        <div class="metric-value">{{ servers_online|length }}</div>
+                                </div>
+                                <div class="metric-meta">
+                                        <div class="metric-trend text-muted">Tracking {{ total_servers }} monitored</div>
+                                        <div class="metric-sparkline sparkline-neutral" aria-hidden="true"></div>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card h-100">
+                                <div class="metric-top">
+                                        <div class="metric-label">Alerts</div>
+                                        <div class="metric-value">{{ alerting_count }}</div>
+                                </div>
+                                <div class="metric-meta">
+                                        <div class="metric-trend {% if alerting_count > 0 %}text-danger{% else %}text-success{% endif %}">
+                                                {% if alerting_count > 0 %}
+                                                        <i class="fas fa-bolt"></i> Needs attention
+                                                {% else %}
+                                                        <i class="fas fa-check"></i> No open incidents
+                                                {% endif %}
+                                        </div>
+                                        <div class="metric-sparkline {% if alerting_count > 0 %}sparkline-danger{% else %}sparkline-success{% endif %}" aria-hidden="true"></div>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                        <div class="metric-card h-100">
+                                <div class="metric-top">
+                                        <div class="metric-label">Avg latency</div>
+                                        <div class="metric-value">{{ average_latency }} ms</div>
+                                </div>
+                                <div class="metric-meta">
+                                        <div class="metric-trend text-muted">Across responding hosts</div>
+                                        <div class="metric-sparkline sparkline-warning" aria-hidden="true"></div>
+                                </div>
                         </div>
                 </div>
         </div>
