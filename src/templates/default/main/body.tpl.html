@@ -101,8 +101,10 @@
                 {% endfor %}
 
                 <div class="content-surface surface-card shadow-sm">
-                        <div class="row">{{ html_sidebar|raw }}</div>
-                        <div class="row mt-4" id="content">{{ html_content|raw }}</div>
+                        <div class="row g-4 align-items-start">
+                                <div class="col-12 col-lg-4 col-xl-3">{{ html_sidebar|raw }}</div>
+                                <div class="col-12 col-lg-8 col-xl-9" id="content">{{ html_content|raw }}</div>
+                        </div>
                 </div>
         </main>
 	{% if add_footer %}
