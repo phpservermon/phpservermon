@@ -339,6 +339,34 @@ class HistoryGraph
         $now = new DateTime();
         $data = array();
 
+        // The keys of the lines iterated
+        $line_keys = array_keys($lines);
+        $is_short_graph = count($line_keys) === 1 && $line_keys[0] === 'latency';
+
+        if (empty($records)) {
+            if ($is_short_graph) {
+                $lines['online'] = array();
+                $lines['offline'] = array();
+            }
+
+            $data['latency_avg'] = 0;
+            $data['lines'] = array();
+
+            foreach (array_keys($lines) as $key) {
+                $data['lines'][$key]['value'] = json_encode(array());
+                $data['lines'][$key]['name'] = psm_get_lang('servers', $key);
+            }
+
+            if ($add_uptime) {
+                $data['uptime'] = null;
+            }
+
+            $data['end_timestamp'] = number_format($end_time->getTimestamp(), 0, '', '') * 1000;
+            $data['start_timestamp'] = number_format($start_time->getTimestamp(), 0, '', '') * 1000;
+
+            return $data;
+        }
+
         // PLEASE NOTE: all times are in microseconds! because of javascript.
         $latency_avg = 0;
 
@@ -349,11 +377,7 @@ class HistoryGraph
         $prev_downtime = 0;
         // Total downtime
         $downtime = 0;
-
-        // The keys of the lines iterated
-        $line_keys = array_keys($lines);
         // Determine whether to process data for the short history graph
-        $is_short_graph = count($line_keys) === 1 && $line_keys[0] === 'latency';
 
         // get highest latency record for offline height
         $highest_latency = 0.0;
