@@ -7,7 +7,6 @@
 </ul>
 <noscript>
         <ul class="navbar-nav me-auto">
-
                 <li class="nav-item">
                         <a class="nav-link" href="{{ url_profile|raw }}">{{ label_profile }}</a>
                 </li>
@@ -15,11 +14,9 @@
                         <a class="nav-link" href="{{ url_logout|raw }}">{{ label_logout }}</a>
                 </li>
                 <span class="navbar-text">{{ label_usermenu }}</span>
-                </li>
         </ul>
 </noscript>
-<noscript><div hidden></noscript>
-<ul class="navbar-nav ms-lg-auto">
+<ul class="navbar-nav ms-lg-auto js-only">
         <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ label_usermenu }}
@@ -35,4 +32,3 @@
         </li>
         -->
 </ul>
-<noscript></div></noscript>
