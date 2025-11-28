@@ -116,6 +116,34 @@ body.app-shell {
     padding: 1.25rem 1.5rem 2rem;
 }
 
+.sidebar-panel {
+    border: 1px solid var(--psm-border);
+    border-radius: 14px;
+    background: var(--psm-surface-alt);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--psm-shadow);
+}
+
+.sidebar-subtitle {
+    letter-spacing: 0.12em;
+    font-weight: 600;
+}
+
+.sidebar-link {
+    color: var(--psm-text);
+    font-weight: 600;
+    padding: 0.35rem 0.25rem;
+    border-radius: 10px;
+    transition: background 150ms ease, color 150ms ease;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus,
+.sidebar-link.active {
+    background: var(--psm-accent-soft);
+    color: var(--psm-accent);
+}
+
 .alert {
     border-radius: 12px;
     border: 1px solid var(--psm-border);
