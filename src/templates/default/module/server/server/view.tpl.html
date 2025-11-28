@@ -37,8 +37,8 @@
 				{% if type|lower == 'service' %}
 				<li class="list-group-item">
 					<dl class="row">
-						<dt class="col-md-4">{{ label_port }}:</dt>
-						<dd class="col-md-8">{{ port }}</dd>
+                                            <dt class="col-md-4">{{ label_port }}:</dt>
+                                            <dd class="col-md-8">{{ port }}{% if port and protocol_label %} <span class="text-muted">({{ protocol_label }})</span>{% endif %}</dd>
 					</dl>
 				</li>
 				{% endif %}
@@ -63,8 +63,8 @@
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item">
 					<dl class="row">
-						<dt class="col-md-6">{{ label_type }}:</dt>
-						<dd class="col-md-6">{{ type }}</dd>
+                                                <dt class="col-md-6">{{ label_type }}:</dt>
+                                                <dd class="col-md-6">{{ type_label }}</dd>
 					</dl>
 				</li>
 				<li class="list-group-item">

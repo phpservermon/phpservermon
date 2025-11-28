@@ -39,8 +39,13 @@
 					</div>
 				</th>
 				<td><div class="content">{{ server.ip|raw }}</div></td>
-				<td>{{ server.port }}</td>
-				<td>{{ server.type }}</td>
+                            <td>
+                                {{ server.port }}
+                                {% if server.port and server.protocol_label %}
+                                        <div class="small text-muted">{{ server.protocol_label }}</div>
+                                {% endif %}
+                            </td>
+                            <td>{{ server.type_label }}</td>
 				<td>{{ (server.rtime * 1000)|round(2) }}</td>
 				<td><div class="content">{{ server.last_online }}</div></td>
 				<td><div class="content">{{ server.last_offline }}</div></td>

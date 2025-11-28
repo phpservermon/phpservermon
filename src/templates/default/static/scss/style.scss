@@ -22,6 +22,10 @@ html[dir='ltr'] {
 body {
     padding-top: 4.5rem;
     margin-bottom: 80px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+                 "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+                 "Noto Color Emoji";
 }
 
 .container-fluid {
@@ -163,16 +167,6 @@ table tr[visible='true'] {
 
 #needle {
     background: rgba(52, 52, 64, 0.7);
-    border-radius: 4px;
-    bottom: -4px;
-    box-shadow: 3px -1px 4px rgba(0, 0, 0, 0.4);
-    display: block;
-    height: 8px;
-    left: 5px;
-    position: absolute;
-    width: 95px;
-    transform-origin: 100% 4px;
-    transition: all 1s;
     border-radius: 4px;
     bottom: -4px;
     box-shadow: 3px -1px 4px rgba(0, 0, 0, 0.4);

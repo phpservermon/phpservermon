@@ -88,6 +88,11 @@ class HistoryGraph
             0 => $this->generateGraphUptime($server_id, $start_date, $now),
             1 => $this->generateGraphHistory($server_id, $last_year, $last_week),
         );
+
+        $uptime_summary = $this->calculateUptimeSummary($server_id, $now);
+        if (!empty($uptime_summary)) {
+            $graphs[0]['uptime_summary'] = $uptime_summary;
+        }
         $info_fields = array(
             'latency_avg' => '%01.5f',
             'uptime' => '%01.3f%%',
@@ -111,6 +116,76 @@ class HistoryGraph
             'graphs' => $graphs,
         );
         return $this->twig->render('module/server/history.tpl.html', $tpl_data);
+    }
+
+    /**
+     * Calculate uptime percentages for common time ranges.
+     *
+     * @param int $server_id
+     * @param DateTime $end_time
+     * @return array
+     */
+    protected function calculateUptimeSummary($server_id, DateTime $end_time)
+    {
+        $periods = array(
+            'day' => new DateTime('-1 day'),
+            'week' => new DateTime('-1 week'),
+            'month' => new DateTime('-1 month'),
+            'year' => new DateTime('-1 year'),
+        );
+
+        $summary = array();
+
+        foreach ($periods as $period => $start_time) {
+            $uptime = $this->calculateUptime($server_id, $start_time, $end_time);
+            if ($uptime === null) {
+                continue;
+            }
+
+            $summary[] = array(
+                'label' => psm_get_lang('servers', $period),
+                'value' => $uptime,
+            );
+        }
+
+        return $summary;
+    }
+
+    /**
+     * Calculate uptime percentage for a specific window.
+     *
+     * @param int $server_id
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return float|null
+     */
+    protected function calculateUptime($server_id, DateTime $start_time, DateTime $end_time)
+    {
+        $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        if (empty($records)) {
+            return null;
+        }
+
+        // Align the timeframe to the actual data coverage so percentages are calculated
+        // only over intervals we have records for.
+        $first_record_time = new DateTime($records[0]['date']);
+        $last_record = end($records);
+        $last_record_time = new DateTime($last_record['date']);
+
+        $effective_start = $first_record_time > $start_time ? $first_record_time : $start_time;
+        $effective_end = $last_record_time < $end_time ? $last_record_time : $end_time;
+
+        if ($effective_start >= $effective_end) {
+            return null;
+        }
+
+        $lines = array(
+            'latency' => array(),
+        );
+
+        $data = $this->generateGraphLines($records, $lines, 'latency', $effective_start, $effective_end, true);
+
+        return isset($data['uptime']) ? $data['uptime'] : null;
     }
 
     /**
@@ -345,7 +420,11 @@ class HistoryGraph
             if (!$prev['status']) {
                 $lines['offline'][] = ['x' => $now->getTimestamp() * 1000, 'y' => $highest_latency];
             }
-            $data['uptime'] = 100 - ($downtime / ($end_time->getTimestamp() - $start_time->getTimestamp()));
+
+            $timeframe = $end_time->getTimestamp() - $start_time->getTimestamp();
+            if ($timeframe > 0) {
+                $data['uptime'] = 100 - (($downtime / $timeframe) * 100);
+            }
         }
 
         $lines_merged = array();

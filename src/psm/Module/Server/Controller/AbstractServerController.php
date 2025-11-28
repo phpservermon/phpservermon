@@ -58,10 +58,11 @@ abstract class AbstractServerController extends AbstractController
         }
 
         $sql = "SELECT
-					`s`.`server_id`,
-					`s`.`ip`,
-					`s`.`port`,
-					`s`.`request_method`,
+                                        `s`.`server_id`,
+                                        `s`.`ip`,
+                                        `s`.`port`,
+                                        `s`.`protocol`,
+                                        `s`.`request_method`,
 					`s`.`post_field`,
 					`s`.`type`,
 					`s`.`label`,
@@ -117,6 +118,8 @@ abstract class AbstractServerController extends AbstractController
      */
     protected function formatServer($server)
     {
+        $server['protocol'] = empty($server['protocol']) ? 'tcp' : $server['protocol'];
+        $server['protocol_label'] = strtoupper($server['protocol']);
         $server['rtime'] = $server['rtime'];
         $server['last_online'] = psm_timespan($server['last_online']);
         $server['last_offline'] = psm_timespan($server['last_offline']);
@@ -140,7 +143,7 @@ abstract class AbstractServerController extends AbstractController
         }
 
         $server['error'] = htmlentities($server['error']);
-        $server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+        $server['type_label'] = psm_get_lang('servers', 'type_' . $server['type']);
         $server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
         $server['last_error'] = htmlentities($server['last_error']);

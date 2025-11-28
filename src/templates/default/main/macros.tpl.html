@@ -3,23 +3,21 @@
 {% endmacro input_csrf %}
 
 {% macro input_checkbox(id, name, label, checked, help, help_label) %}
-    <div class="form-group">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="{{ id }}" name="{{ name }}"
-                {% if help %}aria-describedby="{{ help }}"{% endif %} {{ checked }}>
-            <label class="custom-control-label" for="{{ id }}">{{ label }}</label>
-            {% if help %}
-                <small id="{{ help }}" class="form-text text-muted">{{
-                help_label|striptags('<a>,<b>,<br>')|raw }}</small>
-            {% endif %}
-        </div>
+    <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="{{ id }}" name="{{ name }}"
+            {% if help %}aria-describedby="{{ help }}"{% endif %} {{ checked }}>
+        <label class="form-check-label" for="{{ id }}">{{ label }}</label>
+        {% if help %}
+            <small id="{{ help }}" class="form-text text-muted">{{
+            help_label|striptags('<a>,<b>,<br>')|raw }}</small>
+        {% endif %}
     </div>
 {% endmacro input_checkbox %}
 
 {% macro input_select(id, name, label, options, current, help, help_label) %}
-    <div class="form-group">
-        <label for="{{ id }}">{{ label }}</label>
-        <select id="{{ id }}" name="{{ name }}" class="custom-select" {% if help %}aria-describedby="{{ help }}"{% endif %}>
+    <div class="mb-3">
+        <label class="form-label" for="{{ id }}">{{ label }}</label>
+        <select id="{{ id }}" name="{{ name }}" class="form-select" {% if help %}aria-describedby="{{ help }}"{% endif %}>
             {% for option in options %}
             <option value="{{ option.value }}" {% if option.value == current %} selected="selected" {% endif %}>
                 {{ option.label }}
@@ -47,7 +45,7 @@
 {% endmacro input_select_multiple %}
 
 {% macro input_select_monitoring(id, name, label, current, label_yes, label_no, warning, warning_label) %}
-    <div class="form-group form-row">
+    <div class="row mb-3">
         {% if warning %}
         <div class="alert alert-warning col-md-12" role="alert">
             <i class="fas fa-exclamation-triangle" title="Warning"></i> {{ warning_label }}
@@ -55,7 +53,7 @@
         {% endif %}
         <label for="{{ id }}" class="col-form-label col-md-3">{{ label }}</label>
         <div class="col-md-9 p-0">
-            <select id="{{ id }}" name="{{ name }}" class="custom-select">
+            <select id="{{ id }}" name="{{ name }}" class="form-select">
                 <option value="yes" {% if current == "yes" %} selected="selected" {% endif %}>{{ label_yes }}</option>
                 <option value="no" {% if current == "no" %} selected="selected" {% endif %}>{{ label_no }}</option>
             </select>
@@ -64,33 +62,31 @@
 {% endmacro %}
 
 {% macro input_field(type, id, class, name, label, value, placeholder, max, help, help_label, side_label, readonly, required, autofocus, autocomplete, disabled) %}
-    <div class="form-group {% if class %}{{ class }}{% endif %}">
-        <label for="{{ id }}">{{ label }}</label>
-        {% if side_label and help %}
+    <div class="mb-3 {% if class %}{{ class }}{% endif %}">
+        <label class="form-label" for="{{ id }}">{{ label }}</label>
+        {% if side_label %}
         <div class="input-group">
+            <span class="input-group-text" id="{{ help|default(id ~ '-addon') }}">{{ side_label }}</span>
         {% endif %}
         <input type="{{ type }}" class="form-control" id="{{ id }}"
             {% if name %}name="{{ name }}"{% endif %}
             {% if placeholder != null %}placeholder="{{ placeholder }}"{% endif %}
-            {% if value != null %}value="{{ value }}"{% endif %} 
-            {% if max != null %}maxlength="{{ max }}"{% endif %} 
-            {% if help %}aria-describedby="{{ help }}"{% endif %}
+            {% if value != null %}value="{{ value }}"{% endif %}
+            {% if max != null %}maxlength="{{ max }}"{% endif %}
+            {% if help %}aria-describedby="{{ help }}"{% elseif side_label %}aria-describedby="{{ help|default(id ~ '-addon') }}"{% endif %}
             {% if readonly %}readonly onfocus="this.removeAttribute('readonly');"{% endif %}
             {% if required %}required{% endif %}
             {% if disabled %}disabled{% endif %}
             {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
             {% if autofocus %}autofocus{% endif %}>
-            {% if help %}
-                {% if help_label %}
-                    <small id="{{ help }}" class="form-text text-muted">{{ help_label|striptags('<a>,<b>,<br>')|raw }}</small>
-                {% endif %}
-                {% if side_label %}
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="{{ help }}">{{ side_label }}</span>
-                    </div>
-                    </div>
-                {% endif %}
+        {% if side_label %}
+        </div>
+        {% endif %}
+        {% if help %}
+            {% if help_label %}
+                <small id="{{ help }}" class="form-text text-muted">{{ help_label|striptags('<a>,<b>,<br>')|raw }}</small>
             {% endif %}
+        {% endif %}
     </div>
 {% endmacro input_field %}
 
@@ -107,10 +103,8 @@
 {% endmacro button_save %}
 
 {% macro table_search(label) %}
-    <noscript><div hidden></noscript>
-    <div class="searchbar mb-3">
+    <div class="searchbar mb-3 js-only">
         <input class="search_input" type="search" name="" maxlength="255" placeholder="{{ label }}..." aria-label="{{ label }}">
         <a href="#" class="search_icon"><i class="fas fa-search"></i><p>0</p></a>
     </div>
-    <noscript></div></noscript>
 {% endmacro table_search %}

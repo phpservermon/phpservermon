@@ -18,10 +18,10 @@
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
 				</select>
 			</div>
-			<!-- Port -->
-			<div class="form-group types typeService">
-				<label for="popular_ports">{{ label_port }}</label>
-				<select id="popular_ports" name="popular_ports" class="custom-select">
+                        <!-- Port -->
+                        <div class="form-group types typeService">
+                                <label for="popular_ports">{{ label_port }}</label>
+                                <select id="popular_ports" name="popular_ports" class="custom-select">
 					<option {% if not edit_value_port %}selected {% endif %} disabled>{{ label_please_select }}</option>
 					<option {% if edit_value_port not in [0, 80, 443, 21, 25, 465, 110, 995, 143, 993, 22, 389, 3306, 115, 43, 53,
 					 3389] %} selected {% endif %} value="custom">{{ label_custom_port }}</option>
@@ -43,9 +43,17 @@
 						<option {% if edit_value_port==53 %}selected {% endif %}value="53">BIND (53)</option>
 						<option {% if edit_value_port==3389 %}selected {% endif %}value="3389">RDP (3389)</option>
 					</optgroup>
-				</select>
-			</div>
-			<!-- Custom port -->
+                                </select>
+                        </div>
+                        <!-- Protocol -->
+                        <div class="form-group types typeService">
+                                <label for="protocol">{{ label_protocol }}</label>
+                                <select id="protocol" name="protocol" class="custom-select">
+                                        <option value="tcp" {{ edit_protocol_selected_tcp|raw }}>{{ label_protocol_tcp }}</option>
+                                        <option value="udp" {{ edit_protocol_selected_udp|raw }}>{{ label_protocol_udp }}</option>
+                                </select>
+                        </div>
+                        <!-- Custom port -->
             {{ macro.input_field("number", "port", "port types typeService", "port", label_custom_port, edit_value_port, null, "5") }}
             <!-- SSL Cert check -->
             {{ macro.input_field("number", "ssl_cert_expiry_days", "types typeWebsite", "ssl_cert_expiry_days", label_ssl_cert_expiry_days, edit_value_ssl_cert_expiry_days, 0, "5", 'ssl_cert_help', label_ssl_cert_expiry_days_description) }}
