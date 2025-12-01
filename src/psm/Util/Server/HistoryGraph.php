@@ -226,27 +226,32 @@ class HistoryGraph
         $data['button_name'] = 'timeframe_short';
         $data['buttons'][] = array(
             'unit' => 'minute',
+            'range' => 'hour',
             'time' => $hour->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'hour'),
             'class_active' => 'active'
         );
         $data['buttons'][] = array(
             'unit' => 'hour',
+            'range' => 'day',
             'time' => $day->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'day')
         );
         $data['buttons'][] = array(
             'unit' => 'day',
+            'range' => 'week',
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
         );
         $data['buttons'][] = array(
             'unit' => 'week',
+            'range' => 'month',
             'time' => $month->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
             'unit' => 'year',
+            'range' => 'year',
             'time' => $year->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'year')
         );
@@ -266,10 +271,10 @@ class HistoryGraph
     protected function calculateUptimeRanges($server_id, DateTime $end_time)
     {
         $ranges = array(
-            'minute' => new DateTime('-1 hour'),
-            'hour' => new DateTime('-1 day'),
-            'day' => new DateTime('-1 week'),
-            'week' => new DateTime('-1 month'),
+            'hour' => new DateTime('-1 hour'),
+            'day' => new DateTime('-1 day'),
+            'week' => new DateTime('-1 week'),
+            'month' => new DateTime('-1 month'),
             'year' => new DateTime('-1 year'),
         );
 
