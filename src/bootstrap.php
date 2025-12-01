@@ -172,11 +172,9 @@ namespace {
         // config load OK, make sure database version is up to date
         $installer = new \psm\Util\Install\Installer($db);
         if ($installer->isUpgradeRequired()) {
-            trigger_error(
-                "Your database is for an older version and requires an upgrade, 
-                    <a href=\"install.php\">please click here</a> to update your database to the latest version.",
-                E_USER_ERROR
-            );
+            // Redirect to the installer so the upgrade can be completed without throwing a fatal error
+            header('Location: install.php');
+            die();
         }
     }
 
