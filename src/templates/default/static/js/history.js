@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const applySelection = (inputs, chart) => {
                 const selected = Array.from(inputs).find((input) => input.checked);
                 if (selected && chart) {
-                        updateScale(chart, parseInt(selected.value, 10), selected.id);
+                        const chartUnit = selected.dataset.unit || selected.id;
+                        updateScale(chart, parseInt(selected.value, 10), chartUnit);
                         if (inputs === shortInputs) {
                                 updateGauge(selected.id);
                         }
