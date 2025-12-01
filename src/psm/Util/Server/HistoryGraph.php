@@ -223,6 +223,7 @@ class HistoryGraph
             'day' => clone $week,
             'week' => clone $month,
             'month' => clone $year,
+            'year' => clone $year,
         );
 
         $uptime_ranges = array();
@@ -259,13 +260,13 @@ class HistoryGraph
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
         );
-                $data['buttons'][] = array(
+        $data['buttons'][] = array(
             'unit' => 'week',
             'time' => $month->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
-            'unit' => 'month',
+            'unit' => 'year',
             'time' => $year->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'year')
         );
