@@ -161,31 +161,37 @@ class HistoryGraph
      */
     protected function calculateUptime($server_id, DateTime $start_time, DateTime $end_time)
     {
-        $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
-        if (empty($records)) {
+        $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+
+        if (empty($uptime_records) && empty($history_records)) {
             return null;
         }
 
-        // Align the timeframe to the actual data coverage so percentages are calculated
-        // only over intervals we have records for.
-        $first_record_time = new DateTime($records[0]['date']);
-        $last_record = end($records);
-        $last_record_time = new DateTime($last_record['date']);
+        // Calculate uptime based on the amount of successful checks rather than time windows so
+        // we can combine detailed uptime records with archived history records.
+        $total_checks = 0;
+        $failed_checks = 0;
 
-        $effective_start = $first_record_time > $start_time ? $first_record_time : $start_time;
-        $effective_end = $last_record_time < $end_time ? $last_record_time : $end_time;
+        foreach ($history_records as $record) {
+            $total_checks += (int) $record['checks_total'];
+            $failed_checks += (int) $record['checks_failed'];
+        }
 
-        if ($effective_start >= $effective_end) {
+        foreach ($uptime_records as $record) {
+            $total_checks++;
+            if (!(bool) $record['status']) {
+                $failed_checks++;
+            }
+        }
+
+        if ($total_checks === 0) {
             return null;
         }
 
-        $lines = array(
-            'latency' => array(),
-        );
+        $uptime = 100 - (($failed_checks / $total_checks) * 100);
 
-        $data = $this->generateGraphLines($records, $lines, 'latency', $effective_start, $effective_end, true);
-
-        return isset($data['uptime']) ? $data['uptime'] : null;
+        return $uptime;
     }
 
     /**
