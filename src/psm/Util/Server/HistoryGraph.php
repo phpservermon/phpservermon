@@ -213,9 +213,6 @@ class HistoryGraph
         $week = new DateTime('-1 week');
         $month = new DateTime('-1 month');
         $year = new DateTime('-1 year');
-
-        $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
-
         // Use the supplied $start_time to ensure the graph can be scaled to the
         // earliest timeframe that was archived for this server.
         $data = $this->generateGraphLines($records, $lines, 'latency', $start_time, $end_time, true);
@@ -241,17 +238,11 @@ class HistoryGraph
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
         );
-                $data['buttons'][] = array(
             'unit' => 'week',
             'time' => $month->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
-            'unit' => 'month',
-            'time' => $year->getTimestamp() * 1000,
-            'label' => psm_get_lang('servers', 'year')
-        );
-
         return $data;
     }
 
