@@ -196,10 +196,4 @@
 </script>
 {% endif %}
 {% endfor %}
-<script>
-document.onreadystatechange = function () {
-  if (document.readyState === 'interactive') {
-    $.getScript("src/templates/default/static/js/history.js");
-  }
-}
-</script>
+<script src="src/templates/default/static/js/history.js"></script>
