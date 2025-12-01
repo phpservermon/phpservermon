@@ -134,7 +134,7 @@ class ProfileController extends AbstractController
         $clean = array();
         foreach ($fields as $field) {
             if (isset($_POST[$field])) {
-                $clean[$field] = trim(strip_tags($_POST[$field]));
+                $clean[$field] = $this->sanitizePostedField($_POST[$field]);
             } else {
                 $clean[$field] = '';
             }
@@ -173,6 +173,21 @@ class ProfileController extends AbstractController
             $this->activateTelegram();
         }
         return $this->executeIndex();
+    }
+
+    /**
+     * Normalize and sanitize incoming POST values to avoid runtime errors.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    private function sanitizePostedField($value)
+    {
+        if (is_array($value)) {
+            return '';
+        }
+
+        return trim(strip_tags((string) $value));
     }
 
     /**
