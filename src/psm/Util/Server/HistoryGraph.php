@@ -204,6 +204,8 @@ class HistoryGraph
     public function generateGraphUptime($server_id, $start_time, $end_time)
     {
 
+        $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+
         $lines = array(
             'latency' => array(),
         );
@@ -238,11 +240,17 @@ class HistoryGraph
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
         );
+        $data['buttons'][] = array(
             'unit' => 'week',
             'time' => $month->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
+            'unit' => 'month',
+            'time' => $year->getTimestamp() * 1000,
+            'label' => psm_get_lang('servers', 'year')
+        );
+
         return $data;
     }
 
