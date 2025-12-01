@@ -40,9 +40,11 @@
 
 {% if graph.id == 'history_short' %}
 <script>
-	var historyShort = new Chart(document.getElementById("{{ graph.id }}").getContext('2d'), {
-		type: 'line',
-		data: {
+        window.historyUptimeRanges = {{ graph.uptime_ranges|json_encode|raw }};
+        window.historyUptimeLabel = '{{ graph.info.1.label|e('js') }}';
+        var historyShort = new Chart(document.getElementById("{{ graph.id }}").getContext('2d'), {
+                type: 'line',
+                data: {
 			datasets: [
 			{
 				data: {{ graph.lines.offline.value|raw }},
