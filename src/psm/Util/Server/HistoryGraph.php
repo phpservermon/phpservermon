@@ -222,7 +222,7 @@ class HistoryGraph
             'hour' => clone $day,
             'day' => clone $week,
             'week' => clone $month,
-            'month' => clone $year,
+            'month' => clone $month,
             'year' => clone $year,
         );
 
