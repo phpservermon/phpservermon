@@ -91,30 +91,28 @@ class UptimeArchiver implements ArchiverInterface
         $sql_where_server = $this->createSQLWhereServer($server_id);
 
         $records = $this->db->execute(
-            "SELECT `server_id`,`date`,`status`,`latency`
-				FROM `" . PSM_DB_PREFIX . "servers_uptime`
-				WHERE {$sql_where_server} `date` < :latest_date",
+            "SELECT DATE(`date`) AS `day`, `server_id`,
+                                MIN(`latency`) AS `latency_min`, AVG(`latency`) AS `latency_avg`, MAX(`latency`) AS `latency_max`,
+                                COUNT(*) AS `checks_total`, SUM(CASE WHEN `status` = 0 THEN 1 ELSE 0 END) AS `checks_failed`
+                                FROM `" . PSM_DB_PREFIX . "servers_uptime`
+                                WHERE {$sql_where_server} `date` < :latest_date
+                                GROUP BY `day`, `server_id`
+                                ORDER BY `day` ASC",
             array('latest_date' => $latest_date_str)
         );
 
         if (!empty($records)) {
-            // first group all records by day and server_id
-            $data_by_day = array();
-            foreach ($records as $record) {
-                $server_id = (int) $record['server_id'];
-                $day = date('Y-m-d', strtotime($record['date']));
-                if (!isset($data_by_day[$day][$server_id])) {
-                    $data_by_day[$day][$server_id] = array();
-                }
-                $data_by_day[$day][$server_id][] = $record;
-            }
-
-            // now get history data day by day
             $histories = array();
-            foreach ($data_by_day as $day => $day_records) {
-                foreach ($day_records as $server_id => $server_day_records) {
-                    $histories[] = $this->getHistoryForDay($day, $server_id, $server_day_records);
-                }
+            foreach ($records as $record) {
+                $histories[] = array(
+                    'date' => $record['day'],
+                    'server_id' => (int) $record['server_id'],
+                    'latency_min' => (float) $record['latency_min'],
+                    'latency_avg' => (float) $record['latency_avg'],
+                    'latency_max' => (float) $record['latency_max'],
+                    'checks_total' => (int) $record['checks_total'],
+                    'checks_failed' => (int) $record['checks_failed'],
+                );
             }
 
             // Save all
@@ -144,39 +142,6 @@ class UptimeArchiver implements ArchiverInterface
             false
         );
         return true;
-    }
-
-    /**
-     * Build a history array for a day records
-     * @param string $day
-     * @param int $server_id
-     * @param array $day_records
-     * @return array
-     */
-    protected function getHistoryForDay($day, $server_id, $day_records)
-    {
-        $latencies = array();
-        $checks_failed = 0;
-
-        foreach ($day_records as $day_record) {
-            $latencies[] = $day_record['latency'];
-
-            if ($day_record['status'] == 0) {
-                $checks_failed++;
-            }
-        }
-        sort($latencies, SORT_NUMERIC);
-
-        $history = array(
-            'date' => $day,
-            'server_id' => $server_id,
-            'latency_min' => min($latencies),
-            'latency_avg' => array_sum($latencies) / count($latencies),
-            'latency_max' => max($latencies),
-            'checks_total' => count($day_records),
-            'checks_failed' => $checks_failed,
-        );
-        return $history;
     }
 
     protected function createSQLWhereServer($server_id)
