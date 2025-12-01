@@ -60,6 +60,76 @@ namespace {
     ini_set('display_startup_errors', $displayErrors);
     PSM_DEBUG ? error_reporting(E_ALL) : error_reporting(E_USER_ERROR);
 
+    /**
+     * Convert PHP errors into exceptions so we can capture a debug log instead of a white page.
+     */
+    set_error_handler(function ($severity, $message, $file, $line) {
+        if (!(error_reporting() & $severity)) {
+            // Respect the current error_reporting level
+            return false;
+        }
+
+        throw new \ErrorException($message, 0, $severity, $file, $line);
+    });
+
+    /**
+     * Provide a consistent debug output for uncaught exceptions.
+     */
+    set_exception_handler(function ($exception) {
+        http_response_code(500);
+
+        $details = sprintf(
+            "Unhandled exception: %s in %s on line %d\nStack trace:\n%s",
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getTraceAsString()
+        );
+
+        error_log($details);
+
+        if (PSM_DEBUG) {
+            header('Content-Type: text/plain');
+            echo $details;
+        } else {
+            echo 'An unexpected error occurred. Please check the application logs for more details.';
+        }
+    });
+
+    /**
+     * Capture fatal errors that bypass the normal exception handler.
+     */
+    register_shutdown_function(function () {
+        $error = error_get_last();
+        if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+            $exception = new \ErrorException(
+                $error['message'],
+                0,
+                $error['type'],
+                $error['file'],
+                $error['line']
+            );
+
+            // Re-use the exception handler to output details or log the issue
+            $handler = set_exception_handler(null);
+            if (is_callable($handler)) {
+                // Restore the handler after retrieving it
+                set_exception_handler($handler);
+                $handler($exception);
+            } else {
+                // Fallback if the exception handler was removed unexpectedly
+                http_response_code(500);
+                error_log($exception);
+                if (PSM_DEBUG) {
+                    header('Content-Type: text/plain');
+                    echo $exception;
+                } else {
+                    echo 'A fatal error occurred. Please check the application logs for more details.';
+                }
+            }
+        }
+    });
+
     // check for a cron allowed ip array
     if (!defined('PSM_CRON_ALLOW')) {
     //serialize for php version lower than 7.0.0
