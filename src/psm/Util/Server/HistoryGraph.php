@@ -303,19 +303,24 @@ class HistoryGraph
             return array();
         }
 
+        $max_records = defined('PSM_MAX_GRAPH_RECORDS') ? (int) PSM_MAX_GRAPH_RECORDS : 5000;
+
         /** @noinspection SqlNoDataSourceInspection */
         /** @noinspection SqlResolve */
         /** @noinspection PhpUndefinedConstantInspection */
-        return $this->db->execute(
+        $records = $this->db->execute(
             "SELECT *, UNIX_TIMESTAMP(CONVERT_TZ(`date`, '+00:00', @@session.time_zone)) AS date_ts
-				FROM `" . PSM_DB_PREFIX . "servers_$type`
-				WHERE `server_id` = :server_id AND `date` BETWEEN :start_time AND :end_time ORDER BY `date`",
+                                FROM `" . PSM_DB_PREFIX . "servers_$type`
+                                WHERE `server_id` = :server_id AND `date` BETWEEN :start_time AND :end_time
+                                ORDER BY `date` DESC" . ($max_records > 0 ? ' LIMIT ' . $max_records : ''),
             array(
                 'server_id' => $server_id,
                 'start_time' => $start_time->format('Y-m-d H:i:s'),
                 'end_time' => $end_time->format('Y-m-d H:i:s'),
             )
         );
+
+        return array_reverse($records);
     }
 
     /**
