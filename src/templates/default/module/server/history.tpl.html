@@ -8,7 +8,7 @@
 </div>
 <div class="col-md-2">
 	<noscript><div hidden></noscript>
-		<div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+                <div class="btn-group-vertical btn-group-toggle w-100" data-bs-toggle="buttons">
 			{% for button in graph.buttons %}
 			<label class="btn btn-secondary {{ button.class_active }}">
 				<input type="radio" name="{{ graph.button_name }}" value="{{ button.time }}" id="{{ button.unit }}" autocomplete="off" {% if button.class_active %} checked {% endif  %}> {{ button.label }}
