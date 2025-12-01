@@ -213,28 +213,6 @@ class HistoryGraph
         $week = new DateTime('-1 week');
         $month = new DateTime('-1 month');
         $year = new DateTime('-1 year');
-        $now = new DateTime();
-
-        $records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
-
-        $timeframes = array(
-            'minute' => clone $hour,
-            'hour' => clone $day,
-            'day' => clone $week,
-            'week' => clone $month,
-            'month' => clone $month,
-            'year' => clone $year,
-        );
-
-        $uptime_ranges = array();
-        foreach ($timeframes as $unit => $range_start) {
-            $uptime = $this->calculateUptime($server_id, $range_start, $now);
-            if ($uptime === null) {
-                continue;
-            }
-            $uptime_ranges[$unit] = $uptime;
-        }
-
         // Use the supplied $start_time to ensure the graph can be scaled to the
         // earliest timeframe that was archived for this server.
         $data = $this->generateGraphLines($records, $lines, 'latency', $start_time, $end_time, true);
@@ -260,20 +238,11 @@ class HistoryGraph
             'time' => $week->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'week')
         );
-        $data['buttons'][] = array(
             'unit' => 'week',
             'time' => $month->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
-            'unit' => 'year',
-            'time' => $year->getTimestamp() * 1000,
-            'label' => psm_get_lang('servers', 'year')
-        );
-
-        $data['uptime_ranges'] = $uptime_ranges;
-        $data['uptime'] = $uptime_ranges[$data['unit']] ?? ($data['uptime'] ?? null);
-
         return $data;
     }
 
