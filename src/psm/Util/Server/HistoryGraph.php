@@ -246,12 +246,45 @@ class HistoryGraph
             'label' => psm_get_lang('servers', 'month')
         );
         $data['buttons'][] = array(
-            'unit' => 'month',
+            'unit' => 'year',
             'time' => $year->getTimestamp() * 1000,
             'label' => psm_get_lang('servers', 'year')
         );
 
+        $data['uptime_ranges'] = $this->calculateUptimeRanges($server_id, $end_time);
+
         return $data;
+    }
+
+    /**
+     * Calculate uptime percentages that match the available timeframe buttons.
+     *
+     * @param int $server_id
+     * @param DateTime $end_time
+     * @return array
+     */
+    protected function calculateUptimeRanges($server_id, DateTime $end_time)
+    {
+        $ranges = array(
+            'minute' => new DateTime('-1 hour'),
+            'hour' => new DateTime('-1 day'),
+            'day' => new DateTime('-1 week'),
+            'week' => new DateTime('-1 month'),
+            'year' => new DateTime('-1 year'),
+        );
+
+        $uptime_ranges = array();
+
+        foreach ($ranges as $key => $start_time) {
+            $uptime = $this->calculateUptime($server_id, $start_time, $end_time);
+            if ($uptime === null) {
+                continue;
+            }
+
+            $uptime_ranges[$key] = $uptime;
+        }
+
+        return $uptime_ranges;
     }
 
     /**
