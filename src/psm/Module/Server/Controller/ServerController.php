@@ -406,6 +406,8 @@ class ServerController extends AbstractServerController
         } else {
             // add
             $clean['status'] = 'on';
+            $clean['last_check'] = date('Y-m-d H:i:s');
+            $clean['last_online'] = $clean['last_check'];
             $this->server_id = $this->db->save(PSM_DB_PREFIX . 'servers', $clean);
 
             // server has been added, re-encrypt
