@@ -214,7 +214,7 @@ class StatusUpdater
         $fp = @fsockopen($protocol . $serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
-        if ($status) {
+        if ($status && $protocol !== 'udp://') {
             stream_set_timeout($fp, $timeout);
             // Probe the socket to ensure the port is actually reachable
             @fwrite($fp, "\0");
@@ -222,9 +222,7 @@ class StatusUpdater
             $streamMeta = stream_get_meta_data($fp);
             if ($streamMeta['timed_out'] || $streamMeta['eof'] || $probe === '') {
                 $status = false;
-                $this->error = $protocol === 'udp://' ?
-                    'No response received from UDP service.' :
-                    'No response received from TCP service.';
+                $this->error = 'No response received from TCP service.';
             }
         }
         $this->rtime = (microtime(true) - $starttime);
