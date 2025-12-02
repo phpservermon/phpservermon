@@ -214,15 +214,17 @@ class StatusUpdater
         $fp = @fsockopen($protocol . $serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
-        if ($status && $protocol === 'udp://') {
+        if ($status) {
             stream_set_timeout($fp, $timeout);
-            // Probe the UDP socket to ensure the port is actually reachable
+            // Probe the socket to ensure the port is actually reachable
             @fwrite($fp, "\0");
-            @fread($fp, 1);
+            $probe = @fread($fp, 1);
             $streamMeta = stream_get_meta_data($fp);
-            if ($streamMeta['eof']) {
+            if ($streamMeta['timed_out'] || $streamMeta['eof'] || $probe === '') {
                 $status = false;
-                $this->error = 'No response received from UDP service.';
+                $this->error = $protocol === 'udp://' ?
+                    'No response received from UDP service.' :
+                    'No response received from TCP service.';
             }
         }
         $this->rtime = (microtime(true) - $starttime);
