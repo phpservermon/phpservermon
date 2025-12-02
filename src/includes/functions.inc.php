@@ -405,7 +405,9 @@ namespace {
         $post_field = null,
         $custom_header = null
     ) {
-        ($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
+        $timeout = ($timeout === null || $timeout <= 0)
+            ? PSM_CURL_TIMEOUT
+            : intval($timeout);
 
         $ch = curl_init();
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
