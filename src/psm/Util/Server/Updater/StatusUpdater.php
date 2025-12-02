@@ -199,7 +199,7 @@ class StatusUpdater
      */
     protected function updateService($max_runs, $run = 1)
     {
-        $timeout = ($this->server['timeout'] === null || $this->server['timeout'] > 0) ?
+        $timeout = ($this->server['timeout'] === null || $this->server['timeout'] <= 0) ?
             PSM_CURL_TIMEOUT : intval($this->server['timeout']);
         $errno = 0;
         // save response time
@@ -214,6 +214,17 @@ class StatusUpdater
         $fp = @fsockopen($protocol . $serverIp, $this->server['port'], $errno, $this->error, $timeout);
 
         $status = ($fp === false) ? false : true;
+        if ($status && $protocol === 'udp://') {
+            stream_set_timeout($fp, $timeout);
+            // Probe the UDP socket to ensure the port is actually reachable
+            @fwrite($fp, "\0");
+            @fread($fp, 1);
+            $streamMeta = stream_get_meta_data($fp);
+            if ($streamMeta['eof']) {
+                $status = false;
+                $this->error = 'No response received from UDP service.';
+            }
+        }
         $this->rtime = (microtime(true) - $starttime);
 
         if (is_resource($fp)) {
