@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      PSM_DB_HOST: db
+      PSM_DB_NAME: psm
+      PSM_DB_USER: psm
+      PSM_DB_PASS: changeme
+      PSM_DB_PREFIX: monitor_
+      PSM_BASE_URL: http://localhost:8080
+      PSM_PUBLIC: "false"
+    volumes:
+      - app-config:/var/www/html/config
+      - logs-data:/var/www/html/logs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: psm
+      MYSQL_USER: psm
+      MYSQL_PASSWORD: changeme
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  app-config:
+  logs-data:
+  db-data:
