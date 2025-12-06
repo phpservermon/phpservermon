@@ -153,3 +153,12 @@ Docker
 -------
 
 PHPServerMonitor is now available on Docker : https://github.com/phpservermon/docker-phpservermonitor
+
+Local Docker Compose setup
+--------------------------
+
+This repository includes a ``Dockerfile`` and ``docker-compose.yml`` for local development. Build and start the stack with::
+
+    docker compose up --build
+
+See ``docs/docker.md`` for configuration options and runtime tips.
