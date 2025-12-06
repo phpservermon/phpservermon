@@ -1,0 +1,15 @@
+.git
+.gitignore
+logs
+cron
+vendor
+node_modules
+composer.phar
+updater.sh
+dev
+Vagrantfile
+provision.yaml
+setup-php.sh
+setup-mysql.sh
+index.php.old
+*.log
