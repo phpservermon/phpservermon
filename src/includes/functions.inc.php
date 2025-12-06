@@ -1123,31 +1123,97 @@ namespace {
 
         public function sendurl()
         {
+            if (empty($this->url)) {
+                return [
+                    'ok' => false,
+                    'description' => 'No telegram endpoint configured',
+                ];
+            }
+
             $con = curl_init($this->url);
+            if ($con === false) {
+                return [
+                    'ok' => false,
+                    'description' => 'Failed to initialize request to Telegram',
+                ];
+            }
+
             curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
             curl_setopt($con, CURLOPT_TIMEOUT, 60);
+
             $response = curl_exec($con);
-            $response = json_decode($response, true);
-            return $response;
+            if ($response === false) {
+                $curlError = curl_error($con);
+                curl_close($con);
+
+                return [
+                    'ok' => false,
+                    'description' => $curlError ?: 'Unknown cURL error while contacting Telegram',
+                ];
+            }
+
+            $httpCode = curl_getinfo($con, CURLINFO_HTTP_CODE);
+            curl_close($con);
+
+            $decodedResponse = json_decode($response, true);
+
+            if ($httpCode < 200 || $httpCode >= 300) {
+                return [
+                    'ok' => false,
+                    'description' => $decodedResponse['description'] ?? ('Telegram returned HTTP ' . $httpCode),
+                    'http_code' => $httpCode,
+                ];
+            }
+
+            return $decodedResponse ?: [
+                'ok' => false,
+                'description' => 'Unable to decode Telegram response',
+            ];
         }
 
         public function send()
         {
-            if (!empty($this->token) && !empty($this->user) && !empty($this->message)) {
-                $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) .
-                    '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
-                    urlencode($this->message) . '&parse_mode=HTML&disable_web_page_preview=True';
+            if (empty($this->token)) {
+                return [
+                    'ok' => false,
+                    'description' => 'No Telegram API token configured',
+                ];
             }
+
+            if (empty($this->user)) {
+                return [
+                    'ok' => false,
+                    'description' => 'No Telegram chat id configured',
+                ];
+            }
+
+            if (empty($this->message)) {
+                return [
+                    'ok' => false,
+                    'description' => 'No Telegram message provided',
+                ];
+            }
+
+            $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) .
+                '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
+                urlencode($this->message) . '&parse_mode=HTML&disable_web_page_preview=True';
+
             return $this->sendurl();
         }
 
         // Get the bots username
         public function getBotUsername()
         {
-            if (!empty($this->token)) {
-                $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) . '/getMe';
+            if (empty($this->token)) {
+                return [
+                    'ok' => false,
+                    'description' => 'No Telegram API token configured',
+                ];
             }
+
+            $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) . '/getMe';
+
             return $this->sendurl();
         }
     }
