@@ -100,11 +100,7 @@ class ServerController extends AbstractServerController
         $icons = array(
             'email' => 'icon-envelope',
             'sms' => 'icon-mobile',
-            'discord' => 'icon-discord',
-            'pushover' => 'icon-pushover',
-            'webhook' => 'icon-webhook',
-            'telegram' => 'icon-telegram',
-            'jabber' => 'icon-jabber'
+            'telegram' => 'icon-telegram'
         );
 
         $servers = $this->getServers();
@@ -132,9 +128,6 @@ class ServerController extends AbstractServerController
 
         $tpl_data['config']['email'] = psm_get_conf('email_status');
         $tpl_data['config']['sms'] = psm_get_conf('sms_status');
-        $tpl_data['config']['discord'] = psm_get_conf('discord_status');
-        $tpl_data['config']['webhook'] = psm_get_conf('webhook_status');
-        $tpl_data['config']['pushover'] = psm_get_conf('pushover_status');
         $tpl_data['config']['telegram'] = psm_get_conf('telegram_status');
 
         return $this->twig->render('module/server/server/list.tpl.html', $tpl_data);
@@ -146,11 +139,7 @@ class ServerController extends AbstractServerController
     private static function setDefaultMonitoringNotificationsToConfiguredValues( array &$tpl_data ): void {
         $tpl_data['edit_email_selected'] = psm_get_conf('email_status') ? 'yes' : 'no';
         $tpl_data['edit_sms_selected'] = psm_get_conf('sms_status') ? 'yes' : 'no';
-        $tpl_data['edit_pushover_selected'] = psm_get_conf('pushover_status') ? 'yes' : 'no';
         $tpl_data['edit_telegram_selected'] = psm_get_conf('telegram_status') ? 'yes' : 'no';
-        $tpl_data['edit_jabber_selected'] = psm_get_conf('jabber_status') ? 'yes' : 'no';
-	$tpl_data['edit_discord_selected'] = psm_get_conf('discord_status') ? 'yes' : 'no';
-        $tpl_data['edit_webhook_selected'] = psm_get_conf('webhook_status') ? 'yes' : 'no';
     }
 
     /**
@@ -265,16 +254,12 @@ class ServerController extends AbstractServerController
                 'edit_active_selected' => $edit_server['active'],
                 'edit_email_selected' => $edit_server['email'],
                 'edit_sms_selected' => $edit_server['sms'],
-                'edit_discord_selected' => $edit_server['discord'],
-                'edit_webhook_selected' => $edit_server['webhook'],
-                'edit_pushover_selected' => $edit_server['pushover'],
                 'edit_telegram_selected' => $edit_server['telegram'],
-                'edit_jabber_selected' => $edit_server['jabber'],
                 'edit_custom_header' => $edit_server['custom_header'],
             ));
         }
 
-        $notifications = array('email', 'sms', 'pushover', 'discord', 'webhook', 'telegram', 'jabber');
+        $notifications = array('email', 'sms', 'telegram');
         foreach ($notifications as $notification) {
             if (psm_get_conf($notification . '_status') == 0) {
                 $tpl_data['warning_' . $notification] = true;
@@ -343,11 +328,11 @@ class ServerController extends AbstractServerController
             'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
             'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
-            'discord' => in_array($_POST['discord'], array('yes', 'no')) ? $_POST['discord'] : 'no',
-            'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
-            'webhook' => in_array($_POST['webhook'], array('yes', 'no')) ? $_POST['webhook'] : 'no',
+            'discord' => 'no',
+            'pushover' => 'no',
+            'webhook' => 'no',
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
-            'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
+            'jabber' => 'no',
             'custom_header' => empty(psm_POST('custom_header')) ? null : psm_POST('custom_header'),
         );
         // make sure websites start with http://

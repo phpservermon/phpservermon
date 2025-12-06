@@ -44,20 +44,16 @@ class ConfigController extends AbstractController
         'email_add_url',
         'email_smtp',
         'sms_status',
-        'discord_status',
-        'pushover_status',
-        'webhook_status',
         'telegram_status',
         'telegram_add_url',
-        'jabber_status',
+        'jira_status',
+        'zabbix_status',
         'log_status',
         'log_email',
         'log_sms',
-        'log_discord',
-        'log_pushover',
-        'log_webhook',
         'log_telegram',
-        'log_jabber',
+        'log_jira',
+        'log_zabbix',
         'show_update',
         'combine_notifications',
         'dirauth_status',
@@ -80,14 +76,13 @@ class ConfigController extends AbstractController
         'sms_gateway_username',
         'sms_gateway_password',
         'sms_from',
-        'webhook_url',
-        'webhook_json',
-        'pushover_api_token',
         'telegram_api_token',
-        'jabber_host',
-        'jabber_port',
-        'jabber_username',
-        'jabber_domain',
+        'jira_base_url',
+        'jira_username',
+        'jira_api_token',
+        'jira_project_key',
+        'zabbix_url',
+        'zabbix_api_key',
         'user_agent',
         'site_title',
         'authdir_host_locn',
@@ -108,8 +103,7 @@ class ConfigController extends AbstractController
      * @var array
      */
     protected $encryptedFields = [
-        'email_smtp_password',
-        'jabber_password'
+        'email_smtp_password'
     ];
 
     private $default_tab = 'general';
@@ -247,7 +241,7 @@ class ConfigController extends AbstractController
 
         $tpl_data[$this->default_tab . '_active'] = 'active';
 
-        $testmodals = array('email', 'sms', 'discord', 'webhook', 'pushover', 'telegram', 'jabber');
+        $testmodals = array('email', 'sms', 'telegram');
 
         foreach ($testmodals as $modal_id) {
             $modal = new \psm\Util\Module\Modal(
@@ -312,16 +306,8 @@ class ConfigController extends AbstractController
                 $this->testEmail();
             } elseif (!empty($_POST['test_sms'])) {
                 $this->testSMS();
-            } elseif (!empty($_POST['test_discord'])) {
-                $this->testDiscord();
-            } elseif (!empty($_POST['test_pushover'])) {
-                $this->testPushover();
-            }elseif (!empty($_POST['test_webhook'])) {
-                $this->testWebhook();
             } elseif (!empty($_POST['test_telegram'])) {
                 $this->testTelegram();
-            } elseif (!empty($_POST['test_jabber'])) {
-                $this->testJabber();
             }
 
             if ($language_refresh) {
@@ -337,16 +323,12 @@ class ConfigController extends AbstractController
                 $this->default_tab = 'email';
             } elseif (isset($_POST['sms_submit']) || !empty($_POST['test_sms'])) {
                 $this->default_tab = 'sms';
-            } elseif (isset($_POST['discord_submit']) || !empty($_POST['test_discord'])) {
-                $this->default_tab = 'discord';
-            } elseif (isset($_POST['pushover_submit']) || !empty($_POST['test_pushover'])) {
-                $this->default_tab = 'pushover';
-            } elseif (isset($_POST['webhook_submit']) || !empty($_POST['test_webhook'])) {
-                $this->default_tab = 'webhook';
             } elseif (isset($_POST['telegram_submit']) || !empty($_POST['test_telegram'])) {
                 $this->default_tab = 'telegram';
-            } elseif (isset($_POST['jabber_submit']) || !empty($_POST['test_jabber'])) {
-                $this->default_tab = 'jabber';
+            } elseif (isset($_POST['jira_submit'])) {
+                $this->default_tab = 'jira';
+            } elseif (isset($_POST['zabbix_submit'])) {
+                $this->default_tab = 'zabbix';
             }
         }
         return $this->runAction('index');
@@ -399,127 +381,6 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * Execute Discord test
-     *
-     * @todo move test to separate class
-     */
-    protected function testDiscord()
-    {
-        $user = $this->getUser()->getUser();
-        if (empty($user->discord)) {
-            $this->addMessage(psm_get_lang('config', 'discord_error_nowebhook'), 'error');
-        } else {
-            $success = 0;
-            $result = 'An unknown error has occurred.';
-            try {
-                $curl = curl_init($user->discord);
-                $json = json_decode(
-                    '{"content":""}',
-                    true
-                );
-                $json['content'] = psm_get_lang('config', 'test_message');
-                $msg = "payload_json=" . urlencode(json_encode($json));
-                if(isset($curl)) {
-                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-                    curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $msg);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    $result = curl_exec($curl);
-                    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                    $err = curl_errno($curl);
-
-                    if ($err != 0 || $httpcode != 204) {
-                        $success = 0;
-                        // $result = ($result == '') ? 'Wrong input, please check if all values are correct!' : $result;
-                        $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
-                            curl_strerror($err) . ". \nResult: " . $result;
-                        $result = $error;
-                    } else {
-                        $success = 1;
-                    }
-                    curl_close($curl);
-                }
-            } catch (Exception $e) {
-                $success = 0;
-                $result = $e->getMessage();
-            }
-
-            if ($success === 1) {
-                $this->addMessage(psm_get_lang('config', 'discord_sent'), 'success');
-            } else {
-                $this->addMessage(sprintf(psm_get_lang('config', 'discord_error'), $result), 'error');
-            }
-        }
-    }
-
-    /** Execute webhook test
-     *
-     * @todo move test to separate class
-     */
-    protected function testWebhook()
-    {
-
-        $user = $this->getUser()->getUser();
-
-
-        if (empty($user->webhook_url)) {
-            $this->addMessage(psm_get_lang('config', 'webhook_error_nourl'), 'error');
-        } elseif (empty($user->webhook_json)) {
-            $this->addMessage(psm_get_lang('config', 'webhook_error_nojson'), 'error');
-        } else {
-            $webhook = psm_build_webhook();
-            $webhook->setUrl($user->webhook_url);
-            $webhook->setJson($user->webhook_json);
-            $message = ['#message' => (psm_get_lang('config', 'test_message'))];
-            $result = $webhook->sendWebhook($message);
-            if ($result==1) {
-                $this->addMessage(psm_get_lang('config', 'webhook_sent'), 'success');
-            } else {
-                $this->addMessage(sprintf(psm_get_lang('config', 'webhook_error'), $result), 'error');
-            }
-        }
-    }
-
-    /**
-     * Execute pushover test
-     *
-     * @todo move test to separate class
-     */
-    protected function testPushover()
-    {
-        $pushover = psm_build_pushover();
-        $pushover->setDebug(true);
-        $user = $this->getUser()->getUser();
-        $apiToken = psm_get_conf('pushover_api_token');
-
-        if (empty($apiToken)) {
-            $this->addMessage(psm_get_lang('config', 'pushover_error_noapp'), 'error');
-        } elseif (empty($user->pushover_key)) {
-            $this->addMessage(psm_get_lang('config', 'pushover_error_nokey'), 'error');
-        } else {
-            $pushover->setPriority(0);
-            $pushover->setTitle(psm_get_lang('config', 'test_subject'));
-            $pushover->setMessage(psm_get_lang('config', 'test_message'));
-            $pushover->setUser($user->pushover_key);
-            if ($user->pushover_device != '') {
-                $pushover->setDevice($user->pushover_device);
-            }
-            $result = $pushover->send();
-
-            if (isset($result['output']->status) && $result['output']->status == 1) {
-                $this->addMessage(psm_get_lang('config', 'pushover_sent'), 'success');
-            } else {
-                if (isset($result['output']->errors->error)) {
-                    $error = $result['output']->errors->error;
-                } else {
-                    $error = 'Unknown';
-                }
-                $this->addMessage(sprintf(psm_get_lang('config', 'pushover_error'), $error), 'error');
-            }
-        }
-    }
-
-    /**
      * Execute telegram test
      *
      * @todo move test to separate class
@@ -553,44 +414,20 @@ class ConfigController extends AbstractController
         }
     }
 
-    /**
-     * Test Jabber.
-     */
-    protected function testJabber()
-    {
-        $user = $this->getUser()->getUser();
-        psm_jabber_send_message(
-            psm_get_conf('jabber_host'),
-            psm_get_conf('jabber_username'),
-            psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('jabber_password')),
-            [$user->jabber],
-            psm_get_lang('config', 'test_message'),
-            (trim(psm_get_conf('jabber_port')) !== '' ? (int)psm_get_conf('jabber_port') : null),
-            (trim(psm_get_conf('jabber_domain')) !== '' ? psm_get_conf('jabber_domain') : null)
-        );
-        // no message - async ... so just info
-        $this->addMessage(psm_get_lang('config', 'jabber_check'), 'info');
-        // @todo possible to set message via ajax with callback ...
-    }
-
     protected function getLabels()
     {
         return array(
             'label_tab_email' => psm_get_lang('config', 'tab_email'),
             'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
-            'label_tab_discord' => psm_get_lang('config', 'tab_discord'),
-            'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
-            'label_tab_webhook' => psm_get_lang('config', 'tab_webhook'),
             'label_tab_telegram' => psm_get_lang('config', 'tab_telegram'),
-            'label_tab_jabber' => psm_get_lang('config', 'tab_jabber'),
+            'label_tab_jira' => psm_get_lang('config', 'tab_jira'),
+            'label_tab_zabbix' => psm_get_lang('config', 'tab_zabbix'),
             'label_tab_auth' => psm_get_lang('config', 'tab_auth'),
             'label_settings_email' => psm_get_lang('config', 'settings_email'),
             'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
-            'label_settings_discord' => psm_get_lang('config', 'settings_discord'),
-            'label_settings_webhook' => psm_get_lang('config', 'settings_webhook'),
-            'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
             'label_settings_telegram' => psm_get_lang('config', 'settings_telegram'),
-            'label_settings_jabber' => psm_get_lang('config', 'settings_jabber'),
+            'label_settings_jira' => psm_get_lang('config', 'settings_jira'),
+            'label_settings_zabbix' => psm_get_lang('config', 'settings_zabbix'),
             'label_settings_dirauth' => psm_get_lang('config', 'settings_dirauth'),
             'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
             'label_settings_log' => psm_get_lang('config', 'settings_log'),
@@ -620,40 +457,20 @@ class ConfigController extends AbstractController
             'label_sms_gateway_username' => psm_get_lang('config', 'sms_gateway_username'),
             'label_sms_gateway_password' => psm_get_lang('config', 'sms_gateway_password'),
             'label_sms_from' => psm_get_lang('config', 'sms_from'),
-            'label_discord_status' => psm_get_lang('config', 'discord_status'),
-            'label_discord_description' => psm_get_lang('config', 'discord_description'),
-            'label_webhook_description' => psm_get_lang('config', 'webhook_description'),
-            'label_webhook_status' => psm_get_lang('config', 'webhook_status'),
-            'label_webhook_url' => psm_get_lang('config', 'webhook_url'),
-            'label_webhook_url_description' => psm_get_lang('config', 'webhook_url_description'),
-            'label_webhook_json' => psm_get_lang('config', 'webhook_json'),
-            'label_webhook_json_description' => psm_get_lang('config', 'webhook_json_description'),
-            'label_pushover_description' => psm_get_lang('config', 'pushover_description'),
-            'label_pushover_status' => psm_get_lang('config', 'pushover_status'),
-            'label_pushover_clone_app' => psm_get_lang('config', 'pushover_clone_app'),
-            'pushover_clone_url' => PSM_PUSHOVER_CLONE_URL,
-            'label_pushover_api_token' => psm_get_lang('config', 'pushover_api_token'),
-            'label_pushover_api_token_description' => sprintf(
-                psm_get_lang('config', 'pushover_api_token_description'),
-                PSM_PUSHOVER_CLONE_URL
-            ),
             'label_telegram_description' => psm_get_lang('config', 'telegram_description'),
             'label_telegram_status' => psm_get_lang('config', 'telegram_status'),
             'label_telegram_add_url' => psm_get_lang('config', 'telegram_add_url'),
             'label_telegram_api_token' => psm_get_lang('config', 'telegram_api_token'),
             'label_telegram_api_token_description' => psm_get_lang('config', 'telegram_api_token_description'),
-            'label_jabber_status' => psm_get_lang('config', 'jabber_status'),
-            'label_jabber_description' => psm_get_lang('config', 'jabber_description'),
-            'label_jabber_host' => psm_get_lang('config', 'jabber_host'),
-            'label_jabber_host_description' => psm_get_lang('config', 'jabber_host_description'),
-            'label_jabber_port' => psm_get_lang('config', 'jabber_port'),
-            'label_jabber_port_description' => psm_get_lang('config', 'jabber_port_description'),
-            'label_jabber_username' => psm_get_lang('config', 'jabber_username'),
-            'label_jabber_username_description' => psm_get_lang('config', 'jabber_username_description'),
-            'label_jabber_domain' => psm_get_lang('config', 'jabber_domain'),
-            'label_jabber_domain_description' => psm_get_lang('config', 'jabber_domain_description'),
-            'label_jabber_password' => psm_get_lang('config', 'jabber_password'),
-            'label_jabber_password_description' => psm_get_lang('config', 'jabber_password_description'),
+            'label_jira_status' => psm_get_lang('config', 'jira_status'),
+            'label_jira_base_url' => psm_get_lang('config', 'jira_base_url'),
+            'label_jira_base_url_description' => psm_get_lang('config', 'jira_base_url_description'),
+            'label_jira_username' => psm_get_lang('config', 'jira_username'),
+            'label_jira_api_token' => psm_get_lang('config', 'jira_api_token'),
+            'label_jira_project_key' => psm_get_lang('config', 'jira_project_key'),
+            'label_zabbix_status' => psm_get_lang('config', 'zabbix_status'),
+            'label_zabbix_url' => psm_get_lang('config', 'zabbix_url'),
+            'label_zabbix_api_key' => psm_get_lang('config', 'zabbix_api_key'),
             'label_dirauth_status' => psm_get_lang('config', 'dirauth_status'),
             'label_authdir_host_locn' => psm_get_lang('config', 'authdir_host_locn'),
             'label_authdir_host_port' => psm_get_lang('config', 'authdir_host_port'),
@@ -692,11 +509,9 @@ class ConfigController extends AbstractController
             'label_log_status_description' => psm_get_lang('config', 'log_status_description'),
             'label_log_email' => psm_get_lang('config', 'log_email'),
             'label_log_sms' => psm_get_lang('config', 'log_sms'),
-            'label_log_discord' => psm_get_lang('config', 'log_discord'),
-            'label_log_pushover' => psm_get_lang('config', 'log_pushover'),
-            'label_log_webhook' => psm_get_lang('config', 'log_webhook'),
             'label_log_telegram' => psm_get_lang('config', 'log_telegram'),
-            'label_log_jabber' => psm_get_lang('config', 'log_jabber'),
+            'label_log_jira' => psm_get_lang('config', 'log_jira'),
+            'label_log_zabbix' => psm_get_lang('config', 'log_zabbix'),
             'label_alert_proxy' => psm_get_lang('config', 'alert_proxy'),
             'label_alert_proxy_url' => psm_get_lang('config', 'alert_proxy_url'),
             'label_auto_refresh' => psm_get_lang('config', 'auto_refresh'),
