@@ -210,21 +210,26 @@ class StatusUpdater
             $serverIp = "[$serverIp]";
         }
 
-        $protocol = ($this->server['protocol'] === 'udp') ? 'udp://' : '';
-        $fp = @fsockopen($protocol . $serverIp, $this->server['port'], $errno, $this->error, $timeout);
+        $isUdp = ($this->server['protocol'] === 'udp');
+        $protocol = $isUdp ? 'udp://' : 'tcp://';
+        $fp = @stream_socket_client(
+            $protocol . $serverIp . ':' . $this->server['port'],
+            $errno,
+            $this->error,
+            $timeout
+        );
 
-        $status = ($fp === false) ? false : true;
-        if ($status && $protocol !== 'udp://') {
-            stream_set_timeout($fp, $timeout);
-            // Probe the socket to ensure the port is actually reachable
-            @fwrite($fp, "\0");
-            $probe = @fread($fp, 1);
-            $streamMeta = stream_get_meta_data($fp);
-            if ($streamMeta['timed_out'] || $streamMeta['eof'] || $probe === '') {
-                $status = false;
-                $this->error = 'No response received from TCP service.';
+        $status = ($fp !== false);
+
+        if ($status && $isUdp && (int) $this->server['port'] === 53) {
+            $status = $this->checkDnsPort($fp, $timeout);
+            if (!$status && empty($this->error)) {
+                $this->error = 'No DNS response received on UDP port 53.';
             }
+        } elseif (!$status && empty($this->error)) {
+            $this->error = 'Could not connect to service port.';
         }
+
         $this->rtime = (microtime(true) - $starttime);
 
         if (is_resource($fp)) {
@@ -437,6 +442,55 @@ class StatusUpdater
             }
             $this->db->save(PSM_DB_PREFIX . 'servers', $save, array('server_id' => $this->server_id));
         }
+    }
+
+    /**
+     * Perform a lightweight DNS query to confirm UDP port 53 responds.
+     *
+     * @param resource $socket
+     * @param int $timeout
+     * @return bool
+     */
+    private function checkDnsPort($socket, $timeout)
+    {
+        if (!is_resource($socket)) {
+            return false;
+        }
+
+        $transactionId = random_int(0, 0xffff);
+        $flags = 0x0100; // standard query
+        $questionCount = 1;
+        $header = pack('nnnnnn', $transactionId, $flags, $questionCount, 0, 0, 0);
+
+        $queryName = '';
+        foreach (explode('.', 'example.com') as $label) {
+            $queryName .= chr(strlen($label)) . $label;
+        }
+        $queryName .= "\0"; // terminator
+        $query = $queryName . pack('nn', 1, 1); // type A, class IN
+
+        $packet = $header . $query;
+
+        stream_set_timeout($socket, $timeout);
+        fwrite($socket, $packet);
+
+        $read = array($socket);
+        $write = null;
+        $except = null;
+        $selected = stream_select($read, $write, $except, $timeout);
+
+        if ($selected === false || $selected === 0) {
+            return false;
+        }
+
+        $response = fread($socket, 512);
+        if ($response === false || strlen($response) < 2) {
+            return false;
+        }
+
+        $responseId = unpack('n', substr($response, 0, 2));
+
+        return isset($responseId[1]) && $responseId[1] === $transactionId;
     }
 
     /**
