@@ -15,10 +15,12 @@
 		<!-- Password repeat -->
 		{{ macro.input_field("password", "password_repeat", null, "password_repeat", label_password_repeat, null, placeholder_password, "255", null, null, null, null, null, null, "new-password") }}
 		<!-- Email -->
-		{{ macro.input_field("email", "email", null, "email", label_email, email, label_email, "255", null, null, null, null, true, null, "email") }}
-		<!-- Mobile -->
-		{{ macro.input_field("tel", "mobile", null, "mobile", label_mobile, mobile, label_mobile, "15", null, null, null, null, null, null, "tel") }}
-	</fieldset>
+                {{ macro.input_field("email", "email", null, "email", label_email, email, label_email, "255", null, null, null, null, true, null, "email") }}
+                <!-- Mobile -->
+                {{ macro.input_field("tel", "mobile", null, "mobile", label_mobile, mobile, label_mobile, "15", null, null, null, null, null, null, "tel") }}
+                <!-- Theme -->
+                {{ macro.input_select("theme", "theme", label_theme, theme_options, theme) }}
+        </fieldset>
         <!-- Telegram settings -->
         <fieldset>
         <legend>{{ label_telegram }}</legend>

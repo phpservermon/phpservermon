@@ -33,7 +33,7 @@
         <![endif]-->
 </head>
 
-<body class="app-shell" data-theme="auto" data-asset-base="{{ asset() }}">
+<body class="app-shell" data-theme="{{ theme_preference }}" data-asset-base="{{ asset() }}">
         <nav class="navbar fixed-top navbar-expand-lg navbar-light app-navbar shadow-sm">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
@@ -57,10 +57,17 @@
                                 <a class="btn btn-sm btn-outline-secondary" href="index.php?mod=server_log">
                                         <i class="fas fa-bell-slash me-1"></i> Silence alerts
                                 </a>
-                                <button class="btn btn-sm btn-outline-light theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-                                        <span class="theme-icon" data-theme-preference="light"><i class="fas fa-sun"></i></span>
-                                        <span class="theme-icon" data-theme-preference="dark"><i class="fas fa-moon"></i></span>
-                                </button>
+                                <div class="dropdown theme-toggle" data-theme-toggle data-theme-labels="{{ theme_options|json_encode|e('html_attr') }}" data-theme-current="{{ theme_preference }}" data-csrf="{{ csrf_token('profile') }}">
+                                        <button class="btn btn-sm btn-outline-light dropdown-toggle" id="themeToggle" type="button" data-bs-toggle="dropdown" aria-label="{{ theme_label }}">
+                                                <i class="fas fa-palette me-1"></i>
+                                                <span class="current-theme-label">{{ theme_options[theme_preference] }}</span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeToggle">
+                                                {% for value, label in theme_options %}
+                                                <li><button class="dropdown-item theme-option{% if value == theme_preference %} active{% endif %}" type="button" data-theme-value="{{ value }}">{{ label }}</button></li>
+                                                {% endfor %}
+                                        </ul>
+                                </div>
                         </div>
                 </div>
             </div>

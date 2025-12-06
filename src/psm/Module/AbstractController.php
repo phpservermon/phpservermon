@@ -225,6 +225,22 @@ abstract class AbstractController implements ControllerInterface
                 'html_content' => $html,
             );
 
+            $theme_options = array(
+                'light' => psm_get_lang('users', 'theme_light'),
+                'dark' => psm_get_lang('users', 'theme_dark'),
+                'blue' => psm_get_lang('users', 'theme_blue'),
+                'green' => psm_get_lang('users', 'theme_green'),
+            );
+
+            $theme_preference = $this->getUser()->getUserPref('theme', 'light');
+            if (!array_key_exists($theme_preference, $theme_options)) {
+                $theme_preference = 'light';
+            }
+
+            $tpl_data['theme_options'] = $theme_options;
+            $tpl_data['theme_preference'] = $theme_preference;
+            $tpl_data['theme_label'] = psm_get_lang('users', 'theme');
+
             // add menu to page?
             if ($this->add_menu) {
                 $tpl_data['html_menu'] = $this->createHTMLMenu();

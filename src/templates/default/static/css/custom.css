@@ -28,6 +28,36 @@
     --psm-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
+[data-theme="blue"] {
+    --psm-bg: #e8f0ff;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #dbeafe;
+    --psm-border: #c7d7fe;
+    --psm-text: #0f172a;
+    --psm-muted: #1f2937;
+    --psm-accent: #1d4ed8;
+    --psm-accent-soft: #e0e7ff;
+    --psm-success: #15803d;
+    --psm-warning: #d97706;
+    --psm-danger: #b91c1c;
+    --psm-shadow: 0 12px 30px rgba(30, 64, 175, 0.16);
+}
+
+[data-theme="green"] {
+    --psm-bg: #ecfdf3;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #d1fae5;
+    --psm-border: #bbf7d0;
+    --psm-text: #064e3b;
+    --psm-muted: #047857;
+    --psm-accent: #16a34a;
+    --psm-accent-soft: #dcfce7;
+    --psm-success: #15803d;
+    --psm-warning: #b45309;
+    --psm-danger: #b91c1c;
+    --psm-shadow: 0 12px 30px rgba(6, 78, 59, 0.14);
+}
+
 body.app-shell {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--psm-bg);
@@ -287,8 +317,13 @@ body.app-shell {
     background: var(--psm-surface);
 }
 
-.theme-toggle .theme-icon { display: inline-flex; align-items: center; }
-.theme-toggle .theme-icon.d-none { display: none !important; }
+.theme-toggle .current-theme-label { font-weight: 600; }
+.theme-toggle .dropdown-menu { min-width: 10rem; }
+.theme-toggle .dropdown-item.active {
+    font-weight: 600;
+    background: var(--psm-accent-soft);
+    color: var(--psm-accent);
+}
 
 .searchbar {
     background: var(--psm-surface);

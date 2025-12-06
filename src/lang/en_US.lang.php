@@ -111,6 +111,11 @@ $sm_lang = array(
  global configuration.<br><b>Users</b> can only view and run the updater for the
  servers that have been assigned to them.',
         'mobile' => 'Mobile',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'email' => 'Email',
         'pushover' => 'Pushover',
         'pushover_description' => 'Pushover is a service that makes it easy to get real-time notifications. See <a href="https://pushover.net/" target="_blank">their website</a> for more info.',

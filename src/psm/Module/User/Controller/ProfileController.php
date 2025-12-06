@@ -30,6 +30,7 @@ namespace psm\Module\User\Controller;
 
 use psm\Module\AbstractController;
 use psm\Service\Database;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProfileController extends AbstractController
 {
@@ -41,12 +42,19 @@ class ProfileController extends AbstractController
     protected $profile_fields =
         array('name', 'user_name', 'email', 'mobile', 'telegram_id');
 
+    /**
+     * Available theme preferences.
+     *
+     * @var string[]
+     */
+    private $theme_options = array('light', 'dark', 'blue', 'green');
+
     public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
 
         $this->setActions(array(
-            'index', 'save',
+            'index', 'save', 'saveTheme',
         ), 'index');
         $this->setCSRFKey('profile');
     }
@@ -86,6 +94,9 @@ class ProfileController extends AbstractController
             'label_telegram_get_chat_id' => psm_get_lang('users', 'telegram_get_chat_id'),
             'telegram_get_chat_id_url' => PSM_TELEGRAM_GET_ID_URL,
             'label_email' => psm_get_lang('users', 'email'),
+            'label_theme' => psm_get_lang('users', 'theme'),
+            'theme_options' => $this->getThemeOptionLabels(),
+            'theme' => $this->normalizeTheme($this->getUser()->getUserPref('theme', 'light')),
             'label_save' => psm_get_lang('system', 'save'),
             'form_action' => psm_build_url(array(
                 'mod' => 'user_profile',
@@ -144,6 +155,8 @@ class ProfileController extends AbstractController
         unset($clean['password_repeat']);
 
         $this->db->save(PSM_DB_PREFIX . 'users', $clean, array('user_id' => $this->getUser()->getUserId()));
+        $theme = isset($_POST['theme']) ? $this->normalizeTheme($this->sanitizePostedField($_POST['theme'])) : 'light';
+        $this->getUser()->setUserPref('theme', $theme);
         $this->container->get('event')->dispatch(
             \psm\Module\User\UserEvents::USER_EDIT,
             new \psm\Module\User\Event\UserEvent($this->getUser()->getUserId())
@@ -171,6 +184,36 @@ class ProfileController extends AbstractController
         }
 
         return trim(strip_tags((string) $value));
+    }
+
+    /**
+     * Normalize incoming theme values to allowed options.
+     *
+     * @param string $value
+     * @return string
+     */
+    private function normalizeTheme($value)
+    {
+        $theme = in_array($value, $this->theme_options, true) ? $value : 'light';
+        return $theme;
+    }
+
+    /**
+     * Get available theme options with labels.
+     *
+     * @return array
+     */
+    private function getThemeOptionLabels()
+    {
+        $options = array();
+        foreach ($this->theme_options as $option) {
+            $options[] = array(
+                'value' => $option,
+                'label' => psm_get_lang('users', 'theme_' . $option),
+            );
+        }
+
+        return $options;
     }
 
     /**
@@ -203,5 +246,22 @@ class ProfileController extends AbstractController
             $error = 'Unknown';
         }
         $this->addMessage(sprintf(psm_get_lang('users', 'telegram_bot_error'), $error), 'error');
+    }
+
+    /**
+     * Save the theme preference for the current user via XHR.
+     *
+     * @return JsonResponse
+     */
+    protected function executeSaveTheme()
+    {
+        if (!$this->isXHR()) {
+            return $this->executeIndex();
+        }
+
+        $theme = $this->normalizeTheme(psm_POST('theme', 'light'));
+        $this->getUser()->setUserPref('theme', $theme);
+
+        return new JsonResponse(array('theme' => $theme));
     }
 }
