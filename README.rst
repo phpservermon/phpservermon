@@ -131,6 +131,7 @@ Documentation
 -------------
 
 The documentation is available in the docs folder or https://docs.phpservermonitor.org.
+For a non-Docker local setup that mirrors the old container workflow, see ``docs/local-environment.md``.
 
 
 License
@@ -148,17 +149,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with PHP Server Monitor.  If not, see https://www.gnu.org/licenses/.
-
-Docker
--------
-
-PHPServerMonitor is now available on Docker : https://github.com/phpservermon/docker-phpservermonitor
-
-Local Docker Compose setup
---------------------------
-
-This repository includes a ``Dockerfile`` and ``docker-compose.yml`` for local development. Build and start the stack with::
-
-    docker compose up --build
-
-See ``docs/docker.md`` for configuration options and runtime tips.
