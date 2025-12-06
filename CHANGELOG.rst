@@ -2,9 +2,11 @@ Changelog
 =========
 
 
-Not yet released
-----------------
-\-
+v4.0.1 (released December 6, 2025)
+----------------------------------
+
+* Optimized configuration loading to avoid redundant database queries during requests.
+* Hardened configuration bootstrap to return graceful errors instead of uncaught exceptions.
 
 v3.5.2 (released August 12, 2020)
 -----------------------------

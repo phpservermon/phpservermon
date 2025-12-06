@@ -176,13 +176,18 @@ namespace {
     /**
      * Load config from the database to the $GLOBALS['sm_config'] variable
      *
+     * @param bool $forceReload set to true to refresh the cached configuration
      * @return boolean
      * @global object $db
      * @see psm_get_conf()
      */
-    function psm_load_conf()
+    function psm_load_conf($forceReload = false)
     {
         global $db;
+
+        if (isset($GLOBALS['sm_config']) && !$forceReload && !empty($GLOBALS['sm_config'])) {
+            return true;
+        }
 
         $GLOBALS['sm_config'] = array();
 
@@ -192,16 +197,20 @@ namespace {
         if (!$db->ifTableExists(PSM_DB_PREFIX . 'config')) {
             return false;
         }
-        $config_db = $db->select(PSM_DB_PREFIX . 'config', null, array('key', 'value'));
+        try {
+            $config_db = $db->select(PSM_DB_PREFIX . 'config', null, array('key', 'value'));
 
-        if (is_array($config_db) && !empty($config_db)) {
-            foreach ($config_db as $setting) {
-                $GLOBALS['sm_config'][$setting['key']] = $setting['value'];
+            if (is_array($config_db) && !empty($config_db)) {
+                foreach ($config_db as $setting) {
+                    $GLOBALS['sm_config'][$setting['key']] = $setting['value'];
+                }
+                return true;
             }
-            return true;
-        } else {
-            return false;
+        } catch (\Throwable $exception) {
+            error_log('Failed to load configuration: ' . $exception->getMessage());
         }
+
+        return false;
     }
 
     /**
