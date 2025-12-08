@@ -259,9 +259,16 @@ class ProfileController extends AbstractController
             return $this->executeIndex();
         }
 
-        $theme = $this->normalizeTheme(psm_POST('theme', 'light'));
+        $theme = isset($_POST['theme'])
+            ? $this->normalizeTheme($this->sanitizePostedField($_POST['theme']))
+            : 'light';
+
         $this->getUser()->setUserPref('theme', $theme);
 
-        return new JsonResponse(array('theme' => $theme));
+        return new JsonResponse(array(
+            'success' => true,
+            'theme' => $theme,
+            'label' => psm_get_lang('users', 'theme_' . $theme),
+        ));
     }
 }

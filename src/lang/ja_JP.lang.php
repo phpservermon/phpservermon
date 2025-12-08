@@ -141,6 +141,11 @@ $sm_lang = array(
         'inserted' => 'ユーザーを追加しました。',
         'profile' => 'プロフィール',
         'profile_updated' => 'あなたのプロフィールは更新されました。',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'ユーザーネームは2～64文字以内で入力してください。',
         'error_user_name_invalid' => 'ユーザー名は、アルファベット、数字とアンダーバーのみを含むことができます
  ドット（.）。',
