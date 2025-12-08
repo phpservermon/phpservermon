@@ -156,6 +156,11 @@ $sm_lang = array(
         'inserted' => 'Користувача додано.',
         'profile' => 'Профіль',
         'profile_updated' => 'Ваш профіль оновлено.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'Імена користувачів мають бути довжиною
  від 2 до 64 символів.',
         'error_user_name_invalid' => 'Ім’я користувача може містити лише літери

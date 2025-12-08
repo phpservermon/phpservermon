@@ -114,6 +114,11 @@ define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_mon
 define('PSM_TELEGRAM_GET_ID_URL', 'https://telegram.me/cid_bot');
 
 /**
+ * Base API URL for Telegram Bot API requests.
+ */
+define('PSM_TELEGRAM_API_URL', 'https://api.telegram.org');
+
+/**
  * By defining the PSM_BASE_URL, you will force the psm_build_url() to use this.
  * Useful for cronjobs if it cannot be auto-detected.
  */
