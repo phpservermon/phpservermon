@@ -106,6 +106,11 @@ $sm_lang = array(
         'inserted' => 'Bruger tilføjet.',
         'profile' => 'Profil',
         'profile_updated' => 'Din profil er opdateret.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'Brugernavn skal være mellem 2 til 64 tegn.',
         'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9), prikker (.)
  og (_).',
