@@ -111,6 +111,11 @@ $sm_lang = array(
         'inserted' => 'کاربر اضافه شد.',
         'profile' => 'پروفایل',
         'profile_updated' => 'پروفایل شما بروزرسانی شد.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'نام های کاربری باید بین 2 و 64 کاراکتر باشد.',
         'error_user_name_invalid' => 'نام کاربری باید فقط شامل حروف (a-z, A-Z)، نقطه (.)
  اعداد (0-9) و علامت (_) باشد.',

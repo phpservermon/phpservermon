@@ -115,6 +115,11 @@ $sm_lang = array(
         'inserted' => 'Потребителят е добавен.',
         'profile' => 'Профил',
         'profile_updated' => 'Профилът е обновен успешно',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'Потребителското име трябва да съдържа
  между 2 и 64 символа',
         'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z),
