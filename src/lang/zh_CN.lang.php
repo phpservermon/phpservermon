@@ -106,6 +106,11 @@ $sm_lang = array(
         'inserted' => '用户已添加.',
         'profile' => '个人资料',
         'profile_updated' => '个人资料已更新.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => '用户名长度必须为2-64个字符.',
         'error_user_name_invalid' => '用户名只允许使用字母 (a-z, A-Z), 数字 (0-9), 點（。）
  及下划线 (_).',

@@ -140,6 +140,11 @@ $sm_lang = array(
         'inserted' => 'Usuari afegit.',
         'profile' => 'Perfil',
         'profile_updated' => 'El vostre perfil ha estat actualitzat.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'El nom d\'usuari ha de tenir entre 2 i 64 caràcters.',
         'error_user_name_invalid' => 'El nom d\'usuari només pot tenir caràcters alfanumèrics (a-z, A-Z), digits
  (0-9) i guions baixos (_).',

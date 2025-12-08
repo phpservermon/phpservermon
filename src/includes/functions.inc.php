@@ -674,7 +674,7 @@ namespace {
      */
     function psm_build_telegram()
     {
-        $telegram = new \Telegram();
+        $telegram = new \Telegram(PSM_TELEGRAM_API_URL);
         $telegram->setToken(psm_get_conf('telegram_api_token'));
 
         return $telegram;
@@ -1098,7 +1098,14 @@ namespace {
         private $token;
         private $user;
         private $message;
-        private $url;
+        private $apiBase;
+        private $parseMode = 'HTML';
+        private $disableWebPagePreview = true;
+
+        public function __construct($apiBase = null)
+        {
+            $this->apiBase = rtrim($apiBase ?: PSM_TELEGRAM_API_URL, '/');
+        }
 
         public function setToken($token)
         {
@@ -1121,16 +1128,31 @@ namespace {
             $this->message = (string)$message;
         }
 
-        public function sendurl()
+        private function buildEndpoint($method)
         {
-            if (empty($this->url)) {
+            return $this->apiBase . '/bot' . urlencode($this->token) . '/' . ltrim($method, '/');
+        }
+
+        private function sendRequest($method, array $payload)
+        {
+            if (empty($this->token)) {
                 return [
                     'ok' => false,
-                    'description' => 'No telegram endpoint configured',
+                    'description' => 'No Telegram API token configured',
                 ];
             }
 
-            $con = curl_init($this->url);
+            $endpoint = $this->buildEndpoint($method);
+            $encodedPayload = json_encode($payload);
+
+            if ($encodedPayload === false) {
+                return [
+                    'ok' => false,
+                    'description' => 'Unable to encode Telegram payload',
+                ];
+            }
+
+            $con = curl_init($endpoint);
             if ($con === false) {
                 return [
                     'ok' => false,
@@ -1141,6 +1163,12 @@ namespace {
             curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
             curl_setopt($con, CURLOPT_TIMEOUT, 60);
+            curl_setopt($con, CURLOPT_POST, true);
+            curl_setopt($con, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ));
+            curl_setopt($con, CURLOPT_POSTFIELDS, $encodedPayload);
 
             $response = curl_exec($con);
             if ($response === false) {
@@ -1195,11 +1223,14 @@ namespace {
                 ];
             }
 
-            $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) .
-                '/sendMessage?chat_id=' . urlencode($this->user) . '&text=' .
-                urlencode($this->message) . '&parse_mode=HTML&disable_web_page_preview=True';
+            $payload = array(
+                'chat_id' => $this->user,
+                'text' => $this->message,
+                'parse_mode' => $this->parseMode,
+                'disable_web_page_preview' => $this->disableWebPagePreview,
+            );
 
-            return $this->sendurl();
+            return $this->sendRequest('sendMessage', $payload);
         }
 
         // Get the bots username
@@ -1212,9 +1243,7 @@ namespace {
                 ];
             }
 
-            $this->url = 'https://api.telegram.org/bot' . urlencode($this->token) . '/getMe';
-
-            return $this->sendurl();
+            return $this->sendRequest('getMe', array());
         }
     }
 
