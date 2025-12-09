@@ -162,12 +162,23 @@ class HistoryGraph
     protected function calculateUptime($server_id, DateTime $start_time, DateTime $end_time)
     {
         $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        $previous_record = $this->getPreviousUptimeRecord($server_id, $start_time);
 
-        if (!empty($uptime_records)) {
-            $downtime = $this->calculateDowntimeFromUptimeRecords($uptime_records, $start_time, $end_time);
-            $timeframe = $end_time->getTimestamp() - $start_time->getTimestamp();
+        if (!empty($uptime_records) || $previous_record !== null) {
+            $timeframe = $this->calculateDowntimeFromUptimeRecords(
+                $uptime_records,
+                $previous_record,
+                $start_time,
+                $end_time
+            );
 
-            return $timeframe > 0 ? 100 - (($downtime / $timeframe) * 100) : null;
+            if ($timeframe === null) {
+                return null;
+            }
+
+            list($downtime, $covered_time) = $timeframe;
+
+            return $covered_time > 0 ? 100 - (($downtime / $covered_time) * 100) : null;
         }
 
         $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
@@ -176,40 +187,51 @@ class HistoryGraph
             return null;
         }
 
-        $downtime = $this->calculateDowntimeFromHistoryRecords($history_records, $start_time, $end_time);
-        $timeframe = $end_time->getTimestamp() - $start_time->getTimestamp();
+        list($downtime, $covered_time) = $this->calculateDowntimeFromHistoryRecords(
+            $history_records,
+            $start_time,
+            $end_time
+        );
 
-        return $timeframe > 0 ? 100 - (($downtime / $timeframe) * 100) : null;
+        return $covered_time > 0 ? 100 - (($downtime / $covered_time) * 100) : null;
     }
 
     /**
      * Calculate downtime in seconds using raw uptime records.
      *
      * @param array $uptime_records
+     * @param array|null $previous_record
      * @param DateTime $start_time
      * @param DateTime $end_time
-     * @return int
+     * @return array{int,int}|null [downtime seconds, covered timeframe seconds]
      */
-    protected function calculateDowntimeFromUptimeRecords(array $uptime_records, DateTime $start_time, DateTime $end_time)
+    protected function calculateDowntimeFromUptimeRecords(array $uptime_records, $previous_record, DateTime $start_time, DateTime $end_time)
     {
         $downtime = 0;
         $window_start = $start_time->getTimestamp();
         $window_end = $end_time->getTimestamp();
 
-        // initialize with the first record inside the timeframe
-        /** @var array $previous */
-        $previous = reset($uptime_records);
-        $previous_time = max((int) $previous['date_ts'], $window_start);
-        $previous_status = (bool) $previous['status'];
+        if (empty($uptime_records) && $previous_record === null) {
+            return null;
+        }
+
+        $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
+        $coverage_start = $window_start;
+
+        if ($previous_record === null && $first_record !== null && (int) $first_record['date_ts'] > $coverage_start) {
+            // monitoring started later than the requested window; shift to first record
+            $coverage_start = (int) $first_record['date_ts'];
+        }
+
+        $previous_time = $coverage_start;
+        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : ($first_record !== null ? (bool) $first_record['status'] : true);
 
         foreach ($uptime_records as $record) {
             $current_time = (int) $record['date_ts'];
 
-            if ($current_time < $window_start) {
+            if ($current_time < $coverage_start) {
                 // outside the window
-                $previous = $record;
                 $previous_status = (bool) $record['status'];
-                $previous_time = $window_start;
                 continue;
             }
 
@@ -221,17 +243,17 @@ class HistoryGraph
                 $downtime += ($current_time - $previous_time);
             }
 
-            $previous = $record;
             $previous_status = (bool) $record['status'];
             $previous_time = $current_time;
         }
 
-        // extend the last status to the end of the window
         if (!$previous_status && $previous_time < $window_end) {
             $downtime += ($window_end - $previous_time);
         }
 
-        return $downtime;
+        $covered_time = max(0, $window_end - $coverage_start);
+
+        return array($downtime, $covered_time);
     }
 
     /**
@@ -240,11 +262,12 @@ class HistoryGraph
      * @param array $history_records
      * @param DateTime $start_time
      * @param DateTime $end_time
-     * @return int
+     * @return array{int,int} [downtime seconds, covered timeframe seconds]
      */
     protected function calculateDowntimeFromHistoryRecords(array $history_records, DateTime $start_time, DateTime $end_time)
     {
         $downtime = 0;
+        $covered_time = 0;
         $window_start = $start_time->getTimestamp();
         $window_end = $end_time->getTimestamp();
 
@@ -268,9 +291,39 @@ class HistoryGraph
 
             $failed_ratio = ((int) $record['checks_failed']) / $checks_total;
             $downtime += ($period_end - $period_start) * $failed_ratio;
+            $covered_time += ($period_end - $period_start);
         }
 
-        return $downtime;
+        // if monitoring did not exist for part of the requested window, only the covered portion counts
+        return array($downtime, $covered_time);
+    }
+
+    /**
+     * Fetch the most recent uptime record prior to the requested window start.
+     *
+     * @param int $server_id
+     * @param DateTime $start_time
+     * @return array|null
+     */
+    protected function getPreviousUptimeRecord($server_id, DateTime $start_time)
+    {
+        $records = $this->db->execute(
+            "SELECT *, UNIX_TIMESTAMP(CONVERT_TZ(`date`, '+00:00', @@session.time_zone)) AS date_ts
+                        FROM `" . PSM_DB_PREFIX . "servers_uptime`
+                        WHERE `server_id` = :server_id AND `date` < :start_time
+                        ORDER BY `date` DESC
+                        LIMIT 1",
+            array(
+                'server_id' => $server_id,
+                'start_time' => $start_time->format('Y-m-d H:i:s'),
+            )
+        );
+
+        if (empty($records)) {
+            return null;
+        }
+
+        return $records[0];
     }
 
     /**
