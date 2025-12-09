@@ -291,12 +291,23 @@ class StatusUpdater
             $msg = $code_matches[3][0];
 
             $allow_http_status = explode("|", $this->server['allow_http_status']);
+            $result = null;
+            // Authentication failures should always mark the website as offline
+            if (
+                (int) $code === 401 || (int) $code === 403
+            ) {
+                if (!empty($this->server['website_username']) || !empty($this->server['website_password'])) {
+                    $this->error = "LOGIN ERROR: Authentication failed for provided credentials.";
+                    $result = false;
+                }
+            }
             // All status codes starting with a 4 or higher mean trouble!
-            if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
-                $this->error = "HTTP STATUS ERROR: " . $code . ' ' . $msg;
-                $result = false;
-            } else {
-                $result = true;
+            if ($result !== false) {
+                if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
+                    $this->error = "HTTP STATUS ERROR: " . $code . ' ' . $msg;
+                    $result = false;
+                } else {
+                    $result = true;
 
                 // Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
                 if ($this->server['pattern'] != '') {
