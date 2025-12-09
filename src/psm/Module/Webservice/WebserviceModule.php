@@ -24,40 +24,23 @@
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
  * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
- * @since       phpservermon 2.1
- **/
+ */
 
-namespace psm\Module;
+namespace psm\Module\Webservice;
 
-use psm\Service\Database;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use psm\Module\ModuleInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-interface ControllerInterface extends ContainerAwareInterface
+class WebserviceModule implements ModuleInterface
 {
+    public function load(ContainerBuilder $container)
+    {
+    }
 
-    public function __construct(Database $db, \Twig\Environment $twig);
-
-    /**
-     * Run the controller
-     */
-    public function run();
-
-    /**
-     * Get the minimum required user level for this controller
-     * @return int
-     */
-    public function getMinUserLevelRequired();
-
-    /**
-     * Get custom key for CSRF validation
-     * @return string
-     */
-    public function getCSRFKey();
-
-    /**
-     * Whether CSRF protection should be enforced for this controller.
-     *
-     * @return bool
-     */
-    public function isCsrfProtectionRequired();
+    public function getControllers()
+    {
+        return array(
+            'webservice' => __NAMESPACE__ . '\\Controller\\WebserviceController',
+        );
+    }
 }

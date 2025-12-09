@@ -129,8 +129,9 @@ class Router
         $module = $this->container->get('module.' . $module_id);
         $controllers = $module->getControllers();
         if (!isset($controllers[$controller_id]) || !class_exists($controllers[$controller_id])) {
-            throw new \InvalidArgumentException('Controller "' . $controller_id . '"
-             is not registered or does not exist.');
+            throw new \InvalidArgumentException(
+                'Controller "' . $controller_id . '" is not registered or does not exist.'
+            );
         }
         $controller = new $controllers[$controller_id](
             $this->container->get('db'),
@@ -165,7 +166,9 @@ class Router
     {
         $request = Request::createFromGlobals();
 
-        if ($request->getMethod() == 'POST') {
+        $csrf_required = $controller->isCsrfProtectionRequired();
+
+        if ($csrf_required && $request->getMethod() == 'POST') {
             // require CSRF token for all POST calls
             $session = $this->container->get('user')->getSession();
             $token_in = $request->request->get('csrf', '');
