@@ -25,14 +25,20 @@
                         {{ label_usermenu }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			<a class="dropdown-item" href="{{ url_profile|raw }}">{{ label_profile }} </a>
-			<a class="dropdown-item" href="{{ url_logout|raw }}">{{ label_logout }} </a>
-		</div>
-	</li>
-	<!--
-	<li class="nav-item">
-		<i class="text-white fas fa-universal-access fa-lg nav-link"></i>
-	</li>
-	-->
+                        <a class="dropdown-item" href="{{ url_profile|raw }}">{{ label_profile }} </a>
+                        <a class="dropdown-item" href="{{ url_logout|raw }}">{{ label_logout }} </a>
+                </div>
+        </li>
+        <li class="nav-item d-none d-lg-block">
+                <a class="nav-link" href="{{ url_profile|raw }}">{{ label_profile }}</a>
+        </li>
+        <li class="nav-item d-none d-lg-block">
+                <a class="nav-link" href="{{ url_logout|raw }}">{{ label_logout }}</a>
+        </li>
+        <!--
+        <li class="nav-item">
+                <i class="text-white fas fa-universal-access fa-lg nav-link"></i>
+        </li>
+        -->
 </ul>
 <noscript></div></noscript>
