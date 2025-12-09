@@ -29,7 +29,7 @@
 
 namespace psm\Module\User\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEvent extends Event
 {

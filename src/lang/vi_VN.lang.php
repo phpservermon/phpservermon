@@ -105,6 +105,11 @@ $sm_lang = array(
         'inserted' => 'Đã thêm người dùng.',
         'profile' => 'Hồ sơ',
         'profile_updated' => 'Hồ sơ của bạn đã được cập nhật.',
+        'theme' => 'Theme',
+        'theme_light' => 'Light',
+        'theme_dark' => 'Dark',
+        'theme_blue' => 'Blue',
+        'theme_green' => 'Green',
         'error_user_name_bad_length' => 'Tên người dùng phải có từ 2 và 64 ký tự.',
         'error_user_name_invalid' => 'Tên người dùng chỉ có thể chứa các chữ cái(a-z, A-Z), số
  (0-9), dấu chấm (.) và dấu gạch dưới (_).',

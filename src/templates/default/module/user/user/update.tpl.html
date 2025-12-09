@@ -7,10 +7,12 @@
 			{{ macro.input_field("text", "user_name", null, "user_name", label_user_name, edit_value_user_name, null, "255", null, null, null, null, true) }}
 			<!-- Name -->
 			{{ macro.input_field("text", "name", null, "name", label_name, edit_value_name, null, "255", null, null, null, null, true) }}
-			<!-- Level -->
-			{{ macro.input_select("level", "level", label_level, levels, user_level) }}
-			<!-- Password -->
-			{{ macro.input_field("password", "password", null, "password", label_password, edit_value_password, placeholder_password, "255") }}
+                        <!-- Level -->
+                        {{ macro.input_select("level", "level", label_level, levels, user_level) }}
+                        <!-- Theme -->
+                        {{ macro.input_select("theme", "theme", label_theme, theme_options, theme) }}
+                        <!-- Password -->
+                        {{ macro.input_field("password", "password", null, "password", label_password, edit_value_password, placeholder_password, "255") }}
 			<!-- Password repeat -->
 			{{ macro.input_field("password", "password_repeat", null, "password_repeat", label_password_repeat, edit_value_password_repeat, placeholder_password, "255") }}
 			<!-- Email -->
