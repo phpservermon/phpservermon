@@ -259,6 +259,17 @@ class ServerController extends AbstractServerController
             ));
         }
 
+        $tpl_data['label_login_info_output'] = psm_get_lang('servers', 'output') .
+            ' (' . psm_get_lang('servers', 'authentication_settings') . ')';
+        $tpl_data['label_login_info_output_description'] = psm_get_lang(
+            'servers',
+            'website_password_description'
+        );
+        $tpl_data['login_info_output'] = $this->buildLoginInfoOutput(
+            $tpl_data['edit_value_website_username'] ?? '',
+            $tpl_data['edit_value_website_password'] ?? ''
+        );
+
         $notifications = array('email', 'sms', 'telegram');
         foreach ($notifications as $notification) {
             if (psm_get_conf($notification . '_status') == 0) {
@@ -656,6 +667,18 @@ class ServerController extends AbstractServerController
             'label_custom_header' => psm_get_lang('servers', 'custom_header'),
             'label_custom_header_description' => psm_get_lang('servers', 'custom_header_description'),
         );
+    }
+
+    private function buildLoginInfoOutput(string $username, string $passwordHash): string
+    {
+        $lines = array(
+            psm_get_lang('servers', 'website_username') . ': ' .
+                ($username !== '' ? $username : psm_get_lang('system', 'none')),
+            psm_get_lang('servers', 'website_password') . ': ' .
+                ($passwordHash !== '' ? psm_get_lang('system', 'yes') : psm_get_lang('system', 'none')),
+        );
+
+        return implode(PHP_EOL, $lines);
     }
 
     /**
