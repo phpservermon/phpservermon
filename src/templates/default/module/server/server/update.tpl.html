@@ -7,7 +7,7 @@
 			<!-- Label -->
 			{{ macro.input_field("text", "label", null, "label", label_label, edit_value_label, null, "255", null, null, null, null, true, true) }}
 			<!-- IP -->
-			{{ macro.input_field("text", "ip", null, "ip", label_domain, edit_value_ip, null, "255", null, null, null, null, true) }}
+                        {{ macro.input_field("text", "ip", null, "ip", label_domain, edit_value_ip, "https://example.com/login", "255", null, null, null, null, true) }}
 			<!-- Type -->
 			<div class="form-group">
 				<label for="type">{{ label_type }}</label>
@@ -138,9 +138,9 @@
 		<legend>{{ label_authentication_settings }} ({{ label_optional }})</legend>
 		<div class="col">
 			<!-- Website username -->
-			{{ macro.input_field("text", "website_username", null, "website_username", label_website_username, edit_value_website_username, null, "255", 'website_username_help', label_website_username_description, null, true, null, null, true) }}
-			<!-- website password -->
-			{{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "255", 'website_password_help', label_website_password_description, null, true, null, null, true) }}
+                        {{ macro.input_field("text", "website_username", null, "website_username", label_website_username, edit_value_website_username, null, "255", 'website_username_help', label_website_username_description, null, null, null, null, 'username') }}
+                        <!-- website password -->
+                        {{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "255", 'website_password_help', label_website_password_description, null, null, null, null, 'current-password') }}
 		</div>
 	</fieldset>
 	<fieldset>
