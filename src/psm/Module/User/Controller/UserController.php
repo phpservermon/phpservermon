@@ -347,8 +347,8 @@ class UserController extends AbstractController
         }
         $this->saveUserThemePreference($user_id, $theme);
         $this->container->get('event')->dispatch(
-            $event,
-            new \psm\Module\User\Event\UserEvent($user_id, $this->getUser()->getUserId())
+            new \psm\Module\User\Event\UserEvent($user_id, $this->getUser()->getUserId()),
+            $event
         );
         if (isset($password)) {
             $this->getUser()->changePassword($user_id, $password);

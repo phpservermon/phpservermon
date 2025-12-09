@@ -559,14 +559,15 @@ class User
     public function setUserPref($key, $value)
     {
         if ($this->loadPreferences()) {
-            if (isset($this->user_preferences[$key])) {
-                if ($this->user_preferences[$key] == $value) {
-                    return; // no change
-                }
-                $sql = 'UPDATE `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ? WHERE `user_id` = ?';
-            } else {
-                $sql = 'INSERT INTO `' . PSM_DB_PREFIX . 'users_preferences` SET `key` = ?, `value` = ?, `user_id` = ?';
+            if (isset($this->user_preferences[$key]) && $this->user_preferences[$key] == $value) {
+                return; // no change
             }
+
+            $sql = 'INSERT INTO `' . PSM_DB_PREFIX . 'users_preferences`
+                    (`key`, `value`, `user_id`)
+                    VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)';
+
             $sth = $this->db_connection->prepare($sql);
             $sth->execute(array($key, $value, $this->user_id));
             $this->user_preferences[$key] = $value;
