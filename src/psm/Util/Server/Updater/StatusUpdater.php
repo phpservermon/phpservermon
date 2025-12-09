@@ -292,15 +292,15 @@ class StatusUpdater
 
             $allow_http_status = explode("|", $this->server['allow_http_status']);
             $result = null;
+
             // Authentication failures should always mark the website as offline
-            if (
-                (int) $code === 401 || (int) $code === 403
-            ) {
+            if ((int) $code === 401 || (int) $code === 403) {
                 if (!empty($this->server['website_username']) || !empty($this->server['website_password'])) {
                     $this->error = "LOGIN ERROR: Authentication failed for provided credentials.";
                     $result = false;
                 }
             }
+
             // All status codes starting with a 4 or higher mean trouble!
             if ($result !== false) {
                 if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
@@ -309,55 +309,57 @@ class StatusUpdater
                 } else {
                     $result = true;
 
-                // Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
-                if ($this->server['pattern'] != '') {
-                    // Check to see if the body should not contain specified pattern
-                    // Check to see if the pattern was [not] found.
-                    if (
-                        ($this->server['pattern_online'] == 'yes') ==
-                        !preg_match(
-                            "/{$this->server['pattern']}/i",
-                            $curl_result['exec']
-                        )
-                    ) {
-                        $this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " .
-                            ($this->server['pattern_online'] == 'yes' ? 'not' : 'was') .
-                            ' found.';
-                        $result = false;
-                    }
-                }
-
-                // Check if the website redirects to another domain
-                if ($this->server['redirect_check'] == 'bad') {
-                    $location_matches = array();
-                    preg_match(
-                        '/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/',
-                        $curl_result['exec'],
-                        $location_matches
-                    );
-                    if (!empty($location_matches)) {
-                        $ip_matches = array();
-                        preg_match(
-                            '/(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)?/',
-                            $this->server['ip'],
-                            $ip_matches
-                        );
-                        if (strtolower($location_matches[4]) !== strtolower($ip_matches[3])) {
-                            $this->error = "The IP/URL redirects to another domain.";
+                    // Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
+                    if ($this->server['pattern'] != '') {
+                        // Check to see if the body should not contain specified pattern
+                        // Check to see if the pattern was [not] found.
+                        if (
+                            ($this->server['pattern_online'] == 'yes') ==
+                            !preg_match(
+                                "/{$this->server['pattern']}/i",
+                                $curl_result['exec']
+                            )
+                        ) {
+                            $this->error = "TEXT ERROR : Pattern '{$this->server['pattern']}' " .
+                                ($this->server['pattern_online'] == 'yes' ? 'not' : 'was') .
+                                ' found.';
                             $result = false;
                         }
                     }
-                }
 
-                // Should we check a header ?
-                if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
-                    $header_flag = false;
-                    // Only get the header text if the result also includes the body
-                    $header_text = substr($curl_result['exec'], 0, strpos($curl_result['exec'], "\r\n\r\n"));
-                    foreach (explode("\r\n", $header_text) as $i => $line) {
-                        if ($i === 0 || strpos($line, ':') == false) {
-                            continue; // We skip the status code & other non-header lines. Needed for proxy or redirects
-                        } else {
+                    // Check if the website redirects to another domain
+                    if ($this->server['redirect_check'] == 'bad') {
+                        $location_matches = array();
+                        preg_match(
+                            '/([Ll]ocation: )(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)/',
+                            $curl_result['exec'],
+                            $location_matches
+                        );
+                        if (!empty($location_matches)) {
+                            $ip_matches = array();
+                            preg_match(
+                                '/(https*:\/\/)(www.)?([a-zA-Z.:0-9]*)([\/][[:alnum:][:punct:]]*)?/',
+                                $this->server['ip'],
+                                $ip_matches
+                            );
+                            if (strtolower($location_matches[4]) !== strtolower($ip_matches[3])) {
+                                $this->error = "The IP/URL redirects to another domain.";
+                                $result = false;
+                            }
+                        }
+                    }
+
+                    // Should we check a header ?
+                    if ($this->server['header_name'] != '' && $this->server['header_value'] != '') {
+                        $header_flag = false;
+                        // Only get the header text if the result also includes the body
+                        $header_text = substr($curl_result['exec'], 0, strpos($curl_result['exec'], "\r\n\r\n"));
+                        foreach (explode("\r\n", $header_text) as $i => $line) {
+                            if ($i === 0 || strpos($line, ':') == false) {
+                                // We skip the status code & other non-header lines. Needed for proxy or redirects
+                                continue;
+                            }
+
                             list ($key, $value) = explode(': ', $line);
                             // Header found (case-insensitive)
                             if (strcasecmp($key, $this->server['header_name']) == 0) {
@@ -368,13 +370,13 @@ class StatusUpdater
                                 }
                             }
                         }
-                    }
 
-                    if (!$header_flag) {
-                        // Header was not present, set error message and $result variable
-                        $this->error = 'HEADER ERROR : Header "' . $this->server['header_name'] .
-                            '" not found or does not match "/' . $this->server['header_value'] . '/i".';
-                        $result = false;
+                        if (!$header_flag) {
+                            // Header was not present, set error message and $result variable
+                            $this->error = 'HEADER ERROR : Header "' . $this->server['header_name'] .
+                                '" not found or does not match "/' . $this->server['header_value'] . '/i".';
+                            $result = false;
+                        }
                     }
                 }
             }
