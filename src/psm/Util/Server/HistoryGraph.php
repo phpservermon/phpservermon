@@ -162,36 +162,115 @@ class HistoryGraph
     protected function calculateUptime($server_id, DateTime $start_time, DateTime $end_time)
     {
         $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+
+        if (!empty($uptime_records)) {
+            $downtime = $this->calculateDowntimeFromUptimeRecords($uptime_records, $start_time, $end_time);
+            $timeframe = $end_time->getTimestamp() - $start_time->getTimestamp();
+
+            return $timeframe > 0 ? 100 - (($downtime / $timeframe) * 100) : null;
+        }
+
         $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
 
-        if (empty($uptime_records) && empty($history_records)) {
+        if (empty($history_records)) {
             return null;
         }
 
-        // Calculate uptime based on the amount of successful checks rather than time windows so
-        // we can combine detailed uptime records with archived history records.
-        $total_checks = 0;
-        $failed_checks = 0;
+        $downtime = $this->calculateDowntimeFromHistoryRecords($history_records, $start_time, $end_time);
+        $timeframe = $end_time->getTimestamp() - $start_time->getTimestamp();
 
-        foreach ($history_records as $record) {
-            $total_checks += (int) $record['checks_total'];
-            $failed_checks += (int) $record['checks_failed'];
-        }
+        return $timeframe > 0 ? 100 - (($downtime / $timeframe) * 100) : null;
+    }
+
+    /**
+     * Calculate downtime in seconds using raw uptime records.
+     *
+     * @param array $uptime_records
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return int
+     */
+    protected function calculateDowntimeFromUptimeRecords(array $uptime_records, DateTime $start_time, DateTime $end_time)
+    {
+        $downtime = 0;
+        $window_start = $start_time->getTimestamp();
+        $window_end = $end_time->getTimestamp();
+
+        // initialize with the first record inside the timeframe
+        /** @var array $previous */
+        $previous = reset($uptime_records);
+        $previous_time = max((int) $previous['date_ts'], $window_start);
+        $previous_status = (bool) $previous['status'];
 
         foreach ($uptime_records as $record) {
-            $total_checks++;
-            if (!(bool) $record['status']) {
-                $failed_checks++;
+            $current_time = (int) $record['date_ts'];
+
+            if ($current_time < $window_start) {
+                // outside the window
+                $previous = $record;
+                $previous_status = (bool) $record['status'];
+                $previous_time = $window_start;
+                continue;
             }
+
+            if ($current_time > $window_end) {
+                break;
+            }
+
+            if (!$previous_status) {
+                $downtime += ($current_time - $previous_time);
+            }
+
+            $previous = $record;
+            $previous_status = (bool) $record['status'];
+            $previous_time = $current_time;
         }
 
-        if ($total_checks === 0) {
-            return null;
+        // extend the last status to the end of the window
+        if (!$previous_status && $previous_time < $window_end) {
+            $downtime += ($window_end - $previous_time);
         }
 
-        $uptime = 100 - (($failed_checks / $total_checks) * 100);
+        return $downtime;
+    }
 
-        return $uptime;
+    /**
+     * Calculate downtime in seconds using archived history records.
+     *
+     * @param array $history_records
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return int
+     */
+    protected function calculateDowntimeFromHistoryRecords(array $history_records, DateTime $start_time, DateTime $end_time)
+    {
+        $downtime = 0;
+        $window_start = $start_time->getTimestamp();
+        $window_end = $end_time->getTimestamp();
+
+        foreach ($history_records as $record) {
+            $checks_total = (int) $record['checks_total'];
+
+            if ($checks_total === 0) {
+                continue;
+            }
+
+            $date = new DateTime($record['date']);
+            $day_start = $date->getTimestamp();
+            $day_end = $day_start + 86400; // one day later
+
+            $period_start = max($day_start, $window_start);
+            $period_end = min($day_end, $window_end);
+
+            if ($period_end <= $period_start) {
+                continue;
+            }
+
+            $failed_ratio = ((int) $record['checks_failed']) / $checks_total;
+            $downtime += ($period_end - $period_start) * $failed_ratio;
+        }
+
+        return $downtime;
     }
 
     /**
