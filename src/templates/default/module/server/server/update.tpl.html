@@ -143,6 +143,14 @@
                         {{ macro.input_field("password", "website_password", null, "website_password", label_website_password, edit_value_website_password, null, "255", 'website_password_help', label_website_password_description, null, null, null, null, 'current-password') }}
 		</div>
 	</fieldset>
+	<fieldset class="types typeWebsite">
+		<legend>{{ label_login_info_output }}</legend>
+		<div class="col">
+			<label for="login_info_output" class="form-label">{{ label_login_info_output }}</label>
+			<textarea id="login_info_output" class="form-control" rows="3" readonly aria-describedby="login_info_output_help">{{ login_info_output }}</textarea>
+			<small id="login_info_output_help" class="form-text text-muted">{{ label_login_info_output_description }}</small>
+		</div>
+	</fieldset>
 	<fieldset>
 		<legend>{{ label_fieldset_monitoring }}</legend>
 		<div class="col">
