@@ -538,6 +538,16 @@ abstract class AbstractController implements ControllerInterface
     }
 
     /**
+     * Determine if CSRF validation should be required for the current request.
+     *
+     * @return bool
+     */
+    public function isCsrfProtectionRequired()
+    {
+        return true;
+    }
+
+    /**
      * Set CSRF key for validation
      * @param string $key
      * @return \psm\Module\ControllerInterface
