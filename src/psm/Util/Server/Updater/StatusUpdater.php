@@ -295,10 +295,19 @@ class StatusUpdater
 
             // Authentication failures should always mark the website as offline
             if ((int) $code === 401 || (int) $code === 403) {
+                $status_details = $code . ($msg ? ' ' . $msg : '');
                 if (!empty($this->server['website_username']) || !empty($this->server['website_password'])) {
-                    $this->error = "LOGIN ERROR: Authentication failed for provided credentials.";
-                    $result = false;
+                    $this->error = "LOGIN ERROR: Authentication failed for provided credentials ({$status_details}).";
+                    $this->appendHeaderAuthenticationNote(
+                        "Authentication failed for configured credentials ({$status_details})."
+                    );
+                } else {
+                    $this->error = "LOGIN ERROR: Authentication required ({$status_details}). No credentials configured.";
+                    $this->appendHeaderAuthenticationNote(
+                        "Authentication required ({$status_details}). Configure website credentials to allow monitoring."
+                    );
                 }
+                $result = false;
             }
 
             // All status codes starting with a 4 or higher mean trouble!
@@ -393,6 +402,31 @@ class StatusUpdater
         }
 
         return $result;
+    }
+
+    /**
+     * Append an authentication note to the stored header output so logs include login context.
+     *
+     * @param string $message
+     */
+    protected function appendHeaderAuthenticationNote($message)
+    {
+        $message = trim($message);
+
+        if ($message === '') {
+            return;
+        }
+
+        $note = '[phpservermon] ' . $message;
+
+        if ($this->header === '') {
+            $this->header = $note;
+
+            return;
+        }
+
+        $separator = (substr($this->header, -2) === "\r\n") ? "\r\n" : "\r\n\r\n";
+        $this->header .= $separator . $note;
     }
 
     /**
