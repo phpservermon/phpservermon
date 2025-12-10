@@ -277,7 +277,8 @@ class StatusUpdater
             $website_password,
             $this->server['request_method'],
             $this->replaceAuthPlaceholders($this->server['post_field'], $website_password),
-            $this->replaceAuthPlaceholders($this->server['custom_header'], $website_password)
+            $this->replaceAuthPlaceholders($this->server['custom_header'], $website_password),
+            true
         );
         $this->header = $curl_result['exec'];
         $this->curl_info = $curl_result['info'];

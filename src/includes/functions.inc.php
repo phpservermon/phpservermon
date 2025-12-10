@@ -400,6 +400,7 @@ namespace {
      * @param string|null $request_method Request method like GET, POST etc.
      * @param string|null $post_field POST data
      * @param string|null $custom_header HEADER data
+     * @param bool $send_authentication_header Send Authorization header with the first request
      * @return array cURL result
      */
     function psm_curl_get(
@@ -412,7 +413,8 @@ namespace {
         $website_password = false,
         $request_method = null,
         $post_field = null,
-        $custom_header = null
+        $custom_header = null,
+        $send_authentication_header = false
     ) {
         $timeout = ($timeout === null || $timeout <= 0)
             ? PSM_CURL_TIMEOUT
@@ -442,8 +444,9 @@ namespace {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
         }
 
+        $headers = array();
         if (!empty($custom_header)){
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array($custom_header));
+            $headers[] = $custom_header;
         }
 
         if (
@@ -459,6 +462,14 @@ namespace {
             // (e.g. HTTP → HTTPS) still validate credentials instead of loading the login page anonymously.
             curl_setopt($ch, CURLOPT_UNRESTRICTED_AUTH, true);
             curl_setopt($ch, CURLOPT_USERPWD, $website_username . ":" . $website_password);
+
+            if ($send_authentication_header) {
+                $headers[] = 'Authorization: Basic ' . base64_encode($website_username . ':' . $website_password);
+            }
+        }
+
+        if (!empty($headers)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         }
 
         $href = preg_replace('/(.*)(%cachebuster%)/', '$0' . time(), $href);
