@@ -265,13 +265,14 @@ class User
             $user_password = null;
             @fn_Debug('Authenticated', $user);
         } else {
-
             // using PHP 5.5's password_verify() function to check if the provided passwords
             // fits to the hash of that user's password
-            if (!isset($user->user_id)) {
+            if (!$user || !isset($user->user_id)) {
                 password_verify($user_password, 'dummy_call_against_timing');
                 return false;
-            } elseif (!password_verify($user_password, $user->password)) {
+            }
+
+            if (!password_verify($user_password, $user->password)) {
                 return false;
             }
         } // not authenticated
