@@ -455,6 +455,9 @@ namespace {
             // Explicitly allow cURL to negotiate the authentication scheme when credentials are provided.
             // Some servers will not challenge without this flag, which makes wrong credentials appear successful.
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+            // Keep the Authorization header across redirects so HTTP-authenticated sites that redirect
+            // (e.g. HTTP → HTTPS) still validate credentials instead of loading the login page anonymously.
+            curl_setopt($ch, CURLOPT_UNRESTRICTED_AUTH, true);
             curl_setopt($ch, CURLOPT_USERPWD, $website_username . ":" . $website_password);
         }
 
