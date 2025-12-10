@@ -282,19 +282,31 @@ class StatusUpdater
         $code_matches = array();
         preg_match_all("/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/", $status_code, $code_matches);
 
+        $code = null;
+        $msg = '';
+        $result = null;
+        $allow_http_status = explode("|", $this->server['allow_http_status']);
+
         if (empty($code_matches[0])) {
-            // somehow we dont have a proper response.
-            $this->error = 'TIMEOUT ERROR: no response from server';
-            $result = false;
+            $http_code = isset($curl_result['info']['http_code']) ? (int) $curl_result['info']['http_code'] : 0;
+            if ($http_code > 0) {
+                $code = $http_code;
+                $msg = '';
+            } else {
+                // somehow we dont have a proper response.
+                $this->error = 'TIMEOUT ERROR: no response from server';
+                $result = false;
+            }
         } else {
             $code = $code_matches[2][0];
             $msg = $code_matches[3][0];
+        }
 
-            $allow_http_status = explode("|", $this->server['allow_http_status']);
-            $result = null;
+        $http_code = (int) $code;
 
+        if ($result !== false) {
             // Authentication failures should always mark the website as offline
-            if ((int) $code === 401 || (int) $code === 403) {
+            if ($http_code === 401 || $http_code === 403) {
                 $status_details = $code . ($msg ? ' ' . $msg : '');
                 if (!empty($this->server['website_username']) || !empty($this->server['website_password'])) {
                     $this->error = "LOGIN ERROR: Authentication failed for provided credentials ({$status_details}).";
@@ -312,7 +324,7 @@ class StatusUpdater
 
             // All status codes starting with a 4 or higher mean trouble!
             if ($result !== false) {
-                if (substr($code, 0, 1) >= '4' && !in_array($code, $allow_http_status)) {
+                if ($http_code >= 400 && !in_array($code, $allow_http_status)) {
                     $this->error = "HTTP STATUS ERROR: " . $code . ' ' . $msg;
                     $result = false;
                 } else {
