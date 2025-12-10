@@ -205,7 +205,7 @@ $sm_lang = array(
         'custom_request_method' => 'Custom request method',
         'popular_request_methods' => 'Popular request methods',
         'post_field' => 'Post field',
-        'post_field_description' => 'The data that will be send using the request method above.',
+        'post_field_description' => 'The data that will be send using the request method above. Use %username% / %password% (or %username_url% / %password_url% for URL-encoded values) to inject stored website credentials.',
         'please_select' => 'Please select',
         'type' => 'Type',
         'type_website' => 'Website',
@@ -292,7 +292,7 @@ $sm_lang = array(
         'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
         'error_server_ssl_cert_expiry_days' => 'The remaining days for SSL certificate validity must be a valid integer greater than or equal to 0.',
         'custom_header' => 'Custom header',
-        'custom_header_description' => 'Allows to add a custom header to the request.',
+        'custom_header_description' => 'Allows to add a custom header to the request. Credential placeholders (%username%, %password%, and their *_url% variants) are replaced automatically.',
     ),
     'config' => array(
         'general' => 'General',

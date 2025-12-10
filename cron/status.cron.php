@@ -132,40 +132,54 @@ namespace {
         $confPrefix = 'cron_';
     }
 
+    $cronRunningKey = $confPrefix . 'running';
+    $cronRunningTimeKey = $confPrefix . 'running_time';
+
     $time = time();
     if (
-        psm_get_conf($confPrefix . 'running') == 1
+        psm_get_conf($cronRunningKey) == 1
         && $cron_timeout > 0
-        && ($time - psm_get_conf($confPrefix . 'running_time') < $cron_timeout)
+        && ($time - psm_get_conf($cronRunningTimeKey) < $cron_timeout)
     ) {
         die('Cron is already running. Exiting.');
     }
+
+    $unlockCron = function () use ($cronRunningKey) {
+        if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
+            psm_update_conf($cronRunningKey, 0);
+        }
+    };
+
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
-        psm_update_conf($confPrefix . 'running', 1);
+        psm_update_conf($cronRunningKey, 1);
     }
-    psm_update_conf($confPrefix . 'running_time', $time);
+    psm_update_conf($cronRunningTimeKey, $time);
+
+    register_shutdown_function($unlockCron);
 
     /** @var Router $router */
     /** @var UpdateManager $autorun */
     $autorun = $router->getService('util.server.updatemanager');
 
-    if ($status !== 'off') {
-        $autorun->run(true, $status);
-    } else {
-        set_time_limit(60);
-        if (false === defined('CRON_DOWN_INTERVAL')) {
-            define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
-        }
-        $start = time();
-        $i = 0;
-        while ($i < 59) {
+    try {
+        if ($status !== 'off') {
             $autorun->run(true, $status);
-            if ($i < (59 - CRON_DOWN_INTERVAL)) {
-                time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
+        } else {
+            set_time_limit(60);
+            if (false === defined('CRON_DOWN_INTERVAL')) {
+                define('CRON_DOWN_INTERVAL', 5); // every 5 second call update
             }
-            $i += CRON_DOWN_INTERVAL;
+            $start = time();
+            $i = 0;
+            while ($i < 59) {
+                $autorun->run(true, $status);
+                if ($i < (59 - CRON_DOWN_INTERVAL)) {
+                    time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
+                }
+                $i += CRON_DOWN_INTERVAL;
+            }
         }
+    } finally {
+        $unlockCron();
     }
-
-    psm_update_conf($confPrefix . 'running', 0);
 }
