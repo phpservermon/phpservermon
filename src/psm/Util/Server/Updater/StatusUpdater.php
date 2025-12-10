@@ -254,6 +254,12 @@ class StatusUpdater
     {
         $starttime = microtime(true);
 
+        $has_auth_credentials =
+            !empty($this->server['website_username']) || !empty($this->server['website_password']);
+
+        $authentication_succeeded = false;
+        $authentication_note_added = false;
+
         // We're only interested in the header, because that should tell us plenty!
         // unless we have a pattern to search for!
         $website_password = psm_password_decrypt(
@@ -271,7 +277,8 @@ class StatusUpdater
             $website_password,
             $this->server['request_method'],
             $this->replaceAuthPlaceholders($this->server['post_field'], $website_password),
-            $this->replaceAuthPlaceholders($this->server['custom_header'], $website_password)
+            $this->replaceAuthPlaceholders($this->server['custom_header'], $website_password),
+            true
         );
         $this->header = $curl_result['exec'];
         $this->curl_info = $curl_result['info'];
@@ -312,11 +319,12 @@ class StatusUpdater
             // Authentication failures should always mark the website as offline
             if ($http_code === 401 || $http_code === 403) {
                 $status_details = $code . ($msg ? ' ' . $msg : '');
-                if (!empty($this->server['website_username']) || !empty($this->server['website_password'])) {
+                if ($has_auth_credentials) {
                     $this->error = "LOGIN ERROR: Authentication failed for provided credentials ({$status_details}).";
                     $this->appendHeaderAuthenticationNote(
                         "Authentication failed for configured credentials ({$status_details})."
                     );
+                    $authentication_note_added = true;
                 } else {
                     $this->error = "LOGIN ERROR: Authentication required ({$status_details}). No credentials configured.";
                     $this->appendHeaderAuthenticationNote(
@@ -333,6 +341,10 @@ class StatusUpdater
                     $result = false;
                 } else {
                     $result = true;
+
+                    if ($has_auth_credentials) {
+                        $authentication_succeeded = true;
+                    }
 
                     // Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
                     if ($this->server['pattern'] != '') {
@@ -410,6 +422,14 @@ class StatusUpdater
         // Check ssl cert just when other error is not already in...
         if ($result !== false) {
             $this->checkSsl($this->server, $this->error, $result);
+        }
+
+        if ($has_auth_credentials && !$authentication_note_added) {
+            $this->appendHeaderAuthenticationNote(
+                $authentication_succeeded
+                    ? 'Authentication succeeded using configured website credentials.'
+                    : 'Authentication credentials were sent with the request.'
+            );
         }
 
         // check if server is available and rerun if asked.

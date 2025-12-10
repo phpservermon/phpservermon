@@ -1,7 +1,7 @@
 {% import 'main/macros.tpl.html' as macro %}
 {{ macro.input_csrf() }}
 <div class="container-fluid">
-	<div class="row">
+        <div class="row">
 		<div class="card text-white text-center col-md-2 ps-0 pe-0 mb-4 {% if status|lower == 'on' %}bg-success{% elseif status|lower == 'warning' %}bg-warning{% elseif status|lower == 'off' %}bg-danger{% endif %}">
 			<div class="card-body d-flex align-items-center justify-content-center">
 				{% if status|lower == 'on' %}
@@ -81,8 +81,7 @@
 				</li>
 			</ul>
 		</div>
-		<!--
-	{% if type|lower == 'website' %}
+        {% if type|lower == 'website' %}
 	<div class="card col-md-3 ps-0 pe-0 mb-4">
 		<div class="card-header">
 			{{ label_authentication_settings }}
@@ -101,7 +100,8 @@
 				</dl>
 			</li>
 		</ul>
-	</div><div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
+        </div>
+        <div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
 		<div class="card-header">
 			{{ label_settings }}
 		</div>
@@ -158,49 +158,39 @@
 			</li>
 		</ul>
 	</div>
-	<div class="card col-md-3 ps-0 pe-0 mb-4 ms-auto">
-		<div class="card-header">
-			{{ label_settings }}
-		</div>
-		<ul class="list-group list-group-flush">
-			<li class="list-group-item">
-				<dl class="row">
-					<dt class="col-md-6">{{ label_request_method }}:</dt>
-					<dd class="col-md-6">{% if request_method is not empty %}{{ request_method }}{% else %}-{% endif %}</dd>
-				</dl>
-			</li>
-			<li class="list-group-item">
-				<dl class="row">
-					<dt class="col-md-6">{{ label_post_field }}:</dt>
-					<dd class="col-md-6">{% if post_field is not empty %}{{ post_field }}{% else %}-{% endif %}</dd>
-				</dl>
-			</li>
-		</ul>
-	</div>
-	<div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
-		<div class="card-header">
-			{{ label_settings }}
-		</div>
-		<ul class="list-group list-group-flush">
-			<li class="list-group-item">
-				<dl class="row">
-					<dt class="col-md-6">{{ label_redirect_check }}:</dt>
-					<dd class="col-md-6">{% if redirect_check is not empty %}{{ redirect_check }}{% else %}-{% endif %}</dd>
-				</dl>
-			</li>
-			<li class="list-group-item">
-				<dl class="row">
-					<dt class="col-md-6">{{ label_allow_http_status }}:</dt>
-					<dd class="col-md-6">{% if allow_http_status is not empty %}{{ allow_http_status }}{% else %}-{% endif %}</dd>
-				</dl>
-			</li>
-		</ul>
-	</div>
-	{% endif %}
--->
-		<div class="card col-md-3 ps-0 pe-0 mb-4">
-			<div class="card-header">
-				{{ label_status }}
+        <div class="card col-md-4 ps-0 pe-0 mb-4 ms-auto">
+                <div class="card-header">
+                        {{ label_settings }}
+                </div>
+                <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                                <dl class="row">
+                                        <dt class="col-md-6">{{ label_redirect_check }}:</dt>
+                                        <dd class="col-md-6">{% if redirect_check is not empty %}{{ redirect_check }}{% else %}-{% endif %}</dd>
+                                </dl>
+                        </li>
+                        <li class="list-group-item">
+                                <dl class="row">
+                                        <dt class="col-md-6">{{ label_allow_http_status }}:</dt>
+                                        <dd class="col-md-6">{% if allow_http_status is not empty %}{{ allow_http_status }}{% else %}-{% endif %}</dd>
+                                </dl>
+                        </li>
+                </ul>
+        </div>
+        <div class="card col-md-4 ps-0 pe-0 mb-4">
+                <div class="card-header">
+                        {{ label_login_info_output }}
+                </div>
+                <div class="card-body">
+                        <pre class="mb-2">{{ login_info_output }}</pre>
+                        <small class="text-muted">{{ label_login_info_output_description }}</small>
+                </div>
+        </div>
+        {% endif %}
+
+        <div class="card col-md-3 ps-0 pe-0 mb-4">
+                <div class="card-header">
+                        {{ label_status }}
 			</div>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item">
