@@ -285,35 +285,34 @@ class StatusUpdater
 
         $this->rtime = (microtime(true) - $starttime);
 
-        // the first line would be the status code..
-        $status_code = strtok($curl_result['exec'], "\r\n");
-        // keep it general
-        // $code[2][0] = status code
-        // $code[3][0] = name of status code
+        // Capture all HTTP status lines so we can evaluate the final one even when redirects occurred.
         $code_matches = array();
-        preg_match_all("/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/", $status_code, $code_matches);
+        preg_match_all(
+            "/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/",
+            $curl_result['exec'],
+            $code_matches
+        );
 
-        $code = null;
-        $msg = '';
         $result = null;
         $allow_http_status = explode("|", $this->server['allow_http_status']);
 
-        if (empty($code_matches[0])) {
-            $http_code = isset($curl_result['info']['http_code']) ? (int) $curl_result['info']['http_code'] : 0;
-            if ($http_code > 0) {
-                $code = $http_code;
-                $msg = '';
-            } else {
-                // somehow we dont have a proper response.
-                $this->error = 'TIMEOUT ERROR: no response from server';
-                $result = false;
-            }
-        } else {
-            $code = $code_matches[2][0];
-            $msg = $code_matches[3][0];
+        $http_code = isset($curl_result['info']['http_code']) ? (int) $curl_result['info']['http_code'] : 0;
+        $msg = '';
+
+        if (!empty($code_matches[0])) {
+            // Use the last matched status line because CURLOPT_FOLLOWLOCATION keeps previous responses in the header.
+            $lastIndex = count($code_matches[0]) - 1;
+            $http_code = (int) $code_matches[2][$lastIndex];
+            $msg = $code_matches[3][$lastIndex];
         }
 
-        $http_code = (int) $code;
+        if ($http_code === 0) {
+            // somehow we dont have a proper response.
+            $this->error = 'TIMEOUT ERROR: no response from server';
+            $result = false;
+        }
+
+        $code = $http_code;
 
         if ($result !== false) {
             // Authentication failures should always mark the website as offline
