@@ -111,6 +111,11 @@ You can also provide it as an argument (in seconds!). The following example woul
 
      php status.cron.php --timeout=10
 
+If the script reports that it is already running, but you are sure the previous
+job stalled, you can force a new execution and clear the lock::
+
+    php status.cron.php --force
+
 By default, no URLs are generated for notifications created in the cronjob.
 To specify the base url to your monitor installation, use the "--uri" argument, like so::
 
