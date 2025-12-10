@@ -95,7 +95,7 @@
 {% endmacro input_hidden %}
 
 {% macro button_test(data_modal_id, label) %}
-    <button class="btn btn-primary show-modal" data-bs-toggle="modal" data-modal-id="{{ data_modal_id }}">{{ label }}</button>
+    <button type="button" class="btn btn-primary show-modal" data-bs-toggle="modal" data-modal-id="{{ data_modal_id }}">{{ label }}</button>
 {% endmacro button_test %}
 
 {% macro button_save(name, label) %}
