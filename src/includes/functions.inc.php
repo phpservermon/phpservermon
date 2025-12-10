@@ -882,11 +882,18 @@ namespace {
             if (is_array($params)) {
                 $delim = ($htmlentities) ? '&amp;' : '&';
 
+                $first = true;
                 foreach ($params as $k => $v) {
                     if ($urlencode) {
                         $v = urlencode($v);
                     }
-                    $url .= $delim . $k . '=' . $v;
+
+                    if (!$first) {
+                        $url .= $delim;
+                    }
+
+                    $url .= $k . '=' . $v;
+                    $first = false;
                 }
             } else {
                 $url .= $params;
