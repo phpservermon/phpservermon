@@ -59,6 +59,29 @@ class HistoryGraph
     }
 
     /**
+     * Calculate uptime and latency statistics for a given period.
+     *
+     * @param int $server_id
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return array|null
+     */
+    public function getPerformanceStatistics($server_id, DateTime $start_time, DateTime $end_time)
+    {
+        $uptime = $this->calculateUptime($server_id, $start_time, $end_time);
+        $latency = $this->calculateLatencyStats($server_id, $start_time, $end_time);
+
+        if ($uptime === null && $latency === null) {
+            return null;
+        }
+
+        return array(
+            'uptime' => $uptime,
+            'latency' => $latency,
+        );
+    }
+
+    /**
      * Prepare the HTML for the graph
      * @param string $server_id ID of server to fetch data for
      * @return string Created HTML
@@ -194,6 +217,61 @@ class HistoryGraph
         );
 
         return $covered_time > 0 ? 100 - (($downtime / $covered_time) * 100) : null;
+    }
+
+    /**
+     * Calculate latency statistics (average, min, max) for a specific window.
+     *
+     * @param int $server_id
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return array|null
+     */
+    protected function calculateLatencyStats($server_id, DateTime $start_time, DateTime $end_time)
+    {
+        $latency_sum = 0;
+        $latency_min = null;
+        $latency_max = null;
+        $latency_count = 0;
+
+        $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+
+        foreach ($uptime_records as $record) {
+            if ($record['latency'] === null) {
+                continue;
+            }
+
+            $latency = (float) $record['latency'];
+            $latency_sum += $latency;
+            $latency_min = $latency_min === null ? $latency : min($latency_min, $latency);
+            $latency_max = $latency_max === null ? $latency : max($latency_max, $latency);
+            $latency_count++;
+        }
+
+        if ($latency_count === 0) {
+            $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+
+            foreach ($history_records as $record) {
+                $latency_sum += (float) $record['latency_avg'];
+                $latency_min = $latency_min === null
+                    ? (float) $record['latency_min']
+                    : min($latency_min, (float) $record['latency_min']);
+                $latency_max = $latency_max === null
+                    ? (float) $record['latency_max']
+                    : max($latency_max, (float) $record['latency_max']);
+                $latency_count++;
+            }
+        }
+
+        if ($latency_count === 0) {
+            return null;
+        }
+
+        return array(
+            'average' => $latency_sum / $latency_count,
+            'min' => $latency_min,
+            'max' => $latency_max,
+        );
     }
 
     /**
