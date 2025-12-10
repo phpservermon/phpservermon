@@ -626,6 +626,9 @@ namespace {
         $phpmailer->Encoding = "base64";
         $phpmailer->CharSet = 'UTF-8';
         $phpmailer->SMTPDebug = 0;
+        // Prevent extremely long timeouts when testing email configuration
+        $phpmailer->Timeout = 15;
+        $phpmailer->Timelimit = 15;
 
         if (psm_get_conf('email_smtp') == '1') {
             $phpmailer->IsSMTP();
