@@ -59,12 +59,16 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
 		<!--SERVICES end-->
 
 		<!--UTIL start-->
-		<service id="util.user.validator" class="psm\Util\User\UserValidator">
-			<argument type="service" id="user" />
-		</service>
-		<service id="util.server.updatemanager" class="psm\Util\Server\UpdateManager">
-			<argument type="service" id="service_container" />
-		</service>
-		<!--UTIL end-->
-	</services>
+                <service id="util.user.validator" class="psm\Util\User\UserValidator">
+                        <argument type="service" id="user" />
+                </service>
+                <service id="util.server.updatemanager" class="psm\Util\Server\UpdateManager">
+                        <argument type="service" id="service_container" />
+                </service>
+                <service id="util.server.performance_reporter" class="psm\Util\Server\PerformanceReporter">
+                        <argument type="service" id="db" />
+                        <argument type="service" id="twig" />
+                </service>
+                <!--UTIL end-->
+        </services>
 </container>

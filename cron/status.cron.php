@@ -29,6 +29,7 @@
 namespace {
 // include main configuration and functionality
     use psm\Router;
+    use psm\Util\Server\PerformanceReporter;
     use psm\Util\Server\UpdateManager;
 
     require_once __DIR__ . '/../src/bootstrap.php';
@@ -160,6 +161,8 @@ namespace {
     /** @var Router $router */
     /** @var UpdateManager $autorun */
     $autorun = $router->getService('util.server.updatemanager');
+    /** @var PerformanceReporter $reporter */
+    $reporter = $router->getService('util.server.performance_reporter');
 
     try {
         if ($status !== 'off') {
@@ -179,6 +182,8 @@ namespace {
                 $i += CRON_DOWN_INTERVAL;
             }
         }
+
+        $reporter->maybeSendWeeklyReport();
     } finally {
         $unlockCron();
     }
