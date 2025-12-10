@@ -52,6 +52,14 @@ So if the monitor is able to connect to the server on port 80, you know the webs
 It does not, however, mean that your website is available to your users, because it might have PHP errors or database problems.
 This can be monitored using the website type with a pattern search as described above.
 
+How do I monitor a specific host such as ``https://auth.agri.ee/cas/login``?
+---------------------------------------------------------------------------
+
+Use the **Website** monitor type so the checker performs a full HTTP request against the login page instead of just testing the port.
+Enter the full URL (e.g. ``https://auth.agri.ee/cas/login``) in the **Website** field when creating the server, and optionally add a
+**Search String** or **Regex** to confirm the page contains the expected login markup.
+This ensures the monitor reports the host as down if the CAS login page itself stops responding or returns an error status.
+
 Are requests made by the monitor included in my website statistics?
 -------------------------------------------------------------------
 
