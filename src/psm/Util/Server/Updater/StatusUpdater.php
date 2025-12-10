@@ -256,18 +256,22 @@ class StatusUpdater
 
         // We're only interested in the header, because that should tell us plenty!
         // unless we have a pattern to search for!
+        $website_password = psm_password_decrypt(
+            $this->server['server_id'] . psm_get_conf('password_encrypt_key'),
+            $this->server['website_password']
+        );
+
         $curl_result = psm_curl_get(
-            $this->server['ip'],
+            $this->replaceAuthPlaceholders($this->server['ip'], $website_password),
             true,
             ($this->server['pattern'] == '' ? false : true),
             $this->server['timeout'],
             true,
             $this->server['website_username'],
-            psm_password_decrypt($this->server['server_id'] .
-                psm_get_conf('password_encrypt_key'), $this->server['website_password']),
+            $website_password,
             $this->server['request_method'],
-            $this->server['post_field'],
-            $this->server['custom_header']
+            $this->replaceAuthPlaceholders($this->server['post_field'], $website_password),
+            $this->replaceAuthPlaceholders($this->server['custom_header'], $website_password)
         );
         $this->header = $curl_result['exec'];
         $this->curl_info = $curl_result['info'];
@@ -439,6 +443,38 @@ class StatusUpdater
 
         $separator = (substr($this->header, -2) === "\r\n") ? "\r\n" : "\r\n\r\n";
         $this->header .= $separator . $note;
+    }
+
+    /**
+     * Replace credential placeholders in request data so form-based logins can reuse stored credentials.
+     *
+     * Supported placeholders (case-insensitive):
+     *  - %username% : raw username
+     *  - %password% : raw password
+     *  - %username_url% : URL-encoded username
+     *  - %password_url% : URL-encoded password
+     *
+     * @param string|null $value
+     * @param string $website_password
+     * @return string|null
+     */
+    private function replaceAuthPlaceholders($value, $website_password)
+    {
+        if ($value === null || $value === '') {
+            return $value;
+        }
+
+        $username = (string) $this->server['website_username'];
+        $password = (string) $website_password;
+
+        $replacements = array(
+            '%username%' => $username,
+            '%password%' => $password,
+            '%username_url%' => rawurlencode($username),
+            '%password_url%' => rawurlencode($password),
+        );
+
+        return str_ireplace(array_keys($replacements), array_values($replacements), $value);
     }
 
     /**
