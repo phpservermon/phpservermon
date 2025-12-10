@@ -452,6 +452,9 @@ namespace {
             !empty($website_username) &&
             !empty($website_password)
         ) {
+            // Explicitly allow cURL to negotiate the authentication scheme when credentials are provided.
+            // Some servers will not challenge without this flag, which makes wrong credentials appear successful.
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
             curl_setopt($ch, CURLOPT_USERPWD, $website_username . ":" . $website_password);
         }
 
