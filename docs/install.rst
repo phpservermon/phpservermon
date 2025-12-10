@@ -104,12 +104,17 @@ By default `off` servers are checked every 5 seconds. If you want to change it a
 
 	define('CRON_DOWN_INTERVAL', 1); // every 1 second call update
 
-The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
+The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 1 minute.
 After that the script is assumed dead and the cronjob will run again.
-If you want to change the 10 minutes timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
+If you want to change the 1 minute timeout, find the constant "PSM_CRON_TIMEOUT" in src/includes/psmconfig.inc.php.
 You can also provide it as an argument (in seconds!). The following example would change to timeout to 10 seconds::
 
      php status.cron.php --timeout=10
+
+If the script reports that it is already running, but you are sure the previous
+job stalled, you can force a new execution and clear the lock::
+
+    php status.cron.php --force
 
 By default, no URLs are generated for notifications created in the cronjob.
 To specify the base url to your monitor installation, use the "--uri" argument, like so::
