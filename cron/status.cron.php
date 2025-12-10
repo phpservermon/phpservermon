@@ -70,10 +70,18 @@ namespace {
     }
 
     $cron_timeout = PSM_CRON_TIMEOUT;
-	// parse a couple of arguments
+    $forceRun = false;
+        // parse a couple of arguments
     if (!empty($_SERVER['argv'])) {
         foreach ($_SERVER['argv'] as $argv) {
-            $argi = explode('=', ltrim($argv, '--'));
+            $arg = ltrim($argv, '-');
+
+            if ($arg === 'force' || $arg === 'unlock') {
+                $forceRun = true;
+                continue;
+            }
+
+            $argi = explode('=', ltrim($argv, '--'), 2);
             if (count($argi) !== 2) {
                 continue;
             }
@@ -137,12 +145,19 @@ namespace {
     $cronRunningTimeKey = $confPrefix . 'running_time';
 
     $time = time();
+    $runningSince = psm_get_conf($cronRunningTimeKey);
     if (
-        psm_get_conf($cronRunningKey) == 1
+        !$forceRun
+        && psm_get_conf($cronRunningKey) == 1
         && $cron_timeout > 0
-        && ($time - psm_get_conf($cronRunningTimeKey) < $cron_timeout)
+        && ($time - $runningSince < $cron_timeout)
     ) {
-        die('Cron is already running. Exiting.');
+        $remaining = $cron_timeout - ($time - $runningSince);
+        die(sprintf(
+            'Cron is already running (started %s, %d seconds remaining). Exiting.',
+            date('c', $runningSince),
+            $remaining
+        ));
     }
 
     $unlockCron = function () use ($cronRunningKey) {
