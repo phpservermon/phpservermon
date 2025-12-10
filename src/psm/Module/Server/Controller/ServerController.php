@@ -555,6 +555,17 @@ class ServerController extends AbstractServerController
             $tpl_data['last_error_output_truncated'] = substr($tpl_data['last_error_output'], 0, 255) . '...';
         }
 
+        $tpl_data['label_login_info_output'] = psm_get_lang('servers', 'output') .
+            ' (' . psm_get_lang('servers', 'authentication_settings') . ')';
+        $tpl_data['label_login_info_output_description'] = psm_get_lang(
+            'servers',
+            'website_password_description'
+        );
+        $tpl_data['login_info_output'] = $this->buildLoginInfoOutput(
+            $tpl_data['website_username'] ?? '',
+            $tpl_data['website_password'] ?? ''
+        );
+
         // fetch server status logs
         $log_entries = $this->getServerLogs($this->server_id);
         for ($x = 0; $x < count($log_entries); $x++) {
