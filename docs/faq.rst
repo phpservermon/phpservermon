@@ -56,10 +56,6 @@ How do I monitor a specific host such as ``https://auth.agri.ee/cas/login``?
 ---------------------------------------------------------------------------
 
 Use the **Website** monitor type so the checker performs a full HTTP request against the login page instead of just testing the port.
-Enter the full URL (e.g. ``https://auth.agri.ee/cas/login``) in the **Website** field when creating the server, and optionally add a
-**Search String** or **Regex** to confirm the page contains the expected login markup.
-This ensures the monitor reports the host as down if the CAS login page itself stops responding or returns an error status.
-
 Are requests made by the monitor included in my website statistics?
 -------------------------------------------------------------------
 
