@@ -139,7 +139,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Brukernavn må være mellom 2 og 64 tegn.',
         'error_user_name_invalid' => 'Brukernavnet kan bare inneholde alfabetiske tegn (a-z, A-Z), sifre (0-9),
  punktum (.) and understrek (_).',

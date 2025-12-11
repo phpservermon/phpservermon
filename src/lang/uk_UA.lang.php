@@ -160,7 +160,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Імена користувачів мають бути довжиною
  від 2 до 64 символів.',
         'error_user_name_invalid' => 'Ім’я користувача може містити лише літери

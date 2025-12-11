@@ -112,7 +112,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Kullanıcı adları en az 2 ve en fazla 64 karakter uzunluğunda olmalıdır.',
         'error_user_name_invalid' => 'Kullanıcı adları sadece harf (a-z, A-Z), sayı (0-9), noktalar (.) and alttan
  çizgi (_) karakterlerini içerebilir.',

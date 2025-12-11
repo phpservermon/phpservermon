@@ -127,7 +127,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Uživatelské jméno musí obsahovat 2 až 64 znaků.',
         'error_user_name_invalid' => 'Uživatelské jméno může obsahovat pouze písmena (a-z, A-Z), čísla (0-9),
  tečky (.) a podtržítka (_).',

@@ -119,7 +119,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Потребителското име трябва да съдържа
  между 2 и 64 символа',
         'error_user_name_invalid' => 'Може да съдържа само латински букви (a-z, A-Z),

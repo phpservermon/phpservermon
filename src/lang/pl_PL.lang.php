@@ -165,7 +165,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Login musi mieć od 2 do 64 znaków.',
         'error_user_name_invalid' => 'Login może zawierać tylko litery (a-z, A-Z), cyfry (0-9), kropki (.) oraz znak
  podkreślenia (_).',

@@ -111,7 +111,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Užívateľské meno musí obsahovať 2 až 64 znakov.',
         'error_user_name_invalid' => 'Užívateľské meno môže obsahovať iba písmena (a-z, A-Z), čísla (0-9),
  bodky (.) a podtržítka (_).',

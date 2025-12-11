@@ -110,7 +110,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Kasutajanimi peab olema 2 kuni 64 tähemärki pikk.',
         'error_user_name_invalid' => 'Kasutajanimi võib koosneda ainult tähenumbrilistest kombinatsioonidest (a-z,
  A-Z), numbritest (0-9), punktid (.) ja alakriipsust (_).',
