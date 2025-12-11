@@ -77,6 +77,11 @@ namespace {
         ));
 
         if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
+            $log(sprintf(
+                'Cron web authentication failed (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
+                $_SERVER['REMOTE_ADDR'],
+                $_SERVER['HTTP_X_FORWARDED_FOR']
+            ));
             header('HTTP/1.0 403 Forbidden');
             $log('Web cron request rejected: authentication failed.');
             die('
@@ -89,23 +94,16 @@ namespace {
             </body>
         </html>');
         }
-        $log('Web cron authentication succeeded.');
+
+        $authMethod = $ipWhitelistCheckPassed ? 'IP whitelist' : 'webcron key';
+        $log(sprintf(
+            'Cron web authentication successful via %s (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
+            $authMethod,
+            $_SERVER['REMOTE_ADDR'],
+            $_SERVER['HTTP_X_FORWARDED_FOR']
+        ));
         echo "OK";
     }
-
-    $logDirectory = __DIR__ . '/../logs';
-    if (!is_dir($logDirectory)) {
-        @mkdir($logDirectory, 0777, true);
-    }
-
-    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
-    $log = function ($message) use ($logFile) {
-        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
-
-        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
-            error_log($line);
-        }
-    };
 
     $cron_timeout = PSM_CRON_TIMEOUT;
     $forceRun = false;
