@@ -158,8 +158,8 @@ class ProfileController extends AbstractController
         $theme = isset($_POST['theme']) ? $this->normalizeTheme($this->sanitizePostedField($_POST['theme'])) : 'light';
         $this->getUser()->setUserPref('theme', $theme);
         $this->container->get('event')->dispatch(
-            \psm\Module\User\UserEvents::USER_EDIT,
-            new \psm\Module\User\Event\UserEvent($this->getUser()->getUserId())
+            new \psm\Module\User\Event\UserEvent($this->getUser()->getUserId()),
+            \psm\Module\User\UserEvents::USER_EDIT
         );
         if (isset($password)) {
             $this->getUser()->changePassword($this->getUser()->getUserId(), $password);
