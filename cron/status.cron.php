@@ -34,6 +34,20 @@ namespace {
 
     require_once __DIR__ . '/../src/bootstrap.php';
 
+    $logDirectory = __DIR__ . '/../logs';
+    if (!is_dir($logDirectory)) {
+        @mkdir($logDirectory, 0777, true);
+    }
+
+    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
+    $log = function ($message) use ($logFile) {
+        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
+
+        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
+            error_log($line);
+        }
+    };
+
     if (!psm_is_cli()) {
         // check if it's an allowed host
         if (!isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
@@ -54,18 +68,28 @@ namespace {
             && $_GET["webcron_key"] == PSM_WEBCRON_KEY
             && (PSM_WEBCRON_KEY != "");
 
+        $log(sprintf(
+            'Web cron authentication attempt from %s (forwarded: %s); whitelist=%s, key=%s',
+            $_SERVER['REMOTE_ADDR'],
+            $_SERVER['HTTP_X_FORWARDED_FOR'],
+            $ipWhitelistCheckPassed ? 'passed' : 'failed',
+            $webCronKeyCheckPassed ? 'passed' : 'failed'
+        ));
+
         if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
             header('HTTP/1.0 403 Forbidden');
+            $log('Web cron request rejected: authentication failed.');
             die('
         <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>
             <head><title>403 Forbidden</title></head>
             <body>
-                <h1>Forbidden</h1><p>IP address not allowed. See the 
-                <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a> 
+                <h1>Forbidden</h1><p>IP address not allowed. See the
+                <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a>
                 for more info.</p>
             </body>
         </html>');
         }
+        $log('Web cron authentication succeeded.');
         echo "OK";
     }
 
@@ -135,6 +159,13 @@ namespace {
         }
     }
 
+    $log(sprintf('Cron invoked (status="%s", force=%s, timeout=%d, argv="%s")',
+        $status ?? 'auto',
+        $forceRun ? 'true' : 'false',
+        $cron_timeout,
+        isset($_SERVER['argv']) ? implode(' ', $_SERVER['argv']) : ''
+    ));
+
     if ($status === 'off') {
         $confPrefix = 'cron_off_';
     } else {
@@ -153,6 +184,11 @@ namespace {
         && ($time - $runningSince < $cron_timeout)
     ) {
         $remaining = $cron_timeout - ($time - $runningSince);
+        $log(sprintf(
+            'Cron already running (started %s, %d seconds remaining). Exiting.',
+            date('c', $runningSince),
+            $remaining
+        ));
         die(sprintf(
             'Cron is already running (started %s, %d seconds remaining). Exiting.',
             date('c', $runningSince),
@@ -160,14 +196,23 @@ namespace {
         ));
     }
 
-    $unlockCron = function () use ($cronRunningKey) {
+    $lockReleased = false;
+    $unlockCron = function () use ($cronRunningKey, $log, &$lockReleased) {
+        if ($lockReleased) {
+            return;
+        }
+
         if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
             psm_update_conf($cronRunningKey, 0);
+            $log('Cron lock released.');
         }
+
+        $lockReleased = true;
     };
 
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
         psm_update_conf($cronRunningKey, 1);
+        $log('Cron lock acquired.');
     }
     psm_update_conf($cronRunningTimeKey, $time);
 
@@ -181,6 +226,7 @@ namespace {
 
     try {
         if ($status !== 'off') {
+            $log('Running server updates.');
             $autorun->run(true, $status);
         } else {
             set_time_limit(60);
@@ -190,6 +236,7 @@ namespace {
             $start = time();
             $i = 0;
             while ($i < 59) {
+                $log(sprintf('Running server updates (down mode) at +%d seconds.', $i));
                 $autorun->run(true, $status);
                 if ($i < (59 - CRON_DOWN_INTERVAL)) {
                     time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
@@ -199,6 +246,17 @@ namespace {
         }
 
         $reporter->maybeSendWeeklyReport();
+        $log('Weekly performance report check completed.');
+
+        $log('Cron completed successfully.');
+    } catch (\Throwable $exception) {
+        $log(sprintf(
+            'Cron failed: %s in %s on line %d',
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
+        ));
+        throw $exception;
     } finally {
         $unlockCron();
     }
