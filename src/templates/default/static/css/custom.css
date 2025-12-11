@@ -50,20 +50,20 @@
 }
 
 [data-theme="blue"] {
-    --psm-bg: #0b162b;
-    --psm-bg-alt: #0f2347;
-    --psm-surface: #112b56;
-    --psm-surface-alt: #133366;
-    --psm-border: rgba(96, 165, 250, 0.25);
-    --psm-text: #e5edff;
-    --psm-muted: #c5d4f5;
-    --psm-accent: #60a5fa;
-    --psm-accent-strong: #3b82f6;
-    --psm-accent-soft: rgba(96, 165, 250, 0.22);
-    --psm-success: #34d399;
-    --psm-warning: #fbbf24;
-    --psm-danger: #fb7185;
-    --psm-shadow: 0 20px 54px rgba(24, 86, 190, 0.32);
+    --psm-bg: #eaf2ff;
+    --psm-bg-alt: #d9e7ff;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #f2f7ff;
+    --psm-border: rgba(37, 99, 235, 0.18);
+    --psm-text: #0f172a;
+    --psm-muted: #1e3a8a;
+    --psm-accent: #3b82f6;
+    --psm-accent-strong: #2563eb;
+    --psm-accent-soft: rgba(59, 130, 246, 0.18);
+    --psm-success: #16a34a;
+    --psm-warning: #f59e0b;
+    --psm-danger: #dc2626;
+    --psm-shadow: 0 12px 30px rgba(59, 130, 246, 0.22);
 }
 
 [data-theme="green"] {
