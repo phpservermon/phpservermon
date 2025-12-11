@@ -68,6 +68,14 @@ namespace {
             && $_GET["webcron_key"] == PSM_WEBCRON_KEY
             && (PSM_WEBCRON_KEY != "");
 
+        $log(sprintf(
+            'Web cron authentication attempt from %s (forwarded: %s); whitelist=%s, key=%s',
+            $_SERVER['REMOTE_ADDR'],
+            $_SERVER['HTTP_X_FORWARDED_FOR'],
+            $ipWhitelistCheckPassed ? 'passed' : 'failed',
+            $webCronKeyCheckPassed ? 'passed' : 'failed'
+        ));
+
         if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
             $log(sprintf(
                 'Cron web authentication failed (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
@@ -75,6 +83,7 @@ namespace {
                 $_SERVER['HTTP_X_FORWARDED_FOR']
             ));
             header('HTTP/1.0 403 Forbidden');
+            $log('Web cron request rejected: authentication failed.');
             die('
         <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>
             <head><title>403 Forbidden</title></head>
@@ -199,11 +208,13 @@ namespace {
         ));
     }
 
-    $unlockCron = function () use ($cronRunningKey, $log) {
+
         if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
             psm_update_conf($cronRunningKey, 0);
             $log('Cron lock released.');
         }
+
+        $lockReleased = true;
     };
 
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
