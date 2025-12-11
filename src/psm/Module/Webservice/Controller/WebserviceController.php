@@ -40,7 +40,7 @@ class WebserviceController extends AbstractController
         parent::__construct($db, $twig);
 
         $this->setMinUserLevelRequired(PSM_USER_ANONYMOUS);
-        $this->setActions(array('login', 'logout'), 'login');
+        $this->setActions(array('login', 'logout', 'status'), 'login');
 
         $this->addFooter(false);
         $this->addMenu(false);
@@ -124,5 +124,106 @@ class WebserviceController extends AbstractController
                 'message' => 'Logged out.',
             )
         );
+    }
+
+    protected function executeStatus()
+    {
+        $request = Request::createFromGlobals();
+
+        if ($request->getMethod() !== 'GET') {
+            return new JsonResponse(
+                array(
+                    'success' => false,
+                    'message' => 'Only GET requests are allowed.',
+                ),
+                405
+            );
+        }
+
+        if (!$this->getUser()->isLoggedIn()) {
+            return new JsonResponse(
+                array(
+                    'success' => false,
+                    'message' => 'Authentication required.',
+                ),
+                401
+            );
+        }
+
+        $serverId = $request->get('server_id');
+
+        $servers = $this->getServersForApi($serverId);
+
+        return new JsonResponse(
+            array(
+                'success' => true,
+                'servers' => $servers,
+            )
+        );
+    }
+
+    /**
+     * Fetch server status data for the authenticated user.
+     *
+     * @param int|null $serverId
+     * @return array
+     */
+    protected function getServersForApi($serverId = null)
+    {
+        $sqlJoin = '';
+        $sqlWhere = '';
+
+        if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+            $sqlJoin = "JOIN `" . PSM_DB_PREFIX . "users_servers` AS `us` ON (" .
+                "`us`.`user_id` = :user_id AND `us`.`server_id` = `s`.`server_id`
+            )";
+        }
+
+        $parameters = array();
+
+        if ($serverId !== null) {
+            $sqlWhere = 'WHERE `s`.`server_id` = :server_id ';
+            $parameters[':server_id'] = intval($serverId);
+        }
+
+        if ($this->getUser()->getUserLevel() > PSM_USER_ADMIN) {
+            $parameters[':user_id'] = $this->getUser()->getUserId();
+        }
+
+        $sql = "SELECT
+                    `s`.`server_id`,
+                    `s`.`label`,
+                    `s`.`type`,
+                    `s`.`status`,
+                    `s`.`last_check`,
+                    `s`.`last_online`,
+                    `s`.`last_offline`,
+                    `s`.`rtime`,
+                    `s`.`ssl_cert_expiry_days`,
+                    `s`.`ssl_cert_expired_time`,
+                    `s`.`warning_threshold_counter`
+                FROM `" . PSM_DB_PREFIX . "servers` AS `s`
+                {$sqlJoin}
+                {$sqlWhere}
+                ORDER BY `active` ASC, `status` DESC, `label` ASC";
+
+        if (empty($parameters)) {
+            $servers = $this->db->query($sql);
+        } else {
+            $servers = $this->db->execute($sql, $parameters);
+        }
+
+        foreach ($servers as &$server) {
+            $server['last_check'] = intval($server['last_check']);
+            $server['last_online'] = intval($server['last_online']);
+            $server['last_offline'] = intval($server['last_offline']);
+            $server['rtime'] = $server['rtime'] === null ? null : (float)$server['rtime'];
+            $server['ssl_cert_expiry_days'] = $server['ssl_cert_expiry_days'] === null
+                ? null
+                : intval($server['ssl_cert_expiry_days']);
+            $server['warning_threshold_counter'] = intval($server['warning_threshold_counter']);
+        }
+
+        return $servers;
     }
 }
