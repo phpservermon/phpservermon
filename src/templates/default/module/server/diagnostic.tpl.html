@@ -1,0 +1,93 @@
+<div class="row mb-3">
+    <div class="col-lg-8">
+        <div class="btn-group" role="group" aria-label="{{ range_label }}">
+            {% for key, range in ranges %}
+            <a class="btn btn-outline-primary {% if range.active %}active{% endif %}" href="{{ range.url|raw }}">{{ range.label }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text text-muted">{{ label_table_hint }}</p>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle" id="diagnostic-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" data-sort-key="label">{{ label_host }}</th>
+                                <th scope="col" data-sort-key="uptime">{{ label_uptime }}</th>
+                                <th scope="col" data-sort-key="latency">{{ label_latency }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for server in servers %}
+                            <tr data-label="{{ server.label|lower }}" data-uptime="{{ server.uptime_sort }}" data-latency="{{ server.latency_sort }}">
+                                <td>
+                                    <div class="fw-semibold">{{ server.label }}</div>
+                                    <small class="text-muted">{{ server.address }}</small>
+                                </td>
+                                <td>{{ server.uptime_display }}</td>
+                                <td>{{ server.latency_display }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">{{ label_no_data }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="card-text text-muted mb-0">{{ label_latency_note }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    const table = document.getElementById('diagnostic-table');
+    if (!table) {
+        return;
+    }
+
+    const headers = table.querySelectorAll('th[data-sort-key]');
+    headers.forEach((header) => {
+        header.addEventListener('click', () => {
+            const sortKey = header.dataset.sortKey;
+            const nextDirection = header.dataset.direction === 'asc' ? 'desc' : 'asc';
+            headers.forEach((h) => h.removeAttribute('data-direction'));
+            header.dataset.direction = nextDirection;
+
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            rows.sort((rowA, rowB) => {
+                const valueA = rowA.dataset[sortKey];
+                const valueB = rowB.dataset[sortKey];
+
+                if (valueA === '' && valueB === '') {
+                    return rowA.dataset.label.localeCompare(rowB.dataset.label);
+                }
+                if (valueA === '') {
+                    return 1;
+                }
+                if (valueB === '') {
+                    return -1;
+                }
+
+                const numericA = parseFloat(valueA);
+                const numericB = parseFloat(valueB);
+
+                if (!Number.isNaN(numericA) && !Number.isNaN(numericB)) {
+                    return nextDirection === 'asc' ? numericA - numericB : numericB - numericA;
+                }
+
+                return rowA.dataset.label.localeCompare(rowB.dataset.label);
+            });
+
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = '';
+            rows.forEach((row) => tbody.appendChild(row));
+        });
+    });
+})();
+</script>
