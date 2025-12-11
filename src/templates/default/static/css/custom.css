@@ -1,86 +1,86 @@
 :root {
-    --psm-bg: #0c1220;
-    --psm-bg-alt: #0f172a;
-    --psm-surface: #0f172a;
-    --psm-surface-alt: #111c32;
-    --psm-border: rgba(255, 255, 255, 0.06);
-    --psm-text: #e5e7eb;
-    --psm-muted: #cdd5e1;
-    --psm-accent: #fbbf24;
-    --psm-accent-strong: #f59e0b;
-    --psm-accent-soft: rgba(251, 191, 36, 0.15);
-    --psm-success: #34d399;
-    --psm-warning: #fbbf24;
-    --psm-danger: #f87171;
-    --psm-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    --psm-bg: #f5f7fb;
+    --psm-bg-alt: #e8edf5;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #f1f5f9;
+    --psm-border: rgba(15, 23, 42, 0.1);
+    --psm-text: #0f172a;
+    --psm-muted: #475569;
+    --psm-accent: #f59e0b;
+    --psm-accent-strong: #d97706;
+    --psm-accent-soft: rgba(245, 158, 11, 0.15);
+    --psm-success: #22c55e;
+    --psm-warning: #f59e0b;
+    --psm-danger: #ef4444;
+    --psm-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
 
 [data-theme="light"] {
-    --psm-bg: #0c1220;
-    --psm-bg-alt: #0f172a;
-    --psm-surface: #0f172a;
-    --psm-surface-alt: #111c32;
-    --psm-border: rgba(255, 255, 255, 0.06);
-    --psm-text: #e5e7eb;
-    --psm-muted: #cdd5e1;
-    --psm-accent: #fbbf24;
-    --psm-accent-strong: #f59e0b;
-    --psm-accent-soft: rgba(251, 191, 36, 0.15);
-    --psm-success: #34d399;
-    --psm-warning: #fbbf24;
-    --psm-danger: #f87171;
-    --psm-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    --psm-bg: #f5f7fb;
+    --psm-bg-alt: #e8edf5;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #f1f5f9;
+    --psm-border: rgba(15, 23, 42, 0.1);
+    --psm-text: #0f172a;
+    --psm-muted: #475569;
+    --psm-accent: #f59e0b;
+    --psm-accent-strong: #d97706;
+    --psm-accent-soft: rgba(245, 158, 11, 0.15);
+    --psm-success: #22c55e;
+    --psm-warning: #f59e0b;
+    --psm-danger: #ef4444;
+    --psm-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
 
 [data-theme="dark"] {
-    --psm-bg: #050914;
-    --psm-bg-alt: #0b1224;
-    --psm-surface: #0d1529;
-    --psm-surface-alt: #0f1a35;
+    --psm-bg: #0b1220;
+    --psm-bg-alt: #101a2f;
+    --psm-surface: #111c32;
+    --psm-surface-alt: #15223d;
     --psm-border: rgba(255, 255, 255, 0.08);
-    --psm-text: #f8fafc;
+    --psm-text: #e2e8f0;
     --psm-muted: #cbd5e1;
     --psm-accent: #fbbf24;
     --psm-accent-strong: #f59e0b;
-    --psm-accent-soft: rgba(251, 191, 36, 0.22);
+    --psm-accent-soft: rgba(251, 191, 36, 0.2);
     --psm-success: #34d399;
     --psm-warning: #fbbf24;
     --psm-danger: #fb7185;
-    --psm-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    --psm-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
 [data-theme="blue"] {
-    --psm-bg: #0a1022;
-    --psm-bg-alt: #0c1a34;
-    --psm-surface: #0f203c;
-    --psm-surface-alt: #0f2248;
-    --psm-border: rgba(147, 197, 253, 0.2);
-    --psm-text: #e2e8f0;
-    --psm-muted: #b6c4e1;
+    --psm-bg: #0b162b;
+    --psm-bg-alt: #0f2347;
+    --psm-surface: #112b56;
+    --psm-surface-alt: #133366;
+    --psm-border: rgba(96, 165, 250, 0.25);
+    --psm-text: #e5edff;
+    --psm-muted: #c5d4f5;
     --psm-accent: #60a5fa;
     --psm-accent-strong: #3b82f6;
-    --psm-accent-soft: rgba(96, 165, 250, 0.2);
+    --psm-accent-soft: rgba(96, 165, 250, 0.22);
     --psm-success: #34d399;
     --psm-warning: #fbbf24;
     --psm-danger: #fb7185;
-    --psm-shadow: 0 18px 48px rgba(24, 86, 190, 0.35);
+    --psm-shadow: 0 20px 54px rgba(24, 86, 190, 0.32);
 }
 
 [data-theme="green"] {
-    --psm-bg: #08130e;
-    --psm-bg-alt: #0a1a14;
-    --psm-surface: #0d241a;
-    --psm-surface-alt: #0f2c1e;
-    --psm-border: rgba(134, 239, 172, 0.18);
-    --psm-text: #e6f4ea;
-    --psm-muted: #b8dfc9;
+    --psm-bg: #0b1d14;
+    --psm-bg-alt: #0f2a1d;
+    --psm-surface: #123424;
+    --psm-surface-alt: #15402b;
+    --psm-border: rgba(74, 222, 128, 0.2);
+    --psm-text: #e6f7ed;
+    --psm-muted: #c0e8d2;
     --psm-accent: #34d399;
     --psm-accent-strong: #22c55e;
-    --psm-accent-soft: rgba(52, 211, 153, 0.2);
+    --psm-accent-soft: rgba(52, 211, 153, 0.22);
     --psm-success: #34d399;
-    --psm-warning: #facc15;
+    --psm-warning: #eab308;
     --psm-danger: #f87171;
-    --psm-shadow: 0 18px 48px rgba(17, 94, 68, 0.4);
+    --psm-shadow: 0 20px 54px rgba(17, 94, 68, 0.38);
 }
 
 body.app-shell {
