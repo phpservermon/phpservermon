@@ -572,6 +572,18 @@ body.app-shell {
 .btn-outline-secondary { color: var(--psm-text); border-color: var(--psm-border); }
 .btn-outline-light { color: var(--psm-text); border-color: var(--psm-border); }
 
+[data-theme="light"] .btn-light,
+[data-theme="light"] .btn-outline-light,
+[data-theme="blue"] .btn-light,
+[data-theme="blue"] .btn-outline-light,
+[data-theme="green"] .btn-light,
+[data-theme="green"] .btn-outline-light {
+    color: #0f172a;
+    background-color: #ffffff;
+    border-color: rgba(15, 23, 42, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
 .btn:hover,
 .btn:focus {
     filter: brightness(1.06);

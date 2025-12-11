@@ -43,12 +43,7 @@
                                         </span>
                                         <div class="d-flex flex-column">
                                                 <a class="navbar-brand mb-0" href="index.php">{{ title }}</a>
-                                                <span class="brand-subline">Inspired by Pingdom aesthetics</span>
                                         </div>
-                                </div>
-                                <div class="live-chip">
-                                        <span class="pulse-dot"></span>
-                                        <span class="chip-label">Live observers</span>
                                 </div>
                         </div>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar"
@@ -62,7 +57,6 @@
                                                 <div class="nav-menu-shell">
                                                         {{ html_menu|raw }}
                                                 </div>
-                                                <p class="nav-strapline mb-0">Modern monitoring cockpit with calmer contrast and streamlined navigation.</p>
                                         </div>
                                         <div class="ms-lg-auto d-flex align-items-center gap-2 nav-quick-actions mt-3 mt-lg-0">
                                                 <a class="btn btn-sm btn-primary" href="index.php?mod=server&action=edit">
@@ -97,51 +91,19 @@
 
                 <section class="page-hero surface-card shadow-sm mb-4">
                         <div class="hero-grid row align-items-center gy-3">
-                                <div class="col-lg-7">
+                                <div class="col-12">
                                         <div class="hero-titles">
-                                                <p class="eyebrow text-uppercase mb-2">Experience inspired by Pingdom</p>
                                                 {% if not user_level and subtitle %}
-                                                        <h1 class="page-heading mb-2">{{ subtitle }}</h1>
+                                                        <h1 class="page-heading mb-0">{{ subtitle }}</h1>
                                                 {% else %}
-                                                        <h1 class="page-heading mb-2">{{ title }}</h1>
+                                                        <h1 class="page-heading mb-0">{{ title }}</h1>
                                                 {% endif %}
-                                                <p class="hero-subline mb-3">A calmer, modern observability surface with softer gradients, adaptive themes, and quick entry points.</p>
-                                                <div class="hero-pills d-flex flex-wrap gap-2">
-                                                        <span class="hero-pill hero-pill-live"><i class="fas fa-circle"></i> Uptime-first design</span>
-                                                        <span class="hero-pill hero-pill-contrast"><i class="fas fa-moon"></i> Refined theme engine</span>
-                                                        <span class="hero-pill hero-pill-quiet"><i class="fas fa-bell"></i> Alert focus mode</span>
-                                                </div>
                                         </div>
-                                </div>
-                                <div class="col-lg-5">
-                                        <div class="hero-meta-card surface-card glass-card">
-                                                <div class="meta-row d-flex justify-content-between align-items-center mb-3">
-                                                        <div>
-                                                                <p class="meta-label mb-1">Running version</p>
-                                                                <h3 class="meta-value mb-0">v{{ version }}</h3>
-                                                        </div>
-                                                        <div class="meta-chip success">Stable</div>
-                                                </div>
-                                                <div class="meta-row d-flex justify-content-between align-items-center mb-3">
-                                                        <div>
-                                                                <p class="meta-label mb-1">Theme preference</p>
-                                                                <p class="meta-value-sm mb-0">{{ theme_options[theme_preference] }}</p>
-                                                        </div>
-                                                        <div class="meta-chip neutral">Adaptive</div>
-                                                </div>
-                                                <div class="meta-row d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                                <p class="meta-label mb-1">Navigation</p>
-                                                                <p class="meta-value-sm mb-0">Streamlined controls</p>
-                                                        </div>
-                                                        <div class="meta-chip accent">Live</div>
-                                                </div>
-                                        </div>
+                                        {% if header_accessories %}
+                                        <div class="mt-3 hero-actions">{{ header_accessories|raw }}</div>
+                                        {% endif %}
                                 </div>
                         </div>
-                        {% if header_accessories %}
-                        <div class="mt-4 hero-actions">{{ header_accessories|raw }}</div>
-                        {% endif %}
                 </section>
 
                 {% for msg in messages %}
