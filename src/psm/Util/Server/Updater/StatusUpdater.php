@@ -267,8 +267,10 @@ class StatusUpdater
             $this->server['website_password']
         );
 
+        $requestedUrl = $this->replaceAuthPlaceholders($this->server['ip'], $website_password);
+
         $curl_result = psm_curl_get(
-            $this->replaceAuthPlaceholders($this->server['ip'], $website_password),
+            $requestedUrl,
             true,
             ($this->server['pattern'] == '' ? false : true),
             $this->server['timeout'],
@@ -343,6 +345,19 @@ class StatusUpdater
 
                     if ($has_auth_credentials) {
                         $authentication_succeeded = true;
+                    }
+
+                    if (
+                        $has_auth_credentials &&
+                        $this->redirectedToLogin($requestedUrl, $curl_result)
+                    ) {
+                        $this->error =
+                            'LOGIN ERROR: Request redirected to a login page despite configured credentials.';
+                        $this->appendHeaderAuthenticationNote(
+                            'Request redirected to a login page; configured credentials may be invalid.'
+                        );
+                        $authentication_note_added = true;
+                        $result = false;
                     }
 
                     // Okay, the HTTP status is good : 2xx or 3xx. Now we have to test the pattern if it's set up
@@ -494,6 +509,101 @@ class StatusUpdater
         );
 
         return str_ireplace(array_keys($replacements), array_values($replacements), $value);
+    }
+
+    /**
+     * Detect whether the response chain ended up on a login page even though credentials were supplied.
+     *
+     * @param string|null $requestedUrl
+     * @param array $curl_result
+     * @return bool
+     */
+    private function redirectedToLogin($requestedUrl, array $curl_result)
+    {
+        $effectiveUrl = isset($curl_result['info']['url']) ? $curl_result['info']['url'] : '';
+
+        $targets = $this->extractLocationTargets($curl_result['exec']);
+        if ($effectiveUrl !== '') {
+            $targets[] = $effectiveUrl;
+        }
+
+        foreach ($targets as $target) {
+            if ($this->looksLikeLoginUrl($target) && $this->redirectedAwayFrom($requestedUrl, $target)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Pull all Location headers from the raw response.
+     *
+     * @param string $rawResponse
+     * @return array
+     */
+    private function extractLocationTargets($rawResponse)
+    {
+        $location_matches = array();
+        preg_match_all('/^location:\s*(.+)$/im', $rawResponse, $location_matches);
+
+        return isset($location_matches[1]) ? $location_matches[1] : array();
+    }
+
+    /**
+     * Determine whether a URL resembles a login endpoint.
+     *
+     * @param string $url
+     * @return bool
+     */
+    private function looksLikeLoginUrl($url)
+    {
+        if ($url === '') {
+            return false;
+        }
+
+        $parsed = parse_url($url);
+        $path = isset($parsed['path']) ? strtolower($parsed['path']) : '';
+
+        $loginKeywords = array('login', 'signin', 'logon', 'auth');
+        foreach ($loginKeywords as $keyword) {
+            if (strpos($path, $keyword) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Decide whether the response landed somewhere other than the originally requested URL.
+     *
+     * @param string|null $requestedUrl
+     * @param string $targetUrl
+     * @return bool
+     */
+    private function redirectedAwayFrom($requestedUrl, $targetUrl)
+    {
+        if ($requestedUrl === null || $requestedUrl === '' || $targetUrl === '') {
+            return false;
+        }
+
+        $requested = parse_url($requestedUrl);
+        $target = parse_url($targetUrl);
+
+        if (!isset($requested['host'], $target['host'])) {
+            return true;
+        }
+
+        // If the host changed, we were redirected away.
+        if (strcasecmp($requested['host'], $target['host']) !== 0) {
+            return true;
+        }
+
+        $requestedPath = isset($requested['path']) ? rtrim($requested['path'], '/') : '';
+        $targetPath = isset($target['path']) ? rtrim($target['path'], '/') : '';
+
+        return strcasecmp($requestedPath, $targetPath) !== 0;
     }
 
     /**

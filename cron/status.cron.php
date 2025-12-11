@@ -93,6 +93,20 @@ namespace {
         echo "OK";
     }
 
+    $logDirectory = __DIR__ . '/../logs';
+    if (!is_dir($logDirectory)) {
+        @mkdir($logDirectory, 0777, true);
+    }
+
+    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
+    $log = function ($message) use ($logFile) {
+        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
+
+        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
+            error_log($line);
+        }
+    };
+
     $cron_timeout = PSM_CRON_TIMEOUT;
     $forceRun = false;
         // parse a couple of arguments
@@ -196,11 +210,6 @@ namespace {
         ));
     }
 
-    $lockReleased = false;
-    $unlockCron = function () use ($cronRunningKey, $log, &$lockReleased) {
-        if ($lockReleased) {
-            return;
-        }
 
         if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
             psm_update_conf($cronRunningKey, 0);
