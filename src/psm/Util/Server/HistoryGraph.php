@@ -319,17 +319,12 @@ class HistoryGraph
             return null;
         }
 
-        $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
         $coverage_start = $window_start;
 
         // Default to "up" when we have no prior status so unmonitored time counts as covered
         // but does not contribute downtime. This keeps longer ranges from producing lower
         // percentages than their contained shorter windows when downtime is localized.
         $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : true;
-
-        if ($previous_record === null && $first_record !== null && $first_record['date_ts'] > $window_start) {
-            $previous_status = (bool) $first_record['status'];
-        }
 
         $previous_time = $coverage_start;
 
