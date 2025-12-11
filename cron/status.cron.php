@@ -59,28 +59,40 @@ namespace {
         $data = (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 7) ? false : @unserialize(PSM_CRON_ALLOW);
         $allow = $data === false ? PSM_CRON_ALLOW : $data;
 
+        $ipWhitelistEnabled = PSM_WEBCRON_ENABLE_IP_WHITELIST;
         $ipWhitelistCheckPassed = in_array($_SERVER['REMOTE_ADDR'], $allow)
             && in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)
-            && PSM_WEBCRON_ENABLE_IP_WHITELIST;
+            && $ipWhitelistEnabled;
 
-        $webCronKeyCheckPassed =
-            array_key_exists ("webcron_key", $_GET)
-            && $_GET["webcron_key"] == PSM_WEBCRON_KEY
-            && (PSM_WEBCRON_KEY != "");
+        $webCronKeyProvided = array_key_exists("webcron_key", $_GET) && (PSM_WEBCRON_KEY != "");
+        $webCronKeyCheckPassed = $webCronKeyProvided && $_GET["webcron_key"] == PSM_WEBCRON_KEY;
 
         $log(sprintf(
-            'Web cron authentication attempt from %s (forwarded: %s); whitelist=%s, key=%s',
+            'Web cron authentication attempt from %s (forwarded: %s); whitelist=%s (enabled=%s), key=%s (provided=%s)',
             $_SERVER['REMOTE_ADDR'],
             $_SERVER['HTTP_X_FORWARDED_FOR'],
             $ipWhitelistCheckPassed ? 'passed' : 'failed',
-            $webCronKeyCheckPassed ? 'passed' : 'failed'
+            $ipWhitelistEnabled ? 'yes' : 'no',
+            $webCronKeyCheckPassed ? 'passed' : 'failed',
+            $webCronKeyProvided ? 'yes' : 'no'
         ));
 
         if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
+            $failureReasons = [];
+            if (!$ipWhitelistCheckPassed) {
+                $failureReasons[] = $ipWhitelistEnabled
+                    ? 'IP not in whitelist'
+                    : 'IP whitelist disabled';
+            }
+            if (!$webCronKeyCheckPassed) {
+                $failureReasons[] = $webCronKeyProvided ? 'invalid webcron key' : 'webcron key not provided';
+            }
+
             $log(sprintf(
-                'Cron web authentication failed (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
+                'Cron web authentication failed (REMOTE_ADDR=%s, X-Forwarded-For=%s); reasons: %s.',
                 $_SERVER['REMOTE_ADDR'],
-                $_SERVER['HTTP_X_FORWARDED_FOR']
+                $_SERVER['HTTP_X_FORWARDED_FOR'],
+                implode(', ', $failureReasons)
             ));
             header('HTTP/1.0 403 Forbidden');
             $log('Web cron request rejected: authentication failed.');
