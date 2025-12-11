@@ -35,43 +35,57 @@
 
 <body class="app-shell" data-theme="{{ theme_preference }}" data-asset-base="{{ asset() }}">
         <nav class="navbar fixed-top navbar-expand-lg navbar-light app-navbar shadow-sm">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center">
-                <span class="navbar-brand-icon d-inline-flex align-items-center justify-content-center me-2">
-                        <i class="fas fa-wave-square"></i>
-                </span>
-                <a class="navbar-brand" href="index.php">{{ title }}</a>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar"
-            aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <div class="container-fluid nav-container">
+                        <div class="brand-stack d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-2">
+                                        <span class="navbar-brand-icon d-inline-flex align-items-center justify-content-center">
+                                                <i class="fas fa-wave-square"></i>
+                                        </span>
+                                        <div class="d-flex flex-column">
+                                                <a class="navbar-brand mb-0" href="index.php">{{ title }}</a>
+                                                <span class="brand-subline">Inspired by Pingdom aesthetics</span>
+                                        </div>
+                                </div>
+                                <div class="live-chip">
+                                        <span class="pulse-dot"></span>
+                                        <span class="chip-label">Live observers</span>
+                                </div>
+                        </div>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                        </button>
 
-            <div class="collapse navbar-collapse" id="navbar">
-                <div class="d-lg-flex align-items-center w-100">
-                        {{ html_menu|raw }}
-                        <div class="ms-lg-auto d-flex align-items-center gap-2 nav-quick-actions mt-3 mt-lg-0">
-                                <a class="btn btn-sm btn-primary" href="index.php?mod=server&action=edit">
-                                        <i class="fas fa-plus me-1"></i> Add server
-                                </a>
-                                <a class="btn btn-sm btn-outline-secondary" href="index.php?mod=server_log">
-                                        <i class="fas fa-bell-slash me-1"></i> Silence alerts
-                                </a>
-                                <div class="dropdown theme-toggle" data-theme-toggle data-theme-labels="{{ theme_options|json_encode|e('html_attr') }}" data-theme-current="{{ theme_preference }}" data-csrf="{{ csrf_token('profile') }}">
-                                        <button class="btn btn-sm btn-outline-light dropdown-toggle" id="themeToggle" type="button" data-bs-toggle="dropdown" aria-label="{{ theme_label }}">
-                                                <i class="fas fa-palette me-1"></i>
-                                                <span class="current-theme-label">{{ theme_options[theme_preference] }}</span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeToggle">
-                                                {% for value, label in theme_options %}
-                                                <li><button class="dropdown-item theme-option{% if value == theme_preference %} active{% endif %}" type="button" data-theme-value="{{ value }}">{{ label }}</button></li>
-                                                {% endfor %}
-                                        </ul>
+                        <div class="collapse navbar-collapse" id="navbar">
+                                <div class="nav-layout d-lg-flex align-items-center w-100">
+                                        <div class="nav-menu-rail flex-grow-1">
+                                                <div class="nav-menu-shell">
+                                                        {{ html_menu|raw }}
+                                                </div>
+                                                <p class="nav-strapline mb-0">Modern monitoring cockpit with calmer contrast and streamlined navigation.</p>
+                                        </div>
+                                        <div class="ms-lg-auto d-flex align-items-center gap-2 nav-quick-actions mt-3 mt-lg-0">
+                                                <a class="btn btn-sm btn-primary" href="index.php?mod=server&action=edit">
+                                                        <i class="fas fa-plus me-1"></i> Add server
+                                                </a>
+                                                <a class="btn btn-sm btn-outline-secondary" href="index.php?mod=server_log">
+                                                        <i class="fas fa-bell-slash me-1"></i> Silence alerts
+                                                </a>
+                                                <div class="dropdown theme-toggle" data-theme-toggle data-theme-labels="{{ theme_options|json_encode|e('html_attr') }}" data-theme-current="{{ theme_preference }}" data-csrf="{{ csrf_token('profile') }}">
+                                                        <button class="btn btn-sm btn-outline-light dropdown-toggle" id="themeToggle" type="button" data-bs-toggle="dropdown" aria-label="{{ theme_label }}">
+                                                                <i class="fas fa-palette me-1"></i>
+                                                                <span class="current-theme-label">{{ theme_options[theme_preference] }}</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeToggle">
+                                                                {% for value, label in theme_options %}
+                                                                <li><button class="dropdown-item theme-option{% if value == theme_preference %} active{% endif %}" type="button" data-theme-value="{{ value }}">{{ label }}</button></li>
+                                                                {% endfor %}
+                                                        </ul>
+                                                </div>
+                                        </div>
                                 </div>
                         </div>
                 </div>
-            </div>
-        </div>
         </nav>
         {{ html_modal|raw }}
         <main role="main" class="app-main container-fluid px-4 py-4">
@@ -82,35 +96,66 @@
                 </noscript>
 
                 <section class="page-hero surface-card shadow-sm mb-4">
-                        <div class="d-flex align-items-start flex-wrap justify-content-between gap-3">
-                                <div class="hero-titles">
-                                        <p class="eyebrow text-uppercase mb-1">Live monitoring</p>
-                                        {% if not user_level and subtitle %}
-                                                <h1 class="page-heading mb-2">{{ subtitle }}</h1>
-                                        {% else %}
-                                                <h1 class="page-heading mb-2">{{ title }}</h1>
-                                        {% endif %}
-                                        <p class="text-muted mb-0">Readable, responsive controls designed for long dashboard sessions.</p>
+                        <div class="hero-grid row align-items-center gy-3">
+                                <div class="col-lg-7">
+                                        <div class="hero-titles">
+                                                <p class="eyebrow text-uppercase mb-2">Experience inspired by Pingdom</p>
+                                                {% if not user_level and subtitle %}
+                                                        <h1 class="page-heading mb-2">{{ subtitle }}</h1>
+                                                {% else %}
+                                                        <h1 class="page-heading mb-2">{{ title }}</h1>
+                                                {% endif %}
+                                                <p class="hero-subline mb-3">A calmer, modern observability surface with softer gradients, adaptive themes, and quick entry points.</p>
+                                                <div class="hero-pills d-flex flex-wrap gap-2">
+                                                        <span class="hero-pill hero-pill-live"><i class="fas fa-circle"></i> Uptime-first design</span>
+                                                        <span class="hero-pill hero-pill-contrast"><i class="fas fa-moon"></i> Refined theme engine</span>
+                                                        <span class="hero-pill hero-pill-quiet"><i class="fas fa-bell"></i> Alert focus mode</span>
+                                                </div>
+                                        </div>
                                 </div>
-                                <div class="hero-meta text-end">
-                                        <span class="badge rounded-pill version-pill">v{{ version }}</span>
+                                <div class="col-lg-5">
+                                        <div class="hero-meta-card surface-card glass-card">
+                                                <div class="meta-row d-flex justify-content-between align-items-center mb-3">
+                                                        <div>
+                                                                <p class="meta-label mb-1">Running version</p>
+                                                                <h3 class="meta-value mb-0">v{{ version }}</h3>
+                                                        </div>
+                                                        <div class="meta-chip success">Stable</div>
+                                                </div>
+                                                <div class="meta-row d-flex justify-content-between align-items-center mb-3">
+                                                        <div>
+                                                                <p class="meta-label mb-1">Theme preference</p>
+                                                                <p class="meta-value-sm mb-0">{{ theme_options[theme_preference] }}</p>
+                                                        </div>
+                                                        <div class="meta-chip neutral">Adaptive</div>
+                                                </div>
+                                                <div class="meta-row d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                                <p class="meta-label mb-1">Navigation</p>
+                                                                <p class="meta-value-sm mb-0">Streamlined controls</p>
+                                                        </div>
+                                                        <div class="meta-chip accent">Live</div>
+                                                </div>
+                                        </div>
                                 </div>
                         </div>
                         {% if header_accessories %}
-                        <div class="mt-3 hero-actions">{{ header_accessories|raw }}</div>
+                        <div class="mt-4 hero-actions">{{ header_accessories|raw }}</div>
                         {% endif %}
                 </section>
 
                 {% for msg in messages %}
-                <div class="alert alert-{{ msg.class }} shadow-sm modern-alert" role="alert">
-                        <i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}
+                <div class="alert alert-{{ msg.class }} shadow-sm modern-alert status-stream" role="alert">
+                        <div class="status-bullet"></div>
+                        <div class="status-copy"><i class="fas fa-{{ msg.icon }}"></i> {{ msg.message|raw }}</div>
+                        <span class="status-time">Live</span>
                 </div>
                 {% endfor %}
 
                 <div class="content-surface surface-card shadow-sm">
-                        <div class="row g-4 align-items-start">
-                                <div class="col-12 col-lg-4 col-xl-3">{{ html_sidebar|raw }}</div>
-                                <div class="col-12 col-lg-8 col-xl-9" id="content">{{ html_content|raw }}</div>
+                        <div class="dashboard-grid">
+                                <aside class="dashboard-rail">{{ html_sidebar|raw }}</aside>
+                                <section class="dashboard-main" id="content">{{ html_content|raw }}</section>
                         </div>
                 </div>
         </main>

@@ -1,33 +1,29 @@
 body.app-shell {
     position: relative;
     overflow-x: hidden;
-    background-image:
-        radial-gradient(800px at 20% 20%, rgba(56, 189, 248, 0.08), transparent 55%),
-        radial-gradient(700px at 80% 0%, rgba(168, 85, 247, 0.08), transparent 55%);
-    background-attachment: fixed;
 }
 
 body.app-shell::before,
 body.app-shell::after {
     content: "";
     position: fixed;
-    width: 420px;
-    height: 420px;
-    filter: blur(120px);
-    opacity: 0.6;
+    width: 520px;
+    height: 520px;
+    filter: blur(160px);
+    opacity: 0.7;
     pointer-events: none;
     z-index: 0;
 }
 
 body.app-shell::before {
-    background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.35), transparent 60%);
+    background: radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.28), transparent 60%);
     top: 5%;
-    left: 2%;
+    left: 0;
 }
 
 body.app-shell::after {
-    background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.35), transparent 60%);
-    bottom: 5%;
+    background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.32), transparent 60%);
+    bottom: 0;
     right: 5%;
 }
 
@@ -55,9 +51,9 @@ body.app-shell::after {
 }
 
 .ambient-grid .orb-blue {
-    background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.5), transparent 60%);
-    top: -8%;
-    right: 12%;
+    background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.42), transparent 60%);
+    top: -6%;
+    right: 16%;
 }
 
 .ambient-grid .orb-teal {
@@ -68,9 +64,9 @@ body.app-shell::after {
 }
 
 .ambient-grid .orb-purple {
-    background: radial-gradient(circle at 40% 60%, rgba(168, 85, 247, 0.45), transparent 60%);
+    background: radial-gradient(circle at 40% 60%, rgba(251, 191, 36, 0.35), transparent 60%);
     top: 12%;
-    left: 20%;
+    left: 16%;
     animation-duration: 20s;
 }
 
@@ -83,9 +79,9 @@ body.app-shell::after {
 .hero-aurora {
     position: absolute;
     inset: -30% -10% -10% -10%;
-    background: radial-gradient(1200px circle at 10% 20%, rgba(56, 189, 248, 0.16), transparent 40%),
-        radial-gradient(1100px circle at 90% 0%, rgba(168, 85, 247, 0.14), transparent 42%),
-        linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(168, 85, 247, 0.08));
+    background: radial-gradient(1200px circle at 10% 20%, rgba(96, 165, 250, 0.2), transparent 40%),
+        radial-gradient(1100px circle at 90% 0%, rgba(251, 191, 36, 0.2), transparent 42%),
+        linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(96, 165, 250, 0.14));
     filter: blur(45px);
     opacity: 0.9;
     z-index: 0;
@@ -97,15 +93,10 @@ body.app-shell::after {
 }
 
 .page-hero {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.86));
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
-    backdrop-filter: blur(6px);
-}
-
-[data-theme="dark"] .page-hero {
-    background: linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(15, 23, 42, 0.92));
-    border-color: rgba(55, 65, 81, 0.8);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(10px);
 }
 
 .surface-card::before {
@@ -113,8 +104,8 @@ body.app-shell::after {
     position: absolute;
     inset: -20% -20% auto;
     height: 220px;
-    background: linear-gradient(90deg, rgba(56, 189, 248, 0.08), rgba(168, 85, 247, 0.08));
-    opacity: 0.65;
+    background: linear-gradient(90deg, rgba(251, 191, 36, 0.08), rgba(96, 165, 250, 0.08));
+    opacity: 0.75;
     transform: translateY(-60%);
     filter: blur(50px);
     pointer-events: none;
@@ -142,7 +133,7 @@ body.app-shell::after {
 }
 
 .nav-quick-actions .btn-primary {
-    box-shadow: 0 12px 25px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 14px 30px rgba(251, 191, 36, 0.35);
 }
 
 .nav-quick-actions .btn-outline-secondary,
@@ -158,13 +149,8 @@ body.app-shell::after {
 }
 
 .metric-card {
-    border: 1px solid rgba(229, 231, 235, 0.7);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.86));
-}
-
-[data-theme="dark"] .metric-card {
-    border-color: rgba(55, 65, 81, 0.85);
-    background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
 }
 
 .badge.version-pill {
