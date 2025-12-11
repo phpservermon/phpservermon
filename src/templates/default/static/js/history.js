@@ -35,11 +35,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const applySelection = (inputs, chart) => {
                 const selected = Array.from(inputs).find((input) => input.checked);
+
+                inputs.forEach((input) => {
+                        const label = input.closest('label');
+                        if (label) {
+                                label.classList.remove('active');
+                        }
+                });
+
                 if (selected && chart) {
                         const chartUnit = selected.dataset.unit || selected.id;
                         updateScale(chart, parseInt(selected.value, 10), chartUnit);
                         if (inputs === shortInputs) {
                                 updateGauge(selected.id);
+                        }
+
+                        const label = selected.closest('label');
+                        if (label) {
+                                label.classList.add('active');
                         }
                 }
         };

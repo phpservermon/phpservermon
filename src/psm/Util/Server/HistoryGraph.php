@@ -151,10 +151,10 @@ class HistoryGraph
     protected function calculateUptimeSummary($server_id, DateTime $end_time)
     {
         $periods = array(
-            'day' => new DateTime('-1 day'),
-            'week' => new DateTime('-1 week'),
-            'month' => new DateTime('-1 month'),
-            'year' => new DateTime('-1 year'),
+            'day' => (clone $end_time)->modify('-1 day'),
+            'week' => (clone $end_time)->modify('-1 week'),
+            'month' => (clone $end_time)->modify('-1 month'),
+            'year' => (clone $end_time)->modify('-1 year'),
         );
 
         $summary = array();
@@ -296,13 +296,8 @@ class HistoryGraph
         $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
         $coverage_start = $window_start;
 
-        if ($previous_record === null && $first_record !== null && (int) $first_record['date_ts'] > $coverage_start) {
-            // monitoring started later than the requested window; shift to first record
-            $coverage_start = (int) $first_record['date_ts'];
-        }
-
         $previous_time = $coverage_start;
-        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : ($first_record !== null ? (bool) $first_record['status'] : true);
+        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : false;
 
         foreach ($uptime_records as $record) {
             $current_time = (int) $record['date_ts'];
@@ -481,11 +476,11 @@ class HistoryGraph
     protected function calculateUptimeRanges($server_id, DateTime $end_time)
     {
         $ranges = array(
-            'hour' => new DateTime('-1 hour'),
-            'day' => new DateTime('-1 day'),
-            'week' => new DateTime('-1 week'),
-            'month' => new DateTime('-1 month'),
-            'year' => new DateTime('-1 year'),
+            'hour' => (clone $end_time)->modify('-1 hour'),
+            'day' => (clone $end_time)->modify('-1 day'),
+            'week' => (clone $end_time)->modify('-1 week'),
+            'month' => (clone $end_time)->modify('-1 month'),
+            'year' => (clone $end_time)->modify('-1 year'),
         );
 
         $uptime_ranges = array();
