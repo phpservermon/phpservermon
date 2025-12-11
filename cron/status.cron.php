@@ -69,6 +69,20 @@ namespace {
         echo "OK";
     }
 
+    $logDirectory = __DIR__ . '/../logs';
+    if (!is_dir($logDirectory)) {
+        @mkdir($logDirectory, 0777, true);
+    }
+
+    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
+    $log = function ($message) use ($logFile) {
+        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
+
+        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
+            error_log($line);
+        }
+    };
+
     $cron_timeout = PSM_CRON_TIMEOUT;
     $forceRun = false;
         // parse a couple of arguments
@@ -135,6 +149,13 @@ namespace {
         }
     }
 
+    $log(sprintf('Cron invoked (status="%s", force=%s, timeout=%d, argv="%s")',
+        $status ?? 'auto',
+        $forceRun ? 'true' : 'false',
+        $cron_timeout,
+        isset($_SERVER['argv']) ? implode(' ', $_SERVER['argv']) : ''
+    ));
+
     if ($status === 'off') {
         $confPrefix = 'cron_off_';
     } else {
@@ -153,6 +174,11 @@ namespace {
         && ($time - $runningSince < $cron_timeout)
     ) {
         $remaining = $cron_timeout - ($time - $runningSince);
+        $log(sprintf(
+            'Cron already running (started %s, %d seconds remaining). Exiting.',
+            date('c', $runningSince),
+            $remaining
+        ));
         die(sprintf(
             'Cron is already running (started %s, %d seconds remaining). Exiting.',
             date('c', $runningSince),
@@ -160,14 +186,16 @@ namespace {
         ));
     }
 
-    $unlockCron = function () use ($cronRunningKey) {
+    $unlockCron = function () use ($cronRunningKey, $log) {
         if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
             psm_update_conf($cronRunningKey, 0);
+            $log('Cron lock released.');
         }
     };
 
     if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
         psm_update_conf($cronRunningKey, 1);
+        $log('Cron lock acquired.');
     }
     psm_update_conf($cronRunningTimeKey, $time);
 
@@ -181,6 +209,7 @@ namespace {
 
     try {
         if ($status !== 'off') {
+            $log('Running server updates.');
             $autorun->run(true, $status);
         } else {
             set_time_limit(60);
@@ -190,6 +219,7 @@ namespace {
             $start = time();
             $i = 0;
             while ($i < 59) {
+                $log(sprintf('Running server updates (down mode) at +%d seconds.', $i));
                 $autorun->run(true, $status);
                 if ($i < (59 - CRON_DOWN_INTERVAL)) {
                     time_sleep_until($start + $i + CRON_DOWN_INTERVAL);
@@ -199,6 +229,17 @@ namespace {
         }
 
         $reporter->maybeSendWeeklyReport();
+        $log('Weekly performance report check completed.');
+
+        $log('Cron completed successfully.');
+    } catch (\Throwable $exception) {
+        $log(sprintf(
+            'Cron failed: %s in %s on line %d',
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
+        ));
+        throw $exception;
     } finally {
         $unlockCron();
     }
