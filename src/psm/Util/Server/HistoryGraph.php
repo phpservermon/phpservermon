@@ -322,8 +322,13 @@ class HistoryGraph
         $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
         $coverage_start = $window_start;
 
-        $previous_time = $coverage_start;
         $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : false;
+        if ($previous_record === null && $first_record !== null) {
+            $coverage_start = max($coverage_start, (int) $first_record['date_ts']);
+            $previous_status = (bool) $first_record['status'];
+        }
+
+        $previous_time = $coverage_start;
 
         foreach ($uptime_records as $record) {
             $current_time = (int) $record['date_ts'];
