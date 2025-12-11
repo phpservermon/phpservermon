@@ -34,6 +34,20 @@ namespace {
 
     require_once __DIR__ . '/../src/bootstrap.php';
 
+    $logDirectory = __DIR__ . '/../logs';
+    if (!is_dir($logDirectory)) {
+        @mkdir($logDirectory, 0777, true);
+    }
+
+    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
+    $log = function ($message) use ($logFile) {
+        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
+
+        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
+            error_log($line);
+        }
+    };
+
     if (!psm_is_cli()) {
         // check if it's an allowed host
         if (!isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
@@ -55,33 +69,32 @@ namespace {
             && (PSM_WEBCRON_KEY != "");
 
         if (!$ipWhitelistCheckPassed && !$webCronKeyCheckPassed) {
+            $log(sprintf(
+                'Cron web authentication failed (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
+                $_SERVER['REMOTE_ADDR'],
+                $_SERVER['HTTP_X_FORWARDED_FOR']
+            ));
             header('HTTP/1.0 403 Forbidden');
             die('
         <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>
             <head><title>403 Forbidden</title></head>
             <body>
-                <h1>Forbidden</h1><p>IP address not allowed. See the 
-                <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a> 
+                <h1>Forbidden</h1><p>IP address not allowed. See the
+                <a href="http://docs.phpservermonitor.org/en/latest/install.html#cronjob-over-web">documentation</a>
                 for more info.</p>
             </body>
         </html>');
         }
+
+        $authMethod = $ipWhitelistCheckPassed ? 'IP whitelist' : 'webcron key';
+        $log(sprintf(
+            'Cron web authentication successful via %s (REMOTE_ADDR=%s, X-Forwarded-For=%s).',
+            $authMethod,
+            $_SERVER['REMOTE_ADDR'],
+            $_SERVER['HTTP_X_FORWARDED_FOR']
+        ));
         echo "OK";
     }
-
-    $logDirectory = __DIR__ . '/../logs';
-    if (!is_dir($logDirectory)) {
-        @mkdir($logDirectory, 0777, true);
-    }
-
-    $logFile = $logDirectory . '/cron-' . date('Y-m-d_H-i-s') . '.log';
-    $log = function ($message) use ($logFile) {
-        $line = sprintf('[%s] %s%s', date('c'), $message, PHP_EOL);
-
-        if (false === @file_put_contents($logFile, $line, FILE_APPEND)) {
-            error_log($line);
-        }
-    };
 
     $cron_timeout = PSM_CRON_TIMEOUT;
     $forceRun = false;
