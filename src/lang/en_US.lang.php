@@ -92,9 +92,16 @@ $sm_lang = array(
         'server' => 'Servers',
         'server_log' => 'Log',
         'server_status' => 'Status',
+        'server_diagnostic' => 'Diagnostic',
         'server_update' => 'Update',
         'user' => 'Users',
         'help' => 'Help',
+    ),
+    'diagnostic' => array(
+        'title' => 'Diagnostic',
+        'table_hint' => 'Review uptime ratio and average latency for each host. Click the headers to sort.',
+        'latency_note' => 'Latency values use data collected within the selected time window.',
+        'no_data' => 'No diagnostic data available for the selected range.',
     ),
     'users' => array(
         'user' => 'User',
