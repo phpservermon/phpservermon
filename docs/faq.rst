@@ -56,16 +56,6 @@ How do I monitor a specific host such as ``https://auth.agri.ee/cas/login``?
 ---------------------------------------------------------------------------
 
 Use the **Website** monitor type so the checker performs a full HTTP request against the login page instead of just testing the port.
-Enter the full URL (e.g. ``https://auth.agri.ee/cas/login``) in the **Website** field when creating the server.
-
-If you need the monitor to verify that login actually works (and fails when you supply a bad username/password), set it up as follows:
-
-* Set **Request method** to ``POST`` and enter the login payload in **Post field** using placeholders (``%username%`` / ``%password%`` or their ``_url`` variants) so the stored website credentials are sent to the form, e.g. ``username=%username_url%&password=%password_url%``.
-* Add a **Search String** or **Regex** that appears only after a successful login (or an error string that indicates a failed login and flip **Pattern should be on website** accordingly). Without a pattern check, the monitor will treat a 200 OK login page as online even if authentication failed.
-* Save the server with the desired username/password so you can intentionally test with wrong credentials and confirm the status flips to down when the pattern fails to match.
-
-This approach ensures the monitor reports the login host as down when the authentication flow stops working or credentials are rejected.
-
 Are requests made by the monitor included in my website statistics?
 -------------------------------------------------------------------
 
