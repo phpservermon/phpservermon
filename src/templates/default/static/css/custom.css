@@ -13,6 +13,11 @@
     --psm-warning: #f59e0b;
     --psm-danger: #ef4444;
     --psm-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    --psm-nav-bg: linear-gradient(120deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.92));
+    --psm-nav-foreground: #0f172a;
+    --psm-nav-muted: #475569;
+    --psm-nav-border: rgba(15, 23, 42, 0.08);
+    --psm-nav-glow: 0 14px 34px rgba(15, 23, 42, 0.14);
 }
 
 [data-theme="light"] {
@@ -30,6 +35,11 @@
     --psm-warning: #f59e0b;
     --psm-danger: #ef4444;
     --psm-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    --psm-nav-bg: linear-gradient(120deg, rgba(255, 255, 255, 0.96), rgba(226, 232, 240, 0.92));
+    --psm-nav-foreground: #0f172a;
+    --psm-nav-muted: #334155;
+    --psm-nav-border: rgba(15, 23, 42, 0.08);
+    --psm-nav-glow: 0 14px 34px rgba(15, 23, 42, 0.12);
 }
 
 [data-theme="dark"] {
@@ -47,6 +57,11 @@
     --psm-warning: #fbbf24;
     --psm-danger: #fb7185;
     --psm-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    --psm-nav-bg: linear-gradient(110deg, rgba(15, 23, 42, 0.9) 0%, rgba(17, 24, 39, 0.82) 60%, rgba(15, 23, 42, 0.75) 100%);
+    --psm-nav-foreground: #e2e8f0;
+    --psm-nav-muted: #cbd5e1;
+    --psm-nav-border: rgba(255, 255, 255, 0.08);
+    --psm-nav-glow: 0 14px 40px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="blue"] {
@@ -64,6 +79,11 @@
     --psm-warning: #f59e0b;
     --psm-danger: #dc2626;
     --psm-shadow: 0 12px 30px rgba(59, 130, 246, 0.22);
+    --psm-nav-bg: linear-gradient(120deg, rgba(59, 130, 246, 0.16), rgba(255, 255, 255, 0.94));
+    --psm-nav-foreground: #0f172a;
+    --psm-nav-muted: #1e3a8a;
+    --psm-nav-border: rgba(37, 99, 235, 0.18);
+    --psm-nav-glow: 0 14px 34px rgba(37, 99, 235, 0.24);
 }
 
 [data-theme="green"] {
@@ -81,6 +101,11 @@
     --psm-warning: #f59e0b;
     --psm-danger: #dc2626;
     --psm-shadow: 0 12px 30px rgba(22, 163, 74, 0.16);
+    --psm-nav-bg: linear-gradient(120deg, rgba(34, 197, 94, 0.14), rgba(255, 255, 255, 0.94));
+    --psm-nav-foreground: #0f172a;
+    --psm-nav-muted: #166534;
+    --psm-nav-border: rgba(22, 163, 74, 0.16);
+    --psm-nav-glow: 0 14px 34px rgba(22, 163, 74, 0.18);
 }
 
 body.app-shell {
@@ -101,11 +126,11 @@ body.app-shell {
 }
 
 .app-navbar {
-    background: linear-gradient(110deg, rgba(17, 24, 39, 0.75) 0%, rgba(17, 24, 39, 0.6) 60%, rgba(17, 24, 39, 0.4) 100%);
-    border-bottom: 1px solid var(--psm-border);
-    color: var(--psm-text);
+    background: var(--psm-nav-bg);
+    border-bottom: 1px solid var(--psm-nav-border);
+    color: var(--psm-nav-foreground);
     backdrop-filter: blur(16px);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--psm-nav-glow);
 }
 
 .nav-container {
@@ -114,8 +139,9 @@ body.app-shell {
     gap: 1.5rem;
 }
 
+
 .navbar-brand {
-    color: var(--psm-text);
+    color: var(--psm-nav-foreground);
     font-weight: 700;
     font-size: 1.05rem;
 }
@@ -127,7 +153,7 @@ body.app-shell {
 
 .brand-subline {
     font-size: 0.8rem;
-    color: var(--psm-muted);
+    color: var(--psm-nav-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
@@ -137,9 +163,9 @@ body.app-shell {
     height: 48px;
     border-radius: 16px;
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.18), rgba(251, 191, 36, 0.08));
-    color: var(--psm-text);
-    border: 1px solid var(--psm-border);
-    box-shadow: var(--psm-shadow);
+    color: var(--psm-nav-foreground);
+    border: 1px solid var(--psm-nav-border);
+    box-shadow: var(--psm-nav-glow);
 }
 
 .live-chip {
@@ -188,16 +214,17 @@ body.app-shell {
 }
 
 .nav-menu-rail {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--psm-border);
+    background: var(--psm-surface-alt);
+    border: 1px solid var(--psm-nav-border);
     border-radius: 14px;
     padding: 0.75rem 0.9rem;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--psm-nav-glow);
 }
 
+
 .nav-menu-shell .navbar-nav .nav-link {
-    color: var(--psm-muted);
-    font-weight: 600;
+    color: var(--psm-nav-muted);
+    font-weight: 700;
     padding: 0.35rem 0.75rem;
     border-radius: 10px;
     transition: color 150ms ease, background 150ms ease;
@@ -207,8 +234,8 @@ body.app-shell {
 .nav-menu-shell .navbar-nav .nav-link:focus,
 .nav-menu-shell .navbar-nav .active > .nav-link,
 .nav-menu-shell .navbar-nav .nav-link.active {
-    color: var(--psm-text);
-    background: rgba(255, 255, 255, 0.06);
+    color: var(--psm-nav-foreground);
+    background: var(--psm-accent-soft);
 }
 
 .nav-strapline {
@@ -217,17 +244,18 @@ body.app-shell {
     margin-top: 0.35rem;
 }
 
+
 .nav-quick-actions .btn {
     border-radius: 12px;
     font-weight: 700;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--psm-nav-glow);
 }
 
 .nav-quick-actions .btn-outline-secondary,
 .nav-quick-actions .btn-outline-light {
-    color: var(--psm-text);
-    border-color: var(--psm-border);
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--psm-nav-foreground);
+    border-color: var(--psm-nav-border);
+    background: var(--psm-surface-alt);
 }
 
 .theme-toggle .dropdown-menu {
