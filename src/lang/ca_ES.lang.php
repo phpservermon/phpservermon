@@ -144,7 +144,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'El nom d\'usuari ha de tenir entre 2 i 64 caràcters.',
         'error_user_name_invalid' => 'El nom d\'usuari només pot tenir caràcters alfanumèrics (a-z, A-Z), digits
  (0-9) i guions baixos (_).',

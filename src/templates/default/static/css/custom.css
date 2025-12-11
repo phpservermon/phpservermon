@@ -67,20 +67,20 @@
 }
 
 [data-theme="green"] {
-    --psm-bg: #0b1d14;
-    --psm-bg-alt: #0f2a1d;
-    --psm-surface: #123424;
-    --psm-surface-alt: #15402b;
-    --psm-border: rgba(74, 222, 128, 0.2);
-    --psm-text: #e6f7ed;
-    --psm-muted: #c0e8d2;
-    --psm-accent: #34d399;
-    --psm-accent-strong: #22c55e;
-    --psm-accent-soft: rgba(52, 211, 153, 0.22);
-    --psm-success: #34d399;
-    --psm-warning: #eab308;
-    --psm-danger: #f87171;
-    --psm-shadow: 0 20px 54px rgba(17, 94, 68, 0.38);
+    --psm-bg: #f0fdf4;
+    --psm-bg-alt: #dcfce7;
+    --psm-surface: #ffffff;
+    --psm-surface-alt: #e7f6ed;
+    --psm-border: rgba(22, 163, 74, 0.16);
+    --psm-text: #0f172a;
+    --psm-muted: #166534;
+    --psm-accent: #22c55e;
+    --psm-accent-strong: #16a34a;
+    --psm-accent-soft: rgba(34, 197, 94, 0.16);
+    --psm-success: #16a34a;
+    --psm-warning: #f59e0b;
+    --psm-danger: #dc2626;
+    --psm-shadow: 0 12px 30px rgba(22, 163, 74, 0.16);
 }
 
 body.app-shell {

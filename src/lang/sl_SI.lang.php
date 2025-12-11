@@ -110,7 +110,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Uporabniško ime mora biti dolgo med 2 in 64 znakov.',
         'error_user_name_invalid' => 'Uporabniško ime lahko vsebuje samo črke (a-z, A-Z), številke (0-9), pike (.)
  in podčrtaje (_).',

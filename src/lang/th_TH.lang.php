@@ -37,7 +37,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
     ),
     'locale_tag' => 'th',
     'locale_dir' => 'ltr',

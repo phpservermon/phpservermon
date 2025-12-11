@@ -110,7 +110,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => '用户名长度必须为2-64个字符.',
         'error_user_name_invalid' => '用户名只允许使用字母 (a-z, A-Z), 数字 (0-9), 點（。）
  及下划线 (_).',

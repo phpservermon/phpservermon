@@ -111,7 +111,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Benutzernamen müssen zwischen 2 und 64 Zeichen lang sein.',
         'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9),
  Punkte (.) und Unterstriche (_) enthalten.',

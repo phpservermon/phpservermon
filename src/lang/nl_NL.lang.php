@@ -137,7 +137,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Een gebruikersnaam moet tussen de 2 en 64 tekens zijn.',
         'error_user_name_invalid' => 'Een gebruikersnaam mag alleen alfabetische tekens (a-z, A-Z), cijfers (0-9),
  punten (.) en underscores (_) bevatten.',

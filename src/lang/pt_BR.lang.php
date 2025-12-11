@@ -110,7 +110,7 @@ $sm_lang = array(
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_blue' => 'Blue',
-        'theme_green' => 'Green',
+        'theme_green' => 'Light Green',
         'error_user_name_bad_length' => 'Usernames deve conter entre 2 e 64 caracteres.',
         'error_user_name_invalid' => 'Só pode conter caracteres alfabéticos (a-z, A-Z), dígitos (0-9), pontos (.) e
  underscores (_).',
