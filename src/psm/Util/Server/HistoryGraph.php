@@ -68,8 +68,11 @@ class HistoryGraph
      */
     public function getPerformanceStatistics($server_id, DateTime $start_time, DateTime $end_time)
     {
-        $uptime = $this->calculateUptime($server_id, $start_time, $end_time);
-        $latency = $this->calculateLatencyStats($server_id, $start_time, $end_time);
+        $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        $history_records = null;
+
+        $uptime = $this->calculateUptime($server_id, $start_time, $end_time, $uptime_records, $history_records);
+        $latency = $this->calculateLatencyStats($server_id, $start_time, $end_time, $uptime_records, $history_records);
 
         if ($uptime === null && $latency === null) {
             return null;
@@ -180,11 +183,21 @@ class HistoryGraph
      * @param int $server_id
      * @param DateTime $start_time
      * @param DateTime $end_time
+     * @param array|null $uptime_records Preloaded uptime rows to avoid duplicate queries
+     * @param array|null $history_records Preloaded history rows to avoid duplicate queries (passed by reference)
      * @return float|null
      */
-    protected function calculateUptime($server_id, DateTime $start_time, DateTime $end_time)
-    {
-        $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+    protected function calculateUptime(
+        $server_id,
+        DateTime $start_time,
+        DateTime $end_time,
+        array $uptime_records = null,
+        array &$history_records = null
+    ) {
+        if ($uptime_records === null) {
+            $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        }
+
         $previous_record = $this->getPreviousUptimeRecord($server_id, $start_time);
 
         if (!empty($uptime_records) || $previous_record !== null) {
@@ -204,7 +217,9 @@ class HistoryGraph
             return $covered_time > 0 ? 100 - (($downtime / $covered_time) * 100) : null;
         }
 
-        $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+        if ($history_records === null) {
+            $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+        }
 
         if (empty($history_records)) {
             return null;
@@ -225,16 +240,25 @@ class HistoryGraph
      * @param int $server_id
      * @param DateTime $start_time
      * @param DateTime $end_time
+     * @param array|null $uptime_records Preloaded uptime rows to avoid duplicate queries
+     * @param array|null $history_records Preloaded history rows to avoid duplicate queries (passed by reference)
      * @return array|null
      */
-    protected function calculateLatencyStats($server_id, DateTime $start_time, DateTime $end_time)
-    {
+    protected function calculateLatencyStats(
+        $server_id,
+        DateTime $start_time,
+        DateTime $end_time,
+        array $uptime_records = null,
+        array &$history_records = null
+    ) {
         $latency_sum = 0;
         $latency_min = null;
         $latency_max = null;
         $latency_count = 0;
 
-        $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        if ($uptime_records === null) {
+            $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
+        }
 
         foreach ($uptime_records as $record) {
             if ($record['latency'] === null) {
@@ -249,7 +273,9 @@ class HistoryGraph
         }
 
         if ($latency_count === 0) {
-            $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+            if ($history_records === null) {
+                $history_records = $this->getRecords('history', $server_id, $start_time, $end_time);
+            }
 
             foreach ($history_records as $record) {
                 $latency_sum += (float) $record['latency_avg'];
@@ -293,11 +319,14 @@ class HistoryGraph
             return null;
         }
 
-        $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
         $coverage_start = $window_start;
 
+        // Default to "up" when we have no prior status so unmonitored time counts as covered
+        // but does not contribute downtime. This keeps longer ranges from producing lower
+        // percentages than their contained shorter windows when downtime is localized.
+        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : true;
+
         $previous_time = $coverage_start;
-        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : false;
 
         foreach ($uptime_records as $record) {
             $current_time = (int) $record['date_ts'];
@@ -340,9 +369,9 @@ class HistoryGraph
     protected function calculateDowntimeFromHistoryRecords(array $history_records, DateTime $start_time, DateTime $end_time)
     {
         $downtime = 0;
-        $covered_time = 0;
         $window_start = $start_time->getTimestamp();
         $window_end = $end_time->getTimestamp();
+        $covered_time = max(0, $window_end - $window_start);
 
         foreach ($history_records as $record) {
             $checks_total = (int) $record['checks_total'];
@@ -364,10 +393,11 @@ class HistoryGraph
 
             $failed_ratio = ((int) $record['checks_failed']) / $checks_total;
             $downtime += ($period_end - $period_start) * $failed_ratio;
-            $covered_time += ($period_end - $period_start);
         }
 
-        // if monitoring did not exist for part of the requested window, only the covered portion counts
+        // Treat unmonitored time as up while still counting it as part of the requested range
+        // so wider windows cannot report lower uptime percentages than contained ranges when
+        // downtime only affected a subset of the period.
         return array($downtime, $covered_time);
     }
 

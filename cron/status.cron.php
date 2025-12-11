@@ -208,7 +208,8 @@ namespace {
         ));
     }
 
-
+    $lockReleased = false;
+    $unlockCron = function () use ($cronRunningKey, $log, &$lockReleased) {
         if (!defined('PSM_DEBUG') || !PSM_DEBUG) {
             psm_update_conf($cronRunningKey, 0);
             $log('Cron lock released.');
