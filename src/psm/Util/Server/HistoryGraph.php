@@ -319,14 +319,7 @@ class HistoryGraph
             return null;
         }
 
-        $first_record = !empty($uptime_records) ? reset($uptime_records) : null;
         $coverage_start = $window_start;
-
-        $previous_status = $previous_record !== null ? (bool) $previous_record['status'] : false;
-        if ($previous_record === null && $first_record !== null) {
-            $coverage_start = max($coverage_start, (int) $first_record['date_ts']);
-            $previous_status = (bool) $first_record['status'];
-        }
 
         $previous_time = $coverage_start;
 
@@ -371,9 +364,9 @@ class HistoryGraph
     protected function calculateDowntimeFromHistoryRecords(array $history_records, DateTime $start_time, DateTime $end_time)
     {
         $downtime = 0;
-        $covered_time = 0;
         $window_start = $start_time->getTimestamp();
         $window_end = $end_time->getTimestamp();
+        $covered_time = max(0, $window_end - $window_start);
 
         foreach ($history_records as $record) {
             $checks_total = (int) $record['checks_total'];
@@ -395,10 +388,11 @@ class HistoryGraph
 
             $failed_ratio = ((int) $record['checks_failed']) / $checks_total;
             $downtime += ($period_end - $period_start) * $failed_ratio;
-            $covered_time += ($period_end - $period_start);
         }
 
-        // if monitoring did not exist for part of the requested window, only the covered portion counts
+        // Treat unmonitored time as up while still counting it as part of the requested range
+        // so wider windows cannot report lower uptime percentages than contained ranges when
+        // downtime only affected a subset of the period.
         return array($downtime, $covered_time);
     }
 
