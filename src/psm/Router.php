@@ -262,6 +262,14 @@ class Router
                 }
             )
         );
+        $twig->addFunction(
+            new \Twig\TwigFunction(
+                'psm_build_url',
+                function (array $params = array(), bool $urlencode = true, bool $htmlentities = true) {
+                    return psm_build_url($params, $urlencode, $htmlentities);
+                }
+            )
+        );
 
         return $twig;
     }
