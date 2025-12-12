@@ -1,5 +1,4 @@
 const modalOrigins = new WeakMap();
-const THEME_OPTIONS = ['light', 'dark', 'blue', 'green'];
 
 function psm_setLayout(layout) {
         const listLayout = document.getElementById('list-layout');
@@ -61,80 +60,6 @@ function psm_saveLayout(layout) {
         };
 
         psm_xhr('server_status', params, 'POST');
-}
-
-function getThemeLabels() {
-        try {
-                const toggle = document.querySelector('[data-theme-toggle]');
-                if (toggle && toggle.dataset.themeLabels) {
-                        return JSON.parse(toggle.dataset.themeLabels);
-                }
-        } catch (err) {
-                return {};
-        }
-
-        return {};
-}
-
-function syncThemeButton(theme) {
-        const toggle = document.querySelector('[data-theme-toggle]');
-        if (!toggle) return;
-
-        const labels = getThemeLabels();
-        const currentLabel = toggle.querySelector('.current-theme-label');
-        if (currentLabel) {
-            currentLabel.textContent = labels[theme] || theme;
-        }
-
-        toggle.querySelectorAll('.theme-option').forEach((option) => {
-                option.classList.toggle('active', option.dataset.themeValue === theme);
-        });
-}
-
-function persistThemePreference(theme) {
-        const toggle = document.querySelector('[data-theme-toggle]');
-        if (!toggle) return;
-
-        const csrf = toggle.dataset.csrf || '';
-        const params = {
-                action: 'saveTheme',
-                csrf,
-                theme,
-        };
-
-        psm_xhr('user_profile', params, 'POST', null, { json: true });
-}
-
-function applyTheme(theme, shouldPersist = false) {
-        const preferredTheme = THEME_OPTIONS.includes(theme)
-                ? theme
-                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.body.setAttribute('data-theme', preferredTheme);
-        localStorage.setItem('psm-theme', preferredTheme);
-        syncThemeButton(preferredTheme);
-
-        if (shouldPersist) {
-                persistThemePreference(preferredTheme);
-        }
-}
-
-function initThemeToggle() {
-        const savedTheme = localStorage.getItem('psm-theme');
-        const themeFromServer = document.body.getAttribute('data-theme');
-        const initialTheme = THEME_OPTIONS.includes(themeFromServer)
-                ? themeFromServer
-                : savedTheme;
-
-        applyTheme(initialTheme);
-        const toggle = document.querySelector('[data-theme-toggle]');
-        if (toggle) {
-                toggle.querySelectorAll('.theme-option').forEach((option) => {
-                        option.addEventListener('click', () => {
-                                const selectedTheme = option.dataset.themeValue;
-                                applyTheme(selectedTheme, true);
-                        });
-                });
-        }
 }
 
 function initModalTriggers() {
@@ -331,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initUserNameWatcher();
         focusLabel();
         loadSearchEnhancements();
-        initThemeToggle();
 
         if ('serviceWorker' in navigator) {
                 navigator.serviceWorker

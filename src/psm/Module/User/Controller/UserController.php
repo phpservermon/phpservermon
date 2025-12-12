@@ -38,13 +38,6 @@ use psm\Service\Database;
 class UserController extends AbstractController
 {
     public $servers = array();
-    /**
-     * Available theme preferences.
-     *
-     * @var array
-     */
-    private $theme_options = array('light', 'dark', 'blue', 'green');
-
     public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
@@ -165,8 +158,7 @@ class UserController extends AbstractController
             'user_name',
             'mobile',
             'telegram_id',
-            'email',
-            'theme'
+            'email'
         );
 
         if ($user_id == 0) {
@@ -174,7 +166,6 @@ class UserController extends AbstractController
             $title = psm_get_lang('system', 'insert');
             $placeholder_password = '';
             $lvl_selected = PSM_USER_USER; // default level is regular user
-            $theme_preference = 'light';
 
             // attempt to prefill previously posted fields
             $edit_user = new \stdClass();
@@ -198,7 +189,6 @@ class UserController extends AbstractController
             $title = psm_get_lang('system', 'edit') . ' ' . $edit_user->name;
             $placeholder_password = psm_get_lang('users', 'password_leave_blank');
             $lvl_selected = $edit_user->level;
-            $theme_preference = $this->getUserThemePreference($user_id);
 
             // select servers for this user
             $user_servers = $this->getUserServers($user_id);
@@ -223,16 +213,11 @@ class UserController extends AbstractController
             )),
             'servers' => $this->servers,
             'user_level' => $lvl_selected,
-            'theme' => $theme_preference,
         );
         foreach ($fields_prefill as $field) {
             if (isset($edit_user->$field)) {
                 $tpl_data['edit_value_' . $field] = $edit_user->$field;
             }
-        }
-
-        if (isset($_POST['theme'])) {
-            $theme_preference = $this->normalizeTheme($this->sanitizePostedField($_POST['theme']));
         }
 
         $tpl_data['levels'] = array();
@@ -242,8 +227,6 @@ class UserController extends AbstractController
                 'label' => psm_get_lang('users', 'level_' . $lvl),
             );
         }
-
-        $tpl_data['theme_options'] = $this->getThemeOptionLabels();
 
         $tpl_data = array_merge($this->getLabels(), $tpl_data);
 
@@ -260,10 +243,6 @@ class UserController extends AbstractController
             return $this->executeIndex();
         }
         $user_id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
-
-        $theme = isset($_POST['theme'])
-            ? $this->normalizeTheme($this->sanitizePostedField($_POST['theme']))
-            : 'light';
 
         $fields = array(
             'name',
@@ -345,7 +324,6 @@ class UserController extends AbstractController
 
             $event = \psm\Module\User\UserEvents::USER_ADD;
         }
-        $this->saveUserThemePreference($user_id, $theme);
         $this->container->get('event')->dispatch(
             new \psm\Module\User\Event\UserEvent($user_id, $this->getUser()->getUserId()),
             $event
@@ -443,7 +421,6 @@ class UserController extends AbstractController
             'label_telegram_id_description' => psm_get_lang('users', 'telegram_chat_id_description'),
             'label_email' => psm_get_lang('users', 'email'),
             'label_servers' => psm_get_lang('menu', 'server'),
-            'label_theme' => psm_get_lang('users', 'theme'),
             'label_save' => psm_get_lang('system', 'save'),
             'label_go_back' => psm_get_lang('system', 'go_back'),
             'label_edit' => psm_get_lang('system', 'edit'),
@@ -451,98 +428,6 @@ class UserController extends AbstractController
             'label_add_new' => psm_get_lang('system', 'add_new'),
             'label_search' => psm_get_lang('system', 'search'),
         );
-    }
-
-    /**
-     * Get the stored theme preference for a user.
-     *
-     * @param int $user_id
-     * @return string
-     */
-    private function getUserThemePreference($user_id)
-    {
-        $preference = $this->db->selectRow(
-            PSM_DB_PREFIX . 'users_preferences',
-            array(
-                'user_id' => $user_id,
-                'key' => 'theme'
-            ),
-            array('value')
-        );
-
-        if (isset($preference['value'])) {
-            return $this->normalizeTheme($preference['value']);
-        }
-
-        return 'light';
-    }
-
-    /**
-     * Persist the selected theme for a user.
-     *
-     * @param int $user_id
-     * @param string $theme
-     */
-    private function saveUserThemePreference($user_id, $theme)
-    {
-        $existing_preference = $this->db->selectRow(
-            PSM_DB_PREFIX . 'users_preferences',
-            array(
-                'user_id' => $user_id,
-                'key' => 'theme'
-            ),
-            array('value')
-        );
-
-        $data = array(
-            'key' => 'theme',
-            'value' => $theme
-        );
-
-        if (!empty($existing_preference)) {
-            $this->db->save(
-                PSM_DB_PREFIX . 'users_preferences',
-                $data,
-                array(
-                    'user_id' => $user_id,
-                    'key' => 'theme'
-                )
-            );
-            return;
-        }
-
-        $data['user_id'] = $user_id;
-        $this->db->save(PSM_DB_PREFIX . 'users_preferences', $data);
-    }
-
-    /**
-     * Normalize incoming theme values to allowed options.
-     *
-     * @param string $value
-     * @return string
-     */
-    private function normalizeTheme($value)
-    {
-        return in_array($value, $this->theme_options, true) ? $value : 'light';
-    }
-
-    /**
-     * Get available theme options with labels.
-     *
-     * @return array
-     */
-    private function getThemeOptionLabels()
-    {
-        $theme_options = array();
-
-        foreach ($this->theme_options as $option) {
-            $theme_options[] = array(
-                'value' => $option,
-                'label' => psm_get_lang('users', 'theme_' . $option),
-            );
-        }
-
-        return $theme_options;
     }
 
     /**
