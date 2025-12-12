@@ -96,7 +96,10 @@ class DiagnosticController extends AbstractServerController
             $mail->AltBody = $this->buildTextReport($report_ranges);
             $mail->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
 
-            $mail->send();
+            $sent = $mail->send();
+            if ($sent === false) {
+                throw new \RuntimeException($mail->ErrorInfo ?: 'Diagnostic email was not sent.');
+            }
 
             $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
         } catch (\PHPMailer\PHPMailer\Exception $exception) {
