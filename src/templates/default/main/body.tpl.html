@@ -17,7 +17,7 @@
         <meta name="msapplication-TileColor" content="#424242">
         <!-- TODO add base url -->
         <!-- <link rel="canonical" href=""> -->
-        <meta name="theme-color" content="#0f172a">
+        <meta name="theme-color" content="#2f7df6">
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
         <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}" />
@@ -65,17 +65,6 @@
                                                 <a class="btn btn-sm btn-outline-secondary" href="index.php?mod=server_log">
                                                         <i class="fas fa-bell-slash me-1"></i> Silence alerts
                                                 </a>
-                                                <div class="dropdown theme-toggle" data-theme-toggle data-theme-labels="{{ theme_options|json_encode|e('html_attr') }}" data-theme-current="{{ theme_preference }}" data-csrf="{{ csrf_token('profile') }}">
-                                                        <button class="btn btn-sm btn-outline-light dropdown-toggle" id="themeToggle" type="button" data-bs-toggle="dropdown" aria-label="{{ theme_label }}">
-                                                                <i class="fas fa-palette me-1"></i>
-                                                                <span class="current-theme-label">{{ theme_options[theme_preference] }}</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeToggle">
-                                                                {% for value, label in theme_options %}
-                                                                <li><button class="dropdown-item theme-option{% if value == theme_preference %} active{% endif %}" type="button" data-theme-value="{{ value }}">{{ label }}</button></li>
-                                                                {% endfor %}
-                                                        </ul>
-                                                </div>
                                         </div>
                                 </div>
                         </div>

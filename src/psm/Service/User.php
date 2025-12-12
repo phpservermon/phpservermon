@@ -308,6 +308,7 @@ class User
         if ($regenerate) {
             $this->session->invalidate();
         }
+        $this->session->start();
         $this->session->set('user_id', $user_id);
         $this->session->set('user_logged_in', 1);
 
