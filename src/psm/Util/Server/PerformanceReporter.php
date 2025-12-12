@@ -88,7 +88,14 @@ class PerformanceReporter
             $mail->addAddress($recipient['email'], $recipient['name']);
         }
 
-        $mail->send();
+        $mailSendResult = $mail->send();
+
+        if (!$mailSendResult) {
+            $errorInfo = property_exists($mail, 'ErrorInfo') ? $mail->ErrorInfo : 'unknown reason';
+            error_log(sprintf('Weekly performance report email failed to send: %s', $errorInfo));
+
+            return false;
+        }
 
         psm_update_conf('weekly_report_last_sent', $week_end->getTimestamp());
 
