@@ -57,7 +57,7 @@ class DiagnosticController extends AbstractServerController
     }
 
     /**
-     * Email diagnostics for all ranges to the current user.
+     * Email diagnostics for the selected range to the current user.
      */
     protected function executeSendReport()
     {
@@ -81,7 +81,12 @@ class DiagnosticController extends AbstractServerController
             return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
         }
 
-        $report_ranges = $this->collectReportsForRanges($ranges, $end_time);
+        $report_ranges = array(
+            $range_key => array(
+                'label' => $ranges[$range_key]['label'],
+                'servers' => $this->collectServersForRange(clone $ranges[$range_key]['start'], clone $end_time),
+            ),
+        );
 
         try {
             $mail = psm_build_mail();
@@ -220,27 +225,6 @@ class DiagnosticController extends AbstractServerController
         usort($servers, array($this, 'sortByUptime'));
 
         return $servers;
-    }
-
-    /**
-     * Gather report data for each available range.
-     *
-     * @param array $ranges
-     * @param DateTime $end_time
-     * @return array<string, array>
-     */
-    protected function collectReportsForRanges(array $ranges, DateTime $end_time)
-    {
-        $report = array();
-
-        foreach ($ranges as $key => $range) {
-            $report[$key] = array(
-                'label' => $range['label'],
-                'servers' => $this->collectServersForRange(clone $range['start'], clone $end_time),
-            );
-        }
-
-        return $report;
     }
 
     /**
