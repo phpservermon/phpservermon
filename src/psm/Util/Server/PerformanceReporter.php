@@ -88,7 +88,14 @@ class PerformanceReporter
             $mail->addAddress($recipient['email'], $recipient['name']);
         }
 
-        $mail->send();
+        $mailSendResult = $mail->send();
+
+        if (!$mailSendResult) {
+            $errorInfo = property_exists($mail, 'ErrorInfo') ? $mail->ErrorInfo : 'unknown reason';
+            error_log(sprintf('Weekly performance report email failed to send: %s', $errorInfo));
+
+            return false;
+        }
 
         psm_update_conf('weekly_report_last_sent', $week_end->getTimestamp());
 
@@ -181,10 +188,14 @@ class PerformanceReporter
 
         $rows = '';
         foreach ($servers as $server) {
+            $uptimeCellStyle = ($server['uptime'] === null || (float) $server['uptime'] < 100.0)
+                ? ' style="background:#ffe0b3;"'
+                : '';
+
             $rows .= '<tr>' .
-                '<td>' . htmlspecialchars($server['label']) . '</td>' .
+                '<td style="background:#d9f2d9;font-weight:bold;">' . htmlspecialchars($server['label']) . '</td>' .
                 '<td>' . htmlspecialchars($this->formatAddress($server)) . '</td>' .
-                '<td>' . htmlspecialchars($this->formatUptime($server['uptime'])) . '</td>' .
+                '<td' . $uptimeCellStyle . '>' . htmlspecialchars($this->formatUptime($server['uptime'])) . '</td>' .
                 '<td>' . htmlspecialchars($this->formatLatency($server['latency'])) . '</td>' .
                 '</tr>';
         }
@@ -255,7 +266,33 @@ class PerformanceReporter
             return 'n/a';
         }
 
-        return sprintf('%0.5fs (min %0.5fs / max %0.5fs)', $latency['average'], $latency['min'], $latency['max']);
+        return sprintf(
+            '%s (min %s / max %s)',
+            $this->formatLatencyValue($latency['average']),
+            $this->formatLatencyValue($latency['min']),
+            $this->formatLatencyValue($latency['max'])
+        );
+    }
+
+    /**
+     * Convert a latency value in seconds to a human readable string.
+     *
+     * @param float $seconds
+     * @return string
+     */
+    protected function formatLatencyValue($seconds)
+    {
+        if ($seconds < 1) {
+            return sprintf('%0.2f ms', $seconds * 1000);
+        }
+
+        if ($seconds < 60) {
+            return sprintf('%0.2f s', $seconds);
+        }
+
+        $minutes = $seconds / 60;
+
+        return sprintf('%0.2f min', $minutes);
     }
 
     /**
