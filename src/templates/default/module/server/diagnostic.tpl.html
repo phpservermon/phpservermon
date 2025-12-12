@@ -52,13 +52,12 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <form method="post" action="{{ psm_build_url({'mod': 'server_diagnostic', 'action': 'sendReport', 'range': range_key}) }}" class="d-flex align-items-center flex-wrap gap-2">
+        <form method="post" action="{{ form_action }}" class="d-flex align-items-center flex-wrap gap-2">
             {{ macros.input_csrf() }}
             <input type="hidden" name="range" value="{{ range_key }}" />
             <button type="submit" class="btn btn-primary">{{ label_send_email }}</button>
             <span class="text-muted">{{ label_send_email_help }}</span>
         </form>
-        <p class="mb-0">Send e-mail</p>
     </div>
 </div>
 <script>

@@ -156,6 +156,7 @@ class DiagnosticController extends AbstractServerController
         return array(
             'ranges' => $ranges,
             'range_key' => $range_key,
+            'form_action' => psm_build_url(array('mod' => 'server_diagnostic', 'action' => 'sendReport', 'range' => $range_key)),
             'range_label' => $ranges[$range_key]['label'],
             'servers' => $servers,
             'label_table_hint' => psm_get_lang('diagnostic', 'table_hint'),
