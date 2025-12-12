@@ -89,23 +89,22 @@ class DiagnosticController extends AbstractServerController
         );
 
         try {
-            $mail = psm_build_mail();
+            $mail = psm_build_mail(null, null, true);
             $mail->isHTML(true);
             $mail->Subject = psm_get_lang('diagnostic', 'send_email_subject');
             $mail->Body = $this->buildHtmlReport($report_ranges);
             $mail->AltBody = $this->buildTextReport($report_ranges);
             $mail->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
 
-            $sent = $mail->send();
+            $mail->send();
 
-            if ($sent) {
-                $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
-            } else {
-                if (!empty($mail->ErrorInfo)) {
-                    error_log('Diagnostic email failed: ' . $mail->ErrorInfo);
-                }
-                $this->addMessage(psm_get_lang('diagnostic', 'send_email_error'), 'error');
-            }
+            $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
+        } catch (\PHPMailer\PHPMailer\Exception $exception) {
+            error_log('Diagnostic email failed: ' . $exception->getMessage());
+            $this->addMessage(
+                psm_get_lang('diagnostic', 'send_email_error') . ' ' . $exception->getMessage(),
+                'error'
+            );
         } catch (\Throwable $exception) {
             error_log('Diagnostic email error: ' . $exception->getMessage());
             $this->addMessage(psm_get_lang('diagnostic', 'send_email_error'), 'error');
