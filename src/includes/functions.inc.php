@@ -1189,7 +1189,8 @@ namespace {
 
             curl_setopt($con, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($con, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($con, CURLOPT_TIMEOUT, 60);
+            // Keep the total request time short to avoid tying up the config save request
+            curl_setopt($con, CURLOPT_TIMEOUT, 15);
             curl_setopt($con, CURLOPT_POST, true);
             curl_setopt($con, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/json',
@@ -1311,7 +1312,8 @@ namespace {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonMessage);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+            // Avoid long-running webhook calls when saving configuration
+            curl_setopt($curl, CURLOPT_TIMEOUT, 15);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
             $result = curl_exec($curl);
 
