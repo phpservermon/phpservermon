@@ -620,9 +620,9 @@ namespace {
      * @param string $from_email
      * @return \PHPMailer\PHPMailer\PHPMailer
      */
-    function psm_build_mail($from_name = null, $from_email = null)
+    function psm_build_mail($from_name = null, $from_email = null, $throw_exceptions = false)
     {
-        $phpmailer = new \PHPMailer\PHPMailer\PHPMailer();
+        $phpmailer = new \PHPMailer\PHPMailer\PHPMailer($throw_exceptions);
         $phpmailer->Encoding = "base64";
         $phpmailer->CharSet = 'UTF-8';
         $phpmailer->SMTPDebug = 0;
