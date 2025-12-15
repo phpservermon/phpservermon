@@ -88,29 +88,24 @@ class DiagnosticController extends AbstractServerController
             ),
         );
 
-        try {
-            $mail = psm_build_mail(null, null, true);
-            $mail->isHTML(true);
-            $mail->Subject = psm_get_lang('diagnostic', 'send_email_subject');
-            $mail->Body = $this->buildHtmlReport($report_ranges);
-            $mail->AltBody = $this->buildTextReport($report_ranges);
-            $mail->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
+        $mail = psm_build_mail();
+        $mail->isHTML(true);
+        $mail->Subject = psm_get_lang('diagnostic', 'send_email_subject');
+        $mail->Body = $this->buildHtmlReport($report_ranges);
+        $mail->AltBody = $this->buildTextReport($report_ranges);
+        $mail->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
 
-            $sent = $mail->send();
-            if ($sent === false) {
-                throw new \RuntimeException($mail->ErrorInfo ?: 'Diagnostic email was not sent.');
-            }
-
+        $sent = $mail->send();
+        if ($sent) {
             $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
-        } catch (\PHPMailer\PHPMailer\Exception $exception) {
-            error_log('Diagnostic email failed: ' . $exception->getMessage());
-            $this->addMessage(
-                psm_get_lang('diagnostic', 'send_email_error') . ' ' . $exception->getMessage(),
-                'error'
-            );
-        } catch (\Throwable $exception) {
-            error_log('Diagnostic email error: ' . $exception->getMessage());
-            $this->addMessage(psm_get_lang('diagnostic', 'send_email_error'), 'error');
+        } else {
+            error_log('Diagnostic email failed: ' . $mail->ErrorInfo);
+            $error_info = trim($mail->ErrorInfo);
+            $message = psm_get_lang('diagnostic', 'send_email_error');
+            if ($error_info !== '') {
+                $message .= ' ' . $error_info;
+            }
+            $this->addMessage($message, 'error');
         }
 
         return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
