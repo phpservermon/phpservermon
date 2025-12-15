@@ -52,7 +52,7 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <form method="post" action="{{ form_action }}" class="d-flex flex-column flex-md-row align-items-start gap-2">
+        <form method="post" action="{{ form_action|raw }}" class="d-flex flex-column flex-md-row align-items-start gap-2">
             {{ macros.input_csrf() }}
             <input type="hidden" name="range" value="{{ range_key }}" />
             <button type="submit" class="btn btn-primary">{{ label_send_email }}</button>
