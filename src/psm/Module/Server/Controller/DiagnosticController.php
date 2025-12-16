@@ -107,6 +107,7 @@ class DiagnosticController extends AbstractServerController
     protected function sendDiagnosticEmail($recipient_email, $user, array $report_ranges)
     {
         $mailer = $this->buildMailer();
+        $range_key = array_key_first($report_ranges) ?? 'unknown';
 
         try {
             $mailer->isHTML(true);
@@ -117,22 +118,18 @@ class DiagnosticController extends AbstractServerController
 
             $mailer->send();
 
+            $this->logDiagnosticEmailAttempt($recipient_email, $range_key, true, '');
+
             return array(
                 'type' => 'success',
                 'message' => psm_get_lang('diagnostic', 'send_email_success'),
             );
         } catch (PHPMailerException $exception) {
-            error_log('Diagnostic email failed: ' . $exception->getMessage());
-
-        $sent = $mail->send();
-        $this->logDiagnosticEmailAttempt($recipient_email, $range_key, $sent, $mail->ErrorInfo ?? '');
-        if ($sent) {
-            $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
-        } else {
-            error_log('Diagnostic email failed: ' . $mail->ErrorInfo);
-            $error_info = trim($mail->ErrorInfo);
-            $message = psm_get_lang('diagnostic', 'send_email_error');
             $error_info = trim($exception->getMessage());
+            error_log('Diagnostic email failed: ' . $error_info);
+            $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $error_info);
+
+            $message = psm_get_lang('diagnostic', 'send_email_error');
             if ($error_info !== '') {
                 $message .= ' ' . $error_info;
             }
