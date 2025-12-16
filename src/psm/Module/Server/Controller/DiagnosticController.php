@@ -108,16 +108,6 @@ class DiagnosticController extends AbstractServerController
     {
         $mailer = $this->buildMailer();
         $range_key = array_key_first($report_ranges) ?? 'unknown';
-        $debug_log = array();
-
-        // Capture PHPMailer debug output so we can persist it when a send fails.
-        $mailer->Debugoutput = function ($str) use (&$debug_log) {
-            $debug_log[] = trim($str);
-        };
-
-        if (psm_get_conf('email_smtp') === '1' && PSM_DEBUG) {
-            $mailer->SMTPDebug = 2;
-        }
 
         try {
             $mailer->isHTML(true);
@@ -137,9 +127,6 @@ class DiagnosticController extends AbstractServerController
         } catch (PHPMailerException $exception) {
             $error_info = trim($exception->getMessage());
             error_log('Diagnostic email failed: ' . $error_info);
-            if (!empty($debug_log)) {
-                $error_info .= ' | debug=' . implode(' | ', $debug_log);
-            }
             $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $error_info);
 
             $message = psm_get_lang('diagnostic', 'send_email_error');
