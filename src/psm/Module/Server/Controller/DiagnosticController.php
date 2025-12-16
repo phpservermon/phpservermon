@@ -26,6 +26,8 @@
 namespace psm\Module\Server\Controller;
 
 use DateTime;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use PHPMailer\PHPMailer\PHPMailer;
 use psm\Service\Database;
 use psm\Util\Server\HistoryGraph;
 
@@ -88,27 +90,93 @@ class DiagnosticController extends AbstractServerController
             ),
         );
 
-        $mail = psm_build_mail();
-        $mail->isHTML(true);
-        $mail->Subject = psm_get_lang('diagnostic', 'send_email_subject');
-        $mail->Body = $this->buildHtmlReport($report_ranges);
-        $mail->AltBody = $this->buildTextReport($report_ranges);
-        $mail->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
+        $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
+        $this->addMessage($send_result['message'], $send_result['type']);
 
-        $sent = $mail->send();
-        if ($sent) {
-            $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
-        } else {
-            error_log('Diagnostic email failed: ' . $mail->ErrorInfo);
-            $error_info = trim($mail->ErrorInfo);
+        return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
+    }
+
+    /**
+     * Send the diagnostics report using PHPMailer.
+     *
+     * @param string $recipient_email
+     * @param object|null $user
+     * @param array $report_ranges
+     * @return array{type:string,message:string}
+     */
+    protected function sendDiagnosticEmail($recipient_email, $user, array $report_ranges)
+    {
+        $mailer = $this->buildMailer();
+
+        try {
+            $mailer->isHTML(true);
+            $mailer->Subject = psm_get_lang('diagnostic', 'send_email_subject');
+            $mailer->Body = $this->buildHtmlReport($report_ranges);
+            $mailer->AltBody = $this->buildTextReport($report_ranges);
+            $mailer->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
+
+            $mailer->send();
+
+            return array(
+                'type' => 'success',
+                'message' => psm_get_lang('diagnostic', 'send_email_success'),
+            );
+        } catch (PHPMailerException $exception) {
+            error_log('Diagnostic email failed: ' . $exception->getMessage());
+
             $message = psm_get_lang('diagnostic', 'send_email_error');
+            $error_info = trim($exception->getMessage());
             if ($error_info !== '') {
                 $message .= ' ' . $error_info;
             }
-            $this->addMessage($message, 'error');
+
+            return array(
+                'type' => 'error',
+                'message' => $message,
+            );
+        }
+    }
+
+    /**
+     * Configure a PHPMailer instance for sending diagnostics.
+     *
+     * @return PHPMailer
+     */
+    protected function buildMailer()
+    {
+        $mailer = new PHPMailer(true);
+        $mailer->Encoding = 'base64';
+        $mailer->CharSet = 'UTF-8';
+        $mailer->SMTPDebug = 0;
+        $mailer->Timeout = 15;
+        $mailer->Timelimit = 15;
+
+        if (psm_get_conf('email_smtp') === '1') {
+            $mailer->isSMTP();
+            $mailer->Host = psm_get_conf('email_smtp_host');
+            $mailer->Port = (int) psm_get_conf('email_smtp_port');
+            $mailer->SMTPSecure = psm_get_conf('email_smtp_security');
+            if ($mailer->SMTPSecure === '') {
+                $mailer->SMTPAutoTLS = false;
+            }
+
+            $smtp_user = psm_get_conf('email_smtp_username');
+            $smtp_pass = psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password'));
+
+            if ($smtp_user !== '' && $smtp_pass !== '') {
+                $mailer->SMTPAuth = true;
+                $mailer->Username = $smtp_user;
+                $mailer->Password = $smtp_pass;
+            }
+        } else {
+            $mailer->isMail();
         }
 
-        return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
+        $from_name = psm_get_conf('email_from_name');
+        $from_email = psm_get_conf('email_from_email');
+        $mailer->setFrom($from_email, $from_name);
+
+        return $mailer;
     }
 
     /**
