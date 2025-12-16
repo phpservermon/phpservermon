@@ -52,12 +52,22 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <form method="post" action="{{ form_action|raw }}" class="d-flex flex-column flex-md-row align-items-start gap-2">
-            {{ macros.input_csrf() }}
-            <input type="hidden" name="range" value="{{ range_key }}" />
-            <button type="submit" class="btn btn-primary">{{ label_send_email }}</button>
-            <p class="text-muted mb-0 small">{{ label_send_email_help }}</p>
-        </form>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">{{ label_send_email }}</h5>
+                <form method="post" action="{{ form_action|raw }}" class="d-flex flex-column flex-md-row align-items-start gap-2">
+                    {{ macros.input_csrf() }}
+                    <input type="hidden" name="range" value="{{ range_key }}" />
+                    <button type="submit" class="btn btn-primary" {% if not can_send_email %}disabled{% endif %}>{{ label_send_email }}</button>
+                </form>
+                {% if can_send_email %}
+                <p class="text-muted mb-1 small mt-2">{{ label_send_email_help }}</p>
+                <p class="text-muted mb-0 small">{{ label_send_email_recipient }}</p>
+                {% else %}
+                <p class="text-warning mb-0 small mt-2">{{ label_send_email_missing }}</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 <script>

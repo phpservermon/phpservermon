@@ -124,6 +124,13 @@ class DiagnosticController extends AbstractServerController
         } catch (PHPMailerException $exception) {
             error_log('Diagnostic email failed: ' . $exception->getMessage());
 
+        $sent = $mail->send();
+        $this->logDiagnosticEmailAttempt($recipient_email, $range_key, $sent, $mail->ErrorInfo ?? '');
+        if ($sent) {
+            $this->addMessage(psm_get_lang('diagnostic', 'send_email_success'), 'success');
+        } else {
+            error_log('Diagnostic email failed: ' . $mail->ErrorInfo);
+            $error_info = trim($mail->ErrorInfo);
             $message = psm_get_lang('diagnostic', 'send_email_error');
             $error_info = trim($exception->getMessage());
             if ($error_info !== '') {
@@ -180,6 +187,42 @@ class DiagnosticController extends AbstractServerController
     }
 
     /**
+     * Log diagnostic email delivery attempts to the root logs directory.
+     *
+     * @param string $recipient_email
+     * @param string $range_key
+     * @param bool $sent
+     * @param string $error_info
+     * @return void
+     */
+    protected function logDiagnosticEmailAttempt($recipient_email, $range_key, $sent, $error_info)
+    {
+        $log_dir = realpath(PSM_PATH_SRC . '../logs') ?: PSM_PATH_SRC . '../logs';
+        if (!is_dir($log_dir)) {
+            if (!@mkdir($log_dir, 0777, true) && !is_dir($log_dir)) {
+                error_log('Unable to create logs directory for diagnostic email logging: ' . $log_dir);
+                return;
+            }
+        }
+
+        $status = $sent ? 'sent' : 'failed';
+        $timestamp = (new DateTime())->format(DateTime::ATOM);
+        $log_entry = sprintf(
+            "[%s] diagnostic_email %s range=%s recipient=%s%s\n",
+            $timestamp,
+            $status,
+            $range_key,
+            $recipient_email === '' ? 'unknown' : $recipient_email,
+            $sent ? '' : ' error=' . trim($error_info)
+        );
+
+        $log_file = rtrim($log_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'diagnostic-emails.log';
+        if (false === @file_put_contents($log_file, $log_entry, FILE_APPEND)) {
+            error_log('Unable to write diagnostic email log entry to ' . $log_file);
+        }
+    }
+
+    /**
      * Prepare range metadata.
      *
      * @param string  $active_range
@@ -226,12 +269,24 @@ class DiagnosticController extends AbstractServerController
     {
         list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
 
+        $user = $this->getUser()->getUser();
+        $recipient_email = $user && isset($user->email) ? trim($user->email) : '';
+        $can_send_email = $recipient_email !== '';
+        $recipient_hint = '';
+
+        if ($can_send_email) {
+            $recipient_hint = sprintf(psm_get_lang('diagnostic', 'send_email_recipient'), $recipient_email);
+        }
+
         return array(
             'ranges' => $ranges,
             'range_key' => $range_key,
             'form_action' => psm_build_url(array('mod' => 'server_diagnostic', 'action' => 'sendReport', 'range' => $range_key)),
             'range_label' => $ranges[$range_key]['label'],
             'servers' => $servers,
+            'recipient_email' => $recipient_email,
+            'recipient_hint' => $recipient_hint,
+            'can_send_email' => $can_send_email,
             'label_table_hint' => psm_get_lang('diagnostic', 'table_hint'),
             'label_latency_note' => psm_get_lang('diagnostic', 'latency_note'),
             'label_no_data' => psm_get_lang('diagnostic', 'no_data'),
@@ -240,6 +295,8 @@ class DiagnosticController extends AbstractServerController
             'label_host' => psm_get_lang('servers', 'server'),
             'label_send_email' => psm_get_lang('diagnostic', 'send_email'),
             'label_send_email_help' => psm_get_lang('diagnostic', 'send_email_help'),
+            'label_send_email_missing' => psm_get_lang('diagnostic', 'send_email_missing'),
+            'label_send_email_recipient' => $recipient_hint,
             'label_range_hint' => psm_get_lang('diagnostic', 'range_hint'),
         );
     }

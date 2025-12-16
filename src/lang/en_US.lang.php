@@ -109,6 +109,7 @@ $sm_lang = array(
         'send_email_success' => 'Diagnostics report sent to your email address.',
         'send_email_error' => 'Unable to send the diagnostics report. Please try again later.',
         'send_email_missing' => 'Add an email address to your profile to receive diagnostics reports.',
+        'send_email_recipient' => 'Diagnostics will be emailed to %s.',
         'range_hint' => 'Diagnostics are available per day, per week, per month, and per year.',
     ),
     'users' => array(
