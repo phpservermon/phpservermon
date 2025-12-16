@@ -27,7 +27,6 @@ namespace psm\Module\Server\Controller;
 
 use DateTime;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
-use PHPMailer\PHPMailer\PHPMailer;
 use psm\Service\Database;
 use psm\Util\Server\HistoryGraph;
 
@@ -90,8 +89,13 @@ class DiagnosticController extends AbstractServerController
             ),
         );
 
-        $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
-        $this->addMessage($send_result['message'], $send_result['type']);
+        try {
+            $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
+            $this->addMessage($send_result['message'], $send_result['type']);
+        } catch (\Throwable $exception) {
+            $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $exception->getMessage());
+            $this->addMessage(psm_get_lang('diagnostic', 'send_email_error') . ' ' . $exception->getMessage(), 'error');
+        }
 
         return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
     }
@@ -148,39 +152,7 @@ class DiagnosticController extends AbstractServerController
      */
     protected function buildMailer()
     {
-        $mailer = new PHPMailer(true);
-        $mailer->Encoding = 'base64';
-        $mailer->CharSet = 'UTF-8';
-        $mailer->SMTPDebug = 0;
-        $mailer->Timeout = 15;
-        $mailer->Timelimit = 15;
-
-        if (psm_get_conf('email_smtp') === '1') {
-            $mailer->isSMTP();
-            $mailer->Host = psm_get_conf('email_smtp_host');
-            $mailer->Port = (int) psm_get_conf('email_smtp_port');
-            $mailer->SMTPSecure = psm_get_conf('email_smtp_security');
-            if ($mailer->SMTPSecure === '') {
-                $mailer->SMTPAutoTLS = false;
-            }
-
-            $smtp_user = psm_get_conf('email_smtp_username');
-            $smtp_pass = psm_password_decrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password'));
-
-            if ($smtp_user !== '' && $smtp_pass !== '') {
-                $mailer->SMTPAuth = true;
-                $mailer->Username = $smtp_user;
-                $mailer->Password = $smtp_pass;
-            }
-        } else {
-            $mailer->isMail();
-        }
-
-        $from_name = psm_get_conf('email_from_name');
-        $from_email = psm_get_conf('email_from_email');
-        $mailer->setFrom($from_email, $from_name);
-
-        return $mailer;
+        return psm_build_mail(null, null, true);
     }
 
     /**
