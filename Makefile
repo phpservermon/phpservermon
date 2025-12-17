@@ -1,4 +1,4 @@
-tag = $(shell git describe)
+tag = $(shell git describe --tags --always)
 VERSION = ${subst v,,$(tag)}
 RELEASE_DIR = ./build
 RELEASE_FILE = phpservermon-$(VERSION)
@@ -7,7 +7,12 @@ os = l
 help:
 	@echo ' PHP Server Monitor - $(tag)'
 	@echo ' - make export [os=...] [tag=...]  - create a new release from tag. OS: Use m for macOS.'
+	@echo ' - make lint             - run PHP syntax checks across the repository.'
 	@echo ' - make install           - install all dependencies '
+
+lint:
+	@echo 'Running PHP syntax checks'
+	@find . -path './vendor' -prune -o -name "*.php" -print0 | xargs -0 -n1 php -l
 
 install:
 	@echo 'Downloading dependencies using Composer'
