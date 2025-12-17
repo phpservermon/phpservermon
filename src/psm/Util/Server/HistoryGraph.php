@@ -191,8 +191,8 @@ class HistoryGraph
         $server_id,
         DateTime $start_time,
         DateTime $end_time,
-        array $uptime_records = null,
-        array &$history_records = null
+        ?array $uptime_records = null,
+        ?array &$history_records = null
     ) {
         if ($uptime_records === null) {
             $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
@@ -248,8 +248,8 @@ class HistoryGraph
         $server_id,
         DateTime $start_time,
         DateTime $end_time,
-        array $uptime_records = null,
-        array &$history_records = null
+        ?array $uptime_records = null,
+        ?array &$history_records = null
     ) {
         $latency_sum = 0;
         $latency_min = null;

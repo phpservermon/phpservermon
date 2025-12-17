@@ -664,6 +664,83 @@ namespace {
     }
 
     /**
+     * Resolve the application logs directory.
+     *
+     * @return string|null Absolute path to the logs directory or null when it cannot be created.
+     */
+    function psm_get_logs_directory()
+    {
+        $log_dir = PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'logs';
+        $resolved_dir = realpath($log_dir) ?: $log_dir;
+
+        if (!is_dir($resolved_dir)) {
+            if (!@mkdir($resolved_dir, 0777, true) && !is_dir($resolved_dir)) {
+                error_log('Unable to create logs directory: ' . $resolved_dir);
+
+                return null;
+            }
+        }
+
+        return $resolved_dir;
+    }
+
+    /**
+     * Log an email delivery attempt to the webroot logs directory.
+     *
+     * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer
+     * @param bool $sent
+     * @param array $metadata
+     * @return void
+     */
+    function psm_log_email_attempt($phpmailer, $sent, array $metadata = array())
+    {
+        $log_dir = psm_get_logs_directory();
+        if ($log_dir === null) {
+            return;
+        }
+
+        $context = isset($metadata['context']) ? $metadata['context'] : 'general';
+        if (isset($metadata['context'])) {
+            unset($metadata['context']);
+        }
+
+        $recipients = array();
+        if (method_exists($phpmailer, 'getToAddresses')) {
+            foreach ($phpmailer->getToAddresses() as $address) {
+                $recipients[] = $address[0];
+            }
+        }
+
+        $subject = property_exists($phpmailer, 'Subject') ? $phpmailer->Subject : '';
+        $status = $sent ? 'sent' : 'failed';
+        $error_info = (!$sent && property_exists($phpmailer, 'ErrorInfo')) ? trim($phpmailer->ErrorInfo) : '';
+
+        $metadata_string = '';
+        if (!empty($metadata)) {
+            $metadata_string = ' meta=' . json_encode($metadata);
+        }
+
+        $log_entry = sprintf(
+            '[%s] [%s] to=%s subject="%s" result=%s',
+            date('c'),
+            $context,
+            empty($recipients) ? '-' : implode(',', $recipients),
+            $subject,
+            $status
+        );
+
+        if ($error_info !== '') {
+            $log_entry .= ' error=' . $error_info;
+        }
+        $log_entry .= $metadata_string . PHP_EOL;
+
+        $log_file = rtrim($log_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'emails.log';
+        if (false === @file_put_contents($log_file, $log_entry, FILE_APPEND)) {
+            error_log('Unable to write email log entry to ' . $log_file);
+        }
+    }
+
+    /**
      * Prepare a new Pushover util.
      *
      * @return \Pushover

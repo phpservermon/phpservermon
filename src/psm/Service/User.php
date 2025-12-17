@@ -89,7 +89,7 @@ class User
      * @param \psm\Service\Database $db
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session if NULL, one will be created
      */
-    public function __construct(Database $db, SessionInterface $session = null)
+    public function __construct(Database $db, ?SessionInterface $session = null)
     {
         $this->db_connection = $db->pdo();
 
