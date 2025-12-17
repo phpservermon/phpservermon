@@ -87,7 +87,7 @@ class User
      * Open a new user service
      *
      * @param \psm\Service\Database $db
-     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session if NULL, one will be created
+     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface|null $session if NULL, one will be created
      */
     public function __construct(Database $db, ?SessionInterface $session = null)
     {
