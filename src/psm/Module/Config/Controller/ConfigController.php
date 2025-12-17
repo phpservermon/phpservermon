@@ -349,7 +349,12 @@ class ConfigController extends AbstractController
         $mail->AltBody  = str_replace('<br/>', "\n", $message);
         $user = $this->getUser()->getUser();
         $mail->AddAddress($user->email, $user->name);
-        if ($mail->Send()) {
+        $sendResult = $mail->Send();
+        psm_log_email_attempt($mail, $sendResult, array(
+            'context' => 'config_test_email',
+            'user_id' => $user->user_id,
+        ));
+        if ($sendResult) {
             $this->addMessage(psm_get_lang('config', 'email_sent'), 'success');
         } else {
             $this->addMessage(psm_get_lang('config', 'email_error') . ': ' . $mail->ErrorInfo, 'error');
