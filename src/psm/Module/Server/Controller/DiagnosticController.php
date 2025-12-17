@@ -180,12 +180,9 @@ class DiagnosticController extends AbstractServerController
      */
     protected function logDiagnosticEmailAttempt($recipient_email, $range_key, $sent, $error_info)
     {
-        $log_dir = realpath(PSM_PATH_SRC . '../logs') ?: PSM_PATH_SRC . '../logs';
-        if (!is_dir($log_dir)) {
-            if (!@mkdir($log_dir, 0777, true) && !is_dir($log_dir)) {
-                error_log('Unable to create logs directory for diagnostic email logging: ' . $log_dir);
-                return;
-            }
+        $log_dir = psm_get_logs_directory();
+        if ($log_dir === null) {
+            return;
         }
 
         $status = $sent ? 'sent' : 'failed';

@@ -664,6 +664,27 @@ namespace {
     }
 
     /**
+     * Resolve the application logs directory.
+     *
+     * @return string|null Absolute path to the logs directory or null when it cannot be created.
+     */
+    function psm_get_logs_directory()
+    {
+        $log_dir = PSM_PATH_SRC . '..' . DIRECTORY_SEPARATOR . 'logs';
+        $resolved_dir = realpath($log_dir) ?: $log_dir;
+
+        if (!is_dir($resolved_dir)) {
+            if (!@mkdir($resolved_dir, 0777, true) && !is_dir($resolved_dir)) {
+                error_log('Unable to create logs directory: ' . $resolved_dir);
+
+                return null;
+            }
+        }
+
+        return $resolved_dir;
+    }
+
+    /**
      * Log an email delivery attempt to the webroot logs directory.
      *
      * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer
@@ -673,13 +694,9 @@ namespace {
      */
     function psm_log_email_attempt($phpmailer, $sent, array $metadata = array())
     {
-        $log_dir = realpath(PSM_PATH_SRC . '../logs') ?: PSM_PATH_SRC . '../logs';
-        if (!is_dir($log_dir)) {
-            if (!@mkdir($log_dir, 0777, true) && !is_dir($log_dir)) {
-                error_log('Unable to create logs directory for email logging: ' . $log_dir);
-
-                return;
-            }
+        $log_dir = psm_get_logs_directory();
+        if ($log_dir === null) {
+            return;
         }
 
         $context = isset($metadata['context']) ? $metadata['context'] : 'general';
