@@ -79,7 +79,10 @@ class DiagnosticController extends AbstractServerController
         if ($recipient_email === '') {
             $this->addMessage(psm_get_lang('diagnostic', 'send_email_missing'), 'error');
 
-            return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
+            return $this->twig->render(
+                'module/server/diagnostic.tpl.html',
+                $this->buildTemplateData($range_key, $end_time, $ranges, $report_ranges[$range_key]['servers'])
+            );
         }
 
         $report_ranges = array(
@@ -100,7 +103,7 @@ class DiagnosticController extends AbstractServerController
 
         return $this->twig->render(
             'module/server/diagnostic.tpl.html',
-            $this->buildTemplateData($range_key, $end_time, $ranges, $servers)
+            $this->buildTemplateData($range_key, $end_time, $ranges, $report_ranges[$range_key]['servers'])
         );
     }
 
@@ -243,14 +246,20 @@ class DiagnosticController extends AbstractServerController
      *
      * @param string $range_key
      * @param DateTime $end_time
-     * @param array|null $ranges
-     * @param array|null $servers
+     * @param array|null $ranges    Optional precomputed ranges to avoid recalculation
+     * @param array|null $servers   Optional precomputed server statistics to avoid recalculation
      * @return array
      */
-    protected function buildTemplateData($range_key, DateTime $end_time, ?array $ranges = null, ?array $servers = null)
+    protected function buildTemplateData($range_key, DateTime $end_time, array $ranges = null, array $servers = null)
     {
-        if ($ranges === null || $servers === null || !isset($ranges[$range_key])) {
+        if ($ranges === null || $servers === null) {
             list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
+        } else {
+            if (!isset($ranges[$range_key])) {
+                $range_key = 'week';
+                $ranges = $this->buildRanges($range_key, $end_time);
+                $servers = $this->collectServersForRange($ranges[$range_key]['start'], $end_time);
+            }
         }
 
         $user = $this->getUser()->getUser();
