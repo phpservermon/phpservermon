@@ -89,11 +89,15 @@ class DiagnosticController extends AbstractServerController
                 'servers' => $this->collectServersForRange(clone $ranges[$range_key]['start'], clone $end_time),
             ),
         );
+        $servers = $report_ranges[$range_key]['servers'];
 
         $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
         $this->addMessage($send_result['message'], $send_result['type']);
 
-        return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
+        return $this->twig->render(
+            'module/server/diagnostic.tpl.html',
+            $this->buildTemplateData($range_key, $end_time, $ranges, $servers)
+        );
     }
 
     /**
@@ -118,6 +122,10 @@ class DiagnosticController extends AbstractServerController
 
             $mailer->send();
 
+            psm_log_email_attempt($mailer, true, array(
+                'context' => 'diagnostic_report',
+                'range' => $range_key,
+            ));
             $this->logDiagnosticEmailAttempt($recipient_email, $range_key, true, '');
 
             return array(
@@ -128,6 +136,12 @@ class DiagnosticController extends AbstractServerController
             $error_info = trim($exception->getMessage());
             error_log('Diagnostic email failed: ' . $error_info);
             $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $error_info);
+
+            psm_log_email_attempt($mailer, false, array(
+                'context' => 'diagnostic_report',
+                'range' => $range_key,
+                'error' => $error_info,
+            ));
 
             $message = psm_get_lang('diagnostic', 'send_email_error');
             if ($error_info !== '') {
@@ -260,11 +274,15 @@ class DiagnosticController extends AbstractServerController
      *
      * @param string $range_key
      * @param DateTime $end_time
+     * @param array|null $ranges
+     * @param array|null $servers
      * @return array
      */
-    protected function buildTemplateData($range_key, DateTime $end_time)
+    protected function buildTemplateData($range_key, DateTime $end_time, ?array $ranges = null, ?array $servers = null)
     {
-        list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
+        if ($ranges === null || $servers === null || !isset($ranges[$range_key])) {
+            list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
+        }
 
         $user = $this->getUser()->getUser();
         $recipient_email = $user && isset($user->email) ? trim($user->email) : '';

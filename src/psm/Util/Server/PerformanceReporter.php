@@ -89,6 +89,9 @@ class PerformanceReporter
         }
 
         $mailSendResult = $mail->send();
+        psm_log_email_attempt($mail, $mailSendResult, array(
+            'context' => 'weekly_performance_report',
+        ));
 
         if (!$mailSendResult) {
             $errorInfo = property_exists($mail, 'ErrorInfo') ? $mail->ErrorInfo : 'unknown reason';
