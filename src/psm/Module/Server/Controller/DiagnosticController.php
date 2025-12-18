@@ -459,40 +459,53 @@ class DiagnosticController extends AbstractServerController
      */
     protected function buildHtmlReport(array $ranges)
     {
+        $base_style = 'margin:0;padding:0;font-family:Helvetica,Arial,sans-serif;color:#212529;';
+        $card_style = 'background:#ffffff;border:1px solid #e9ecef;border-radius:8px;margin-bottom:16px;overflow:hidden;';
         $table_style = 'border-collapse:collapse;width:100%;';
-        $head_style = 'text-align:left;background:#f2f2f2;';
-        $cell_style = 'vertical-align:top;';
-        $label_style = 'color:#198754;font-weight:600;';
-        $muted_style = 'color:#6c757d;';
+        $head_style = 'padding:10px 12px;background:#f8f9fa;color:#343a40;font-weight:700;font-size:13px;border-bottom:1px solid #e9ecef;text-align:left;';
+        $cell_style = 'padding:10px 12px;border-bottom:1px solid #e9ecef;font-size:13px;vertical-align:top;';
+        $label_style = 'color:#198754;font-weight:700;font-size:14px;';
+        $muted_style = 'color:#6c757d;font-size:12px;';
 
-        $html = '<p>' . psm_get_lang('diagnostic', 'send_email_intro') . '</p>';
+        $html = '<div style="' . $base_style . '">';
+        $html .= '<p style="margin:0 0 12px 0;font-size:14px;">' . psm_get_lang('diagnostic', 'send_email_intro') . '</p>';
 
         foreach ($ranges as $range) {
-            $html .= '<h3 style="margin-bottom:8px;">' . htmlspecialchars($range['label']) . '</h3>';
+            $html .= '<div style="' . $card_style . '">';
+            $html .= '<div style="padding:12px 12px 0 12px;"><h3 style="margin:0 0 12px 0;font-size:16px;color:#212529;">' . htmlspecialchars($range['label']) . '</h3>';
+            $html .= '</div>';
 
             if (empty($range['servers'])) {
-                $html .= '<p>' . psm_get_lang('diagnostic', 'no_data') . '</p>';
+                $html .= '<p style="margin:0 12px 12px 12px;font-size:14px;">' . psm_get_lang('diagnostic', 'no_data') . '</p>';
+                $html .= '</div>';
                 continue;
             }
 
-            $html .= '<table cellpadding="6" cellspacing="0" border="1" style="' . $table_style . '">';
+            $html .= '<table cellpadding="0" cellspacing="0" border="0" style="' . $table_style . '">';
             $html .= '<thead><tr>';
             $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'server') . '</th>';
             $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'uptime') . '</th>';
             $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'latency') . '</th>';
             $html .= '</tr></thead><tbody>';
 
+            $alternate_row = false;
+
             foreach ($range['servers'] as $server) {
+                $row_background = $alternate_row ? 'background-color:#f8f9fa;' : '';
+                $alternate_row = !$alternate_row;
+
                 $html .= '<tr>';
-                $html .= '<td style="' . $cell_style . $label_style . '">' . htmlspecialchars($server['label']) . '<br />'
-                    . '<small style="' . $muted_style . '">(' . htmlspecialchars($server['address']) . ')</small></td>';
-                $html .= '<td style="' . $cell_style . '">' . htmlspecialchars($server['uptime_display']) . '</td>';
-                $html .= '<td style="' . $cell_style . '">' . htmlspecialchars($server['latency_display']) . '</td>';
+                $html .= '<td style="' . $cell_style . $row_background . '"><div style="' . $label_style . '">' . htmlspecialchars($server['label']) . '</div>'
+                    . '<div style="' . $muted_style . '">' . htmlspecialchars($server['address']) . '</div></td>';
+                $html .= '<td style="' . $cell_style . $row_background . '">' . $this->formatUptimeBadge($server['uptime'], $server['uptime_display']) . '</td>';
+                $html .= '<td style="' . $cell_style . $row_background . '">' . $this->formatLatencyBadge($server['latency_display'], $server['latency']) . '</td>';
                 $html .= '</tr>';
             }
 
-            $html .= '</tbody></table>';
+            $html .= '</tbody></table></div>';
         }
+
+        $html .= '</div>';
 
         return $html;
     }
@@ -541,6 +554,72 @@ class DiagnosticController extends AbstractServerController
         }
 
         return sprintf('%0.3f%%', $uptime);
+    }
+
+    /**
+     * Format uptime as a colored badge for HTML emails.
+     *
+     * @param float|null $uptime
+     * @param string     $display
+     * @return string
+     */
+    protected function formatUptimeBadge($uptime, $display)
+    {
+        if ($uptime === null) {
+            return $this->buildBadge($display, '#e9ecef', '#495057');
+        }
+
+        if ($uptime >= 99.9) {
+            return $this->buildBadge($display, '#d1e7dd', '#0f5132');
+        }
+
+        if ($uptime >= 97) {
+            return $this->buildBadge($display, '#fff3cd', '#664d03');
+        }
+
+        return $this->buildBadge($display, '#f8d7da', '#842029');
+    }
+
+    /**
+     * Format latency as a colored badge for HTML emails.
+     *
+     * @param string     $display
+     * @param array|null $latency
+     * @return string
+     */
+    protected function formatLatencyBadge($display, $latency)
+    {
+        if ($latency === null || !isset($latency['average'])) {
+            return $this->buildBadge($display, '#e9ecef', '#495057');
+        }
+
+        $average_ms = $latency['average'] * 1000;
+
+        if ($average_ms <= 500) {
+            return $this->buildBadge($display, '#d1e7dd', '#0f5132');
+        }
+
+        if ($average_ms <= 1500) {
+            return $this->buildBadge($display, '#fff3cd', '#664d03');
+        }
+
+        return $this->buildBadge($display, '#f8d7da', '#842029');
+    }
+
+    /**
+     * Build a pill-style badge for HTML emails.
+     *
+     * @param string $text
+     * @param string $background
+     * @param string $color
+     * @return string
+     */
+    protected function buildBadge($text, $background, $color)
+    {
+        $badge_style = 'display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px;'
+            . 'background:' . $background . ';color:' . $color . ';';
+
+        return '<span style="' . $badge_style . '">' . htmlspecialchars($text) . '</span>';
     }
 
     /**
