@@ -133,7 +133,7 @@ class PerformanceReporter
     {
         $last_sent = (int) psm_get_conf('weekly_report_last_sent', 0);
 
-        $dispatch_after = (clone $week_start)->modify('friday this week')->setTime(13, 0, 0);
+        $dispatch_after = (clone $week_start)->modify('friday this week')->setTime(15, 0, 0);
 
         if (new DateTime() < $dispatch_after) {
             return false;
