@@ -29,7 +29,9 @@
 
 namespace psm\Module\Server\Controller;
 
+use DateTime;
 use psm\Service\Database;
+use psm\Util\Server\HistoryGraph;
 
 /**
  * Status module
@@ -37,9 +39,14 @@ use psm\Service\Database;
 class StatusController extends AbstractServerController
 {
 
+    /** @var HistoryGraph */
+    protected $history;
+
     public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
+
+        $this->history = new HistoryGraph($db, $twig);
 
         $this->setCSRFKey('status');
         $this->setActions(array('index', 'saveLayout'), 'index');
@@ -64,6 +71,7 @@ class StatusController extends AbstractServerController
             'label_online' => psm_get_lang('servers', 'online'),
             'label_offline' => psm_get_lang('servers', 'offline'),
             'label_rtime' => psm_get_lang('servers', 'latency'),
+            'label_uptime' => psm_get_lang('servers', 'uptime'),
             'block_layout_active' => ($layout == 0) ? 'active' : '',
             'list_layout_active' => ($layout != 0) ? 'active' : '',
             'label_add_server' => psm_get_lang('system', 'add_new'),
@@ -84,6 +92,9 @@ class StatusController extends AbstractServerController
         // get the active servers from database
         $servers = $this->getServers();
 
+        $uptime_start = new DateTime('-1 week 0:0:0');
+        $uptime_end = new DateTime();
+
         $layout_data['servers_offline'] = array();
         $layout_data['servers_warning'] = array();
         $layout_data['servers_online'] = array();
@@ -102,6 +113,10 @@ class StatusController extends AbstractServerController
             $server['url_view'] = psm_build_url(
                 array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status')
             );
+
+            $performance = $this->history->getPerformanceStatistics($server['server_id'], clone $uptime_start, clone $uptime_end);
+            $uptime = $performance['uptime'] ?? null;
+            $server['uptime_display'] = $this->formatUptime($uptime);
 
             if ($server['status'] == "off") {
                 $layout_data['servers_offline'][] = $server;
@@ -135,5 +150,20 @@ class StatusController extends AbstractServerController
             ));
             return $response;
         }
+    }
+
+    /**
+     * Format uptime percentage for display.
+     *
+     * @param float|null $uptime
+     * @return string
+     */
+    protected function formatUptime($uptime)
+    {
+        if ($uptime === null) {
+            return '-';
+        }
+
+        return sprintf('%0.3f%%', $uptime);
     }
 }
