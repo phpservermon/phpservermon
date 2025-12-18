@@ -51,7 +51,7 @@ class DiagnosticController extends AbstractServerController
     {
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_diagnostic'));
 
-        $range_key = psm_GET('range', 'week');
+        $range_key = psm_GET('range', 'day');
         $end_time = new DateTime();
 
         return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
@@ -64,7 +64,7 @@ class DiagnosticController extends AbstractServerController
     {
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_diagnostic'));
 
-        $range_key = psm_POST('range', psm_GET('range', 'week'));
+        $range_key = psm_POST('range', psm_GET('range', 'day'));
         $end_time = new DateTime();
         list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
         $this->logDiagnosticEvent('request', sprintf('range=%s recipient=%s', $range_key, $this->getRecipientEmail()));
@@ -150,7 +150,11 @@ class DiagnosticController extends AbstractServerController
 
         try {
             $mailer->isHTML(true);
-            $mailer->Subject = psm_get_lang('diagnostic', 'send_email_subject');
+            $mailer->Subject = sprintf(
+                '%s - %s',
+                psm_get_lang('diagnostic', 'send_email_subject'),
+                (new DateTime())->format('Y-m-d')
+            );
             $mailer->Body = $this->buildHtmlReport($report_ranges);
             $mailer->AltBody = $this->buildTextReport($report_ranges);
             $mailer->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
@@ -319,10 +323,6 @@ class DiagnosticController extends AbstractServerController
                 'label' => psm_get_lang('servers', 'day'),
                 'start' => (clone $end_time)->modify('-1 day'),
             ),
-            'week' => array(
-                'label' => psm_get_lang('servers', 'week'),
-                'start' => (clone $end_time)->modify('-1 week'),
-            ),
             'month' => array(
                 'label' => psm_get_lang('servers', 'month'),
                 'start' => (clone $end_time)->modify('-1 month'),
@@ -356,7 +356,7 @@ class DiagnosticController extends AbstractServerController
             list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
         } else {
             if (!isset($ranges[$range_key])) {
-                $range_key = 'week';
+                $range_key = 'day';
                 $ranges = $this->buildRanges($range_key, $end_time);
                 $servers = $this->collectServersForRange($ranges[$range_key]['start'], $end_time);
             }
@@ -406,7 +406,7 @@ class DiagnosticController extends AbstractServerController
         $ranges = $this->buildRanges($range_key, $end_time);
 
         if (!isset($ranges[$range_key])) {
-            $range_key = 'week';
+            $range_key = 'day';
             $ranges = $this->buildRanges($range_key, $end_time);
         }
 
