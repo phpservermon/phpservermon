@@ -459,6 +459,12 @@ class DiagnosticController extends AbstractServerController
      */
     protected function buildHtmlReport(array $ranges)
     {
+        $table_style = 'border-collapse:collapse;width:100%;';
+        $head_style = 'text-align:left;background:#f2f2f2;';
+        $cell_style = 'vertical-align:top;';
+        $label_style = 'color:#198754;font-weight:600;';
+        $muted_style = 'color:#6c757d;';
+
         $html = '<p>' . psm_get_lang('diagnostic', 'send_email_intro') . '</p>';
 
         foreach ($ranges as $range) {
@@ -469,18 +475,19 @@ class DiagnosticController extends AbstractServerController
                 continue;
             }
 
-            $html .= '<table cellpadding="6" cellspacing="0" border="1" style="border-collapse:collapse;">';
+            $html .= '<table cellpadding="6" cellspacing="0" border="1" style="' . $table_style . '">';
             $html .= '<thead><tr>';
-            $html .= '<th>' . psm_get_lang('servers', 'server') . '</th>';
-            $html .= '<th>' . psm_get_lang('servers', 'uptime') . '</th>';
-            $html .= '<th>' . psm_get_lang('servers', 'latency') . '</th>';
+            $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'server') . '</th>';
+            $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'uptime') . '</th>';
+            $html .= '<th style="' . $head_style . '">' . psm_get_lang('servers', 'latency') . '</th>';
             $html .= '</tr></thead><tbody>';
 
             foreach ($range['servers'] as $server) {
                 $html .= '<tr>';
-                $html .= '<td>' . htmlspecialchars($server['label']) . ' <small>(' . htmlspecialchars($server['address']) . ')</small></td>';
-                $html .= '<td>' . htmlspecialchars($server['uptime_display']) . '</td>';
-                $html .= '<td>' . htmlspecialchars($server['latency_display']) . '</td>';
+                $html .= '<td style="' . $cell_style . $label_style . '">' . htmlspecialchars($server['label']) . '<br />'
+                    . '<small style="' . $muted_style . '">(' . htmlspecialchars($server['address']) . ')</small></td>';
+                $html .= '<td style="' . $cell_style . '">' . htmlspecialchars($server['uptime_display']) . '</td>';
+                $html .= '<td style="' . $cell_style . '">' . htmlspecialchars($server['latency_display']) . '</td>';
                 $html .= '</tr>';
             }
 
