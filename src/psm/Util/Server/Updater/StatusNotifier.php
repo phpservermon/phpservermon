@@ -460,10 +460,12 @@ class StatusNotifier
 
         $body = key_exists('message', $combi) ?
             $combi['message'] :
-	    psm_parse_msg($this->status_new, 'email_body', $this->server);
-	    if ((bool)psm_get_conf('email_add_url')) $body .= PHP_EOL.PHP_EOL.'<a href="'.$publicUrl.'">'.$publicUrl.'</a>';
+            psm_parse_msg($this->status_new, 'email_body', $this->server);
+        if ((bool)psm_get_conf('email_add_url')) {
+            $body .= '<br><br><a href="' . $publicUrl . '">' . $publicUrl . '</a>';
+        }
         $mail->Body = $body;
-        $mail->AltBody = str_replace('<br/>', "\n", $body);
+        $mail->AltBody = str_replace(array('<br/>', '<br>', '<br />'), "\n", $body);
 
         if (psm_get_conf('log_email')) {
             $log_id = psm_add_log($this->server_id, 'email', $body);
