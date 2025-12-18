@@ -10,7 +10,7 @@ PHP Server Monitor
    :target: https://discord.gg/Rv7nRP4HVq
 
 Version
-4.0.1
+5.0.0
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,

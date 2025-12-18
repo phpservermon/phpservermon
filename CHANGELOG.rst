@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-v4.0.1 (released December 6, 2025)
+v5.0.0 (released December 6, 2025)
 ----------------------------------
 
 * Optimized configuration loading to avoid redundant database queries during requests.
