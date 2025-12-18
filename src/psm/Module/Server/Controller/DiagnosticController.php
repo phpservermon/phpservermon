@@ -51,7 +51,7 @@ class DiagnosticController extends AbstractServerController
     {
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_diagnostic'));
 
-        $range_key = psm_GET('range', 'day');
+        $range_key = psm_GET('range', 'week');
         $end_time = new DateTime();
 
         return $this->twig->render('module/server/diagnostic.tpl.html', $this->buildTemplateData($range_key, $end_time));
@@ -64,7 +64,7 @@ class DiagnosticController extends AbstractServerController
     {
         $this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_diagnostic'));
 
-        $range_key = psm_POST('range', psm_GET('range', 'day'));
+        $range_key = psm_POST('range', psm_GET('range', 'week'));
         $end_time = new DateTime();
         list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
         $this->logDiagnosticEvent('request', sprintf('range=%s recipient=%s', $range_key, $this->getRecipientEmail()));
@@ -145,16 +145,17 @@ class DiagnosticController extends AbstractServerController
      */
     protected function sendDiagnosticEmail($recipient_email, $user, array $report_ranges)
     {
-        $mailer = $this->buildMailer();
-        $range_key = array_key_first($report_ranges) ?? 'unknown';
+            $mailer = $this->buildMailer();
+            $range_key = array_key_first($report_ranges) ?? 'unknown';
+            $range_label = $report_ranges[$range_key]['label'] ?? $range_key;
 
-        try {
-            $mailer->isHTML(true);
-            $mailer->Subject = sprintf(
-                '%s - %s',
-                psm_get_lang('diagnostic', 'send_email_subject'),
-                (new DateTime())->format('Y-m-d')
-            );
+            try {
+                $mailer->isHTML(true);
+                $mailer->Subject = sprintf(
+                    '%s - %s',
+                    psm_get_lang('diagnostic', 'send_email_subject'),
+                    $range_label
+                );
             $mailer->Body = $this->buildHtmlReport($report_ranges);
             $mailer->AltBody = $this->buildTextReport($report_ranges);
             $mailer->addAddress($recipient_email, $user->name ?? $user->user_name ?? '');
@@ -318,7 +319,21 @@ class DiagnosticController extends AbstractServerController
      */
     protected function buildRanges($active_range, DateTime $end_time)
     {
+        $week_end = (clone $end_time)->modify('sunday this week')->setTime(23, 59, 59);
+        $week_start = (clone $week_end)->modify('-6 days')->setTime(0, 0, 0);
+
         $ranges = array(
+            'week' => array(
+                'label' => sprintf(
+                    '%s #%d %s - %s',
+                    psm_get_lang('servers', 'week'),
+                    (int) $week_start->format('W'),
+                    $week_start->format('d.m'),
+                    $week_end->format('d.m')
+                ),
+                'start' => $week_start,
+                'end' => $week_end,
+            ),
             'day' => array(
                 'label' => psm_get_lang('servers', 'day'),
                 'start' => (clone $end_time)->modify('-1 day'),
@@ -356,9 +371,9 @@ class DiagnosticController extends AbstractServerController
             list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
         } else {
             if (!isset($ranges[$range_key])) {
-                $range_key = 'day';
+                $range_key = 'week';
                 $ranges = $this->buildRanges($range_key, $end_time);
-                $servers = $this->collectServersForRange($ranges[$range_key]['start'], $end_time);
+                $servers = $this->collectServersForRange($ranges[$range_key]['start'], $ranges[$range_key]['end'] ?? $end_time);
             }
         }
 
@@ -406,11 +421,12 @@ class DiagnosticController extends AbstractServerController
         $ranges = $this->buildRanges($range_key, $end_time);
 
         if (!isset($ranges[$range_key])) {
-            $range_key = 'day';
+            $range_key = 'week';
             $ranges = $this->buildRanges($range_key, $end_time);
         }
 
-        $servers = $this->collectServersForRange($ranges[$range_key]['start'], $end_time);
+        $range_end = $ranges[$range_key]['end'] ?? $end_time;
+        $servers = $this->collectServersForRange($ranges[$range_key]['start'], $range_end);
 
         return array($ranges, $range_key, $servers);
     }
