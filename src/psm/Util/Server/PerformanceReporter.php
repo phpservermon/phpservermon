@@ -161,7 +161,7 @@ class PerformanceReporter
      */
     protected function collectServerStatistics(DateTime $start, DateTime $end)
     {
-        $servers = $this->db->query('SELECT `server_id`, `label`, `ip`, `port`, `protocol`, `type` FROM `' . PSM_DB_PREFIX . 'servers` WHERE `active` = "yes"');
+        $servers = $this->db->query('SELECT `server_id`, `label`, `ip`, `port`, `protocol`, `type`, `last_offline`, `last_offline_duration` FROM `' . PSM_DB_PREFIX . 'servers` WHERE `active` = "yes"');
 
         $results = array();
 
@@ -191,28 +191,26 @@ class PerformanceReporter
         $period = $this->formatPeriod($start, $end);
 
         $rows = '';
+        $cellStyle = ' style="background:#1b7a1b;color:#ffffff;border:1px solid #0f5d0f;padding:6px 10px;"';
+        $headerStyle = ' style="background:#146414;color:#ffffff;border:1px solid #0f5d0f;padding:6px 10px;font-weight:bold;"';
+
         foreach ($servers as $server) {
-            $isPerfectUptime = $server['uptime'] !== null && (float) $server['uptime'] >= 100.0;
-
-            $uptimeCellStyle = ($server['uptime'] === null || (float) $server['uptime'] < 100.0)
-                ? ' style="background:#ffe0b3;"'
-                : '';
-
-            $hostCellStyle = $isPerfectUptime
-                ? ' style="background:#d9f2d9;font-weight:bold;"'
-                : ' style="background:#f2d9d9;font-weight:bold;"';
-
             $rows .= '<tr>' .
-                '<td' . $hostCellStyle . '>' . htmlspecialchars($server['label']) . '</td>' .
-                '<td>' . htmlspecialchars($this->formatAddress($server)) . '</td>' .
-                '<td' . $uptimeCellStyle . '>' . htmlspecialchars($this->formatUptime($server['uptime'])) . '</td>' .
-                '<td>' . htmlspecialchars($this->formatLatency($server['latency'])) . '</td>' .
+                '<td' . $cellStyle . '>' . htmlspecialchars($server['label']) . '</td>' .
+                '<td' . $cellStyle . '>' . htmlspecialchars($this->formatAddress($server)) . '</td>' .
+                '<td' . $cellStyle . '>' . htmlspecialchars($this->formatUptime($server['uptime'])) . '</td>' .
+                '<td' . $cellStyle . '>' . htmlspecialchars($this->formatLastOffline($server['last_offline'], $server['last_offline_duration'])) . '</td>' .
                 '</tr>';
         }
 
         return '<p>Weekly performance summary (' . $period . ')</p>' .
-            '<table border="1" cellpadding="6" cellspacing="0">' .
-            '<thead><tr><th>Host</th><th>Address</th><th>Uptime</th><th>Latency</th></tr></thead>' .
+            '<table border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#1b7a1b;color:#ffffff;">' .
+            '<thead><tr>' .
+            '<th' . $headerStyle . '>Host</th>' .
+            '<th' . $headerStyle . '>Address</th>' .
+            '<th' . $headerStyle . '>Uptime</th>' .
+            '<th' . $headerStyle . '>Last offline</th>' .
+            '</tr></thead>' .
             '<tbody>' . $rows . '</tbody>' .
             '</table>';
     }
@@ -234,7 +232,7 @@ class PerformanceReporter
                 $server['label'],
                 $this->formatAddress($server),
                 $this->formatUptime($server['uptime']),
-                $this->formatLatency($server['latency']),
+                $this->formatLastOffline($server['last_offline'], $server['last_offline_duration']),
             ));
         }
 
@@ -293,6 +291,32 @@ class PerformanceReporter
     protected function formatLatencyValue($seconds)
     {
         return sprintf('%0.2f ms', $seconds * 1000);
+    }
+
+    /**
+     * Format last offline information.
+     *
+     * @param string|null $lastOffline
+     * @param string|null $duration
+     * @return string
+     */
+    protected function formatLastOffline($lastOffline, $duration)
+    {
+        if (empty($lastOffline)) {
+            return psm_get_lang('system', 'never');
+        }
+
+        $timestamp = strtotime($lastOffline);
+        if ($timestamp === false) {
+            return psm_get_lang('system', 'never');
+        }
+
+        $timespan = psm_timespan($timestamp);
+        if ($timespan === psm_get_lang('system', 'never')) {
+            return $timespan;
+        }
+
+        return $duration ? $timespan . ' (' . $duration . ')' : $timespan;
     }
 
     /**
