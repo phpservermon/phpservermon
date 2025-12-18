@@ -365,7 +365,7 @@ class DiagnosticController extends AbstractServerController
      * @param array|null $servers   Optional precomputed server statistics to avoid recalculation
      * @return array
      */
-    protected function buildTemplateData($range_key, DateTime $end_time, array $ranges = null, array $servers = null)
+    protected function buildTemplateData($range_key, DateTime $end_time, ?array $ranges = null, ?array $servers = null)
     {
         if ($ranges === null || $servers === null) {
             list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
