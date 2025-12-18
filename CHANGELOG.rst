@@ -5,8 +5,10 @@ Changelog
 v5.0.0 (released December 6, 2025)
 ----------------------------------
 
-* Optimized configuration loading to avoid redundant database queries during requests.
-* Hardened configuration bootstrap to return graceful errors instead of uncaught exceptions.
+* Added weekly diagnostic reports with a week-based default range, clearer labels, and range-aware email subjects for exports.
+* Scheduled the automatic weekly performance summary to dispatch on Fridays at 15:00 for easier end-of-week reviews.
+* Refined incident notification emails with clearer down/recovery subjects, better spacing before public URLs, and improved copy.
+* Made diagnostic templates more resilient to missing optional data.
 
 v3.5.2 (released August 12, 2020)
 -----------------------------
