@@ -484,8 +484,8 @@ $sm_lang = array(
     ),
     'notifications' => array(
         'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%',
-        'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
-        'off_email_body' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
+        'off_email_subject' => 'Incident: Unable to connect to %LABEL% over HTTPS',
+        'off_email_body' => 'Incident: Unable to connect to %LABEL% over HTTPS<br><br><strong>Details</strong><br><br>Service: %LABEL%<br>Public URL: %IP%<br>Protocol / Port: HTTPS / %PORT%<br>Error: %ERROR%<br>Date & time: %DATE%',
         'off_discord_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'off_webhook_title' => 'Server \'%LABEL%\' is DOWN',
         'off_webhook_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP:
