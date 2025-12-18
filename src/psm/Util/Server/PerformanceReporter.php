@@ -74,6 +74,7 @@ class PerformanceReporter
         }
 
         $servers = $this->collectServerStatistics($week_start, $week_end);
+        $servers = $this->sortServersByUptime($servers);
         if (empty($servers)) {
             return false;
         }
@@ -132,7 +133,7 @@ class PerformanceReporter
     {
         $last_sent = (int) psm_get_conf('weekly_report_last_sent', 0);
 
-        $dispatch_after = (clone $week_start)->modify('friday this week')->setTime(12, 0, 0);
+        $dispatch_after = (clone $week_start)->modify('friday this week')->setTime(13, 0, 0);
 
         if (new DateTime() < $dispatch_after) {
             return false;
@@ -191,12 +192,18 @@ class PerformanceReporter
 
         $rows = '';
         foreach ($servers as $server) {
+            $isPerfectUptime = $server['uptime'] !== null && (float) $server['uptime'] >= 100.0;
+
             $uptimeCellStyle = ($server['uptime'] === null || (float) $server['uptime'] < 100.0)
                 ? ' style="background:#ffe0b3;"'
                 : '';
 
+            $hostCellStyle = $isPerfectUptime
+                ? ' style="background:#d9f2d9;font-weight:bold;"'
+                : ' style="background:#f2d9d9;font-weight:bold;"';
+
             $rows .= '<tr>' .
-                '<td style="background:#d9f2d9;font-weight:bold;">' . htmlspecialchars($server['label']) . '</td>' .
+                '<td' . $hostCellStyle . '>' . htmlspecialchars($server['label']) . '</td>' .
                 '<td>' . htmlspecialchars($this->formatAddress($server)) . '</td>' .
                 '<td' . $uptimeCellStyle . '>' . htmlspecialchars($this->formatUptime($server['uptime'])) . '</td>' .
                 '<td>' . htmlspecialchars($this->formatLatency($server['latency'])) . '</td>' .
@@ -285,17 +292,7 @@ class PerformanceReporter
      */
     protected function formatLatencyValue($seconds)
     {
-        if ($seconds < 1) {
-            return sprintf('%0.2f ms', $seconds * 1000);
-        }
-
-        if ($seconds < 60) {
-            return sprintf('%0.2f s', $seconds);
-        }
-
-        $minutes = $seconds / 60;
-
-        return sprintf('%0.2f min', $minutes);
+        return sprintf('%0.2f ms', $seconds * 1000);
     }
 
     /**
@@ -312,4 +309,35 @@ class PerformanceReporter
 
         return $server['protocol'] . '://' . $server['ip'] . ':' . $server['port'];
     }
+
+    /**
+     * Sort servers by uptime (descending, nulls last).
+     *
+     * @param array<int, array<string, mixed>> $servers
+     * @return array<int, array<string, mixed>>
+     */
+    protected function sortServersByUptime(array $servers)
+    {
+        usort($servers, function ($a, $b) {
+            $uptimeA = array_key_exists('uptime', $a) ? (float) $a['uptime'] : null;
+            $uptimeB = array_key_exists('uptime', $b) ? (float) $b['uptime'] : null;
+
+            if ($uptimeA === $uptimeB) {
+                return 0;
+            }
+
+            if ($uptimeA === null) {
+                return 1;
+            }
+
+            if ($uptimeB === null) {
+                return -1;
+            }
+
+            return $uptimeA > $uptimeB ? -1 : 1;
+        });
+
+        return $servers;
+    }
 }
+
