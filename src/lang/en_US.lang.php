@@ -104,6 +104,7 @@ $sm_lang = array(
         'no_data' => 'No diagnostic data available for the selected range.',
         'send_email' => 'Send email',
         'send_email_help' => 'Email the diagnostics for the selected range to your account address.',
+        'send_email_processing' => 'Sending your diagnostics report in the background. You can safely continue using the app.',
         'send_email_subject' => 'PHP Server Monitor diagnostics report',
         'send_email_intro' => 'Here are your diagnostics for the selected range.',
         'send_email_success' => 'Diagnostics report sent to your email address.',

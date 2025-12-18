@@ -709,6 +709,28 @@ namespace {
     }
 
     /**
+     * Write a generic application log entry.
+     *
+     * @param string $context
+     * @param string $message
+     * @return void
+     */
+    function psm_log_event($context, $message)
+    {
+        $log_dir = psm_get_logs_directory();
+        if ($log_dir === null) {
+            return;
+        }
+
+        $log_entry = sprintf('[%s] [%s] %s%s', date('c'), $context, trim($message), PHP_EOL);
+        $log_file = rtrim($log_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'application.log';
+
+        if (false === @file_put_contents($log_file, $log_entry, FILE_APPEND)) {
+            error_log('Unable to write application log entry to ' . $log_file);
+        }
+    }
+
+    /**
      * Log an email delivery attempt to the webroot logs directory.
      *
      * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer
