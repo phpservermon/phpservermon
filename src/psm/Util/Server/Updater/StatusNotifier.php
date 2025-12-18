@@ -187,7 +187,9 @@ class StatusNotifier
             'server_id',
             'ip',
             'port',
+            'protocol',
             'label',
+            'type',
             'error',
             'email',
             'sms',
@@ -203,6 +205,8 @@ class StatusNotifier
         if (empty($this->server)) {
             return false;
         }
+
+        $this->server['protocol_label'] = $this->formatProtocolLabel($this->server);
 
         $notify = false;
 
@@ -367,6 +371,34 @@ class StatusNotifier
             }
         }
         unset($notifications);
+    }
+
+    /**
+     * Derive a human-readable protocol label for notification subjects.
+     *
+     * @param array $server
+     * @return string
+     */
+    protected function formatProtocolLabel(array $server)
+    {
+        $protocol = isset($server['protocol']) ? strtoupper($server['protocol']) : '';
+        $type = isset($server['type']) ? $server['type'] : null;
+        $address = isset($server['ip']) ? $server['ip'] : '';
+
+        if ($type === 'website') {
+            $parsed = @parse_url($address);
+            if ($parsed !== false && isset($parsed['scheme'])) {
+                return strtoupper($parsed['scheme']);
+            }
+
+            return 'HTTP';
+        }
+
+        if ($protocol !== '') {
+            return $protocol;
+        }
+
+        return 'TCP';
     }
 
     /**
