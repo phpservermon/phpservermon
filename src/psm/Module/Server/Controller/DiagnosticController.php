@@ -66,12 +66,14 @@ class DiagnosticController extends AbstractServerController
 
         $range_key = psm_POST('range', psm_GET('range', 'week'));
         $end_time = new DateTime();
-        $ranges = $this->buildRanges($range_key, $end_time);
+        list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
 
-        if (!isset($ranges[$range_key])) {
-            $range_key = 'week';
-            $ranges = $this->buildRanges($range_key, $end_time);
-        }
+        $report_ranges = array(
+            $range_key => array(
+                'label' => $ranges[$range_key]['label'],
+                'servers' => $servers,
+            ),
+        );
 
         $user = $this->getUser()->getUser();
         $recipient_email = $user && isset($user->email) ? trim($user->email) : '';
@@ -81,17 +83,9 @@ class DiagnosticController extends AbstractServerController
 
             return $this->twig->render(
                 'module/server/diagnostic.tpl.html',
-                $this->buildTemplateData($range_key, $end_time, $ranges, $report_ranges[$range_key]['servers'])
+                $this->buildTemplateData($range_key, $end_time, $ranges, $servers)
             );
         }
-
-        $report_ranges = array(
-            $range_key => array(
-                'label' => $ranges[$range_key]['label'],
-                'servers' => $this->collectServersForRange(clone $ranges[$range_key]['start'], clone $end_time),
-            ),
-        );
-        $servers = $report_ranges[$range_key]['servers'];
 
         try {
             $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
@@ -103,7 +97,7 @@ class DiagnosticController extends AbstractServerController
 
         return $this->twig->render(
             'module/server/diagnostic.tpl.html',
-            $this->buildTemplateData($range_key, $end_time, $ranges, $report_ranges[$range_key]['servers'])
+            $this->buildTemplateData($range_key, $end_time, $ranges, $servers)
         );
     }
 
