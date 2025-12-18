@@ -445,8 +445,7 @@ class StatusNotifier
 
             // we sent a separate email to every single user.
             $mail->AddAddress($user['email'], $user['name']);
-            $result = $mail->Send();
-            psm_log_email_attempt($mail, $result, array(
+            $result = psm_send_and_log_mail($mail, array(
                 'context' => 'status_notification',
                 'server_id' => $this->server_id,
                 'user_id' => $user['user_id'],

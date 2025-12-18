@@ -181,8 +181,7 @@ class LoginController extends AbstractController
         $mail->AltBody = str_replace('<br/>', "\n", $body);
 
         $mail->AddAddress($user_email);
-        $result = $mail->Send();
-        psm_log_email_attempt($mail, $result, array(
+        psm_send_and_log_mail($mail, array(
             'context' => 'password_reset',
             'user_id' => $user_id,
         ));

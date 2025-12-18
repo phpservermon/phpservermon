@@ -664,6 +664,30 @@ namespace {
     }
 
     /**
+     * Send an email and log the delivery attempt.
+     *
+     * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer
+     * @param array $metadata Additional metadata to include in the log entry.
+     * @return bool True when the email was accepted for delivery, false otherwise.
+     */
+    function psm_send_and_log_mail($phpmailer, array $metadata = array())
+    {
+        $sent = false;
+
+        try {
+            $sent = $phpmailer->send();
+        } catch (\Throwable $exception) {
+            $error_info = trim($phpmailer->ErrorInfo . ' ' . $exception->getMessage());
+            $phpmailer->ErrorInfo = $error_info;
+            $sent = false;
+        }
+
+        psm_log_email_attempt($phpmailer, $sent, $metadata);
+
+        return $sent;
+    }
+
+    /**
      * Resolve the application logs directory.
      *
      * @return string|null Absolute path to the logs directory or null when it cannot be created.
