@@ -67,6 +67,7 @@ class DiagnosticController extends AbstractServerController
         $range_key = psm_POST('range', psm_GET('range', 'week'));
         $end_time = new DateTime();
         list($ranges, $range_key, $servers) = $this->buildRangeData($range_key, $end_time);
+        $this->logDiagnosticEvent('request', sprintf('range=%s recipient=%s', $range_key, $this->getRecipientEmail()));
 
         $report_ranges = array(
             $range_key => array(
@@ -80,6 +81,7 @@ class DiagnosticController extends AbstractServerController
 
         if ($recipient_email === '') {
             $this->addMessage(psm_get_lang('diagnostic', 'send_email_missing'), 'error');
+            $this->logDiagnosticEvent('request', 'blocked missing_recipient');
 
             return $this->twig->render(
                 'module/server/diagnostic.tpl.html',
@@ -87,18 +89,50 @@ class DiagnosticController extends AbstractServerController
             );
         }
 
-        try {
-            $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
-            $this->addMessage($send_result['message'], $send_result['type']);
-        } catch (\Throwable $exception) {
-            $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $exception->getMessage());
-            $this->addMessage(psm_get_lang('diagnostic', 'send_email_error') . ' ' . $exception->getMessage(), 'error');
+        $template_data = $this->buildTemplateData($range_key, $end_time, $ranges, $servers);
+        $send_callback = function () use ($recipient_email, $user, $report_ranges, $range_key) {
+            $start_time = microtime(true);
+
+            try {
+                $send_result = $this->sendDiagnosticEmail($recipient_email, $user, $report_ranges);
+                $this->logDiagnosticEvent(
+                    'email',
+                    sprintf('range=%s result=%s duration_ms=%d', $range_key, $send_result['type'], (int) round((microtime(true) - $start_time) * 1000))
+                );
+
+                return $send_result;
+            } catch (\Throwable $exception) {
+                $this->logDiagnosticEmailAttempt($recipient_email, $range_key, false, $exception->getMessage());
+                $this->logDiagnosticEvent(
+                    'email',
+                    sprintf('range=%s result=exception error=%s', $range_key, $exception->getMessage())
+                );
+
+                return array(
+                    'type' => 'error',
+                    'message' => psm_get_lang('diagnostic', 'send_email_error') . ' ' . $exception->getMessage(),
+                );
+            }
+        };
+
+        if ($this->shouldSendAsynchronously()) {
+            $this->addMessage(psm_get_lang('diagnostic', 'send_email_processing'), 'info');
+            $response = $this->twig->render('module/server/diagnostic.tpl.html', $template_data);
+            $this->finishRequestEarly($response);
+
+            $this->applySocketTimeout(function () use ($send_callback) {
+                $send_callback();
+            });
+
+            return '';
         }
 
-        return $this->twig->render(
-            'module/server/diagnostic.tpl.html',
-            $this->buildTemplateData($range_key, $end_time, $ranges, $servers)
-        );
+        $send_result = $this->applySocketTimeout($send_callback);
+        if (is_array($send_result)) {
+            $this->addMessage($send_result['message'], $send_result['type']);
+        }
+
+        return $this->twig->render('module/server/diagnostic.tpl.html', $template_data);
     }
 
     /**
@@ -164,6 +198,78 @@ class DiagnosticController extends AbstractServerController
     protected function buildMailer()
     {
         return psm_build_mail(null, null, true);
+    }
+
+    /**
+     * Execute an operation with a reduced socket timeout to prevent long HTTP responses.
+     *
+     * @param callable $callback
+     * @return mixed
+     */
+    protected function applySocketTimeout(callable $callback)
+    {
+        $original_timeout = ini_get('default_socket_timeout');
+        @ini_set('default_socket_timeout', '15');
+
+        try {
+            return $callback();
+        } finally {
+            if ($original_timeout !== false) {
+                @ini_set('default_socket_timeout', (string) $original_timeout);
+            }
+        }
+    }
+
+    /**
+     * Log diagnostic events to the shared application log.
+     *
+     * @param string $context
+     * @param string $message
+     * @return void
+     */
+    protected function logDiagnosticEvent($context, $message)
+    {
+        psm_log_event('diagnostic_' . $context, $message);
+    }
+
+    /**
+     * Determine whether the environment can complete the request before sending the email.
+     *
+     * @return bool
+     */
+    protected function shouldSendAsynchronously()
+    {
+        return PHP_SAPI !== 'cli' && function_exists('fastcgi_finish_request');
+    }
+
+    /**
+     * Flush the current response to the client before executing slow operations.
+     *
+     * @param string $content
+     * @return void
+     */
+    protected function finishRequestEarly($content)
+    {
+        ignore_user_abort(true);
+        echo $content;
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            flush();
+        }
+    }
+
+    /**
+     * Resolve the email address for the authenticated user.
+     *
+     * @return string
+     */
+    protected function getRecipientEmail()
+    {
+        $user = $this->getUser()->getUser();
+
+        return $user && isset($user->email) ? trim($user->email) : '';
     }
 
     /**
