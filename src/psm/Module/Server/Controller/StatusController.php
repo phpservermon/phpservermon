@@ -94,6 +94,20 @@ class StatusController extends AbstractServerController
 
         $uptime_start = new DateTime('-1 week 0:0:0');
         $uptime_end = new DateTime();
+        $active_server_ids = array();
+
+        foreach ($servers as $server) {
+            if ($server['active'] == 'no') {
+                continue;
+            }
+            $active_server_ids[] = (int) $server['server_id'];
+        }
+
+        $uptime_stats = $this->history->getUptimePercentages(
+            $active_server_ids,
+            clone $uptime_start,
+            clone $uptime_end
+        );
 
         $layout_data['servers_offline'] = array();
         $layout_data['servers_warning'] = array();
@@ -114,8 +128,7 @@ class StatusController extends AbstractServerController
                 array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status')
             );
 
-            $performance = $this->history->getPerformanceStatistics($server['server_id'], clone $uptime_start, clone $uptime_end);
-            $uptime = $performance['uptime'] ?? null;
+            $uptime = $uptime_stats[$server['server_id']] ?? null;
             $server['uptime_display'] = $this->formatUptime($uptime);
 
             if ($server['status'] == "off") {
