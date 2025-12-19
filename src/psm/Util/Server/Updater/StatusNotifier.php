@@ -191,6 +191,7 @@ class StatusNotifier
             'label',
             'type',
             'error',
+            'last_error',
             'email',
             'sms',
             'discord',
@@ -208,7 +209,8 @@ class StatusNotifier
 
         $this->server['protocol_label'] = $this->formatProtocolLabel($this->server);
         $this->server['monitor_url'] = PSM_BASE_URL . '/public.php';
-        $this->server['summary'] = $status_new ? '' : $this->buildErrorSummary($this->server['error']);
+        $summary_source = $status_new ? $this->server['last_error'] : $this->server['error'];
+        $this->server['summary'] = $this->buildErrorSummary($summary_source);
 
         $notify = false;
 
@@ -422,192 +424,120 @@ class StatusNotifier
         $code = (int) $matches[1];
         $summaries = array(
             400 => array(
-                'impact' => 'Request rejected because it was malformed or invalid.',
-                'notes' => 'Often caused by invalid syntax, headers, query parameters, or payload formatting.',
+                'title' => '400 Bad Request',
+                'summary' => 'The server rejected the request because it was malformed or invalid. This usually means the request syntax, headers, query parameters, or body payload did not meet expected formatting rules. Common triggers include invalid JSON, missing required fields, incorrect parameter types, or badly encoded characters. Check the client request construction, including Content-Type and any URL encoding. Reviewing application/API logs typically reveals which field or header caused the validation failure.',
             ),
             401 => array(
-                'impact' => 'Request blocked because authentication is missing or invalid.',
-                'notes' => 'Check auth headers/tokens, expiry, and the authentication method required by the service.',
-            ),
-            402 => array(
-                'impact' => 'Request denied due to account/billing requirement.',
-                'notes' => 'Typically used by APIs/SaaS for quota/billing enforcement.',
+                'title' => '401 Unauthorized',
+                'summary' => 'The request failed because authentication was missing, invalid, or expired. The server requires credentials (token, API key, session, or basic auth) and did not accept what was provided. This can happen due to expired tokens, incorrect secrets, missing Authorization headers, or clock skew affecting token validity. Confirm the authentication method required by the service and verify the correct credentials are being used. Check auth provider logs (IdP/API gateway) to see why the credentials were rejected.',
             ),
             403 => array(
-                'impact' => 'Request understood but refused due to insufficient permissions.',
-                'notes' => 'Check access policy, ACLs, IP allowlists, WAF rules, and required roles/scopes.',
+                'title' => '403 Forbidden',
+                'summary' => 'The server understood the request but refused to authorize it. This typically indicates the authenticated identity lacks permissions, or access is blocked by policy (ACL, RBAC, IP allowlist, WAF rule). It can also occur if the resource is restricted by tenant/org rules or geographic/network constraints. Validate user/service account roles and any applicable allow/deny rules at the application, gateway, and firewall layers. Logs from the WAF/API gateway are often the fastest way to pinpoint the exact policy that blocked the request.',
             ),
             404 => array(
-                'impact' => 'Requested resource does not exist at the given path/URL.',
-                'notes' => 'Verify path, routing, base URL, and whether the resource was removed or never deployed.',
+                'title' => '404 Not Found',
+                'summary' => 'The requested resource was not found at the specified URL/path. This usually means the route does not exist, the resource identifier is wrong, or the item has been removed or never deployed. It can also happen when a reverse proxy is pointing to the wrong upstream or when a base URL/version prefix is incorrect. Confirm the endpoint path, API version, hostname, and routing configuration. If this is unexpected, check deployment status and service routing tables for mismatches.',
             ),
             405 => array(
-                'impact' => 'Endpoint exists, but HTTP method (GET/POST/PUT/…) is not permitted.',
-                'notes' => 'Confirm allowed methods and client behavior (e.g., POST vs GET).',
-            ),
-            406 => array(
-                'impact' => 'Server can’t produce a response matching the client’s Accept headers.',
-                'notes' => 'Check Accept / content negotiation settings (e.g., JSON vs XML).',
-            ),
-            407 => array(
-                'impact' => 'Proxy refused the request because proxy authentication is required.',
-                'notes' => 'Usually indicates corporate proxy settings or missing proxy credentials.',
+                'title' => '405 Method Not Allowed',
+                'summary' => 'The endpoint exists, but the HTTP method used (GET/POST/PUT/DELETE, etc.) is not allowed. This often happens when a client uses the wrong method for an endpoint or when server routing is configured to accept only specific methods. Some proxies or frameworks will return 405 when an OPTIONS/CORS preflight isn’t handled correctly. Verify the API contract for allowed methods and confirm the client is using the correct one. Review server route definitions and gateway policy for method restrictions.',
             ),
             408 => array(
-                'impact' => 'Request timed out before completion.',
-                'notes' => 'Often due to slow network/client, overloaded server, or aggressive timeout settings.',
+                'title' => '408 Request Timeout',
+                'summary' => 'The server timed out waiting for the request to complete. This can be caused by slow client uploads, unstable network conditions, or server-side timeouts that are set too aggressively. If the timeout occurs before the request is fully received, large payloads or slow connections are common contributors. Check client-side timeout settings and compare them to proxy/load balancer/application timeouts. Server and edge logs can show whether the timeout occurred while reading the request or waiting on processing.',
             ),
             409 => array(
-                'impact' => 'Request conflicts with current server state.',
-                'notes' => 'Common with versioning/ETags, duplicate resources, or concurrent updates.',
+                'title' => '409 Conflict',
+                'summary' => 'The request could not be completed because it conflicts with the current state of the resource. This is common in APIs that enforce uniqueness, versioning, optimistic locking, or concurrency controls. For example, creating a resource that already exists or updating with an outdated version/ETag can trigger 409. Resolve by fetching the latest state and retrying with correct preconditions or by handling duplicates gracefully. Application logs typically indicate what condition triggered the conflict.',
             ),
             410 => array(
-                'impact' => 'Resource previously existed but has been permanently removed.',
-                'notes' => 'Update references; unlike 404, removal is intentional/permanent.',
-            ),
-            411 => array(
-                'impact' => 'Server requires Content-Length but it wasn’t provided.',
-                'notes' => 'Ensure client sets Content-Length or uses chunked transfer correctly.',
-            ),
-            412 => array(
-                'impact' => 'Preconditions (e.g., If-Match/If-Unmodified-Since) were not met.',
-                'notes' => 'Common with optimistic locking; refresh ETag/version and retry.',
+                'title' => '410 Gone',
+                'summary' => 'The requested resource is no longer available and has been permanently removed. Unlike 404, 410 explicitly signals that the removal is intentional and not expected to return. This can occur when an API deprecates an endpoint or content is deleted as part of lifecycle policies. Update clients to stop calling the removed resource and use the documented replacement if one exists. Check release notes or service documentation for deprecation timelines and migration paths.',
             ),
             413 => array(
-                'impact' => 'Request body exceeded server limits.',
-                'notes' => 'Increase limits (proxy/app) or reduce payload (compress/split/upload differently).',
+                'title' => '413 Payload Too Large',
+                'summary' => 'The server rejected the request because the request body exceeded configured size limits. This limit may be enforced at multiple layers, such as CDN/WAF, load balancer, reverse proxy, or the application itself. Large uploads, oversized JSON payloads, or unexpectedly large headers (sometimes cookies) can trigger this. Reduce payload size, compress data, split uploads, or move large uploads to object storage with signed URLs. If the payload is valid and expected, increase limits consistently across all proxy and application layers.',
             ),
             414 => array(
-                'impact' => 'URL length exceeded server limits.',
-                'notes' => 'Move large query data into body (POST) or shorten parameters.',
+                'title' => '414 URI Too Long',
+                'summary' => 'The server rejected the request because the URL (including query string) exceeded length limits. This often happens when clients include large encoded data or many parameters in the query string. Some proxies and browsers have strict URI limits that differ between environments, so issues can appear only in certain paths. Move large parameters into the request body (e.g., POST) or reduce query size by using shorter identifiers. Check proxy/web server configuration for URI and header size limits if adjustments are required.',
             ),
             415 => array(
-                'impact' => 'Server rejected request due to unsupported Content-Type.',
-                'notes' => 'Set correct Content-Type (e.g., application/json) and encoding.',
-            ),
-            416 => array(
-                'impact' => 'Invalid byte-range requested for resource.',
-                'notes' => 'Client range request doesn’t match resource size/availability.',
-            ),
-            418 => array(
-                'impact' => 'Request intentionally refused by server logic.',
-                'notes' => 'Usually custom behavior; check service docs or routing rules.',
-            ),
-            421 => array(
-                'impact' => 'Request routed to the wrong server/virtual host.',
-                'notes' => 'Common with TLS/SNI or reverse-proxy routing misconfiguration.',
+                'title' => '415 Unsupported Media Type',
+                'summary' => 'The server refused the request because the Content-Type is not supported for this endpoint. This commonly occurs when JSON is sent as text/plain, when form data is expected but JSON is provided, or when character encoding is incorrect. Some services also require explicit Accept headers for response format negotiation. Ensure the client sets the correct Content-Type and that the payload matches that format. Server logs usually highlight the mismatch and the accepted media types.',
             ),
             422 => array(
-                'impact' => 'Request is syntactically valid but fails semantic validation.',
-                'notes' => 'Check required fields, formats, and business validation rules.',
-            ),
-            423 => array(
-                'impact' => 'Resource is locked and cannot be modified.',
-                'notes' => 'Often WebDAV or application-level locking.',
-            ),
-            424 => array(
-                'impact' => 'Request failed because a dependent operation/service failed.',
-                'notes' => 'Identify upstream dependency failures.',
-            ),
-            425 => array(
-                'impact' => 'Server refused to process due to replay risk (early data).',
-                'notes' => 'Seen with TLS early data; client/server config may need adjustment.',
-            ),
-            426 => array(
-                'impact' => 'Server requires protocol upgrade (e.g., to HTTPS or newer HTTP version).',
-                'notes' => 'Update client to required protocol / TLS settings.',
-            ),
-            428 => array(
-                'impact' => 'Server requires conditional request (e.g., If-Match) to prevent lost updates.',
-                'notes' => 'Fetch current ETag/version and retry with preconditions.',
+                'title' => '422 Unprocessable Entity',
+                'summary' => 'The server understood the request structure but rejected it due to semantic validation errors. This usually indicates required fields are missing, values are out of range, formats are invalid, or business rules were violated. Unlike 400, the issue is typically with the meaning of the data rather than basic parsing. Check the response body for validation messages and map them back to the payload fields. Fix the input data and retry after ensuring it meets API validation requirements.',
             ),
             429 => array(
-                'impact' => 'Rate limit triggered; requests temporarily blocked.',
-                'notes' => 'Apply backoff/retry-after, reduce request rate, or increase quota.',
+                'title' => '429 Too Many Requests',
+                'summary' => 'The request was rate-limited because too many requests were sent in a short period. This can be enforced per IP, per user, per token, or per endpoint, depending on the service policy. It may also occur due to traffic spikes, retry storms, or poorly bounded concurrency in clients. Honor Retry-After headers if present and implement exponential backoff with jitter. If this is expected workload, request higher quotas or adjust the client’s request patterns.',
             ),
             431 => array(
-                'impact' => 'Request headers exceeded size limits.',
-                'notes' => 'Reduce cookies/headers, trim auth tokens, or raise proxy limits.',
-            ),
-            451 => array(
-                'impact' => 'Content blocked due to legal restrictions.',
-                'notes' => 'Often geo/legal policy; verify compliance and distribution rules.',
+                'title' => '431 Request Header Fields Too Large',
+                'summary' => 'The server rejected the request because the headers were too large. This is often caused by oversized cookies, very large authorization tokens, or too many custom headers. It can also appear when headers grow over time due to accumulating cookies across redirects. Reduce cookie bloat, trim unnecessary headers, or shorten tokens where possible. If the headers are legitimate, raise header size limits on the proxy/server while confirming upstream components support the same limits.',
             ),
             500 => array(
-                'impact' => 'Server encountered an unexpected error and could not complete request.',
-                'notes' => 'Check application logs, unhandled exceptions, and recent deployments.',
+                'title' => '500 Internal Server Error',
+                'summary' => 'The server encountered an unexpected condition and failed to complete the request. This typically indicates an unhandled exception, misconfiguration, or runtime failure in the application. It may be triggered by specific inputs or by environmental issues such as missing dependencies or failing downstream services. Check application logs around the timestamp to identify stack traces or error messages. Recent deployments, config changes, or dependency outages are common starting points for investigation.',
             ),
             501 => array(
-                'impact' => 'Server does not support the requested method/feature.',
-                'notes' => 'Endpoint may be incomplete or disabled; verify service capabilities.',
+                'title' => '501 Not Implemented',
+                'summary' => 'The server does not support the functionality required to fulfill the request. This commonly occurs when a method is not implemented, an endpoint is incomplete, or a feature is disabled. In some cases, a gateway or proxy returns 501 if it cannot route to a handler that supports the request. Confirm the API documentation and verify the endpoint and method are intended to exist. Review server routing and feature flags to ensure the capability is enabled and deployed.',
             ),
             502 => array(
-                'impact' => 'Gateway/proxy received an invalid response from upstream server.',
-                'notes' => 'Often upstream crash, misrouting, TLS issues, or bad upstream response formatting.',
+                'title' => '502 Bad Gateway',
+                'summary' => 'A gateway or proxy received an invalid response from an upstream server. This often indicates the upstream crashed, returned malformed HTTP, closed the connection early, or failed TLS negotiation. It can also be caused by incorrect upstream routing, DNS issues, or misconfigured load balancer pools. Check upstream health, application logs, and gateway error logs to determine what response was considered invalid. If the issue is intermittent, correlate with upstream restarts, deploys, or resource saturation.',
             ),
             503 => array(
-                'impact' => 'Service temporarily unavailable (overloaded, down, or in maintenance).',
-                'notes' => 'Check health checks, capacity, autoscaling, maintenance windows.',
+                'title' => '503 Service Unavailable',
+                'summary' => 'The service is temporarily unavailable and cannot handle the request. This typically happens when the service is overloaded, in maintenance mode, failing health checks, or intentionally shedding load. It can be generated by the application itself or by load balancers when no healthy upstream instances are available. Check service health dashboards, autoscaling status, and recent deployments or maintenance windows. If overload is the cause, capacity increases or traffic shaping may be required.',
             ),
             504 => array(
-                'impact' => 'Gateway/proxy timed out waiting for upstream server response.',
-                'notes' => 'Upstream slow/hung, network issues, or timeout too low at proxy/load balancer.',
-            ),
-            505 => array(
-                'impact' => 'Server doesn’t support the HTTP protocol version used by client.',
-                'notes' => 'Adjust client/proxy to supported HTTP version.',
+                'title' => '504 Gateway Timeout',
+                'summary' => 'A gateway or proxy timed out waiting for a response from the upstream server. This usually means the upstream is slow, hung, overloaded, or unreachable beyond a certain point in the request lifecycle. It can also occur when timeout settings between components are mismatched (e.g., proxy timeout shorter than application processing time). Review upstream latency metrics, request traces, and resource usage during the incident window. Adjust timeouts only after confirming the upstream can reliably respond within the expected SLA.',
             ),
             507 => array(
-                'impact' => 'Server cannot store representation needed to complete request.',
-                'notes' => 'Disk full, quota exceeded, or storage backend issues.',
+                'title' => '507 Insufficient Storage',
+                'summary' => 'The server could not complete the request because it lacks sufficient storage capacity. This may be due to full disks, exceeded quotas, or an underlying storage backend that is out of space. It can also appear if logs, temp files, or uploads consume space unexpectedly. Check filesystem usage, storage quotas, and object storage/backend capacity. Free space, rotate logs, or expand storage, then retry operations after confirming stability.',
             ),
             508 => array(
-                'impact' => 'Server detected an infinite loop while processing request.',
-                'notes' => 'Often misconfigured rewrite/proxy rules or recursive dependencies.',
-            ),
-            510 => array(
-                'impact' => 'Server requires additional extensions to fulfill request.',
-                'notes' => 'Rare; usually indicates nonstandard/legacy extension requirements.',
+                'title' => '508 Loop Detected',
+                'summary' => 'The server detected an infinite loop while processing the request and stopped to prevent runaway behavior. This is often caused by misconfigured redirects, rewrite rules, or proxy routing that sends traffic back to itself. It can also occur with recursive application logic or dependency calls that form a cycle. Inspect routing rules, redirect chains, and reverse proxy configuration for loops. Tracing headers and request logs can reveal the repeated path or host causing the loop.',
             ),
             511 => array(
-                'impact' => 'Access blocked until network authentication is completed.',
-                'notes' => 'Common in captive portals / network-level access control.',
+                'title' => '511 Network Authentication Required',
+                'summary' => 'The request was blocked because network-level authentication is required before accessing the resource. This commonly occurs on captive portals, managed guest networks, or enterprise networks requiring login/acceptance of terms. The server is signaling that the client must authenticate to the network, not necessarily to the application. Check whether the client environment is behind a captive portal or policy gateway. Once network authentication is completed, the request should succeed without application changes.',
             ),
             520 => array(
-                'impact' => 'Edge/CDN received an unexpected/unknown response from origin.',
-                'notes' => 'Often origin returned something invalid or connection was reset; check origin logs and edge/origin connectivity.',
+                'title' => '520 Web Server Returned an Unknown Error',
+                'summary' => 'The edge/CDN received an unexpected or unclassified error from the origin server. This can happen when the origin returns an invalid HTTP response, resets the connection, or fails in a way the edge cannot map to a standard status. It may also indicate intermittent origin crashes or network instability between edge and origin. Check origin web server and application logs for resets, malformed responses, or abrupt terminations. Edge logs can help identify whether the failure occurred during connect, TLS handshake, or response read.',
             ),
             521 => array(
-                'impact' => 'Edge/CDN could not connect to origin because origin refused connections.',
-                'notes' => 'Origin may be down, firewall blocking, or origin not listening on required port.',
+                'title' => '521 Web Server Is Down',
+                'summary' => 'The edge/CDN could not establish a connection because the origin refused the connection. This usually indicates the origin service is down, not listening on the expected port, or blocking edge IP ranges at the firewall. It can also occur if the origin IP has changed and the edge is still targeting an old address. Verify origin availability, service listeners, and firewall/ACL rules for inbound traffic from the edge. Confirm DNS/origin configuration in the CDN matches the active origin address.',
             ),
             522 => array(
-                'impact' => 'Edge/CDN could connect to origin but timed out waiting for response.',
-                'notes' => 'Origin overloaded/slow, routing issues, or timeouts too strict.',
+                'title' => '522 Connection Timed Out',
+                'summary' => 'The edge/CDN attempted to connect to the origin but the connection timed out. This often indicates routing issues, packet drops, overloaded origin networking, or firewall rules silently dropping traffic. It differs from 524 in that the timeout is typically during connection establishment rather than waiting for a response. Check network paths, firewall logs, and origin host load to identify why connects are not completing. Validate that the origin is reachable from the internet and that the CDN’s IP ranges are allowed.',
             ),
             523 => array(
-                'impact' => 'Client could not establish a successful connection to the origin behind the endpoint.',
-                'notes' => 'Commonly indicates edge/CDN cannot reach origin (origin down, routing/firewall restrictions, DNS/origin IP mismatch, blocked edge IP ranges).',
+                'title' => '523 Origin Is Unreachable',
+                'summary' => 'The edge/CDN could not reach the origin server, so the client request could not be completed. This commonly indicates origin downtime, routing problems, or access restrictions preventing the edge from connecting. It can also be caused by DNS/origin IP mismatch or the origin being moved without updating CDN configuration. Confirm the origin is up, reachable on port 443, and allows inbound connections from the CDN/edge IP ranges. Review CDN logs and origin firewall rules to pinpoint the exact block or path failure.',
             ),
             524 => array(
-                'impact' => 'Edge/CDN connected to origin, but origin did not respond in time.',
-                'notes' => 'Long-running requests, overloaded origin, or insufficient upstream timeouts.',
+                'title' => '524 A Timeout Occurred',
+                'summary' => 'The edge/CDN successfully connected to the origin, but the origin did not respond within the allowed time. This typically indicates slow application processing, overloaded backend dependencies, or long-running requests exceeding edge timeout limits. It can also occur during peak load when request queues grow and response times degrade. Check origin latency metrics, traces, and dependency health to find what is delaying responses. Mitigate by optimizing slow endpoints, scaling capacity, or adjusting timeouts only if the workload is expected and safe.',
             ),
             525 => array(
-                'impact' => 'Edge/CDN failed to complete TLS handshake with origin.',
-                'notes' => 'Origin TLS misconfig, incompatible ciphers, missing intermediates, or SNI/cert issues.',
+                'title' => '525 SSL Handshake Failed',
+                'summary' => 'The edge/CDN could not complete a TLS handshake with the origin server. This is usually caused by TLS misconfiguration, incompatible cipher suites, missing intermediate certificates, or SNI/certificate selection issues. It can also occur if the origin presents an unexpected certificate or blocks handshake attempts. Validate the origin’s TLS configuration, certificate chain, and SNI behavior using standard TLS checks. Compare CDN TLS requirements with the origin’s supported versions and ciphers.',
             ),
             526 => array(
-                'impact' => 'Edge/CDN rejected origin TLS certificate as invalid.',
-                'notes' => 'Expired/self-signed/wrong hostname/untrusted chain; fix origin certificate/chain.',
-            ),
-            527 => array(
-                'impact' => 'Edge feature failed communicating with origin acceleration component.',
-                'notes' => 'Feature misconfig/outage; bypass/disable feature or check related services.',
-            ),
-            530 => array(
-                'impact' => 'Request blocked by edge/service policy or configuration.',
-                'notes' => 'Often WAF/rules/billing/feature gating; check provider dashboard/logs.',
+                'title' => '526 Invalid SSL Certificate',
+                'summary' => 'The edge/CDN rejected the origin’s TLS certificate as invalid. Common causes include expired certificates, hostname mismatch, self-signed certificates, or an incomplete/untrusted certificate chain. This prevents secure communication between the edge and origin, so requests fail even if the origin is otherwise reachable. Check the origin certificate validity dates, SAN/hostname coverage, and full chain (including intermediates). Replace or fix the certificate chain, then re-test connectivity through the CDN.',
             ),
         );
 
@@ -615,7 +545,7 @@ class StatusNotifier
             return '';
         }
 
-        return 'Impact: ' . $summaries[$code]['impact'] . ' Notes: ' . $summaries[$code]['notes'];
+        return $summaries[$code]['title'] . ': ' . $summaries[$code]['summary'];
     }
 
     /**

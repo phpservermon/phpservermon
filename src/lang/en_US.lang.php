@@ -496,7 +496,7 @@ $sm_lang = array(
         'off_jabber_message' => 'Failed to connect to the following server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Date: %DATE%',
         'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
         'on_email_subject' => 'Connection restored to %LABEL%. Service RUNNING (%PROTOCOL_LABEL%/%PORT%) – Downtime %LAST_OFFLINE_DURATION%',
-        'on_email_body' => 'Recovery: %LABEL% is running again after %LAST_OFFLINE_DURATION% downtime<br><br>Details<br><br>Service: %LABEL%<br>Public URL: %IP%<br>Protocol / Port: %PROTOCOL_LABEL%/%PORT%<br>Date & time: %DATE%',
+        'on_email_body' => 'Recovery: %LABEL% is running again after %LAST_OFFLINE_DURATION% downtime<br><br>Details<br><br>Service: %LABEL%<br>Public URL: %IP%<br>Protocol / Port: %PROTOCOL_LABEL%/%PORT%<br>Date & time: %DATE%<br>Summary: %SUMMARY%',
         'on_discord_message' => 'Server \'%LABEL%\' is running again, it was down for:
  %LAST_OFFLINE_DURATION%<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%',
         'on_webhook_title' => 'Server \'%LABEL%\' is RUNNING',
