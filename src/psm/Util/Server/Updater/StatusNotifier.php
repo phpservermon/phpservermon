@@ -215,6 +215,9 @@ class StatusNotifier
             $summary_source,
             isset($this->server['last_error_output']) ? $this->server['last_error_output'] : null
         );
+        if (empty($this->server['summary'])) {
+            $this->server['summary'] = $this->server['protocol_label'] . '/' . $this->server['port'];
+        }
 
         $notify = false;
 
