@@ -116,6 +116,101 @@ class HistoryGraph
     }
 
     /**
+     * Calculate uptime percentages for multiple servers using aggregated data.
+     *
+     * @param int[] $server_ids
+     * @param DateTime $start_time
+     * @param DateTime $end_time
+     * @return array<int, float|null>
+     */
+    public function getUptimePercentages(array $server_ids, DateTime $start_time, DateTime $end_time)
+    {
+        $server_ids = array_values(array_unique(array_map('intval', $server_ids)));
+        if (empty($server_ids)) {
+            return array();
+        }
+
+        $placeholders = array();
+        $parameters = array(
+            'start_time' => $start_time->format('Y-m-d H:i:s'),
+            'end_time' => $end_time->format('Y-m-d H:i:s'),
+        );
+
+        foreach ($server_ids as $index => $server_id) {
+            $key = 'server_id_' . $index;
+            $placeholders[] = ':' . $key;
+            $parameters[$key] = $server_id;
+        }
+
+        $in_clause = implode(', ', $placeholders);
+
+        $records = $this->db->execute(
+            "SELECT `server_id`, SUM(`status`) AS `uptime_count`, COUNT(*) AS `total_count`
+                FROM `" . PSM_DB_PREFIX . "servers_uptime`
+                WHERE `server_id` IN (" . $in_clause . ")
+                    AND `date` BETWEEN :start_time AND :end_time
+                GROUP BY `server_id`",
+            $parameters
+        );
+
+        $uptime_stats = array();
+        $missing_ids = array_fill_keys($server_ids, true);
+
+        foreach ($records as $record) {
+            $server_id = (int) $record['server_id'];
+            $total = (int) $record['total_count'];
+            $uptime = null;
+
+            if ($total > 0) {
+                $uptime_count = (int) $record['uptime_count'];
+                $uptime = 100 - (($total - $uptime_count) / $total) * 100;
+            }
+
+            $uptime_stats[$server_id] = $uptime;
+            unset($missing_ids[$server_id]);
+        }
+
+        if (!empty($missing_ids)) {
+            $history_placeholders = array();
+            $history_parameters = array(
+                'start_date' => $start_time->format('Y-m-d'),
+                'end_date' => $end_time->format('Y-m-d'),
+            );
+
+            foreach (array_keys($missing_ids) as $index => $server_id) {
+                $key = 'history_server_id_' . $index;
+                $history_placeholders[] = ':' . $key;
+                $history_parameters[$key] = $server_id;
+            }
+
+            $history_in_clause = implode(', ', $history_placeholders);
+            $history_records = $this->db->execute(
+                "SELECT `server_id`, SUM(`checks_total`) AS `total_count`, SUM(`checks_failed`) AS `failed_count`
+                    FROM `" . PSM_DB_PREFIX . "servers_history`
+                    WHERE `server_id` IN (" . $history_in_clause . ")
+                        AND `date` BETWEEN :start_date AND :end_date
+                    GROUP BY `server_id`",
+                $history_parameters
+            );
+
+            foreach ($history_records as $record) {
+                $server_id = (int) $record['server_id'];
+                $total = (int) $record['total_count'];
+                $uptime = null;
+
+                if ($total > 0) {
+                    $failed = (int) $record['failed_count'];
+                    $uptime = 100 - (($failed / $total) * 100);
+                }
+
+                $uptime_stats[$server_id] = $uptime;
+            }
+        }
+
+        return $uptime_stats;
+    }
+
+    /**
      * Prepare the HTML for the graph
      * @param string $server_id ID of server to fetch data for
      * @return string Created HTML
