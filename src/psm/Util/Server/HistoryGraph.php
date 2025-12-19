@@ -218,6 +218,21 @@ class HistoryGraph
      */
     public function createHTML($server_id)
     {
+        $server_id = (int) $server_id;
+        $cache_ttl = defined('PSM_HISTORY_GRAPH_CACHE_TTL') ? (int) PSM_HISTORY_GRAPH_CACHE_TTL : 60;
+        $cache_key = 'history_graph_html_' . $server_id;
+        $cache_time_key = $cache_key . '_time';
+
+        if ($cache_ttl > 0) {
+            $cache_time = (int) psm_get_conf($cache_time_key, 0);
+            if ($cache_time > 0 && (time() - $cache_time) < $cache_ttl) {
+                $cached = psm_get_conf($cache_key, '');
+                if ($cached !== '') {
+                    return $cached;
+                }
+            }
+        }
+
         // Archive all records for this server to make sure we have up-to-date stats
         $archive = new ArchiveManager($this->db);
         $archive->archive($server_id);
@@ -267,7 +282,14 @@ class HistoryGraph
         $tpl_data = array(
             'graphs' => $graphs,
         );
-        return $this->twig->render('module/server/history.tpl.html', $tpl_data);
+        $html = $this->twig->render('module/server/history.tpl.html', $tpl_data);
+
+        if ($cache_ttl > 0) {
+            psm_update_conf($cache_key, $html);
+            psm_update_conf($cache_time_key, time());
+        }
+
+        return $html;
     }
 
     /**

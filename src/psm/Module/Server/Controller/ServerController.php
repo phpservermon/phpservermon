@@ -202,7 +202,7 @@ class ServerController extends AbstractServerController
             default:
                 // edit mode
                 // get server entry
-                $edit_server = $this->getServers($this->server_id);
+                $edit_server = $this->getServerEditData($this->server_id);
                 if (empty($edit_server)) {
                     $this->addMessage(psm_get_lang('servers', 'error_server_no_match'), 'error');
                     return $this->runAction('index');
@@ -709,6 +709,52 @@ class ServerController extends AbstractServerController
             $result[] = $user['user_id'];
         }
         return $result;
+    }
+
+    /**
+     * Load server fields needed for the edit form.
+     *
+     * @param int $server_id
+     * @return array|null
+     */
+    private function getServerEditData(int $server_id): ?array
+    {
+        $server_id = (int) $server_id;
+        $server = $this->db->select(
+            PSM_DB_PREFIX . 'servers',
+            array('server_id' => $server_id),
+            array(
+                'label',
+                'ip',
+                'port',
+                'protocol',
+                'request_method',
+                'post_field',
+                'type',
+                'pattern',
+                'pattern_online',
+                'redirect_check',
+                'allow_http_status',
+                'header_name',
+                'header_value',
+                'timeout',
+                'website_username',
+                'website_password',
+                'warning_threshold',
+                'ssl_cert_expiry_days',
+                'active',
+                'email',
+                'sms',
+                'telegram',
+                'custom_header',
+            )
+        );
+
+        if (empty($server)) {
+            return null;
+        }
+
+        return $server[0];
     }
 
     /**
