@@ -29,6 +29,7 @@
 namespace {
 // include main configuration and functionality
     use psm\Router;
+    use psm\Util\Server\DiagnosticReporter;
     use psm\Util\Server\PerformanceReporter;
     use psm\Util\Server\UpdateManager;
 
@@ -251,6 +252,8 @@ namespace {
     $autorun = $router->getService('util.server.updatemanager');
     /** @var PerformanceReporter $reporter */
     $reporter = $router->getService('util.server.performance_reporter');
+    /** @var DiagnosticReporter $diagnosticReporter */
+    $diagnosticReporter = $router->getService('util.server.diagnostic_reporter');
 
     try {
         if ($status !== 'off') {
@@ -275,6 +278,8 @@ namespace {
 
         $reporter->maybeSendWeeklyReport();
         $log('Weekly performance report check completed.');
+        $diagnosticReporter->maybeSendDailyReport();
+        $log('Daily diagnostic report check completed.');
 
         $log('Cron completed successfully.');
     } catch (\Throwable $exception) {

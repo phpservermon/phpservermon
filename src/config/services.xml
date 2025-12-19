@@ -69,6 +69,10 @@ xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/sc
                         <argument type="service" id="db" />
                         <argument type="service" id="twig" />
                 </service>
+                <service id="util.server.diagnostic_reporter" class="psm\Util\Server\DiagnosticReporter">
+                        <argument type="service" id="db" />
+                        <argument type="service" id="twig" />
+                </service>
                 <!--UTIL end-->
         </services>
 </container>
