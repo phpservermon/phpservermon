@@ -192,6 +192,7 @@ class StatusNotifier
             'type',
             'error',
             'last_error',
+            'last_error_output',
             'email',
             'sms',
             'discord',
@@ -210,7 +211,10 @@ class StatusNotifier
         $this->server['protocol_label'] = $this->formatProtocolLabel($this->server);
         $this->server['monitor_url'] = PSM_BASE_URL . '/public.php';
         $summary_source = $status_new ? $this->server['last_error'] : $this->server['error'];
-        $this->server['summary'] = $this->buildErrorSummary($summary_source);
+        $this->server['summary'] = $this->buildErrorSummary(
+            $summary_source,
+            isset($this->server['last_error_output']) ? $this->server['last_error_output'] : null
+        );
 
         $notify = false;
 
@@ -409,19 +413,33 @@ class StatusNotifier
      * Build a summary message based on an HTTP status/error code.
      *
      * @param string|null $error
+     * @param string|null $errorOutput
      * @return string
      */
-    protected function buildErrorSummary($error)
+    protected function buildErrorSummary($error, $errorOutput = null)
     {
-        if (!is_string($error) || trim($error) === '') {
-            return '';
+        $code = null;
+
+        if (is_string($error) && trim($error) !== '' && preg_match('/\b(\d{3})\b/', $error, $matches)) {
+            $code = (int) $matches[1];
         }
 
-        if (!preg_match('/\b(\d{3})\b/', $error, $matches)) {
-            return '';
+        if ($code === null && is_string($errorOutput) && trim($errorOutput) !== '') {
+            $codeMatches = array();
+            preg_match_all(
+                "/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/",
+                $errorOutput,
+                $codeMatches
+            );
+            if (!empty($codeMatches[2])) {
+                $lastIndex = count($codeMatches[2]) - 1;
+                $code = (int) $codeMatches[2][$lastIndex];
+            }
         }
 
-        $code = (int) $matches[1];
+        if ($code === null) {
+            return '';
+        }
         $summaries = array(
             400 => array(
                 'title' => '400 Bad Request',
