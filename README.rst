@@ -10,15 +10,15 @@ PHP Server Monitor
    :target: https://discord.gg/Rv7nRP4HVq
 
 Version
-5.0.0
+5.1.0
 
-What's new in v5.0.0
+What's new in v5.1.0
 --------------------
 
-* Weekly diagnostic reports now default to a week-long view with clearer range labels and matching email subjects.
-* Automatic performance summaries are scheduled for Fridays at 15:00 to land alongside weekly reviews.
-* Incident notification emails feature clearer down/recovery subjects, improved spacing before public URLs, and refreshed copy
-  for readability.
+* Status and server detail pages load faster thanks to streamlined uptime lookups and cached performance stats.
+* Web cron responses are flushed earlier to keep the UI responsive while checks complete.
+* Weekday diagnostic reports now run automatically at 9am with updated incident summaries.
+* Added a monitoring checklist to help teams plan server coverage.
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,

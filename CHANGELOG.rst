@@ -2,6 +2,15 @@ Changelog
 =========
 
 
+v5.1.0 (released December 19, 2025)
+----------------------------------
+
+* Improved status and server detail load times by streamlining uptime lookups and caching performance stats.
+* Flushed web cron responses earlier to avoid blocking UI navigation while checks finish.
+* Scheduled weekday diagnostic reports for 9:00 and refreshed incident summary messaging.
+* Added a monitoring checklist to help plan server coverage.
+* See https://github.com/phpservermon/phpservermon/compare/v5.0.0...v5.1.0
+
 v5.0.0 (released December 6, 2025)
 ----------------------------------
 

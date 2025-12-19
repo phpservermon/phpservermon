@@ -15,6 +15,7 @@ Contents:
    requirements
    install
    monitoring-checklist
+   release-notes-5.1.0
    faq
    developers
    credits
@@ -29,4 +30,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
