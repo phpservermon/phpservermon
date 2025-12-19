@@ -388,8 +388,8 @@ class UserController extends AbstractController
                 $this->db->delete(PSM_DB_PREFIX . 'users_servers', array('user_id' => $id));
 
                 $this->container->get('event')->dispatch(
-                    \psm\Module\User\UserEvents::USER_DELETE,
-                    new \psm\Module\User\Event\UserEvent($id, $this->getUser()->getUserId())
+                    new \psm\Module\User\Event\UserEvent($id, $this->getUser()->getUserId()),
+                    \psm\Module\User\UserEvents::USER_DELETE
                 );
 
                 $this->addMessage(psm_get_lang('users', 'deleted'), 'success');
