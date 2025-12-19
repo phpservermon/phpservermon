@@ -207,6 +207,8 @@ class StatusNotifier
         }
 
         $this->server['protocol_label'] = $this->formatProtocolLabel($this->server);
+        $this->server['monitor_url'] = PSM_BASE_URL . '/public.php';
+        $this->server['summary'] = $status_new ? '' : $this->buildErrorSummary($this->server['error']);
 
         $notify = false;
 
@@ -402,6 +404,221 @@ class StatusNotifier
     }
 
     /**
+     * Build a summary message based on an HTTP status/error code.
+     *
+     * @param string|null $error
+     * @return string
+     */
+    protected function buildErrorSummary($error)
+    {
+        if (!is_string($error) || trim($error) === '') {
+            return '';
+        }
+
+        if (!preg_match('/\b(\d{3})\b/', $error, $matches)) {
+            return '';
+        }
+
+        $code = (int) $matches[1];
+        $summaries = array(
+            400 => array(
+                'impact' => 'Request rejected because it was malformed or invalid.',
+                'notes' => 'Often caused by invalid syntax, headers, query parameters, or payload formatting.',
+            ),
+            401 => array(
+                'impact' => 'Request blocked because authentication is missing or invalid.',
+                'notes' => 'Check auth headers/tokens, expiry, and the authentication method required by the service.',
+            ),
+            402 => array(
+                'impact' => 'Request denied due to account/billing requirement.',
+                'notes' => 'Typically used by APIs/SaaS for quota/billing enforcement.',
+            ),
+            403 => array(
+                'impact' => 'Request understood but refused due to insufficient permissions.',
+                'notes' => 'Check access policy, ACLs, IP allowlists, WAF rules, and required roles/scopes.',
+            ),
+            404 => array(
+                'impact' => 'Requested resource does not exist at the given path/URL.',
+                'notes' => 'Verify path, routing, base URL, and whether the resource was removed or never deployed.',
+            ),
+            405 => array(
+                'impact' => 'Endpoint exists, but HTTP method (GET/POST/PUT/…) is not permitted.',
+                'notes' => 'Confirm allowed methods and client behavior (e.g., POST vs GET).',
+            ),
+            406 => array(
+                'impact' => 'Server can’t produce a response matching the client’s Accept headers.',
+                'notes' => 'Check Accept / content negotiation settings (e.g., JSON vs XML).',
+            ),
+            407 => array(
+                'impact' => 'Proxy refused the request because proxy authentication is required.',
+                'notes' => 'Usually indicates corporate proxy settings or missing proxy credentials.',
+            ),
+            408 => array(
+                'impact' => 'Request timed out before completion.',
+                'notes' => 'Often due to slow network/client, overloaded server, or aggressive timeout settings.',
+            ),
+            409 => array(
+                'impact' => 'Request conflicts with current server state.',
+                'notes' => 'Common with versioning/ETags, duplicate resources, or concurrent updates.',
+            ),
+            410 => array(
+                'impact' => 'Resource previously existed but has been permanently removed.',
+                'notes' => 'Update references; unlike 404, removal is intentional/permanent.',
+            ),
+            411 => array(
+                'impact' => 'Server requires Content-Length but it wasn’t provided.',
+                'notes' => 'Ensure client sets Content-Length or uses chunked transfer correctly.',
+            ),
+            412 => array(
+                'impact' => 'Preconditions (e.g., If-Match/If-Unmodified-Since) were not met.',
+                'notes' => 'Common with optimistic locking; refresh ETag/version and retry.',
+            ),
+            413 => array(
+                'impact' => 'Request body exceeded server limits.',
+                'notes' => 'Increase limits (proxy/app) or reduce payload (compress/split/upload differently).',
+            ),
+            414 => array(
+                'impact' => 'URL length exceeded server limits.',
+                'notes' => 'Move large query data into body (POST) or shorten parameters.',
+            ),
+            415 => array(
+                'impact' => 'Server rejected request due to unsupported Content-Type.',
+                'notes' => 'Set correct Content-Type (e.g., application/json) and encoding.',
+            ),
+            416 => array(
+                'impact' => 'Invalid byte-range requested for resource.',
+                'notes' => 'Client range request doesn’t match resource size/availability.',
+            ),
+            418 => array(
+                'impact' => 'Request intentionally refused by server logic.',
+                'notes' => 'Usually custom behavior; check service docs or routing rules.',
+            ),
+            421 => array(
+                'impact' => 'Request routed to the wrong server/virtual host.',
+                'notes' => 'Common with TLS/SNI or reverse-proxy routing misconfiguration.',
+            ),
+            422 => array(
+                'impact' => 'Request is syntactically valid but fails semantic validation.',
+                'notes' => 'Check required fields, formats, and business validation rules.',
+            ),
+            423 => array(
+                'impact' => 'Resource is locked and cannot be modified.',
+                'notes' => 'Often WebDAV or application-level locking.',
+            ),
+            424 => array(
+                'impact' => 'Request failed because a dependent operation/service failed.',
+                'notes' => 'Identify upstream dependency failures.',
+            ),
+            425 => array(
+                'impact' => 'Server refused to process due to replay risk (early data).',
+                'notes' => 'Seen with TLS early data; client/server config may need adjustment.',
+            ),
+            426 => array(
+                'impact' => 'Server requires protocol upgrade (e.g., to HTTPS or newer HTTP version).',
+                'notes' => 'Update client to required protocol / TLS settings.',
+            ),
+            428 => array(
+                'impact' => 'Server requires conditional request (e.g., If-Match) to prevent lost updates.',
+                'notes' => 'Fetch current ETag/version and retry with preconditions.',
+            ),
+            429 => array(
+                'impact' => 'Rate limit triggered; requests temporarily blocked.',
+                'notes' => 'Apply backoff/retry-after, reduce request rate, or increase quota.',
+            ),
+            431 => array(
+                'impact' => 'Request headers exceeded size limits.',
+                'notes' => 'Reduce cookies/headers, trim auth tokens, or raise proxy limits.',
+            ),
+            451 => array(
+                'impact' => 'Content blocked due to legal restrictions.',
+                'notes' => 'Often geo/legal policy; verify compliance and distribution rules.',
+            ),
+            500 => array(
+                'impact' => 'Server encountered an unexpected error and could not complete request.',
+                'notes' => 'Check application logs, unhandled exceptions, and recent deployments.',
+            ),
+            501 => array(
+                'impact' => 'Server does not support the requested method/feature.',
+                'notes' => 'Endpoint may be incomplete or disabled; verify service capabilities.',
+            ),
+            502 => array(
+                'impact' => 'Gateway/proxy received an invalid response from upstream server.',
+                'notes' => 'Often upstream crash, misrouting, TLS issues, or bad upstream response formatting.',
+            ),
+            503 => array(
+                'impact' => 'Service temporarily unavailable (overloaded, down, or in maintenance).',
+                'notes' => 'Check health checks, capacity, autoscaling, maintenance windows.',
+            ),
+            504 => array(
+                'impact' => 'Gateway/proxy timed out waiting for upstream server response.',
+                'notes' => 'Upstream slow/hung, network issues, or timeout too low at proxy/load balancer.',
+            ),
+            505 => array(
+                'impact' => 'Server doesn’t support the HTTP protocol version used by client.',
+                'notes' => 'Adjust client/proxy to supported HTTP version.',
+            ),
+            507 => array(
+                'impact' => 'Server cannot store representation needed to complete request.',
+                'notes' => 'Disk full, quota exceeded, or storage backend issues.',
+            ),
+            508 => array(
+                'impact' => 'Server detected an infinite loop while processing request.',
+                'notes' => 'Often misconfigured rewrite/proxy rules or recursive dependencies.',
+            ),
+            510 => array(
+                'impact' => 'Server requires additional extensions to fulfill request.',
+                'notes' => 'Rare; usually indicates nonstandard/legacy extension requirements.',
+            ),
+            511 => array(
+                'impact' => 'Access blocked until network authentication is completed.',
+                'notes' => 'Common in captive portals / network-level access control.',
+            ),
+            520 => array(
+                'impact' => 'Edge/CDN received an unexpected/unknown response from origin.',
+                'notes' => 'Often origin returned something invalid or connection was reset; check origin logs and edge/origin connectivity.',
+            ),
+            521 => array(
+                'impact' => 'Edge/CDN could not connect to origin because origin refused connections.',
+                'notes' => 'Origin may be down, firewall blocking, or origin not listening on required port.',
+            ),
+            522 => array(
+                'impact' => 'Edge/CDN could connect to origin but timed out waiting for response.',
+                'notes' => 'Origin overloaded/slow, routing issues, or timeouts too strict.',
+            ),
+            523 => array(
+                'impact' => 'Client could not establish a successful connection to the origin behind the endpoint.',
+                'notes' => 'Commonly indicates edge/CDN cannot reach origin (origin down, routing/firewall restrictions, DNS/origin IP mismatch, blocked edge IP ranges).',
+            ),
+            524 => array(
+                'impact' => 'Edge/CDN connected to origin, but origin did not respond in time.',
+                'notes' => 'Long-running requests, overloaded origin, or insufficient upstream timeouts.',
+            ),
+            525 => array(
+                'impact' => 'Edge/CDN failed to complete TLS handshake with origin.',
+                'notes' => 'Origin TLS misconfig, incompatible ciphers, missing intermediates, or SNI/cert issues.',
+            ),
+            526 => array(
+                'impact' => 'Edge/CDN rejected origin TLS certificate as invalid.',
+                'notes' => 'Expired/self-signed/wrong hostname/untrusted chain; fix origin certificate/chain.',
+            ),
+            527 => array(
+                'impact' => 'Edge feature failed communicating with origin acceleration component.',
+                'notes' => 'Feature misconfig/outage; bypass/disable feature or check related services.',
+            ),
+            530 => array(
+                'impact' => 'Request blocked by edge/service policy or configuration.',
+                'notes' => 'Often WAF/rules/billing/feature gating; check provider dashboard/logs.',
+            ),
+        );
+
+        if (!isset($summaries[$code])) {
+            return '';
+        }
+
+        return 'Impact: ' . $summaries[$code]['impact'] . ' Notes: ' . $summaries[$code]['notes'];
+    }
+
+    /**
      * This functions returns the message for a combined notification
      *
      * @param string $method Notification method
@@ -462,7 +679,7 @@ class StatusNotifier
             $combi['message'] :
             psm_parse_msg($this->status_new, 'email_body', $this->server);
         if ((bool)psm_get_conf('email_add_url')) {
-            $body .= '<br><br><a href="' . $publicUrl . '">' . $publicUrl . '</a>';
+            $body .= '<br><br>Monitored URL: <a href="' . $publicUrl . '">' . $publicUrl . '</a>';
         }
         $mail->Body = $body;
         $mail->AltBody = str_replace(array('<br/>', '<br>', '<br />'), "\n", $body);
