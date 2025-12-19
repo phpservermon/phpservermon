@@ -68,6 +68,26 @@ class HistoryGraph
      */
     public function getPerformanceStatistics($server_id, DateTime $start_time, DateTime $end_time)
     {
+        $cache_ttl = defined('PSM_PERFORMANCE_STATS_CACHE_TTL') ? (int) PSM_PERFORMANCE_STATS_CACHE_TTL : 0;
+        $cache_key = 'performance_stats_' . (int) $server_id;
+        $cache_time_key = $cache_key . '_time';
+
+        if ($cache_ttl > 0) {
+            $cache_time = (int) psm_get_conf($cache_time_key, 0);
+            if ($cache_time > 0 && (time() - $cache_time) < $cache_ttl) {
+                $cached = psm_get_conf($cache_key);
+                if (!empty($cached)) {
+                    $cached_stats = json_decode($cached, true);
+                    if (is_array($cached_stats)) {
+                        if (array_key_exists('empty', $cached_stats)) {
+                            return null;
+                        }
+                        return $cached_stats;
+                    }
+                }
+            }
+        }
+
         $uptime_records = $this->getRecords('uptime', $server_id, $start_time, $end_time);
         $history_records = null;
 
@@ -75,13 +95,24 @@ class HistoryGraph
         $latency = $this->calculateLatencyStats($server_id, $start_time, $end_time, $uptime_records, $history_records);
 
         if ($uptime === null && $latency === null) {
+            if ($cache_ttl > 0) {
+                psm_update_conf($cache_key, json_encode(array('empty' => true)));
+                psm_update_conf($cache_time_key, time());
+            }
             return null;
         }
 
-        return array(
+        $stats = array(
             'uptime' => $uptime,
             'latency' => $latency,
         );
+
+        if ($cache_ttl > 0) {
+            psm_update_conf($cache_key, json_encode($stats));
+            psm_update_conf($cache_time_key, time());
+        }
+
+        return $stats;
     }
 
     /**

@@ -147,3 +147,8 @@ if (defined('PSM_JABBER_DEBUG_LEVEL') === false) {
     // possible values: ERROR, WARNING, NOTICE, INFO, DEBUG
     define('PSM_JABBER_DEBUG_LEVEL', JAXLLogger::WARNING);
 }
+
+if (defined('PSM_PERFORMANCE_STATS_CACHE_TTL') === false) {
+    // Cache uptime/latency statistics (seconds) to speed up status page rendering.
+    define('PSM_PERFORMANCE_STATS_CACHE_TTL', 60);
+}
