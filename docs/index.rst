@@ -14,6 +14,7 @@ Contents:
    intro
    requirements
    install
+   monitoring-checklist
    faq
    developers
    credits
