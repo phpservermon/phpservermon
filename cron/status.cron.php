@@ -115,6 +115,14 @@ namespace {
             $_SERVER['HTTP_X_FORWARDED_FOR']
         ));
         echo "OK";
+        if (function_exists('fastcgi_finish_request')) {
+            if (function_exists('session_write_close')) {
+                @session_write_close();
+            }
+            fastcgi_finish_request();
+        } else {
+            @flush();
+        }
     }
 
     $cron_timeout = PSM_CRON_TIMEOUT;
