@@ -432,7 +432,11 @@ class StatusNotifier
             ),
             403 => array(
                 'title' => '403 Forbidden',
-                'summary' => 'The server understood the request but refused to authorize it. This typically indicates the authenticated identity lacks permissions, or access is blocked by policy (ACL, RBAC, IP allowlist, WAF rule). It can also occur if the resource is restricted by tenant/org rules or geographic/network constraints. Validate user/service account roles and any applicable allow/deny rules at the application, gateway, and firewall layers. Logs from the WAF/API gateway are often the fastest way to pinpoint the exact policy that blocked the request.',
+                'summary' => 'The edge/CDN could not reach the origin server on 443/TCP, so the client request could not be completed. This commonly indicates origin downtime, routing problems, or access restrictions preventing the edge from connecting to the origin over HTTPS. It can also be caused by a DNS/origin IP mismatch or the origin being moved without updating CDN configuration. Confirm the origin is up, reachable on port 443, and that inbound connections from the CDN/edge IP ranges are allowed at the firewall/ACL level. Review CDN logs and origin firewall rules to pinpoint whether the failure occurs during connect, routing, or policy enforcement.',
+            ),
+            443 => array(
+                'title' => '443 HTTPS Connection Failed',
+                'summary' => 'The edge/CDN could not reach the origin server on 443/TCP, so the client request could not be completed. This commonly indicates origin downtime, routing problems, or access restrictions preventing the edge from connecting to the origin over HTTPS. It can also be caused by a DNS/origin IP mismatch or the origin being moved without updating CDN configuration. Confirm the origin is up, reachable on port 443, and that inbound connections from the CDN/edge IP ranges are allowed at the firewall/ACL level. Review CDN logs and origin firewall rules to pinpoint whether the failure occurs during connect, routing, or policy enforcement.',
             ),
             404 => array(
                 'title' => '404 Not Found',
