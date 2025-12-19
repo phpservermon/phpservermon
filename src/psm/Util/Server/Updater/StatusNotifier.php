@@ -215,6 +215,9 @@ class StatusNotifier
             $summary_source,
             isset($this->server['last_error_output']) ? $this->server['last_error_output'] : null
         );
+        if (empty($this->server['summary'])) {
+            $this->server['summary'] = $this->server['protocol_label'] . '/' . $this->server['port'];
+        }
 
         $notify = false;
 
@@ -418,28 +421,6 @@ class StatusNotifier
      */
     protected function buildErrorSummary($error, $errorOutput = null)
     {
-        $code = null;
-
-        if (is_string($error) && trim($error) !== '' && preg_match('/\b(\d{3})\b/', $error, $matches)) {
-            $code = (int) $matches[1];
-        }
-
-        if ($code === null && is_string($errorOutput) && trim($errorOutput) !== '') {
-            $codeMatches = array();
-            preg_match_all(
-                "/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/",
-                $errorOutput,
-                $codeMatches
-            );
-            if (!empty($codeMatches[2])) {
-                $lastIndex = count($codeMatches[2]) - 1;
-                $code = (int) $codeMatches[2][$lastIndex];
-            }
-        }
-
-        if ($code === null) {
-            return '';
-        }
         $summaries = array(
             400 => array(
                 'title' => '400 Bad Request',
@@ -558,6 +539,35 @@ class StatusNotifier
                 'summary' => 'The edge/CDN rejected the origin’s TLS certificate as invalid. Common causes include expired certificates, hostname mismatch, self-signed certificates, or an incomplete/untrusted certificate chain. This prevents secure communication between the edge and origin, so requests fail even if the origin is otherwise reachable. Check the origin certificate validity dates, SAN/hostname coverage, and full chain (including intermediates). Replace or fix the certificate chain, then re-test connectivity through the CDN.',
             ),
         );
+
+        $code = null;
+
+        if (is_string($error) && trim($error) !== '' && preg_match('/\b(\d{3})\b/', $error, $matches)) {
+            $matchedCode = (int) $matches[1];
+            if (isset($summaries[$matchedCode])) {
+                $code = $matchedCode;
+            }
+        }
+
+        if ($code === null && is_string($errorOutput) && trim($errorOutput) !== '') {
+            $codeMatches = array();
+            preg_match_all(
+                "/[A-Z]{2,5}\/\d(\.\d)?\s(\d{3})\s?(.*)/",
+                $errorOutput,
+                $codeMatches
+            );
+            if (!empty($codeMatches[2])) {
+                $lastIndex = count($codeMatches[2]) - 1;
+                $matchedCode = (int) $codeMatches[2][$lastIndex];
+                if (isset($summaries[$matchedCode])) {
+                    $code = $matchedCode;
+                }
+            }
+        }
+
+        if ($code === null) {
+            return '';
+        }
 
         if (!isset($summaries[$code])) {
             return '';
