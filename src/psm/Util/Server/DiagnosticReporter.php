@@ -63,7 +63,7 @@ class DiagnosticReporter
         }
 
         $now = new DateTime();
-        if (!$this->isWeekday($now)) {
+        if (!$this->isFriday($now)) {
             return false;
         }
 
@@ -126,25 +126,25 @@ class DiagnosticReporter
     }
 
     /**
-     * Check if today is Monday through Friday.
+     * Check if today is Friday.
      *
      * @param DateTime $now
      * @return bool
      */
-    protected function isWeekday(DateTime $now)
+    protected function isFriday(DateTime $now)
     {
-        return (int) $now->format('N') <= 5;
+        return (int) $now->format('N') === 5;
     }
 
     /**
-     * Check if the current time is within the 09:00-09:59 window.
+     * Check if the current time is within the 13:00-13:59 window.
      *
      * @param DateTime $now
      * @return bool
      */
     protected function isWithinDispatchWindow(DateTime $now)
     {
-        $windowStart = (clone $now)->setTime(9, 0, 0);
+        $windowStart = (clone $now)->setTime(13, 0, 0);
         $windowEnd = (clone $windowStart)->modify('+1 hour');
 
         return $now >= $windowStart && $now < $windowEnd;

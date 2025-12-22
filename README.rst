@@ -17,7 +17,7 @@ What's new in v5.1.0
 
 * Status and server detail pages load faster thanks to streamlined uptime lookups and cached performance stats.
 * Web cron responses are flushed earlier to keep the UI responsive while checks complete.
-* Weekday diagnostic reports now run automatically at 9am with updated incident summaries.
+* Diagnostic reports now run automatically every Friday at 1pm with updated incident summaries.
 * Added a monitoring checklist to help teams plan server coverage.
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
