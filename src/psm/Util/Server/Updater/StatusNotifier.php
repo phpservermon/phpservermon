@@ -215,7 +215,11 @@ class StatusNotifier
             $summary_source,
             isset($this->server['last_error_output']) ? $this->server['last_error_output'] : null
         );
-        if (empty($this->server['summary'])) {
+        $is_pattern_text_error = $this->isPatternTextError($summary_source);
+        if ($is_pattern_text_error) {
+            $this->server['summary'] = '';
+        }
+        if (empty($this->server['summary']) && !$is_pattern_text_error) {
             $this->server['summary'] = $this->server['protocol_label'] . '/' . $this->server['port'];
         }
 
@@ -581,6 +585,36 @@ class StatusNotifier
     }
 
     /**
+     * Detect pattern text errors where no HTTP status code exists.
+     *
+     * @param string|null $error
+     * @return bool
+     */
+    protected function isPatternTextError($error)
+    {
+        if (!is_string($error) || trim($error) === '') {
+            return false;
+        }
+
+        if (strpos($error, 'TEXT ERROR : Pattern') !== 0) {
+            return false;
+        }
+
+        return strpos($error, 'not found') !== false;
+    }
+
+    /**
+     * Remove the summary line from notification bodies.
+     *
+     * @param string $message
+     * @return string
+     */
+    protected function stripSummaryLine($message)
+    {
+        return preg_replace('/<br>\\s*Summary:\\s*/i', '', $message);
+    }
+
+    /**
      * This functions returns the message for a combined notification
      *
      * @param string $method Notification method
@@ -638,6 +672,9 @@ class StatusNotifier
         $body = key_exists('message', $combi) ?
             $combi['message'] :
             psm_parse_msg($this->status_new, 'email_body', $this->server);
+        if (empty($this->server['summary'])) {
+            $body = $this->stripSummaryLine($body);
+        }
         $mail->Body = $body;
         $mail->AltBody = str_replace(array('<br/>', '<br>', '<br />'), "\n", $body);
 
