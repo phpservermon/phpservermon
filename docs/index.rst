@@ -15,6 +15,7 @@ Contents:
    requirements
    install
    monitoring-checklist
+   release-notes-6.0.0
    release-notes-5.1.0
    faq
    developers

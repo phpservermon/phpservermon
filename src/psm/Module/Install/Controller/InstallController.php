@@ -74,24 +74,12 @@ class InstallController extends AbstractController
         $errors = 0;
 
         $phpv = phpversion();
-        if (
-            version_compare($phpv, '5.5.9', '<') ||
-            (version_compare($phpv, '7.0.8', '<') && version_compare($phpv, '7.0.0', '>='))
-        ) {
+        if (version_compare($phpv, '8.5.0', '<')) {
             $errors++;
-            $this->addMessage('PHP 5.5.9+ or 7.0.8+ is required to run PHP Server Monitor. You\'re using ' .
+            $this->addMessage('PHP 8.5+ is required to run PHP Server Monitor. You\'re using ' .
                 $phpv . '.', 'error');
         } else {
             $this->addMessage('PHP version: ' . $phpv, 'success');
-        }
-        if (version_compare(PHP_MAJOR_VERSION, '7', '<')) {
-            $this->addMessage(
-                'PHP 5 reaches the end of life (January 1, 2019), please update to PHP 7.
-                 PHP supported versions can be found
-                 <a href="https://secure.php.net/supported-versions.php" target="_blank"
-                 rel="noopener">here</a>.',
-                'warning'
-            );
         }
         if (!function_exists('curl_init')) {
             $this->addMessage('PHP is installed without the cURL module. Please install cURL.', 'warning');
