@@ -2,6 +2,13 @@ Changelog
 =========
 
 
+v6.0.0 (released January 15, 2026)
+----------------------------------
+
+* Raised the minimum supported PHP version to 8.5 and updated install checks accordingly.
+* Updated documentation and Composer metadata to reflect the PHP 8.5 baseline.
+* See https://github.com/phpservermon/phpservermon/compare/v5.1.0...v6.0.0
+
 v5.1.0 (released December 19, 2025)
 ----------------------------------
 

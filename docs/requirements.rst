@@ -5,7 +5,7 @@ Requirements
 
 * Web server
 * MySQL database
-* PHP 8.1+
+* PHP 8.5+
 * PHP cURL package
 * PHP PDO mysql driver
 * PHP XML package

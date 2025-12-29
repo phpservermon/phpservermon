@@ -3,7 +3,7 @@
 The Docker assets were removed, but you can run a full local stack with the same pieces (PHP + MariaDB) using the host tools below.
 
 ## Prerequisites
-- PHP 8.1+ with `pdo_mysql`, `curl`, `json`, `mbstring`, `openssl`, `xml` extensions
+- PHP 8.5+ with `pdo_mysql`, `curl`, `json`, `mbstring`, `openssl`, `xml` extensions
 - MariaDB/MySQL running locally
 - Composer (or allow the bootstrap script to download `composer.phar`)
 - Node is **not** required
