@@ -13,7 +13,7 @@
 		"symfony/config": "6.4",
 		"symfony/dependency-injection": "6.4",
 		"symfony/event-dispatcher": "6.4",
-		"symfony/http-foundation": "6.4.16",
+		"symfony/http-foundation": "6.4.29",
 		"symfony/filesystem": "6.4",
 		"symfony/deprecation-contracts": "^2.5",
 		"symfony/event-dispatcher-contracts": "^2.5",
