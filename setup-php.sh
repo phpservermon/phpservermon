@@ -6,5 +6,5 @@ if [ -d "$DIR" ]; then
   echo "vendor dir found, nothing to do..."
 else
   echo "vendor dir not found, installing dependencies..."
-  cd /vagrant/ && php composer.phar install
+  cd /vagrant/ && ./bin/psm-composer install
 fi
