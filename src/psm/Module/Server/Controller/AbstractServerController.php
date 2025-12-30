@@ -101,7 +101,7 @@ abstract class AbstractServerController extends AbstractController
 				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				{$sql_where}
-				ORDER BY `active` ASC, `status` DESC, `label` ASC";
+				ORDER BY `active` ASC, CASE WHEN `status` = 'off' THEN 1 ELSE 0 END ASC, `status` DESC, `label` ASC";
         $servers = $this->db->query($sql);
 
         if ($server_id !== null && count($servers) == 1) {

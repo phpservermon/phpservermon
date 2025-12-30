@@ -598,7 +598,7 @@ body.app-shell {
 }
 
 .status-overview-board .metric-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(234, 242, 252, 0.95);
     border: 1px solid var(--psm-border);
     box-shadow: none;
     color: var(--psm-text);
@@ -608,8 +608,19 @@ body.app-shell {
     color: var(--psm-muted);
 }
 
-.server-status-board {
+.server-status-board,
+.status-table-board,
+.server-list-board {
     padding: 2rem;
+    background: linear-gradient(140deg, rgba(211, 226, 246, 0.98), rgba(188, 207, 237, 0.95));
+    border-color: rgba(120, 149, 190, 0.35);
+}
+
+.server-status-board::before,
+.status-table-board::before,
+.server-list-board::before {
+    background-image: none;
+    opacity: 0;
 }
 
 .server-status-grid {
@@ -626,7 +637,7 @@ body.app-shell {
     border-radius: 18px;
     text-decoration: none;
     color: var(--psm-text);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(232, 241, 252, 0.95);
     border: 1px solid var(--psm-border);
     box-shadow: inset 0 0 0 1px rgba(47, 125, 246, 0.08);
     transition: transform 160ms ease, box-shadow 160ms ease, border 160ms ease;
@@ -717,7 +728,7 @@ body.app-shell {
 .server-list-board .table-responsive {
     border-radius: 16px;
     border: 1px solid var(--psm-border);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(228, 238, 251, 0.95);
     overflow: hidden;
 }
 
@@ -725,6 +736,7 @@ body.app-shell {
 .server-table {
     --bs-table-bg: transparent;
     color: var(--psm-text);
+    border: 0;
     border-color: transparent;
     border-collapse: collapse;
 }
@@ -732,13 +744,23 @@ body.app-shell {
 .server-status-table thead,
 .server-table thead {
     background: rgba(226, 240, 255, 0.92);
-    border-bottom: 1px solid var(--psm-border);
+    border: 0;
+    border-bottom: 0;
 }
 
 .server-status-table th,
 .server-status-table td {
+    border: 0;
     border-color: transparent;
     vertical-align: top;
+}
+
+.server-status-table thead th,
+.server-status-table thead td,
+.server-table thead th,
+.server-table thead td {
+    border: 0;
+    box-shadow: none;
 }
 
 .server-table-modern th,
@@ -877,8 +899,14 @@ body.app-shell {
 
 .server-table th,
 .server-table td {
+    border: 0;
     border-color: transparent;
     vertical-align: middle;
+}
+
+.server-status-table tr,
+.server-table tr {
+    border: 0;
 }
 
 .server-status-table tbody tr + tr,
@@ -925,7 +953,7 @@ body.app-shell {
 }
 
 .server-list-board .searchbar {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(226, 236, 250, 0.92);
     border: 1px solid var(--psm-border);
     border-radius: 999px;
     padding: 0.4rem 0.75rem;
