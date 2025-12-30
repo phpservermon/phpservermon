@@ -806,7 +806,7 @@ body.app-shell {
 
 .server-table-modern .server-sub {
     font-size: 0.85rem;
-    color: rgba(226, 232, 240, 0.7);
+    color: var(--psm-muted);
 }
 
 .server-table-modern .server-title a,
@@ -824,7 +824,7 @@ body.app-shell {
     display: grid;
     gap: 0.4rem;
     font-size: 0.85rem;
-    color: rgba(226, 232, 240, 0.75);
+    color: var(--psm-muted);
 }
 
 .server-meta .meta-item {
