@@ -597,10 +597,15 @@ body.app-shell {
     padding: 1.25rem 1.5rem;
 }
 
+.status-overview-board::before {
+    background-image: none;
+    opacity: 0;
+}
+
 .status-overview-board .metric-card {
     background: rgba(234, 242, 252, 0.95);
     border: 1px solid var(--psm-border);
-    box-shadow: none;
+    box-shadow: 0 8px 18px rgba(59, 130, 246, 0.12);
     color: var(--psm-text);
 }
 
