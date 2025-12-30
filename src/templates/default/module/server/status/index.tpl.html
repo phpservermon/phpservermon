@@ -73,58 +73,6 @@
         <div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
                 <div class="hardware-board server-status-board">
                         <div class="server-status-grid">
-                        {% for server in servers_offline %}
-                                <a class="server-status-card is-offline" href="{{ server.url_view|raw }}">
-                                        <div class="status-card-header">
-                                                <div class="status-chip">
-                                                        <span class="status-dot"></span>
-                                                        <span>{{ label_offline }}</span>
-                                                </div>
-                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
-                                        </div>
-                                        <div class="status-card-title">{{ server.label }}</div>
-                                        <div class="status-card-meta">
-                                                <div class="meta-row">
-                                                        <span>{{ label_uptime }}</span>
-                                                        <span>{{ server.uptime_display }}</span>
-                                                </div>
-                                                <div class="meta-row">
-                                                        <span>{{ label_last_online }}</span>
-                                                        <span>{{ server.last_online_nice }}</span>
-                                                </div>
-                                                <div class="meta-row">
-                                                        <span>{{ label_last_check }}</span>
-                                                        <span>{{ server.last_checked_nice }}</span>
-                                                </div>
-                                        </div>
-                                </a>
-                        {% endfor %}
-                        {% for server in servers_warning %}
-                                <a class="server-status-card is-warning" href="{{ server.url_view|raw }}">
-                                        <div class="status-card-header">
-                                                <div class="status-chip">
-                                                        <span class="status-dot"></span>
-                                                        <span>{{ label_warning }}</span>
-                                                </div>
-                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
-                                        </div>
-                                        <div class="status-card-title">{{ server.label }}</div>
-                                        <div class="status-card-meta">
-                                                <div class="meta-row">
-                                                        <span>{{ label_uptime }}</span>
-                                                        <span>{{ server.uptime_display }}</span>
-                                                </div>
-                                                <div class="meta-row">
-                                                        <span>{{ label_last_online }}</span>
-                                                        <span>{{ server.last_online_nice }}</span>
-                                                </div>
-                                                <div class="meta-row">
-                                                        <span>{{ label_last_check }}</span>
-                                                        <span>{{ server.last_checked_nice }}</span>
-                                                </div>
-                                        </div>
-                                </a>
-                        {% endfor %}
                         {% for server in servers_online %}
                                 <a class="server-status-card is-online" href="{{ server.url_view|raw }}">
                                         <div class="status-card-header">
@@ -155,6 +103,58 @@
                                         </div>
                                 </a>
                         {% endfor %}
+                        {% for server in servers_warning %}
+                                <a class="server-status-card is-warning" href="{{ server.url_view|raw }}">
+                                        <div class="status-card-header">
+                                                <div class="status-chip">
+                                                        <span class="status-dot"></span>
+                                                        <span>{{ label_warning }}</span>
+                                                </div>
+                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
+                                        </div>
+                                        <div class="status-card-title">{{ server.label }}</div>
+                                        <div class="status-card-meta">
+                                                <div class="meta-row">
+                                                        <span>{{ label_uptime }}</span>
+                                                        <span>{{ server.uptime_display }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_online }}</span>
+                                                        <span>{{ server.last_online_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_check }}</span>
+                                                        <span>{{ server.last_checked_nice }}</span>
+                                                </div>
+                                        </div>
+                                </a>
+                        {% endfor %}
+                        {% for server in servers_offline %}
+                                <a class="server-status-card is-offline" href="{{ server.url_view|raw }}">
+                                        <div class="status-card-header">
+                                                <div class="status-chip">
+                                                        <span class="status-dot"></span>
+                                                        <span>{{ label_offline }}</span>
+                                                </div>
+                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
+                                        </div>
+                                        <div class="status-card-title">{{ server.label }}</div>
+                                        <div class="status-card-meta">
+                                                <div class="meta-row">
+                                                        <span>{{ label_uptime }}</span>
+                                                        <span>{{ server.uptime_display }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_online }}</span>
+                                                        <span>{{ server.last_online_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_check }}</span>
+                                                        <span>{{ server.last_checked_nice }}</span>
+                                                </div>
+                                        </div>
+                                </a>
+                        {% endfor %}
                         {% if not servers_offline and not servers_warning and not servers_online %}
                                 {{ label_none }}
                                 <div class="w-100"></div>
@@ -177,24 +177,29 @@
                                         </tr>
                                 </thead>
                                 <tbody>
-                                        {% for server in servers_offline %}
-                                                <tr class="server-row is-offline" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                        {% for server in servers_online %}
+                                                <tr class="server-row is-online" onclick="window.location.href='{{ server.url_view|raw }}'">
                                                         <th class="full">
                                                                 <div class="server-cell">
                                                                         <div class="server-title">
                                                                                 <span class="status-pill">
-                                                                                        <i class="fas fa-times-circle"></i>
-                                                                                        <span class="status-text">{{ label_offline }}</span>
+                                                                                        <i class="fas fa-check-circle"></i>
+                                                                                        <span class="status-text">{{ label_online }}</span>
                                                                                 </span>
-                                                                                <a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a>
+                                                                                <a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a>
                                                                         </div>
-                                                                        <div class="server-sub">{{ label_last_online }}: {{ server.last_online_nice }}</div>
+                                                                        <div class="server-sub">{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</div>
                                                                 </div>
                                                         </th>
-                                                        <td><span class="status-badge status-badge-offline">{{ label_offline }}</span></td>
+                                                        <td><span class="status-badge status-badge-online">{{ label_online }}</span></td>
                                                         <td>{{ server.uptime_display }}</td>
-                                                        <td>&mdash;</td>
-                                                        <td>{{ server.last_checked_nice }}</td>
+                                                                <td>
+                                                                        <span class="latency-badge">
+                                                                                <i class="fas fa-wave-square"></i>
+                                                                                {{ (server.rtime * 1000)|round(2) }} ms
+                                                                        </span>
+                                                                </td>
+                                                                <td>{{ server.last_checked_nice }}</td>
                                                 </tr>
                                         {% endfor %}
                                         {% for server in servers_warning %}
@@ -217,28 +222,23 @@
                                                         <td>{{ server.last_checked_nice }}</td>
                                                 </tr>
                                         {% endfor %}
-                                        {% for server in servers_online %}
-                                                <tr class="server-row is-online" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                        {% for server in servers_offline %}
+                                                <tr class="server-row is-offline" onclick="window.location.href='{{ server.url_view|raw }}'">
                                                         <th class="full">
                                                                 <div class="server-cell">
                                                                         <div class="server-title">
                                                                                 <span class="status-pill">
-                                                                                        <i class="fas fa-check-circle"></i>
-                                                                                        <span class="status-text">{{ label_online }}</span>
+                                                                                        <i class="fas fa-times-circle"></i>
+                                                                                        <span class="status-text">{{ label_offline }}</span>
                                                                                 </span>
-                                                                                <a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a>
+                                                                                <a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a>
                                                                         </div>
-                                                                        <div class="server-sub">{{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</div>
+                                                                        <div class="server-sub">{{ label_last_online }}: {{ server.last_online_nice }}</div>
                                                                 </div>
                                                         </th>
-                                                        <td><span class="status-badge status-badge-online">{{ label_online }}</span></td>
+                                                        <td><span class="status-badge status-badge-offline">{{ label_offline }}</span></td>
                                                         <td>{{ server.uptime_display }}</td>
-                                                        <td>
-                                                                <span class="latency-badge">
-                                                                        <i class="fas fa-wave-square"></i>
-                                                                        {{ (server.rtime * 1000)|round(2) }} ms
-                                                                </span>
-                                                        </td>
+                                                        <td>&mdash;</td>
                                                         <td>{{ server.last_checked_nice }}</td>
                                                 </tr>
                                         {% endfor %}
