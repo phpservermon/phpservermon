@@ -643,6 +643,15 @@ body.app-shell {
     transition: transform 160ms ease, box-shadow 160ms ease, border 160ms ease;
 }
 
+.server-status-card .status-card-meta,
+.server-status-card .status-card-meta .meta-row {
+    color: rgba(30, 41, 59, 0.85);
+}
+
+.server-status-card .status-card-meta .meta-row span:last-child {
+    color: rgba(15, 23, 42, 0.95);
+}
+
 .server-status-card:hover,
 .server-status-card:focus {
     transform: translateY(-4px);
