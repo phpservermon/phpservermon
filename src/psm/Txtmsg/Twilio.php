@@ -77,7 +77,6 @@ class Twilio extends Core
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
             $result = curl_exec($ch);
-            curl_close($ch);
 
             // When the result string starts with {"code": there is a problem
             if (strpos($result, "{\"code\":") === 0) {

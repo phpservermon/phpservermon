@@ -86,7 +86,6 @@ class Octopush extends Core
         $result = json_decode(curl_exec($ch), true);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_errno($ch);
-        curl_close($ch);
 
         if ($err != 0 || ($httpcode != 201 && $httpcode != 200)) {
             return $result['code'] . " - " . $result['message'];

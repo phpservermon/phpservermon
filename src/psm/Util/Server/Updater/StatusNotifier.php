@@ -770,7 +770,6 @@ class StatusNotifier
                             curl_strerror($err) . ". \nResult: " . $result;
                         $log_id = psm_add_log($this->server_id, 'discord', $error);
                     }
-                    curl_close($curl);
                 }
             } catch (Exception $e) {
                 $log_id = psm_add_log($this->server_id, 'discord', $e->getMessage());

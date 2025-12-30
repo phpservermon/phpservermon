@@ -91,7 +91,6 @@ class Callr extends Core
                     $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err) .
                         ". Result: " . $result['data']['code'] . " - " . $result['data']['message'];
             }
-            curl_close($curl);
         }
         if ($success) {
             return 1;

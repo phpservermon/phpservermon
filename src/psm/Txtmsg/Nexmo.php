@@ -79,7 +79,6 @@ class Nexmo extends Core
                 $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err) .
                     ". \nResult: " . $result['messages'][0]['error-text'];
             }
-            curl_close($curl);
         }
         
         if ($success) {

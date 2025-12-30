@@ -79,7 +79,6 @@ class Mosms extends Core
                 $success = 0;
                 $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . $err . ". \nResult: " . $result;
             }
-            curl_close($curl);
         }
         
         if ($success) {

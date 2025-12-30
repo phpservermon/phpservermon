@@ -89,7 +89,6 @@ class LabsMobile extends Core
         $result = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $err = curl_error($curl);
-        curl_close($curl); 
         
         //Error code: https://apidocs.labsmobile.com/#results-and-errors
         $jsonresponse=(json_decode($result, true));   
