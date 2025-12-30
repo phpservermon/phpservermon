@@ -2,17 +2,14 @@
 <div class="hardware-board server-list-board">
 	{{ macro.table_search(label_search) }}
 	<div class="table-responsive">
-	<table class="table table-hover server-table">
+	<table class="table table-hover server-table server-table-modern">
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
                 <th scope="col">{{ label_label }}</th>
                 <th scope="col">{{ label_domain }}</th>
-                <th scope="col" style="width: 5%;">{{ label_port }}</th>
-                <th scope="col" style="width: 8%;">{{ label_type }}</th>
-                <th scope="col" style="width: 8%;">{{ label_rtime }} (ms)</th>
-                <th scope="col" style="width: 10%;">{{ label_last_online }}</th>
-                <th scope="col" style="width: 10%;">{{ label_last_offline }}</th>
+                <th scope="col" style="width: 18%;">{{ label_last_check }}</th>
+                <th scope="col" style="width: 12%;">{{ label_rtime }}</th>
                 <th scope="col" style="width: 10%;">{{ label_monitoring }}</th>
                 {% if user_level == 10 %}
                 <th scope="col" style="width: 5%;">&#32</th>
@@ -26,8 +23,9 @@
 			{% for server in servers %}
 			<tr class="server-row {% if server.status|lower == 'on' %}is-online{% elseif server.status|lower == 'warning' %}is-warning{% elseif server.status|lower == 'off' %}is-offline{% endif %}">
 				<th scope="row">
-					<div class="content">
-						<span class="status-pill">
+					<div class="server-cell">
+						<div class="server-title">
+							<span class="status-pill">
 							{% if server.status|lower == 'on' %}
 							<i class="fas fa-check-circle" title="{{ server.status }}"></i>
 							{% elseif server.status|lower == 'warning' %}
@@ -36,25 +34,50 @@
 							<i class="fas fa-times-circle" title="{{ server.status }}"></i>
 							{% endif %}
 							<span class="status-text">{{ server.status }}</span>
-						</span>
-						<a href="{{ server.url_view|raw }}" title="{{ label_view }}">
-							{{ server.label }}
-						</a>
+							</span>
+							<a href="{{ server.url_view|raw }}" title="{{ label_view }}">
+								{{ server.label }}
+							</a>
+						</div>
+						<div class="server-sub">{{ server.type }}</div>
 					</div>
 				</th>
-				<td><div class="content">{{ server.ip|raw }}</div></td>
-                            <td>
-                                {{ server.port }}
-                                {% if server.port and server.protocol_label %}
-                                        <div class="small text-muted">{{ server.protocol_label }}</div>
-                                {% endif %}
-                            </td>
-				<td>{{ server.type }}</td>
-				<td>{{ (server.rtime * 1000)|round(2) }}</td>
-				<td><div class="content">{{ server.last_online }}</div></td>
-				<td><div class="content">{{ server.last_offline }}</div></td>
 				<td>
-					{% if server.active|lower == 'yes'%} 
+					<div class="server-meta">
+						<div class="meta-item">
+							<span class="meta-label">{{ label_domain }}</span>
+							<span class="meta-value">{{ server.ip|raw }}</span>
+						</div>
+						<div class="meta-item">
+							<span class="meta-label">{{ label_port }}</span>
+							<span class="meta-value">
+								{% if server.port %}
+									{{ server.port }}
+								{% else %}
+									&mdash;
+								{% endif %}
+								{% if server.port and server.protocol_label %}
+									<span class="meta-badge">{{ server.protocol_label }}</span>
+								{% endif %}
+							</span>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="server-meta">
+						<span class="meta-label">{{ label_last_check }}</span>
+						<span class="meta-value">{{ server.last_check }}</span>
+					</div>
+				</td>
+				<td>
+					<span class="latency-badge">
+						<i class="fas fa-wave-square"></i>
+						{{ (server.rtime * 1000)|round(2) }} ms
+					</span>
+				</td>
+				<td>
+					<div class="monitoring-icons">
+					{% if server.active|lower == 'yes'%}
 						<i class="fas fa-eye" title="{{ server.active_title }}"></i>
 					{% else %}
 						<i class="fas fa-eye-slash" title="{{ server.active_title }}"></i>
@@ -89,6 +112,7 @@
                             <span class="fa-layers-text fa-inverse" style="font-weight:600; font-size:55%">W</span>
                         </span>
                     {% endif %}
+					</div>
 				</td>
 				{% if user_level == 10 %}
 				<td>
