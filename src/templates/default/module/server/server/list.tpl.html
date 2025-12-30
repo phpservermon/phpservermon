@@ -1,7 +1,8 @@
 {% import 'main/macros.tpl.html' as macro %}
-{{ macro.table_search(label_search) }}
-<div class="table-responsive">
-	<table class="table table-striped table-hover table-bordered">
+<div class="hardware-board server-list-board">
+	{{ macro.table_search(label_search) }}
+	<div class="table-responsive">
+	<table class="table table-hover server-table">
 		<thead>
 			<tr>
 				<!--class="d-none d-lg-table-cell"-->
@@ -23,16 +24,19 @@
 		</thead>
 		<tbody>
 			{% for server in servers %}
-			<tr>
+			<tr class="server-row {% if server.status|lower == 'on' %}is-online{% elseif server.status|lower == 'warning' %}is-warning{% elseif server.status|lower == 'off' %}is-offline{% endif %}">
 				<th scope="row">
 					<div class="content">
-						{% if server.status|lower == 'on' %}
-						<i class="fas fa-check-circle" title="{{ server.status }}"></i>&nbsp;
-						{% elseif server.status|lower == 'warning' %}
-						<i class="fas fa-exclamation-triangle" title="{{ server.status }}"></i>&nbsp;
-						{% elseif server.status|lower == 'off' %}
-						<i class="fas fa-times-circle" title="{{ server.status }}"></i>&nbsp;
-						{% endif %}
+						<span class="status-pill">
+							{% if server.status|lower == 'on' %}
+							<i class="fas fa-check-circle" title="{{ server.status }}"></i>
+							{% elseif server.status|lower == 'warning' %}
+							<i class="fas fa-exclamation-triangle" title="{{ server.status }}"></i>
+							{% elseif server.status|lower == 'off' %}
+							<i class="fas fa-times-circle" title="{{ server.status }}"></i>
+							{% endif %}
+							<span class="status-text">{{ server.status }}</span>
+						</span>
 						<a href="{{ server.url_view|raw }}" title="{{ label_view }}">
 							{{ server.label }}
 						</a>
@@ -109,4 +113,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
+</div>
 </div>
