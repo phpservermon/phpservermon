@@ -743,6 +743,15 @@ body.app-shell {
     padding: 1rem 1.25rem;
 }
 
+.server-table-modern {
+    table-layout: fixed;
+}
+
+.server-table-modern th,
+.server-table-modern td {
+    overflow-wrap: anywhere;
+}
+
 .server-table-modern .server-cell {
     display: flex;
     flex-direction: column;
@@ -761,6 +770,17 @@ body.app-shell {
     color: rgba(226, 232, 240, 0.7);
 }
 
+.server-table-modern .server-title a,
+.server-table-modern .meta-value {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.server-table-modern .server-cell,
+.server-table-modern .server-meta {
+    min-width: 0;
+}
+
 .server-meta {
     display: grid;
     gap: 0.4rem;
@@ -770,9 +790,9 @@ body.app-shell {
 
 .server-meta .meta-item {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
 }
 
 .server-meta .meta-label {
