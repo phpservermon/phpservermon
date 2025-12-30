@@ -725,6 +725,7 @@ body.app-shell {
 .server-table {
     --bs-table-bg: transparent;
     color: var(--psm-text);
+    border: 0;
     border-color: transparent;
     border-collapse: collapse;
 }
@@ -732,13 +733,23 @@ body.app-shell {
 .server-status-table thead,
 .server-table thead {
     background: rgba(226, 240, 255, 0.92);
-    border-bottom: 1px solid var(--psm-border);
+    border: 0;
+    border-bottom: 0;
 }
 
 .server-status-table th,
 .server-status-table td {
+    border: 0;
     border-color: transparent;
     vertical-align: top;
+}
+
+.server-status-table thead th,
+.server-status-table thead td,
+.server-table thead th,
+.server-table thead td {
+    border: 0;
+    box-shadow: none;
 }
 
 .server-table-modern th,
@@ -877,8 +888,14 @@ body.app-shell {
 
 .server-table th,
 .server-table td {
+    border: 0;
     border-color: transparent;
     vertical-align: middle;
+}
+
+.server-status-table tr,
+.server-table tr {
+    border: 0;
 }
 
 .server-status-table tbody tr + tr,
