@@ -54,6 +54,7 @@ body.app-shell::after {
     background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.42), transparent 60%);
     top: -6%;
     right: 16%;
+    opacity: 0.22;
 }
 
 .ambient-grid .orb-teal {
