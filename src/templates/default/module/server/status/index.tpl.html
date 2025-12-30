@@ -12,7 +12,8 @@
     {% set average_latency = (latency_sum / (servers_online|length))|round(1) %}
 {% endif %}
 <div class="container-fluid">
-        <div class="row g-3 status-metrics mb-4">
+        <section class="hardware-board status-overview-board mb-4">
+                <div class="row g-3 status-metrics">
                 <div class="col-md-3 col-sm-6">
                         <div class="metric-card h-100">
                                 <div class="metric-top">
@@ -67,60 +68,93 @@
                                 </div>
                         </div>
                 </div>
-        </div>
+                </div>
+        </section>
         <div id="flow-layout" class="{{ block_layout_active }}" aria-labelledby="block-layout">
-                <div class="row">
+                <div class="hardware-board server-status-board">
+                        <div class="server-status-grid">
                         {% for server in servers_offline %}
-                        <div class="col-sm-4 col-md-3 col-xl-2">
-                                <div class="card status-card bg-danger text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a></div>
-                                        <div class="card-body">
-                                                <p class="card-text">
-                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
-                                                        {{ label_last_check }}: {{ server.last_checked_nice }}
-                                                </p>
+                                <a class="server-status-card is-offline" href="{{ server.url_view|raw }}">
+                                        <div class="status-card-header">
+                                                <div class="status-chip">
+                                                        <span class="status-dot"></span>
+                                                        <span>{{ label_offline }}</span>
+                                                </div>
+                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
                                         </div>
-                                </div>
-                        </div>
+                                        <div class="status-card-title">{{ server.label }}</div>
+                                        <div class="status-card-meta">
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_online }}</span>
+                                                        <span>{{ server.last_online_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_check }}</span>
+                                                        <span>{{ server.last_checked_nice }}</span>
+                                                </div>
+                                        </div>
+                                </a>
                         {% endfor %}
                         {% for server in servers_warning %}
-                        <div class="col-sm-4 col-md-3 col-xl-2">
-                                <div class="card status-card bg-warning text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_warning }})</span></a></div>
-                                        <div class="card-body">
-                                                <p class="card-text">
-                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
-                                                        {{ label_last_check }}: {{ server.last_checked_nice }}
-                                                </p>
+                                <a class="server-status-card is-warning" href="{{ server.url_view|raw }}">
+                                        <div class="status-card-header">
+                                                <div class="status-chip">
+                                                        <span class="status-dot"></span>
+                                                        <span>{{ label_warning }}</span>
+                                                </div>
+                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
                                         </div>
-                                </div>
-                        </div>
+                                        <div class="status-card-title">{{ server.label }}</div>
+                                        <div class="status-card-meta">
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_online }}</span>
+                                                        <span>{{ server.last_online_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_check }}</span>
+                                                        <span>{{ server.last_checked_nice }}</span>
+                                                </div>
+                                        </div>
+                                </a>
                         {% endfor %}
                         {% for server in servers_online %}
-                        <div class="col-sm-4 col-md-3 col-xl-2">
-                                <div class="card status-card bg-success text-white mb-3" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                        <div class="card-header"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a></div>
-                                        <div class="card-body">
-                                                <p class="card-text">
-                                                        {{ label_last_online }}: {{ server.last_online_nice }}<br>
-                                                        {{ label_last_offline }}: {{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}<br>
-                                                        {{ label_rtime }}: {{ (server.rtime * 1000)|round(2) }} ms
-                                                </p>
+                                <a class="server-status-card is-online" href="{{ server.url_view|raw }}">
+                                        <div class="status-card-header">
+                                                <div class="status-chip">
+                                                        <span class="status-dot"></span>
+                                                        <span>{{ label_online }}</span>
+                                                </div>
+                                                <span class="status-action"><i class="fas fa-chevron-right"></i></span>
                                         </div>
-                                </div>
-                        </div>
+                                        <div class="status-card-title">{{ server.label }}</div>
+                                        <div class="status-card-meta">
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_online }}</span>
+                                                        <span>{{ server.last_online_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_last_offline }}</span>
+                                                        <span>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice }}</span>
+                                                </div>
+                                                <div class="meta-row">
+                                                        <span>{{ label_rtime }}</span>
+                                                        <span>{{ (server.rtime * 1000)|round(2) }} ms</span>
+                                                </div>
+                                        </div>
+                                </a>
                         {% endfor %}
                         {% if not servers_offline and not servers_warning and not servers_online %}
                                 {{ label_none }}
                                 <div class="w-100"></div>
                                 <button class="btn btn-primary" onclick="window.location.href='{{ url_save|raw }}'">{{ label_add_server }}</button>
                         {% endif %}
+                        </div>
                 </div>
         </div>
         <div id="list-layout" class="{{ list_layout_active }}" aria-labelledby="block-layout" style="display:none;">
-                <div class="row table-responsive">
+                <div class="row table-responsive hardware-board status-table-board">
                         {% if servers_offline  or servers_warning or servers_online %}
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-hover server-status-table">
                                 {% if servers_offline or servers_warning %}
                                 <thead>
                                         <tr>
@@ -133,8 +167,8 @@
                                 </thead>
                                 <tbody>
                                         {% for server in servers_offline %}
-                                                <tr class="bg-danger text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a></th>
+                                                <tr class="server-row is-offline" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_offline }})</span></a></th>
                                                         <td>{{ server.last_online_nice }}</td>
                                                         <td>{{ server.last_checked_nice }}</td>
                                                         <td>{{ server.uptime_display }}</td>
@@ -142,8 +176,8 @@
                                                 </tr>
                                         {% endfor %}
                                         {% for server in servers_warning %}
-                                                <tr class="bg-warning text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_warning }})</span></a></th>
+                                                <tr class="server-row is-warning" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_warning }})</span></a></th>
                                                         <td>{{ server.last_online_nice }}</td>
                                                         <td>{{ server.last_checked_nice }}</td>
                                                         <td>{{ server.uptime_display }}</td>
@@ -164,8 +198,8 @@
                                 </thead>
                                 <tbody>
                                         {% for server in servers_online %}
-                                                <tr class="bg-success text-white" onclick="window.location.href='{{ server.url_view|raw }}'">
-                                                        <th class="full"><a href="{{ server.url_view|raw }}" class="text-white">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a></th>
+                                                <tr class="server-row is-online" onclick="window.location.href='{{ server.url_view|raw }}'">
+                                                        <th class="full"><a href="{{ server.url_view|raw }}">{{ server.label }}<span class="visually-hidden"> ({{ label_online }})</span></a></th>
                                                         <td>{{ server.last_online_nice }}</td>
                                                         <td>{{ server.last_offline_nice }} {{ server.last_offline_duration_nice}}</td>
                                                         <td>{{ server.uptime_display }}</td>
