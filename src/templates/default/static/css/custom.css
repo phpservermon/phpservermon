@@ -710,6 +710,14 @@ body.app-shell {
     padding: 1.5rem;
 }
 
+.status-table-board .table-responsive,
+.server-list-board .table-responsive {
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(15, 23, 42, 0.5);
+    overflow: hidden;
+}
+
 .server-status-table,
 .server-table {
     --bs-table-bg: transparent;
@@ -730,6 +738,11 @@ body.app-shell {
 .server-table td {
     border-color: transparent;
     vertical-align: middle;
+}
+
+.server-status-table tbody tr + tr,
+.server-table tbody tr + tr {
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
 }
 
 .server-status-table a,
