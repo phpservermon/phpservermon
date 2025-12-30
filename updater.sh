@@ -79,9 +79,9 @@ mv config.php.keep config.php
 
 # run php composer.phar install or update
 if [ -d "vendor" ]; then
-    php composer.phar update
+    ./bin/psm-composer update
 else
-    php composer.phar install
+    ./bin/psm-composer install
 fi
 
 echo Update finished!

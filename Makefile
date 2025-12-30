@@ -16,7 +16,7 @@ lint:
 
 install:
 	@echo 'Downloading dependencies using Composer'
-	php composer.phar install
+	./bin/psm-composer install
 	@echo 'Install complete '
 
 export:
@@ -36,7 +36,7 @@ endif
 	@echo 'Testing on syntax errors (thats all the automated testing your are going to get for now..) '
 	find $(RELEASE_DIR)/$(RELEASE_FILE) -name "*.php" | xargs -I file php -l file
 	@echo 'Downloading dependencies'
-	cd $(RELEASE_DIR)/$(RELEASE_FILE); php composer.phar install; php composer.phar dump-autoload --optimize; cd ../../;
+	cd $(RELEASE_DIR)/$(RELEASE_FILE); ./bin/psm-composer install; ./bin/psm-composer dump-autoload --optimize; cd ../../;
 	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.phar
 	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.json
 	rm -f $(RELEASE_DIR)/$(RELEASE_FILE)/composer.lock

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MIN_VERSION="2.8.12"
+
+version_ge() {
+  local current="$1"
+  local minimum="$2"
+  if [ -z "$current" ]; then
+    return 1
+  fi
+  if [ "$current" = "$minimum" ]; then
+    return 0
+  fi
+  if [ "$(printf '%s\n' "$minimum" "$current" | sort -V | head -n1)" = "$minimum" ]; then
+    return 0
+  fi
+  return 1
+}
+
+try_system_composer() {
+  if ! command -v composer >/dev/null 2>&1; then
+    return 1
+  fi
+
+  local version
+  version="$(composer --no-interaction --version 2>/dev/null | awk '{print $3}')"
+  if version_ge "$version" "$MIN_VERSION"; then
+    exec composer "$@"
+  fi
+
+  return 1
+}
+
+download_composer() {
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+  local installer_path="$tmp_dir/composer-setup.php"
+  local phar_path="$tmp_dir/composer.phar"
+
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL https://composer.github.io/installer.sig -o "$tmp_dir/installer.sig"
+    curl -fsSL https://getcomposer.org/installer -o "$installer_path"
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q -O "$tmp_dir/installer.sig" https://composer.github.io/installer.sig
+    wget -q -O "$installer_path" https://getcomposer.org/installer
+  else
+    echo "composer: curl or wget is required to download Composer." >&2
+    rm -rf "$tmp_dir"
+    return 1
+  fi
+
+  local expected_signature
+  local actual_signature
+  expected_signature="$(cat "$tmp_dir/installer.sig")"
+  actual_signature="$(php -r "echo hash_file('SHA384', '$installer_path');")"
+  if [ "$expected_signature" != "$actual_signature" ]; then
+    echo "composer: invalid installer signature." >&2
+    rm -rf "$tmp_dir"
+    return 1
+  fi
+
+  php "$installer_path" --quiet --install-dir="$tmp_dir" --filename composer.phar
+  trap 'rm -rf "$tmp_dir"' EXIT
+  exec php "$phar_path" "$@"
+}
+
+if try_system_composer "$@"; then
+  exit 0
+fi
+
+if download_composer "$@"; then
+  exit 0
+fi
+
+if [ -f "$ROOT_DIR/composer.phar" ]; then
+  exec php "$ROOT_DIR/composer.phar" "$@"
+fi
+
+echo "composer: unable to locate a usable Composer binary." >&2
+exit 1
