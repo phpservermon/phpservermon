@@ -733,7 +733,11 @@ body.app-shell {
 }
 
 .server-status-table th,
-.server-status-table td,
+.server-status-table td {
+    border-color: transparent;
+    vertical-align: top;
+}
+
 .server-table th,
 .server-table td {
     border-color: transparent;
