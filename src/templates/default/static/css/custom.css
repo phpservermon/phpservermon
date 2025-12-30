@@ -715,7 +715,6 @@ body.app-shell {
     --bs-table-bg: transparent;
     color: #e2e8f0;
     border-color: transparent;
-    border: none;
     border-collapse: collapse;
 }
 
@@ -729,8 +728,7 @@ body.app-shell {
 .server-status-table td,
 .server-table th,
 .server-table td {
-    border: none !important;
-    box-shadow: none;
+    border-color: transparent;
     vertical-align: middle;
 }
 
