@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MIN_VERSION="2.8.12"
+PHP_DEPRECATION_FLAGS=(-d error_reporting=E_ALL\&~E_DEPRECATED\&~E_USER_DEPRECATED)
 
 version_ge() {
   local current="$1"
@@ -27,7 +28,7 @@ try_system_composer() {
   local version
   version="$(composer --no-interaction --version 2>/dev/null | awk '{print $3}')"
   if version_ge "$version" "$MIN_VERSION"; then
-    exec composer "$@"
+    exec php "${PHP_DEPRECATION_FLAGS[@]}" "$(command -v composer)" "$@"
   fi
 
   return 1
@@ -63,7 +64,7 @@ download_composer() {
 
   php "$installer_path" --quiet --install-dir="$tmp_dir" --filename composer.phar
   trap 'rm -rf "$tmp_dir"' EXIT
-  exec php "$phar_path" "$@"
+  exec php "${PHP_DEPRECATION_FLAGS[@]}" "$phar_path" "$@"
 }
 
 if try_system_composer "$@"; then
@@ -75,7 +76,7 @@ if download_composer "$@"; then
 fi
 
 if [ -f "$ROOT_DIR/composer.phar" ]; then
-  exec php "$ROOT_DIR/composer.phar" "$@"
+  exec php "${PHP_DEPRECATION_FLAGS[@]}" "$ROOT_DIR/composer.phar" "$@"
 fi
 
 echo "composer: unable to locate a usable Composer binary." >&2
