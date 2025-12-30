@@ -738,6 +738,120 @@ body.app-shell {
     vertical-align: top;
 }
 
+.server-table-modern th,
+.server-table-modern td {
+    padding: 1rem 1.25rem;
+}
+
+.server-table-modern .server-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.server-table-modern .server-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+}
+
+.server-table-modern .server-sub {
+    font-size: 0.85rem;
+    color: rgba(226, 232, 240, 0.7);
+}
+
+.server-meta {
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: rgba(226, 232, 240, 0.75);
+}
+
+.server-meta .meta-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.server-meta .meta-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(226, 232, 240, 0.55);
+}
+
+.server-meta .meta-value {
+    font-weight: 600;
+    color: rgba(226, 232, 240, 0.95);
+}
+
+.server-meta .meta-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.4rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(148, 163, 184, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.latency-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #bfdbfe;
+}
+
+.monitoring-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: rgba(226, 232, 240, 0.8);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(148, 163, 184, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    color: rgba(226, 232, 240, 0.9);
+}
+
+.status-badge-online {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: rgba(34, 197, 94, 0.4);
+    color: #bbf7d0;
+}
+
+.status-badge-warning {
+    background: rgba(234, 179, 8, 0.2);
+    border-color: rgba(234, 179, 8, 0.4);
+    color: #fde68a;
+}
+
+.status-badge-offline {
+    background: rgba(248, 113, 113, 0.2);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #fecaca;
+}
+
 .server-table th,
 .server-table td {
     border-color: transparent;
