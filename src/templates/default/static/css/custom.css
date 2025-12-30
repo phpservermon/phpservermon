@@ -12,12 +12,12 @@
     --psm-success: #1cb065;
     --psm-warning: #f59e0b;
     --psm-danger: #dc2626;
-    --psm-shadow: 0 16px 36px rgba(47, 125, 246, 0.18);
+    --psm-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
     --psm-nav-bg: linear-gradient(115deg, rgba(243, 249, 255, 0.96), rgba(218, 235, 255, 0.92));
     --psm-nav-foreground: #0b1b33;
     --psm-nav-muted: #3b5b8a;
     --psm-nav-border: rgba(47, 125, 246, 0.18);
-    --psm-nav-glow: 0 16px 40px rgba(47, 125, 246, 0.18);
+    --psm-nav-glow: 0 10px 24px rgba(15, 23, 42, 0.12);
 }
 
 body.app-shell {
@@ -130,7 +130,7 @@ body.app-shell {
     border: 1px solid var(--psm-nav-border);
     border-radius: 14px;
     padding: 0.75rem 0.9rem;
-    box-shadow: var(--psm-nav-glow);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
 }
 
 
@@ -176,9 +176,9 @@ body.app-shell {
 
 .page-hero {
     padding: 1.5rem 1.75rem;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(17, 24, 39, 0.92));
-    border: 1px solid var(--psm-border);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.35);
 }
 
 .page-heading {
@@ -220,11 +220,11 @@ body.app-shell {
 }
 
 .hero-meta-card {
-    border: 1px solid var(--psm-border);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 18px;
     padding: 1.25rem 1.5rem;
-    background: linear-gradient(150deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-    box-shadow: 0 16px 40px rgba(47, 125, 246, 0.18);
+    background: linear-gradient(150deg, rgba(15, 23, 42, 0.45), rgba(30, 41, 59, 0.35));
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.25);
 }
 
 .glass-card {
@@ -269,24 +269,33 @@ body.app-shell {
 }
 
 .surface-card {
-    background: var(--psm-surface);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 248, 255, 0.96));
     border-radius: 18px;
-    border: 1px solid var(--psm-border);
+    border: 1px solid rgba(148, 163, 184, 0.28);
     box-shadow: var(--psm-shadow);
     padding: 1.4rem 1.6rem;
     position: relative;
     overflow: hidden;
 }
 
+.surface-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: linear-gradient(90deg, rgba(47, 125, 246, 0.6), rgba(56, 189, 248, 0.4));
+    opacity: 0.8;
+}
+
 .surface-card::after {
     content: "";
     position: absolute;
-    inset: -25% 20% auto auto;
-    width: 220px;
-    height: 220px;
-    background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.1), transparent 55%);
-    filter: blur(60px);
-    opacity: 0.6;
+    inset: auto 8% -35% auto;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.12), transparent 60%);
+    filter: blur(40px);
+    opacity: 0.5;
     pointer-events: none;
 }
 
@@ -298,6 +307,10 @@ body.app-shell {
 .content-surface {
     margin-top: 1.25rem;
     padding: 1.5rem 1.75rem 2.25rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .dashboard-grid {
@@ -323,11 +336,11 @@ body.app-shell {
 }
 
 .sidebar-panel {
-    border: 1px solid var(--psm-border);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 14px;
-    background: var(--psm-surface-alt);
+    background: linear-gradient(180deg, rgba(248, 250, 255, 0.95), rgba(233, 242, 255, 0.92));
     padding: 1.1rem 1.25rem;
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
 }
 
 .sidebar-subtitle {
@@ -412,22 +425,22 @@ body.app-shell {
 .card,
 .list-group-item {
     background: var(--psm-surface);
-    border: 1px solid var(--psm-border);
+    border: 1px solid rgba(148, 163, 184, 0.22);
     border-radius: 14px;
     color: var(--psm-text);
 }
 
 .status-card {
-    border: none;
-    box-shadow: var(--psm-shadow);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.14);
 }
 
 .metric-card {
-    border: 1px solid var(--psm-border);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    background: linear-gradient(180deg, rgba(248, 250, 255, 0.96), rgba(235, 244, 255, 0.92));
     border-radius: 14px;
     padding: 1.1rem 1.25rem;
-    box-shadow: var(--psm-shadow);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -513,8 +526,12 @@ body.app-shell {
 .btn-outline-light, .btn-light {
     color: var(--psm-text);
     background-color: #ffffff;
-    border-color: var(--psm-border);
+    border-color: rgba(148, 163, 184, 0.3);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.shadow-sm {
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12) !important;
 }
 
 .btn:hover,
