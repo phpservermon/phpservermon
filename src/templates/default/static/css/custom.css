@@ -23,7 +23,7 @@
 body.app-shell {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: radial-gradient(circle at 20% 20%, rgba(47, 125, 246, 0.12), transparent 32%),
-        radial-gradient(circle at 80% 0%, rgba(125, 211, 252, 0.24), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(125, 211, 252, 0.1), transparent 42%),
         radial-gradient(circle at 15% 70%, rgba(94, 234, 212, 0.12), transparent 40%),
         linear-gradient(140deg, var(--psm-bg) 0%, var(--psm-bg-alt) 55%, #e4f0ff 100%);
     color: var(--psm-text);
@@ -898,7 +898,7 @@ body.app-shell {
 }
 
 .server-row.is-online {
-    background: rgba(34, 197, 94, 0.12);
+    background: transparent;
 }
 
 .server-row.is-warning {
