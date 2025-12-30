@@ -213,7 +213,6 @@ class CMBulkSMS extends Core
         $cResponse = curl_exec($cr);
         $cError = curl_error($cr);
         $cErrorCode = curl_errno($cr);
-        curl_close($cr);
 
         // set result and log error if needed
         if ($cError) {

@@ -388,7 +388,6 @@ namespace {
     }
 
     /**
-     * Shortcut to curl_init(), curl_exec and curl_close()
      *
      * @param string $href
      * @param boolean $header return headers?
@@ -494,7 +493,6 @@ namespace {
         $result['exec'] = curl_exec($ch);
         $result['info'] = curl_getinfo($ch);
 
-        curl_close($ch);
 
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
             echo PHP_EOL .
@@ -1324,7 +1322,6 @@ namespace {
             $response = curl_exec($con);
             if ($response === false) {
                 $curlError = curl_error($con);
-                curl_close($con);
 
                 return [
                     'ok' => false,
@@ -1333,7 +1330,6 @@ namespace {
             }
 
             $httpCode = curl_getinfo($con, CURLINFO_HTTP_CODE);
-            curl_close($con);
 
             $decodedResponse = json_decode($response, true);
 
@@ -1448,7 +1444,6 @@ namespace {
                 $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . $err . ". \nResult: " . $result;
             }
 
-            curl_close($curl);
 
             if ($success) {
                 return 1;

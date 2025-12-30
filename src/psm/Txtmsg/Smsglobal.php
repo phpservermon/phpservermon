@@ -87,7 +87,6 @@ class Smsglobal extends Core
             $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
                 curl_strerror($err) . ". \nResult: " . $result;
         }
-        curl_close($curl);
         
         if ($success) {
             return 1;

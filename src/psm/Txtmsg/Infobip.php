@@ -74,7 +74,6 @@ class Infobip extends Core
             $headers[] = "Content-Type: application/x-www-form-urlencoded";
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $result = curl_exec($ch);
-            curl_close($ch);
 
             // Check for errors
             if (is_numeric(strpos($result, "FAILED"))) {

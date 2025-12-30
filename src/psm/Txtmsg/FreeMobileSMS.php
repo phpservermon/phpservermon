@@ -70,7 +70,6 @@ class FreeMobileSMS extends Core
             $success = 0;
                 $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " . curl_strerror($err);
         }
-        curl_close($curl);
         
         if ($success) {
             return 1;

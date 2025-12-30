@@ -80,7 +80,6 @@ class GatewayAPI extends Core
         $result = json_decode(curl_exec($curl), true);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $err = curl_errno($curl);
-        curl_close($curl);
 
         if ($err != 0 || $httpcode != 200) {
             $success = 0;

@@ -138,7 +138,6 @@ class SMSAPI extends Core
             $error = curl_error($ch);
         }
 
-        curl_close($ch);
 
         if ($error !== false) {
             throw new \RuntimeException($error);

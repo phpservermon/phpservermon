@@ -83,7 +83,6 @@ class PromoSMS extends Core
             $error = "HTTP_code: " . $httpcode . ".\ncURL error (" . $err . "): " .
                 curl_strerror($err) . ". Result: " . $result . "";
         }
-        curl_close($curl);
 
         if ($success) {
             return 1;
