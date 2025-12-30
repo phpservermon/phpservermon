@@ -541,8 +541,8 @@ body.app-shell {
     border-radius: 24px;
     background: linear-gradient(140deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.92));
     color: #e2e8f0;
-    border: 1px solid rgba(148, 163, 184, 0.08);
-    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.28);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
     overflow: hidden;
 }
 
@@ -575,18 +575,6 @@ body.app-shell {
 
 .status-overview-board .metric-label {
     color: rgba(226, 232, 240, 0.7);
-}
-
-.status-overview-board .metric-value {
-    color: #f8fafc;
-}
-
-.status-overview-board .metric-top {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.status-overview-board .metric-trend {
-    color: rgba(226, 232, 240, 0.75);
 }
 
 .server-status-board {
