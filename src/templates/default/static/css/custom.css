@@ -473,7 +473,7 @@ body.app-shell {
 
 .metric-top {
     padding-bottom: 0.25rem;
-    border-bottom: 1px solid var(--psm-border);
+    border-bottom: 0;
 }
 
 .metric-meta {
