@@ -540,23 +540,56 @@ body.app-shell {
 }
 
 .footer {
-    padding: 1.5rem 0;
+    position: relative;
+    height: auto;
+    line-height: normal;
+    padding: 1.25rem 0;
     border-top: 1px solid var(--psm-border);
     background: var(--psm-surface);
+    box-shadow: 0 -12px 24px rgba(15, 23, 42, 0.08);
 }
 
-.remitk-banner {
-    margin-top: 1.75rem;
-    padding: 2.5rem 1rem;
-    text-align: center;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 800;
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    color: var(--psm-muted);
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.footer-label {
+    font-weight: 600;
+    color: var(--psm-text);
+}
+
+.footer-update {
+    color: var(--psm-danger);
+    font-weight: 600;
+}
+
+.footer-brand {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: #1f3a8a;
+    font-size: 0.7rem;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #0b1b33;
-    background: linear-gradient(120deg, #d8ebff 0%, #b9d9ff 50%, #d8ebff 100%);
-    border-top: 1px solid rgba(47, 125, 246, 0.35);
-    box-shadow: 0 -12px 24px rgba(47, 125, 246, 0.2);
+}
+
+.footer-top {
+    font-weight: 600;
 }
 
 .searchbar {
