@@ -827,8 +827,7 @@ class HistoryGraph
                     $highest_latency = $latency;
                 }
             }
-            // to ms
-            $highest_latency = round($highest_latency * 1000);
+            $highest_latency = round($highest_latency, 3);
         }
 
         // Create the list of points and server down zones
@@ -844,7 +843,7 @@ class HistoryGraph
                     // down
                     $lines['online'][] = $prev['status']
                         // Previous datapoint was online
-                            ? ['x' => $time_ms, 'y' => round($prev['latency'] * 1000, 3)]
+                            ? ['x' => $time_ms, 'y' => round($prev['latency'], 3)]
                         // Previous datapoint was offline
                             : ['x' => $time_ms, 'y' => null];
                     // new outage start
@@ -861,7 +860,7 @@ class HistoryGraph
                             ? ['x' => $time_ms, 'y' => null]
                         // Previous datapoint was offline
                             : ['x' => $time_ms, 'y' => 0];
-                    $lines['online'][] = ['x' => $time_ms, 'y' => round($record['latency'] * 1000, 3)];
+                    $lines['online'][] = ['x' => $time_ms, 'y' => round($record['latency'], 3)];
 
                     if ($prev_downtime !== 0) {
                         $downtime += ($time - $prev_downtime);
@@ -871,7 +870,7 @@ class HistoryGraph
             } else {
                 foreach ($line_keys as $key) {
                     // add the value for each of the different lines
-                    $lines[$key][] = ['x' => $record['date'], 'y' => $record[$key] * 1000];
+                    $lines[$key][] = ['x' => $record['date'], 'y' => $record[$key]];
                 }
             }
             $prev = $record;

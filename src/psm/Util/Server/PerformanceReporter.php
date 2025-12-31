@@ -290,7 +290,7 @@ class PerformanceReporter
      */
     protected function formatLatencyValue($seconds)
     {
-        return sprintf('%0.2f ms', $seconds * 1000);
+        return sprintf('%0.2f s', $seconds);
     }
 
     /**
@@ -364,4 +364,3 @@ class PerformanceReporter
         return $servers;
     }
 }
-

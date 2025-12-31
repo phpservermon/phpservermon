@@ -35,7 +35,7 @@
         </div><br>
         {% endif %}
         {% endif %}
-                {{ graph.info.0.label }}: {{ graph.info.0.value * 1000 }} ms
+                {{ graph.info.0.label }}: {{ graph.info.0.value|round(2) }} s
 </div>
 
 {% if graph.id == 'history_short' %}

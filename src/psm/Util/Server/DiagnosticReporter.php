@@ -350,11 +350,11 @@ class DiagnosticReporter
             return 'n/a';
         }
 
-        $avg = $latency['average'] * 1000;
-        $min = $latency['min'] * 1000;
-        $max = $latency['max'] * 1000;
+        $avg = $latency['average'];
+        $min = $latency['min'];
+        $max = $latency['max'];
 
-        return sprintf('%0.2f ms (min %0.2f / max %0.2f)', $avg, $min, $max);
+        return sprintf('%0.2f s (min %0.2f / max %0.2f)', $avg, $min, $max);
     }
 
     /**
@@ -394,13 +394,13 @@ class DiagnosticReporter
             return $this->buildBadge($display, '#e9ecef', '#495057');
         }
 
-        $average_ms = $latency['average'] * 1000;
+        $average_seconds = $latency['average'];
 
-        if ($average_ms <= 500) {
+        if ($average_seconds <= 0.5) {
             return $this->buildBadge($display, '#d1e7dd', '#0f5132');
         }
 
-        if ($average_ms <= 1500) {
+        if ($average_seconds <= 1.5) {
             return $this->buildBadge($display, '#fff3cd', '#664d03');
         }
 
