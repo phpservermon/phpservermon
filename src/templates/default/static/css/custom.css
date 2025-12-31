@@ -838,12 +838,12 @@ body.app-shell {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(226, 232, 240, 0.55);
+    color: var(--psm-muted);
 }
 
 .server-meta .meta-value {
     font-weight: 600;
-    color: rgba(226, 232, 240, 0.95);
+    color: var(--psm-text);
 }
 
 .server-meta .meta-badge {
@@ -867,7 +867,7 @@ body.app-shell {
     font-weight: 600;
     background: rgba(59, 130, 246, 0.15);
     border: 1px solid rgba(59, 130, 246, 0.35);
-    color: #bfdbfe;
+    color: var(--psm-accent-strong);
 }
 
 .monitoring-icons {
@@ -875,7 +875,7 @@ body.app-shell {
     flex-wrap: wrap;
     gap: 0.5rem;
     font-size: 0.95rem;
-    color: rgba(226, 232, 240, 0.8);
+    color: var(--psm-muted);
 }
 
 .status-badge {
@@ -890,25 +890,25 @@ body.app-shell {
     letter-spacing: 0.05em;
     background: rgba(148, 163, 184, 0.2);
     border: 1px solid rgba(148, 163, 184, 0.35);
-    color: rgba(226, 232, 240, 0.9);
+    color: var(--psm-text);
 }
 
 .status-badge-online {
     background: rgba(34, 197, 94, 0.2);
     border-color: rgba(34, 197, 94, 0.4);
-    color: #bbf7d0;
+    color: #0f5132;
 }
 
 .status-badge-warning {
     background: rgba(234, 179, 8, 0.2);
     border-color: rgba(234, 179, 8, 0.4);
-    color: #fde68a;
+    color: #92400e;
 }
 
 .status-badge-offline {
     background: rgba(248, 113, 113, 0.2);
     border-color: rgba(248, 113, 113, 0.4);
-    color: #fecaca;
+    color: #991b1b;
 }
 
 .server-table th,
