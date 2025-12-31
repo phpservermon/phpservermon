@@ -113,16 +113,8 @@
 	{% if add_footer %}
 	{% block footer %}
 	<footer class="footer" role="contentinfo">
-		<div class="container">
-			<span class="text-muted">
-				Powered by
-				<a href="https://github.com/phpservermon/phpservermon/" target="_blank" rel="noopener">
-					PHP Server Monitor {{ version }}.
-				</a><span style="color:red;">{{ update_available|raw }}</span><a href="#" class="float-right">{{ label_back_to_top }}</a>
-			</span>
-		</div>
-		<div class="remitk-banner">
-			Powered by REMITK
+		<div class="container footer-content">
+			<div class="footer-branding">Developed by REMITK</div>
 		</div>
 	</footer>
 	{% endblock %}

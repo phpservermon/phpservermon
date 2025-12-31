@@ -540,23 +540,28 @@ body.app-shell {
 }
 
 .footer {
-    padding: 1.5rem 0;
+    position: relative;
+    height: auto;
+    line-height: normal;
+    padding: 2.5rem 0 3rem;
     border-top: 1px solid var(--psm-border);
-    background: var(--psm-surface);
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.9) 0%, rgba(226, 232, 240, 0.9) 100%);
+    box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.08);
 }
 
-.remitk-banner {
-    margin-top: 1.75rem;
-    padding: 2.5rem 1rem;
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.footer-branding {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #0b1b33;
-    background: linear-gradient(120deg, #d8ebff 0%, #b9d9ff 50%, #d8ebff 100%);
-    border-top: 1px solid rgba(47, 125, 246, 0.35);
-    box-shadow: 0 -12px 24px rgba(47, 125, 246, 0.2);
 }
 
 .searchbar {
