@@ -73,7 +73,7 @@
 				<td>
 					<span class="latency-badge">
 						<i class="fas fa-wave-square"></i>
-						{{ server.rtime|round(2) }} s
+						{{ server.rtime|number_format(4, '.', '') }} s
 					</span>
 				</td>
 				<td>

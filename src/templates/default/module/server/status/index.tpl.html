@@ -9,7 +9,7 @@
     {% for server in servers_online %}
         {% set latency_sum = latency_sum + server.rtime %}
     {% endfor %}
-    {% set average_latency = (latency_sum / (servers_online|length))|round(2) %}
+    {% set average_latency = latency_sum / (servers_online|length) %}
 {% endif %}
 <div class="container-fluid">
         <section class="hardware-board status-overview-board mb-4">
@@ -60,7 +60,7 @@
                         <div class="metric-card h-100">
                                 <div class="metric-top">
                                         <div class="metric-label">Avg latency</div>
-                                        <div class="metric-value">{{ average_latency }} s</div>
+                                        <div class="metric-value">{{ average_latency|number_format(4, '.', '') }} s</div>
                                 </div>
                                 <div class="metric-meta">
                                         <div class="metric-trend text-muted">Across responding hosts</div>
@@ -98,7 +98,7 @@
                                                 </div>
                                                 <div class="meta-row">
                                                         <span>{{ label_rtime }}</span>
-                                                        <span>{{ server.rtime|round(2) }} s</span>
+                                                        <span>{{ server.rtime|number_format(4, '.', '') }} s</span>
                                                 </div>
                                         </div>
                                 </a>
@@ -196,7 +196,7 @@
                                                                 <td>
                                                                         <span class="latency-badge">
                                                                                 <i class="fas fa-wave-square"></i>
-                                                                                {{ server.rtime|round(2) }} s
+                                                                                {{ server.rtime|number_format(4, '.', '') }} s
                                                                         </span>
                                                                 </td>
                                                                 <td>{{ server.last_checked_nice }}</td>
