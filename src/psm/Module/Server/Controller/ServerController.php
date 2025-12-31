@@ -296,7 +296,9 @@ class ServerController extends AbstractServerController
         );
         $tpl_data['login_info_output'] = $this->buildLoginInfoOutput(
             $tpl_data['edit_value_website_username'] ?? '',
-            $tpl_data['edit_value_website_password'] ?? ''
+            $tpl_data['edit_value_website_password'] ?? '',
+            $edit_server['last_output'] ?? '',
+            $edit_server['last_error_output'] ?? ''
         );
 
         $notifications = array('email', 'sms', 'telegram');
@@ -592,7 +594,9 @@ class ServerController extends AbstractServerController
         );
         $tpl_data['login_info_output'] = $this->buildLoginInfoOutput(
             $tpl_data['website_username'] ?? '',
-            $tpl_data['website_password'] ?? ''
+            $tpl_data['website_password'] ?? '',
+            $tpl_data['last_output'] ?? '',
+            $tpl_data['last_error_output'] ?? ''
         );
 
         // fetch server status logs
@@ -724,13 +728,22 @@ class ServerController extends AbstractServerController
         return sprintf('%0.3f%%', $uptime);
     }
 
-    private function buildLoginInfoOutput(string $username, string $passwordHash): string
+    private function buildLoginInfoOutput(
+        string $username,
+        string $passwordHash,
+        string $lastOutput = '',
+        string $lastErrorOutput = ''
+    ): string
     {
         $lines = array(
             psm_get_lang('servers', 'website_username') . ': ' .
                 ($username !== '' ? $username : psm_get_lang('system', 'none')),
             psm_get_lang('servers', 'website_password') . ': ' .
                 ($passwordHash !== '' ? psm_get_lang('system', 'yes') : psm_get_lang('system', 'none')),
+            psm_get_lang('servers', 'last_output') . ': ' .
+                ($lastOutput !== '' ? $lastOutput : psm_get_lang('system', 'none')),
+            psm_get_lang('servers', 'last_error_output') . ': ' .
+                ($lastErrorOutput !== '' ? $lastErrorOutput : psm_get_lang('system', 'none')),
         );
 
         return implode(PHP_EOL, $lines);
@@ -790,6 +803,8 @@ class ServerController extends AbstractServerController
                 'email',
                 'sms',
                 'telegram',
+                'last_output',
+                'last_error_output',
                 'custom_header',
             )
         );
