@@ -269,10 +269,16 @@ class StatusUpdater
 
         $requestedUrl = $this->replaceAuthPlaceholders($this->server['ip'], $website_password);
 
+        $request_method = strtoupper((string) $this->server['request_method']);
+        $has_request_body = !empty($this->server['post_field']);
+        $send_body = $this->server['pattern'] !== '' ||
+            $has_request_body ||
+            ($request_method !== '' && !in_array($request_method, array('GET', 'HEAD'), true));
+
         $curl_result = psm_curl_get(
             $requestedUrl,
             true,
-            ($this->server['pattern'] == '' ? false : true),
+            $send_body,
             $this->server['timeout'],
             true,
             $this->server['website_username'],
