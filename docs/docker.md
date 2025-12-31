@@ -1,7 +1,7 @@
 Docker usage
 ============
 
-This repository includes a Docker setup to run PHP Server Monitor locally or in a containerized environment.
+This repository includes a Docker setup to run REMITK MONITORING locally or in a containerized environment.
 
 Prerequisites
 -------------

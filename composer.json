@@ -1,6 +1,6 @@
 {
 	"name": "phpservermon/phpservermon",
-	"description": "PHP Server Monitor",
+	"description": "REMITK MONITORING",
 	"license": "GPL-3.0-or-later",
 	"homepage": "https://www.phpservermonitor.org",
 	"require": {

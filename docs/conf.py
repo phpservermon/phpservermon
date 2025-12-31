@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PHP Server Monitor'
+project = u'REMITK MONITORING'
 copyright = u'2008-2017, Pepijn Over'
 
 # The version info for the project you're documenting, acts as replacement for

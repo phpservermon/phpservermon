@@ -5,7 +5,7 @@ RELEASE_FILE = phpservermon-$(VERSION)
 os = l
 
 help:
-	@echo ' PHP Server Monitor - $(tag)'
+	@echo ' REMITK MONITORING - $(tag)'
 	@echo ' - make export [os=...] [tag=...]  - create a new release from tag. OS: Use m for macOS.'
 	@echo ' - make lint             - run PHP syntax checks across the repository.'
 	@echo ' - make install           - install all dependencies '

@@ -1,4 +1,4 @@
-# PHP Server Monitor container image
+# REMITK MONITORING container image
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
