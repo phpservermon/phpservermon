@@ -543,25 +543,53 @@ body.app-shell {
     position: relative;
     height: auto;
     line-height: normal;
-    padding: 2.5rem 0 3rem;
+    padding: 1.25rem 0;
     border-top: 1px solid var(--psm-border);
-    background: linear-gradient(180deg, rgba(248, 250, 252, 0.9) 0%, rgba(226, 232, 240, 0.9) 100%);
-    box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.08);
+    background: var(--psm-surface);
+    box-shadow: 0 -12px 24px rgba(15, 23, 42, 0.08);
 }
 
 .footer-content {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    color: var(--psm-muted);
 }
 
-.footer-branding {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    letter-spacing: 0.12em;
+.footer-left,
+.footer-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+.footer-label {
+    font-weight: 600;
+    color: var(--psm-text);
+}
+
+.footer-update {
+    color: var(--psm-danger);
+    font-weight: 600;
+}
+
+.footer-brand {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: #1f3a8a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #0b1b33;
+}
+
+.footer-top {
+    font-weight: 600;
 }
 
 .searchbar {
