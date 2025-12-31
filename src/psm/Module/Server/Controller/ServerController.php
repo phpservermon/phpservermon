@@ -28,13 +28,18 @@
 
 namespace psm\Module\Server\Controller;
 
+use DateTime;
 use psm\Service\Database;
+use psm\Util\Server\HistoryGraph;
 
 /**
  * Server module. Add/edit/delete servers, show a list of all servers etc.
  */
 class ServerController extends AbstractServerController
 {
+
+    /** @var HistoryGraph */
+    protected $history;
 
     /**
      * Current server id
@@ -45,6 +50,8 @@ class ServerController extends AbstractServerController
     public function __construct(Database $db, \Twig\Environment $twig)
     {
         parent::__construct($db, $twig);
+
+        $this->history = new HistoryGraph($db, $twig);
 
         $this->server_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -105,8 +112,29 @@ class ServerController extends AbstractServerController
 
         $servers = $this->getServers();
         $server_count = count($servers);
+        $uptime_start = new DateTime('-1 week 0:0:0');
+        $uptime_end = new DateTime();
+        $active_server_ids = array();
+
+        foreach ($servers as $server) {
+            if ($server['active'] == 'no') {
+                continue;
+            }
+            $active_server_ids[] = (int) $server['server_id'];
+        }
+
+        $uptime_stats = $this->history->getUptimePercentages(
+            $active_server_ids,
+            clone $uptime_start,
+            clone $uptime_end
+        );
 
         for ($x = 0; $x < $server_count; $x++) {
+            $uptime = null;
+            if ($servers[$x]['active'] == 'yes') {
+                $uptime = $uptime_stats[$servers[$x]['server_id']] ?? null;
+            }
+
             if ($servers[$x]['type'] == 'website') {
                 // add link to label
                 $ip = $servers[$x]['ip'];
@@ -123,6 +151,7 @@ class ServerController extends AbstractServerController
             }
 
             $servers[$x] = $this->formatServer($servers[$x]);
+            $servers[$x]['uptime_display'] = $this->formatUptime($uptime);
         }
         $tpl_data['servers'] = $servers;
 
@@ -626,6 +655,7 @@ class ServerController extends AbstractServerController
             'label_header_value_description' => psm_get_lang('servers', 'header_value_description'),
             'label_last_check' => psm_get_lang('servers', 'last_check'),
             'label_rtime' => psm_get_lang('servers', 'latency'),
+            'label_uptime' => psm_get_lang('servers', 'uptime'),
             'label_last_online' => psm_get_lang('servers', 'last_online'),
             'label_last_offline' => psm_get_lang('servers', 'last_offline'),
             'label_last_output' => psm_get_lang('servers', 'last_output'),
@@ -678,6 +708,21 @@ class ServerController extends AbstractServerController
             'label_custom_header' => psm_get_lang('servers', 'custom_header'),
             'label_custom_header_description' => psm_get_lang('servers', 'custom_header_description'),
         );
+    }
+
+    /**
+     * Format uptime percentage for display.
+     *
+     * @param float|null $uptime
+     * @return string
+     */
+    protected function formatUptime($uptime)
+    {
+        if ($uptime === null) {
+            return '-';
+        }
+
+        return sprintf('%0.3f%%', $uptime);
     }
 
     private function buildLoginInfoOutput(string $username, string $passwordHash): string
