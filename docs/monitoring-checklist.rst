@@ -1,7 +1,7 @@
 Monitoring checklist
 ====================
 
-Use this list to seed monitoring and alerting for PHP Server Monitor or any PHP stack. Pick only the pieces that match your stack (for example: FPM+Nginx/Apache, MySQL/Postgres, Redis, queues). Start with the “minimums” and expand as you add components.
+Use this list to seed monitoring and alerting for REMITK MONITORING or any PHP stack. Pick only the pieces that match your stack (for example: FPM+Nginx/Apache, MySQL/Postgres, Redis, queues). Start with the “minimums” and expand as you add components.
 
 Minimums for a typical FPM + Nginx + MySQL + Redis host
 -------------------------------------------------------

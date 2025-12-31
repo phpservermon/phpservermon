@@ -1662,7 +1662,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Module for authenticating PHP Server Monitor users against a directory",
+            "description": "Module for authenticating REMITK MONITORING users against a directory",
             "homepage": "https://gitlab.com/viharm/PsmLDAPauth",
             "keywords": [
                 "ad",

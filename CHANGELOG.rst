@@ -322,7 +322,7 @@ v2.1.0 (released February 8, 2014)
 ----------------------------------
 
 * PHP 5.3+ required
-* Merged PHP Server Monitor Plus project by Luiz Alberto S. Ribeiro (<https://github.com/madeinnordeste/PHP-Server-Monitor-Plus>).
+* Merged REMITK MONITORING Plus project by Luiz Alberto S. Ribeiro (<https://github.com/madeinnordeste/PHP-Server-Monitor-Plus>).
 * New layout
 * New install module.
 * Regex search on website has been added.

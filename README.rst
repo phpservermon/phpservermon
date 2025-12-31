@@ -1,4 +1,4 @@
-PHP Server Monitor
+REMITK MONITORING
 ==================
 
 .. image:: https://badges.gitter.im/Join%20Chat.svg
@@ -20,7 +20,7 @@ What's new in v5.1.0
 * Diagnostic reports now run automatically every Friday at 1pm with updated incident summaries.
 * Added a monitoring checklist to help teams plan server coverage.
 
-PHP Server Monitor is a script that checks whether your websites and servers are up and running.
+REMITK MONITORING is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
 and you can manage users for each server with a mobile number and email address.
 
@@ -145,15 +145,15 @@ For a non-Docker local setup that mirrors the old container workflow, see ``docs
 License
 -------
 
-PHP Server Monitor is free software: you can redistribute it and/or modify
+REMITK MONITORING is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-PHP Server Monitor is distributed in the hope that it will be useful,
+REMITK MONITORING is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with PHP Server Monitor.  If not, see https://www.gnu.org/licenses/.
+along with REMITK MONITORING.  If not, see https://www.gnu.org/licenses/.

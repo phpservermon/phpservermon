@@ -1,22 +1,22 @@
 <?php
 
 /**
- * PHP Server Monitor
+ * REMITK MONITORING
  * Monitor your servers and websites.
  *
- * This file is part of PHP Server Monitor.
- * PHP Server Monitor is free software: you can redistribute it and/or modify
+ * This file is part of REMITK MONITORING.
+ * REMITK MONITORING is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * PHP Server Monitor is distributed in the hope that it will be useful,
+ * REMITK MONITORING is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
+ * along with REMITK MONITORING.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
  * @author      Roman Beylin <roman.beylin@yandex.ru>
@@ -517,7 +517,7 @@ $sm_lang = array(
         'password_repeat' => 'Повторить пароль',
         'password_forgot' => 'Забыли пароль?',
         'password_reset' => 'Сбросить пароль',
-        'password_reset_email_subject' => 'Сброс пароля для PHP Server Monitor',
+        'password_reset_email_subject' => 'Сброс пароля для REMITK MONITORING',
         'password_reset_email_body' => 'Пожалуйста, используйте следующую ссылку для сброса пароля. Ссылка действительна 1 час.<br><br>%link%',
         'error_user_incorrect' => 'Пользователь с указаными данными не найден.',
         'error_login_incorrect' => 'Информация указана неверно.',

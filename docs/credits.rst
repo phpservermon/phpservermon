@@ -7,7 +7,7 @@ Credits
 Credits
 +++++++
 
-The following people have contributed to the development of PHP Server Monitor:
+The following people have contributed to the development of REMITK MONITORING:
 
 
 * Pepijn Over - https://github.com/dopeh
@@ -100,7 +100,7 @@ The following people have contributed to the development of PHP Server Monitor:
 Translators
 +++++++++++
 
-The following people have contributed to the translation of PHP Server Monitor:
+The following people have contributed to the translation of REMITK MONITORING:
 
 * Bulgarian
 
@@ -192,7 +192,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 Vendors
 +++++++
 
-The following libraries are being used by PHP Server Monitor:
+The following libraries are being used by REMITK MONITORING:
 
 * Chart.js - http://chartjs.org/
 * Twitter Bootstrap - http://getbootstrap.com
