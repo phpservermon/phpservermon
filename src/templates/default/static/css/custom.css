@@ -156,6 +156,22 @@ body.app-shell {
     margin-top: 0.35rem;
 }
 
+.login-info-output {
+    background: var(--psm-surface-alt);
+    border: 1px solid var(--psm-border);
+    border-radius: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+    max-height: 320px;
+    overflow: auto;
+    padding: 0.75rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
 
 .nav-quick-actions .btn {
     border-radius: 12px;
