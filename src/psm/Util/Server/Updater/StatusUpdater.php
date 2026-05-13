@@ -175,19 +175,31 @@ class StatusUpdater
      */
     protected function updatePing($max_runs, $run = 1)
     {
-        // Settings
-        $max_runs = ($max_runs == null || $max_runs > 1) ? 1 : $max_runs;
-        $server_ip = escapeshellcmd($this->server['ip']);
+        $starttime = microtime(true);
+        $ip = $this->server['ip'];
         $os_is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        
+        if ($os_is_windows) {
+            // Windows Ping: -n 1 (1 packet), -w 2000 (2000ms timeout)
+            exec('ping -n 1 -w 2000 ' . escapeshellarg($ip), $output, $result);
+            $output_str = implode("", $output);
+            // Windows ping notoriously returns 0 on unreachable hosts. Verify with "TTL="
+            $status = ($result === 0 && stripos($output_str, 'TTL=') !== false) ? true : false;
+        } else {
+            // Linux/Unix Ping: -c 1 (1 packet), -w 2 (2s timeout), capture stderr
+            exec('ping -c 1 -w 2 ' . escapeshellarg($ip) . ' 2>&1', $output, $result);
+            // Core fix for Linux: Only trust the Return Code! (0 is success)
+            $status = ($result === 0) ? true : false;
+        }
+        
+        // Record the response time
+        $this->rtime = (microtime(true) - $starttime);
 
-        $status = $os_is_windows ?
-            $this->pingFromWindowsMachine($server_ip, $max_runs) :
-            $this->pingFromNonWindowsMachine($server_ip, $max_runs);
-
-        // check if server is available and rerun if asked.
-        if (!$status && $run < $max_runs) {
+        // If it fails and we haven't reached max retries, try again
+        if(!$status && $run < $max_runs) {
             return $this->updatePing($max_runs, $run + 1);
         }
+        
         return $status;
     }
 
