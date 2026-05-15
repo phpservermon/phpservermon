@@ -46,6 +46,7 @@ class ServerModule implements ModuleInterface
             'log' => __NAMESPACE__ . '\Controller\LogController',
             'status' => __NAMESPACE__ . '\Controller\StatusController',
             'update' => __NAMESPACE__ . '\Controller\UpdateController',
+            'callback' => __NAMESPACE__ . '\Controller\CallbackController',
         );
     }
 }

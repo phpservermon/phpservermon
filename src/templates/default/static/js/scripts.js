@@ -56,13 +56,20 @@ $("#type").change(function () {
 	switch ($("select#type option:checked").val()) {
 		case "website":
 			$('.typeService').slideUp();
+			$('.typeCallback').slideUp();
 			$('.typeWebsite').slideDown();
 			$("select#popular_request_methods").change();
 			break;
 		case "service":
 			$('.typeWebsite').slideUp();
+			$('.typeCallback').slideUp();
 			$('.typeService').slideDown();
 			$("select#popular_ports").change();
+			break;
+		case "callback":
+			$('.typeWebsite').slideUp();
+			$('.typeService').slideUp();
+			$('.typeCallback').slideDown();
 			break;
 		default:
 			$('.types').slideUp();

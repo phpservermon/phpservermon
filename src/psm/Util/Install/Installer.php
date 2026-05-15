@@ -260,7 +260,7 @@ class Installer
                 `port` int(5) NOT NULL,
                 `request_method` varchar(50) NULL,
                 `label` varchar(255) NOT NULL,
-                `type` enum('ping','service','website') NOT NULL default 'service',
+                `type` enum('ping','service','website','callback') NOT NULL default 'service',
                 `pattern` varchar(255) NOT NULL default '',
                 `pattern_online` enum('yes','no') NOT NULL default 'yes',
                 `post_field` varchar(255) NULL,
@@ -294,6 +294,10 @@ class Installer
                 `last_error_output` TEXT,
                 `last_output` TEXT,
                 `custom_header` TEXT NULL DEFAULT NULL,
+                `callback_token` varchar(128) DEFAULT NULL,
+                `callback_frequency` int(10) unsigned NOT NULL DEFAULT '0',
+                `callback_last_call` datetime NULL,
+                UNIQUE KEY `callback_token` (`callback_token`),
                 PRIMARY KEY  (`server_id`)
             ) DEFAULT CHARSET=utf8;",
             PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -371,6 +375,9 @@ class Installer
         }
         if (version_compare($version_from, '3.6.0', '<')) {
             $this->upgrade360();
+        }
+        if (version_compare($version_from, '3.6.1', '<')) {
+            $this->upgrade361();
         }
         psm_update_conf('version', $version_to);
     }
@@ -767,5 +774,27 @@ class Installer
         $this->execSQL($queries);
 
         $this->log('Public page is now available. Added user \'__PUBLIC__\'. See documentation for more info.');
+    }
+
+    /**
+     * Patch for v3.6.1 release
+     * Added callback-based server validation.
+     */
+    protected function upgrade361()
+    {
+        $queries = array();
+
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+            CHANGE `type` `type` ENUM('ping','service','website','callback') NOT NULL DEFAULT 'service';";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+            ADD `callback_token` VARCHAR(128) NULL AFTER `custom_header`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+            ADD `callback_frequency` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `callback_token`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+            ADD `callback_last_call` DATETIME NULL AFTER `callback_frequency`;";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers`
+            ADD UNIQUE KEY `callback_token` (`callback_token`);";
+
+        $this->execSQL($queries);
     }
 }
