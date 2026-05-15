@@ -100,7 +100,7 @@ class StatusUpdater
             'allow_http_status', 'redirect_check', 'header_name',
             'header_value', 'status', 'active', 'warning_threshold',
             'warning_threshold_counter', 'ssl_cert_expiry_days', 'ssl_cert_expired_time', 'timeout', 'website_username',
-            'website_password', 'last_offline', 'custom_header'
+            'website_password', 'last_offline', 'custom_header', 'callback_frequency', 'callback_last_call'
         ));
         if (empty($this->server)) {
             return false;
@@ -115,6 +115,9 @@ class StatusUpdater
                 break;
             case 'website':
                 $this->status_new = $this->updateWebsite($max_runs);
+                break;
+            case 'callback':
+                $this->status_new = $this->updateCallback();
                 break;
         }
 
@@ -362,6 +365,41 @@ class StatusUpdater
         }
 
         return $result;
+    }
+
+    /**
+     * Check the current callback server status
+     * @return boolean
+     */
+    protected function updateCallback()
+    {
+        $this->rtime = 0;
+        $frequency = intval($this->server['callback_frequency']);
+        $last_call = $this->server['callback_last_call'];
+
+        if ($frequency <= 0) {
+            $this->error = 'CALLBACK ERROR: Invalid callback frequency.';
+            return false;
+        }
+
+        if (empty($last_call) || $last_call == '0000-00-00 00:00:00') {
+            $this->error = 'CALLBACK ERROR: No callback has been received yet.';
+            return false;
+        }
+
+        $last_call_ts = strtotime($last_call);
+        if ($last_call_ts === false) {
+            $this->error = 'CALLBACK ERROR: Last callback timestamp is invalid.';
+            return false;
+        }
+
+        $elapsed = time() - $last_call_ts;
+        if ($elapsed >= $frequency) {
+            $this->error = 'CALLBACK ERROR: Last callback was ' . $elapsed . ' seconds ago.';
+            return false;
+        }
+
+        return true;
     }
 
     /**

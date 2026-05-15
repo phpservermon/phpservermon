@@ -67,6 +67,28 @@
 						<dd class="col-md-6">{{ type }}</dd>
 					</dl>
 				</li>
+				{% if callback_url %}
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_callback_frequency }}:</dt>
+						<dd class="col-md-6">{{ callback_frequency }} {{ label_seconds }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_callback_last_received }}:</dt>
+						<dd class="col-md-6">{{ callback_last_call }}</dd>
+					</dl>
+				</li>
+				<li class="list-group-item">
+					<dl class="row">
+						<dt class="col-md-6">{{ label_callback_curl_command }}:</dt>
+						<dd class="col-md-6">
+							<input type="text" class="form-control" value="{{ callback_curl_command }}" aria-label="{{ label_callback_curl_command }}" readonly>
+						</dd>
+					</dl>
+				</li>
+				{% endif %}
 				<li class="list-group-item">
 					<dl class="row">
 						<dt class="col-md-6">{{ label_warning_threshold }}:</dt>

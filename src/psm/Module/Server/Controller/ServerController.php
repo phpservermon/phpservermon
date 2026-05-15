@@ -120,6 +120,9 @@ class ServerController extends AbstractServerController
             if ($servers[$x]['type'] == 'ping') {
                 $servers[$x]['port'] = '';
             }
+            if ($servers[$x]['type'] == 'callback') {
+                $servers[$x]['port'] = '';
+            }
             if (($servers[$x]['active'] == 'yes')) {
                 $servers[$x]['active_title'] = psm_get_lang('servers', 'monitoring');
             } else {
@@ -168,6 +171,8 @@ class ServerController extends AbstractServerController
 
         $tpl_data = $this->getLabels();
         self::setDefaultMonitoringNotificationsToConfiguredValues( $tpl_data );
+        $tpl_data['edit_value_callback_url'] = '';
+        $tpl_data['edit_value_callback_curl'] = '';
 
         $tpl_data['edit_server_id'] = $this->server_id;
         $tpl_data['url_save'] = psm_build_url(array(
@@ -205,6 +210,7 @@ class ServerController extends AbstractServerController
                 // insert mode
                 $tpl_data['titlemode'] = psm_get_lang('system', 'insert');
                 $tpl_data['edit_value_warning_threshold'] = '1';
+                $tpl_data['edit_value_callback_frequency'] = '60';
 
                 $edit_server = $_POST;
                 break;
@@ -234,6 +240,10 @@ class ServerController extends AbstractServerController
                 $edit_server[$key] = psm_POST($key, $value);
             }
 
+            $callback_url = $this->buildCallbackUrl(
+                isset($edit_server['callback_token']) ? $edit_server['callback_token'] : null
+            );
+
             $tpl_data = array_merge($tpl_data, array(
                 'edit_value_label' => $edit_server['label'],
                 'edit_value_ip' => $edit_server['ip'],
@@ -252,6 +262,9 @@ class ServerController extends AbstractServerController
                 'edit_value_website_password' => empty($edit_server['website_password']) ? '' :
                     sha1($edit_server['website_password']),
                 'edit_value_ssl_cert_expiry_days' => $edit_server['ssl_cert_expiry_days'],
+                'edit_value_callback_frequency' => $edit_server['callback_frequency'],
+                'edit_value_callback_url' => $callback_url,
+                'edit_value_callback_curl' => $this->buildCallbackCurlCommand($callback_url),
                 'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
                 'edit_active_selected' => $edit_server['active'],
                 'edit_email_selected' => $edit_server['email'],
@@ -291,6 +304,11 @@ class ServerController extends AbstractServerController
             return $this->executeIndex();
         }
 
+        $current_server = null;
+        if ($this->server_id > 0) {
+            $current_server = $this->getServers($this->server_id);
+        }
+
         // We need the server id to encrypt the password. Encryption will be done after the server is added
         $encrypted_password = '';
 
@@ -298,11 +316,10 @@ class ServerController extends AbstractServerController
             $new_password = psm_POST('website_password');
 
             if ($this->server_id > 0) {
-                $edit_server = $this->getServers($this->server_id);
-                $hash = sha1($edit_server['website_password']);
+                $hash = sha1($current_server['website_password']);
 
                 if ($new_password == $hash) {
-                    $encrypted_password = $edit_server['website_password'];
+                    $encrypted_password = $current_server['website_password'];
                 } else {
                     $encrypted_password = psm_password_encrypt(strval($this->server_id) .
                         psm_get_conf('password_encrypt_key'), $new_password);
@@ -330,6 +347,7 @@ class ServerController extends AbstractServerController
             'header_value' => psm_POST('header_value', ''),
             'warning_threshold' => intval(psm_POST('warning_threshold', 0)),
             'ssl_cert_expiry_days' => intval(psm_POST('ssl_cert_expiry_days', 1)),
+            'callback_frequency' => intval(psm_POST('callback_frequency', 0)),
             'active' => in_array($_POST['active'], array('yes', 'no')) ? $_POST['active'] : 'no',
             'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
             'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
@@ -339,7 +357,34 @@ class ServerController extends AbstractServerController
             'telegram' => in_array($_POST['telegram'], array('yes', 'no')) ? $_POST['telegram'] : 'no',
             'jabber' => in_array($_POST['jabber'], array('yes', 'no')) ? $_POST['jabber'] : 'no',
             'custom_header' => empty(psm_POST('custom_header')) ? null : psm_POST('custom_header'),
+            'callback_last_call' => null,
         );
+
+        if ($clean['type'] === 'callback') {
+            if (empty($clean['ip'])) {
+                $clean['ip'] = 'localhost';
+            }
+            $clean['port'] = 0;
+            $clean['request_method'] = null;
+            $clean['post_field'] = null;
+            $clean['pattern'] = '';
+            $clean['pattern_online'] = 'yes';
+            $clean['redirect_check'] = 'bad';
+            $clean['allow_http_status'] = '';
+            $clean['header_name'] = '';
+            $clean['header_value'] = '';
+            $clean['ssl_cert_expiry_days'] = 0;
+            $clean['website_username'] = null;
+            $clean['website_password'] = '';
+            $clean['custom_header'] = null;
+            $clean['callback_token'] = $this->resolveCallbackToken($current_server);
+            if (!empty($current_server) && $current_server['type'] === 'callback') {
+                $clean['callback_last_call'] = $current_server['callback_last_call'];
+            }
+        } else {
+            $clean['callback_frequency'] = 0;
+            $clean['callback_token'] = null;
+        }
         // make sure websites start with http://
         if (
             $clean['type'] == 'website' &&
@@ -379,6 +424,9 @@ class ServerController extends AbstractServerController
             $server_validator->ip($clean['ip'], $clean['type']);
             $server_validator->warningThreshold($clean['warning_threshold']);
             $server_validator->sslCertExpiryDays($clean['ssl_cert_expiry_days']);
+            if ($clean['type'] === 'callback') {
+                $server_validator->callbackFrequency($clean['callback_frequency']);
+            }
         } catch (\InvalidArgumentException $ex) {
             $this->addMessage(psm_get_lang('servers', 'error_' . $ex->getMessage()), 'error');
             return $this->executeEdit();
@@ -590,6 +638,7 @@ class ServerController extends AbstractServerController
             'label_website' => psm_get_lang('servers', 'type_website'),
             'label_service' => psm_get_lang('servers', 'type_service'),
             'label_ping' => psm_get_lang('servers', 'type_ping'),
+            'label_callback' => psm_get_lang('servers', 'type_callback'),
             'label_pattern' => psm_get_lang('servers', 'pattern'),
             'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
             'label_pattern_online' => psm_get_lang('servers', 'pattern_online'),
@@ -630,6 +679,13 @@ class ServerController extends AbstractServerController
             'label_warning_threshold_description' => psm_get_lang('servers', 'warning_threshold_description'),
             'label_ssl_cert_expiry_days' => psm_get_lang('servers', 'ssl_cert_expiry_days'),
             'label_ssl_cert_expiry_days_description' => psm_get_lang('servers', 'ssl_cert_expiry_days_description'),
+            'label_callback_frequency' => psm_get_lang('servers', 'callback_frequency'),
+            'label_callback_frequency_description' => psm_get_lang('servers', 'callback_frequency_description'),
+            'label_callback_last_received' => psm_get_lang('servers', 'callback_last_received'),
+            'label_callback_url' => psm_get_lang('servers', 'callback_url'),
+            'label_callback_curl_command' => psm_get_lang('servers', 'callback_curl_command'),
+            'label_callback_url_description' => psm_get_lang('servers', 'callback_url_description'),
+            'label_callback_url_curl_description' => psm_get_lang('servers', 'callback_url_curl_description'),
             'label_action' => psm_get_lang('system', 'action'),
             'label_save' => psm_get_lang('system', 'save'),
             'label_go_back' => psm_get_lang('system', 'go_back'),
@@ -656,6 +712,38 @@ class ServerController extends AbstractServerController
             'label_custom_header' => psm_get_lang('servers', 'custom_header'),
             'label_custom_header_description' => psm_get_lang('servers', 'custom_header_description'),
         );
+    }
+
+    /**
+     * Resolve callback token for callback checks
+     * @param array|null $current_server
+     * @return string
+     */
+    protected function resolveCallbackToken($current_server = null)
+    {
+        if (!empty($current_server['callback_token'])) {
+            return $current_server['callback_token'];
+        }
+
+        return $this->generateUniqueCallbackToken();
+    }
+
+    /**
+     * Generate a unique callback token
+     * @return string
+     */
+    protected function generateUniqueCallbackToken()
+    {
+        do {
+            $token = bin2hex(random_bytes(32));
+            $match = $this->db->selectRow(
+                PSM_DB_PREFIX . 'servers',
+                array('callback_token' => $token),
+                array('server_id')
+            );
+        } while (!empty($match));
+
+        return $token;
     }
 
     /**

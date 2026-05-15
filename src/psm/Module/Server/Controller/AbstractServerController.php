@@ -96,7 +96,10 @@ abstract class AbstractServerController extends AbstractController
 					`s`.`last_error`,
 					`s`.`last_error_output`,
 					`s`.`last_output`,
-                    `s`.`custom_header`
+                    `s`.`custom_header`,
+                    `s`.`callback_token`,
+                    `s`.`callback_frequency`,
+                    `s`.`callback_last_call`
 				FROM `" . PSM_DB_PREFIX . "servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -117,9 +120,13 @@ abstract class AbstractServerController extends AbstractController
      */
     protected function formatServer($server)
     {
+        $server_type = $server['type'];
         $server['rtime'] = $server['rtime'];
         $server['last_online'] = psm_timespan($server['last_online']);
         $server['last_offline'] = psm_timespan($server['last_offline']);
+        $server['callback_last_call'] = psm_timespan($server['callback_last_call']);
+        $server['callback_url'] = $this->buildCallbackUrl($server['callback_token']);
+        $server['callback_curl_command'] = $this->buildCallbackCurlCommand($server['callback_url']);
         if ($server['last_offline'] != psm_get_lang('system', 'never')) {
             $server['last_offline_duration'] = is_null($server['last_offline_duration']) ?
                 null : "(" . $server['last_offline_duration'] . ")";
@@ -140,7 +147,7 @@ abstract class AbstractServerController extends AbstractController
         }
 
         $server['error'] = htmlentities($server['error']);
-        $server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
+        $server['type'] = psm_get_lang('servers', 'type_' . $server_type);
         $server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
 
         $server['last_error'] = htmlentities($server['last_error']);
@@ -157,5 +164,40 @@ abstract class AbstractServerController extends AbstractController
         }
 
         return $server;
+    }
+
+    /**
+     * Build callback URL from token
+     * @param string|null $token
+     * @return string
+     */
+    protected function buildCallbackUrl($token)
+    {
+        if (empty($token)) {
+            return '';
+        }
+
+        return psm_build_url(
+            array(
+                'mod' => 'server_callback',
+                'token' => $token,
+            ),
+            true,
+            false
+        );
+    }
+
+    /**
+     * Build callback curl command from callback URL
+     * @param string $callback_url
+     * @return string
+     */
+    protected function buildCallbackCurlCommand($callback_url)
+    {
+        if (empty($callback_url)) {
+            return '';
+        }
+
+        return 'curl -fsS ' . escapeshellarg($callback_url);
     }
 }

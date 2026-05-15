@@ -16,8 +16,15 @@
 					<option value="ping" {{ edit_type_selected_ping|raw }}>{{ label_ping }}</option>
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
+					<option value="callback" {{ edit_type_selected_callback|raw }}>{{ label_callback }}</option>
 				</select>
 			</div>
+			<!-- Callback frequency -->
+			{{ macro.input_field("number", "callback_frequency", "types typeCallback", "callback_frequency", label_callback_frequency, edit_value_callback_frequency, "60", "10", 'callback_frequency_help', label_callback_frequency_description) }}
+			<!-- Callback URL -->
+			{{ macro.input_field("text", "callback_url", "types typeCallback", null, label_callback_url, edit_value_callback_url, null, null, 'callback_url_help', label_callback_url_description, null, true) }}
+			<!-- Callback curl command -->
+			{{ macro.input_field("text", "callback_url_curl", "types typeCallback", null, label_callback_curl_command, edit_value_callback_curl, null, null, 'callback_url_curl_help', label_callback_url_curl_description, null, true) }}
 			<!-- Port -->
 			<div class="form-group types typeService">
 				<label for="popular_ports">{{ label_port }}</label>

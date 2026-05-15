@@ -135,8 +135,22 @@ class ServerValidator
      */
     public function type($type)
     {
-        if (!in_array($type, array('ping', 'service', 'website'))) {
+        if (!in_array($type, array('ping', 'service', 'website', 'callback'))) {
             throw new \InvalidArgumentException('server_type_invalid');
+        }
+        return true;
+    }
+
+    /**
+     * Check callback frequency
+     * @param int $value
+     * @return boolean
+     * @throws \InvalidArgumentException
+     */
+    public function callbackFrequency($value)
+    {
+        if (!is_numeric($value) || intval($value) <= 0) {
+            throw new \InvalidArgumentException('server_callback_frequency_invalid');
         }
         return true;
     }
